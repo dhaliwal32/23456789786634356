@@ -290,6 +290,11 @@ const formRatio = (p, K) => { const r = sigOf(p).rec, b = effAvg(p, K); return r
 const LBL = { F1: "1st line", F2: "2nd line", D1: "top pair", D2: "2nd pair" };
 const tags = (p, K) => {
   const g = sigOf(p), out = [], fr = formRatio(p, K);
+  { const M = window.__MODEL, pid = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null, mb = M && pid ? (M.base || {})[pid] : null;
+    if (mb != null && p.proj && p.avg > 0 && window.__PMODE !== "espn") {
+      if (mb - p.avg >= 1 && mb / p.avg >= 1.15) out.push({ t: "📊 underrated", c: "text-green-700" });
+      else if (p.avg - mb >= 1 && mb / p.avg <= 0.85) out.push({ t: "📊 overrated", c: "text-amber-600" });
+    } }
   if (g.gs && g.gs.flag) out.push({ t: `🥅 started ${g.gs.rs} of last ${g.gs.rg}`, c: g.gs.rs / g.gs.rg > g.gs.prior ? "text-green-700 font-semibold" : "text-red-600 font-semibold" });
   if (g.lines && g.lines.chg === "up") out.push({ t: `⬆ ${LBL[g.lines.grp] || "promoted"}`, c: "text-green-700 font-semibold" });
   else if (g.lines && g.lines.chg === "down") out.push({ t: "⬇ demoted", c: "text-red-600" });
@@ -1166,14 +1171,24 @@ function TwoForOne({ s }) {
   const theirs = s.players.filter((p) => p.ft === partner);
   const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 40), [tv]);
   const posOK = (roster) => { const c = { F: 0, D: 0, G: 0 }; roster.forEach((p) => { if (!p.ir) c[p.p]++; }); return ["F", "D", "G"].every((k) => c[k] >= mins[k]); };
-  const sellFlags = (p) => {
-    const f = [], l = sigOf(p).luck, id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  const valueFlags = (p) => {
+    const f = [], g = sigOf(p), l = g.luck, id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
     const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
-    if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push("🎲 lucky");
-    if (mb != null && p.proj && p.avg > 0 && mb / p.avg <= 0.85) f.push("ESPN overrates");
-    if ((formRatio(p, K) || 0) >= 1.25) f.push("🔥 hot streak");
+    if (mb != null && p.proj && p.avg > 0) {
+      if (mb / p.avg <= 0.85 && p.avg - mb >= 1) f.push({ t: "ESPN overrates", sell: true });
+      else if (mb / p.avg >= 1.15 && mb - p.avg >= 1) f.push({ t: "📊 underrated", sell: false });
+    }
+    if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push({ t: "🎲 lucky", sell: true });
+    if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) f.push({ t: "🎲 unlucky", sell: false });
+    if ((formRatio(p, K) || 0) >= 1.25) f.push({ t: "🔥 hot streak", sell: true });
+    const t = g.toi;
+    if (t && (t.d >= 90 || t.pd >= 45)) f.push({ t: "⏱ more ice time", sell: false });
+    if (g.lines && g.lines.chg === "up") f.push({ t: "⬆ promoted", sell: false });
+    if (g.ppChg === "added") f.push({ t: "⬆ new on PP1", sell: false });
     return f;
   };
+  const sellFlags = (p) => valueFlags(p).filter((x) => x.sell).map((x) => x.t);
+  const buyFlags = (p) => valueFlags(p).filter((x) => !x.sell).map((x) => x.t);
   const toggle = (arr, set, id) => set(arr.includes(id) ? arr.filter((x) => x !== id) : [...arr, id]);
   const G = mine.filter((p) => give.includes(p.id)), Rr = theirs.filter((p) => get.includes(p.id));
   const extra = Math.max(0, G.length - Rr.length);
@@ -1235,8 +1250,8 @@ function TwoForOne({ s }) {
       {list.sort((a, b) => order[a.p] - order[b.p] || (tv[b.id] || 0) - (tv[a.id] || 0)).map((p) => (
         <label key={p.id} className={"flex items-center gap-2 py-1 px-1 rounded " + (sel.includes(p.id) ? "bg-blue-50" : "")}>
           <input type="checkbox" checked={sel.includes(p.id)} onChange={() => toggle(sel, set, p.id)} />
-          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span> {sellFlags(p).map((f) => <span key={f} className="text-xs text-amber-600 ml-1">{f}</span>)}</span>
-          <span className="text-xs text-slate-500" title="True value (your model) / how others see him (ESPN)">{f1(tv[p.id])} <span className="text-slate-400">/ {f1(pe(p))}</span></span>
+          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span> {valueFlags(p).map((f) => <span key={f.t} className={"text-xs ml-1 " + (f.sell ? "text-amber-600" : "text-green-700")}>{f.t}</span>)}</span>
+          <span className="text-xs text-slate-500 whitespace-nowrap" title="Per game: your model vs what other managers see (ESPN projection + actual points)">{f1(effAvg(p, K) * (p.p === "G" ? p.prob : 1))} <span className="text-slate-400">vs {f1(vv(p))}</span>/g</span>
         </label>
       ))}
     </Section>
@@ -1263,6 +1278,7 @@ function TwoForOne({ s }) {
               <span className="mr-2">Per game (as they see it): {x.A.n.split(" ").pop()} {f1(vv(x.A))} + {x.B.n.split(" ").pop()} {f1(vv(x.B))} for {x.T.n.split(" ").pop()} {f1(vv(x.T))}</span>
               {x.perc >= 0.05 ? <span className="text-green-700 font-semibold">Likely accepted — they gain {Math.round(x.perc * 100)}% in value</span> : <span className="text-amber-600 font-semibold">Possible — about even for them ({x.perc >= 0 ? "+" : ""}{Math.round(x.perc * 100)}%)</span>} · their lineup <D v={x.thR} /> ROS
               {[...sellFlags(x.A), ...sellFlags(x.B)].length ? <span className="text-amber-600"> · selling high: {[...sellFlags(x.A).map((f) => `${x.A.n} ${f}`), ...sellFlags(x.B).map((f) => `${x.B.n} ${f}`)].join(", ")}</span> : null}
+              {buyFlags(x.T).length ? <span className="text-green-700"> · buying before they notice: {x.T.n} {buyFlags(x.T).join(", ")}</span> : null}
               <button className="text-blue-600 ml-3" onClick={() => load(x)}>Open in builder →</button>
             </div>
           </div>
