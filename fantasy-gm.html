@@ -402,7 +402,7 @@ const Section = ({ title, sub, link, children }) => (
 const NAV = [
   ["today", "🏠 Today", null],
   ["matchup", "⚔️ Matchup", null],
-  ["moves", "🔁 Moves", [["advice", "Advice"], ["adddrop", "Add / Drop"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"]]],
+  ["moves", "🔁 Moves", [["advice", "Advice"], ["adddrop", "Add / Drop"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
   ["league", "🏆 League", [["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
   ["players", "👥 Players", null],
   ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
@@ -466,7 +466,7 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
-  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : <AdvicePanel {...P} />;
+  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : <League {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
   return (
@@ -786,6 +786,105 @@ function OddsBoard({ s }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ---------- Playoff planner ----------
+function PlayoffPlanner({ s, setS }) {
+  const K = s.blend;
+  const st = s.poStart ?? 24, nW = s.poWeeks ?? 3;
+  const [who, setWho] = useState("fa"); const [pos, setPos] = useState("all"); const [q, setQ] = useState(""); const [showTeams, setShowTeams] = useState(false);
+  const weeks = useMemo(() => s.weeks.slice(st, st + nW).map((w) => deriveWeek(w, false)), [s.weeks, st, nW]);
+  const dates = weeks.flatMap((w) => w.dates || []);
+  const perDay = {}; dates.forEach((d) => (perDay[d] = NHL.filter((t) => SCHED[t] && SCHED[t].has(d)).length / 2));
+  const light = new Set(dates.filter((d) => perDay[d] > 0 && perDay[d] <= 5));
+  const teamRows = NHL.map((t) => { const per = weeks.map((w) => gms(w, t)); const tot = per.reduce((a, b) => a + b, 0); const off = dates.filter((d) => light.has(d) && SCHED[t].has(d)).length; return { t, per, tot, off }; }).sort((a, b) => b.tot - a.tot || b.off - a.off);
+  const avgGames = teamRows.reduce((a, r) => a + r.tot, 0) / teamRows.length;
+  const tg = {}; teamRows.forEach((r) => (tg[r.t] = r));
+  const val = (p) => { let v = 0; dates.forEach((d) => { if (SCHED[p.t] && SCHED[p.t].has(d)) v += effAvg(p, K, d) * p.prob * avail(p, d); }); return v; };
+  const rows = useMemo(() => s.players
+    .filter((p) => (who === "all" || (who === "fa" ? p.ft === "fa" : who === "mine" ? p.ft === s.me : p.ft !== "fa" && p.ft !== s.me)) && (pos === "all" || p.p === pos) && p.n.toLowerCase().includes(q.toLowerCase()) && p.prob > 0)
+    .map((p) => { const v = val(p); const r = tg[p.t] || { tot: 0, off: 0, per: [] }; return { p, v, g: r.tot, off: r.off, per: r.per, bonus: (r.tot - avgGames) * effAvg(p, K) * p.prob }; })
+    .sort((a, b) => b.v - a.v).slice(0, 100), [s.players, who, pos, q, st, nW, K]);
+  const league = useMemo(() => s.teams.map((t) => { const r = s.players.filter((p) => p.ft === t.id); return { t, tot: weeks.reduce((a, w) => a + weekProj(r, w, K, 0).total, 0) }; }).sort((a, b) => b.tot - a.tot), [s.players, weeks, K]);
+  const myRank = league.findIndex((x) => x.t.id === s.me) + 1;
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir).map((p) => ({ p, g: (tg[p.t] || {}).tot || 0 })).sort((a, b) => a.g - b.g);
+  const weakSched = mine.filter((x) => x.g <= avgGames - 1.5);
+  const set = (k, v) => setS((x) => ({ ...x, [k]: v }));
+  const gCls = (g, avg) => (g >= avg + 1.5 ? "text-green-700 font-semibold" : g <= avg - 1.5 ? "text-red-600" : "");
+  const today = todayISO();
+  const deadline = "2027-02-26";
+  return (
+    <div className="space-y-4">
+      <Section title="Fantasy playoff planner" sub={`${weeks.length ? `${mdL(weeks[0].dates[0])} – ${mdL(dates[dates.length - 1])}` : ""} · trade deadline ${mdL(deadline)}${today <= deadline ? ` (${Math.round((fromIso(deadline) - fromIso(today)) / 864e5)} days away)` : " (passed)"}`}>
+        <div className="flex flex-wrap gap-2 items-center">
+          <label>Playoffs start <select className={inp} value={st} onChange={(e) => set("poStart", +e.target.value)}>{s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}</select></label>
+          <label>Weeks <select className={inp} value={nW} onChange={(e) => set("poWeeks", +e.target.value)}>{[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
+        </div>
+        <div className="text-xs text-slate-500 mt-2">Players are valued on <b>games in your playoff weeks × projection</b>. Average team plays {avgGames.toFixed(1)} games in this window. "Light nights" = 5 or fewer NHL games — easier to fit everyone into your lineup.</div>
+      </Section>
+      <div className="grid md:grid-cols-2 gap-4">
+        <Section title="Your playoff outlook">
+          <div className="text-2xl font-bold">#{myRank} <span className="text-sm font-normal text-slate-500">of {league.length} in projected playoff-week points</span></div>
+          <div className="mt-2">{league.map((x, i) => <div key={x.t.id} className={"flex justify-between py-1 border-t border-slate-100 " + (x.t.id === s.me ? "text-blue-700 font-semibold" : "")}><span>{i + 1}. {x.t.name}</span><span>{f1(x.tot)}</span></div>)}</div>
+          <div className="text-xs text-slate-500 mt-2">Lineup-aware totals for all {nW} weeks with current rosters and projections.</div>
+        </Section>
+        <Section title="Your players with weak playoff schedules">
+          {weakSched.length ? weakSched.map(({ p, g }) => (
+            <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}</span><span className="ml-auto text-red-600 text-xs">{g} games ({(g - avgGames).toFixed(1)} vs avg)</span></div>
+          )) : <div className="text-green-700">✅ None of your players have a clearly light playoff schedule.</div>}
+          <div className="text-xs text-slate-500 mt-2">Trade candidates before the deadline — swap them for similar players with more games.</div>
+        </Section>
+      </div>
+      <Section title="Playoff targets" sub="Ranked by projected points in your playoff weeks. Schedule bonus = extra points from games above the average.">
+        <div className="flex flex-wrap gap-2 mb-3">
+          <Pills items={[["fa", "Free agents (stash)"], ["other", "Other teams (trade)"], ["mine", "My team"], ["all", "Everyone"]]} value={who} onChange={setWho} />
+          <select className={inp} value={pos} onChange={(e) => setPos(e.target.value)}><option value="all">All positions</option><option>F</option><option>D</option><option>G</option></select>
+          <input className={inp + " flex-1 min-w-[140px]"} placeholder="Search" value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-left"><tr>{["Player", "", "Owner", ...weeks.map((w, i) => `Wk ${st + i + 1}`), "Games", "Light", "Avg", "Playoff pts", "Sched bonus"].map((h, i) => <th key={i} className="px-2 py-2">{h}</th>)}</tr></thead>
+            <tbody>
+              {rows.map(({ p, v, g, off, per, bonus }) => (
+                <tr key={p.id} className={"border-t border-slate-100 " + (p.ft === s.me ? "bg-blue-50" : "")}>
+                  <td className="px-2 py-2 font-medium whitespace-nowrap">{p.n}{p.ir ? <span className="text-red-600 text-xs ml-1">IR</span> : ""}</td>
+                  <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · {p.t}</td>
+                  <td className="px-2 py-2 text-xs text-slate-500">{teamName(s, p.ft)}</td>
+                  {per.map((n, i) => <td key={i} className={"px-2 py-2 " + (n >= 4 ? "text-green-700 font-semibold" : n <= 2 ? "text-red-600" : "")}>{n}</td>)}
+                  <td className={"px-2 py-2 " + gCls(g, avgGames)}>{g}</td>
+                  <td className="px-2 py-2">{off}</td>
+                  <td className="px-2 py-2">{f1(effAvg(p, K))}</td>
+                  <td className="px-2 py-2 font-semibold">{f1(v)}</td>
+                  <td className={"px-2 py-2 " + (bonus >= 0 ? "text-green-700" : "text-red-600")}>{bonus >= 0 ? "+" : ""}{f1(bonus)}</td>
+                </tr>
+              ))}
+              {rows.length === 0 && <tr><td className="px-2 py-3 text-slate-400">No players match.</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+      <Section title="NHL team schedules in your playoff weeks" link={[showTeams ? "Hide" : "Show all 32 teams", () => setShowTeams(!showTeams)]}>
+        <div className="text-xs text-slate-500 mb-2">Best: {teamRows.slice(0, 5).map((r) => `${r.t} (${r.tot})`).join(", ")} · Worst: {teamRows.slice(-5).reverse().map((r) => `${r.t} (${r.tot})`).join(", ")}</div>
+        {showTeams && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-left"><tr>{["Team", ...weeks.map((w, i) => `Wk ${st + i + 1}`), "Total", "Light-night games"].map((h) => <th key={h} className="px-2 py-2">{h}</th>)}</tr></thead>
+              <tbody>
+                {teamRows.map((r) => (
+                  <tr key={r.t} className="border-t border-slate-100">
+                    <td className="px-2 py-1.5 font-medium">{r.t}</td>
+                    {r.per.map((n, i) => <td key={i} className={"px-2 py-1.5 " + (n >= 4 ? "text-green-700 font-semibold" : n <= 2 ? "text-red-600" : "")}>{n}</td>)}
+                    <td className={"px-2 py-1.5 " + gCls(r.tot, avgGames)}>{r.tot}</td>
+                    <td className="px-2 py-1.5">{r.off}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Section>
     </div>
   );
 }
