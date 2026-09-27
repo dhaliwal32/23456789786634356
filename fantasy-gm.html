@@ -243,9 +243,9 @@ const gStart = (p, dt) => {
     const st = (me.status || "").toLowerCase();
     if (st.includes("confirm") && !st.includes("un")) return { v: 1, l: "✓ confirmed" };
     if (/likely|expected|project/.test(st)) return { v: 0.85, l: "likely" };
-    return { v: 0.6, l: "unconfirmed" };
+    return { v: 0.5, l: "unconfirmed" };
   }
-  if (Object.values(day).some((x) => x.team === p.t)) return { v: 0.05, l: "not starting" };
+  if (Object.values(day).some((x) => x.team === p.t)) return { v: 0, l: "not starting" };
   return fallback;
 };
 function dayLineup(roster, wk, d, K) {
@@ -1282,7 +1282,82 @@ function PowerRankings({ s, setS }) {
           <div><b>Record / Actual</b> = real results from {games} completed week{games === 1 ? "" : "s"} — shown for context only; they don't change the ranking, because schedules and luck make early records noisy. ▲▼ = movement since the previous week.</div>
         </div>
       </Section>
+      <ClimbPanel s={s} data={data} ranks={ranks} />
     </div>
+  );
+}
+function ClimbPanel({ s, data, ranks }) {
+  const K = s.blend;
+  const today = todayISO();
+  const me = data.rows.find((x) => x.t.id === s.me);
+  const moves = useMemo(() => computeMoves(s, { H: 4, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3) && effAvg(r.f, K) >= effAvg(r.d, K)).slice(0, 5), [s]);
+  const wasted = useMemo(() => {
+    const r = s.players.filter((p) => p.ft === s.me); let w = 0, pts = 0;
+    s.weeks.slice(s.wk, s.wk + 4).forEach((w0, i) => { const dw = deriveWeek(w0, s.autoDone); const res = weekProj(r, dw, K, i === 0 ? dw.done : 0); w += res.wasted; res.days.forEach((d) => d && d.bench.forEach((p) => (pts += p.x))); });
+    return { w, pts };
+  }, [s.players, s.wk, K]);
+  if (!me) return null;
+  const rank = ranks[s.me], n = data.rows.length;
+  const above = rank > 1 ? data.rows[rank - 2] : null, below = rank < n ? data.rows[rank] : null;
+  const gr = data.grpRank[s.me] || {};
+  const posName = { F: "forwards", D: "defence", G: "goalies" };
+  const need = { F: 10, D: 5, G: 2 };
+  const order = ["F", "D", "G"].sort((a, b) => gr[b] - gr[a]);
+  const weak = order[0], strong = order[2];
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const byVal = (a, b) => pv(b) - pv(a);
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const myWeak = mine.filter((p) => p.p === weak).sort(byVal);
+  const worstStarter = myWeak[Math.min(need[weak], myWeak.length) - 1];
+  const chips = mine.filter((p) => p.p === strong).sort(byVal).slice(need[strong]);
+  const partners = s.teams.filter((t) => t.id !== s.me).map((t) => {
+    const g = data.grpRank[t.id] || {};
+    const tp = s.players.filter((p) => p.ft === t.id && !p.ir && p.p === weak && worstStarter && pv(p) > pv(worstStarter)).sort(byVal).slice(0, 3);
+    return { t, g, tp, fit: (g[weak] <= 4 ? 1 : 0) + (g[strong] >= 6 ? 1 : 0) };
+  }).filter((x) => x.tp.length && x.fit >= 1).sort((a, b) => b.fit - a.fit).slice(0, 4);
+  const outNow = s.players.filter((p) => p.ft === s.me && (p.ir || avail(p, today) === 0));
+  const irUsed = s.players.some((p) => p.ft === s.me && p.ir);
+  const irCandidate = outNow.find((p) => !p.ir && !effBack(p).d || (!p.ir && effBack(p).d > addDays(today, 10)));
+  const Sub = ({ t }) => <div className="font-semibold mt-4 mb-1">{t}</div>;
+  return (
+    <Section title="How to climb the rankings" sub="Specific moves for your team, based on the same projections as the ranking.">
+      <div className="text-base">
+        You're <b>#{rank} of {n}</b> at <b>{f1(me.strength)}</b> pts/week.{" "}
+        {above ? <>You're <b className="text-red-600">{f1(above.strength - me.strength)} pts/week</b> behind #{rank - 1} {above.t.name}{rank > 2 ? <> and {f1(data.rows[0].strength - me.strength)} behind #1</> : null}.</>
+          : <>You lead #2 {below ? below.t.name : ""} by <b className="text-green-700">{f1(me.strength - (below ? below.strength : 0))} pts/week</b> — a small edge, so keep improving.</>}
+      </div>
+      <div className="text-xs text-slate-500 mt-1">Your group ranks: forwards #{gr.F}, defence #{gr.D}, goalies #{gr.G}. Weakest: <b>{posName[weak]}</b>. Strongest: <b>{posName[strong]}</b>.</div>
+
+      <Sub t={`1 · Pickups that raise your strength (next 4 weeks)`} />
+      {moves.length ? moves.map((r) => (
+        <div key={r.f.id} className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-1.5">
+          <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} · {r.f.t}</span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
+          <span className="text-green-700 font-semibold">+{f1(r.gain / 4)}/wk</span><span className="text-xs text-slate-500">(+{f1(r.gain)} over 4 weeks)</span><Tags p={r.f} K={K} />
+        </div>
+      )) : <div className="text-slate-400 text-xs">No free agent is a clear long-term upgrade right now — improvement will come from trades.</div>}
+
+      <Sub t={`2 · Trade from ${posName[strong]} to fix ${posName[weak]}`} />
+      {chips.length ? <div className="text-sm">Your trade chips (beyond your starting {posName[strong]}): {chips.map((p) => <b key={p.id} className="mr-2">{p.n} <span className="text-xs text-slate-400 font-normal">{f1(pv(p))}/g</span></b>)}</div>
+        : <div className="text-xs text-slate-500">You have no spare {posName[strong]} beyond your starters — a 2-for-1 trade (two good players for one great one) is the way to upgrade.</div>}
+      {partners.length ? partners.map((x) => (
+        <div key={x.t.id} className="border-t border-slate-100 py-1.5">
+          <b>{x.t.name}</b> <span className="text-xs text-slate-500">({posName[weak]} #{x.g[weak]}, {posName[strong]} #{x.g[strong]}{x.fit === 2 ? " — ideal partner: strong where you're weak, weak where you're strong" : ""})</span>
+          <div className="text-xs mt-0.5">Targets: {x.tp.map((p) => <span key={p.id} className="mr-3">{p.n} <span className="text-slate-400">{p.p} · {f1(pv(p))}/g</span></span>)}{worstStarter ? <span className="text-slate-500"> — better than your #{need[weak]} {weak} ({worstStarter.n}, {f1(pv(worstStarter))}/g)</span> : null}</div>
+        </div>
+      )) : <div className="text-slate-400 text-xs">No obvious trade partner — check Moves → Trade analyzer with a few teams.</div>}
+      <div className="text-xs text-slate-500 mt-1">Test any idea in Moves → Trade analyzer before sending it.</div>
+
+      <Sub t="3 · Stop wasting games" />
+      {wasted.w > 0 ? <div className="text-sm">About <b>{wasted.w} games</b> (≈ <b>{f1(wasted.pts)} pts</b>) will sit on your bench over the next 4 weeks because you have more players than lineup slots on busy nights. Trade two of those depth players for one better player (2-for-1), or swap one for a position you're short on.</div>
+        : <div className="text-green-700 text-sm">✅ Almost no games wasted — your roster fits your lineup slots well.</div>}
+
+      <Sub t="4 · Injuries & IR" />
+      {outNow.length ? <div className="text-sm">{outNow.map((p) => { const b = effBack(p).d; return <div key={p.id}>{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · on IR" : ""}</span> <span className="text-xs text-slate-500">— {b ? "back " + mdL(b) : "no return date"}</span></div>; })}</div> : <div className="text-green-700 text-sm">✅ Everyone healthy.</div>}
+      {!irUsed && irCandidate ? <div className="text-amber-600 text-sm mt-1">Your IR slot is empty — move {irCandidate.n} there (if ESPN lists him as IR-eligible) to free a roster spot for a pickup.</div> : null}
+      {outNow.length >= 3 ? <div className="text-xs text-slate-500 mt-1">With {outNow.length} players out, stream the open spots with Moves → Weekly planner each week until they return.</div> : null}
+
+      {weak === "G" && <><Sub t="5 · Goalies" /><div className="text-sm">Goalies are your weakest group. Wins (5 pts) and saves drive goalie scoring, so target a <b>true starter</b> (60%+ of starts) on a good team rather than a third timeshare goalie. Stream backups on back-to-back second nights (amber in Setup → Schedule) to cover the gaps.</div></>}
+    </Section>
   );
 }
 
