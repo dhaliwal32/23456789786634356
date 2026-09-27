@@ -161,7 +161,8 @@ function applyESPN(s, E) {
   const prev = {}; s.players.forEach((p) => (prev[p.n.toLowerCase()] = p));
   const players = (E.players || []).filter((p) => p.n && NHL.includes(p.t)).map((p) => {
     const pv = prev[p.n.toLowerCase()];
-    const prob = p.p === "G" ? (pv && pv.p === "G" && pv.prob > 0 ? pv.prob : 0.5) : p.status === "DAY_TO_DAY" ? 0.8 : 1;
+    const gsAuto = s.autoGoalie !== false && p.p === "G" ? ((E.signals || {}).gstart || {})[p.id] : null;
+    const prob = p.p === "G" ? (gsAuto ? gsAuto.share : pv && pv.p === "G" && pv.prob > 0 ? pv.prob : 0.5) : p.status === "DAY_TO_DAY" ? 0.8 : 1;
     const avg = p.pavg > 0 ? p.pavg : pv ? pv.avg : p.avg > 0 ? p.avg : p.p === "G" ? 7 : 5;
     const back = pv && pv.back !== undefined ? pv.back : DEFAULT_BACK[p.n] || "";
     return { id: "e" + p.id, n: p.n, t: p.t, p: p.p, avg: Math.round(avg * 100) / 100, prob, ft: p.ft ? "t" + p.ft : "fa", ir: p.ir !== undefined ? !!p.ir : !!(pv && pv.ir), est: !(p.pavg > 0) && !pv, gp: p.gp || 0, tot: p.tot || 0, status: p.status || "", back, proj: p.pavg > 0, keep: pv ? pv.keep : false, own: p.own || 0, chg: p.chg || 0 };
@@ -277,12 +278,13 @@ const sigOf = (p) => {
   const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
   if (!id) return {};
   return { rec: (S.recent || {})[id], pp1: ((S.pp1 || {}).on || {})[id], ppChg: ((S.pp1 || {}).changes || {})[id], news: (S.news || {})[id], toi: (S.toi || {})[id],
-    lines: { grp: ((S.lines || {}).top || {})[id], chg: ((S.lines || {}).changes || {})[id] }, luck: (S.luck || {})[id] };
+    lines: { grp: ((S.lines || {}).top || {})[id], chg: ((S.lines || {}).changes || {})[id] }, luck: (S.luck || {})[id], gs: (S.gstart || {})[id] };
 };
 const formRatio = (p, K) => { const r = sigOf(p).rec, b = effAvg(p, K); return r && r.gp >= 3 && b > 0 ? r.ppg / b : null; };
 const LBL = { F1: "1st line", F2: "2nd line", D1: "top pair", D2: "2nd pair" };
 const tags = (p, K) => {
   const g = sigOf(p), out = [], fr = formRatio(p, K);
+  if (g.gs && g.gs.flag) out.push({ t: `🥅 started ${g.gs.rs} of last ${g.gs.rg}`, c: g.gs.rs / g.gs.rg > g.gs.prior ? "text-green-700 font-semibold" : "text-red-600 font-semibold" });
   if (g.lines && g.lines.chg === "up") out.push({ t: `⬆ ${LBL[g.lines.grp] || "promoted"}`, c: "text-green-700 font-semibold" });
   else if (g.lines && g.lines.chg === "down") out.push({ t: "⬇ demoted", c: "text-red-600" });
   if (g.luck && g.luck.t === "s" && Math.abs(g.luck.d) >= 2) out.push({ t: g.luck.d > 0 ? `🎲 lucky +${f1(g.luck.d)} G` : `🎲 unlucky ${f1(g.luck.d)} G`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
@@ -1618,6 +1620,8 @@ function Settings({ s, setS }) {
         <label className="flex items-center gap-2">ESPN projection weight (games) <input type="number" min="0" className={inp + " w-20"} value={s.blend} onChange={(e) => setS({ ...s, blend: Math.max(0, parseFloat(e.target.value) || 0) })} /></label>
         <div className="text-xs text-slate-500 mt-1">How fast real results replace ESPN's projection (10 = half-and-half after 10 games).</div>
         <label className="flex items-center gap-2 mt-3"><input type="checkbox" checked={s.autoDone} onChange={(e) => setS({ ...s, autoDone: e.target.checked })} /> Count completed days automatically</label>
+        <label className="flex items-center gap-2 mt-2"><input type="checkbox" checked={s.autoGoalie !== false} onChange={(e) => setS({ ...s, autoGoalie: e.target.checked })} /> Set goalie start % automatically from recent starts</label>
+        <div className="text-xs text-slate-500 mt-1">Uses who started each team's last ~10 games (blended with last season). Kicks in once a team has played 3 games; applied at every sync. Turn off to keep your own numbers.</div>
       </Section>
       <Section title="Team names">
         {s.teams.map((t) => <div key={t.id} className="flex gap-2 mb-1 items-center"><input className={inp + " flex-1"} value={t.name} onChange={(e) => setS({ ...s, teams: s.teams.map((x) => (x.id === t.id ? { ...x, name: e.target.value } : x)) })} />{t.id === s.me && <span className="text-xs text-blue-700">you</span>}</div>)}
