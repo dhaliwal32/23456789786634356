@@ -195,7 +195,7 @@ const gStart = (p, dt) => {
 };
 function dayLineup(roster, wk, d, K) {
   const dt = wk.dates ? wk.dates[d] : null;
-  const pl = roster.filter((p) => !p.ir && p.prob > 0 && avail(p, dt) > 0 && (wk.games[p.t] || []).includes(d)).map((p) => { const g = p.p === "G" ? gStart(p, dt) : null; return { ...p, x: effAvg(p, K, dt) * (g ? g.v : p.prob) * avail(p, dt), gs: g ? g.l : "" }; });
+  const pl = roster.filter((p) => !p.ir && p.prob > 0 && avail(p, dt) > 0 && (wk.games[p.t] || []).includes(d)).map((p) => { const g = p.p === "G" ? gStart(p, dt) : null; return { ...p, x: effAvg(p, K, dt) * (g ? g.v : p.prob) * avail(p, dt), gs: g ? g.l : "", dt }; });
   const by = (a, b) => b.x - a.x;
   const F = pl.filter((p) => p.p === "F").sort(by), D = pl.filter((p) => p.p === "D").sort(by), G = pl.filter((p) => p.p === "G").sort(by);
   const fs = F.slice(0, 9), ds = D.slice(0, 5);
@@ -341,7 +341,7 @@ function App() {
   const w0 = s.weeks[s.wk] || s.weeks[0];
   const wk = useMemo(() => deriveWeek(w0, s.autoDone), [w0, s.autoDone]);
   const setWk = (patch) => setS((st) => ({ ...st, weeks: st.weeks.map((w, i) => (i === st.wk ? { ...w, ...(typeof patch === "function" ? patch(w) : patch) } : w)) }));
-  const tabs = [["advice", "★ Advice"], ["matchup", "Matchup"], ["league", "League & Standings"], ["adddrop", "Add / Drop"], ["players", "Players"], ["rosters", "Rosters & Bulk Update"], ["schedule", "Schedule & Weeks"], ["settings", "Settings & ESPN Sync"]];
+  const tabs = [["advice", "★ Advice"], ["matchup", "Matchup"], ["league", "League & Standings"], ["adddrop", "Add / Drop"], ["trade", "Trade Analyzer"], ["players", "Players"], ["rosters", "Rosters & Bulk Update"], ["schedule", "Schedule & Weeks"], ["settings", "Settings & ESPN Sync"]];
   if (!loaded) return <div className="p-8 text-slate-500">Loading your league…</div>;
   const P = { s, setS, wk, setWk };
   return (
@@ -374,6 +374,7 @@ function App() {
         {tab === "rosters" && <Rosters {...P} />}
         {tab === "schedule" && <Schedule {...P} />}
         {tab === "settings" && <Settings {...P} />}
+        {tab === "trade" && <TradeAnalyzer {...P} />}
       </div>
     </div>
   );
@@ -382,7 +383,7 @@ function App() {
 // ---------- Advice ----------
 function Advice(props) {
   const [view, setView] = useState("advice");
-  const items = [["advice", "Advice"], ["news", "News"], ["pp", "PP1 units — all teams"], ["avail", "Available PP1 players"]];
+  const items = [["advice", "Advice"], ["news", "News"], ["pp", "PP1 units — all teams"], ["avail", "Available PP1 players"], ["odds", "Betting lines"]];
   return (
     <div>
       <div className="mb-4"><Pills items={items} value={view} onChange={setView} /></div>
@@ -402,6 +403,53 @@ function ppData(s) {
   const order = hasTP ? [...NHL].sort((a, b) => ((tp[b] || {}).pct ?? (tp[b] || {}).rate ?? 0) - ((tp[a] || {}).pct ?? (tp[a] || {}).rate ?? 0)) : NHL;
   const rank = {}; order.forEach((t, i) => (rank[t] = i + 1));
   return { pp, units, byName, onPP, has, w: deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone), tp, hasTP, order, rank };
+}
+const oddsFor = (t, dt) => { const O = ((window.ESPN_DATA || {}).model || {}).odds || {}; return dt && O[dt] ? O[dt][t] || null : null; };
+function OddsBoard({ s }) {
+  const O = ((window.ESPN_DATA || {}).model || {}).odds || null;
+  const today = todayISO();
+  const w = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone);
+  const opp = oppOf(w, s.me);
+  const nm = (id) => (s.teams.find((t) => t.id === id) || {}).name || "";
+  const count = (tid, team) => s.players.filter((p) => p.ft === tid && p.t === team && !p.ir).length;
+  if (!O || !Object.keys(O).length) return <div className={box + " text-slate-400"}>No betting lines in the data yet — make sure gm_model.py includes "odds" in its output (see instructions) and run the sync.</div>;
+  const days = Object.keys(O).filter((d) => d >= today).sort();
+  return (
+    <div>
+      <div className={box}>
+        <div className="font-semibold mb-1">Betting lines used by the GM model</div>
+        <div className="text-xs text-slate-500">Win chance (bookmaker margin removed) and expected goals per team, from The Odds API. Refreshed every 4 hours. Sportsbooks post NHL lines 1–3 days ahead; later games use the team-strength model until lines appear. Shown in the Matchup tab as "W %" (goalies) and "xG" (skaters) whenever Projections is Blend or GM model.</div>
+      </div>
+      {days.map((d) => {
+        const games = Object.entries(O[d]).filter(([, v]) => v.home);
+        return (
+          <div key={d} className="bg-white rounded-xl border border-slate-200 mb-3 overflow-x-auto">
+            <div className="px-3 py-2 bg-slate-50 border-b border-slate-200 font-semibold text-sm">{dayLabel(d)} · {games.length} games</div>
+            <table className="w-full text-sm">
+              <thead className="text-left text-xs text-slate-500"><tr>{["Game", "Win chance", "Expected goals", "Total", `Your players`, opp ? `${nm(opp)}'s` : "Opponent's"].map((h) => <th key={h} className="px-3 py-1">{h}</th>)}</tr></thead>
+              <tbody>
+                {games.map(([home, v]) => {
+                  const a = O[d][v.opp] || {};
+                  const mineN = count(s.me, home) + count(s.me, v.opp), oppN = opp ? count(opp, home) + count(opp, v.opp) : 0;
+                  const fav = v.win >= 0.5 ? home : v.opp;
+                  return (
+                    <tr key={home} className={"border-t border-slate-100 " + (mineN ? "bg-blue-50" : "")}>
+                      <td className="px-3 py-1.5 font-medium">{v.opp} @ {home}</td>
+                      <td className="px-3 py-1.5"><span className={fav === v.opp ? "font-semibold text-green-700" : ""}>{v.opp} {Math.round((a.win ?? 1 - v.win) * 100)}%</span> · <span className={fav === home ? "font-semibold text-green-700" : ""}>{home} {Math.round(v.win * 100)}%</span></td>
+                      <td className="px-3 py-1.5">{v.opp} {(a.gf ?? v.ga).toFixed(1)} · {home} {v.gf.toFixed(1)}</td>
+                      <td className="px-3 py-1.5">{(v.gf + v.ga).toFixed(1)}</td>
+                      <td className="px-3 py-1.5">{mineN ? <span className="text-blue-700 font-semibold">{mineN}</span> : "–"}</td>
+                      <td className="px-3 py-1.5">{oppN || "–"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 function AvailPP({ s }) {
   const K = s.blend;
@@ -567,6 +615,7 @@ function AdviceMain({ s, setS, view }) {
       <PPTeams s={s} />
       </>}
       {view === "avail" && <AvailPP s={s} />}
+      {view === "odds" && <OddsBoard s={s} />}
       {view === "advice" && <>
       <div className={box}>
         <div className="font-semibold mb-1">5 · Your players — form check</div>
@@ -650,6 +699,107 @@ function PPUnits({ s }) {
   );
 }
 
+// ---------- Trade analyzer ----------
+const rosRaw = (p, K) => {
+  if (p.ir && !effBack(p).d) return 0;
+  const t = todayISO(); let v = 0;
+  (SCHED[p.t] ? [...SCHED[p.t]] : []).forEach((d) => { if (d >= t) v += effAvg(p, K, d) * p.prob * avail(p, d); });
+  return v;
+};
+const horizonTotal = (roster, s, n) => {
+  let t = 0;
+  s.weeks.slice(s.wk, s.wk + n).forEach((w, i) => { const dw = deriveWeek(w, s.autoDone); t += weekProj(roster, dw, s.blend, i === 0 ? dw.done : 0).total; });
+  return t;
+};
+function TradeAnalyzer({ s }) {
+  const K = s.blend;
+  const others = s.teams.filter((t) => t.id !== s.me);
+  const [partner, setPartner] = useState((others[0] || {}).id || "");
+  const [give, setGive] = useState([]); const [get, setGet] = useState([]);
+  const nm = (id) => (s.teams.find((t) => t.id === id) || {}).name || "";
+  const mine = s.players.filter((p) => p.ft === s.me), theirs = s.players.filter((p) => p.ft === partner);
+  const order = { F: 0, D: 1, G: 2 };
+  const vals = useMemo(() => { const o = {}; [...mine, ...theirs].forEach((p) => (o[p.id] = rosRaw(p, K))); return o; }, [s.players, partner, K]);
+  const toggle = (arr, set, id) => set(arr.includes(id) ? arr.filter((x) => x !== id) : [...arr, id]);
+  const G = mine.filter((p) => give.includes(p.id)), R = theirs.filter((p) => get.includes(p.id));
+  const ready = G.length > 0 && R.length > 0;
+  const res = useMemo(() => {
+    if (!ready) return null;
+    const myAfter = [...mine.filter((p) => !give.includes(p.id)), ...R.map((p) => ({ ...p, ft: s.me }))];
+    const thAfter = [...theirs.filter((p) => !get.includes(p.id)), ...G.map((p) => ({ ...p, ft: partner }))];
+    const n4 = 4, nR = s.weeks.length - s.wk;
+    return {
+      my4: horizonTotal(myAfter, s, n4) - horizonTotal(mine, s, n4), myR: horizonTotal(myAfter, s, nR) - horizonTotal(mine, s, nR),
+      th4: horizonTotal(thAfter, s, n4) - horizonTotal(theirs, s, n4), thR: horizonTotal(thAfter, s, nR) - horizonTotal(theirs, s, nR),
+      myAfter, thAfter,
+    };
+  }, [ready, give.join(), get.join(), partner, s.players, s.wk]);
+  const vGive = G.reduce((a, p) => a + (vals[p.id] || 0), 0), vGet = R.reduce((a, p) => a + (vals[p.id] || 0), 0);
+  const edge = vGive > 0 ? (vGet - vGive) / vGive : 0;
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const counts = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
+  const verdict = !ready ? null : Math.abs(edge) <= 0.1 ? ["Fair trade", "bg-green-100 text-green-800", "Values are within 10% — should pass a league vote."] : edge > 0.25 ? ["Lopsided in your favour", "bg-amber-100 text-amber-800", "You gain a lot more value — other managers may veto (4 votes needed). Consider adding a sweetener."] : edge > 0.1 ? ["Slightly in your favour", "bg-green-100 text-green-800", "A reasonable ask; most leagues let this through."] : edge < -0.25 ? ["Bad for you", "bg-red-100 text-red-800", "You give up much more value than you get back."] : ["Slightly against you", "bg-amber-100 text-amber-800", "Only worth it if it fixes a position need or wins you this week."];
+  const Pick = ({ list, sel, set, title }) => (
+    <div className={box}>
+      <div className="font-semibold mb-2">{title}</div>
+      {list.sort((a, b) => order[a.p] - order[b.p] || (vals[b.id] || 0) - (vals[a.id] || 0)).map((p) => (
+        <label key={p.id} className={"flex items-center gap-2 py-0.5 text-sm " + (sel.includes(p.id) ? "bg-blue-50 rounded" : "")}>
+          <input type="checkbox" checked={sel.includes(p.id)} onChange={() => toggle(sel, set, p.id)} />
+          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span></span>
+          <span className="text-xs text-slate-500">{f1(vals[p.id])} ROS</span>
+        </label>
+      ))}
+    </div>
+  );
+  const Bal = ({ before, after, label, check }) => {
+    const b = counts(before), a = counts(after);
+    return (
+      <div className="text-sm">{label}: {["F", "D", "G"].map((k) => (
+        <span key={k} className={"mr-3 " + (check && a[k] < mins[k] ? "text-red-600 font-semibold" : a[k] !== b[k] ? "text-blue-700" : "")}>{k} {b[k]}→{a[k]}{check && a[k] < mins[k] ? " ⚠" : ""}</span>
+      ))}<span className="text-xs text-slate-500">({after.filter((p) => !p.ir).length}/22 active)</span></div>
+    );
+  };
+  const Delta = ({ v }) => <span className={"font-semibold " + (v >= 0 ? "text-green-700" : "text-red-700")}>{v >= 0 ? "+" : ""}{f1(v)}</span>;
+  return (
+    <div>
+      <div className={box}>
+        <div className="font-semibold mb-2">Trade analyzer</div>
+        <div className="flex flex-wrap gap-2 items-center">
+          <span>Trade with</span>
+          <select className={inp} value={partner} onChange={(e) => { setPartner(e.target.value); setGet([]); }}>{others.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
+          <button className="text-xs text-slate-500 underline ml-2" onClick={() => { setGive([]); setGet([]); }}>clear</button>
+        </div>
+        <div className="text-xs text-slate-500 mt-2">Tick the players you'd give and the players you'd get. "ROS" = projected fantasy points for the rest of the season (games left × projection, including injuries and return dates).</div>
+      </div>
+      <div className="grid md:grid-cols-2 gap-4">
+        <Pick list={[...mine]} sel={give} set={setGive} title={`You give (${nm(s.me)})`} />
+        <Pick list={[...theirs]} sel={get} set={setGet} title={`You get (${nm(partner)})`} />
+      </div>
+      {ready && res && (
+        <div className={box}>
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <span className={"px-3 py-1 rounded-full font-semibold " + verdict[1]}>{verdict[0]}</span>
+            <span className="text-sm text-slate-600">{verdict[2]}</span>
+          </div>
+          <div className="grid md:grid-cols-3 gap-3 mb-4">
+            <Card label="Player value (rest of season)" value={`${f1(vGive)} → ${f1(vGet)}`} sub={`You ${edge >= 0 ? "gain" : "lose"} ${Math.abs(edge * 100).toFixed(0)}% in raw player value`} />
+            <Card label={`${nm(s.me)} — lineup impact`} value={<span><Delta v={res.myR} /> ROS</span>} sub={<span>Next 4 weeks: <Delta v={res.my4} /> · counts only games that fit your lineup</span>} />
+            <Card label={`${nm(partner)} — lineup impact`} value={<span><Delta v={res.thR} /> ROS</span>} sub={<span>Next 4 weeks: <Delta v={res.th4} /></span>} />
+          </div>
+          <div className="space-y-1">
+            <Bal before={mine} after={res.myAfter} label={`${nm(s.me)} roster`} check />
+            <Bal before={theirs} after={res.thAfter} label={`${nm(partner)} roster`} />
+          </div>
+          <div className="text-xs text-slate-500 mt-3">
+            {res.myAfter.filter((p) => !p.ir).length > 22 ? "⚠ You'd have more than 22 active players — you'll need to drop someone (the lineup impact assumes you keep everyone). " : ""}
+            "Lineup impact" can differ from raw value: getting two good players for one great one can still lower your score if they'd sit on your bench. The best trades are green for you in lineup impact and close to fair in raw value.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function LiveBar({ s, wk, setWk, ids, nm }) {
   const setAct = (id, v) => setWk((w) => ({ act: { ...(w.act || {}), [id]: v } }));
   const auto = s.autoDone && wk.dates && wk.dates.length;
@@ -685,7 +835,7 @@ function Side({ l, name }) {
           <tr key={p.id} className="border-t border-slate-100">
             <td className="py-1 pr-2 text-xs text-slate-500 w-10">{p.slot}</td>
             <td className="py-1">{p.n}<span className="text-xs text-slate-400 ml-1">{p.t}{p.gs ? "" : p.prob < 1 ? " · " + Math.round(p.prob * 100) + "%" : ""}</span>{p.gs ? <span className={"text-xs ml-1 " + (p.gs.includes("confirmed") && !p.gs.includes("un") ? "text-green-700 font-semibold" : p.gs === "not starting" ? "text-red-600" : "text-amber-600")}>{p.gs}</span> : ""}</td>
-            <td className="py-1 text-right">{f1(p.x)}</td>
+            <td className="py-1 text-right whitespace-nowrap">{(() => { const o = oddsFor(p.t, p.dt); if (!o || window.__PMODE === "espn") return null; return p.p === "G" ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span> : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>; })()}{f1(p.x)}</td>
           </tr>
         ))}
         {l.start.length === 0 && <tr><td className="text-slate-400 text-sm py-1">No games</td></tr>}
