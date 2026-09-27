@@ -1,12 +1,13 @@
 """
-ai_engine.py  -  Fantasy Islands GM learning engine, STAGE 1 (record -> grade -> report)
+ai_engine.py  -  Fantasy Islands GM learning engine, STAGE 1 + 2b (record -> grade -> report)
 
-Runs right AFTER espn_sync.py in GitHub Actions. It only READS espn-data.js and writes
-into the ai/ folder, so your existing app keeps working even if this file fails.
+Runs right AFTER espn_sync.py in GitHub Actions. It only READS espn-data.js (and the AI
+projections written by ai_learn.py) and writes into the ai/ folder, so your existing app
+keeps working even if this file fails.
 
 Each run it:
   1. PREDICT  - saves a permanent, timestamped copy of the pregame projections
-                (ESPN, GM model, Blend) for games that have not started yet.
+                (ESPN, GM model, Blend and AI) for games that have not started yet.
                 Rows are append-only and are never written after a game starts.
   2. OBSERVE  - once NHL games are officially final ("OFF"), downloads the real stats
                 and scores them with your league's exact scoring.
@@ -29,7 +30,7 @@ import unicodedata
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-VERSION = "ai-stage1-v1"
+VERSION = "ai-stage2b-v1"
 HERE = os.path.dirname(os.path.abspath(__file__))
 UTC = timezone.utc
 ET = ZoneInfo("America/New_York")
@@ -44,6 +45,7 @@ GO = {"W": 5, "GA": -3, "SV": 0.6, "SO": 5, "OTL": 1}
 
 ESPN_K = 10                # app default "ESPN projection weight"
 MAX_INPUT_AGE_MIN = 25     # espn-data.js must have been generated this recently
+AI_MAX_AGE_H = 36          # AI projections older than this are not used
 MIN_LEAD_MIN = 2           # never record a prediction within 2 min of puck drop
 CORRECTION_HOURS = 72      # keep re-checking final stats this long (NHL corrections)
 RELABEL_EVERY_H = 3        # how often to re-check days that are already final
@@ -52,6 +54,7 @@ DEAD_SCHED = ("PPD", "CNCL", "SUSP")
 DF_START = [("unconfirmed", 0.60), ("confirmed", 1.00), ("likely", 0.85)]  # order matters
 ALIAS = {"LAK": "LA", "NJD": "NJ", "SJS": "SJ", "TBL": "TB", "ARI": "UTA", "UTAH": "UTA", "WAS": "WSH"}
 MODELS = ("espn", "gm", "blend", "ai")
+HASH_SKIP = ("v", "ts", "data_ts", "lead_min", "ai_meta")
 
 
 # ----------------------------------------------------------------- small helpers
@@ -162,6 +165,19 @@ def data_time(data):
     return dt.astimezone(UTC)
 
 
+def load_ai(root, now):
+    """AI projections from ai_learn.py - only used if made recently (and therefore before the games)."""
+    ai = read_json(P(root, "models", "ai_proj.json"), {})
+    try:
+        age = (now - parse_utc(ai["asof"])).total_seconds() / 3600
+    except (KeyError, TypeError, ValueError):
+        return {}
+    if age > AI_MAX_AGE_H or age < -1:
+        print(f"(ai) AI projections are {round(age)} h old - not used for new predictions")
+        return {}
+    return ai
+
+
 def fetch_day(day):
     """Regular-season NHL games on one Eastern-time date, with id, start time and state."""
     js = http_json(f"{WEB}/schedule/{day}")
@@ -251,21 +267,39 @@ def _contains(c, keys, depth=0):
 
 
 def signals_for(sig, p):
-    """Pull this player's entry out of every signal group, without assuming its exact shape."""
-    keys = (p.get("id"), str(p.get("id")), p.get("n"), norm(p.get("n")))
+    """This player's pregame signals, using the exact shapes gm_signals.py writes."""
+    pid = str(p.get("id"))
+    keys = (p.get("id"), pid, p.get("n"), norm(p.get("n")))
     out = {}
     for k, v in (sig or {}).items():
-        if not isinstance(v, dict):
+        if not isinstance(v, dict) or k in ("pp1", "lines", "teampp"):
             continue
         hit = next((v[x] for x in keys if x is not None and x in v), None)
-        if hit is not None:
-            if k == "news":
-                out["news_n"] = len(hit) if isinstance(hit, list) else 1
-            elif len(json.dumps(hit, default=str)) <= 300:
-                out[k] = hit
-        for sub in ("on", "top"):
-            if isinstance(v.get(sub), (dict, list)):
-                out[f"{k}_{sub}"] = _contains(v[sub], keys)
+        if hit is None:
+            continue
+        if k == "news":
+            items = hit if isinstance(hit, list) else [hit]
+            out["news_n"] = len(items)
+            out["news_tone"] = "".join(str(i.get("tone") or "") for i in items if isinstance(i, dict))
+        elif len(json.dumps(hit, default=str)) <= 300:
+            out[k] = hit
+    pp = sig.get("pp1") if isinstance((sig or {}).get("pp1"), dict) else {}
+    if isinstance(pp.get("on"), (dict, list)):
+        out["pp1_on"] = _contains(pp["on"], keys)
+        ch = pp.get("changes")
+        if isinstance(ch, dict) and pid in ch:
+            out["pp1_chg"] = ch[pid]
+    ln = sig.get("lines") if isinstance((sig or {}).get("lines"), dict) else {}
+    if isinstance(ln.get("top"), (dict, list)):
+        out["lines_top"] = _contains(ln["top"], keys)
+        if isinstance(ln["top"], dict) and ln["top"].get(pid):
+            out["line"] = ln["top"][pid]
+        ch = ln.get("changes")
+        if isinstance(ch, dict) and pid in ch:
+            out["line_chg"] = ch[pid]
+    tp = (sig or {}).get("teampp")
+    if isinstance(tp, dict) and isinstance(tp.get(p.get("t")), dict):
+        out["teampp"] = {k: tp[p["t"]].get(k) for k in ("pct", "rate", "gp")}
     return out
 
 
@@ -288,7 +322,8 @@ def goalie_start(p, day_map, sig):
     return None, "unknown"
 
 
-def snapshot(root, state, data, now, day_fetch):
+def snapshot(root, state, data, now, day_fetch, ai=None):
+    ai = ai or {}
     dts = data_time(data)
     age = (now - dts).total_seconds() / 60 if dts else None
     if age is None or age > MAX_INPUT_AGE_MIN or age < -10:
@@ -313,14 +348,18 @@ def snapshot(root, state, data, now, day_fetch):
     model = data.get("model") or {}
     proj, base, odds = model.get("proj") or {}, model.get("base") or {}, model.get("odds") or {}
     sig_all, goalies = data.get("signals") or {}, data.get("goalies") or {}
+    ai_proj, ai_gs, ai_rng = ai.get("proj") or {}, ai.get("gstart") or {}, ai.get("range") or {}
+    ai_ver = ai.get("versions") or {}
     last = state.setdefault("last", {})
     new_rows = {}
+    n_ai = 0
     for p in data.get("players") or []:
         for g, opp, home, lead in open_games.get(p.get("t"), []):
             pid, day = str(p.get("id")), g["date"]
             gm = (proj.get(pid) or {}).get(day)
             espn = espn_eff(p)
-            if gm is None and espn is None:
+            aiv = (ai_proj.get(pid) or {}).get(day)
+            if gm is None and espn is None and aiv is None:
                 continue  # nothing real to record - never invent a number
             prev_day = (date.fromisoformat(day) - timedelta(days=1)).isoformat()
             sig = signals_for(sig_all, p)
@@ -330,12 +369,17 @@ def snapshot(root, state, data, now, day_fetch):
                    "b2b": (p.get("t"), prev_day) in played, "ft": p.get("ft", 0),
                    "status": p.get("status"), "ir": bool(p.get("ir")),
                    "espn_raw": {k: p.get(k) for k in ("pavg", "avg", "tot", "gp", "own", "chg")},
-                   "pred": {"espn": espn, "gm": gm, "blend": blend_of(espn, gm, base.get(pid)), "ai": None},
+                   "pred": {"espn": espn, "gm": gm, "blend": blend_of(espn, gm, base.get(pid)), "ai": aiv},
                    "gm_base": base.get(pid), "odds": (odds.get(day) or {}).get(p.get("t")), "sig": sig}
+            if aiv is not None:
+                n_ai += 1
+                grp = "G_cond" if p.get("p") == "G" else ("D" if p.get("p") == "D" else "F")
+                row["ai_meta"] = {"asof": ai.get("asof"), "version": ai_ver.get(grp),
+                                  "range": (ai_rng.get(pid) or {}).get(day)}
             if p.get("p") == "G":
                 sp, why = goalie_start(p, goalies.get(day), sig)
-                row["goalie"] = {"start_p": sp, "source": why}
-            core = {k: v for k, v in row.items() if k not in ("v", "ts", "data_ts", "lead_min")}
+                row["goalie"] = {"start_p": sp, "source": why, "ai_start_p": (ai_gs.get(pid) or {}).get(day)}
+            core = {k: v for k, v in row.items() if k not in HASH_SKIP}
             h = hashlib.sha1(json.dumps(core, sort_keys=True, default=str).encode()).hexdigest()[:12]
             key = f"{g['gid']}|{pid}"
             if last.get(key, {}).get("h") == h:
@@ -349,7 +393,8 @@ def snapshot(root, state, data, now, day_fetch):
     state["last"] = {k: v for k, v in last.items() if v.get("date", "") >= cutoff}
     n = sum(len(r) for r in new_rows.values())
     n_games = len({g["gid"] for lst in open_games.values() for g, *_ in lst})
-    print(f"(ai) snapshot: {n} new/changed prediction rows | {n_games} upcoming games open for predictions")
+    print(f"(ai) snapshot: {n} new/changed prediction rows ({n_ai} with AI projections) | "
+          f"{n_games} upcoming games open for predictions")
     return n
 
 
@@ -440,12 +485,16 @@ def join_day(preds, lab):
                  if norm(x["name"])[:1] == nm[:1]]
             a, how = (c[0], "last+team") if len(c) == 1 else (None, None)
         pr, gl, sig = p.get("pred") or {}, p.get("goalie") or {}, p.get("sig") or {}
+        rng = (p.get("ai_meta") or {}).get("range") or [None, None]
         out.append({"date": p["date"], "gid": gid, "pid": pid, "name": p.get("name"), "team": p.get("team"),
                     "pos": p.get("pos"), "opp": p.get("opp"), "home": p.get("home"), "b2b": p.get("b2b"),
                     "status": p.get("status"), "ft": p.get("ft", 0), "pp1": sig.get("pp1_on"),
-                    "top": sig.get("lines_top"), "lead": p.get("lead_min"),
+                    "pp1_chg": sig.get("pp1_chg"), "top": sig.get("lines_top"), "line": sig.get("line"),
+                    "line_chg": sig.get("line_chg"), "lead": p.get("lead_min"),
                     "espn": pr.get("espn"), "gm": pr.get("gm"), "blend": pr.get("blend"), "ai": pr.get("ai"),
-                    "start_p": gl.get("start_p"), "played": a is not None, "match": how,
+                    "ai_lo": rng[0], "ai_hi": rng[1],
+                    "start_p": gl.get("start_p"), "ai_start_p": gl.get("ai_start_p"),
+                    "played": a is not None, "match": how,
                     "fp": a["fp"] if a else None, "gs": (a or {}).get("GS"), "toi": (a or {}).get("toi"),
                     "nhl_id": (a or {}).get("nhl_id")})
     return out, void
@@ -507,13 +556,31 @@ def paired(recs, task, a, b):
     return {"n": n, "diff": round(m, 3), "se": round(se, 3), "verdict": verdict}
 
 
+def calibration(recs, key):
+    gl = [r for r in recs if r["pos"] == "G" and r.get(key) is not None]
+    cal = {"n": len(gl)}
+    if gl:
+        started = [1 if (r.get("gs") or 0) >= 1 else 0 for r in gl]
+        cal["brier"] = round(sum((r[key] - s) ** 2 for r, s in zip(gl, started)) / len(gl), 4)
+        cal["bins"] = []
+        for lo, hi in ((0, 0.2), (0.2, 0.5), (0.5, 0.8), (0.8, 1.01)):
+            b = [(r[key], s) for r, s in zip(gl, started) if lo <= r[key] < hi]
+            if b:
+                cal["bins"].append({"range": f"{lo:.0%}-{min(hi, 1):.0%}", "n": len(b),
+                                    "predicted": round(sum(x for x, _ in b) / len(b), 3),
+                                    "actual": round(sum(y for _, y in b) / len(b), 3)})
+    return cal
+
+
 SEGMENTS = {
     "position": lambda r: {"D": "defense"}.get(r["pos"], "forward"),
     "venue": lambda r: "home" if r.get("home") else "away",
     "rest": lambda r: "back-to-back" if r.get("b2b") else "rested",
     "injury status": lambda r: "active" if (r.get("status") or "ACTIVE") == "ACTIVE" else "listed " + str(r.get("status")),
     "power play": lambda r: {True: "on PP1", False: "not on PP1"}.get(r.get("pp1"), "unknown"),
-    "line": lambda r: {True: "top line/pair", False: "lower lines"}.get(r.get("top"), "unknown"),
+    "PP1 change": lambda r: {"added": "just added to PP1", "removed": "just removed from PP1"}.get(r.get("pp1_chg"), "no change"),
+    "line": lambda r: r.get("line") or {True: "top line/pair", False: "lower lines"}.get(r.get("top"), "unknown"),
+    "line change": lambda r: {"up": "just promoted", "down": "just demoted"}.get(r.get("line_chg"), "no change"),
     "ownership": lambda r: "on a fantasy team" if r.get("ft") else "free agent",
     "team": lambda r: r.get("team"),
     "opponent": lambda r: r.get("opp"),
@@ -534,11 +601,12 @@ def report(root, state, now):
             continue
         cache = P(root, "joined", f"{day}.json")
         j = read_json(cache, None) if lstate.get(day, {}).get("frozen") else None
-        if j is None:
+        if j is None or j.get("v") != VERSION:
             rows = read_rows(os.path.join(pred_dir, f"{day}.jsonl"))
             best, leaked = official(rows)
             rs, void = join_day(best, read_json(lab_path, {}))
-            j = {"day": day, "rows": len(rows), "official": len(best), "leaked": leaked, "void": void, "recs": rs}
+            j = {"v": VERSION, "day": day, "rows": len(rows), "official": len(best), "leaked": leaked,
+                 "void": void, "recs": rs}
             write_json(cache, j)
         recs += j["recs"]
         counts["prediction_rows_graded"] += j["rows"]
@@ -551,7 +619,8 @@ def report(root, state, now):
     for task in ("skater", "goalie_if_start", "goalie_expected"):
         tasks[task] = {m: summarize([e for _, e in task_pairs(recs, task, m)]) for m in MODELS}
         pairs[task] = {f"{a}_vs_{b}": paired(recs, task, a, b)
-                       for a, b in (("gm", "espn"), ("blend", "espn"), ("blend", "gm"), ("ai", "blend"))}
+                       for a, b in (("gm", "espn"), ("blend", "espn"), ("blend", "gm"),
+                                    ("ai", "espn"), ("ai", "gm"), ("ai", "blend"))}
         ranked = sorted([(m, s) for m, s in tasks[task].items() if s and s["n"] >= 200], key=lambda x: x[1]["mae"])
         if not ranked:
             best[task] = {"model": None, "note": "not enough finished games yet (needs 200+)"}
@@ -563,7 +632,7 @@ def report(root, state, now):
                           "note": "clearly best" if clear else "lowest error so far, but not clearly better yet"}
     for seg, fn in SEGMENTS.items():
         segs[seg] = {}
-        for m in ("espn", "gm", "blend"):
+        for m in MODELS:
             groups = {}
             for r, e in task_pairs(recs, "skater", m):
                 groups.setdefault(fn(r), []).append(e)
@@ -576,21 +645,10 @@ def report(root, state, now):
                                           f"{val} by {abs(s['bias']):.2f} pts/game ({s['n']} games)",
                                   "status": "exploratory - not yet validated"})
 
-    gl = [r for r in recs if r["pos"] == "G" and r.get("start_p") is not None]
-    cal = {"n": len(gl)}
-    if gl:
-        started = [1 if (r.get("gs") or 0) >= 1 else 0 for r in gl]
-        cal["brier"] = round(sum((r["start_p"] - s) ** 2 for r, s in zip(gl, started)) / len(gl), 4)
-        cal["bins"] = []
-        for lo, hi in ((0, 0.2), (0.2, 0.5), (0.5, 0.8), (0.8, 1.01)):
-            b = [(r["start_p"], s) for r, s in zip(gl, started) if lo <= r["start_p"] < hi]
-            if b:
-                cal["bins"].append({"range": f"{lo:.0%}-{min(hi, 1):.0%}", "n": len(b),
-                                    "predicted": round(sum(x for x, _ in b) / len(b), 3),
-                                    "actual": round(sum(y for _, y in b) / len(b), 3)})
-
+    cov = [r["ai_lo"] <= r["fp"] <= r["ai_hi"] for r in recs
+           if r["pos"] != "G" and r["played"] and r.get("ai_lo") is not None and r.get("ai_hi") is not None]
     daily = {}
-    for m in ("espn", "gm", "blend", "ai"):
+    for m in MODELS:
         for r, e in task_pairs(recs, "skater", m):
             daily.setdefault(r["date"], {}).setdefault(m, []).append(e)
     daily_out = [dict({"date": d}, **{m: summarize(v) for m, v in sorted(ms.items())}) for d, ms in sorted(daily.items())]
@@ -599,26 +657,31 @@ def report(root, state, now):
     for r in sorted(recs, key=lambda x: x["date"]):
         if r.get("ft"):
             pl = players.setdefault(r["pid"], {"name": r["name"], "pos": r["pos"], "team": r["team"], "games": []})
-            pl["games"].append({k: r.get(k) for k in ("date", "opp", "home", "b2b", "espn", "gm", "blend", "ai",
-                                                      "start_p", "played", "fp")})
+            pl["games"].append({k: r.get(k) for k in ("date", "opp", "home", "b2b", "line", "espn", "gm", "blend",
+                                                      "ai", "ai_lo", "ai_hi", "start_p", "ai_start_p", "played", "fp")})
     for pl in players.values():
         pl["games"] = pl["games"][-30:]
 
+    reg = read_json(P(root, "models", "registry.json"), {})
     not_played = [r for r in recs if not r["played"] and r["pos"] != "G"]
     rep = {"version": VERSION, "generated": iso(now), "counts": counts,
            "not_played": {"n": len(not_played),
                           "rostered_examples": sorted({r["name"] for r in not_played if r.get("ft")})[:20],
                           "note": "scratched/injured, or a name the engine could not match - check this list"},
            "tasks": tasks, "paired": pairs, "best": best, "segments": segs, "flags": flags,
-           "calibration": cal, "daily": daily_out, "players": players,
-           "health": state.get("health", {}),
+           "calibration": calibration(recs, "start_p"), "calibration_ai": calibration(recs, "ai_start_p"),
+           "ai_range": {"n": len(cov), "coverage": round(sum(cov) / len(cov), 3) if cov else None, "target": 0.8},
+           "ai_models": {"production": reg.get("production"), "last_train": reg.get("last_train"),
+                         "recent_decisions": (reg.get("history") or [])[-8:],
+                         "status": read_json(P(root, "models", "status.json"), {})},
+           "daily": daily_out, "players": players, "health": state.get("health", {}),
            "labels": {d: v for d, v in sorted(lstate.items())[-10:]}}
     write_json(P(root, "report.json"), rep)
     with open(P(root, "report.js"), "w", encoding="utf-8") as f:
         f.write("window.AI_REPORT = " + json.dumps(rep, separators=(",", ":")) + ";\n")
     s = tasks["skater"]
     print("(ai) accuracy so far (skaters, avg error pts/game): "
-          + ", ".join(f"{m} {s[m]['mae']} (n={s[m]['n']})" for m in ("espn", "gm", "blend") if s.get(m))
+          + ", ".join(f"{m} {s[m]['mae']} (n={s[m]['n']})" for m in MODELS if s.get(m))
           if any(s.values()) else "(ai) accuracy: no finished games graded yet")
     return rep
 
@@ -631,7 +694,7 @@ def run(root=HERE, now=None, day_fetch=None, stats_fetch=None):
     errs = []
     dfetch = memo(day_fetch or fetch_day)
     try:
-        n = snapshot(root, state, load_espn_data(root), now, dfetch)
+        n = snapshot(root, state, load_espn_data(root), now, dfetch, load_ai(root, now))
         health["last_snapshot_check"] = iso(now)
         if n:
             health["last_snapshot_written"] = iso(now)
@@ -707,14 +770,24 @@ def selftest():
                                    "6": {"2026-10-11": 5.0}},
                           "odds": {D: {"VAN": {"win": 0.55, "gf": 3.1, "ga": 2.7}}}},
                 "goalies": {D: {"Kevin Lankinen": {"status": "Confirmed", "team": "VAN"}}},
-                "signals": {"pp1": {"asof": "x", "on": {"COL": ["Nathan MacKinnon"]}, "changes": []}}}
+                "signals": {"pp1": {"asof": "x", "on": {"1": True}, "changes": {"1": "added"}, "units": {}},
+                            "lines": {"asof": "x", "top": {"1": "F1", "2": "D1"}, "changes": {"2": "up"}},
+                            "teampp": {"COL": {"pct": 25.0, "rate": 0.9, "gp": 0, "lastPct": 25.0}},
+                            "news": {"1": [{"h": "x", "tone": "+"}]}}}
+        write_json(P(tmp, "models", "ai_proj.json"),
+                   {"asof": iso(now - timedelta(hours=2)), "versions": {"F": "F-gbm_stats-20261005"},
+                    "proj": {"1": {D: 6.1}, "3": {D: 7.0}, "5": {D: 6.5}},
+                    "gstart": {"3": {D: 0.7}, "5": {D: 0.3}}, "range": {"1": {D: [0.0, 14.0]}}})
+        ai = load_ai(tmp, now)
+        check("fresh AI projections are loaded", ai.get("proj", {}).get("1", {}).get(D) == 6.1)
+        check("stale AI projections are ignored", load_ai(tmp, now + timedelta(days=3)) == {})
 
         def write_data():
             with open(os.path.join(tmp, "espn-data.js"), "w", encoding="utf-8") as f:
                 f.write("window.ESPN_DATA = " + json.dumps(data) + ";\n")
         write_data()
         state = {}
-        n = snapshot(tmp, state, load_espn_data(tmp), now, fetch)
+        snapshot(tmp, state, load_espn_data(tmp), now, fetch, ai)
         rows = read_rows(P(tmp, "predictions", D + ".jsonl"))
         check("records only games that have not started", sorted(r["pid"] for r in rows) == ["1", "2", "3", "5"])
         check("postponed games are not recorded", not os.path.exists(P(tmp, "predictions", "2026-10-11.jsonl")))
@@ -724,29 +797,39 @@ def selftest():
         hughes = next(r for r in rows if r["pid"] == "2")
         check("ESPN per-game formula", abs(mac["pred"]["espn"] - 5.0) < 1e-9)
         check("Blend formula", abs(mac["pred"]["blend"] - 5.0625) < 0.001)
-        check("PP1 signal attached", mac["sig"].get("pp1_on") is True)
+        check("AI projection recorded next to ESPN/GM/Blend", mac["pred"]["ai"] == 6.1)
+        check("AI range and model version recorded", mac["ai_meta"]["range"] == [0.0, 14.0]
+              and mac["ai_meta"]["version"] == "F-gbm_stats-20261005")
+        check("player without an AI projection gets none (never invented)", hughes["pred"]["ai"] is None)
+        check("PP1 signal and PP1 change attached", mac["sig"].get("pp1_on") is True and mac["sig"].get("pp1_chg") == "added")
+        check("exact line (F1/D1) and line change attached", mac["sig"].get("line") == "F1"
+              and hughes["sig"].get("line") == "D1" and hughes["sig"].get("line_chg") == "up")
+        check("team power-play strength attached", (mac["sig"].get("teampp") or {}).get("pct") == 25.0)
+        check("news tone attached", mac["sig"].get("news_tone") == "+")
         check("confirmed goalie = 100% start", lank["goalie"]["start_p"] == 1.0)
         check("other goalie confirmed = 5% start", demko["goalie"]["start_p"] == 0.05)
+        check("AI goalie start chance recorded separately", lank["goalie"]["ai_start_p"] == 0.7)
         check("betting odds attached", (hughes.get("odds") or {}).get("win") == 0.55)
         check("timestamp is before puck drop", all(r["ts"] < r["start"] for r in rows))
         check("no duplicate rows when nothing changed",
-              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(minutes=10), fetch) == 0)
+              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(minutes=10), fetch, ai) == 0)
         data["model"]["proj"]["1"][D] = 5.2
         write_data()
         check("changed projection adds a new timestamped row",
-              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(minutes=20), fetch) == 1)
+              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(minutes=20), fetch, ai) == 1)
         check("stale espn-data.js is ignored",
-              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(hours=3), fetch) == 0)
+              snapshot(tmp, state, load_espn_data(tmp), now + timedelta(hours=3), fetch, ai) == 0)
         data["generated"] = "2026-10-10T23:01:00"
         data["model"]["proj"]["1"][D] = 9.9
         write_data()
         check("nothing recorded after puck drop (even if NHL still says FUT)",
-              snapshot(tmp, state, load_espn_data(tmp), datetime(2026, 10, 10, 23, 5, tzinfo=UTC), fetch) == 0)
-        bad = dict(mac, ts="2026-10-10T23:30:00Z", pred={"espn": 99, "gm": 99, "blend": 99, "ai": None})
+              snapshot(tmp, state, load_espn_data(tmp), datetime(2026, 10, 10, 23, 5, tzinfo=UTC), fetch, ai) == 0)
+        mac = [r for r in read_rows(P(tmp, "predictions", D + ".jsonl")) if r["pid"] == "1"][-1]
+        bad = dict(mac, ts="2026-10-10T23:30:00Z", pred={"espn": 99, "gm": 99, "blend": 99, "ai": 99})
         append_rows(P(tmp, "predictions", D + ".jsonl"), [bad])
         best, leaked = official(read_rows(P(tmp, "predictions", D + ".jsonl")))
         check("post-start row rejected; official = last pregame row",
-              leaked == 1 and best[(1, "1")]["pred"]["gm"] == 5.2)
+              leaked == 1 and best[(1, "1")]["pred"]["gm"] == 5.2 and best[(1, "1")]["pred"]["ai"] == 6.1)
 
         g1["state"] = "OFF"
         stats = [dict(gid=1, nhl_id=11, name="Nathan MacKinnon", team="COL", pos="F", G=1, A=2, PM=1, PPP=1,
@@ -769,7 +852,11 @@ def selftest():
         check("actual points joined to the pregame prediction", r1.get("fp") == 22.1 and r1.get("gm") == 5.2)
         check("goalie who did not play is marked as not played", r5.get("played") is False)
         check("skater accuracy computed", rep["tasks"]["skater"]["gm"]["n"] == 2)
-        check("goalie start-probability calibration computed", rep["calibration"]["n"] == 2)
+        check("AI graded on the same games (only where it made a projection)", rep["tasks"]["skater"]["ai"]["n"] == 1)
+        check("AI range coverage measured on real results", rep["ai_range"]["n"] == 1)
+        check("goalie start calibration computed (app rule and AI)",
+              rep["calibration"]["n"] == 2 and rep["calibration_ai"]["n"] == 2)
+        check("exact line used in error breakdown", "F1" in rep["segments"]["line"])
         g2["state"] = "OFF"
         label(tmp, state, later + timedelta(hours=1), fetch, lambda d: [dict(r) for r in stats])
         check("day not locked before correction window ends", not state["labels"][D]["frozen"])
@@ -793,8 +880,17 @@ def selftest():
             print(f"INFO  signal groups in your data: {sorted(sig)}")
             ex = next((p for p in pls if p.get("ft") == 4), None)
             if ex:
-                print(f"INFO  signals found for {ex.get('n')}: {sorted(signals_for(sig, ex))}")
+                s = signals_for(sig, ex)
+                print(f"INFO  signals found for {ex.get('n')}: {sorted(s)} | line: {s.get('line')} | "
+                      f"team PP: {s.get('teampp')}")
                 print(f"INFO  ESPN per-game for {ex.get('n')}: {espn_eff(ex)}")
+            aip = read_json(os.path.join(HERE, "ai", "models", "ai_proj.json"), {})
+            if aip:
+                ids = {str(p.get("id")) for p in pls}
+                print(f"INFO  your AI projections: made {aip.get('asof')}, {len(aip.get('proj', {}))} players, "
+                      f"{len(ids & set(aip.get('proj', {})))} match ESPN players")
+            else:
+                print("NOTE  no AI projections in the repo yet (they appear after the first AI training run)")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     ok = all(results)
