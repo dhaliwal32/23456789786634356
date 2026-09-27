@@ -299,6 +299,55 @@ def injuries(players):
     print(f"(signals) injuries from {src}: {len(out)} players, return dates: {n_espn} from ESPN, {n_parsed} from news text")
     return out
 
+# ---------- ice time trends ----------
+TOI_DAYS = 10       # "lately" = last 10 days (about 4-5 games)
+TOI_MIN_GP = 3      # need at least 3 recent games
+TOI_PRIOR = 10      # last season counts like 10 games when this season is young
+
+
+def toi_rows(exp):
+    r = requests.get(f"{STATS}/skater/timeonice", params={"limit": -1, "cayenneExp": exp}, headers=HDR, timeout=60)
+    r.raise_for_status()
+    out = {}
+    for x in r.json().get("data", []):
+        grp = "D" if x.get("positionCode") == "D" else "F"
+        out[(norm(x.get("skaterFullName")), grp)] = {"gp": x.get("gamesPlayed") or 0,
+                                                     "toi": x.get("timeOnIcePerGame") or 0,
+                                                     "pp": x.get("ppTimeOnIcePerGame") or 0}
+    return out
+
+
+def toi(players):
+    end = datetime.now().date()
+    start = end - timedelta(days=TOI_DAYS)
+    rec = toi_rows(f'seasonId={THIS} and gameTypeId=2 and gameDate<="{end} 23:59:59" and gameDate>="{start}"')
+    cur = toi_rows(f"seasonId={THIS} and gameTypeId=2")
+    last = toi_rows(f"seasonId={LAST} and gameTypeId=2")
+    out, ups, downs = {}, 0, 0
+    for p in players:
+        if p["p"] == "G":
+            continue
+        k = (norm(p["n"]), "D" if p["p"] == "D" else "F")
+        r = rec.get(k)
+        if not r or r["gp"] < TOI_MIN_GP:
+            continue
+        c = cur.get(k, {"gp": 0, "toi": 0, "pp": 0})
+        l = last.get(k)
+        before = c["gp"] - r["gp"]                      # this-season games before the recent window
+        tb = (c["toi"] * c["gp"] - r["toi"] * r["gp"]) / before if before > 0 else 0
+        pb = (c["pp"] * c["gp"] - r["pp"] * r["gp"]) / before if before > 0 else 0
+        w = TOI_PRIOR if l and l["gp"] else 0
+        if w + before == 0:
+            continue
+        base = ((l["toi"] if l else 0) * w + tb * before) / (w + before)
+        pbase = ((l["pp"] if l else 0) * w + pb * before) / (w + before)
+        d, pd = r["toi"] - base, r["pp"] - pbase
+        out[str(p["id"])] = {"r": round(r["toi"]), "b": round(base), "d": round(d),
+                             "pr": round(r["pp"]), "pb": round(pbase), "pd": round(pd), "gp": r["gp"]}
+        ups += d >= 120
+        downs += d <= -120
+    print(f"(signals) ice time: {len(out)} players tracked, {ups} up 2+ min, {downs} down 2+ min (last {TOI_DAYS} days)")
+    return out
 
 def build(players):
     out = {}
