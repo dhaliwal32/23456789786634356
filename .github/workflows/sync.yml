@@ -23,6 +23,7 @@ jobs:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           SWID: ${{ secrets.SWID }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python espn_sync.py
       - name: Save results
         run: |
