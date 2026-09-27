@@ -105,7 +105,7 @@ def run(players, slots, goalies, signals, my_team_id):
             continue
         if norm(p["n"]) in {norm(k) for k in gday}:
             continue
-        other = next(((k, v) for k, v in gday.items() if v.get("team") == p["t"]), None)
+        other = next(((k, v) for k, v in gday.items() if v.get("team") == p["t"] and "confirm" in (v.get("status") or "").lower() and "un" not in (v.get("status") or "").lower()), None)
         if other:
             alerts.append(("Goalie not starting tonight", f"{p['n']} ({p['t']}, {games[p['t']]}): Daily Faceoff lists {other[0]} ({other[1].get('status') or 'starter'}). Swap in a goalie who is starting.", "high", "goal_net"))
 
