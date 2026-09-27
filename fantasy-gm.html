@@ -216,6 +216,14 @@ function weekProj(roster, wk, K, from = 0) {
 }
 const oppOf = (wk, me) => { const pr = (wk.pairs || []).find((p) => p[0] && p[1] && (p[0] === me || p[1] === me)); return pr ? (pr[0] === me ? pr[1] : pr[0]) : null; };
 const f1 = (x) => (Math.round((+x || 0) * 10) / 10).toFixed(1);
+// sync times come from GitHub's servers in UTC - show them in your own time
+const fmtTime = (x) => {
+  if (!x) return "";
+  let str = String(x);
+  if (!/[zZ]$|[+-]\d\d:?\d\d$/.test(str)) str += "Z";
+  const d = new Date(str);
+  return isNaN(d) ? String(x) : d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+};
 const gms = (wk, t) => (wk.games[t] || []).length;
 
 // ---------- signals (form, PP1, news, trending) ----------
@@ -359,7 +367,7 @@ function App() {
           <option value="blend" disabled={!window.__MODEL}>Projections: Blend (ESPN + GM model)</option>
           <option value="model" disabled={!window.__MODEL}>Projections: GM model</option>
         </select>
-        <span className={"text-xs px-2 py-1 rounded " + (s.lastSync ? "bg-green-700" : "bg-slate-700")}>{s.lastSync ? "ESPN synced " + String(s.lastSync).replace("T", " ") : "Not synced with ESPN yet"}</span>
+        <span className={"text-xs px-2 py-1 rounded " + (s.lastSync ? "bg-green-700" : "bg-slate-700")}>{s.lastSync ? "ESPN synced " + fmtTime(s.lastSync) : "Not synced with ESPN yet"}</span>
         {syncMsg && <span className="text-xs text-green-300">{syncMsg}</span>}
         <div className="text-xs text-slate-400 ml-auto">{status}</div>
       </div>
@@ -1360,10 +1368,10 @@ function Settings({ s, setS }) {
     <div className="grid md:grid-cols-2 gap-4">
       <div className={box + " md:col-span-2"}>
         <div className="font-semibold mb-2">ESPN sync & data sources</div>
-        {E ? <div>ESPN file: <b>{E.leagueName || "your league"}</b> · created {String(E.generated).replace("T", " ")} · {(E.teams || []).length} teams · {(E.players || []).length} players</div>
+        {E ? <div>ESPN file: <b>{E.leagueName || "your league"}</b> · created {fmtTime(E.generated)} · {(E.teams || []).length} teams · {(E.players || []).length} players</div>
           : <div className="text-red-600">No espn-data.js found next to this file. Run espn_sync.py, then refresh.</div>}
         <ul className="text-xs text-slate-600 mt-2 space-y-1">
-          <li>GM model: {E && E.model ? `✓ ${Object.keys(E.model.base || {}).length} players projected (${String(E.model.asof).replace("T", " ")})` : "not loaded (add gm_model.py)"}</li>
+          <li>GM model: {E && E.model ? `✓ ${Object.keys(E.model.base || {}).length} players projected (${fmtTime(E.model.asof)})` : "not loaded (add gm_model.py)"}</li>
           <li>Recent form (NHL stats, last 14 days): {Sg && Sg.recent ? `✓ ${Object.keys(Sg.recent).length} players` : "not loaded"}</li>
           <li>PP1 units (Daily Faceoff): {Sg && Sg.pp1 ? `✓ ${Object.keys(Sg.pp1.on || {}).length} players on PP1, checked ${Sg.pp1.asof}` : "not loaded"}</li>
           <li>News (ESPN): {Sg && Sg.news ? `✓ ${Object.keys(Sg.news).length} players mentioned` : "not loaded"}</li>
