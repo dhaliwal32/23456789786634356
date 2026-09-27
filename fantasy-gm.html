@@ -1159,7 +1159,9 @@ function TwoForOne({ s }) {
   const nR = s.weeks.length - s.wk;
   const gl = (p) => [...(SCHED[p.t] || [])].filter((d) => d >= today && avail(p, d) > 0).length;
   const tv = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.ft !== "fa" || p.proj !== false || p.gp > 0) o[p.id] = rosRaw(p, K); }); return o; }, [s.players, K, window.__PMODE]);
-  const pe = (p) => effAvg0(p, K) * gl(p) * p.prob;
+  const vv = (p) => effAvg0(p, K) * (p.p === "G" ? p.prob : 1);
+  const rep = useMemo(() => { const o = {}; ["F", "D", "G"].forEach((k) => { const l = s.players.filter((p) => p.ft === "fa" && p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map(vv).sort((a, b) => b - a).slice(0, 5); o[k] = l.length ? l.reduce((a, b) => a + b, 0) / l.length : 0; }); return o; }, [s.players, K]);
+  const pe = (p) => Math.max(0, vv(p) - (rep[p.p] || 0)) * gl(p);
   const mine = s.players.filter((p) => p.ft === s.me);
   const theirs = s.players.filter((p) => p.ft === partner);
   const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 40), [tv]);
@@ -1201,7 +1203,7 @@ function TwoForOne({ s }) {
           const pool = mineR.filter((p) => !keep.has(p.id) && (tv[p.id] || 0) < (tv[T.id] || 0));
           for (let i = 0; i < pool.length; i++) for (let j = i + 1; j < pool.length; j++) {
             const A = pool[i], B = pool[j];
-            if (pe(A) + pe(B) < 0.95 * pe(T)) continue;
+            if (pe(T) <= 0 || pe(A) + pe(B) < 0.95 * pe(T) || Math.max(vv(A), vv(B)) < 0.75 * vv(T)) continue;
             const c = { F: 0, D: 0, G: 0 }; mineR.forEach((p) => c[p.p]++); c[A.p]--; c[B.p]--; c[T.p]++;
             const short = ["F", "D", "G"].filter((k) => c[k] < mins[k]);
             if (short.length > 1) continue;
@@ -1248,7 +1250,7 @@ function TwoForOne({ s }) {
       <Section title="2-for-1 trade builder" sub="Give two players, get one better one — then use the roster spot you freed to pick up the best free agent. The other manager judges the trade by ESPN's numbers and recent points (they see a 2-for-1 win); you judge it by your model including the pickup.">
         <div className="text-xs text-slate-500">Numbers next to players: <b>true value</b> (your model, rest of season) / <span className="text-slate-400">how others see him</span> (ESPN projection + actual points). Look for players where the second number is bigger — those are your best trade chips. Amber flags (🎲 lucky, ESPN overrates, 🔥 hot) = sell-high candidates.</div>
       </Section>
-      <Section title="Suggested 2-for-1 trades" sub="Searches every team for trades the other manager should see as a win (≥95% of the value by ESPN's numbers) but that improve your lineup once you add the best free agent to the open spot.">
+      <Section title="Suggested 2-for-1 trades" sub={`Only realistic offers: judged the way managers judge trades — value above what's free on waivers (replacement level now: F ${f1(rep.F)}, D ${f1(rep.D)}, G ${f1(rep.G)} pts/game) — and your better player must be at least 75% as good per game as the one you ask for. Your side is judged by your model, including the free agent you add.`}>
         <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy} onClick={findTrades}>{busy ? "Searching…" : "Find 2-for-1 trades"}</button>
         {sugg && (sugg.length ? sugg.map((x, i) => (
           <div key={i} className="border-t border-slate-100 py-3 mt-2">
@@ -1258,7 +1260,8 @@ function TwoForOne({ s }) {
               <span className="ml-auto">You <D v={x.myR} /> ROS</span>
             </div>
             <div className="text-xs text-slate-500 mt-1">
-              They see it as {x.perc >= 0 ? <span className="text-green-700">a {Math.round(x.perc * 100)}% win for them</span> : <span className="text-amber-600">about even ({Math.round(x.perc * 100)}%)</span>} · their lineup <D v={x.thR} /> ROS
+              <span className="mr-2">Per game (as they see it): {x.A.n.split(" ").pop()} {f1(vv(x.A))} + {x.B.n.split(" ").pop()} {f1(vv(x.B))} for {x.T.n.split(" ").pop()} {f1(vv(x.T))}</span>
+              {x.perc >= 0.05 ? <span className="text-green-700 font-semibold">Likely accepted — they gain {Math.round(x.perc * 100)}% in value</span> : <span className="text-amber-600 font-semibold">Possible — about even for them ({x.perc >= 0 ? "+" : ""}{Math.round(x.perc * 100)}%)</span>} · their lineup <D v={x.thR} /> ROS
               {[...sellFlags(x.A), ...sellFlags(x.B)].length ? <span className="text-amber-600"> · selling high: {[...sellFlags(x.A).map((f) => `${x.A.n} ${f}`), ...sellFlags(x.B).map((f) => `${x.B.n} ${f}`)].join(", ")}</span> : null}
               <button className="text-blue-600 ml-3" onClick={() => load(x)}>Open in builder →</button>
             </div>
