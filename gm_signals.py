@@ -433,7 +433,51 @@ def luck(players):
     lo = sum(1 for v in out.values() if v["d"] <= (-2 if v["t"] == "s" else -4))
     print(f"(signals) luck: {len(out)} players with enough shots, {hi} running lucky, {lo} running unlucky")
     return out
+# ---------- automatic goalie start share ----------
+GS_DAYS = 21      # about the last 10 team games
+GS_PRIOR = 6      # last season's share counts like 6 games
 
+
+def gstart(players):
+    end = datetime.now().date()
+    start = end - timedelta(days=GS_DAYS)
+    exp = f'seasonId={THIS} and gameTypeId=2 and gameDate<="{end} 23:59:59" and gameDate>="{start}"'
+    r = requests.get(f"{STATS}/team/summary", params={"limit": -1, "cayenneExp": exp}, headers=HDR, timeout=60)
+    r.raise_for_status()
+    team_g = {}
+    for x in r.json().get("data", []):
+        c = team_code(x.get("teamFullName"))
+        if c:
+            team_g[c] = x.get("gamesPlayed") or 0
+    recent_st = {}
+    for x in get_stats("goalie/summary", start, end):
+        recent_st[norm(x.get("goalieFullName"))] = (x.get("gamesStarted") or 0, ab((x.get("teamAbbrevs") or "").split(",")[-1].strip()))
+    last = {norm(x.get("goalieFullName")): (x.get("gamesStarted") or 0, ab((x.get("teamAbbrevs") or "").split(",")[-1].strip()))
+            for x in stats("goalie/summary", LAST)}
+    last_gp = {}
+    for x in stats("team/summary", LAST):
+        c = team_code(x.get("teamFullName"))
+        if c:
+            last_gp[c] = x.get("gamesPlayed") or 82
+    out, flags = {}, 0
+    for p in players:
+        if p["p"] != "G":
+            continue
+        key, t = norm(p["n"]), p["t"]
+        g = team_g.get(t, 0)
+        if g < 3:                                   # wait until the team has played 3 games
+            continue
+        st, st_team = recent_st.get(key, (0, t))
+        starts = st if st_team == t else 0
+        l = last.get(key)
+        prior = l[0] / max(1, last_gp.get(l[1], 82)) if l and l[1] == t else None
+        pr = prior if prior is not None else 0.5
+        share = max(0.05, min(0.95, (starts + pr * GS_PRIOR) / (g + GS_PRIOR)))
+        flag = g >= 5 and abs(starts / g - pr) >= 0.25
+        flags += flag
+        out[str(p["id"])] = {"share": round(share, 2), "rs": starts, "rg": g, "prior": round(pr, 2), "flag": flag}
+    print(f"(signals) goalie starts: {len(out)} goalies with an automatic start %, {flags} with a big change in who starts")
+    return out
 
 def build(players):
     out = {}
@@ -444,7 +488,7 @@ def build(players):
         cache = {}
     steps = (("recent", lambda: recent(players)), ("pp1", lambda: pp1(players, cache)), ("lines", lambda: lines(players, cache)),
              ("news", lambda: news(players)), ("teampp", team_pp), ("injuries", lambda: injuries(players)),
-             ("toi", lambda: toi(players)), ("luck", lambda: luck(players)))
+             ("toi", lambda: toi(players)), ("luck", lambda: luck(players)), ("gstart", lambda: gstart(players)))
     for name, fn in steps:
         try:
             out[name] = fn()
