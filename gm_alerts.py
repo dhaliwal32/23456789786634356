@@ -18,8 +18,8 @@ from gm_model import norm, ab
 try:
     from secrets_local import NTFY_TOPIC
 except ImportError:
-    NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "PASTE-YOUR-TOPIC-NAME")
-# the same unique name you subscribed to in the ntfy app
+       NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "PASTE-YOUR-TOPIC-NAME").strip()
+ # the same unique name you subscribed to in the ntfy app
 QUIET_START, QUIET_END = 23, 7         # no alerts between 11 PM and 7 AM (your time)
 TRENDING_PCT = 10                      # alert when a free agent's ownership jumps this much
 
