@@ -416,7 +416,7 @@ const Section = ({ title, sub, link, children }) => (
 const NAV = [
   ["today", "🏠 Today", null],
   ["matchup", "⚔️ Matchup", null],
-  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
+  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["twoforone", "2-for-1 builder"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
   ["league", "🏆 League", [["power", "Power rankings"], ["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
   ["players", "👥 Players", null],
   ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
@@ -480,7 +480,7 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
-  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "bench" ? <BenchFixer {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
+  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "bench" ? <BenchFixer {...P} /> : sub === "twoforone" ? <TwoForOne {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
   return (
@@ -1142,6 +1142,165 @@ function PlayoffPlanner({ s, setS }) {
           </div>
         )}
       </Section>
+    </div>
+  );
+}
+
+// ---------- 2-for-1 builder ----------
+function TwoForOne({ s }) {
+  const K = s.blend;
+  const today = todayISO();
+  const others = s.teams.filter((t) => t.id !== s.me);
+  const [partner, setPartner] = useState((others[0] || {}).id || "");
+  const [give, setGive] = useState([]); const [get, setGet] = useState([]);
+  const [faPick, setFaPick] = useState({});
+  const [sugg, setSugg] = useState(null); const [busy, setBusy] = useState(false);
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const nR = s.weeks.length - s.wk;
+  const gl = (p) => [...(SCHED[p.t] || [])].filter((d) => d >= today && avail(p, d) > 0).length;
+  const tv = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.ft !== "fa" || p.proj !== false || p.gp > 0) o[p.id] = rosRaw(p, K); }); return o; }, [s.players, K, window.__PMODE]);
+  const pe = (p) => effAvg0(p, K) * gl(p) * p.prob;
+  const mine = s.players.filter((p) => p.ft === s.me);
+  const theirs = s.players.filter((p) => p.ft === partner);
+  const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 40), [tv]);
+  const posOK = (roster) => { const c = { F: 0, D: 0, G: 0 }; roster.forEach((p) => { if (!p.ir) c[p.p]++; }); return ["F", "D", "G"].every((k) => c[k] >= mins[k]); };
+  const sellFlags = (p) => {
+    const f = [], l = sigOf(p).luck, id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+    const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
+    if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push("🎲 lucky");
+    if (mb != null && p.proj && p.avg > 0 && mb / p.avg <= 0.85) f.push("ESPN overrates");
+    if ((formRatio(p, K) || 0) >= 1.25) f.push("🔥 hot streak");
+    return f;
+  };
+  const toggle = (arr, set, id) => set(arr.includes(id) ? arr.filter((x) => x !== id) : [...arr, id]);
+  const G = mine.filter((p) => give.includes(p.id)), Rr = theirs.filter((p) => get.includes(p.id));
+  const extra = Math.max(0, G.length - Rr.length);
+  const manual = useMemo(() => {
+    if (!G.length || !Rr.length) return null;
+    let after = [...mine.filter((p) => !give.includes(p.id)), ...Rr.map((p) => ({ ...p, ft: s.me }))];
+    const base = horizonTotal(mine, s, nR), base4 = horizonTotal(mine, s, 4);
+    const noFill = horizonTotal(after, s, nR) - base;
+    const fills = [];
+    for (let k = 0; k < extra; k++) {
+      let ch = faPick[k] && faPick[k] !== "auto" ? fas.find((f) => f.id === faPick[k]) : null;
+      if (!ch) { let best = null; fas.filter((f) => !fills.includes(f)).slice(0, 15).forEach((f) => { const v = horizonTotal([...after, { ...f, ft: s.me }], s, nR); if (!best || v > best.v) best = { f, v }; }); ch = best && best.f; }
+      if (ch) { fills.push(ch); after = [...after, { ...ch, ft: s.me }]; }
+    }
+    const thAfter = [...theirs.filter((p) => !get.includes(p.id)), ...G.map((p) => ({ ...p, ft: partner }))];
+    return { fills, myR: horizonTotal(after, s, nR) - base, my4: horizonTotal(after, s, 4) - base4, noFill, thR: horizonTotal(thAfter, s, nR) - horizonTotal(theirs, s, nR), ok: posOK(after) };
+  }, [give.join(), get.join(), partner, JSON.stringify(faPick), s.players, s.wk]);
+  const findTrades = () => {
+    setBusy(true);
+    setTimeout(() => {
+      const mineR = mine.filter((p) => !p.ir);
+      const keep = new Set([...mineR].sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 2).map((p) => p.id));
+      const bestFA = {}; ["F", "D", "G"].forEach((k) => (bestFA[k] = fas.find((f) => f.p === k)));
+      const cands = [];
+      others.forEach((t) => {
+        s.players.filter((p) => p.ft === t.id && !p.ir).sort((a, b) => (tv[b.id] || 0) - (tv[a.id] || 0)).slice(0, 4).forEach((T) => {
+          const pool = mineR.filter((p) => !keep.has(p.id) && (tv[p.id] || 0) < (tv[T.id] || 0));
+          for (let i = 0; i < pool.length; i++) for (let j = i + 1; j < pool.length; j++) {
+            const A = pool[i], B = pool[j];
+            if (pe(A) + pe(B) < 0.95 * pe(T)) continue;
+            const c = { F: 0, D: 0, G: 0 }; mineR.forEach((p) => c[p.p]++); c[A.p]--; c[B.p]--; c[T.p]++;
+            const short = ["F", "D", "G"].filter((k) => c[k] < mins[k]);
+            if (short.length > 1) continue;
+            const fa = short.length ? bestFA[short[0]] : ["F", "D", "G"].map((k) => bestFA[k]).filter(Boolean).sort((a, b) => tv[b.id] - tv[a.id])[0];
+            if (!fa) continue;
+            const pre = (tv[T.id] || 0) + tv[fa.id] - (tv[A.id] || 0) - (tv[B.id] || 0);
+            if (pre > 0) cands.push({ t, T, A, B, fa, pre });
+          }
+        });
+      });
+      cands.sort((a, b) => b.pre - a.pre);
+      const seen = new Set(), top = [];
+      for (const c of cands) { const k = c.T.id; if (seen.has(k)) continue; seen.add(k); top.push(c); if (top.length >= 12) break; }
+      const base = horizonTotal(mine, s, nR);
+      const out = top.map((c) => {
+        const after = [...mine.filter((p) => p.id !== c.A.id && p.id !== c.B.id), { ...c.T, ft: s.me }, { ...c.fa, ft: s.me }];
+        const th = s.players.filter((p) => p.ft === c.t.id);
+        const thAfter = [...th.filter((p) => p.id !== c.T.id), { ...c.A, ft: c.t.id }, { ...c.B, ft: c.t.id }];
+        const perc = (pe(c.A) + pe(c.B) - pe(c.T)) / Math.max(1, pe(c.T));
+        return { ...c, myR: horizonTotal(after, s, nR) - base, thR: horizonTotal(thAfter, s, nR) - horizonTotal(th, s, nR), perc };
+      }).filter((x) => x.myR > 0).sort((a, b) => b.myR - a.myR).slice(0, 8);
+      setSugg(out); setBusy(false);
+    }, 30);
+  };
+  const load = (x) => { setPartner(x.t.id); setGive([x.A.id, x.B.id]); setGet([x.T.id]); setFaPick({ 0: x.fa.id }); window.scrollTo(0, document.body.scrollHeight); };
+  const order = { F: 0, D: 1, G: 2 };
+  const Pick = ({ list, sel, set, title }) => (
+    <Section title={title}>
+      {list.sort((a, b) => order[a.p] - order[b.p] || (tv[b.id] || 0) - (tv[a.id] || 0)).map((p) => (
+        <label key={p.id} className={"flex items-center gap-2 py-1 px-1 rounded " + (sel.includes(p.id) ? "bg-blue-50" : "")}>
+          <input type="checkbox" checked={sel.includes(p.id)} onChange={() => toggle(sel, set, p.id)} />
+          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span> {sellFlags(p).map((f) => <span key={f} className="text-xs text-amber-600 ml-1">{f}</span>)}</span>
+          <span className="text-xs text-slate-500" title="True value (your model) / how others see him (ESPN)">{f1(tv[p.id])} <span className="text-slate-400">/ {f1(pe(p))}</span></span>
+        </label>
+      ))}
+    </Section>
+  );
+  const D = ({ v }) => <span className={"font-semibold " + (v >= 0 ? "text-green-700" : "text-red-600")}>{v >= 0 ? "+" : ""}{f1(v)}</span>;
+  const peG = G.reduce((a, p) => a + pe(p), 0), peR = Rr.reduce((a, p) => a + pe(p), 0);
+  const tvG = G.reduce((a, p) => a + (tv[p.id] || 0), 0), tvR = Rr.reduce((a, p) => a + (tv[p.id] || 0), 0) + (manual ? manual.fills.reduce((a, f) => a + tv[f.id], 0) : 0);
+  const theyThink = peR > 0 ? (peG - peR) / peR : 0;
+  return (
+    <div className="space-y-4">
+      <Section title="2-for-1 trade builder" sub="Give two players, get one better one — then use the roster spot you freed to pick up the best free agent. The other manager judges the trade by ESPN's numbers and recent points (they see a 2-for-1 win); you judge it by your model including the pickup.">
+        <div className="text-xs text-slate-500">Numbers next to players: <b>true value</b> (your model, rest of season) / <span className="text-slate-400">how others see him</span> (ESPN projection + actual points). Look for players where the second number is bigger — those are your best trade chips. Amber flags (🎲 lucky, ESPN overrates, 🔥 hot) = sell-high candidates.</div>
+      </Section>
+      <Section title="Suggested 2-for-1 trades" sub="Searches every team for trades the other manager should see as a win (≥95% of the value by ESPN's numbers) but that improve your lineup once you add the best free agent to the open spot.">
+        <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy} onClick={findTrades}>{busy ? "Searching…" : "Find 2-for-1 trades"}</button>
+        {sugg && (sugg.length ? sugg.map((x, i) => (
+          <div key={i} className="border-t border-slate-100 py-3 mt-2">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span>Give <b>{x.A.n}</b> + <b>{x.B.n}</b></span><span>→ get <b>{x.T.n}</b> <span className="text-xs text-slate-400">{x.T.p} · {x.T.t}</span> from {x.t.name}</span>
+              <span>+ pick up <b>{x.fa.n}</b> <span className="text-xs text-slate-400">{x.fa.p} · {x.fa.t}</span></span>
+              <span className="ml-auto">You <D v={x.myR} /> ROS</span>
+            </div>
+            <div className="text-xs text-slate-500 mt-1">
+              They see it as {x.perc >= 0 ? <span className="text-green-700">a {Math.round(x.perc * 100)}% win for them</span> : <span className="text-amber-600">about even ({Math.round(x.perc * 100)}%)</span>} · their lineup <D v={x.thR} /> ROS
+              {[...sellFlags(x.A), ...sellFlags(x.B)].length ? <span className="text-amber-600"> · selling high: {[...sellFlags(x.A).map((f) => `${x.A.n} ${f}`), ...sellFlags(x.B).map((f) => `${x.B.n} ${f}`)].join(", ")}</span> : null}
+              <button className="text-blue-600 ml-3" onClick={() => load(x)}>Open in builder →</button>
+            </div>
+          </div>
+        )) : <div className="text-slate-400 text-xs mt-2">No 2-for-1 trade improves your team right now while still looking fair to the other side. Try again as the season develops.</div>)}
+      </Section>
+      <Section title="Build your own">
+        <div className="flex flex-wrap gap-2 items-center">
+          <span>Trade with</span>
+          <select className={inp} value={partner} onChange={(e) => { setPartner(e.target.value); setGet([]); }}>{others.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
+          <button className="text-xs text-slate-500 underline ml-2" onClick={() => { setGive([]); setGet([]); setFaPick({}); }}>clear</button>
+        </div>
+        {extra > 0 && (
+          <div className="mt-3">
+            <div className="text-xs text-slate-500 mb-1">You free {extra} roster spot{extra > 1 ? "s" : ""} — pick up:</div>
+            {[...Array(extra)].map((_, k) => (
+              <select key={k} className={inp + " mr-2 mb-1"} value={faPick[k] || "auto"} onChange={(e) => setFaPick({ ...faPick, [k]: e.target.value })}>
+                <option value="auto">Best available (auto){manual && manual.fills[k] && (!faPick[k] || faPick[k] === "auto") ? ` — ${manual.fills[k].n}` : ""}</option>
+                {fas.map((f) => <option key={f.id} value={f.id}>{f.n} ({f.p}, {f.t}) · {f1(tv[f.id])}</option>)}
+              </select>
+            ))}
+          </div>
+        )}
+      </Section>
+      {manual && (
+        <Section title="Result">
+          <div className="grid md:grid-cols-4 gap-3 mb-3">
+            <Card label="How they see it (ESPN)" value={`${f1(peG)} for ${f1(peR)}`} sub={theyThink >= 0 ? `They "win" by ${Math.round(theyThink * 100)}% — easy to accept` : `They "lose" ${Math.round(-theyThink * 100)}% — harder sell`} tone={theyThink >= -0.05 ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200"} />
+            <Card label="True value (your model)" value={`${f1(tvG)} → ${f1(tvR)}`} sub={`incl. pickup${manual.fills.length > 1 ? "s" : ""}: ${manual.fills.map((f) => f.n).join(", ") || "—"}`} />
+            <Card label="Your lineup impact" value={<span><D v={manual.myR} /> ROS</span>} sub={<span>Next 4 wks <D v={manual.my4} /> · without the pickup <D v={manual.noFill} /></span>} />
+            <Card label="Their lineup impact" value={<span><D v={manual.thR} /> ROS</span>} />
+          </div>
+          {!manual.ok && <div className="text-red-600 text-sm mb-2">⚠ This leaves you below your roster minimums — choose a pickup at the short position.</div>}
+          <div className="text-xs text-slate-500">
+            {manual.myR > 0 && theyThink >= -0.05 ? "✅ Win-win on paper: they gain by ESPN's numbers, you gain by your model plus the pickup. Make sure the free agent is still available before offering, and add him the moment the trade goes through." : manual.myR > 0 ? "You gain, but they probably see it as a loss — expect a counter-offer or a veto risk." : "This doesn't improve your lineup even with the pickup — the two players you give are worth more to you than the upgrade."}
+          </div>
+        </Section>
+      )}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Pick list={[...mine]} sel={give} set={setGive} title={`You give (${teamName(s, s.me)})`} />
+        <Pick list={[...theirs]} sel={get} set={setGet} title={`You get (${teamName(s, partner)})`} />
+      </div>
     </div>
   );
 }
