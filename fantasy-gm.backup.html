@@ -189,7 +189,7 @@ function applyESPN(s, E) {
 const effAvg0 = (p, K) => (p.gp > 0 ? (p.avg * K + p.tot) / (K + p.gp) : p.avg);
 const effAvg = (p, K, dt) => {
   const base = effAvg0(p, K);
-  const M = window.__MODEL, mode = window.__PMODE || "espn"; { const A = window.__AI, aid = mode === "ai" && typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null, ap = aid && A ? (A.proj || {})[aid] : null, av = ap ? (dt && ap[dt] != null ? ap[dt] : (window.__AIAVG || {})[aid]) : null; if (av != null) return av * (p.gwMul || 1); }
+  const M = window.__MODEL, mode = window.__PMODE || "espn";
   let v = base;
   if (M && mode !== "espn" && typeof p.id === "string" && p.id[0] === "e") {
     const id = p.id.slice(1), pr = (M.proj || {})[id];
@@ -235,7 +235,7 @@ const b2bAdj = (p, dt) => {
   return null;
 };
 const gStart = (p, dt) => {
-  const aiG = window.__PMODE === "ai" && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null; const fallback = aiG != null ? { v: aiG, l: `AI start chance (${Math.round(aiG * 100)}%)` } : b2bAdj(p, dt) || { v: p.prob, l: "" };
+  const fallback = b2bAdj(p, dt) || { v: p.prob, l: "" };
   const day = dt && (window.__GOALIES || {})[dt];
   if (!day) return fallback;
   const me = day[nrm(p.n)];
@@ -468,7 +468,7 @@ function App() {
   }, [s, loaded]);
   const E = window.ESPN_DATA;
   window.__MODEL = (E && E.model) || null;
-  window.__SIG = (E && E.signals) || null; useEffect(() => { fetch("ai/models/ai_proj.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((A) => { if (!A || !A.proj || !((Date.now() - Date.parse(A.asof)) / 36e5 < 36)) return; const avg = {}; Object.entries(A.proj).forEach(([id, m]) => { const v = Object.values(m).filter((x) => x != null); if (v.length) avg[id] = v.reduce((a, b) => a + b, 0) / v.length; }); window.__AI = A; window.__AIAVG = avg; setS((st) => ({ ...st, players: [...st.players] })); }).catch(() => {}); }, []);
+  window.__SIG = (E && E.signals) || null;
   window.__PMODE = window.__MODEL ? s.pmode || "blend" : "espn";
   window.__GOALIES = useMemo(() => { const o = {}; Object.entries(s.goalies || {}).forEach(([d, m]) => { o[d] = {}; Object.entries(m || {}).forEach(([n, v]) => { o[d][nrm(n)] = v; }); }); return o; }, [s.goalies]);
   const w0 = s.weeks[s.wk] || s.weeks[0];
@@ -499,11 +499,11 @@ function App() {
           <select className={inp} value={window.__PMODE} onChange={(e) => setS({ ...s, pmode: e.target.value, players: [...s.players] })}>
             <option value="espn">Proj: ESPN</option>
             <option value="blend" disabled={!window.__MODEL}>Proj: Blend</option>
-            <option value="model" disabled={!window.__MODEL}>Proj: GM model</option><option value="ai" disabled={!window.__MODEL || !window.__AI}>Proj: AI (beta)</option>
+            <option value="model" disabled={!window.__MODEL}>Proj: GM model</option>
           </select>
           <span className={"text-xs px-2 py-1 rounded-full " + (s.lastSync ? (ageH !== null && ageH > 2 ? "bg-red-100 text-red-600" : "bg-green-100 text-green-700") : "bg-slate-200 text-slate-500")}>{s.lastSync ? "● Synced " + fmtTime(s.lastSync) : "Not synced yet"}</span>
           {syncMsg && <span className="text-xs text-green-700 hidden md:inline">{syncMsg}</span>}
-          <a href="ai-dashboard.html" className="text-xs text-blue-600 ml-auto">🧪 AI Lab</a><span className="text-xs text-slate-500">{status}</span>
+          <span className="text-xs text-slate-500 ml-auto">{status}</span>
         </div>
         <div className="max-w-6xl mx-auto px-2 flex gap-1 overflow-x-auto navscroll">
           {NAV.map(([k, l]) => (
