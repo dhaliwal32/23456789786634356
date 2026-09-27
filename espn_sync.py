@@ -195,7 +195,7 @@ def pick(d, side, *needles):
 
 
 goalies = {}
-for off in (0, 1):
+for off in range(8):
     day = (datetime.now(ET) + timedelta(days=off)).date().isoformat()
     try:
         html = requests.get(f"https://www.dailyfaceoff.com/starting-goalies/{day}",
