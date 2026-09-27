@@ -26,6 +26,10 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python espn_sync.py
+      - name: AI learning engine (safe to fail)
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python ai_engine.py
       - name: Save results
         run: |
           git config user.name "fantasy-bot"
