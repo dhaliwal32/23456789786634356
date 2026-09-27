@@ -15,8 +15,8 @@ MY_TEAM_ID = 4
 try:
     from secrets_local import ESPN_S2, SWID
 except ImportError:
-    ESPN_S2 = os.environ.get("ESPN_S2", "")
-    SWID = os.environ.get("SWID", "")
+       ESPN_S2 = os.environ.get("ESPN_S2", "").strip()
+       SWID = os.environ.get("SWID", "").strip()
 # ------------------------------------------------------------------
 
 BASE = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/fhl/seasons/{SEASON}"
