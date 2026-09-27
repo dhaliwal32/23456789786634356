@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +19,8 @@ jobs:
         run: python ai_engine.py --selftest
       - name: Offline tests (stage 2)
         run: python ai_learn.py --selftest
+      - name: Offline tests (research)
+        run: python ai_research.py --selftest
       - name: Live NHL connection test (stage 1)
         run: python ai_engine.py --livetest
       - name: Live history download test (stage 2)
