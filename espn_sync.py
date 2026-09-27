@@ -229,20 +229,6 @@ try:
 except Exception as ex:
     print(f"(check) signals failed: {ex}")
 try:
-
-# --- Adaptive-learning hook: fail back to original GM model ---
-try:
-    import copy
-    _original_model = copy.deepcopy(data.get("model"))
-    import gm_learning
-    data = gm_learning.run(data)
-except Exception as ex:
-    if "_original_model" in locals():
-        data["model"] = _original_model
-    data.pop("learning", None)
-    print(f"(learning) fallback: original GM model preserved: {ex}")
-# --- End adaptive-learning hook ---
-    
     
     import gm_alerts
     gm_alerts.run(players, globals().get("slots", {}), data.get("goalies", {}), data.get("signals", {}), MY_TEAM_ID)
