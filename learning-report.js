@@ -1,0 +1,1 @@
+window.LEARNING_REPORT = {"version":"1.0","asof":null,"snapshots":0,"labeled_appearances":0,"health":{"boards":[],"warnings":[]},"training":{},"trained":{},"accuracy":{},"applied_today_tomorrow":{"F":0,"D":0,"G":0}};
