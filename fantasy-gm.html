@@ -8,8 +8,7 @@
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script>window.ESPN_DATA = null;</script>
-<script src="espn-data.js"></script>
+<script>window.ESPN_DATA = null; document.write('<script src="espn-data.js?t=' + Date.now() + '"><\/script>');</script>
 </head>
 <body>
 <div id="root"></div>
@@ -160,7 +159,11 @@ const effAvg = (p, K, dt) => {
   if (M && mode !== "espn" && typeof p.id === "string" && p.id[0] === "e") {
     const id = p.id.slice(1), pr = (M.proj || {})[id];
     const mv = dt && pr && pr[dt] != null ? pr[dt] : (M.base || {})[id];
-    if (mv != null) v = mode === "model" ? mv : (base + mv) / 2;
+    if (mv != null) {
+      const mb = (M.base || {})[id];
+      const ratio = dt && pr && pr[dt] != null && mb > 0 ? Math.max(0.5, Math.min(1.6, pr[dt] / mb)) : 1;
+      v = mode === "model" ? mv : (base * ratio + mv) / 2;
+    }
   }
   return v * (p.gwMul || 1);
 };
