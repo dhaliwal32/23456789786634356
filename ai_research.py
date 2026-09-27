@@ -321,8 +321,9 @@ def selftest():
         check("confirmation only uses held-out months when screening passed",
               all((e["holdout"] is None) == (e["status"] == "rejected") for e in exps))
         n2 = research(tmp, data, now + timedelta(days=1), tcfg, max_per_group=3)
-        again = {e["key"] for e in E.read_json(L.H(tmp, "research", "log.json"), {})["experiments"][n:]}
-        check("ideas are not re-tested within 4 weeks on the same data", not again & {e["key"] for e in exps})
+        again = {(e["group"], e["key"]) for e in E.read_json(L.H(tmp, "research", "log.json"), {})["experiments"][n:]}
+        check("ideas are not re-tested within 4 weeks on the same data",
+              not again & {(e["group"], e["key"]) for e in exps})
         for g in L.FAMILIES:
             for k in [k for k in L.FAMILIES[g] if k.endswith("+research")]:
                 L.FAMILIES[g].pop(k)
