@@ -1,6 +1,6 @@
 """
-gm_signals.py - recent form (NHL stats), PP1 units (Daily Faceoff, daily), team PP ranking,
-news and injuries (ESPN, with Daily Faceoff player news as backup when ESPN blocks cloud servers).
+gm_signals.py - recent form, PP1 units + even-strength lines (Daily Faceoff, daily), team PP ranking,
+news + injuries (ESPN, Daily Faceoff backup), ice-time trends and the luck detector (NHL stats).
 Called by espn_sync.py.
 """
 import json
@@ -17,8 +17,11 @@ BROWSER = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
            "Accept": "application/json, text/html, */*", "Accept-Language": "en-US,en;q=0.9",
            "Referer": "https://www.espn.com/", "Origin": "https://www.espn.com"}
 STATS = "https://api.nhle.com/stats/rest/en"
+PREV2 = "20242025"
 DAYS = 14
 PP_PRIOR = 5
+TOI_DAYS, TOI_MIN_GP, TOI_PRIOR = 10, 3, 10
+LUCK_MIN_SHOTS, LUCK_MIN_SA = 25, 150
 SLUGS = {"ANA": "anaheim-ducks", "BOS": "boston-bruins", "BUF": "buffalo-sabres", "CGY": "calgary-flames",
          "CAR": "carolina-hurricanes", "CHI": "chicago-blackhawks", "COL": "colorado-avalanche",
          "CBJ": "columbus-blue-jackets", "DAL": "dallas-stars", "DET": "detroit-red-wings", "EDM": "edmonton-oilers",
@@ -35,8 +38,15 @@ NEG = ["injur", "out for", "out indefinitely", "scratch", "day-to-day", "surgery
 WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "ten": 10, "twelve": 12}
 UNIT = {"day": 1, "week": 7, "month": 30}
 DUR = re.compile(r"(\d+|one|two|three|four|five|six|seven|eight|ten|twelve)(?:\s*(?:-|to)\s*(\d+|two|three|four|five|six|eight|ten|twelve))?\s*(day|week|month)s?", re.I)
+PP_RE = re.compile(r"^(pp ?1|powerplay ?1|power ?play ?(unit )?1|1st power ?play( unit)?|first power ?play( unit)?)$", re.I)
+LINE_RES = [("F1", re.compile(r"^(f ?1|forwards? ?1|1st line|first line|line ?1)$", re.I)),
+            ("F2", re.compile(r"^(f ?2|forwards? ?2|2nd line|second line|line ?2)$", re.I)),
+            ("D1", re.compile(r"^(d ?1|defen[cs]e ?(pair(ing)? ?)?1|1st pair(ing)?|first pair(ing)?|pair(ing)? ?1)$", re.I)),
+            ("D2", re.compile(r"^(d ?2|defen[cs]e ?(pair(ing)? ?)?2|2nd pair(ing)?|second pair(ing)?|pair(ing)? ?2)$", re.I))]
+NAME_KEYS = ("playerName", "name", "fullName", "player_name")
 
 
+# ---------- helpers ----------
 def next_data(url):
     html = requests.get(url, headers=BROWSER, timeout=30).text
     m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
@@ -68,6 +78,31 @@ def duration_back(text, start):
     except Exception:
         base = datetime.now()
     return (base + timedelta(days=days)).date().isoformat()
+
+
+def names_in(obj, out):
+    if isinstance(obj, dict):
+        for k in NAME_KEYS:
+            if isinstance(obj.get(k), str) and " " in obj[k]:
+                out.add(obj[k])
+                break
+        for v in obj.values():
+            if isinstance(v, (dict, list)):
+                names_in(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            names_in(v, out)
+
+
+def find_group(obj, rx, out):
+    if isinstance(obj, dict):
+        if any(isinstance(v, str) and rx.match(v.strip()) for v in obj.values()):
+            names_in(obj, out)
+        for v in obj.values():
+            find_group(v, rx, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            find_group(v, rx, out)
 
 
 # ---------- recent form ----------
@@ -111,56 +146,44 @@ def recent(players):
     return out
 
 
-# ---------- PP1 units ----------
-PP_RE = re.compile(r"^(pp ?1|powerplay ?1|power ?play ?(unit )?1|1st power ?play( unit)?|first power ?play( unit)?)$", re.I)
-NAME_KEYS = ("playerName", "name", "fullName", "player_name")
-
-
-def names_in(obj, out):
-    if isinstance(obj, dict):
-        for k in NAME_KEYS:
-            if isinstance(obj.get(k), str) and " " in obj[k]:
-                out.add(obj[k])
-                break
-        for v in obj.values():
-            if isinstance(v, (dict, list)):
-                names_in(v, out)
-    elif isinstance(obj, list):
-        for v in obj:
-            names_in(v, out)
-
-
-def find_pp1(obj, out):
-    if isinstance(obj, dict):
-        if any(isinstance(v, str) and PP_RE.match(v.strip()) for v in obj.values()):
-            names_in(obj, out)
-        for v in obj.values():
-            find_pp1(v, out)
-    elif isinstance(obj, list):
-        for v in obj:
-            find_pp1(v, out)
-
-
-def pp1(players):
+# ---------- Daily Faceoff: PP1 units + even-strength lines (read once a day) ----------
+def df_lines(players):
     today = datetime.now().date().isoformat()
     cache = {}
     if os.path.exists(PP_CACHE):
         with open(PP_CACHE, encoding="utf-8") as f:
             cache = json.load(f)
-    if cache.get("date") != today:
-        units = {}
+    if cache.get("date") != today or "lines" not in cache:
+        new_day = cache.get("date") != today
+        units, lines = {}, {}
         for t, slug in SLUGS.items():
             try:
                 data = next_data(f"https://www.dailyfaceoff.com/teams/{slug}/line-combinations")
-                names = set()
+                pp, grp = set(), {}
                 if data:
-                    find_pp1(data, names)
-                units[t] = sorted(names) if 3 <= len(names) <= 8 else cache.get("units", {}).get(t, [])
+                    find_group(data, PP_RE, pp)
+                    for lab, rx in LINE_RES:
+                        names = set()
+                        find_group(data, rx, names)
+                        ok = (2 <= len(names) <= 4) if lab[0] == "F" else (2 <= len(names) <= 3)
+                        if ok:
+                            grp[lab] = sorted(names)
+                units[t] = sorted(pp) if 3 <= len(pp) <= 8 else cache.get("units", {}).get(t, [])
+                lines[t] = grp or cache.get("lines", {}).get(t, {})
             except Exception:
                 units[t] = cache.get("units", {}).get(t, [])
-        cache = {"date": today, "prev": cache.get("units", {}), "units": units}
+                lines[t] = cache.get("lines", {}).get(t, {})
+        cache = {"date": today,
+                 "prev": cache.get("units", {}) if new_day else cache.get("prev", {}),
+                 "units": units,
+                 "prev_lines": cache.get("lines", {}) if new_day else cache.get("prev_lines", {}),
+                 "lines": lines}
         with open(PP_CACHE, "w", encoding="utf-8") as f:
             json.dump(cache, f)
+    return cache
+
+
+def pp1(players, cache):
     units, prev = cache.get("units", {}), cache.get("prev", {})
     by = {norm(p["n"]): str(p["id"]) for p in players}
     on, chg = {}, {}
@@ -181,6 +204,31 @@ def pp1(players):
     return {"asof": cache.get("date"), "on": on, "changes": chg, "units": units}
 
 
+def lines(players, cache):
+    cur, prev = cache.get("lines", {}), cache.get("prev_lines", {})
+    by = {norm(p["n"]): p for p in players}
+    top, chg = {}, {}
+    for t, groups in cur.items():
+        now_top = {norm(n): lab for lab, names in groups.items() for n in names}
+        pg = prev.get(t) or {}
+        before_top = {norm(n) for names in pg.values() for n in names}
+        for n, lab in now_top.items():
+            p = by.get(n)
+            if p:
+                top[str(p["id"])] = lab
+                if pg and n not in before_top:
+                    chg[str(p["id"])] = "up"
+        if pg:
+            for n in before_top - set(now_top):
+                p = by.get(n)
+                if p and p["t"] == t and (p.get("status") or "ACTIVE") in ("ACTIVE", ""):
+                    chg[str(p["id"])] = "down"
+    teams_ok = sum(1 for g in cur.values() if g)
+    ups = sum(1 for v in chg.values() if v == "up")
+    print(f"(signals) lines: {teams_ok}/32 teams read, {len(top)} top-6 F / top-4 D players, {ups} promoted, {len(chg) - ups} demoted vs last day")
+    return {"asof": cache.get("date"), "top": top, "changes": chg}
+
+
 # ---------- team power-play ranking ----------
 def team_pp():
     def season(sid):
@@ -197,7 +245,6 @@ def team_pp():
         return pts, gp, pct
     lpts, lgp, lpct = season(LAST)
     tpts, tgp, tpct = season(THIS)
-    print(f"(signals) team PP check: {len(lgp)} teams found for 2025-26, {len(tgp)} for 2026-27")
     out = {}
     for t in set(lgp) | set(tgp):
         g = tgp.get(t, 0)
@@ -215,7 +262,6 @@ def team_pp():
 
 # ---------- news (ESPN, backup: Daily Faceoff player news) ----------
 def _df_items():
-    """Daily Faceoff player news: returns list of {text, title, date, url}."""
     data = next_data("https://www.dailyfaceoff.com/hockey-player-news")
     items = []
 
@@ -223,8 +269,7 @@ def _df_items():
         if isinstance(o, dict):
             title = next((v for k, v in o.items() if isinstance(v, str) and any(w in k.lower() for w in ("title", "headline"))), None)
             if title and len(title) > 15:
-                body = " ".join(v for k, v in o.items() if isinstance(v, str) and any(w in k.lower() for w in ("detail", "description", "summary", "content", "body", "news"))
-                                ) if o else ""
+                body = " ".join(v for k, v in o.items() if isinstance(v, str) and any(w in k.lower() for w in ("detail", "description", "summary", "content", "body", "news")))
                 date = next((v for k, v in o.items() if isinstance(v, str) and any(w in k.lower() for w in ("date", "created", "published"))), "")
                 slug = next((v for k, v in o.items() if isinstance(v, str) and k.lower() in ("slug", "url", "link")), "")
                 url = slug if slug.startswith("http") else (f"https://www.dailyfaceoff.com/hockey-player-news/{slug}" if slug else "https://www.dailyfaceoff.com/hockey-player-news")
@@ -299,12 +344,8 @@ def injuries(players):
     print(f"(signals) injuries from {src}: {len(out)} players, return dates: {n_espn} from ESPN, {n_parsed} from news text")
     return out
 
+
 # ---------- ice time trends ----------
-TOI_DAYS = 10       # "lately" = last 10 days (about 4-5 games)
-TOI_MIN_GP = 3      # need at least 3 recent games
-TOI_PRIOR = 10      # last season counts like 10 games when this season is young
-
-
 def toi_rows(exp):
     r = requests.get(f"{STATS}/skater/timeonice", params={"limit": -1, "cayenneExp": exp}, headers=HDR, timeout=60)
     r.raise_for_status()
@@ -333,7 +374,7 @@ def toi(players):
             continue
         c = cur.get(k, {"gp": 0, "toi": 0, "pp": 0})
         l = last.get(k)
-        before = c["gp"] - r["gp"]                      # this-season games before the recent window
+        before = c["gp"] - r["gp"]
         tb = (c["toi"] * c["gp"] - r["toi"] * r["gp"]) / before if before > 0 else 0
         pb = (c["pp"] * c["gp"] - r["pp"] * r["gp"]) / before if before > 0 else 0
         w = TOI_PRIOR if l and l["gp"] else 0
@@ -349,10 +390,61 @@ def toi(players):
     print(f"(signals) ice time: {len(out)} players tracked, {ups} up 2+ min, {downs} down 2+ min (last {TOI_DAYS} days)")
     return out
 
+
+# ---------- luck detector ----------
+def luck(players):
+    def sk(season):
+        out = {}
+        for r in stats("skater/summary", season):
+            grp = "D" if r.get("positionCode") == "D" else "F"
+            out[(norm(r.get("skaterFullName")), grp)] = (r.get("goals") or 0, r.get("shots") or 0)
+        return out
+
+    def go(season):
+        return {norm(r.get("goalieFullName")): (r.get("saves") or 0, r.get("shotsAgainst") or 0) for r in stats("goalie/summary", season)}
+
+    cur, l1, l2 = sk(THIS), sk(LAST), sk(PREV2)
+    gc, g1, g2 = go(THIS), go(LAST), go(PREV2)
+    out = {}
+    for p in players:
+        key = norm(p["n"])
+        if p["p"] == "G":
+            c = gc.get(key)
+            if not c or c[1] < LUCK_MIN_SA:
+                continue
+            sv = sum(x.get(key, (0, 0))[0] for x in (g1, g2))
+            sa = sum(x.get(key, (0, 0))[1] for x in (g1, g2))
+            career = (sv + 0.900 * 1500) / (sa + 1500)
+            out[str(p["id"])] = {"t": "g", "sv": round(c[0] / c[1], 3), "csv": round(career, 3),
+                                 "d": round(c[0] - career * c[1], 1), "sa": c[1]}
+        else:
+            k = (key, "D" if p["p"] == "D" else "F")
+            c = cur.get(k)
+            if not c or c[1] < LUCK_MIN_SHOTS:
+                continue
+            g = sum(x.get(k, (0, 0))[0] for x in (l1, l2))
+            s = sum(x.get(k, (0, 0))[1] for x in (l1, l2))
+            prior = 0.045 if p["p"] == "D" else 0.105
+            career = (g + prior * 100) / (s + 100)
+            out[str(p["id"])] = {"t": "s", "g": c[0], "sh": c[1], "pct": round(100 * c[0] / c[1], 1),
+                                 "cpct": round(100 * career, 1), "xg": round(career * c[1], 1),
+                                 "d": round(c[0] - career * c[1], 1)}
+    hi = sum(1 for v in out.values() if v["d"] >= (2 if v["t"] == "s" else 4))
+    lo = sum(1 for v in out.values() if v["d"] <= (-2 if v["t"] == "s" else -4))
+    print(f"(signals) luck: {len(out)} players with enough shots, {hi} running lucky, {lo} running unlucky")
+    return out
+
+
 def build(players):
     out = {}
-    steps = (("recent", lambda: recent(players)), ("pp1", lambda: pp1(players)), ("news", lambda: news(players)),
-             ("teampp", team_pp), ("injuries", lambda: injuries(players)))
+    try:
+        cache = df_lines(players)
+    except Exception as ex:
+        print(f"(signals) Daily Faceoff lines failed: {type(ex).__name__}: {ex}")
+        cache = {}
+    steps = (("recent", lambda: recent(players)), ("pp1", lambda: pp1(players, cache)), ("lines", lambda: lines(players, cache)),
+             ("news", lambda: news(players)), ("teampp", team_pp), ("injuries", lambda: injuries(players)),
+             ("toi", lambda: toi(players)), ("luck", lambda: luck(players)))
     for name, fn in steps:
         try:
             out[name] = fn()
