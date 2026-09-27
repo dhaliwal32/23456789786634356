@@ -228,4 +228,4 @@ def build(players):
     ex = next((p for p in players if str(p["id"]) in base and p["ft"]), None)
     if ex:
         print(f"(model) example: {ex['n']}  base {base[str(ex['id'])]}  next games: {list(proj.get(str(ex['id']), {}).items())[:3]}")
-    return {"asof": datetime.now().isoformat(timespec="seconds"), "base": base, "proj": proj}
+    return {"asof": datetime.now().isoformat(timespec="seconds"), "base": base, "proj": proj, "odds": ODDS}
