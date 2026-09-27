@@ -217,9 +217,26 @@ const avail = (p, date) => {
   return OUTS.includes(st) || /^out|injured reserve|suspen/i.test(st) ? 0 : 1;
 };
 const nrm = (x) => (x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+// back-to-backs: starters usually rest the 2nd night, backups usually start it
+const b2bAdj = (p, dt) => {
+  const S = SCHED[p.t];
+  if (!dt || !S || p.p !== "G") return null;
+  const pc = (v) => ` (${Math.round(v * 100)}%)`;
+  if (S.has(addDays(dt, -1))) {
+    if (p.prob >= 0.55) { const v = p.prob * 0.5; return { v, l: "B2B 2nd night · likely rests" + pc(v), b2b: 2 }; }
+    if (p.prob <= 0.45) { const v = Math.min(0.8, p.prob + 0.3); return { v, l: "B2B 2nd night · likely starts" + pc(v), b2b: 2 }; }
+    return { v: p.prob, l: "B2B 2nd night · split" + pc(p.prob), b2b: 2 };
+  }
+  if (S.has(addDays(dt, 1))) {
+    if (p.prob >= 0.55) { const v = Math.min(0.95, p.prob + 0.1); return { v, l: "B2B 1st night · likely starts" + pc(v), b2b: 1 }; }
+    if (p.prob <= 0.45) { const v = Math.max(0.05, p.prob - 0.1); return { v, l: "B2B 1st night · likely rests" + pc(v), b2b: 1 }; }
+  }
+  return null;
+};
 const gStart = (p, dt) => {
+  const fallback = b2bAdj(p, dt) || { v: p.prob, l: "" };
   const day = dt && (window.__GOALIES || {})[dt];
-  if (!day) return { v: p.prob, l: "" };
+  if (!day) return fallback;
   const me = day[nrm(p.n)];
   if (me) {
     const st = (me.status || "").toLowerCase();
@@ -228,7 +245,7 @@ const gStart = (p, dt) => {
     return { v: 0.6, l: "unconfirmed" };
   }
   if (Object.values(day).some((x) => x.team === p.t)) return { v: 0.05, l: "not starting" };
-  return { v: p.prob, l: "" };
+  return fallback;
 };
 function dayLineup(roster, wk, d, K) {
   const dt = wk.dates ? wk.dates[d] : null;
@@ -1258,7 +1275,7 @@ function Schedule({ s, setS, wk, setWk }) {
             {NHL.map((t) => (
               <tr key={t} className="border-t border-slate-100">
                 <td className="px-2 py-1 font-medium">{t}</td>
-                {wk.days.map((_, d) => { const on = (wk.games[t] || []).includes(d); return <td key={d} className="px-1 py-1 text-center"><span className={"inline-block w-7 h-4 rounded " + (on ? "bg-blue-600" : "bg-slate-200")}></span></td>; })}
+                {wk.days.map((_, d) => { const on = (wk.games[t] || []).includes(d); const b2 = on && wk.dates && SCHED[t] && SCHED[t].has(addDays(wk.dates[d], -1)); return <td key={d} className="px-1 py-1 text-center"><span title={b2 ? "2nd night of a back-to-back — backup goalie likely" : ""} className={"inline-block w-7 h-4 rounded " + (b2 ? "bg-amber-500" : on ? "bg-blue-600" : "bg-slate-200")}></span></td>; })}
                 <td className={"px-2 py-1 text-center font-semibold " + (gms(wk, t) >= 4 ? "text-green-700" : gms(wk, t) <= 1 ? "text-red-600" : "")}>{gms(wk, t)}</td>
               </tr>
             ))}
