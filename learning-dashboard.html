@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fantasy Islands | Learning Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1320;--card:#142236;--muted:#a2b3c9;--text:#f2f6fb;--accent:#59c9a5;--border:#29415b}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at top,#173149 0%,#0b1320 60%);color:var(--text)}
+main{max-width:1140px;margin:auto;padding:42px 20px 60px}h1{font-size:clamp(27px,5vw,45px);margin:8px 0 8px;letter-spacing:-.03em}h2{font-size:18px;margin:0 0 15px}h3{font-size:16px;margin:8px 0}p{color:var(--muted);margin:6px 0}.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.16em;font-size:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:22px 0}.card{border:1px solid var(--border);border-radius:16px;padding:21px;background:linear-gradient(150deg,#172a40,var(--card));box-shadow:0 7px 26px #040b1660}.stat{font-size:38px;font-weight:750;letter-spacing:-.03em;margin:6px 0}.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;padding:4px 10px;border-radius:30px;background:#223b4d;color:#c8e4e0;font-size:12px;font-weight:650;margin-top:8px}.good{background:#164739;color:#b6f4da}.warning{background:#5a4120;color:#ffdfa3}.muted{color:var(--muted)}.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}.mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.bar{border-radius:6px;height:7px;background:#304359;overflow:hidden;margin:7px 0 14px}.bar>div{height:100%;background:var(--accent);width:0;transition:width .3s}.drivers{padding-left:20px;color:#cfe1f3}.alert{border-left:3px solid #efb95f;padding-left:12px;margin:10px 0}a{color:var(--accent)}footer{padding-top:15px;border-top:1px solid var(--border);margin-top:26px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">FANTASY ISLANDS / LEARNING LAB</div>
+<h1>Adaptive projection intelligence</h1>
+<p>Real pregame forecasts compared with final NHL outcomes. Candidate models earn promotion through chronological testing, rather than automatically trusting yesterday's results.</p>
+<section class="grid" id="summary"><div class="card"><h2>Loading learning results...</h2><p>If this message remains, run the GitHub synchronization workflow first.</p></div></section>
+<h2>Position-specific model performance</h2><section class="grid" id="roles"></section>
+<section class="grid">
+<div class="card"><h2>Goalie starting probability</h2><div id="starts" class="muted">Collecting pregame start predictions...</div></div>
+<div class="card"><h2>Data health</h2><div id="health" class="muted">Waiting for data...</div></div>
+</section>
+<div class="card" id="research"><h2>Automatically generated research queue</h2><p>Collect more evidence to unlock feature tests.</p></div>
+<div class="card"><h2>What the system can and cannot learn</h2>
+<p>Feature drivers show which recorded factors improved error estimates in a given dataset; they do not prove causation. The model can choose between available feature groups, but it cannot invent new data sources. Future additions, such as opponent penalty-kill strength or expected goals, require pregame collection before they can be evaluated safely.</p>
+<p>The system never treats an injury scratch as a zero-point game for its conditional-on-playing model. Goalie start probability is trained separately from goalie points when starting or appearing.</p></div>
+<footer id="last">No data yet</footer>
+</main>
+<script>
+const e=(tag,cls,txt)=>{const a=document.createElement(tag);if(cls)a.className=cls;if(txt!==undefined)a.textContent=String(txt);return a};
+const mount=(parent,...kids)=>kids.forEach(k=>parent.append(k));
+const fmt=v=>typeof v==='number'?v.toFixed(2):'—';
+const status=s=>s==='promoted'?['Promoted','pill good']:s==='collecting'?['Collecting games','pill warning']:[s||'Awaiting evidence','pill'];
+function render(r){
+ const sum=document.getElementById('summary');sum.replaceChildren();
+ for(const [label,value,explanation] of [
+ ['Pregame forecasts',r.snapshots||0,'Stored before puck drop'],
+ ['Completed appearances',r.labeled_appearances||0,'Matched against official NHL game statistics'],
+ ['Active scoring models',Object.values(r.trained||{}).filter(Boolean).length,'F, D and G train independently'],
+ ['Predictions refined',Object.values(r.applied_today_tomorrow||{}).reduce((a,b)=>a+b,0),'Upcoming games in the current sync']]){
+  let card=e('article','card');mount(card,e('h2','',label),e('div','stat mono',value),e('p','small',explanation));sum.append(card);
+ }
+ const roles=document.getElementById('roles');roles.replaceChildren();
+ for (const [pos,label] of [['F','Forwards'],['D','Defense'],['G','Goalies']]){
+  const train=(r.training||{})[pos]||{};const acc=(r.accuracy||{})[pos]||{};const champion=(r.trained||{})[pos];
+  const card=e('article','card');const [state,cls]=status(champion?.paused?'paused for drift':champion?'promoted':train.status);
+  mount(card,e('h2','',label),e('span',cls,champion?(champion.paused?'Paused (baseline restored): ':'Deployed: ')+champion.family+'/'+champion.kind:state),
+    e('div','row',`Observed games: ${acc.games||0}`),e('div','row',`Chronological test examples: ${train.holdout_examples||0}`));
+  const base=(acc.baseline_mae||{});
+  for (const [name,val] of [['Current GM',base.gm_proj],['GM + ESPN blend',base.blend_proj],['Raw ESPN season estimate',base.espn_raw_proj],['Matchup-adjusted ESPN estimate',base.espn_proj],['Deployed model',acc.deployed_mae]]){
+   if(val===undefined)continue;const row=e('div','row');mount(row,e('span','muted',name),e('span','mono',fmt(val)+' pts MAE'));card.append(row);
+  }
+  if(train.holdout_mae!==undefined){mount(card,e('p','small','Latest candidate: '+train.selected+' | held-out MAE: '+fmt(train.holdout_mae)+' | reference: '+fmt(train.reference_mae)));}
+  const drivers=champion?.feature_drivers||[];
+  if(drivers.length){card.append(e('h3','', 'Observed predictive drivers'));const ul=e('ol','drivers');drivers.slice(0,5).forEach(x=>ul.append(e('li','',x.feature.replaceAll('_',' ')+' (+'+fmt(x.permutation_mae_increase)+' error if shuffled)')));card.append(ul);}
+  if(champion?.paused){card.append(e('p','alert',champion.pause_reason||'Live error exceeded the safe baseline; learned adjustments are paused.'));}
+  if(!champion){card.append(e('p','small',`Promotion requires at least ${({'F':240,'D':120,'G':90})[pos]} completed appearances across 12 or more game dates, followed by stronger holdout performance.`));}
+  roles.append(card);
+ }
+ const start=(r.training||{}).start_probability||{};
+ document.getElementById('starts').textContent=start.examples?`${start.examples} goalie games examined. ${start.status||'Collecting'}. Default Brier: ${fmt(start.baseline_brier)}. Candidate Brier: ${fmt(start.model_brier)}. A lower Brier score is better.`:'No finished goalie start labels yet. Default estimates remain active.';
+ const research=document.getElementById('research');research.replaceChildren();research.append(e('h2','','Automatically generated research queue'));
+ for(const idea of (r.research_queue||[])){
+  mount(research,e('h3','',idea.topic),e('p','',idea.evidence),e('p','small','Next test: '+idea.next_test));
+ }
+ const h=document.getElementById('health');h.replaceChildren();const warning=(r.health?.warnings||[]);
+ mount(h,e('p','',`Scoreboard dates verified: ${(r.health?.boards||[]).length}`),e('p','',`Finished dates newly labeled: ${(r.outcomes_added||[]).join(', ')||'none'}`));
+ if(warning.length){warning.forEach(w=>h.append(e('p','alert',w)));}else{h.append(e('p','', 'No reported data-collection errors in this sync.'));}
+ document.getElementById('last').textContent='Last synchronized: '+(r.asof||'not yet')+' | Mean absolute error (MAE) is measured in actual league fantasy points per played game.';
+}
+const src=document.createElement('script');src.src='learning-report.js?t='+Date.now();src.onload=()=>render(window.LEARNING_REPORT||{});src.onerror=()=>{document.getElementById('health').textContent='Cannot load learning-report.js. Run the sync and verify GitHub Pages deployment.'};document.body.append(src);
+</script>
+</body></html>
