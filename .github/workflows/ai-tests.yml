@@ -6,16 +6,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests
+      - run: pip install requests numpy scikit-learn
       - name: Syntax check every Python file
         run: python -m py_compile *.py
-      - name: Offline tests
+      - name: Offline tests (stage 1)
         run: python ai_engine.py --selftest
-      - name: Live NHL connection test (read-only)
+      - name: Offline tests (stage 2)
+        run: python ai_learn.py --selftest
+      - name: Live NHL connection test (stage 1)
         run: python ai_engine.py --livetest
+      - name: Live history download test (stage 2)
+        run: python ai_learn.py --livetest
