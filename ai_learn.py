@@ -850,7 +850,7 @@ def train(root, reg, data, now, cfg, log=print):
             pickle.dump(model, f)
         prune(root, grp, cfg["keep_models"], fn)
         prod_all[grp] = {"version": fn[:-4], "family": choice, "file": fn, "trained": E.iso(now),
-                         "examples": int(len(dates)), "data_through": str(dates.max())}
+                         "examples": int(len(dates)), "data_through": str(max(dates.tolist()))}
         g = summarize_wf(grp, wf)
         g["decision"] = {"event": event, "family": choice, "previous": prod, "reason": why}
         if grp == "G_start":
