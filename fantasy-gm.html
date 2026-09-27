@@ -416,7 +416,7 @@ const Section = ({ title, sub, link, children }) => (
 const NAV = [
   ["today", "🏠 Today", null],
   ["matchup", "⚔️ Matchup", null],
-  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
+  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
   ["league", "🏆 League", [["power", "Power rankings"], ["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
   ["players", "👥 Players", null],
   ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
@@ -480,7 +480,7 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
-  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
+  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "bench" ? <BenchFixer {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
   return (
@@ -956,6 +956,92 @@ function EdgesPanel({ s }) {
           {uMine.length > 0 && <><Sub t="Your players ESPN underrates (keep — they're worth more than they look)" />{uMine.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />)}</>}
           <div className="text-xs text-slate-500 mt-3">Early in the season the model leans on last year's stats, so check the tags (PP1, ice time, lines) to see <i>why</i> it disagrees before acting.</div>
         </>)}
+      </Section>
+    </div>
+  );
+}
+
+// ---------- Bench fixer ----------
+function BenchFixer({ s }) {
+  const K = s.blend;
+  const [H, setH] = useState(4);
+  const mine = s.players.filter((p) => p.ft === s.me);
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const ranked = mine.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const prot = new Set([...ranked.slice(0, s.protectTop ?? 8).map((p) => p.id), ...mine.filter((p) => p.keep).map((p) => p.id)]);
+  const cnt = { F: 0, D: 0, G: 0 }; mine.forEach((p) => { if (!p.ir) cnt[p.p]++; });
+  const res = useMemo(() => {
+    const wks = s.weeks.slice(s.wk, s.wk + H).map((w, i) => { const dw = deriveWeek(w, s.autoDone); return { dw, from: i === 0 ? dw.done : 0 }; });
+    const tot = (roster, a) => wks.slice(a).reduce((t, x) => t + weekProj(roster, x.dw, K, x.from).total, 0);
+    const chronic = {};
+    const out = wks.map(({ dw, from }, i) => {
+      const wasted = {}; const empty = { F: 0, D: 0, UTIL: 0, G: 0 }; let total = 0;
+      dw.days.forEach((dl, d) => {
+        if (d < from) return;
+        const L = dayLineup(mine, dw, d, K); total += L.total;
+        L.bench.forEach((p) => { const w = (wasted[p.id] = wasted[p.id] || { p, g: 0, pts: 0, days: [] }); w.g++; w.pts += p.x; w.days.push(dl.split(",")[0]); const c = (chronic[p.id] = chronic[p.id] || { p, g: 0, pts: 0, wk: 0 }); c.g++; c.pts += p.x; });
+        const c = { F: 0, D: 0, UTIL: 0, G: 0 }; L.start.forEach((x) => c[x.slot]++);
+        empty.F += 9 - c.F; empty.D += 5 - c.D; empty.UTIL += 1 - c.UTIL; empty.G += 2 - c.G;
+      });
+      Object.values(wasted).forEach((w) => chronic[w.p.id].wk++);
+      const wl = Object.values(wasted).sort((a, b) => b.pts - a.pts);
+      let fix = null;
+      const openPos = ["F", "D", "G"].filter((k) => (k === "F" ? empty.F + empty.UTIL : k === "D" ? empty.D + empty.UTIL : empty.G) > 0);
+      if (wl.length && openPos.length) {
+        const drops = wl.map((w) => w.p).filter((p) => !p.ir && !prot.has(p.id)).slice(0, 5);
+        const weekPts = (p) => (dw.games[p.t] || []).filter((d) => d >= from).reduce((t, d) => { const dt = dw.dates[d]; return t + effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt); }, 0);
+        const pool = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && openPos.includes(p.p) && (p.proj !== false || p.gp > 0)).map((p) => ({ p, v: weekPts(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 25).map((x) => x.p);
+        const base = weekProj(mine, dw, K, from).total, baseRest = tot(mine, i);
+        drops.forEach((d) => pool.forEach((f) => {
+          if (d.p !== f.p && cnt[d.p] - 1 < mins[d.p]) return;
+          const r2 = [...mine.filter((x) => x.id !== d.id), { ...f, ft: s.me }];
+          const g = weekProj(r2, dw, K, from).total - base;
+          if (!fix || g > fix.gain) fix = { d, f, gain: g, r2 };
+        }));
+        if (fix) fix.rest = tot(fix.r2, i) - baseRest;
+        if (fix && fix.gain < 1) fix = null;
+      }
+      return { dw, wl, empty, total, fix, openPos };
+    });
+    return { weeks: out, chronic: Object.values(chronic).sort((a, b) => b.g - a.g) };
+  }, [s.players, s.wk, H, K]);
+  const totW = res.weeks.reduce((a, w) => a + w.wl.reduce((x, y) => x + y.g, 0), 0);
+  const totP = res.weeks.reduce((a, w) => a + w.wl.reduce((x, y) => x + y.pts, 0), 0);
+  const totE = res.weeks.reduce((a, w) => ({ F: a.F + w.empty.F, D: a.D + w.empty.D, UTIL: a.UTIL + w.empty.UTIL, G: a.G + w.empty.G }), { F: 0, D: 0, UTIL: 0, G: 0 });
+  const slotTxt = (e) => ["F", "D", "UTIL", "G"].filter((k) => e[k] > 0).map((k) => `${e[k]} ${k}`).join(" · ") || "none";
+  return (
+    <div className="space-y-4">
+      <Section title="Bench fixer" sub="Finds the games your players waste on the bench (more players than slots on busy nights) and the lineup slots you leave empty — then suggests the swap that turns wasted games into points.">
+        <div className="flex flex-wrap gap-3 items-center">
+          <label>Look ahead <select className={inp} value={H} onChange={(e) => setH(+e.target.value)}><option value={1}>This week</option><option value={2}>2 weeks</option><option value={4}>4 weeks</option><option value={8}>8 weeks</option></select></label>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
+          <Card label="Games wasted on bench" value={totW} sub={`≈ ${f1(totP)} pts lost`} tone={totW ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"} />
+          <Card label="Empty lineup slots" value={totE.F + totE.D + totE.UTIL + totE.G} sub={slotTxt(totE)} />
+          <Card label="Moves available" value="3 / week" sub="Each fix below uses one" />
+        </div>
+      </Section>
+      {res.weeks.map((w, i) => (
+        <Section key={i} title={w.dw.label} sub={`Projected ${f1(w.total)} pts · wasted ${w.wl.reduce((a, x) => a + x.g, 0)} games · empty slots: ${slotTxt(w.empty)}`}>
+          {w.wl.length ? (
+            <div className="mb-2">
+              <div className="text-xs text-slate-500 mb-1">Sitting on your bench:</div>
+              {w.wl.map((x) => <div key={x.p.id} className="flex flex-wrap gap-2 py-1 border-t border-slate-100"><span className="font-medium">{x.p.n}</span><span className="text-xs text-slate-400">{x.p.p} · {x.p.t}</span><span className="text-xs text-red-600">{x.g} game{x.g > 1 ? "s" : ""} wasted ({x.days.join(", ")}) ≈ {f1(x.pts)} pts</span>{prot.has(x.p.id) && <span className="text-xs text-slate-500">protected</span>}</div>)}
+            </div>
+          ) : <div className="text-green-700 text-sm">✅ No wasted games this week.</div>}
+          {w.fix ? (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
+              <div className="font-semibold">Fix: drop <b>{w.fix.d.n}</b> <span className="text-xs text-slate-500 font-normal">({w.fix.d.p})</span> → add <b>{w.fix.f.n}</b> <span className="text-xs text-slate-500 font-normal">{w.fix.f.p} · {w.fix.f.t}</span> <span className="text-green-700 ml-2">+{f1(w.fix.gain)} this week</span>{H > 1 && i < res.weeks.length - 1 ? <span className="text-xs text-slate-500 ml-2">(+{f1(w.fix.rest)} through week {s.wk + res.weeks.length})</span> : null}</div>
+              <div className="text-xs text-slate-500 mt-1">Fills your empty {w.openPos.join("/")} slots with a player who actually gets into your lineup.{effAvg(w.fix.f, K) < effAvg(w.fix.d, K) ? ` Long-term ${w.fix.f.n} is ${f1(effAvg(w.fix.d, K) - effAvg(w.fix.f, K))}/game worse — treat it as a stream.` : " He's also as good or better per game — a keeper."} <Tags p={w.fix.f} K={K} /></div>
+            </div>
+          ) : w.wl.length && !w.openPos.length ? <div className="text-xs text-slate-500 mt-1">No empty slots elsewhere this week — the wasted games are just a busy schedule. A 2-for-1 trade is the long-term fix.</div>
+            : w.wl.length ? <div className="text-xs text-slate-500 mt-1">No free agent at an open position beats keeping your bench player this week.</div> : null}
+        </Section>
+      ))}
+      <Section title="Chronic bench players" sub="Players who keep getting squeezed out week after week — the best candidates to trade 2-for-1 or swap for a position you're short on.">
+        {res.chronic.filter((c) => c.wk >= 2).length ? res.chronic.filter((c) => c.wk >= 2).map((c) => (
+          <PlayerLine key={c.p.id} s={s} p={c.p} extra={<span className="text-xs text-red-600">benched {c.g} games across {c.wk} weeks ≈ {f1(c.pts)} pts{prot.has(c.p.id) ? " · protected — package him in a trade rather than dropping" : ""}</span>} />
+        )) : <div className="text-slate-400 text-xs">Nobody is stuck on your bench more than one week in this window.</div>}
       </Section>
     </div>
   );
