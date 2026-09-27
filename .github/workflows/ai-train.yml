@@ -1,0 +1,37 @@
+name: AI training
+on:
+  schedule:
+    - cron: "20 11 * * *"
+  workflow_dispatch:
+    inputs:
+      retrain:
+        description: "Retrain the models now"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: ai-train
+  cancel-in-progress: false
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests numpy scikit-learn
+      - name: Learn and project
+        run: python ai_learn.py --daily ${{ inputs.retrain && '--train' || '' }}
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          git add ai
+          git diff --cached --quiet && exit 0
+          git commit -m "ai training $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 15; done
+          exit 1
