@@ -103,15 +103,21 @@ def run(players, slots, goalies, signals, my_team_id):
             a = idle[0]
             alerts.append(("Lineup: bench player has a game", f"{b['n']} ({b['t']}, {games[b['t']]}) is on your bench with a game today, while {a['n']} ({a['t']}) is starting with no game. Swap them.", "default", "arrows_counterclockwise"))
 
-    ppc = (signals.get("pp1") or {}).get("changes", {})
-    for p in players:                      # 4) free-agent opportunities
+     ppc = (signals.get("pp1") or {}).get("changes", {})
+    toi = signals.get("toi") or {}
+    for p in players:                      # 4) free-agent opportunities + your players' ice time
+        t = toi.get(str(p["id"]))
+        if p["ft"] == my_team_id and t and t["d"] <= -180:
+            alerts.append(("Your player is losing ice time", f"{p['n']} ({p['t']}) is down {abs(t['d']) / 60:.1f} min per game lately ({t['r'] / 60:.1f} vs {t['b'] / 60:.1f}). Possible demotion - watch his role.", "default", "arrow_down"))
         if p["ft"]:
             continue
         if ppc.get(str(p["id"])) == "added":
             alerts.append(("Pickup: new PP1 free agent", f"{p['n']} ({p['p']}, {p['t']}) was just moved onto his team's top power-play unit and is a free agent.", "default", "chart_with_upwards_trend"))
+        elif t and (t["d"] >= 180 or t["pd"] >= 90):
+            alerts.append(("Pickup: ice time jump", f"{p['n']} ({p['p']}, {p['t']}) is playing {t['r'] / 60:.1f} min per game lately, up {t['d'] / 60:+.1f} (PP {t['pd'] / 60:+.1f}). Likely promoted - free agent.", "default", "stopwatch"))
         elif (p.get("chg") or 0) >= TRENDING_PCT:
             alerts.append(("Pickup: trending free agent", f"{p['n']} ({p['p']}, {p['t']}) ownership is up {p['chg']}% - other managers are grabbing him.", "low", "fire"))
-
+    
     sent = {}
     if os.path.exists(SENT):
         with open(SENT, encoding="utf-8") as f:
