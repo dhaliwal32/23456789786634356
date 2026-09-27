@@ -1,9 +1,9 @@
 """
 gm_model.py - GM projection model for Fantasy Islands.
-Builds a per-game fantasy projection for every player from free NHL stats:
-role/usage (per-game rates), shooting % pulled toward normal, opponent strength,
-home/away and back-to-backs. Goalies: shots faced, regressed save %, win chance.
-Called by espn_sync.py - you don't run this file directly.
+Per-game fantasy projections from free NHL stats: role/usage rates, shooting % pulled
+toward normal, opponent strength, home/away, back-to-backs - and, when available,
+betting odds (win probability + expected goals) via gm_odds.py.
+Called by espn_sync.py.
 """
 import math
 import unicodedata
@@ -11,14 +11,13 @@ from datetime import datetime, timedelta, date
 from zoneinfo import ZoneInfo
 import requests
 
-# Fantasy Islands scoring
 SK = {"G": 6, "A": 4, "PM": 2, "PPP": 2, "SHP": 3, "SOG": 1, "HIT": 0.1, "BLK": 1}
 GO = {"W": 5, "GA": -3, "SV": 0.6, "SO": 5, "OTL": 1}
 
 LAST, THIS = "20252026", "20262027"
-PRIOR_GAMES = 20   # last season counts like this many games when blending with this season
-TEAM_PRIOR = 15    # same idea for team strength
-DAYS_AHEAD = 35    # how far ahead to project individual games
+PRIOR_GAMES = 20
+TEAM_PRIOR = 15
+DAYS_AHEAD = 35
 ET = ZoneInfo("America/New_York")
 STATS = "https://api.nhle.com/stats/rest/en"
 WEB = "https://api-web.nhle.com/v1"
@@ -48,7 +47,7 @@ def ab(x):
 
 
 def team_code(txt):
-    t = (txt or "").lower()
+    t = unicodedata.normalize("NFD", txt or "").encode("ascii", "ignore").decode().lower()
     for w, c in TEAM_WORDS:
         if w in t:
             return c
@@ -144,31 +143,39 @@ def rates(grp, ls, ts):
     prior = 0.045 if grp == "D" else 0.105
     g = (ls or {}).get("G", 0) + (ts or {}).get("G", 0)
     s = (ls or {}).get("SOG", 0) + (ts or {}).get("SOG", 0)
-    r["G"] = r["SOG"] * (g + prior * 150) / (s + 150)   # shooting % pulled toward normal
-    r["PM"] *= 0.3                                      # plus/minus is mostly luck
+    r["G"] = r["SOG"] * (g + prior * 150) / (s + 150)
+    r["PM"] *= 0.3
     return r
 
 
-def skater_pts(r, T, L, opp=None, home=None, b2b=False):
+def skater_pts(r, T, L, opp=None, home=None, b2b=False, od=None):
     o = T.get(opp) if opp else None
-    m_off = clamp(o["ga"] / L["ga"], 0.85, 1.2) if o else 1.0
+    if od:                                   # betting market: expected goals for his team
+        m_off = clamp(od["gf"] / L["gf"], 0.75, 1.3)
+        hf = 0.97 if b2b else 1.0
+    else:
+        m_off = clamp(o["ga"] / L["ga"], 0.85, 1.2) if o else 1.0
+        hf = 1.0 if home is None else (1.03 if home else 0.98)
+        if b2b:
+            hf *= 0.96
     m_sog = clamp(o["sa"] / L["sa"], 0.88, 1.15) if o else 1.0
     m_blk = clamp(o["sf"] / L["sf"], 0.88, 1.15) if o else 1.0
-    hf = 1.0 if home is None else (1.03 if home else 0.98)
-    if b2b:
-        hf *= 0.96
     return (SK["G"] * r["G"] * m_off * hf + SK["A"] * r["A"] * m_off * hf + SK["PPP"] * r["PPP"] * m_off * hf
             + SK["SHP"] * r["SHP"] + SK["SOG"] * r["SOG"] * m_sog * hf + SK["HIT"] * r["HIT"]
             + SK["BLK"] * r["BLK"] * m_blk + SK["PM"] * r["PM"])
 
 
-def goalie_pts(sv, team, T, L, opp=None, home=None, b2b=False):
+def goalie_pts(sv, team, T, L, opp=None, home=None, b2b=False, od=None):
     own = T.get(team, L)
     o = T.get(opp, L) if opp else L
     sa = 0.5 * o["sf"] + 0.5 * own["sa"]
     ga = sa * (1 - sv)
-    edge = 0 if home is None else (0.03 if home else -0.03)
-    pw = clamp(0.5 + 0.9 * (own["pp"] - o["pp"]) + edge - (0.04 if b2b else 0), 0.25, 0.75)
+    if od:                                   # betting market: win chance + expected goals against
+        ga = 0.5 * ga + 0.5 * od["ga"]
+        pw = clamp(od["win"], 0.1, 0.9)
+    else:
+        edge = 0 if home is None else (0.03 if home else -0.03)
+        pw = clamp(0.5 + 0.9 * (own["pp"] - o["pp"]) + edge - (0.04 if b2b else 0), 0.25, 0.75)
     potl = (1 - pw) * 0.22
     pso = pw * 0.9 * math.exp(-ga)
     return GO["W"] * pw + GO["OTL"] * potl + GO["SV"] * (sa - ga) + GO["GA"] * ga + GO["SO"] * pso
@@ -180,8 +187,14 @@ def build(players):
     GL, GT = goalie_table(LAST), goalie_table(THIS)
     T, L = team_table()
     sched = schedule()
+    try:
+        import gm_odds
+        ODDS = gm_odds.get_odds(team_code)
+    except Exception as ex:
+        print(f"(model) odds unavailable: {ex}")
+        ODDS = {}
     base, proj = {}, {}
-    ns = ng = 0
+    ns = ng = with_odds = 0
     for p in players:
         pid, tm, key = str(p["id"]), p["t"], norm(p["n"])
         games = sched.get(tm, {})
@@ -194,7 +207,9 @@ def build(players):
             base[pid] = round(goalie_pts(sv, tm, T, L), 2)
             for dt, (opp, home) in games.items():
                 b2b = (date.fromisoformat(dt) - timedelta(days=1)).isoformat() in games
-                proj.setdefault(pid, {})[dt] = round(goalie_pts(sv, tm, T, L, opp, home, b2b), 2)
+                od = ODDS.get(dt, {}).get(tm)
+                with_odds += bool(od)
+                proj.setdefault(pid, {})[dt] = round(goalie_pts(sv, tm, T, L, opp, home, b2b, od), 2)
             ng += 1
         else:
             grp = "D" if p["p"] == "D" else "F"
@@ -204,10 +219,12 @@ def build(players):
             base[pid] = round(skater_pts(r, T, L), 2)
             for dt, (opp, home) in games.items():
                 b2b = (date.fromisoformat(dt) - timedelta(days=1)).isoformat() in games
-                proj.setdefault(pid, {})[dt] = round(skater_pts(r, T, L, opp, home, b2b), 2)
+                od = ODDS.get(dt, {}).get(tm)
+                with_odds += bool(od)
+                proj.setdefault(pid, {})[dt] = round(skater_pts(r, T, L, opp, home, b2b, od), 2)
             ns += 1
     days = len({d for g in sched.values() for d in g})
-    print(f"(model) projected {ns} skaters + {ng} goalies over {days} game days  |  teams rated: {len(T)}")
+    print(f"(model) projected {ns} skaters + {ng} goalies over {days} game days  |  teams rated: {len(T)}  |  player-games using betting odds: {with_odds}")
     ex = next((p for p in players if str(p["id"]) in base and p["ft"]), None)
     if ex:
         print(f"(model) example: {ex['n']}  base {base[str(ex['id'])]}  next games: {list(proj.get(str(ex['id']), {}).items())[:3]}")
