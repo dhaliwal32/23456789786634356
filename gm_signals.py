@@ -459,24 +459,26 @@ def gstart(players):
         c = team_code(x.get("teamFullName"))
         if c:
             last_gp[c] = x.get("gamesPlayed") or 82
-    out, flags = {}, 0
+    out, flags, pre = {}, 0, 0
     for p in players:
         if p["p"] != "G":
             continue
         key, t = norm(p["n"]), p["t"]
-        g = team_g.get(t, 0)
-        if g < 3:                                   # wait until the team has played 3 games
-            continue
-        st, st_team = recent_st.get(key, (0, t))
-        starts = st if st_team == t else 0
         l = last.get(key)
-        prior = l[0] / max(1, last_gp.get(l[1], 82)) if l and l[1] == t else None
+        prior = min(0.85, l[0] / max(1, last_gp.get(l[1], 82))) if l and l[1] == t else None
+        g = team_g.get(t, 0)
+        if g < 3 and prior is None:          # changed teams and no games yet: keep the app's number
+            continue
+        g_used = g if g >= 3 else 0          # before 3 team games, use last season's share only
+        st, st_team = recent_st.get(key, (0, t))
+        starts = st if (st_team == t and g_used) else 0
         pr = prior if prior is not None else 0.5
-        share = max(0.05, min(0.95, (starts + pr * GS_PRIOR) / (g + GS_PRIOR)))
-        flag = g >= 5 and abs(starts / g - pr) >= 0.25
+        share = max(0.05, min(0.95, (starts + pr * GS_PRIOR) / (g_used + GS_PRIOR)))
+        flag = g_used >= 5 and abs(starts / g_used - pr) >= 0.25
         flags += flag
-        out[str(p["id"])] = {"share": round(share, 2), "rs": starts, "rg": g, "prior": round(pr, 2), "flag": flag}
-    print(f"(signals) goalie starts: {len(out)} goalies with an automatic start %, {flags} with a big change in who starts")
+        pre += g_used == 0
+        out[str(p["id"])] = {"share": round(share, 2), "rs": starts, "rg": g_used, "prior": round(pr, 2), "flag": flag}
+    print(f"(signals) goalie starts: {len(out)} goalies ({pre} from last season's share until 3 games), {flags} with a big change in who starts")
     return out
 
 def build(players):
