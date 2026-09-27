@@ -64,6 +64,8 @@ DEFAULT = {"F": {"G": .16, "A": .24, "PM": 0.0, "PPP": .08, "SHP": .006, "SOG": 
 TEAM_DEFAULT = {"gf": 3.0, "ga": 3.0, "sf": 28.5, "sa": 28.5}
 SV_DEFAULT = 0.900
 CFG = {"folds": 6, "min_test": 1500, "min_train": 5000, "promote_se": 2.0, "min_gain": 0.005, "keep_models": 3}
+# goalies produce far fewer examples per month (about 400 starts), so they need smaller thresholds
+GROUP_CFG = {"G_start": {"min_test": 300, "min_train": 2000}, "G_cond": {"min_test": 150, "min_train": 1000}}
 
 SK_FEATS = ([f"{k}_{dn}" for dn, _ in DECAYS for k in SK_STATS + USAGE] + [f"n_{dn}" for dn, _ in DECAYS]
             + ["gp_log", "sgp_log", "sh_pct", "rest", "b2b", "home", "own_gf", "own_sf",
@@ -833,11 +835,12 @@ def train(root, reg, data, now, cfg, log=print):
     val.setdefault("groups", {})
     for grp in FAMILIES:
         X, Y, dates, keys = data[grp]
-        if len(dates) < cfg["min_train"]:
+        gcfg = dict(cfg, **{k: min(cfg[k], v) for k, v in GROUP_CFG.get(grp, {}).items()})
+        if len(dates) < gcfg["min_train"]:
             log(f"(learn) {grp}: only {len(dates)} examples - not enough to train yet")
             continue
         t0 = time.time()
-        wf = walk_forward(grp, X, Y, dates, keys, cfg)
+        wf = walk_forward(grp, X, Y, dates, keys, gcfg)
         if not wf["folds"]:
             log(f"(learn) {grp}: not enough months of data to test fairly yet")
             continue
