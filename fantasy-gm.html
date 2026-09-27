@@ -276,7 +276,7 @@ const sigOf = (p) => {
   const S = window.__SIG || {};
   const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
   if (!id) return {};
-  return { rec: (S.recent || {})[id], pp1: ((S.pp1 || {}).on || {})[id], ppChg: ((S.pp1 || {}).changes || {})[id], news: (S.news || {})[id] };
+  return { rec: (S.recent || {})[id], pp1: ((S.pp1 || {}).on || {})[id], ppChg: ((S.pp1 || {}).changes || {})[id], news: (S.news || {})[id], toi: (S.toi || {})[id] };
 };
 const formRatio = (p, K) => { const r = sigOf(p).rec, b = effAvg(p, K); return r && r.gp >= 3 && b > 0 ? r.ppg / b : null; };
 const tags = (p, K) => {
@@ -286,6 +286,11 @@ const tags = (p, K) => {
   if (g.ppChg === "added") out.push({ t: "⬆ new on PP1", c: "text-green-700 font-semibold" });
   else if (g.ppChg === "removed") out.push({ t: "⬇ off PP1", c: "text-red-600 font-semibold" });
   else if (g.pp1) out.push({ t: "PP1", c: "text-slate-500" });
+  const t = g.toi;
+  if (t && t.d >= 120) out.push({ t: `⏱ ${mm(t.d)} TOI`, c: "text-green-700 font-semibold" });
+  else if (t && t.d <= -120) out.push({ t: `⏱ ${mm(t.d)} TOI`, c: "text-red-600" });
+  if (t && t.pd >= 60) out.push({ t: `⏱ PP ${mm(t.pd)}`, c: "text-green-700" });
+  else if (t && t.pd <= -60) out.push({ t: `⏱ PP ${mm(t.pd)}`, c: "text-red-600" });
   if ((p.chg || 0) >= 5) out.push({ t: `📈 +${f1(p.chg)}% rostered`, c: "text-green-700" });
   if (g.news && g.news.length) out.push({ t: "📰 " + (g.news[0].h || "").slice(0, 60), c: g.news[0].tone === "-" ? "text-red-600" : "text-slate-500", u: g.news[0].u });
   return out;
@@ -295,6 +300,30 @@ const Tags = ({ p, K }) => (
     {tags(p, K).map((t, i) => (t.u ? <a key={i} href={t.u} target="_blank" rel="noreferrer" className={"text-xs underline " + t.c}>{t.t}</a> : <span key={i} className={"text-xs " + t.c}>{t.t}</span>))}
   </span>
 );
+// ice time: seconds -> "+2.5 min"
+const mm = (sec) => (sec >= 0 ? "+" : "−") + (Math.abs(sec) / 60).toFixed(1) + " min";
+const toiOf = (p) => sigOf(p).toi || null;
+function ToiMovers({ s }) {
+  const S = window.__SIG || {};
+  const risers = s.players.filter((p) => p.ft === "fa" && p.p !== "G" && toiOf(p) && (toiOf(p).d >= 90 || toiOf(p).pd >= 45)).sort((a, b) => (toiOf(b).d + toiOf(b).pd) - (toiOf(a).d + toiOf(a).pd)).slice(0, 10);
+  const mine = s.players.filter((p) => p.ft === s.me && toiOf(p));
+  const up = mine.filter((p) => toiOf(p).d >= 90 || toiOf(p).pd >= 45), down = mine.filter((p) => toiOf(p).d <= -90 || toiOf(p).pd <= -45);
+  const info = (p) => { const t = toiOf(p); return <span className="text-xs text-slate-500">{(t.r / 60).toFixed(1)} min/g lately vs {(t.b / 60).toFixed(1)} before{t.pd ? ` · PP ${(t.pr / 60).toFixed(1)} vs ${(t.pb / 60).toFixed(1)}` : ""}</span>; };
+  return (
+    <Section title="Ice-time movers" sub="Last 10 days vs earlier. A coach's promotion shows up in minutes before it shows up in points.">
+      {!S.toi ? <div className="text-slate-400">Ice-time data appears after the next sync (needs gm_signals.py with the toi step).</div> : (
+        <div>
+          <div className="font-medium mb-1">Free agents gaining minutes</div>
+          {risers.length ? risers.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={info(p)} />) : <div className="text-slate-400 text-xs mb-2">None yet — needs about 5 games per player (mid-October).</div>}
+          <div className="font-medium mt-3 mb-1">Your players</div>
+          {up.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<>{info(p)}<span className="text-xs text-green-700">↑ bigger role</span></>} />)}
+          {down.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<>{info(p)}<span className="text-xs text-red-600">↓ losing minutes — watch closely</span></>} />)}
+          {!up.length && !down.length && <div className="text-slate-400 text-xs">No big changes in your players' minutes.</div>}
+        </div>
+      )}
+    </Section>
+  );
+}
 const verdict = (gain, sd) => (gain > 0 && sd >= 0 ? ["Add & keep", "bg-green-100 text-green-800"] : gain > 0 ? ["Stream only", "bg-amber-100 text-amber-800"] : ["Pass", "bg-slate-200 text-slate-500"]);
 
 // ---------- move engine ----------
@@ -592,6 +621,7 @@ function AdvicePanel({ s }) {
       <Section title="Hot & trending free agents" sub="Scoring well above projection (last 14 days), gaining ownership fast, or newly on PP1.">
         {hotFA.length ? hotFA.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <div className="text-slate-400">Nothing yet — needs a couple of weeks of games or a fresh PP1 change.</div>}
       </Section>
+      <ToiMovers s={s} />
       <Section title="Your players — form check">
         {myHot.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className="text-xs text-orange-600">hot — start every game; sell-high if his role hasn't changed</span>} />)}
         {myCold.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className="text-xs text-sky-600">cold — check ice time/PP role before dropping</span>} />)}
