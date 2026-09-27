@@ -276,11 +276,17 @@ const sigOf = (p) => {
   const S = window.__SIG || {};
   const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
   if (!id) return {};
-  return { rec: (S.recent || {})[id], pp1: ((S.pp1 || {}).on || {})[id], ppChg: ((S.pp1 || {}).changes || {})[id], news: (S.news || {})[id], toi: (S.toi || {})[id] };
+  return { rec: (S.recent || {})[id], pp1: ((S.pp1 || {}).on || {})[id], ppChg: ((S.pp1 || {}).changes || {})[id], news: (S.news || {})[id], toi: (S.toi || {})[id],
+    lines: { grp: ((S.lines || {}).top || {})[id], chg: ((S.lines || {}).changes || {})[id] }, luck: (S.luck || {})[id] };
 };
 const formRatio = (p, K) => { const r = sigOf(p).rec, b = effAvg(p, K); return r && r.gp >= 3 && b > 0 ? r.ppg / b : null; };
+const LBL = { F1: "1st line", F2: "2nd line", D1: "top pair", D2: "2nd pair" };
 const tags = (p, K) => {
   const g = sigOf(p), out = [], fr = formRatio(p, K);
+  if (g.lines && g.lines.chg === "up") out.push({ t: `⬆ ${LBL[g.lines.grp] || "promoted"}`, c: "text-green-700 font-semibold" });
+  else if (g.lines && g.lines.chg === "down") out.push({ t: "⬇ demoted", c: "text-red-600" });
+  if (g.luck && g.luck.t === "s" && Math.abs(g.luck.d) >= 2) out.push({ t: g.luck.d > 0 ? `🎲 lucky +${f1(g.luck.d)} G` : `🎲 unlucky ${f1(g.luck.d)} G`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
+  if (g.luck && g.luck.t === "g" && Math.abs(g.luck.d) >= 4) out.push({ t: g.luck.d > 0 ? `🎲 hot SV +${f1(g.luck.d)}` : `🎲 cold SV ${f1(g.luck.d)}`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
   if (fr !== null && fr >= 1.25) out.push({ t: `🔥 ${f1(g.rec.ppg)}/g last 14d`, c: "text-orange-600" });
   else if (fr !== null && fr <= 0.7) out.push({ t: `❄ ${f1(g.rec.ppg)}/g last 14d`, c: "text-sky-600" });
   if (g.ppChg === "added") out.push({ t: "⬆ new on PP1", c: "text-green-700 font-semibold" });
@@ -402,7 +408,7 @@ const Section = ({ title, sub, link, children }) => (
 const NAV = [
   ["today", "🏠 Today", null],
   ["matchup", "⚔️ Matchup", null],
-  ["moves", "🔁 Moves", [["advice", "Advice"], ["adddrop", "Add / Drop"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
+  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
   ["league", "🏆 League", [["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
   ["players", "👥 Players", null],
   ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
@@ -466,7 +472,7 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
-  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdvicePanel {...P} />;
+  else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : <League {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
   return (
@@ -786,6 +792,163 @@ function OddsBoard({ s }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ---------- Weekly acquisition planner ----------
+function buildPlan(s, wk, d0, M) {
+  const K = s.blend, nD = wk.days.length;
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const minGain = s.minGain ?? 3;
+  const myR = s.players.filter((p) => p.ft === s.me);
+  const ranked = myR.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const prot = new Set([...ranked.slice(0, s.protectTop ?? 8).map((p) => p.id), ...myR.filter((p) => p.keep).map((p) => p.id)]);
+  const val = (p, a) => (wk.games[p.t] || []).filter((d) => d >= a).reduce((t, d) => { const dt = wk.dates[d]; return t + effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt); }, 0);
+  const dayTotal = (tl, d) => dayLineup(tl.filter((x) => x.from <= d && x.to >= d).map((x) => x.p), wk, d, K).total;
+  let tl = myR.map((p) => ({ p, from: 0, to: nD - 1, orig: true }));
+  const fas = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0))
+    .map((p) => ({ p, v: val(p, d0) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 45).map((x) => x.p);
+  let base0 = 0; for (let d = d0; d < nD; d++) base0 += dayTotal(tl, d);
+  const steps = [], usedFA = new Set();
+  for (let k = 0; k < M; k++) {
+    const cur = []; for (let d = d0; d < nD; d++) cur[d] = dayTotal(tl, d);
+    const suffix = (a) => { let t = 0; for (let d = a; d < nD; d++) t += cur[d]; return t; };
+    let best = null;
+    for (let d = d0; d < nD; d++) {
+      const active = tl.filter((x) => x.from <= d && x.to >= d);
+      const cnt = { F: 0, D: 0, G: 0 }; active.forEach((x) => { if (!x.p.ir) cnt[x.p.p]++; });
+      const drops = active.filter((x) => !x.p.ir && x.from < d + (x.orig ? 1 : 0) && !(x.orig && prot.has(x.p.id)) && !(!x.orig && x.from >= d))
+        .map((x) => ({ x, v: val(x.p, d) })).sort((a, b) => a.v - b.v);
+      const cand = []; ["F", "D", "G"].forEach((ps) => drops.filter((y) => y.x.p.p === ps).slice(0, 4).forEach((y) => cand.push(y.x)));
+      const before = suffix(d);
+      for (const f of fas) {
+        if (usedFA.has(f.id) || !(wk.games[f.t] || []).includes(d)) continue;
+        for (const x of cand) {
+          if (x.p.p !== f.p && cnt[x.p.p] - 1 < mins[x.p.p]) continue;
+          const tl2 = tl.map((y) => (y === x ? { ...y, to: d - 1 } : y)).concat([{ p: { ...f, ft: s.me }, from: d, to: nD - 1, orig: false }]);
+          let after = 0; for (let dd = d; dd < nD; dd++) after += dayTotal(tl2, dd);
+          const gain = after - before;
+          if (!best || gain > best.gain) best = { gain, d, f, x, tl2 };
+        }
+      }
+    }
+    if (!best || best.gain < minGain) break;
+    steps.push({ day: best.d, add: best.f, drop: best.x.p, dropWasStream: !best.x.orig, gain: best.gain });
+    usedFA.add(best.f.id); tl = best.tl2;
+  }
+  let final = 0; for (let d = d0; d < nD; d++) final += dayTotal(tl, d);
+  return { steps: steps.sort((a, b) => a.day - b.day), gain: final - base0, base: base0, final, pool: fas.length, d0 };
+}
+function AcqPlanner({ s, setS, wk }) {
+  const K = s.blend;
+  const used = ((s.movesUsed || {})[s.wk]) || 0;
+  const setUsed = (v) => setS((x) => ({ ...x, movesUsed: { ...(x.movesUsed || {}), [x.wk]: v } }));
+  const [fromTomorrow, setFT] = useState(false);
+  const [plan, setPlan] = useState(null); const [busy, setBusy] = useState(false);
+  const dates = wk.dates || [];
+  const ti = dates.indexOf(todayISO());
+  const d0 = Math.min(dates.length, Math.max(wk.done || 0, ti >= 0 ? ti : 0) + (fromTomorrow ? 1 : 0));
+  const left = Math.max(0, 3 - used);
+  const opp = oppOf(wk, s.me) || s.opp;
+  const oppProj = weekProj(s.players.filter((p) => p.ft === opp), wk, K, d0).total;
+  const aA = +((wk.act || {})[s.me]) || 0, aB = +((wk.act || {})[opp]) || 0;
+  useEffect(() => { setPlan(null); }, [s.wk, used, fromTomorrow, s.players]);
+  const run = () => { setBusy(true); setTimeout(() => { setPlan(buildPlan(s, wk, d0, left)); setBusy(false); }, 30); };
+  const gamesFrom = (p, a) => (wk.games[p.t] || []).filter((d) => d >= a).map((d) => wk.days[d].split(",")[0]).join(", ");
+  return (
+    <div className="space-y-4">
+      <Section title="Weekly acquisition planner" sub="Plans all your remaining pickups together — which player, which day, and who to drop — to squeeze the most points out of this week's lineup slots.">
+        <div className="flex flex-wrap gap-3 items-center">
+          <label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={fromTomorrow} onChange={(e) => setFT(e.target.checked)} /> Start from tomorrow (today's games already started)</label>
+          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy || !left || d0 >= dates.length} onClick={run}>{busy ? "Planning…" : `Build my plan (${left} move${left === 1 ? "" : "s"} left)`}</button>
+        </div>
+        <div className="text-xs text-slate-500 mt-2">Planning from {dates[d0] ? dayLabel(dates[d0]) : "—"} · uses your roster minimums, protected players and minimum gain from Add / Drop settings · counts only games that fit your daily lineup · goalies use Daily Faceoff starters, back-to-back logic and betting odds.</div>
+      </Section>
+      {!left && <div className={box + " text-slate-400"}>No moves left this week.</div>}
+      {plan && (
+        <Section title={plan.steps.length ? `Your plan: +${f1(plan.gain)} points this week` : "No move is worth it this week"} sub={`${teamName(s, s.me)} ${f1(aA + plan.base)} → ${f1(aA + plan.final)} projected vs ${teamName(s, opp)} ${f1(aB + oppProj)} · margin ${aA + plan.base - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.base - aB - oppProj)} → ${aA + plan.final - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.final - aB - oppProj)}`}>
+          {plan.steps.length ? plan.steps.map((st, i) => { const sd = effAvg(st.add, K) - effAvg(st.drop, K); return (
+            <div key={i} className="border-t border-slate-100 py-3">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="text-xs px-2 py-0.5 rounded bg-blue-600">{i + 1}</span>
+                <span className="font-semibold">{wk.days[st.day]}</span>
+                <span>Add <b>{st.add.n}</b> <span className="text-xs text-slate-400">{st.add.p} · {st.add.t}</span></span>
+                <span>· drop <b>{st.drop.n}</b>{st.dropWasStream ? <span className="text-xs text-slate-400"> (streamer from step {plan.steps.findIndex((x) => x.add.id === st.drop.id) + 1})</span> : <span className="text-xs text-slate-400"> {st.drop.p}</span>}</span>
+                <span className="text-green-700 font-semibold ml-auto">+{f1(st.gain)}</span>
+              </div>
+              <div className="text-xs text-slate-500 mt-1 ml-8">{st.add.n} plays: {gamesFrom(st.add, st.day) || "—"}{!st.dropWasStream && sd < 0 ? <span className="text-amber-600"> · stream only: {f1(Math.abs(sd))}/game worse long-term than {st.drop.n}</span> : ""} <Tags p={st.add} K={K} /></div>
+            </div>
+          ); }) : <div className="text-slate-400">No pickup adds at least {s.minGain ?? 3} points this week — save your moves (or lower the minimum gain in Add / Drop settings).</div>}
+          {plan.steps.length > 0 && <div className="text-xs text-slate-500 mt-2">Make each move on ESPN on the day shown, before that day's first game. Re-run the plan after each move (and each morning) — injuries, goalie announcements and your opponent's moves change the best plan. Set "moves already used" after each one.</div>}
+        </Section>
+      )}
+    </div>
+  );
+}
+
+// ---------- Edges: line promotions, luck, model vs ESPN ----------
+function EdgesPanel({ s }) {
+  const K = s.blend; const S = window.__SIG || {}; const M = window.__MODEL;
+  const pid = (p) => (typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null);
+  const ln = (p) => sigOf(p).lines || {};
+  const promoFA = s.players.filter((p) => p.ft === "fa" && ln(p).chg === "up");
+  const promoOther = s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && ln(p).chg === "up").slice(0, 10);
+  const mineChg = s.players.filter((p) => p.ft === s.me && ln(p).chg);
+  const lk = (p) => sigOf(p).luck;
+  const lucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d >= 2 : l.d >= 4); };
+  const unlucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d <= -2 : l.d <= -4); };
+  const byLuck = (a, b) => Math.abs(lk(b).d) - Math.abs(lk(a).d);
+  const sellHigh = s.players.filter((p) => p.ft === s.me && lucky(p)).sort(byLuck);
+  const myUnlucky = s.players.filter((p) => p.ft === s.me && unlucky(p)).sort(byLuck);
+  const buyLow = s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && unlucky(p) && effAvg(p, K) >= 5).sort(byLuck).slice(0, 12);
+  const buyFA = s.players.filter((p) => p.ft === "fa" && unlucky(p)).sort(byLuck).slice(0, 10);
+  const luckInfo = (p) => { const l = lk(p); return <span className="text-xs text-slate-500">{l.t === "s" ? `${l.g} G on ${l.sh} shots (${l.pct}% vs career ${l.cpct}%) · ${l.d > 0 ? "+" : ""}${f1(l.d)} goals vs expected ≈ ${l.d > 0 ? "+" : ""}${f1(l.d * 6)} pts` : `SV% ${l.sv.toFixed(3)} vs career ${l.csv.toFixed(3)} · ${l.d > 0 ? "+" : ""}${f1(l.d)} goals vs normal ≈ ${l.d > 0 ? "+" : ""}${f1(l.d * 3.6)} pts`}</span>; };
+  const mv = (p) => { const id = pid(p); const mb = M && id ? (M.base || {})[id] : null; return mb != null && p.proj && p.avg > 0 ? { mb, e: p.avg, d: mb - p.avg, r: mb / p.avg } : null; };
+  const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15; };
+  const over = (p) => { const x = mv(p); return x && x.d <= -1 && x.r <= 0.85; };
+  const uFA = s.players.filter((p) => p.ft === "fa" && under(p)).sort((a, b) => mv(b).d - mv(a).d).slice(0, 12);
+  const uOther = s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && under(p)).sort((a, b) => mv(b).d - mv(a).d).slice(0, 12);
+  const oMine = s.players.filter((p) => p.ft === s.me && over(p)).sort((a, b) => mv(a).d - mv(b).d);
+  const uMine = s.players.filter((p) => p.ft === s.me && under(p));
+  const mvInfo = (p) => { const x = mv(p); return <span className={"text-xs " + (x.d > 0 ? "text-green-700" : "text-red-600")}>GM model {f1(x.mb)}/g vs ESPN {f1(x.e)}/g ({x.d > 0 ? "+" : ""}{f1(x.d)})</span>; };
+  const Sub = ({ t }) => <div className="font-medium mt-3 mb-1">{t}</div>;
+  const None = ({ t }) => <div className="text-slate-400 text-xs">{t}</div>;
+  return (
+    <div className="space-y-4">
+      <Section title="⬆ Line promotions" sub={`Daily Faceoff even-strength lines${S.lines ? `, checked ${S.lines.asof}` : ""}. Top-6 forwards and top-4 D get more minutes and better linemates — points usually follow within a week.`}>
+        {!S.lines ? <None t="Line data appears after the next sync (needs the updated gm_signals.py)." /> : (<>
+          <Sub t="Free agents just promoted (pickup targets)" />
+          {promoFA.length ? promoFA.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <None t="No free-agent promotions since yesterday." />}
+          <Sub t="Your players" />
+          {mineChg.length ? mineChg.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={"text-xs " + (ln(p).chg === "up" ? "text-green-700" : "text-red-600")}>{ln(p).chg === "up" ? "↑ start him" : "↓ moved down the lineup — watch his minutes"}</span>} />) : <None t="No line changes for your players." />}
+          {promoOther.length > 0 && <><Sub t="Promoted on other fantasy teams (trade targets)" />{promoOther.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</>}
+        </>)}
+      </Section>
+      <Section title="🎲 Luck detector" sub="Compares this season's shooting % (skaters) and save % (goalies) with their last two seasons. Luck evens out — other managers judge by recent points, so trade on it.">
+        {!S.luck ? <None t="Luck data appears after the next sync (needs the updated gm_signals.py)." /> : !Object.keys(S.luck).length ? <None t="Needs about 25 shots per skater / 150 shots against per goalie — usually by late October." /> : (<>
+          <Sub t="Sell high — your lucky players (points will likely drop)" />
+          {sellHigh.length ? sellHigh.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None of your players are running unusually hot." />}
+          <Sub t="Buy low — unlucky players on other teams (points are coming)" />
+          {buyLow.length ? buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None right now." />}
+          <Sub t="Unlucky free agents (cheap upside)" />
+          {buyFA.length ? buyFA.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None right now." />}
+          {myUnlucky.length > 0 && <><Sub t="Your unlucky players — don't sell low" />{myUnlucky.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />)}</>}
+        </>)}
+      </Section>
+      <Section title="📊 Model vs ESPN" sub="Where your GM model (usage, ice time, betting lines, matchups) disagrees with ESPN's projection by 15%+. Most managers only see ESPN's number — so these players are mispriced in your league.">
+        {!M ? <None t="Needs the GM model in the sync." /> : (<>
+          <Sub t="Undervalued free agents" />
+          {uFA.length ? uFA.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None right now." />}
+          <Sub t="Undervalued on other teams (trade targets — their owner thinks they're worth less)" />
+          {uOther.length ? uOther.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None right now." />}
+          <Sub t="Your players ESPN overrates (sell to managers who trust ESPN)" />
+          {oMine.length ? oMine.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None — your roster isn't overrated by ESPN." />}
+          {uMine.length > 0 && <><Sub t="Your players ESPN underrates (keep — they're worth more than they look)" />{uMine.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />)}</>}
+          <div className="text-xs text-slate-500 mt-3">Early in the season the model leans on last year's stats, so check the tags (PP1, ice time, lines) to see <i>why</i> it disagrees before acting.</div>
+        </>)}
+      </Section>
     </div>
   );
 }
