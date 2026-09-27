@@ -245,7 +245,13 @@ const gStart = (p, dt) => {
     if (/likely|expected|project/.test(st)) return { v: 0.85, l: "likely" };
     return { v: 0.5, l: "unconfirmed" };
   }
-  if (Object.values(day).some((x) => x.team === p.t)) return { v: 0, l: "not starting" };
+  const mate = Object.entries(day).find(([, x]) => x.team === p.t);
+  if (mate) {
+    const st = (mate[1].status || "").toLowerCase();
+    const mv = st.includes("confirm") && !st.includes("un") ? 1 : /likely|expected|project/.test(st) ? 0.85 : 0.5;
+    const who = mate[0].replace(/\b\w/g, (c) => c.toUpperCase());
+    return { v: 1 - mv, l: mv === 1 ? "not starting" : `backup · ${who} ${mv === 0.5 ? "unconfirmed" : "likely"} (${Math.round((1 - mv) * 100)}%)` };
+  }
   return fallback;
 };
 function dayLineup(roster, wk, d, K) {
