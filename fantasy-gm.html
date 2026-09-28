@@ -62,7 +62,7 @@
   .bg-white.rounded-xl.p-4 { padding: 1.4rem 1.5rem !important; }
   .font-semibold.text-base { font-family: var(--serif); font-weight: 500 !important; font-size: 1.3rem !important; line-height: 1.2; letter-spacing: -0.01em; }
   .font-bold.text-lg { font-family: var(--serif); font-weight: 500 !important; font-size: 1.4rem !important; letter-spacing: -0.01em; }
-  .text-4xl { font-weight: 600 !important; font-size: 2.75rem !important; line-height: 1.1; margin-top: .4rem; margin-bottom: .2rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .text-4xl { font-weight: 500 !important; font-size: 2.75rem !important; line-height: 1.1; margin-top: .4rem; margin-bottom: .2rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
   .text-2xl { font-weight: 500 !important; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
   input:not([type=checkbox]), select, textarea { background-color: transparent !important; color: var(--ink) !important; border-color: var(--line2) !important; border-radius: 8px !important; }
   select option { background: var(--card); }
@@ -577,48 +577,58 @@ function Today({ s, wk, go }) {
   }
   const outNow = mine.filter((p) => { const b = effBack(p).d; return (b && b > today) || (!b && avail(p, today) === 0); });
   const moves = useMemo(() => computeMoves(s, { H: 1, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3)).slice(0, 3), [s]);
-  const ppAdds = s.players.filter((p) => p.ft === "fa" && sigOf(p).ppChg === "added");
-  const hot = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && ((formRatio(p, K) || 0) >= 1.25 || (p.chg || 0) >= 5));
-  const intel = [...ppAdds, ...hot.filter((p) => !ppAdds.includes(p))].slice(0, 6);
-  const news = mine.filter((p) => (sigOf(p).news || []).length).slice(0, 5);
+  const sameDrop = moves.length > 1 && moves.every((r) => r.d.id === moves[0].d.id);
+  const trend = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && ((formRatio(p, K) || 0) >= 1.25 || (p.chg || 0) >= 5)).sort((a, b) => (b.chg || 0) - (a.chg || 0)).slice(0, 2);
+  const lastName = (n) => nrm(n).split(" ").pop();
+  const allNews = mine.map((p) => { const all = sigOf(p).news || []; return { p, all, items: all.filter((n) => nrm(n.h || "").includes(lastName(p.n))) }; });
+  const news = allNews.filter((x) => x.items.length).slice(0, 5);
+  const hidden = allNews.reduce((a, x) => a + x.all.length - x.items.length, 0);
   const pct = Math.max(6, Math.min(94, 50 + margin / 2));
-  const icon = { bad: "●", warn: "●", good: "●" };
+  const dot = { bad: "text-red-600", warn: "text-amber-600", good: "text-green-700" };
+  const daysLeft = dates.length - done;
+  const Row = ({ children }) => <div className="flex items-center gap-3 py-2.5 border-t border-slate-100">{children}</div>;
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-xl border border-slate-200 p-4">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 mb-3">
-          <span className="uppercase tracking-wide">{wk.label}</span><span>·</span><span>{done >= dates.length ? "Final" : `${dates.length - done} day${dates.length - done === 1 ? "" : "s"} left`}</span>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          <span className="uppercase tracking-wide">{wk.label}</span><span>·</span><span>{done >= dates.length ? "Final" : `${daysLeft} day${daysLeft === 1 ? "" : "s"} left`}</span>
           <button className="ml-auto text-blue-600" onClick={() => go("matchup")}>Full matchup →</button>
         </div>
-        <div className="grid grid-cols-2 gap-4 items-end">
-          <div><div className="text-xs uppercase text-slate-500 truncate">{teamName(s, s.me)}</div><div className="text-4xl font-bold">{f1(fa)}</div><div className="text-xs text-slate-500">{f1(aA)} actual + {f1(A.total)} proj</div></div>
-          <div className="text-right"><div className="text-xs uppercase text-slate-500 truncate">{teamName(s, opp)}</div><div className="text-4xl font-bold">{f1(fb)}</div><div className="text-xs text-slate-500">{f1(aB)} actual + {f1(B.total)} proj</div></div>
+        <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-end mt-4">
+          <div className="min-w-0"><div className="text-xs uppercase tracking-wide text-slate-500 truncate">{teamName(s, s.me)}</div><div className="text-4xl">{f1(fa)}</div><div className="text-xs text-slate-500">{f1(aA)} actual + {f1(A.total)} proj</div></div>
+          <div className="text-sm text-slate-400 pb-7">vs</div>
+          <div className="min-w-0 text-right"><div className="text-xs uppercase tracking-wide text-slate-500 truncate">{teamName(s, opp)}</div><div className="text-4xl">{f1(fb)}</div><div className="text-xs text-slate-500">{f1(aB)} actual + {f1(B.total)} proj</div></div>
         </div>
-        <div className="h-2 rounded-full bg-slate-200 mt-4 overflow-hidden"><div className={"h-full rounded-full " + (margin >= 0 ? "bg-green-500" : "bg-red-500")} style={{ width: pct + "%" }}></div></div>
-        <div className={"text-sm mt-2 font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))} projected{Math.abs(margin) < 15 ? " — close, every move matters" : ""}</div>
+        <div className="h-1.5 rounded-full bg-slate-200 mt-5 overflow-hidden"><div className={"h-full rounded-full " + (margin >= 0 ? "bg-green-500" : "bg-red-500")} style={{ width: pct + "%" }}></div></div>
+        <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected{Math.abs(margin) < 15 ? " · close, every move matters" : ""}</span></div>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        <Section title={dday ? (dday === today ? "Today's lineup check" : `Next game day — ${dayLabel(dday)}`) : "No games left this week"} link={["Matchup", () => go("matchup")]}>
-          {checks.length ? checks.map(([k, t], i) => <div key={i} className={"py-1.5 border-t border-slate-100 " + (k === "bad" ? "text-red-600" : k === "warn" ? "text-amber-600" : "text-green-700")}>{icon[k]} {t}</div>) : <div className="text-green-700">Lineup looks good.</div>}
-          {L && <div className="text-xs text-slate-500 mt-2">{L.start.length} of your players play · projected {f1(L.total)} vs {f1(OL.total)}</div>}
+        <Section title={dday ? (dday === today ? "Tonight" : `Next game day · ${dayLabel(dday)}`) : "No games left this week"} sub={L ? `${L.start.length} of your players play · projected ${f1(L.total)} vs ${f1(OL.total)}` : ""} link={["Matchup", () => go("matchup")]}>
+          {checks.length ? checks.map(([k, t], i) => <Row key={i}><span className={dot[k]}>●</span><span className="text-slate-700">{t}</span></Row>) : <div className="text-green-700">Lineup looks good.</div>}
         </Section>
-        <Section title="Top moves this week" link={["All moves", () => go("moves", "adddrop")]}>
+        <Section title="Best moves this week" sub={sameDrop ? `All free up ${moves[0].d.n}'s spot` : ""} link={["All moves", () => go("moves", "adddrop")]}>
           {moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
-            <div key={r.f.id} className="py-2 border-t border-slate-100"><span className={"text-xs px-2 py-0.5 rounded mr-2 " + c}>{v}</span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} {r.f.t}</span> · drop <b>{r.d.n}</b> <span className="text-green-700 font-semibold ml-1">+{f1(r.gain)}</span></div>
+            <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} · {r.f.t}</span>{sameDrop ? null : <> · drop <b>{r.d.n}</b></>}</span><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
           ); }) : <div className="text-slate-400">No move worth an acquisition right now.</div>}
         </Section>
-        <Section title="PP1 changes & trending free agents" link={["PP1 free agents", () => go("moves", "ppfa")]}>
-          {intel.length ? intel.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <div className="text-slate-400">Nothing new — shows up here as lines and form change.</div>}
-        </Section>
-        <Section title="Injuries on your team" link={["Injuries", () => go("setup", "inj")]}>
+      </div>
+      {window.LinesSummary ? <window.LinesSummary s={s} wk={wk} go={go} trend={trend} H={{ Section, teamName, f1 }} /> : null}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Section title="Injuries" link={["Manage", () => go("setup", "inj")]}>
           {outNow.length ? outNow.map((p) => { const b = effBack(p); const soon = b.d && dates.length && b.d <= dates[dates.length - 1]; return (
-            <div key={p.id} className="py-1.5 border-t border-slate-100 flex gap-2"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? (soon ? "back this week · " : "back ") + mdL(b.d) : "no return date"}</span></div>
+            <Row key={p.id}><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? "Back " + mdL(b.d) : "No return date"}</span></Row>
           ); }) : <div className="text-green-700">Everyone healthy.</div>}
         </Section>
+        <Section title="News on your players" link={["All news", () => go("league", "news")]}>
+          {news.length ? news.map(({ p, items }) => (
+            <div key={p.id} className="py-2.5 border-t border-slate-100">
+              <div><span className="font-medium">{p.n}</span> <span className="text-xs text-slate-400">{p.p} · {p.t}</span></div>
+              {items.slice(0, 2).map((n, i) => <a key={i} href={n.u} target="_blank" rel="noreferrer" className={"block text-sm mt-0.5 hover:underline " + (n.tone === "-" ? "text-red-600" : "text-slate-600")}>{n.h}</a>)}
+            </div>
+          )) : <div className="text-slate-400">No headlines about your players right now.</div>}
+          {hidden > 0 && <div className="text-xs text-slate-400 mt-2">{hidden} general headline{hidden === 1 ? "" : "s"} hidden (they don't mention the player)</div>}
+        </Section>
       </div>
-      <Section title="News on your players" link={["All news", () => go("league", "news")]}>
-        {news.length ? news.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <div className="text-slate-400">No recent headlines about your players.</div>}
-      </Section>
     </div>
   );
 }
