@@ -1,0 +1,40 @@
+name: Install Lines tab
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = make a test copy, live = update the real app (backup first), undo = restore the backup"
+        required: true
+        default: test
+        type: choice
+        options:
+          - test
+          - live
+          - undo
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fantasy-sync
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Patch the app
+        run: python install_lines_tab.py ${{ inputs.mode }}
+      - name: Save results
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "lines tab: ${{ inputs.mode }}"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
