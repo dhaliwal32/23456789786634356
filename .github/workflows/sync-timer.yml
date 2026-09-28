@@ -1,0 +1,31 @@
+name: Sync timer
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+permissions:
+  actions: write
+concurrency:
+  group: sync-timer
+  cancel-in-progress: false
+jobs:
+  timer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - name: Start Fantasy sync every 10 minutes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          end=$(( $(date +%s) + 340*60 ))
+          while [ $(date +%s) -lt $end ]; do
+            gh workflow run sync.yml --ref main || echo "could not start sync, will try again in 10 min"
+            sleep 600
+          done
+      - name: Start the next timer
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run sync-timer.yml --ref main
