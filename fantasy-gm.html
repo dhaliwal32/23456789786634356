@@ -534,7 +534,7 @@ function App() {
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "teams") content = teamView ? <TeamPage {...P} id={teamView} back={backFromTeam} /> : <TeamsTab {...P} openTeam={openTeam} />;
   else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
-  else if (tab === "news") content = <NewsView s={s} />;
+  else if (tab === "news") content = <div className="space-y-4"><PhoneFeed /><NewsView s={s} /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "adddrop" ? <AddDrop {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : <Settings {...P} />;
@@ -2400,6 +2400,56 @@ function TradesPanel(props) {
   );
 }
 
+// ---------- Phone notifications feed (reads notify_outbox.json) ----------
+function PhoneFeed() {
+  const [box, setBox] = useState(null);
+  const [err, setErr] = useState("");
+  const [show, setShow] = useState(12);
+  const load = () => fetch("notify_outbox.json?t=" + Date.now())
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((b) => { setBox(b); setErr(""); })
+    .catch(() => setErr("No notification history yet. It appears after the next sync."));
+  useEffect(() => { load(); const id = setInterval(load, 2 * 60 * 1000); return () => clearInterval(id); }, []);
+  const when = (iso) => { const d = toDate(iso); return d ? d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : ""; };
+  const SEC = { lineup: "Lineup", mine: "Your players", pickup: "Pickup idea", other: "Other" };
+  const items = (box && box.items) || [];
+  const waiting = items.filter((i) => !i.sent).reverse();
+  const urgent = items.filter((i) => i.sent && (i.via === "urgent" || (!i.via && i.urgent))).map((i) => ({ at: i.sent_at || i.at, kind: "urgent", title: i.title, body: i.text }));
+  const sent = [...urgent, ...((box && box.log) || [])].sort((a, b) => (a.at < b.at ? 1 : -1));
+  const label = { urgent: "Sent right away", morning: "Morning summary", pregame: "Pre-game summary" };
+  return (
+    <Section title="Phone notifications" sub="Everything your phone gets from ntfy, newest first. Checks for new ones every 2 minutes.">
+      {err ? <div className="text-slate-400">{err}</div> : !box ? <div className="text-slate-400">Loading…</div> : (
+        <div className="space-y-5 mt-2">
+          <div>
+            <div className="text-xs uppercase tracking-wide text-slate-400 mb-1">Waiting for the next summary ({waiting.length})</div>
+            {waiting.length ? waiting.map((i) => (
+              <div key={i.k} className="flex flex-wrap items-baseline gap-2 py-2 border-t border-slate-100">
+                <span className={"text-xs px-2 py-0.5 rounded " + (i.urgent ? "bg-red-100 text-red-600" : "bg-slate-200 text-slate-500")}>{i.urgent ? "Urgent (quiet hours)" : SEC[i.section] || "Other"}</span>
+                <span className="text-sm text-slate-700 flex-1 min-w-[200px]">{i.text}</span>
+                <span className="text-xs text-slate-400">{when(i.at)}</span>
+              </div>
+            )) : <div className="text-sm text-slate-400">Nothing waiting.</div>}
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-wide text-slate-400 mb-1">Sent to your phone</div>
+            {sent.length ? sent.slice(0, show).map((m, i) => (
+              <div key={i} className="py-3 border-t border-slate-100">
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <span className={"text-xs px-2 py-0.5 rounded " + (m.kind === "urgent" ? "bg-red-100 text-red-600" : "bg-blue-50 text-blue-600")}>{label[m.kind] || m.kind}</span>
+                  <span className="font-medium">{m.title}</span>
+                  <span className="text-xs text-slate-400 ml-auto">{when(m.at)}</span>
+                </div>
+                <div className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{m.body}</div>
+              </div>
+            )) : <div className="text-sm text-slate-400">Nothing sent yet. Your first summary arrives after 8 AM.</div>}
+            {sent.length > show && <button className="text-sm text-blue-600 mt-2" onClick={() => setShow(show + 12)}>Show older</button>}
+          </div>
+        </div>
+      )}
+    </Section>
+  );
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
