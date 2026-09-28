@@ -54,7 +54,8 @@
 </style>
 </head>
 <body>
-<script>window.LINES_DATA = null; document.write('<script src="lines-data.js?t=' + Date.now() + '"><\/script>'); document.write('<script type="text/babel" data-presets="react" src="lines-tab.js?t=' + Date.now() + '"><\/script>');</script>
+<script>window.LINES_DATA = null; document.write('<script src="lines-data.js?t=' + Date.now() + '"><\/script>'); document.write('<script type="text/babel" data-presets="react" src="lines-tab-v2.js?t=' + Date.now() + '"><\/script>');</script>
+<script>document.write('<script type="text/babel" data-presets="react" src="ask-panel.js?t=' + Date.now() + '"><\/script>');</script>
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useMemo } = React;
@@ -520,6 +521,7 @@ function App() {
       <div className="max-w-6xl mx-auto px-3 py-4">
         {nav && nav[2] && <div className="mb-4"><Pills items={nav[2]} value={sub} onChange={(v) => setSubs((x) => ({ ...x, [tab]: v }))} /></div>}
         {content}
+        {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
     </div>
   );
