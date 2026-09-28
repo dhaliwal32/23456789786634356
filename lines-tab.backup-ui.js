@@ -1,4 +1,4 @@
-// lines-tab-v2.js - redesigned "Lines" tab for Fantasy Islands GM.
+// lines-tab-v2.js - redesigned "🏒 Lines" tab for Fantasy Islands GM.
 // Same data as before (window.LINES_DATA from lines-data.js) and same app helpers (H).
 // New: changes ranked by importance (top few shown, "Show all" for the rest),
 // and teams as a ranked list that opens into Daily Faceoff-style lines.
@@ -23,59 +23,59 @@
 
   // ---------- styles (dark, matches the app) ----------
   const CSS = `
-.lt-it{display:grid;grid-template-columns:26px 1fr auto;gap:8px;padding:8px 2px;border-top:1px solid #292929;align-items:start;cursor:pointer}
+.lt-it{display:grid;grid-template-columns:26px 1fr auto;gap:8px;padding:8px 2px;border-top:1px solid #1a2438;align-items:start;cursor:pointer}
 .lt-it:first-child{border-top:none}
-.lt-it:hover{background:rgba(139,124,255,.06)}
+.lt-it:hover{background:rgba(96,165,250,.06)}
 .lt-low{opacity:.55}
 .lt-ic{font-weight:700;font-size:12px;text-align:center;padding-top:2px}
-.lt-up{color:#5fd08a}.lt-dn{color:#f06a6a}.lt-mu{color:#8f8f8f}
-.lt-tm{font-size:11px;color:#8f8f8f;margin-right:2px}
-.lt-why{font-size:12px;color:#8f8f8f;margin-top:1px}
-.lt-own{font-size:12px;white-space:nowrap;padding-top:2px;color:#8f8f8f;max-width:130px;overflow:hidden;text-overflow:ellipsis}
-.lt-own.me{color:#8b7cff;font-weight:600}.lt-own.fa{color:#5fd08a}
-.lt-link{background:none;border:none;color:#8b7cff;cursor:pointer;padding:8px 0 0;font-size:13px}
-.lt-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #292929;font-size:12px;color:#8f8f8f}
-.lt-grp-h{display:flex;gap:8px;align-items:center;padding:8px 2px;border-top:1px solid #292929;cursor:pointer;font-size:13px}
+.lt-up{color:#4ade80}.lt-dn{color:#f87171}.lt-mu{color:#8b98ad}
+.lt-tm{font-size:11px;color:#8b98ad;margin-right:2px}
+.lt-why{font-size:12px;color:#8b98ad;margin-top:1px}
+.lt-own{font-size:12px;white-space:nowrap;padding-top:2px;color:#8b98ad;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.lt-own.me{color:#60a5fa;font-weight:600}.lt-own.fa{color:#4ade80}
+.lt-link{background:none;border:none;color:#60a5fa;cursor:pointer;padding:8px 0 0;font-size:13px}
+.lt-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #22304a;font-size:12px;color:#8b98ad}
+.lt-grp-h{display:flex;gap:8px;align-items:center;padding:8px 2px;border-top:1px solid #22304a;cursor:pointer;font-size:13px}
 .lt-grp-b{padding:0 0 6px 16px}
-.lt-team{border:1px solid #292929;border-radius:12px;background:#161616;margin-bottom:8px;overflow:hidden}
-.lt-team.open{border-color:#4a4a4a}
+.lt-team{border:1px solid #22304a;border-radius:12px;background:#0e1628;margin-bottom:8px;overflow:hidden}
+.lt-team.open{border-color:#3b4b6b}
 .lt-tr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
-.lt-tr:hover{background:#1f1f1f}
-.lt-rk{font-weight:700;width:34px;color:#8f8f8f;flex-shrink:0}
+.lt-tr:hover{background:#15203a}
+.lt-rk{font-weight:700;width:34px;color:#8b98ad;flex-shrink:0}
 .lt-tmain{min-width:0;flex:1}
-.lt-tn{font-weight:600;color:#fafafa}
-.lt-meta{font-size:12px;color:#8f8f8f}
-.lt-hint{font-size:12px;margin-top:2px;color:#d4d4d4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-tn{font-weight:600;color:#e6edf7}
+.lt-meta{font-size:12px;color:#8b98ad}
+.lt-hint{font-size:12px;margin-top:2px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lt-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.lt-pill{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #363636;color:#8f8f8f;white-space:nowrap}
-.lt-pill.me{color:#8b7cff;border-color:rgba(139,124,255,.45)}
-.lt-chev{color:#8f8f8f;transition:transform .2s;flex-shrink:0;display:inline-block}
+.lt-pill{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #2c3b58;color:#8b98ad;white-space:nowrap}
+.lt-pill.me{color:#60a5fa;border-color:rgba(96,165,250,.45)}
+.lt-chev{color:#8b98ad;transition:transform .2s;flex-shrink:0;display:inline-block}
 .lt-team.open .lt-chev{transform:rotate(180deg)}
-.lt-body{padding:10px 12px 14px;border-top:1px solid #292929}
+.lt-body{padding:10px 12px 14px;border-top:1px solid #22304a}
 .lt-stabs{display:flex;gap:6px;flex-wrap:wrap}
-.lt-stab{background:transparent;border:1px solid #363636;color:#d4d4d4;border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
-.lt-stab.on{border-color:#8b7cff;color:#8b7cff;background:rgba(139,124,255,.1)}
-.lt-sec{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#bdbdbd;margin:14px 0 8px;background:#202020;padding:5px 8px;border-radius:6px;text-align:center;font-weight:600}
+.lt-stab{background:transparent;border:1px solid #2c3b58;color:#cbd5e1;border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
+.lt-stab.on{border-color:#60a5fa;color:#60a5fa;background:rgba(96,165,250,.1)}
+.lt-sec{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#c9d6e8;margin:14px 0 8px;background:#1c2a44;padding:5px 8px;border-radius:6px;text-align:center;font-weight:600}
 .lt-grid{display:grid;grid-template-columns:28px repeat(3,minmax(0,1fr));gap:6px}
 .lt-grid.d{grid-template-columns:28px repeat(2,minmax(0,1fr));max-width:680px;margin:0 auto}
-.lt-rl{font-size:12px;color:#8f8f8f;display:flex;align-items:center}
-.lt-pc{display:block;width:100%;background:#1a1a1a;border:1px solid #292929;border-left:3px solid #4d4d4d;border-radius:8px;padding:7px 8px;min-width:0;text-align:left;cursor:pointer;color:#fafafa;font:inherit}
-.lt-pc:hover{border-color:#4a4a4a}
-.lt-pc.me{border-left-color:#8b7cff}.lt-pc.me .lt-nm{color:#8b7cff}
-.lt-pc.fa{border-left-color:#5fd08a}
+.lt-rl{font-size:12px;color:#8b98ad;display:flex;align-items:center}
+.lt-pc{display:block;width:100%;background:#111a2e;border:1px solid #22304a;border-left:3px solid #56627a;border-radius:8px;padding:7px 8px;min-width:0;text-align:left;cursor:pointer;color:#e6edf7;font:inherit}
+.lt-pc:hover{border-color:#3b4b6b}
+.lt-pc.me{border-left-color:#60a5fa}.lt-pc.me .lt-nm{color:#60a5fa}
+.lt-pc.fa{border-left-color:#4ade80}
 .lt-nm{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lt-pc small{display:block;font-size:11px;color:#8f8f8f;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lt-pp{color:#8b7cff}
-.lt-empty{opacity:.4;text-align:center;cursor:default;border-left-color:#292929}
+.lt-pc small{display:block;font-size:11px;color:#8b98ad;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-pp{color:#c4a7ff}
+.lt-empty{opacity:.4;text-align:center;cursor:default;border-left-color:#22304a}
 .lt-short{display:none}
 .lt-ppu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .lt-ppd{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:66%;margin:6px auto 0}
 .lt-gg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-width:680px;margin:0 auto}
-.lt-legend{font-size:12px;color:#8f8f8f;display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 10px}
+.lt-legend{font-size:12px;color:#8b98ad;display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 10px}
 .lt-dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
-.lt-msg{font-size:13px;color:#8f8f8f;padding:10px 0}
-.lt-how{font-size:12px;color:#8f8f8f;margin-top:8px}
-.lt-how summary{cursor:pointer;color:#8b7cff}
+.lt-msg{font-size:13px;color:#8b98ad;padding:10px 0}
+.lt-how{font-size:12px;color:#8b98ad;margin-top:8px}
+.lt-how summary{cursor:pointer;color:#60a5fa}
 @media(max-width:640px){.lt-full{display:none}.lt-short{display:inline}.lt-ppd{width:100%}.lt-next{display:none}
 .lt-grid{grid-template-columns:22px repeat(3,minmax(0,1fr));gap:4px}.lt-grid.d{grid-template-columns:22px repeat(2,minmax(0,1fr))}
 .lt-pc{padding:6px}.lt-tr{padding:10px 8px;gap:8px}}
@@ -249,7 +249,7 @@
       ) : <div className="lt-msg">No changes in this filter.</div>;
     }
     return (
-      <H.Section title="Line & roster changes" sub={`Checked ${ago(L.lines_at)} · ${imp.length} of ${list.length} changes matter to you. Your phone still gets alerts for your players and for free agents who move into a top role.`}>
+      <H.Section title="📣 Line & roster changes" sub={`Checked ${ago(L.lines_at)} · ${imp.length} of ${list.length} changes matter to you. Your phone still gets alerts for your players and for free agents who move into a top role.`}>
         <div className="mb-2"><H.Pills items={FILTERS} value={flt} onChange={(v) => { setFlt(v); setMore(false); }} /></div>
         {body}
         <div className="lt-bar">
@@ -366,15 +366,15 @@
     };
     const shown = rows.filter((x) => !onlyMine || x.mine.length).sort(S[sort]);
     return (
-      <H.Section title="Teams" sub={`Daily Faceoff lines, checked ${ago(L.lines_at)}. # = NHL standings (${L.st_src}). Tap a team for its lines, power play and changes; tap a player for full details.`}>
+      <H.Section title="🏒 Teams" sub={`Daily Faceoff lines, checked ${ago(L.lines_at)}. # = NHL standings (${L.st_src}). Tap a team for its lines, power play and changes; tap a player for full details.`}>
         <div className="flex flex-wrap gap-2 items-center">
           <H.Pills items={[["standings", "NHL standings"], ["fp", "Fantasy points"], ["chg", "Most changes"], ["mine", "My players"]]} value={sort} onChange={setSort} />
           <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
         </div>
         <div className="lt-legend">
-          <span><span className="lt-dot" style={{ background: "#8b7cff" }}></span>Yours</span>
-          <span><span className="lt-dot" style={{ background: "#5fd08a" }}></span>Free agent</span>
-          <span><span className="lt-dot" style={{ background: "#4d4d4d" }}></span>Rostered</span>
+          <span><span className="lt-dot" style={{ background: "#60a5fa" }}></span>Yours</span>
+          <span><span className="lt-dot" style={{ background: "#4ade80" }}></span>Free agent</span>
+          <span><span className="lt-dot" style={{ background: "#56627a" }}></span>Rostered</span>
           <span><span className="lt-up">▲</span>/<span className="lt-dn">▼</span> moved in last 48 h</span>
           <span><span className="lt-dn">✚</span> injured</span>
           <span>Numbers = {L.fp_season} fantasy pts</span>
@@ -503,7 +503,7 @@
     const opp = pr ? (pr[0] === s.me ? pr[1] : pr[0]) : s.opp;
     const ctx = useMemo(() => build(s, L), [s.players, L && L.generated]);
     const items = useMemo(() => enrich(L, ctx, s, opp), [ctx, opp, L && L.generated]);
-    if (!L) return <H.Section title="Lines">No line data yet. It appears after the next sync once gm_lines.py is set up.</H.Section>;
+    if (!L) return <H.Section title="🏒 Lines">No line data yet. It appears after the next sync once gm_lines.py is set up.</H.Section>;
     const pick = (it) => { setSel(it); window.scrollTo({ top: 0, behavior: "smooth" }); };
     const pickChange = (x) => pick({ name: x.c.name, key: x.c.key, t: x.c.type === "move" && x.c.dir === "in" && x.c.to ? x.c.to : x.c.team, g: x.c.g || (x.p ? x.p.p : "F"), p: x.p || ctx.pOf(x.c.key, x.c.g) });
     const qq = nk(q);
@@ -511,7 +511,7 @@
       .sort((a, b) => (b.key.startsWith(qq) - a.key.startsWith(qq)) || ((b.p ? b.p.own : 0) - (a.p ? a.p.own : 0))).slice(0, 8);
     return (
       <div className="space-y-4">
-        <H.Section title="Ask about a player" sub="Type any NHL player's name to see his line, power-play unit, season fantasy points, projections, schedule, injury and news in one place.">
+        <H.Section title="🔎 Ask about a player" sub="Type any NHL player's name to see his line, power-play unit, season fantasy points, projections, schedule, injury and news in one place.">
           <input className={H.inp + " w-full"} placeholder="Player name, e.g. MacKinnon" value={q} onChange={(e) => setQ(e.target.value)} />
           {results.length > 0 && <div className="flex flex-wrap gap-2 mt-2">{results.map((it) => (
             <button key={it.key + it.t} onClick={() => { setSel(it); setQ(""); }} className="px-2 py-1 rounded-lg border border-slate-300 text-xs">
@@ -526,48 +526,5 @@
     );
   }
 
-  // ---------- compact summary for the Today screen ----------
-  function LinesSummary({ s, wk, go, trend, H }) {
-    const L = window.LINES_DATA;
-    const pr = (wk.pairs || []).find((x) => x[0] && x[1] && (x[0] === s.me || x[1] === s.me));
-    const opp = pr ? (pr[0] === s.me ? pr[1] : pr[0]) : s.opp;
-    const ctx = useMemo(() => build(s, L), [s.players, L && L.generated]);
-    const items = useMemo(() => enrich(L, ctx, s, opp), [ctx, opp, L && L.generated]);
-    if (!L) return null;
-    const imp = items.filter((x) => x.s >= TH);
-    const mine = imp.filter((x) => x.ok === "me" || (x.ok !== "fa" && x.mates.length > 0)).slice(0, 4);
-    const tr = (trend || []).slice(0, 2);
-    const fa = imp.filter((x) => x.ok === "fa").slice(0, Math.max(2, 4 - tr.length));
-    const open = () => go("lines");
-    const head = (t) => <div className="text-xs uppercase tracking-wide text-slate-400 mb-1">{t}</div>;
-    return (
-      <H.Section title="Line changes" sub={`Checked ${ago(L.lines_at)} · ${imp.length} of ${items.length} changes matter to you`} link={["Open Lines", open]}>
-        <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
-          <div>
-            {head("Your team")}
-            {mine.length ? mine.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={open} />) : <div className="lt-msg">No changes for your players.</div>}
-          </div>
-          <div>
-            {head("Pickup targets")}
-            {fa.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={open} />)}
-            {tr.map((p) => (
-              <div key={p.id} className="lt-it" onClick={() => go("moves", "adddrop")}>
-                <span className="lt-ic lt-up">↗</span>
-                <div style={{ minWidth: 0 }}>
-                  <div className="text-sm"><b>{p.n}</b> <span className="lt-tm">{p.t} · {p.p}</span> trending</div>
-                  <div className="lt-why">{(p.chg || 0) >= 5 ? `+${H.f1(p.chg)}% rostered this week` : "Hot over the last 14 days"}</div>
-                </div>
-                <span className="lt-own fa">FA</span>
-              </div>
-            ))}
-            {!fa.length && !tr.length && <div className="lt-msg">No free agents moving up right now.</div>}
-          </div>
-        </div>
-        <div className="lt-bar"><span>{items.length - imp.length} minor changes hidden</span><button className="lt-link" style={{ padding: 0 }} onClick={open}>See all {items.length} in Lines →</button></div>
-      </H.Section>
-    );
-  }
-
-  window.LinesSummary = LinesSummary;
   window.LinesTab = LinesTab;
 })();

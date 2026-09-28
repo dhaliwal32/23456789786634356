@@ -1,4 +1,4 @@
-// ask-panel.js - the Ask button for Fantasy Islands GM (loaded by fantasy-gm.html).
+// ask-panel.js - the 💬 Ask button for Fantasy Islands GM (loaded by fantasy-gm.html).
 // Answers any question with Google Gemini, using your league data from the app.
 // Your Gemini key is saved only in this browser (localStorage) - never in the GitHub repo.
 (function () {
@@ -50,7 +50,7 @@ Rules for answering:
       if (w.es && ROLE[w.es]) bits.push(ROLE[w.es]);
       if (w.pp) bits.push(w.pp);
       const f = fpTxt(p); if (f) bits.push(f);
-      const tg = (H.tags(p, K) || []).filter((x) => x.t && !x.u).map((x) => x.t).join("; ");
+      const tg = (H.tags(p, K) || []).map((x) => x.t).filter((t) => t && !t.startsWith("📰")).join("; ");
       if (tg) bits.push(tg);
       return bits.join(" | ");
     };
@@ -128,7 +128,7 @@ Rules for answering:
           last = m + ": empty answer"; continue;
         }
         const msg = String((d.error && d.error.message) || r.status);
-        if (/api key/i.test(msg)) return { err: "Google says the key isn't valid. Click Key and paste it again." };
+        if (/api key/i.test(msg)) return { err: "Google says the key isn't valid. Click 🔑 Key and paste it again." };
         if (r.status === 403) return { err: "Google refused the key: " + msg };
         last = `${m}: ${msg}`;
       } catch (e) { last = "network error: " + e.message; }
@@ -174,21 +174,21 @@ Rules for answering:
       setBusy(false);
     };
     if (!open) {
-      return <button onClick={() => setOpen(true)} className="fixed bottom-5 right-5 z-40 bg-blue-600 rounded-full px-5 py-3 shadow-lg font-semibold text-sm">Ask</button>;
+      return <button onClick={() => setOpen(true)} className="fixed bottom-5 right-5 z-40 bg-blue-600 rounded-full px-5 py-3 shadow-lg font-semibold text-sm">💬 Ask</button>;
     }
     const needKey = !key || showKey;
     return (
       <div className="fixed bottom-0 right-0 sm:bottom-5 sm:right-5 z-50 w-full sm:w-[440px] h-[85vh] sm:h-[640px] bg-white border border-slate-200 rounded-t-xl sm:rounded-xl shadow-2xl flex flex-col text-sm">
         <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-200">
-          <span className="font-semibold">Ask your GM</span>
+          <span className="font-semibold">💬 Ask your GM</span>
           <span className="text-xs text-slate-400">Gemini · uses your league data</span>
-          <button className="ml-auto text-xs text-slate-500" onClick={() => setShowKey(!showKey)}>Key</button>
+          <button className="ml-auto text-xs text-slate-500" onClick={() => setShowKey(!showKey)}>🔑 Key</button>
           {msgs.length > 0 && <button className="text-xs text-slate-500" onClick={() => setMsgs([])}>Clear</button>}
           <button className="text-slate-500 px-1" onClick={() => setOpen(false)}>✕</button>
         </div>
         {needKey && (
           <div className="p-3 border-b border-slate-200 bg-slate-50">
-            <div className="text-xs text-slate-600 mb-2">Paste your Gemini API key (starts with <b>AIza</b>). It's saved only in this browser on this device, not on GitHub. Get it at aistudio.google.com → key icon.</div>
+            <div className="text-xs text-slate-600 mb-2">Paste your Gemini API key (starts with <b>AIza</b>). It's saved only in this browser on this device, not on GitHub. Get it at aistudio.google.com → 🔑 key icon.</div>
             <div className="flex gap-2">
               <input type="password" className="border border-slate-300 rounded-lg px-2 py-1.5 text-sm flex-1" placeholder="AIza..." value={keyInput} onChange={(e) => setKeyInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && saveKey()} />
               <button className="bg-blue-600 rounded-lg px-3 py-1.5" onClick={saveKey}>Save</button>
