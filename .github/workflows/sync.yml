@@ -36,7 +36,7 @@ jobs:
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python gm_lines.py
-              - name: Phone notifications (safe to fail)
+      - name: Phone notifications (safe to fail)
         continue-on-error: true
         timeout-minutes: 2
         env:
