@@ -1,0 +1,40 @@
+name: UI refresh
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = make fantasy-gm-test.html, live = change the real app, undo = restore backup"
+        required: true
+        default: test
+        type: choice
+        options: [test, live, undo]
+permissions:
+  contents: write
+concurrency:
+  group: ui-refresh
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Apply changes
+        run: python ui_refresh.py ${{ inputs.mode }}
+      - name: Save results
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          for f in fantasy-gm.html fantasy-gm-test.html fantasy-gm.backup-ui.html; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then echo "Nothing changed"; exit 0; fi
+          git commit -m "ui refresh (${{ inputs.mode }})"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase && git push; then exit 0; fi
+            sleep 5
+          done
+          exit 1
