@@ -190,7 +190,7 @@
   function Own({ x, s, H }) {
     if (x.ok === "me") return <span className="lt-own me">yours</span>;
     if (x.ok === "fa") return <span className="lt-own fa">FA</span>;
-    return <span className="lt-own">{x.p ? H.teamName(s, x.p.ft) : ""}</span>;
+    return <span className="lt-own">{x.p ? (H.TL ? <H.TL s={s} id={x.p.ft} /> : H.teamName(s, x.p.ft)) : ""}</span>;
   }
   function Row({ x, s, H, onPick, dim }) {
     const c = x.c, [ic, cl] = iconOf(c);
@@ -439,7 +439,7 @@
           <div>
             <div className="text-lg font-bold">{it.name}</div>
             <div className="text-xs text-slate-500">
-              {isG ? "Goalie" : it.g === "D" ? "Defence" : "Forward"} · {it.t} · {p ? H.teamName(s, p.ft) : "not in your league's ESPN player list"}
+              {isG ? "Goalie" : it.g === "D" ? "Defence" : "Forward"} · {it.t} · {p ? (H.TL ? <H.TL s={s} id={p.ft} /> : H.teamName(s, p.ft)) : "not in your league's ESPN player list"}
               {p && p.own ? ` · ${H.f1(p.own)}% rostered` : ""}{p && p.chg ? ` (${p.chg > 0 ? "+" : ""}${H.f1(p.chg)}%)` : ""}
             </div>
           </div>
@@ -568,6 +568,25 @@
     );
   }
 
+  // ---------- player pop-up used everywhere in the app ----------
+  function PlayerPopup({ p, s, wk, H, onClose }) {
+    const L = window.LINES_DATA || { teams: {}, changes: [], sched: {}, season: "This season" };
+    const ctx = useMemo(() => build(s, L), [s.players, L && L.generated]);
+    const [it, setIt] = useState(null);
+    useEffect(() => { setIt(null); }, [p && p.id]);
+    useEffect(() => { const k = (e) => { if (e.key === "Escape") onClose(); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, []);
+    const real = s.players.find((q) => q.id === p.id) || p;
+    const cur = it || { name: real.n, key: nk(real.n), t: real.t, g: real.p, p: real };
+    return (
+      <div className="fixed inset-0 z-50 overflow-y-auto" style={{ background: "rgba(0,0,0,.65)" }} onClick={onClose}>
+        <div className="max-w-2xl mx-auto my-10 px-3" onClick={(e) => e.stopPropagation()}>
+          <PlayerCard it={cur} s={s} wk={wk} H={H} L={L} ctx={ctx} onClose={onClose} onPick={setIt} />
+        </div>
+      </div>
+    );
+  }
+
+  window.PlayerPopup = PlayerPopup;
   window.LinesSummary = LinesSummary;
   window.LinesTab = LinesTab;
 })();
