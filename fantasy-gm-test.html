@@ -3,57 +3,81 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#060b18" />
+<meta name="theme-color" content="#121212" />
 <title>Fantasy Islands GM</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script>window.ESPN_DATA = null; document.write('<script src="espn-data.js?t=' + Date.now() + '"><\/script>');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
 <style>
-  :root { color-scheme: dark; }
-  body { background: #0b1120; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
-  .bg-slate-100 { background-color: #0b1120 !important; }
-  .bg-white { background-color: #111a2e !important; }
-  .bg-slate-50 { background-color: #0e1628 !important; }
-  .bg-slate-200 { background-color: #1c2740 !important; }
-  .bg-slate-900 { background-color: #060b18 !important; }
-  .text-slate-900 { color: #e6edf7 !important; }
-  .text-slate-700 { color: #cbd5e1 !important; }
-  .text-slate-600 { color: #aab6c8 !important; }
-  .text-slate-500 { color: #8b98ad !important; }
-  .text-slate-400 { color: #6f7c92 !important; }
-  .text-slate-300 { color: #56627a !important; }
-  .border-slate-100 { border-color: #1a2438 !important; }
-  .border-slate-200, .border-slate-800 { border-color: #22304a !important; }
-  .border-slate-300 { border-color: #2c3b58 !important; }
-  .border-slate-400, .border-b-slate-400 { border-color: #3b4b6b !important; }
-  .divide-slate-200 > * + * { border-color: #22304a !important; }
-  .bg-blue-50 { background-color: rgba(59,130,246,.13) !important; }
-  .bg-green-50 { background-color: rgba(34,197,94,.10) !important; }
-  .bg-red-50 { background-color: rgba(239,68,68,.10) !important; }
-  .bg-amber-50 { background-color: rgba(245,158,11,.10) !important; }
-  .bg-green-100 { background-color: rgba(34,197,94,.18) !important; }
-  .bg-amber-100 { background-color: rgba(245,158,11,.18) !important; }
-  .bg-red-100 { background-color: rgba(239,68,68,.18) !important; }
-  .border-green-200, .border-green-300 { border-color: rgba(34,197,94,.4) !important; }
-  .border-red-200 { border-color: rgba(239,68,68,.4) !important; }
-  .border-amber-200 { border-color: rgba(245,158,11,.4) !important; }
-  .text-green-700, .text-green-800 { color: #4ade80 !important; }
-  .text-red-600, .text-red-700 { color: #f87171 !important; }
-  .text-amber-600, .text-amber-800 { color: #fbbf24 !important; }
-  .text-blue-700, .text-blue-600 { color: #60a5fa !important; }
-  .text-sky-600 { color: #38bdf8 !important; }
-  .text-orange-600 { color: #fb923c !important; }
-  input, select, textarea { background-color: #0b1426 !important; color: #e6edf7 !important; border-color: #2c3b58 !important; }
+  :root { color-scheme: dark; --bg:#121212; --card:#1a1a1a; --card2:#161616; --line:#292929; --line2:#363636; --ink:#fafafa; --ink2:#d4d4d4; --mute:#8f8f8f; --faint:#666666; --accent:#8b7cff; --accentSoft:rgba(139,124,255,.14); --good:#5fd08a; --bad:#f06a6a; --warn:#f5c451; --serif:"Newsreader", Georgia, serif; }
+  body { background: var(--bg); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+  ::selection { background: rgba(139,124,255,.35); }
+  .bg-slate-100 { background-color: var(--bg) !important; }
+  .bg-white { background-color: var(--card) !important; }
+  .bg-slate-50 { background-color: var(--card2) !important; }
+  .bg-slate-200 { background-color: var(--line) !important; }
+  .bg-slate-800 { background-color: #202020 !important; }
+  .bg-slate-900 { background-color: rgba(18,18,18,.82) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .shadow, .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
+  .text-white, .text-slate-900 { color: var(--ink) !important; }
+  .text-slate-700 { color: var(--ink2) !important; }
+  .text-slate-600 { color: #b0b0b0 !important; }
+  .text-slate-500 { color: var(--mute) !important; }
+  .text-slate-400 { color: var(--faint) !important; }
+  .text-slate-300 { color: #4d4d4d !important; }
+  .border-slate-100, .border-slate-200, .border-slate-800 { border-color: var(--line) !important; }
+  .border-slate-300 { border-color: var(--line2) !important; }
+  .border-slate-400, .border-b-slate-400 { border-color: #4a4a4a !important; }
+  .divide-slate-200 > * + * { border-color: var(--line) !important; }
+  .bg-blue-50 { background-color: var(--accentSoft) !important; }
+  .bg-green-50 { background-color: rgba(95,208,138,.07) !important; }
+  .bg-red-50 { background-color: rgba(240,106,106,.07) !important; }
+  .bg-amber-50 { background-color: rgba(245,196,81,.07) !important; }
+  .bg-green-100 { background-color: rgba(95,208,138,.12) !important; }
+  .bg-amber-100 { background-color: rgba(245,196,81,.12) !important; }
+  .bg-red-100 { background-color: rgba(240,106,106,.12) !important; }
+  .border-green-200, .border-green-300 { border-color: rgba(95,208,138,.3) !important; }
+  .border-red-200 { border-color: rgba(240,106,106,.3) !important; }
+  .border-amber-200 { border-color: rgba(245,196,81,.3) !important; }
+  .text-green-500, .text-green-600, .text-green-700, .text-green-800 { color: var(--good) !important; }
+  .text-red-500, .text-red-600, .text-red-700 { color: var(--bad) !important; }
+  .text-amber-500, .text-amber-600, .text-amber-800 { color: var(--warn) !important; }
+  .text-blue-400, .text-blue-500, .text-blue-600, .text-blue-700 { color: var(--accent) !important; }
+  .text-sky-600 { color: #7fb3e0 !important; }
+  .text-orange-600 { color: #ff8a3d !important; }
+  .text-purple-400, .text-purple-500, .text-violet-400, .text-indigo-400 { color: var(--accent) !important; }
+  .bg-green-500 { background-color: var(--accent) !important; }
+  .bg-red-500 { background-color: var(--bad) !important; }
+  .bg-red-600 { background-color: #8f3434 !important; color: var(--ink) !important; }
+  .border-blue-400, .border-blue-500, .border-blue-600 { border-color: var(--accent) !important; }
+  .bg-blue-500, .bg-blue-600 { background-color: var(--ink) !important; color: #111111 !important; border-color: var(--ink) !important; }
+  .w-7.h-4.bg-blue-600 { background-color: var(--accent) !important; border-color: var(--accent) !important; }
+  .rounded-xl { border-radius: 12px !important; }
+  .rounded-lg { border-radius: 8px !important; }
+  .bg-white.rounded-xl.p-4 { padding: 1.4rem 1.5rem !important; }
+  .font-semibold.text-base { font-family: var(--serif); font-weight: 500 !important; font-size: 1.3rem !important; line-height: 1.2; letter-spacing: -0.01em; }
+  .font-bold.text-lg { font-family: var(--serif); font-weight: 500 !important; font-size: 1.4rem !important; letter-spacing: -0.01em; }
+  .text-4xl { font-weight: 600 !important; font-size: 2.75rem !important; line-height: 1.1; margin-top: .4rem; margin-bottom: .2rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .text-2xl { font-weight: 500 !important; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  input:not([type=checkbox]), select, textarea { background-color: transparent !important; color: var(--ink) !important; border-color: var(--line2) !important; border-radius: 8px !important; }
+  select option { background: var(--card); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(139,124,255,.22) !important; }
   input[type=date] { color-scheme: dark; }
-  .bg-blue-600 { background-color: #2563eb !important; color: #fff !important; }
+  input[type=checkbox] { accent-color: var(--accent); }
+  button, a { transition: color .15s ease, background-color .15s ease, border-color .15s ease; }
   .navscroll::-webkit-scrollbar { display: none; }
-  table th { font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .03em; color: #8b98ad; }
-  ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-thumb { background: #22304a; border-radius: 6px; }
+  table th { font-weight: 500; font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--mute); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-thumb { background: var(--line2); border-radius: 6px; }
 </style>
 </head>
 <body>
+<script>window.LINES_DATA = null; document.write('<script src="lines-data.js?t=' + Date.now() + '"><\/script>'); document.write('<script type="text/babel" data-presets="react" src="lines-tab.js?t=' + Date.now() + '"><\/script>');</script>
+<script>document.write('<script type="text/babel" data-presets="react" src="ask-panel.js?t=' + Date.now() + '"><\/script>');</script>
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useMemo } = React;
@@ -292,26 +316,26 @@ const tags = (p, K) => {
   const g = sigOf(p), out = [], fr = formRatio(p, K);
   { const M = window.__MODEL, pid = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null, mb = M && pid ? (M.base || {})[pid] : null;
     if (mb != null && p.proj && p.avg > 0 && window.__PMODE !== "espn") {
-      if (mb - p.avg >= 1 && mb / p.avg >= 1.15) out.push({ t: "📊 underrated", c: "text-green-700" });
-      else if (p.avg - mb >= 1 && mb / p.avg <= 0.85) out.push({ t: "📊 overrated", c: "text-amber-600" });
+      if (mb - p.avg >= 1 && mb / p.avg >= 1.15) out.push({ t: "underrated", c: "text-green-700" });
+      else if (p.avg - mb >= 1 && mb / p.avg <= 0.85) out.push({ t: "overrated", c: "text-amber-600" });
     } }
-  if (g.gs && g.gs.flag) out.push({ t: `🥅 started ${g.gs.rs} of last ${g.gs.rg}`, c: g.gs.rs / g.gs.rg > g.gs.prior ? "text-green-700 font-semibold" : "text-red-600 font-semibold" });
-  if (g.lines && g.lines.chg === "up") out.push({ t: `⬆ ${LBL[g.lines.grp] || "promoted"}`, c: "text-green-700 font-semibold" });
-  else if (g.lines && g.lines.chg === "down") out.push({ t: "⬇ demoted", c: "text-red-600" });
-  if (g.luck && g.luck.t === "s" && Math.abs(g.luck.d) >= 2) out.push({ t: g.luck.d > 0 ? `🎲 lucky +${f1(g.luck.d)} G` : `🎲 unlucky ${f1(g.luck.d)} G`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
-  if (g.luck && g.luck.t === "g" && Math.abs(g.luck.d) >= 4) out.push({ t: g.luck.d > 0 ? `🎲 hot SV +${f1(g.luck.d)}` : `🎲 cold SV ${f1(g.luck.d)}`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
-  if (fr !== null && fr >= 1.25) out.push({ t: `🔥 ${f1(g.rec.ppg)}/g last 14d`, c: "text-orange-600" });
-  else if (fr !== null && fr <= 0.7) out.push({ t: `❄ ${f1(g.rec.ppg)}/g last 14d`, c: "text-sky-600" });
-  if (g.ppChg === "added") out.push({ t: "⬆ new on PP1", c: "text-green-700 font-semibold" });
-  else if (g.ppChg === "removed") out.push({ t: "⬇ off PP1", c: "text-red-600 font-semibold" });
+  if (g.gs && g.gs.flag) out.push({ t: `started ${g.gs.rs} of last ${g.gs.rg}`, c: g.gs.rs / g.gs.rg > g.gs.prior ? "text-green-700 font-semibold" : "text-red-600 font-semibold" });
+  if (g.lines && g.lines.chg === "up") out.push({ t: `↑ ${LBL[g.lines.grp] || "promoted"}`, c: "text-green-700 font-semibold" });
+  else if (g.lines && g.lines.chg === "down") out.push({ t: "↓ demoted", c: "text-red-600" });
+  if (g.luck && g.luck.t === "s" && Math.abs(g.luck.d) >= 2) out.push({ t: g.luck.d > 0 ? `lucky +${f1(g.luck.d)} G` : `unlucky ${f1(g.luck.d)} G`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
+  if (g.luck && g.luck.t === "g" && Math.abs(g.luck.d) >= 4) out.push({ t: g.luck.d > 0 ? `hot SV +${f1(g.luck.d)}` : `cold SV ${f1(g.luck.d)}`, c: g.luck.d > 0 ? "text-amber-600" : "text-sky-600" });
+  if (fr !== null && fr >= 1.25) out.push({ t: `${f1(g.rec.ppg)}/g last 14d`, c: "text-orange-600" });
+  else if (fr !== null && fr <= 0.7) out.push({ t: `${f1(g.rec.ppg)}/g last 14d`, c: "text-sky-600" });
+  if (g.ppChg === "added") out.push({ t: "↑ new on PP1", c: "text-green-700 font-semibold" });
+  else if (g.ppChg === "removed") out.push({ t: "↓ off PP1", c: "text-red-600 font-semibold" });
   else if (g.pp1) out.push({ t: "PP1", c: "text-slate-500" });
   const t = g.toi;
-  if (t && t.d >= 120) out.push({ t: `⏱ ${mm(t.d)} TOI`, c: "text-green-700 font-semibold" });
-  else if (t && t.d <= -120) out.push({ t: `⏱ ${mm(t.d)} TOI`, c: "text-red-600" });
-  if (t && t.pd >= 60) out.push({ t: `⏱ PP ${mm(t.pd)}`, c: "text-green-700" });
-  else if (t && t.pd <= -60) out.push({ t: `⏱ PP ${mm(t.pd)}`, c: "text-red-600" });
-  if ((p.chg || 0) >= 5) out.push({ t: `📈 +${f1(p.chg)}% rostered`, c: "text-green-700" });
-  if (g.news && g.news.length) out.push({ t: "📰 " + (g.news[0].h || "").slice(0, 60), c: g.news[0].tone === "-" ? "text-red-600" : "text-slate-500", u: g.news[0].u });
+  if (t && t.d >= 120) out.push({ t: `${mm(t.d)} TOI`, c: "text-green-700 font-semibold" });
+  else if (t && t.d <= -120) out.push({ t: `${mm(t.d)} TOI`, c: "text-red-600" });
+  if (t && t.pd >= 60) out.push({ t: `PP ${mm(t.pd)}`, c: "text-green-700" });
+  else if (t && t.pd <= -60) out.push({ t: `PP ${mm(t.pd)}`, c: "text-red-600" });
+  if ((p.chg || 0) >= 5) out.push({ t: `+${f1(p.chg)}% rostered`, c: "text-green-700" });
+  if (g.news && g.news.length) out.push({ t: "" + (g.news[0].h || "").slice(0, 60), c: g.news[0].tone === "-" ? "text-red-600" : "text-slate-500", u: g.news[0].u });
   return out;
 };
 const Tags = ({ p, K }) => (
@@ -419,12 +443,13 @@ const Section = ({ title, sub, link, children }) => (
 
 // ---------- App ----------
 const NAV = [
-  ["today", "🏠 Today", null],
-  ["matchup", "⚔️ Matchup", null],
-  ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["twoforone", "2-for-1 builder"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
-  ["league", "🏆 League", [["power", "Power rankings"], ["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
-  ["players", "👥 Players", null],
-  ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
+  ["today", "Today", null],
+  ["matchup", "Matchup", null],
+  ["moves", "Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["twoforone", "2-for-1 builder"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
+  ["league", "League", [["power", "Power rankings"], ["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
+  ["lines", "Lines", null],
+  ["players", "Players", null],
+  ["setup", "Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
 ];
 
 function App() {
@@ -485,6 +510,7 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
+  else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={{ effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel }} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "bench" ? <BenchFixer {...P} /> : sub === "twoforone" ? <TwoForOne {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
@@ -492,7 +518,7 @@ function App() {
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800 shadow-lg">
         <div className="max-w-6xl mx-auto px-3 pt-2 pb-1 flex flex-wrap items-center gap-2">
-          <div className="font-bold text-lg mr-1 text-white">🏒 Fantasy Islands GM</div>
+          <div className="font-bold text-lg mr-1 text-white">Fantasy Islands GM</div>
           <select className={inp + " max-w-[210px]"} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>
             {s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}
           </select>
@@ -503,7 +529,7 @@ function App() {
           </select>
           <span className={"text-xs px-2 py-1 rounded-full " + (s.lastSync ? (ageH !== null && ageH > 2 ? "bg-red-100 text-red-600" : "bg-green-100 text-green-700") : "bg-slate-200 text-slate-500")}>{s.lastSync ? "● Synced " + fmtTime(s.lastSync) : "Not synced yet"}</span>
           {syncMsg && <span className="text-xs text-green-700 hidden md:inline">{syncMsg}</span>}
-          <a href="ai-dashboard.html" className="text-xs text-blue-600 ml-auto">🧪 AI Lab</a><span className="text-xs text-slate-500">{status}</span>
+          <a href="ai-dashboard.html" className="text-xs text-blue-600 ml-auto">AI Lab</a><span className="text-xs text-slate-500">{status}</span>
         </div>
         <div className="max-w-6xl mx-auto px-2 flex gap-1 overflow-x-auto navscroll">
           {NAV.map(([k, l]) => (
@@ -512,11 +538,12 @@ function App() {
         </div>
       </div>
       {ageH !== null && ageH > 2 && (
-        <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">⚠ Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
+        <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
         {nav && nav[2] && <div className="mb-4"><Pills items={nav[2]} value={sub} onChange={(v) => setSubs((x) => ({ ...x, [tab]: v }))} /></div>}
         {content}
+        {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
     </div>
   );
@@ -555,7 +582,7 @@ function Today({ s, wk, go }) {
   const intel = [...ppAdds, ...hot.filter((p) => !ppAdds.includes(p))].slice(0, 6);
   const news = mine.filter((p) => (sigOf(p).news || []).length).slice(0, 5);
   const pct = Math.max(6, Math.min(94, 50 + margin / 2));
-  const icon = { bad: "⛔", warn: "⚠️", good: "✅" };
+  const icon = { bad: "●", warn: "●", good: "●" };
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-xl border border-slate-200 p-4">
@@ -572,7 +599,7 @@ function Today({ s, wk, go }) {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         <Section title={dday ? (dday === today ? "Today's lineup check" : `Next game day — ${dayLabel(dday)}`) : "No games left this week"} link={["Matchup", () => go("matchup")]}>
-          {checks.length ? checks.map(([k, t], i) => <div key={i} className={"py-1.5 border-t border-slate-100 " + (k === "bad" ? "text-red-600" : k === "warn" ? "text-amber-600" : "text-green-700")}>{icon[k]} {t}</div>) : <div className="text-green-700">✅ Lineup looks good.</div>}
+          {checks.length ? checks.map(([k, t], i) => <div key={i} className={"py-1.5 border-t border-slate-100 " + (k === "bad" ? "text-red-600" : k === "warn" ? "text-amber-600" : "text-green-700")}>{icon[k]} {t}</div>) : <div className="text-green-700">Lineup looks good.</div>}
           {L && <div className="text-xs text-slate-500 mt-2">{L.start.length} of your players play · projected {f1(L.total)} vs {f1(OL.total)}</div>}
         </Section>
         <Section title="Top moves this week" link={["All moves", () => go("moves", "adddrop")]}>
@@ -586,7 +613,7 @@ function Today({ s, wk, go }) {
         <Section title="Injuries on your team" link={["Injuries", () => go("setup", "inj")]}>
           {outNow.length ? outNow.map((p) => { const b = effBack(p); const soon = b.d && dates.length && b.d <= dates[dates.length - 1]; return (
             <div key={p.id} className="py-1.5 border-t border-slate-100 flex gap-2"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? (soon ? "back this week · " : "back ") + mdL(b.d) : "no return date"}</span></div>
-          ); }) : <div className="text-green-700">✅ Everyone healthy.</div>}
+          ); }) : <div className="text-green-700">Everyone healthy.</div>}
         </Section>
       </div>
       <Section title="News on your players" link={["All news", () => go("league", "news")]}>
@@ -751,7 +778,7 @@ function PPView({ s }) {
                   const badge = !p ? null : p.ft === s.me ? <span className="text-xs text-blue-700 font-semibold">yours</span> : p.ft === "fa" ? <span className="text-xs text-green-700 font-semibold">FA</span> : <span className="text-xs text-slate-400 truncate">{teamName(s, p.ft)}</span>;
                   return (
                     <div key={n} className={"flex justify-between gap-2 text-xs py-0.5 " + (p && p.ft === "fa" ? "bg-green-50 rounded px-1" : p && p.ft === s.me ? "bg-blue-50 rounded px-1" : "")}>
-                      <span>{n}{c === "added" ? <span className="text-green-700 ml-1">⬆ new</span> : ""}</span>{badge}
+                      <span>{n}{c === "added" ? <span className="text-green-700 ml-1">↑ new</span> : ""}</span>{badge}
                     </div>
                   );
                 }) : <div className="text-xs text-slate-400">not available</div>}
@@ -930,7 +957,7 @@ function EdgesPanel({ s }) {
   const None = ({ t }) => <div className="text-slate-400 text-xs">{t}</div>;
   return (
     <div className="space-y-4">
-      <Section title="⬆ Line promotions" sub={`Daily Faceoff even-strength lines${S.lines ? `, checked ${S.lines.asof}` : ""}. Top-6 forwards and top-4 D get more minutes and better linemates — points usually follow within a week.`}>
+      <Section title="↑ Line promotions" sub={`Daily Faceoff even-strength lines${S.lines ? `, checked ${S.lines.asof}` : ""}. Top-6 forwards and top-4 D get more minutes and better linemates — points usually follow within a week.`}>
         {!S.lines ? <None t="Line data appears after the next sync (needs the updated gm_signals.py)." /> : (<>
           <Sub t="Free agents just promoted (pickup targets)" />
           {promoFA.length ? promoFA.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <None t="No free-agent promotions since yesterday." />}
@@ -939,7 +966,7 @@ function EdgesPanel({ s }) {
           {promoOther.length > 0 && <><Sub t="Promoted on other fantasy teams (trade targets)" />{promoOther.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</>}
         </>)}
       </Section>
-      <Section title="🎲 Luck detector" sub="Compares this season's shooting % (skaters) and save % (goalies) with their last two seasons. Luck evens out — other managers judge by recent points, so trade on it.">
+      <Section title="Luck detector" sub="Compares this season's shooting % (skaters) and save % (goalies) with their last two seasons. Luck evens out — other managers judge by recent points, so trade on it.">
         {!S.luck ? <None t="Luck data appears after the next sync (needs the updated gm_signals.py)." /> : !Object.keys(S.luck).length ? <None t="Needs about 25 shots per skater / 150 shots against per goalie — usually by late October." /> : (<>
           <Sub t="Sell high — your lucky players (points will likely drop)" />
           {sellHigh.length ? sellHigh.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None of your players are running unusually hot." />}
@@ -950,7 +977,7 @@ function EdgesPanel({ s }) {
           {myUnlucky.length > 0 && <><Sub t="Your unlucky players — don't sell low" />{myUnlucky.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />)}</>}
         </>)}
       </Section>
-      <Section title="📊 Model vs ESPN" sub="Where your GM model (usage, ice time, betting lines, matchups) disagrees with ESPN's projection by 15%+. Most managers only see ESPN's number — so these players are mispriced in your league.">
+      <Section title="Model vs ESPN" sub="Where your GM model (usage, ice time, betting lines, matchups) disagrees with ESPN's projection by 15%+. Most managers only see ESPN's number — so these players are mispriced in your league.">
         {!M ? <None t="Needs the GM model in the sync." /> : (<>
           <Sub t="Undervalued free agents" />
           {uFA.length ? uFA.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None right now." />}
@@ -1033,7 +1060,7 @@ function BenchFixer({ s }) {
               <div className="text-xs text-slate-500 mb-1">Sitting on your bench:</div>
               {w.wl.map((x) => <div key={x.p.id} className="flex flex-wrap gap-2 py-1 border-t border-slate-100"><span className="font-medium">{x.p.n}</span><span className="text-xs text-slate-400">{x.p.p} · {x.p.t}</span><span className="text-xs text-red-600">{x.g} game{x.g > 1 ? "s" : ""} wasted ({x.days.join(", ")}) ≈ {f1(x.pts)} pts</span>{prot.has(x.p.id) && <span className="text-xs text-slate-500">protected</span>}</div>)}
             </div>
-          ) : <div className="text-green-700 text-sm">✅ No wasted games this week.</div>}
+          ) : <div className="text-green-700 text-sm">No wasted games this week.</div>}
           {w.fix ? (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
               <div className="font-semibold">Fix: drop <b>{w.fix.d.n}</b> <span className="text-xs text-slate-500 font-normal">({w.fix.d.p})</span> → add <b>{w.fix.f.n}</b> <span className="text-xs text-slate-500 font-normal">{w.fix.f.p} · {w.fix.f.t}</span> <span className="text-green-700 ml-2">+{f1(w.fix.gain)} this week</span>{H > 1 && i < res.weeks.length - 1 ? <span className="text-xs text-slate-500 ml-2">(+{f1(w.fix.rest)} through week {s.wk + res.weeks.length})</span> : null}</div>
@@ -1095,7 +1122,7 @@ function PlayoffPlanner({ s, setS }) {
         <Section title="Your players with weak playoff schedules">
           {weakSched.length ? weakSched.map(({ p, g }) => (
             <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}</span><span className="ml-auto text-red-600 text-xs">{g} games ({(g - avgGames).toFixed(1)} vs avg)</span></div>
-          )) : <div className="text-green-700">✅ None of your players have a clearly light playoff schedule.</div>}
+          )) : <div className="text-green-700">None of your players have a clearly light playoff schedule.</div>}
           <div className="text-xs text-slate-500 mt-2">Trade candidates before the deadline — swap them for similar players with more games.</div>
         </Section>
       </div>
@@ -1176,15 +1203,15 @@ function TwoForOne({ s }) {
     const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
     if (mb != null && p.proj && p.avg > 0) {
       if (mb / p.avg <= 0.85 && p.avg - mb >= 1) f.push({ t: "ESPN overrates", sell: true });
-      else if (mb / p.avg >= 1.15 && mb - p.avg >= 1) f.push({ t: "📊 underrated", sell: false });
+      else if (mb / p.avg >= 1.15 && mb - p.avg >= 1) f.push({ t: "underrated", sell: false });
     }
-    if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push({ t: "🎲 lucky", sell: true });
-    if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) f.push({ t: "🎲 unlucky", sell: false });
-    if ((formRatio(p, K) || 0) >= 1.25) f.push({ t: "🔥 hot streak", sell: true });
+    if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push({ t: "lucky", sell: true });
+    if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) f.push({ t: "unlucky", sell: false });
+    if ((formRatio(p, K) || 0) >= 1.25) f.push({ t: "hot streak", sell: true });
     const t = g.toi;
-    if (t && (t.d >= 90 || t.pd >= 45)) f.push({ t: "⏱ more ice time", sell: false });
-    if (g.lines && g.lines.chg === "up") f.push({ t: "⬆ promoted", sell: false });
-    if (g.ppChg === "added") f.push({ t: "⬆ new on PP1", sell: false });
+    if (t && (t.d >= 90 || t.pd >= 45)) f.push({ t: "more ice time", sell: false });
+    if (g.lines && g.lines.chg === "up") f.push({ t: "↑ promoted", sell: false });
+    if (g.ppChg === "added") f.push({ t: "↑ new on PP1", sell: false });
     return f;
   };
   const sellFlags = (p) => valueFlags(p).filter((x) => x.sell).map((x) => x.t);
@@ -1263,7 +1290,7 @@ function TwoForOne({ s }) {
   return (
     <div className="space-y-4">
       <Section title="2-for-1 trade builder" sub="Give two players, get one better one — then use the roster spot you freed to pick up the best free agent. The other manager judges the trade by ESPN's numbers and recent points (they see a 2-for-1 win); you judge it by your model including the pickup.">
-        <div className="text-xs text-slate-500">Numbers next to players: <b>true value</b> (your model, rest of season) / <span className="text-slate-400">how others see him</span> (ESPN projection + actual points). Look for players where the second number is bigger — those are your best trade chips. Amber flags (🎲 lucky, ESPN overrates, 🔥 hot) = sell-high candidates.</div>
+        <div className="text-xs text-slate-500">Numbers next to players: <b>true value</b> (your model, rest of season) / <span className="text-slate-400">how others see him</span> (ESPN projection + actual points). Look for players where the second number is bigger — those are your best trade chips. Amber flags (lucky, ESPN overrates, hot) = sell-high candidates.</div>
       </Section>
       <Section title="Suggested 2-for-1 trades" sub={`Only realistic offers: judged the way managers judge trades — value above what's free on waivers (replacement level now: F ${f1(rep.F)}, D ${f1(rep.D)}, G ${f1(rep.G)} pts/game) — and your better player must be at least 75% as good per game as the one you ask for. Your side is judged by your model, including the free agent you add.`}>
         <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy} onClick={findTrades}>{busy ? "Searching…" : "Find 2-for-1 trades"}</button>
@@ -1310,9 +1337,9 @@ function TwoForOne({ s }) {
             <Card label="Your lineup impact" value={<span><D v={manual.myR} /> ROS</span>} sub={<span>Next 4 wks <D v={manual.my4} /> · without the pickup <D v={manual.noFill} /></span>} />
             <Card label="Their lineup impact" value={<span><D v={manual.thR} /> ROS</span>} />
           </div>
-          {!manual.ok && <div className="text-red-600 text-sm mb-2">⚠ This leaves you below your roster minimums — choose a pickup at the short position.</div>}
+          {!manual.ok && <div className="text-red-600 text-sm mb-2">This leaves you below your roster minimums — choose a pickup at the short position.</div>}
           <div className="text-xs text-slate-500">
-            {manual.myR > 0 && theyThink >= -0.05 ? "✅ Win-win on paper: they gain by ESPN's numbers, you gain by your model plus the pickup. Make sure the free agent is still available before offering, and add him the moment the trade goes through." : manual.myR > 0 ? "You gain, but they probably see it as a loss — expect a counter-offer or a veto risk." : "This doesn't improve your lineup even with the pickup — the two players you give are worth more to you than the upgrade."}
+            {manual.myR > 0 && theyThink >= -0.05 ? "Win-win on paper: they gain by ESPN's numbers, you gain by your model plus the pickup. Make sure the free agent is still available before offering, and add him the moment the trade goes through." : manual.myR > 0 ? "You gain, but they probably see it as a loss — expect a counter-offer or a veto risk." : "This doesn't improve your lineup even with the pickup — the two players you give are worth more to you than the upgrade."}
           </div>
         </Section>
       )}
@@ -1367,7 +1394,7 @@ function TradeAnalyzer({ s }) {
     </Section>
   );
   const Bal = ({ before, after, label, check }) => { const b = counts(before), a = counts(after); return (
-    <div>{label}: {["F", "D", "G"].map((k) => <span key={k} className={"mr-3 " + (check && a[k] < mins[k] ? "text-red-600 font-semibold" : a[k] !== b[k] ? "text-blue-700" : "")}>{k} {b[k]}→{a[k]}{check && a[k] < mins[k] ? " ⚠" : ""}</span>)}<span className="text-xs text-slate-500">({after.filter((p) => !p.ir).length}/22 active)</span></div>
+    <div>{label}: {["F", "D", "G"].map((k) => <span key={k} className={"mr-3 " + (check && a[k] < mins[k] ? "text-red-600 font-semibold" : a[k] !== b[k] ? "text-blue-700" : "")}>{k} {b[k]}→{a[k]}{check && a[k] < mins[k] ? " " : ""}</span>)}<span className="text-xs text-slate-500">({after.filter((p) => !p.ir).length}/22 active)</span></div>
   ); };
   const Delta = ({ v }) => <span className={"font-semibold " + (v >= 0 ? "text-green-700" : "text-red-700")}>{v >= 0 ? "+" : ""}{f1(v)}</span>;
   return (
@@ -1389,7 +1416,7 @@ function TradeAnalyzer({ s }) {
           </div>
           <Bal before={mine} after={res.myAfter} label={teamName(s, s.me)} check />
           <Bal before={theirs} after={res.thAfter} label={teamName(s, partner)} />
-          <div className="text-xs text-slate-500 mt-2">{res.myAfter.filter((p) => !p.ir).length > 22 ? "⚠ Over 22 active players — you'd need a drop. " : ""}Best trades: green lineup impact for you, close to fair in raw value.</div>
+          <div className="text-xs text-slate-500 mt-2">{res.myAfter.filter((p) => !p.ir).length > 22 ? "Over 22 active players — you'd need a drop. " : ""}Best trades: green lineup impact for you, close to fair in raw value.</div>
         </Section>
       )}
       <div className="grid md:grid-cols-2 gap-4">
@@ -1619,10 +1646,10 @@ function ClimbPanel({ s, data, ranks }) {
 
       <Sub t="3 · Stop wasting games" />
       {wasted.w > 0 ? <div className="text-sm">About <b>{wasted.w} games</b> (≈ <b>{f1(wasted.pts)} pts</b>) will sit on your bench over the next 4 weeks because you have more players than lineup slots on busy nights. Trade two of those depth players for one better player (2-for-1), or swap one for a position you're short on.</div>
-        : <div className="text-green-700 text-sm">✅ Almost no games wasted — your roster fits your lineup slots well.</div>}
+        : <div className="text-green-700 text-sm">Almost no games wasted — your roster fits your lineup slots well.</div>}
 
       <Sub t="4 · Injuries & IR" />
-      {outNow.length ? <div className="text-sm">{outNow.map((p) => { const b = effBack(p).d; return <div key={p.id}>{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · on IR" : ""}</span> <span className="text-xs text-slate-500">— {b ? "back " + mdL(b) : "no return date"}</span></div>; })}</div> : <div className="text-green-700 text-sm">✅ Everyone healthy.</div>}
+      {outNow.length ? <div className="text-sm">{outNow.map((p) => { const b = effBack(p).d; return <div key={p.id}>{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · on IR" : ""}</span> <span className="text-xs text-slate-500">— {b ? "back " + mdL(b) : "no return date"}</span></div>; })}</div> : <div className="text-green-700 text-sm">Everyone healthy.</div>}
       {!irUsed && irCandidate ? <div className="text-amber-600 text-sm mt-1">Your IR slot is empty — move {irCandidate.n} there (if ESPN lists him as IR-eligible) to free a roster spot for a pickup.</div> : null}
       {outNow.length >= 3 ? <div className="text-xs text-slate-500 mt-1">With {outNow.length} players out, stream the open spots with Moves → Weekly planner each week until they return.</div> : null}
 
@@ -1766,7 +1793,7 @@ function AddDrop({ s, setS }) {
           <select className={inp} value={add} onChange={(e) => setAdd(e.target.value)}><option value="">Add — free agent</option>{[...fas].sort((a, b) => a.n.localeCompare(b.n)).map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}, {p.t})</option>)}</select>
           <select className={inp} value={drop} onChange={(e) => setDrop(e.target.value)}><option value="">Drop — my player</option>{myR.filter((p) => !p.ir).map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}, {p.t})</option>)}</select>
           {sim !== null && <span className={"font-semibold " + (sim >= 0 ? "text-green-700" : "text-red-700")}>{sim >= 0 ? "+" : ""}{f1(sim)} pts · season {effAvg(A, K) - effAvg(D, K) >= 0 ? "+" : ""}{f1(effAvg(A, K) - effAvg(D, K))}/game</span>}
-          {simBreaks && <span className="text-red-600 text-xs font-semibold">⚠ below your {D.p} minimum</span>}
+          {simBreaks && <span className="text-red-600 text-xs font-semibold">below your {D.p} minimum</span>}
           {sim !== null && <button className="bg-blue-600 rounded-lg px-3 py-1.5" onClick={() => { apply(add, drop); setAdd(""); setDrop(""); }}>Apply here</button>}
         </div>
         <div className="text-xs text-slate-500 mt-2">Make the real move on ESPN — the next sync confirms it.</div>
@@ -2012,7 +2039,7 @@ function Settings({ s, setS }) {
   const Sg = E && E.signals;
   const download = () => { const blob = new Blob([JSON.stringify(s)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `fantasy-gm-backup-${todayISO()}.json`; a.click(); setMsg("Backup file downloaded — keep it somewhere safe."); };
   const upload = (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const v = JSON.parse(r.result); if (v.players && v.weeks) { setS(migrate(v)); setMsg("Backup restored."); } else setMsg("That file isn't a backup."); } catch (ex) { setMsg("Couldn't read that file."); } }; r.readAsText(f); };
-  const row = (ok, label, detail) => <div className="flex gap-2 py-1 border-t border-slate-100"><span>{ok ? "✅" : "⚪"}</span><span className="font-medium">{label}</span><span className="text-slate-500 text-xs ml-auto text-right">{detail}</span></div>;
+  const row = (ok, label, detail) => <div className="flex gap-2 py-1 border-t border-slate-100"><span><span className={ok ? "text-green-700" : "text-slate-400"}>●</span></span><span className="font-medium">{label}</span><span className="text-slate-500 text-xs ml-auto text-right">{detail}</span></div>;
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <Section title="Data sources" sub={E ? `${E.leagueName || "Your league"} · synced ${fmtTime(E.generated)}` : "No data file found."}>
@@ -2028,8 +2055,8 @@ function Settings({ s, setS }) {
       </Section>
       <Section title="Backup & restore" sub="Your settings (goalie start %, return dates, protected players, minimums) live in this browser. Back them up.">
         <div className="flex flex-wrap gap-2">
-          <button className="bg-blue-600 rounded-lg px-3 py-1.5" onClick={download}>⬇ Download backup file</button>
-          <label className="border border-slate-300 rounded-lg px-3 py-1.5 cursor-pointer">⬆ Restore from file<input type="file" accept=".json,application/json" className="hidden" onChange={upload} /></label>
+          <button className="bg-blue-600 rounded-lg px-3 py-1.5" onClick={download}>↓ Download backup file</button>
+          <label className="border border-slate-300 rounded-lg px-3 py-1.5 cursor-pointer">↑ Restore from file<input type="file" accept=".json,application/json" className="hidden" onChange={upload} /></label>
         </div>
         {msg && <div className="text-xs text-green-700 mt-2">{msg}</div>}
         <details className="mt-3 text-xs text-slate-500">
