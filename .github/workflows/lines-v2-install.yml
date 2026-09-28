@@ -1,0 +1,55 @@
+name: Install new Lines layout
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = make a test page, live = switch the real app (backup first), undo = restore the old Lines tab"
+        required: true
+        default: test
+        type: choice
+        options:
+          - test
+          - live
+          - undo
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fantasy-sync
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        env:
+          MODE: ${{ inputs.mode }}
+        run: |
+          set -e
+          test -f lines-tab-v2.js || { echo "lines-tab-v2.js is missing - nothing changed"; exit 1; }
+          if [ "$MODE" = "test" ]; then
+            n=$(grep -c 'src="lines-tab.js?t=' fantasy-gm.html || true)
+            if [ "$n" != "1" ]; then echo "Expected the lines-tab.js line once in fantasy-gm.html, found $n - nothing changed"; exit 1; fi
+            sed 's/src="lines-tab.js?t=/src="lines-tab-v2.js?t=/' fantasy-gm.html > fantasy-gm-lines-test.html
+            echo "Test page written: fantasy-gm-lines-test.html"
+          elif [ "$MODE" = "live" ]; then
+            if [ ! -f lines-tab.before-redesign.js ]; then cp lines-tab.js lines-tab.before-redesign.js; echo "Old Lines tab backed up"; fi
+            cp lines-tab-v2.js lines-tab.js
+            echo "New Lines tab is live"
+          else
+            test -f lines-tab.before-redesign.js || { echo "No backup found - nothing to undo"; exit 1; }
+            cp lines-tab.before-redesign.js lines-tab.js
+            echo "Old Lines tab restored"
+          fi
+      - name: Save results
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "new lines layout: ${{ inputs.mode }}"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
