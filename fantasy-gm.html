@@ -457,6 +457,20 @@ const NAV = [
   ["setup", "Setup", [["settings", "Settings & backup"], ["sched", "Schedule & weeks"], ["bulk", "Bulk update"], ["inj", "Injury overrides"]]],
 ];
 
+function livePP1(E) {
+  const L = window.LINES_DATA;
+  if (!L || !L.teams || !E || !E.players || !window.__SIG) return;
+  const k = (x) => (x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.'’]/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+  const byT = {}, byN = {};
+  E.players.forEach((p) => { if (!p.n) return; const n = k(p.n); byT[n + "|" + p.t] = String(p.id); byN[n] = byN[n] === undefined ? String(p.id) : null; });
+  const idOf = (n, t) => byT[k(n) + "|" + t] || byN[k(n)] || null;
+  const units = {}, on = {}, changes = {};
+  Object.entries(L.teams).forEach(([t, x]) => { const u = ((x || {}).lines || {}).PP1 || []; units[t] = u; u.forEach((n) => { const id = idOf(n, t); if (id) on[id] = true; }); });
+  const since = Date.now() - 36 * 3600 * 1000;
+  [...(L.changes || [])].reverse().forEach((c) => { if (c.type !== "pp" || Date.parse(c.at) < since) return; const id = idOf(c.name, c.team) || (c.e ? String(c.e) : null); if (id) changes[id] = c.dir === "up" ? "added" : "removed"; });
+  Object.keys(changes).forEach((id) => { if ((changes[id] === "removed") === !!on[id]) delete changes[id]; });
+  window.__SIG = { ...window.__SIG, pp1: { asof: new Date(L.lines_at || L.generated).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }), on, changes, units } };
+}
 function App() {
   const [s, setS] = useState(init);
   const [tab, setTab] = useState("today");
@@ -492,6 +506,7 @@ function App() {
       };
       sc.onerror = () => sc.remove();
       document.head.appendChild(sc);
+      const ls = document.createElement("script"); ls.src = "lines-data.js?t=" + Date.now(); ls.onload = ls.onerror = () => ls.remove(); document.head.appendChild(ls);
     }, 2 * 60 * 1000);
     return () => clearInterval(id);
   }, [loaded]);
@@ -502,7 +517,7 @@ function App() {
   }, [s, loaded]);
   const E = window.ESPN_DATA;
   window.__MODEL = (E && E.model) || null;
-  window.__SIG = (E && E.signals) || null;
+  window.__SIG = (E && E.signals) || null; livePP1(E);
   useEffect(() => { fetch("ai/models/ai_proj.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((A) => { if (!A || !A.proj || !((Date.now() - Date.parse(A.asof)) / 36e5 < 36)) return; const avg = {}; Object.entries(A.proj).forEach(([id, m]) => { const v = Object.values(m).filter((x) => x != null); if (v.length) avg[id] = v.reduce((a, b) => a + b, 0) / v.length; }); window.__AI = A; window.__AIAVG = avg; setS((st) => ({ ...st, players: [...st.players] })); }).catch(() => {}); }, []);
   window.__PMODE = window.__MODEL ? s.pmode || "blend" : "espn";
   window.__GOALIES = useMemo(() => { const o = {}; Object.entries(s.goalies || {}).forEach(([d, m]) => { o[d] = {}; Object.entries(m || {}).forEach(([n, v]) => { o[d][nrm(n)] = v; }); }); return o; }, [s.goalies]);
