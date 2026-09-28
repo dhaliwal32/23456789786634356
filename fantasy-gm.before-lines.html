@@ -54,7 +54,6 @@
 </style>
 </head>
 <body>
-<script>window.LINES_DATA = null; document.write('<script src="lines-data.js?t=' + Date.now() + '"><\/script>'); document.write('<script type="text/babel" data-presets="react" src="lines-tab.js?t=' + Date.now() + '"><\/script>');</script>
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useMemo } = React;
@@ -424,7 +423,6 @@ const NAV = [
   ["matchup", "⚔️ Matchup", null],
   ["moves", "🔁 Moves", [["advice", "Advice"], ["planner", "Weekly planner"], ["bench", "Bench fixer"], ["adddrop", "Add / Drop"], ["edges", "Edges"], ["trade", "Trade analyzer"], ["twoforone", "2-for-1 builder"], ["ppfa", "PP1 free agents"], ["playoffs", "Playoff planner"]]],
   ["league", "🏆 League", [["power", "Power rankings"], ["standings", "Scores & standings"], ["odds", "Betting lines"], ["pp", "PP1 units"], ["news", "News"]]],
-  ["lines", "🏒 Lines", null],
   ["players", "👥 Players", null],
   ["setup", "⚙️ Setup", [["mine", "My roster"], ["opp", "Other rosters"], ["fa", "Free agents"], ["inj", "Injuries"], ["bulk", "Bulk update"], ["sched", "Schedule & weeks"], ["settings", "Settings & backup"]]],
 ];
@@ -487,7 +485,6 @@ function App() {
   if (tab === "today") content = <Today {...P} />;
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "players") content = <Players {...P} />;
-  else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={{ effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel }} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "moves") content = sub === "adddrop" ? <AddDrop {...P} /> : sub === "trade" ? <TradeAnalyzer {...P} /> : sub === "ppfa" ? <AvailPP s={s} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "planner" ? <AcqPlanner {...P} /> : sub === "bench" ? <BenchFixer {...P} /> : sub === "twoforone" ? <TwoForOne {...P} /> : sub === "edges" ? <EdgesPanel {...P} /> : <AdvicePanel {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "pp" ? <PPView s={s} /> : sub === "news" ? <NewsView s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "opp" ? <OppRosters {...P} /> : sub === "fa" ? <RosterTable {...P} team="fa" /> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "sched" ? <Schedule {...P} /> : sub === "settings" ? <Settings {...P} /> : <RosterTable {...P} team={s.me} />;
