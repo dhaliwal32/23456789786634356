@@ -453,37 +453,40 @@ def alert_for(c):
         title, prio = "Pickup idea: bigger role", "default"
     return title, c["text"], prio, "arrow_down" if bad else "arrow_up"
 
-
 def send_alerts(state, now):
     try:
-        import gm_alerts
+        import gm_notify
     except Exception as ex:
-        print(f"(lines) alerts unavailable: {ex}")
-        return
-    if not gm_alerts.NTFY_TOPIC or "PASTE" in gm_alerts.NTFY_TOPIC:
-        print("(lines) alerts off - no ntfy topic")
-        return
-    h = now.astimezone(PT).hour
-    if h >= QUIET_START or h < QUIET_END:
-        print("(lines) quiet hours - alerts wait until 7 AM")
+        print(f"(lines) notifications unavailable: {ex}")
         return
     pending = [c for c in state.get("changes") or [] if c.get("who") and not c.get("alerted")
                and parse(c["at"]) and now - parse(c["at"]) < timedelta(hours=ALERT_MAX_AGE_H)]
     if not pending:
         return
-    pending.sort(key=lambda c: (c["who"] != "mine", c["at"]))
-    first = pending if len(pending) <= MAX_ALERTS_PER_RUN else pending[:MAX_ALERTS_PER_RUN - 1]
-    rest = pending[len(first):]
-    for c in first:
-        gm_alerts.send(*alert_for(c))
-        c["alerted"] = True
-    if rest:
-        msg = "; ".join(c["text"] for c in rest[:6]) + (" ..." if len(rest) > 6 else "") + " - see the Lines tab."
-        gm_alerts.send(f"{len(rest)} more roster/line changes", msg, "low", "clipboard")
-        for c in rest:
-            c["alerted"] = True
-    print(f"(lines) phone alerts sent: {len(first)}{' + 1 summary' if rest else ''}")
+    try:
+        sched = read_schedule(now)
+    except Exception:
+        sched = {}
+    today = now.astimezone(ET).date().isoformat()
 
+    def plays_soon(team):
+        for g in sched.get(team) or []:
+            st = parse(g.get("s") or "")
+            if g.get("d") == today and st and st > now:
+                return True
+        return False
+
+    urgent_n = 0
+    for c in sorted(pending, key=lambda c: (c["who"] != "mine", c["at"])):
+        title, text, prio, tags = alert_for(c)
+        bad = c["dir"] in ("down", "out")
+        gone = c["type"] in ("lineup", "move") or (c["type"] == "status" and any(
+            w in str(c.get("to") or "").upper() for w in ("OUT", "RESERVE", "SUSPEN")))
+        urgent = c["who"] == "mine" and bad and gone and plays_soon(c["team"])
+        gm_notify.add(c["id"], title, text, "mine" if c["who"] == "mine" else "pickup", urgent=urgent, tags=tags if urgent else "")
+        c["alerted"] = True
+        urgent_n += 1 if urgent else 0
+    print(f"(lines) {len(pending)} change(s) handed to notifications ({urgent_n} urgent)")
 
 # ----------------------------------------------------------------- main
 def run(force=False):
