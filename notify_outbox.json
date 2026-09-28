@@ -1,5 +1,15 @@
 {
- "items": [],
+ "items": [
+  {
+   "k": "2026-09-28|2a29f7a7274a",
+   "at": "2026-09-28T23:58:17Z",
+   "title": "Your player: injury update",
+   "text": "Troy Terry (ANA) injury status: Out -> Injury Reserve",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  }
+ ],
  "sent": {
   "2026-09-28": [
    "morning"
