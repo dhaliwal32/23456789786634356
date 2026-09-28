@@ -7,6 +7,7 @@ right away. Everything else is collected and sent as one summary:
   - Pre-game summary about 60 minutes before your first player's game,
     only if something new came in since the morning
 Nothing is sent 11 PM - 7 AM; anything that arrives then waits for the morning.
+Everything is kept in notify_outbox.json, which the app's News tab shows.
 
 Other scripts call:  gm_notify.add(key, title, text, section, urgent=False)
 The sync runs `python gm_notify.py` at the end to send any summary that is due.
@@ -47,7 +48,8 @@ QUIET_START, QUIET_END = 23, 7      # nothing sent between 11 PM and 7 AM Pacifi
 MORNING = (8, 0)                    # morning summary time (Pacific)
 PREGAME_MIN = 60                    # pre-game summary this many minutes before your first game
 MAX_PER_SECTION = 6
-KEEP_DAYS = 3
+KEEP_DAYS = 7                       # history kept for the app's News tab
+KEEP_LOG = 40                       # summaries kept for the app's News tab
 SECTIONS = [("lineup", "LINEUP"), ("mine", "YOUR PLAYERS"), ("pickup", "PICKUP IDEAS"), ("other", "OTHER")]
 
 
@@ -70,6 +72,7 @@ def _load():
         box = {}
     box.setdefault("items", [])
     box.setdefault("sent", {})
+    box.setdefault("log", [])
     return box
 
 
@@ -77,6 +80,7 @@ def _save(box):
     now = datetime.now(UTC)
     cut = now - timedelta(days=KEEP_DAYS)
     box["items"] = [i for i in box["items"] if (_parse(i.get("at", "")) or now) >= cut]
+    box["log"] = box["log"][-KEEP_LOG:]
     for k in sorted(box["sent"])[:-5]:
         del box["sent"][k]
     tmp = OUTBOX + ".tmp"
@@ -127,11 +131,11 @@ def add(key, title, text, section="other", urgent=False, tags=""):
             print(f"(notify) urgent send failed: {ex}")
             ok = False
         if ok:
-            item["sent"] = True
+            item.update(sent=True, via="urgent", sent_at=_iso(now))
             status = "sent right away"
             for i in box["items"]:
-                if i.get("text") == text:
-                    i["sent"] = True
+                if i.get("text") == text and not i.get("sent"):
+                    i.update(sent=True, via="urgent", sent_at=_iso(now))
     box["items"].append(item)
     _save(box)
     print(f"(notify) {'URGENT ' if urgent else ''}{status}: {title}")
@@ -241,8 +245,9 @@ def flush(now=None):
         print(f"(notify) summary send failed: {ex}")
     if ok:
         for i in pend:
-            i["sent"] = True
+            i.update(sent=True, via=kind, sent_at=_iso(now))
         done.append(kind)
+        box["log"].append({"at": _iso(now), "kind": kind, "title": title, "body": body})
         print(f"(notify) {kind} summary sent with {len(pend)} update(s)")
     _save(box)
 
