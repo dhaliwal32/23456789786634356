@@ -198,6 +198,162 @@ const WinDelta = ({ s, add, drop, base }) => {
 
 '''
 
+R6_HELPERS = r'''// ---------- round 6: moves left, fill slots, ESPN lineup check, goalie streams, strategy (news_logos.py) ----------
+const movesLeft = (s, tid, w) => {
+  const E = window.ESPN_DATA || {};
+  if (E.acq && w && w.period != null) { const a = E.acq[String(tid).replace(/^t/, "")]; if (a) return Math.max(0, 3 - (+a[String(w.period)] || 0)); }
+  return tid === s.me ? Math.max(0, 3 - (((s.movesUsed || {})[s.wk]) || 0)) : null;
+};
+const gamesMoves = (s, tid, w, R) => { const m = movesLeft(s, tid, w); return R.used + " games left" + (m != null ? " · " + m + " move" + (m === 1 ? "" : "s") + " left" : ""); };
+const dropFor = (s, add) => {
+  const K = s.blend, mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const prot = new Set([...mine].sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, s.protectTop ?? 8).map((p) => p.id));
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const cnt = { F: 0, D: 0, G: 0 }; mine.forEach((p) => { cnt[p.p]++; });
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  return mine.filter((p) => !prot.has(p.id) && !p.keep && (p.p === add.p || cnt[p.p] - 1 >= mins[p.p])).sort((a, b) => pv(a) - pv(b))[0] || null;
+};
+const strategy = (p) => (p == null ? null : p >= 0.75 ? ["Play it safe", "You're a clear favourite. Keep steady skaters in, skip risky goalie streams and save moves for injuries."]
+  : p >= 0.55 ? ["Protect the edge", "Slight favourite. Take sure points: stream skaters with extra games before goalies."]
+  : p >= 0.4 ? ["Toss-up", "Every game counts. Fill every empty slot and use all your moves."]
+  : ["Swing big", "You're the underdog. Chase upside: confirmed goalies with good win odds and players on hot power plays."]);
+const StrategyLine = ({ p }) => { const t = strategy(p); return t ? <div className="text-sm mt-2"><span className="font-semibold">{t[0]}</span><span className="text-slate-500"> · {t[1]}</span></div> : null; };
+function FillSlot({ l, s, wk, d }) {
+  const K = s.blend, dt = wk.dates ? wk.dates[d] : null;
+  if (!dt || dt < todayISO() || l.empty <= 0) return null;
+  const c = { F: 0, D: 0, UTIL: 0, G: 0 }; l.start.forEach((p) => { c[p.slot] = (c[p.slot] || 0) + 1; });
+  const open = { F: 9 - c.F, D: 5 - c.D, U: 1 - c.UTIL, G: 2 - c.G };
+  const fits = (p) => (p.p === "G" ? open.G > 0 : open[p.p] > 0 || open.U > 0);
+  const val = (p) => effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt);
+  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p))
+    .map((p) => ({ p, v: val(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 2);
+  if (!best.length) return null;
+  const ml = movesLeft(s, s.me, wk);
+  return (
+    <div className="mt-3 rounded-lg border border-slate-200 px-3 py-2">
+      <div className="text-xs uppercase tracking-wide text-slate-500">Fill an empty spot{ml != null ? " · " + ml + " move" + (ml === 1 ? "" : "s") + " left" : ""}</div>
+      {best.map(({ p, v }) => { const dr = dropFor(s, p), g = gameOf(p.t, dt); return (
+        <div key={p.id} className="flex items-center gap-3 py-2">
+          <TeamLogo t={p.t} size={28} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2"><PN p={p} className="truncate" /><span className="text-xs text-slate-400">{p.p}</span></div>
+            <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
+          </div>
+          <div className="text-right whitespace-nowrap"><div className="font-semibold text-green-700">+{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} /> : null}</div>
+        </div>
+      ); })}
+    </div>
+  );
+}
+function espnLineupChecks(mine, L, wk, di, dday, today) {
+  const SL = (window.ESPN_DATA || {}).slots;
+  if (!SL || !L || dday !== today) return [];
+  const sid = (p) => SL[String(p.id).slice(1)];
+  if (!mine.some((p) => sid(p) != null)) return [];
+  const act = (p) => { const v = sid(p); return v != null && v !== 7 && v !== 8; };
+  const locked = (p) => { const g = gameOf(p.t, dday); return !!(g && g.st && new Date(g.st) <= new Date()); };
+  const plays = (p) => (wk.games[p.t] || []).includes(di);
+  const best = new Set(L.start.map((p) => p.id));
+  const toStart = L.start.filter((p) => !act(p) && !locked(p));
+  if (!toStart.length) return [["good", "Your ESPN lineup is already the best one for today"]];
+  const out = mine.filter((p) => act(p) && !best.has(p.id) && !locked(p)).sort((a, b) => (plays(a) ? 1 : 0) - (plays(b) ? 1 : 0)).slice(0, toStart.length);
+  return [["bad", "On ESPN, start " + toStart.map((p) => p.n).join(", ") + (out.length ? " and bench " + out.map((p) => p.n).join(", ") : "")]];
+}
+const startTag = (gs) => ((gs.l || "").includes("confirmed") && !(gs.l || "").includes("un") ? ["Confirmed", "bg-green-100 text-green-700"]
+  : gs.v >= 0.85 ? ["Likely starter", "bg-amber-100 text-amber-800"] : [Math.round(gs.v * 100) + "% to start", "bg-slate-200 text-slate-600"]);
+function GoalieStreams({ s, wk }) {
+  const K = s.blend, today = todayISO(), dates = wk.dates || [];
+  const base = useMemo(() => winChance(s), [s]);
+  const st = strategy(base);
+  const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, list: s.players
+    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0)
+    .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
+    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
+  return (
+    <Section title="Goalie streams" sub="Free-agent goalies for each day left this week, best first. Start status from Daily Faceoff, win chance from betting odds.">
+      {st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
+      {days.length ? days.map(({ dt, list }) => (
+        <div key={dt} className="mt-4">
+          <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{dt === today ? "Today" : dayLabel(dt)}</div>
+          {list.length ? list.map(({ p, gs, o, g, v }) => { const tg = startTag(gs), dr = dropFor(s, p); return (
+            <div key={p.id} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
+              <TeamLogo t={p.t} size={30} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2"><PN p={p} /><span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span></div>
+                <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, o ? "W " + Math.round(o.win * 100) + "%" : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
+              </div>
+              <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} base={base} /> : null}</div>
+            </div>
+          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>}
+        </div>
+      )) : <div className="text-slate-400">No days left this week.</div>}
+    </Section>
+  );
+}
+
+'''
+
+CARD_A_OLD = r'''<Card label={teamName(s, a)} value={f1(fa)} sub={`${f1(aA)} actual + ${f1(A.total)} proj`} />'''
+CARD_A_NEW = r'''<Card label={teamName(s, a)} value={f1(fa)} sub={<>{f1(aA)} actual + {f1(A.total)} proj<br />{gamesMoves(s, a, wk, A)}</>} />'''
+CARD_B_OLD = r'''<Card label={teamName(s, b)} value={f1(fb)} sub={`${f1(aB)} actual + ${f1(B.total)} proj`} />'''
+CARD_B_NEW = r'''<Card label={teamName(s, b)} value={f1(fb)} sub={<>{f1(aB)} actual + {f1(B.total)} proj<br />{gamesMoves(s, b, wk, B)}</>} />'''
+BAR_OLD = r'''<div className="h-1 rounded-full bg-slate-200 mt-2 overflow-hidden"><div className="h-full bg-green-500" style={{ width: pct + "%" }}></div></div>'''
+BAR_NEW = r'''<div className="h-1 rounded-full bg-slate-200 mt-2 overflow-hidden"><div className="h-full bg-green-500" style={{ width: Math.round(winProb(X.r, Y.r, X.act, Y.act) * 100) + "%" }}></div></div><div className="flex justify-between text-xs text-slate-500 mt-1.5"><span>{wpTxt(winProb(X.r, Y.r, X.act, Y.act))} to win</span><span>{wpTxt(1 - winProb(X.r, Y.r, X.act, Y.act))}</span></div>'''
+EMPTY_OLD = r'''{l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}'''
+
+# ---------- Python files (applied in live mode only, checked for errors first) ----------
+SYNC, ALERTS = "espn_sync.py", "gm_alerts.py"
+PY_BAK = {SYNC: "espn_sync.backup-news.py", ALERTS: "gm_alerts.backup-news.py"}
+PY_DONE = {SYNC: '"slots": {str(k)', ALERTS: "(news_logos.py)"}
+SYNC_OLD = '"periods": periods, "matchups": matchups}'
+SYNC_NEW = ('"periods": periods, "matchups": matchups, "slots": {str(k): v for k, v in slots.items()}, '
+            '"acq": ({str(t.get("id")): ((t.get("transactionCounter") or {}).get("matchupAcquisitionTotals") or {}) '
+            'for t in lg.get("teams", [])} if any("transactionCounter" in t for t in lg.get("teams", [])) else None)}')
+GOALIE_BLOCK = r'''for p in active:  # 2b) goalie still not confirmed close to puck drop (news_logos.py)
+    if p["p"] != "G" or not upcoming(p["t"]) or games[p["t"]][1] - now > timedelta(minutes=75):
+        continue
+    gst = next(((v.get("status") or "").lower() for k, v in gday.items() if norm(k) == norm(p["n"])), "")
+    if "confirm" in gst and "un" not in gst:
+        continue
+    if any(v.get("team") == p["t"] and "confirm" in (v.get("status") or "").lower() and "un" not in (v.get("status") or "").lower() for k, v in gday.items() if norm(k) != norm(p["n"])):
+        continue
+    alerts.append(("Goalie not confirmed yet", f"{p['n']} ({p['t']}, {lbl(p['t'])}) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.", "lineup", True, "warning"))'''
+
+
+def py_ok(name, src):
+    try:
+        compile(src, name, "exec")
+    except SyntaxError as ex:
+        fail(f"{name} would have a Python error after the change (line {ex.lineno}): {ex.msg}")
+
+
+def fix_sync(t):
+    t = lit(t, "sync: save ESPN lineup slots and moves used", SYNC_OLD, SYNC_NEW, '"slots": {str(k)')
+    py_ok(SYNC, t)
+    return t
+
+
+def fix_alerts(t):
+    t = sub_once(t, "alerts: scratch check near each game", r"if SCRATCH_FROM <= now\.hour < SCRATCH_TO:",
+                 "if True:  # scratch check runs within 3 hours of each game (news_logos.py)", "scratch check runs within 3 hours")
+    t = sub_once(t, "alerts: scratch timing", r'if p\["p"\] == "G" or not upcoming\(p\["t"\]\) or is_out\(p\):',
+                 'if p["p"] == "G" or not upcoming(p["t"]) or is_out(p) or games[p["t"]][1] - now > timedelta(hours=3):',
+                 'or games[p["t"]][1] - now > timedelta(hours=3)')
+    if "2b) goalie still not confirmed" in t:
+        print("(news) alerts: unconfirmed goalie warning: already done")
+    else:
+        m = list(re.finditer(r"^([ \t]*)if True:  # scratch check runs", t, re.M))
+        if len(m) != 1:
+            fail("alerts: could not find where to add the goalie warning. Send this log to the AI helper.")
+        ind = m[0].group(1)
+        t = t[:m[0].start()] + "".join(ind + ln + "\n" for ln in GOALIE_BLOCK.splitlines()) + t[m[0].start():]
+        print("(news) alerts: unconfirmed goalie warning: updated")
+    py_ok(ALERTS, t)
+    return t
+
+
+PY_FIXES = {SYNC: fix_sync, ALERTS: fix_alerts}
+
 HELPERS = r'''// ---------- team logos, game times and news filter (news_logos.py) ----------
 const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
@@ -383,6 +539,24 @@ def fix(t):
               ))}
             </div>''',
                  'data-w="daydiff3"', re.S)
+    # --- round 6: games/moves left, win chance on every card, fill empty spots, ESPN lineup check, goalie streams, strategy ---
+    t = lit(t, "round 6 helpers", ROOT, R6_HELPERS + ROOT, "function GoalieStreams(")
+    t = lit(t, "matchup: games and moves left (you)", CARD_A_OLD, CARD_A_NEW, "gamesMoves(s, a, wk, A)")
+    t = lit(t, "matchup: games and moves left (them)", CARD_B_OLD, CARD_B_NEW, "gamesMoves(s, b, wk, B)")
+    t = lit(t, "matchup cards: win chance", BAR_OLD, BAR_NEW, "to win</span><span>")
+    t = lit(t, "matchup: pass the day to each side", "<Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />",
+            "<Side l={x} s={s} id={a} wk={wk} d={d} /><Side l={y} s={s} id={b} wk={wk} d={d} />", "wk={wk} d={d} />")
+    t = lit(t, "matchup: side knows the day", "function Side({ l, s, id }) {", "function Side({ l, s, id, wk, d }) {", "function Side({ l, s, id, wk, d })")
+    t = lit(t, "matchup: fill empty spots", EMPTY_OLD, EMPTY_OLD + "\n      {wk && id === s.me ? <FillSlot l={l} s={s} wk={wk} d={d} /> : null}", "<FillSlot")
+    t = sub_once(t, "home: ESPN lineup check", r'(?<=a streamer could fill \$\{L\.empty > 1 \? "them" : "it"\}`\]\);)',
+                 ' espnLineupChecks(mine, L, wk, di, dday, today).forEach((c) => (c[0] === "bad" ? checks.unshift(c) : checks.push(c)));',
+                 "espnLineupChecks(mine")
+    t = lit(t, "home: safe or risky advice", "chance to win</span></div>",
+            "chance to win</span></div>{done < dates.length ? <StrategyLine p={winProb(A, B, aA, aB)} /> : null}", "<StrategyLine")
+    t = lit(t, "moves: goalie streams tab", '["planner", "Planner"], ["adddrop", "Add / Drop"]',
+            '["planner", "Planner"], ["goalies", "Goalie streams"], ["adddrop", "Add / Drop"]', '["goalies", "Goalie streams"]')
+    t = lit(t, "moves: goalie streams page", 'sub === "planner" ? <PlannerAll {...P} /> :',
+            'sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> :', "<GoalieStreams {...P} />")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
@@ -462,6 +636,10 @@ def main():
             fail("no backup found - live mode has never been run.")
         pathlib.Path(SRC).write_text(b.read_text(encoding="utf-8"), encoding="utf-8")
         print(f"(news) restored {SRC} from {BAK}")
+        for f, bk in PY_BAK.items():
+            if pathlib.Path(bk).exists():
+                pathlib.Path(f).write_text(pathlib.Path(bk).read_text(encoding="utf-8"), encoding="utf-8")
+                print(f"(news) restored {f} from {bk}")
         return
     if mode not in ("test", "live"):
         fail("mode must be test, live, undo or games")
@@ -471,15 +649,33 @@ def main():
     old = p.read_text(encoding="utf-8")
     new = fix(old)
     jsx_check(new)
+    py = {}
+    for f, fn in PY_FIXES.items():
+        fp = pathlib.Path(f)
+        if not fp.exists():
+            print(f"(news) {f} not found - skipped")
+            continue
+        print(f"--- {f}")
+        before = fp.read_text(encoding="utf-8")
+        py[f] = (before, fn(before))
     if mode == "test":
         pathlib.Path(TEST).write_text(new, encoding="utf-8")
         print(f"(news) test copy written - open {TEST} to check")
+        print("(news) Python changes checked (no errors) - they are only applied in live mode")
     else:
         if DONE not in old:
             pathlib.Path(BAK).write_text(old, encoding="utf-8")
             print(f"(news) backup saved: {BAK}")
         p.write_text(new, encoding="utf-8")
         print("(news) live app updated")
+        for f, (before, after) in py.items():
+            if after == before:
+                continue
+            if PY_DONE[f] not in before:
+                pathlib.Path(PY_BAK[f]).write_text(before, encoding="utf-8")
+                print(f"(news) backup saved: {PY_BAK[f]}")
+            pathlib.Path(f).write_text(after, encoding="utf-8")
+            print(f"(news) {f} updated")
 
 
 if __name__ == "__main__":
