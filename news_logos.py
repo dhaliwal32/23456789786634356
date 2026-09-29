@@ -1702,5 +1702,203 @@ _fix_before_r14 = fix
 def fix(t):
     return round14(_fix_before_r14(t))
 
+# ---------- round 15: clean Advice page and player lines ----------
+R15_CSS = r'''  /* round 15 advice (news_logos.py) */
+  .adv-head, .adv-row { display: grid; grid-template-columns: 28px minmax(0,1fr) 60px 74px 36px; gap: 12px; align-items: center; }
+  .adv-head { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); padding: 4px 0 8px; }
+  .adv-row { padding: 10px 0; border-top: 1px solid var(--line); }
+  .adv-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  @media (max-width: 640px) { .adv-head, .adv-row { grid-template-columns: 26px minmax(0,1fr) 46px 64px 18px; gap: 8px; } }
+'''
+
+R15_PLAYERLINE = r'''const PlayerLine = ({ s, p, extra }) => {
+  // player line v15: logo, name, one short note (news_logos.py)
+  const tg = shortTag(p, s.blend);
+  return (
+    <div className="flex items-center gap-3 py-2.5 border-t border-slate-100 text-sm">
+      <TeamLogo t={p.t} size={26} />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 min-w-0"><PN p={p} className="truncate font-medium" /><span className="text-xs text-slate-500">{p.p}</span>{tg ? <span className={"text-xs truncate " + tg.c}>{tg.t}</span> : null}</div>
+        <div className="text-xs text-slate-500 flex flex-wrap items-baseline gap-x-2 mt-0.5"><TL s={s} id={p.ft} />{extra}</div>
+      </div>
+      <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(effAvg(p, s.blend))}</div><div className="text-xs text-slate-500">pts/g</div></div>
+    </div>
+  );
+};
+'''
+
+R15_ADVICE = r'''const advDot = (k, z) => ({ display: "inline-block", width: z || 10, height: z || 10, borderRadius: 99, margin: z ? 0 : "0 5px 0 6px", background: k ? "var(--good)" : "var(--bad)" });
+const KeepLegend = () => <div className="text-xs text-slate-500 mt-3">Keep:<span style={advDot(true)}></span>add and keep ·<span style={advDot(false)}></span>stream this week, then drop</div>;
+const AdvMove = ({ s, r, K, showDrop, base }) => {
+  const sd = effAvg(r.f, K) - effAvg(r.d, K), keep = r.gain > 0 && sd >= 0, tg = shortTag(r.f, K);
+  return (
+    <div className="adv-row">
+      <TeamLogo t={r.f.t} size={28} />
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 min-w-0"><PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>{tg ? <span className={"text-xs truncate m-hide " + tg.c}>{tg.t}</span> : null}</div>
+        <div className="text-xs text-slate-500 truncate">{showDrop ? "drop " + r.d.n + " · " : ""}{sd >= 0 ? "+" : ""}{f1(sd)}/g long-term</div>
+      </div>
+      <div className="adv-num font-semibold text-green-700">+{f1(r.gain)}</div>
+      <div className="adv-num"><WinCell s={s} add={r.f} drop={r.d} base={base} /></div>
+      <div className="adv-num"><span title={keep ? "Add and keep" : "Stream this week, then drop"} style={advDot(keep, 12)}></span></div>
+    </div>
+  );
+};
+function AdvicePanel({ s }) {
+  // advice v15: clean rows (news_logos.py) · older marker kept: advice={1}
+  const K = s.blend;
+  const minGain = s.minGain ?? 3;
+  const now = useMemo(() => computeMoves(s, { H: 1, pool: 60 }), [s]);
+  const later = useMemo(() => computeMoves(s, { H: 4, pool: 40 }), [s]);
+  const base = useMemo(() => winChance(s), [s]);
+  const sdOf = (r) => effAvg(r.f, K) - effAvg(r.d, K);
+  const topNow = now.res.filter((r) => r.gain >= minGain).slice(0, 5);
+  const topLong = later.res.filter((r) => r.gain >= minGain && sdOf(r) >= 0).slice(0, 5);
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const why = (p) => {
+    const g = sigOf(p), r = [], fr = formRatio(p, K), t = g.toi;
+    if (g.ppChg === "added") r.push("new on PP1");
+    if (fr !== null && fr >= 1.25) r.push(f1(g.rec.ppg) + "/g last 14 days");
+    if (t && t.d >= 90) r.push(mm(t.d) + " ice time");
+    if (t && t.pd >= 45) r.push("PP " + mm(t.pd));
+    if ((p.chg || 0) >= 5) r.push("+" + f1(p.chg) + "% rostered");
+    return r.join(" · ");
+  };
+  const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
+  const form = mine.map((p) => {
+    const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
+    if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
+    if (fr !== null && fr <= 0.7) return { p, n: "Cold: " + f1(rec.ppg) + "/g lately. Check his role before dropping.", c: "text-sky-600" };
+    if (t && (t.d <= -90 || t.pd <= -45)) return { p, n: "Losing minutes (" + mm(t.d) + " a game). Watch closely.", c: "text-red-600" };
+    if (t && (t.d >= 90 || t.pd >= 45)) return { p, n: "Bigger role (" + mm(t.d) + " a game).", c: "text-green-700" };
+    return null;
+  }).filter(Boolean);
+  const buyLow = s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && effAvg(p, K) >= 7 && (formRatio(p, K) ?? 9) <= 0.75).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 5);
+  const T = leagueTable(s), g = T.grpRank[s.me] || {};
+  const posName = { F: "forwards", D: "defence", G: "goalies" }, need = { F: 10, D: 5, G: 2 };
+  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0)), weak = by[0], strong = by[2];
+  const spare = mine.filter((p) => p.p === strong).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(need[strong]);
+  const oneDrop = (l) => (l.length > 1 && l.every((r) => r.d.id === l[0].d.id) ? l[0].d : null);
+  const moves = (list, label, empty) => {
+    const d1 = oneDrop(list);
+    if (!list.length) return <div className="text-slate-400">{empty}</div>;
+    return (
+      <div>
+        {d1 ? <div className="text-sm mb-2"><span className="text-slate-500">Drop for each: </span><PN p={d1} /></div> : null}
+        <div className="adv-head"><span></span><span>Pickup</span><span className="adv-num">{label}</span><span className="adv-num" title="Your chance to win this week right now">{base == null ? "Win" : wpTxt(base)}</span><span className="adv-num">Keep</span></div>
+        {list.map((r) => <AdvMove key={r.f.id} s={s} r={r} K={K} showDrop={!d1} base={base} />)}
+      </div>
+    );
+  };
+  return (
+    <div className="space-y-4">
+      {!window.__SIG ? <div className="text-sm text-slate-500">Form, PP1 and news signals appear after the next sync.</div> : null}
+      <Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week.">
+        {moves(topNow, "Gain", `No move adds ${minGain}+ points this week. Save your moves.`)}
+        {topNow.length ? <KeepLegend /> : null}
+      </Section>
+      <Section title="Long-term upgrades" sub="Better per game, and more points over the next 4 weeks.">
+        {moves(topLong, "4 wks", "No free agent is a clear long-term upgrade right now.")}
+      </Section>
+      {watch.length ? (
+        <Section title="Free agents to watch" sub="Hot lately, new on PP1, more ice time, or gaining owners fast.">
+          {watch.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span>· {why(p)}</span>} />)}
+        </Section>
+      ) : null}
+      <Section title="Your players" sub="Recent form and ice time compared with their projection.">
+        {form.length ? form.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>· {n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
+      </Section>
+      <Section title="Trade advice" sub={`Your ranks: forwards #${g.F || "–"}, defence #${g.D || "–"}, goalies #${g.G || "–"} of ${T.rows.length}.`}>
+        <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
+        {buyLow.length ? <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Buy low: good players in a slump</div>{buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</div> : null}
+      </Section>
+    </div>
+  );
+}
+
+'''
+
+R15_EDGES = r'''function EdgesPanel({ s }) {
+  // edges v15: only groups with players, 5 each (news_logos.py)
+  const K = s.blend, S = window.__SIG || {}, M = window.__MODEL;
+  const pid = (p) => (typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null);
+  const top5 = (l) => l.slice(0, 5);
+  const byAvg = (a, b) => effAvg(b, K) - effAvg(a, K);
+  const ln = (p) => sigOf(p).lines || {};
+  const promoFA = top5(s.players.filter((p) => p.ft === "fa" && ln(p).chg === "up").sort(byAvg));
+  const promoOther = top5(s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && ln(p).chg === "up").sort(byAvg));
+  const mineChg = s.players.filter((p) => p.ft === s.me && ln(p).chg);
+  const lk = (p) => sigOf(p).luck;
+  const lucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d >= 2 : l.d >= 4); };
+  const unlucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d <= -2 : l.d <= -4); };
+  const byLuck = (a, b) => Math.abs(lk(b).d) - Math.abs(lk(a).d);
+  const sellHigh = top5(s.players.filter((p) => p.ft === s.me && lucky(p)).sort(byLuck));
+  const myUnlucky = top5(s.players.filter((p) => p.ft === s.me && unlucky(p)).sort(byLuck));
+  const buyLow = top5(s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && unlucky(p) && effAvg(p, K) >= 5).sort(byLuck));
+  const buyFA = top5(s.players.filter((p) => p.ft === "fa" && unlucky(p)).sort(byLuck));
+  const luckInfo = (p) => { const l = lk(p); return <span>· {l.t === "s" ? `${l.g} G on ${l.sh} shots, ${l.pct}% vs ${l.cpct}% career` : `SV% ${l.sv.toFixed(3)} vs ${l.csv.toFixed(3)} career`}</span>; };
+  const mv = (p) => { const id = pid(p); const mb = M && id ? (M.base || {})[id] : null; return mb != null && p.proj && p.avg > 0 ? { mb, e: p.avg, d: mb - p.avg, r: mb / p.avg } : null; };
+  const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15; };
+  const over = (p) => { const x = mv(p); return x && x.d <= -1 && x.r <= 0.85; };
+  const uFA = top5(s.players.filter((p) => p.ft === "fa" && under(p)).sort((a, b) => mv(b).d - mv(a).d));
+  const uOther = top5(s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && under(p)).sort((a, b) => mv(b).d - mv(a).d));
+  const oMine = top5(s.players.filter((p) => p.ft === s.me && over(p)).sort((a, b) => mv(a).d - mv(b).d));
+  const uMine = top5(s.players.filter((p) => p.ft === s.me && under(p)));
+  const mvInfo = (p) => { const x = mv(p); return <span className={x.d > 0 ? "text-green-700" : "text-red-600"}>· model {f1(x.mb)} vs ESPN {f1(x.e)} pts/g</span>; };
+  const lineNote = (p) => <span className={ln(p).chg === "up" ? "text-green-700" : "text-red-600"}>· {ln(p).chg === "up" ? "moved up to " + (LBL[ln(p).grp] || "a bigger role") : "moved down the lineup"}</span>;
+  const None = ({ t }) => <div className="text-slate-400">{t}</div>;
+  const Grp = ({ t, list, note }) => (list.length ? (
+    <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{t}</div>{list.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={note ? note(p) : null} />)}</div>
+  ) : null);
+  const promoAny = promoFA.length + promoOther.length + mineChg.length;
+  const luckAny = sellHigh.length + myUnlucky.length + buyLow.length + buyFA.length;
+  const mvAny = uFA.length + uOther.length + oMine.length + uMine.length;
+  return (
+    <div className="space-y-4">
+      <Section title="Line promotions" sub="Top-6 forwards and top-4 D get more minutes. Points usually follow within a week.">
+        {!S.lines ? <None t="Line data appears after the next sync." /> : promoAny ? (<>
+          <Grp t="Free agents: pickup targets" list={promoFA} note={lineNote} />
+          <Grp t="Your players" list={mineChg} note={lineNote} />
+          <Grp t="Other teams: trade targets" list={promoOther} note={lineNote} />
+        </>) : <None t="No line changes since yesterday." />}
+      </Section>
+      <Section title="Luck" sub="Shooting % and save % this season vs career. Luck evens out, so trade on it.">
+        {!S.luck || !Object.keys(S.luck).length ? <None t="Fills in once players have enough shots, usually by late October." /> : luckAny ? (<>
+          <Grp t="Sell high: your lucky players" list={sellHigh} note={luckInfo} />
+          <Grp t="Buy low: unlucky players on other teams" list={buyLow} note={luckInfo} />
+          <Grp t="Unlucky free agents" list={buyFA} note={luckInfo} />
+          <Grp t="Your unlucky players: don't sell low" list={myUnlucky} note={luckInfo} />
+        </>) : <None t="Nobody is running unusually lucky or unlucky." />}
+      </Section>
+      <Section title="Model vs ESPN" sub="Where your GM model and ESPN disagree by 15% or more. Most managers only see ESPN's number.">
+        {!M ? <None t="Needs the GM model in the sync." /> : mvAny ? (<>
+          <Grp t="Undervalued free agents" list={uFA} note={mvInfo} />
+          <Grp t="Undervalued on other teams: trade targets" list={uOther} note={mvInfo} />
+          <Grp t="Yours that ESPN overrates: sell" list={oMine} note={mvInfo} />
+          <Grp t="Yours that ESPN underrates: keep" list={uMine} note={mvInfo} />
+          <div className="text-xs text-slate-500 mt-3">Early in the season the model leans on last year's stats, so check why before acting.</div>
+        </>) : <None t="The model and ESPN agree on everyone right now." />}
+      </Section>
+    </div>
+  );
+}
+
+'''
+
+
+def round15(t):
+    t = lit(t, "advice styles", "</style>", R15_CSS + "</style>", "round 15 advice")
+    t = block(t, "player lines: cleaner layout", "const PlayerLine = ({ s, p, extra }) => (", "const Section = (", R15_PLAYERLINE, "player line v15")
+    t = block(t, "advice: clean page", "function AdvicePanel({ s }) {", "function NewsView(", R15_ADVICE, "advice v15")
+    t = block(t, "edges: only groups with players", "function EdgesPanel({ s }) {", "// ---------- Bench fixer ----------", R15_EDGES, "edges v15")
+    return t
+
+
+_fix_before_r15 = fix
+
+
+def fix(t):
+    return round15(_fix_before_r15(t))
+
 if __name__ == "__main__":
     main()
