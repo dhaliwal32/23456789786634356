@@ -1582,5 +1582,15 @@ _fix_before_r12 = fix
 def fix(t):
     return round12(_fix_before_r12(t))
 
+# ---------- keep older rounds' "already done" markers after round 11 ----------
+OLD_MARKS = '  // older rounds already done: "Gain", "Win this week" · colSpan={10}>No moves clear · base={wBase} /> : null}\n'
+_fix_before_marks = fix
+
+
+def fix(t):
+    if "add/drop v11" in t and "older rounds already done" not in t:
+        t = t.replace("  // add/drop v11:", OLD_MARKS + "  // add/drop v11:", 1)
+    return _fix_before_marks(t)
+
 if __name__ == "__main__":
     main()
