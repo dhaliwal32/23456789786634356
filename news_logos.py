@@ -1621,5 +1621,86 @@ _fix_before_r13 = fix
 def fix(t):
     return round13(_fix_before_r13(t))
 
+# ---------- round 14: cleaner injuries + protected players on My Team ----------
+R14_START = '<Section title="Injuries & settings" sub="Return dates fill in from ESPN automatically; pick a date to override. Protected players are never suggested as drops.">'
+R14_CALL = '<MyInjProt s={s} setS={setS} wk={wk} />\n    </div>\n  );\n}\n\n'
+R14_HELPERS = r'''// ---------- round 14: My Team injuries + protected players (news_logos.py) ----------
+function MyInjProt({ s, setS, wk }) {
+  const K = s.blend, today = todayISO();
+  const [edit, setEdit] = useState(null);
+  const [adv, setAdv] = useState(false);
+  const roster = s.players.filter((p) => p.ft === s.me);
+  const upd = (id, patch) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
+  const out = roster.filter((p) => { const b = effBack(p).d; return p.ir || (b && b > today) || (!b && avail(p, today) === 0) || (p.status && p.status !== "ACTIVE"); })
+    .sort((a, b) => ((effBack(a).d || "9999") < (effBack(b).d || "9999") ? -1 : 1));
+  const top = s.protectTop ?? 8;
+  const healthy = roster.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const auto = healthy.slice(0, top), autoIds = new Set(auto.map((p) => p.id));
+  const mine = healthy.filter((p) => p.keep && !autoIds.has(p.id));
+  const addable = healthy.filter((p) => !autoIds.has(p.id) && !p.keep);
+  const ST = { DAY_TO_DAY: "Day-to-day", OUT: "Out", INJURY_RESERVE: "IR", SUSPENSION: "Suspended" };
+  const stTxt = (p) => (p.ir ? "IR" : ST[p.status] || (p.status || "Out").replace(/_/g, " "));
+  const SRC = { you: "your date", ESPN: "from ESPN", news: "from injury news", estimate: "estimate" };
+  const chip = "inline-flex items-center gap-1.5 pl-1.5 pr-2.5 py-1 rounded-full border text-sm ";
+  const backTxt = (p, b) => {
+    if (!b) return "No return date yet";
+    if (b <= today) return "Available now";
+    const n = Math.round((fromIso(b) - fromIso(today)) / 864e5);
+    const miss = (wk.dates || []).filter((d, i) => d >= today && d < b && (wk.games[p.t] || []).includes(i)).length;
+    return "Back " + mdL(b) + " (" + n + " day" + (n === 1 ? "" : "s") + ")" + (miss ? " · misses " + miss + " game" + (miss === 1 ? "" : "s") + " this week" : "");
+  };
+  return (
+    <div className="space-y-4">
+      <div className="grid md:grid-cols-2 gap-4 items-start">
+        <Section title="Injuries" sub="Return dates come from ESPN. Change one only if you know better.">
+          {out.length ? out.map((p) => { const eb = effBack(p); return (
+            <div key={p.id} className="flex items-center gap-3 py-3 border-t border-slate-100">
+              <TeamLogo t={p.t} size={30} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2"><PN p={p} /><span className="text-xs text-slate-500">{p.p}</span><span className="text-xs px-1.5 py-0.5 rounded bg-red-100 text-red-600">{stTxt(p)}</span></div>
+                <div className="text-xs text-slate-500 mt-0.5">{backTxt(p, eb.d)}{eb.d && eb.src ? " · " + SRC[eb.src] : ""}{eb.src === "you" ? <button className="text-blue-600 ml-2" onClick={() => upd(p.id, { back: DEFAULT_BACK[p.n] || "" })}>Reset</button> : null}</div>
+                {edit === p.id ? <div className="flex items-center gap-2 mt-2"><input type="date" className={inp} value={eb.d} onChange={(e) => upd(p.id, { back: e.target.value })} /><button className="text-sm text-blue-600" onClick={() => setEdit(null)}>Done</button></div> : null}
+              </div>
+              {edit === p.id ? null : <button className="text-sm text-blue-600 whitespace-nowrap" onClick={() => setEdit(p.id)}>Change</button>}
+            </div>
+          ); }) : <div className="text-green-700">Everyone is healthy.</div>}
+        </Section>
+        <Section title="Protected players" sub="Never suggested as drops anywhere in the app. Players on IR are never dropped.">
+          <label className="flex flex-wrap items-center gap-2 text-sm"><span>Always protect my top</span>
+            <select className={inp} value={top} onChange={(e) => setS((st) => ({ ...st, protectTop: +e.target.value }))}>{[...Array(13)].map((_, n) => <option key={n} value={n}>{n}</option>)}</select>
+            <span>players</span></label>
+          {auto.length ? (
+            <div className="mt-3 flex flex-wrap gap-2">{auto.map((p) => <span key={p.id} className={chip + "border-slate-200 text-slate-600"}><TeamLogo t={p.t} size={18} />{p.n}</span>)}</div>
+          ) : null}
+          <div className="text-xs uppercase tracking-wide text-slate-500 mt-4 mb-2">Also protect</div>
+          <div className="flex flex-wrap gap-2 items-center">
+            {mine.map((p) => <span key={p.id} className={chip + "border-green-300 bg-green-50"}><TeamLogo t={p.t} size={18} />{p.n}<button className="text-slate-500 ml-1 text-base leading-none" aria-label={"Unprotect " + p.n} onClick={() => upd(p.id, { keep: false })}>×</button></span>)}
+            {addable.length ? <select className={inp} value="" onChange={(e) => { if (e.target.value) upd(e.target.value, { keep: true }); }}><option value="">+ Add a player</option>{addable.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p})</option>)}</select> : null}
+          </div>
+        </Section>
+      </div>
+      <div className="px-1">
+        <button className="text-sm text-blue-600" onClick={() => setAdv(!adv)}>{adv ? "Hide the full editor" : "Edit every player: projections, play %, IR"}</button>
+        {adv ? <div className="mt-3"><RosterTable s={s} setS={setS} wk={wk} team={s.me} /></div> : null}
+      </div>
+    </div>
+  );
+}
+
+'''
+
+
+def round14(t):
+    t = block(t, "my team: cleaner injuries and protected players", R14_START, "function TeamsTab(", R14_CALL, "<MyInjProt s={s}")
+    t = lit(t, "my team: injuries and protected helper", ROOT, R14_HELPERS + ROOT, "function MyInjProt(")
+    return t
+
+
+_fix_before_r14 = fix
+
+
+def fix(t):
+    return round14(_fix_before_r14(t))
+
 if __name__ == "__main__":
     main()
