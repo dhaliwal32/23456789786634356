@@ -230,6 +230,25 @@ def fix(t):
     t = lit(t, "schedule logos", SCHED_OLD, SCHED_NEW, "<TeamLogo t={t} size={16} />")
     t = lit(t, "playoff schedule logos", PO_OLD, PO_NEW, "<TeamLogo t={r.t}")
     t = lit(t, "logo, game time and news helpers", ROOT, HELPERS + ROOT, DONE)
+    # --- round 2: bigger logos, day totals and difference in Matchup ---
+    t = lit(t, "bigger logos", "const z = size || 16;", "const z = size || 20;", "const z = size || 20;")
+    t = sub_once(t, "matchup: both sides same height",
+                 r'<div className="p-3">(?=\r?\n[ \t]*<div className="flex justify-between font-semibold mb-1"><TL s=\{s\} id=\{id\})',
+                 '<div className="p-3 flex flex-col h-full">', 'className="p-3 flex flex-col h-full"')
+    t = lit(t, "matchup: projected total at the bottom",
+            r'''{l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}''',
+            r'''{l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
+      <div className="mt-auto pt-3"><div className="flex justify-between items-baseline border-t border-slate-200 pt-2"><span className="text-xs uppercase tracking-wide text-slate-500">Projected today</span><span className="font-semibold text-base">{f1(l.total)}</span></div></div>''',
+            "Projected today")
+    t = sub_once(t, "matchup: day difference",
+                 re.escape("<Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />") + r"\r?\n[ \t]*</div>",
+                 r'''<Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />
+            </div>
+            <div className="flex flex-wrap justify-between items-center gap-2 px-3 py-2.5 border-t border-slate-200 text-sm">
+              <span className="text-xs uppercase tracking-wide text-slate-500">Day difference</span>
+              <span className={"font-semibold " + (x.total - y.total >= 0 ? "text-green-700" : "text-red-600")}>{x.total - y.total >= 0 ? "+" : ""}{f1(x.total - y.total)} · {x.total === y.total ? "even" : teamName(s, x.total > y.total ? a : b) + " ahead"}</span>
+            </div>''',
+                 "Day difference")
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
         if must not in t:
             fail("fantasy-gm.html looks damaged after the changes (" + must + ").")
