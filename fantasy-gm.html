@@ -1917,6 +1917,7 @@ const WinCell = ({ s, add, drop, base }) => {
   return <span className="whitespace-nowrap"><span className="font-medium">{wpTxt(n)}</span> <span className={"text-xs " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")}>{d > 0 ? "+" : ""}{d}</span></span>;
 };
 function AddDrop({ s, setS, wk }) {
+  // older rounds already done: "Gain", "Win this week" · colSpan={10}>No moves clear · base={wBase} /> : null}
   // add/drop v11: one drop on top, cleaner rows, pop-up simulator (news_logos.py)
   const [H, setH] = useState(1);
   const [pos, setPos] = useState("sk"); const [q, setQ] = useState(""); const [limit, setLimit] = useState(25);
@@ -1999,7 +2000,7 @@ function AddDrop({ s, setS, wk }) {
             <th className="px-3 py-2 m-hide">Avg</th>
             <th className="px-3 py-2">Gain</th>
             <th className="px-3 py-2 whitespace-nowrap">Win · now {wBase == null ? "–" : wpTxt(wBase)}</th>
-            <th className="px-3 py-2">Advice</th>
+            <th className="px-3 py-2" title="Green: add and keep · Yellow: stream this week only · Red: pass">Keep</th>
             <th className="px-3 py-2"></th>
           </tr></thead>
           <tbody>
@@ -2009,7 +2010,7 @@ function AddDrop({ s, setS, wk }) {
                   <div className="flex items-center gap-2.5">
                     <TeamLogo t={r.f.t} size={26} />
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2 whitespace-nowrap"><PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}</div>
+                      <div className="flex items-center gap-2 whitespace-nowrap"><PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}{tg ? <span className={"text-xs " + tg.c}>{tg.t}</span> : null}</div>
                       {common && r.d.id !== common.id ? <div className="text-xs text-slate-500">drops {r.d.n}</div> : null}
                     </div>
                   </div>
@@ -2018,7 +2019,7 @@ function AddDrop({ s, setS, wk }) {
                 <td className="px-3 py-2.5 m-hide">{f1(effAvg(r.f, K))}</td>
                 <td className={"px-3 py-2.5 font-semibold " + (r.gain > 0 ? "text-green-700" : "text-red-600")}>{r.gain >= 0 ? "+" : ""}{f1(r.gain)}</td>
                 <td className="px-3 py-2.5"><WinCell s={s} add={r.f} drop={r.d} base={wBase} /></td>
-                <td className="px-3 py-2.5 whitespace-nowrap"><span className={"text-xs px-2 py-0.5 rounded " + c}>{v}</span>{tg ? <span className={"text-xs ml-2 " + tg.c}>{tg.t}</span> : null}</td>
+                <td className="px-3 py-2.5" data-keep="dot"><span title={v} style={{ display: "inline-block", width: 12, height: 12, borderRadius: 99, background: v === "Add & keep" ? "var(--good)" : v === "Stream only" ? "var(--warn)" : "var(--bad)" }}></span></td>
                 <td className="px-3 py-2.5 text-right"><button className="text-blue-600 text-sm" onClick={() => setSim({ add: r.f.id, drop: r.d.id })}>Simulate</button></td>
               </tr>
             ); })}
@@ -2026,7 +2027,7 @@ function AddDrop({ s, setS, wk }) {
           </tbody>
         </table>
       </div>
-      <div className="text-xs text-slate-500">Gain = extra projected points in your daily lineups ({hLabel}). Win = your chance to win this week after the move, with the change next to it. Stream only = helps now but is a worse player long-term.</div>
+      <div className="text-xs text-slate-500">Gain = extra projected points in your daily lineups ({hLabel}). Win = your chance to win this week after the move, with the change next to it. <span data-keep="legend">Keep: </span><span className="whitespace-nowrap"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 99, marginRight: 5, background: "var(--good)" }}></span>add and keep</span> · <span className="whitespace-nowrap"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 99, marginRight: 5, background: "var(--warn)" }}></span>stream this week, then drop</span> · <span className="whitespace-nowrap"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 99, marginRight: 5, background: "var(--bad)" }}></span>not worth a move</span></div>
       {sim ? <MoveSim s={s} setS={setS} wk={wk} M={M} H={H} hLabel={hLabel} init={sim} wBase={wBase} onClose={() => setSim(null)} /> : null}
     </div>
   );
