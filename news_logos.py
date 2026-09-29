@@ -341,7 +341,7 @@ def fix(t):
                  '<Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))}',
                  'label={"Win chance · "')
     t = sub_once(t, "home: win chance",
-                 r'projected\{Math\.abs\(margin\) < 15 \? ". close, every move matters" : ""\}',
+                 r'projected\{Math\.abs\(margin\) < 15 \? "\s*.\s*close, every move matters" : ""\}',
                  "projected · {wpTxt(winProb(A, B, aA, aB))} chance to win", "chance to win</span>")
     t = lit(t, "home: moves change win chance",
             '<span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>',
