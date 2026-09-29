@@ -154,7 +154,7 @@ print(f"(check) players in IR slots: {[p['n'] for p in players if p['ir']]}")
 data = {"generated": datetime.now().isoformat(timespec="seconds"),
         "leagueName": lg.get("settings", {}).get("name", ""), "myTeamId": MY_TEAM_ID,
         "currentPeriod": current, "teams": teams, "players": players,
-        "periods": periods, "matchups": matchups, "slots": {str(k): v for k, v in slots.items()}, "acq": ({str(t.get("id")): ((t.get("transactionCounter") or {}).get("matchupAcquisitionTotals") or {}) for t in lg.get("teams", [])} if any("transactionCounter" in t for t in lg.get("teams", [])) else None)}
+        "periods": periods, "matchups": matchups}
 # 4) Starting goalies from Daily Faceoff (today + tomorrow)
 import re
 TEAM_WORDS = [("blue jackets", "CBJ"), ("red wings", "DET"), ("maple leafs", "TOR"), ("golden knights", "VGK"),
