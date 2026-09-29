@@ -1240,5 +1240,318 @@ def main():
             print(f"(news) {f} updated")
 
 
+# ---------- round 11: cleaner Add / Drop with a pop-up move simulator ----------
+R11_CSS = r'''  /* round 11 add/drop (news_logos.py) */
+  .ms-card { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; width: 100%; max-width: 680px; padding: 18px; margin: auto 0; }
+  .ms-move { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+  .ms-pick { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line2); border-radius: 8px; padding: 6px 10px; min-height: 42px; }
+  .ms-list { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 60; background: #202020; border: 1px solid var(--line2); border-radius: 10px; padding: 4px; max-height: 300px; overflow-y: auto; }
+  .ms-opt { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px; border-radius: 8px; color: var(--ink); }
+  .ms-opt:hover { background: var(--accentSoft); }
+  .ms-res { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 14px; }
+  @media (max-width: 640px) { .ms-card { padding: 14px; } .ms-move .tb-grid { grid-template-columns: minmax(0,1fr); } }
+'''
+
+ADDDROP11 = r'''const shortTag = (p, K) => { const t = tags(p, K)[0]; if (!t) return null; const x = t.u ? t.t.split(":")[0] : t.t; return { t: x.length > 20 ? x.slice(0, 19) + "…" : x, c: t.c }; };
+const cntOf = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
+const WinCell = ({ s, add, drop, base }) => {
+  if (base == null) return null;
+  const n = winChance(s, afterMove(s, add, drop));
+  if (n == null) return null;
+  const d = Math.round(n * 100) - Math.round(base * 100);
+  return <span className="whitespace-nowrap"><span className="font-medium">{wpTxt(n)}</span> <span className={"text-xs " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")}>{d > 0 ? "+" : ""}{d}</span></span>;
+};
+function AddDrop({ s, setS, wk }) {
+  // add/drop v11: one drop on top, cleaner rows, pop-up simulator (news_logos.py)
+  const [H, setH] = useState(1);
+  const [pos, setPos] = useState("sk"); const [q, setQ] = useState(""); const [limit, setLimit] = useState(25);
+  const [dropSel, setDropSel] = useState("");
+  const [sim, setSim] = useState(null);
+  const [showSet, setShowSet] = useState(false);
+  const M = useMemo(() => computeMoves(s, { H, pos, q }), [s, H, pos, q]);
+  const wBase = useMemo(() => winChance(s), [s]);
+  const { res, total, gamesIn, rawPts, autoProt, protectedIds, cnt, mins, keepsMins, lineupAware, myR, K, gw, protectTop } = M;
+  const minGain = s.minGain ?? 3;
+  const num = (k, v, fb) => setS((st) => ({ ...st, [k]: isNaN(parseFloat(v)) ? fb : parseFloat(v) }));
+  const hLabel = { 1: "rest of this week", 2: "this week + next", 4: "next 4 weeks", 0: "rest of season" }[H];
+  const forced = myR.find((p) => p.id === dropSel && !p.ir) || null;
+  const rows = useMemo(() => {
+    if (!forced) return res;
+    const base = lineupAware ? total(myR) : 0;
+    return res.filter((r) => keepsMins(forced, r.f)).map((r) => ({ ...r, d: forced, gain: lineupAware ? total(myR.filter((x) => x.id !== forced.id).concat([{ ...r.f, ft: s.me }])) - base : rawPts(r.f) - rawPts(forced) })).sort((a, b) => b.gain - a.gain);
+  }, [M, dropSel]);
+  const worth = rows.filter((r) => r.gain >= minGain);
+  const shown = worth.slice(0, limit === 0 ? 9999 : limit);
+  const tally = {}; shown.forEach((r) => { tally[r.d.id] = (tally[r.d.id] || 0) + 1; });
+  const topId = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0];
+  const common = forced || myR.find((p) => p.id === topId) || null;
+  const mixed = !forced && Object.keys(tally).length > 1;
+  const dropList = myR.filter((p) => !p.ir).sort((a, b) => effAvg(a, K) - effAvg(b, K));
+  const toggleKeep = (id, v) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, keep: v } : p)) }));
+  const stOf = (p) => (p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
+  const tabs = [["sk", "All skaters"], ["F", "Forwards"], ["D", "Defense"], ["G", "Goalies"], ["pp1", "On PP1"], ["all", "Everyone"]];
+  return (
+    <div className="space-y-4">
+      <Section title="Add / Drop" sub={`${worth.length} pickups worth ${minGain}+ pts · ${lineupAware ? "lineup-aware" : "quick estimate"}`} link={[showSet ? "Hide settings" : "Settings & protected players", () => setShowSet(!showSet)]}>
+        <div className="flex flex-wrap gap-2 items-center">
+          <select className={inp} value={H} onChange={(e) => setH(+e.target.value)}><option value={1}>Rest of this week</option><option value={2}>This week + next</option><option value={4}>Next 4 weeks</option><option value={0}>Rest of season</option></select>
+          <input className={inp + " flex-1 min-w-[140px]"} placeholder="Search free agents" value={q} onChange={(e) => setQ(e.target.value)} />
+          <select className={inp} value={limit} onChange={(e) => setLimit(+e.target.value)}><option value={25}>Show 25</option><option value={50}>Show 50</option><option value={100}>Show 100</option><option value={0}>Show all</option></select>
+          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => setSim({})}>Build a move</button>
+        </div>
+        {showSet && (
+          <div className="mt-3 pt-3 border-t border-slate-200 space-y-3">
+            <div className="flex flex-wrap gap-3 items-center">
+              <span className="font-medium">Minimums</span>
+              <label>F <input type="number" className={inp + " w-14"} value={mins.F} onChange={(e) => num("minF", e.target.value, 10)} /></label>
+              <label>D <input type="number" className={inp + " w-14"} value={mins.D} onChange={(e) => num("minD", e.target.value, 5)} /></label>
+              <label>G <input type="number" className={inp + " w-14"} value={mins.G} onChange={(e) => num("minGo", e.target.value, 2)} /></label>
+              <span className={"text-xs " + (cnt.F < mins.F || cnt.D < mins.D || cnt.G < mins.G ? "text-red-600 font-semibold" : "text-slate-500")}>You have F {cnt.F} · D {cnt.D} · G {cnt.G}</span>
+            </div>
+            <div className="flex flex-wrap gap-3 items-center">
+              <label>Goalie value × <input type="number" step="0.1" className={inp + " w-16"} value={gw} onChange={(e) => num("gw", e.target.value, 1.3)} /></label>
+              <label>Auto-protect top <input type="number" className={inp + " w-14"} value={protectTop} onChange={(e) => num("protectTop", e.target.value, 8)} /></label>
+              <label>Min gain <input type="number" step="0.5" className={inp + " w-16"} value={minGain} onChange={(e) => num("minGain", e.target.value, 3)} /> pts</label>
+            </div>
+            <div>
+              <div className="text-xs text-slate-500 mb-1">Protected players (never suggested as drops):</div>
+              <div className="flex flex-wrap gap-2">
+                {myR.map((p) => { const auto = autoProt.has(p.id), prot = protectedIds.has(p.id); return (
+                  <label key={p.id} className={"flex items-center gap-1 px-2 py-1 rounded-full border text-xs " + (p.ir ? "text-slate-400 border-slate-200" : prot ? "bg-green-50 border-green-300" : "border-slate-300")}>
+                    <input type="checkbox" disabled={p.ir || auto} checked={p.ir || prot} onChange={(e) => toggleKeep(p.id, e.target.checked)} />{p.n}{p.ir ? " (IR)" : auto ? " (auto)" : ""}
+                  </label>
+                ); })}
+              </div>
+            </div>
+          </div>
+        )}
+      </Section>
+      <div className="bg-white rounded-xl border border-slate-200 overflow-x-auto">
+        <div className="p-3 border-b border-slate-200"><Pills items={tabs} value={pos} onChange={setPos} /></div>
+        <div className="flex flex-wrap items-center gap-2 px-3 py-2.5 border-b border-slate-200 text-sm">
+          <span className="text-slate-500">Dropping</span>
+          {common ? <span className="inline-flex items-center gap-1.5 font-semibold"><TeamLogo t={common.t} size={22} />{common.n}<span className="text-xs text-slate-500 font-normal">{common.p}</span></span> : <span className="text-slate-400">nobody yet</span>}
+          <span className="text-xs text-slate-500">{forced ? "your choice" : mixed ? "for most pickups, others shown on the row" : "suggested"}</span>
+          <select className={inp + " ml-auto"} value={dropSel} onChange={(e) => setDropSel(e.target.value)}>
+            <option value="">Change drop: best for each (auto)</option>
+            {dropList.map((p) => <option key={p.id} value={p.id}>Drop {p.n} ({p.p}) · {f1(effAvg(p, K))}/g{protectedIds.has(p.id) ? " · protected" : ""}</option>)}
+          </select>
+        </div>
+        <table className="w-full text-sm">
+          <thead className="text-left"><tr>
+            <th className="px-3 py-2">Add</th>
+            <th className="px-3 py-2 m-hide">Gms</th>
+            <th className="px-3 py-2 m-hide">Avg</th>
+            <th className="px-3 py-2">Gain</th>
+            <th className="px-3 py-2 whitespace-nowrap">Win · now {wBase == null ? "–" : wpTxt(wBase)}</th>
+            <th className="px-3 py-2">Advice</th>
+            <th className="px-3 py-2"></th>
+          </tr></thead>
+          <tbody>
+            {shown.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); const tg = shortTag(r.f, K); const st = stOf(r.f); return (
+              <tr key={r.f.id} className="border-t border-slate-100">
+                <td className="px-3 py-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <TeamLogo t={r.f.t} size={26} />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 whitespace-nowrap"><PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}</div>
+                      {common && r.d.id !== common.id ? <div className="text-xs text-slate-500">drops {r.d.n}</div> : null}
+                    </div>
+                  </div>
+                </td>
+                <td className="px-3 py-2.5 m-hide">{gamesIn(r.f)}</td>
+                <td className="px-3 py-2.5 m-hide">{f1(effAvg(r.f, K))}</td>
+                <td className={"px-3 py-2.5 font-semibold " + (r.gain > 0 ? "text-green-700" : "text-red-600")}>{r.gain >= 0 ? "+" : ""}{f1(r.gain)}</td>
+                <td className="px-3 py-2.5"><WinCell s={s} add={r.f} drop={r.d} base={wBase} /></td>
+                <td className="px-3 py-2.5 whitespace-nowrap"><span className={"text-xs px-2 py-0.5 rounded " + c}>{v}</span>{tg ? <span className={"text-xs ml-2 " + tg.c}>{tg.t}</span> : null}</td>
+                <td className="px-3 py-2.5 text-right"><button className="text-blue-600 text-sm" onClick={() => setSim({ add: r.f.id, drop: r.d.id })}>Simulate</button></td>
+              </tr>
+            ); })}
+            {shown.length === 0 && <tr><td className="px-3 py-4 text-slate-400" colSpan={7}>No pickups clear your minimum gain for this position and window{forced ? " with this drop" : ""}.</td></tr>}
+          </tbody>
+        </table>
+      </div>
+      <div className="text-xs text-slate-500">Gain = extra projected points in your daily lineups ({hLabel}). Win = your chance to win this week after the move, with the change next to it. Stream only = helps now but is a worse player long-term.</div>
+      {sim ? <MoveSim s={s} setS={setS} wk={wk} M={M} H={H} hLabel={hLabel} init={sim} wBase={wBase} onClose={() => setSim(null)} /> : null}
+    </div>
+  );
+}
+function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
+  const { total, rawPts, gamesIn, protectedIds, mins, lineupAware, myR, fas, K } = M;
+  const left = movesLeft(s, s.me, wk);
+  const cap = Math.max(1, left == null ? 3 : left);
+  const [moves, setMoves] = useState([{ add: init.add || "", drop: init.drop || "", sug: init.drop || "" }]);
+  const [qs, setQs] = useState({});
+  const [openI, setOpenI] = useState(init.add ? -1 : 0);
+  const [focus, setFocus] = useState(0);
+  useEffect(() => {
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k); document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, []);
+  const byId = (id) => (id ? s.players.find((p) => p.id === id) || null : null);
+  const rosterBefore = (i, ms) => { let r = myR; (ms || moves).slice(0, i).forEach((m) => { const a = byId(m.add); if (a && r.some((x) => x.id === m.drop)) r = r.filter((x) => x.id !== m.drop).concat([{ ...a, ft: s.me }]); }); return r; };
+  const suggestDrop = (i, f, ms) => {
+    const r = rosterBefore(i, ms), c = cntOf(r);
+    const ok = (d) => !d.ir && (d.p === f.p || c[d.p] - 1 >= mins[d.p]);
+    let cands = r.filter((d) => ok(d) && !protectedIds.has(d.id));
+    if (!cands.length) cands = r.filter(ok);
+    const b = lineupAware ? total(r) : 0;
+    let best = null;
+    cands.forEach((d) => { const g = lineupAware ? total(r.filter((x) => x.id !== d.id).concat([{ ...f, ft: s.me }])) - b : rawPts(f) - rawPts(d); if (!best || g > best.g) best = { d, g }; });
+    return best ? best.d.id : "";
+  };
+  const setAdd = (i, id) => {
+    const f = byId(id);
+    setMoves((ms) => ms.map((m, k) => { if (k !== i) return m; const sug = f ? suggestDrop(i, f, ms) : ""; return { add: id, drop: sug, sug }; }));
+    setQs((x) => ({ ...x, [i]: "" })); setOpenI(-1); setFocus(i);
+  };
+  const setDrop = (i, id) => setMoves((ms) => ms.map((m, k) => (k === i ? { ...m, drop: id } : m)));
+  const addMove = () => { const n = moves.length; setMoves((ms) => ms.concat([{ add: "", drop: "", sug: "" }])); setOpenI(n); setFocus(n); };
+  const removeMove = (i) => { setMoves((ms) => ms.filter((_, k) => k !== i)); setFocus(0); setOpenI(-1); };
+  const matches = (i) => {
+    const q = nrm(qs[i] || ""), used = new Set(moves.filter((_, k) => k !== i).map((m) => m.add));
+    if (!q) return M.res.filter((r) => !used.has(r.f.id)).slice(0, 6).map((r) => r.f);
+    return fas.filter((p) => p.prob > 0 && !used.has(p.id) && nrm(p.n).includes(q)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
+  };
+  const key = JSON.stringify(moves.map((m) => [m.add, m.drop]));
+  const R = useMemo(() => {
+    const list = moves.map((m, i) => { const a = byId(m.add), r = rosterBefore(i); const d = r.find((x) => x.id === m.drop) || null; return a && d ? { a, d } : null; });
+    const ok = list.filter(Boolean);
+    if (!ok.length) return { list, ok };
+    const after = rosterBefore(moves.length);
+    const gain = lineupAware ? total(after) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d), 0);
+    const c = cntOf(after);
+    return { list, ok, after, gain, c, win: winChance(s, after), short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
+  }, [key]);
+  const addF = byId((moves[focus] || {}).add);
+  const alts = useMemo(() => (addF ? computeMoves(s, { H, pos: addF.p, pool: 40 }).res.filter((r) => r.f.id !== addF.id && !moves.some((m) => m.add === r.f.id)).slice(0, 3) : []), [addF ? addF.id : "", H]);
+  const apply = () => {
+    const drops = new Set(R.ok.map((x) => x.d.id)), adds = new Set(R.ok.map((x) => x.a.id));
+    setS((st) => ({ ...st, players: st.players.map((p) => (drops.has(p.id) ? { ...p, ft: "fa", ir: false } : adds.has(p.id) ? { ...p, ft: st.me } : p)) }));
+    onClose();
+  };
+  const before = cntOf(myR);
+  const posName = { F: "forwards", D: "defencemen", G: "goalies" };
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 overflow-y-auto" style={{ background: "rgba(0,0,0,.65)" }} onClick={onClose}>
+      <div className="ms-card" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-start gap-3 mb-3">
+          <div>
+            <div className="font-semibold text-base">Simulate a move</div>
+            <div className="text-xs text-slate-500">Points: {hLabel} · win chance: this week{left != null ? ` · ${left} move${left === 1 ? "" : "s"} left this week` : ""}</div>
+          </div>
+          <button className="ml-auto text-2xl leading-none text-slate-500" aria-label="Close" onClick={onClose}>×</button>
+        </div>
+        {moves.map((m, i) => {
+          const a = byId(m.add), r = rosterBefore(i), it = R.list[i];
+          const drops = r.filter((p) => !p.ir).sort((x, y) => effAvg(x, K) - effAvg(y, K));
+          const sd = it ? effAvg(it.a, K) - effAvg(it.d, K) : 0;
+          const ml = openI === i ? matches(i) : [];
+          return (
+            <div key={i} className="ms-move" onClick={() => setFocus(i)}>
+              {moves.length > 1 ? <div className="flex items-center mb-2"><span className="text-xs uppercase tracking-wide text-slate-500">Move {i + 1}</span><button className="ml-auto text-xs text-slate-500" onClick={(e) => { e.stopPropagation(); removeMove(i); }}>Remove</button></div> : null}
+              <div className="tb-grid">
+                <div className="min-w-0">
+                  <div className="text-xs text-slate-500 mb-1">Add</div>
+                  {a && openI !== i ? (
+                    <div className="ms-pick">
+                      <TeamLogo t={a.t} size={26} />
+                      <div className="min-w-0 flex-1"><div className="truncate font-medium">{a.n}</div><div className="text-xs text-slate-500">{a.p} · {gamesIn(a)} gms · {f1(effAvg(a, K))}/g</div></div>
+                      <button className="text-xs text-blue-600" onClick={() => setOpenI(i)}>Change</button>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <input className={inp + " w-full"} autoFocus={openI === i} placeholder="Type a free agent's name" value={qs[i] || ""}
+                        onChange={(e) => { setQs({ ...qs, [i]: e.target.value }); setOpenI(i); }} onFocus={() => setOpenI(i)}
+                        onBlur={() => setTimeout(() => setOpenI((x) => (x === i ? -1 : x)), 150)} />
+                      {openI === i ? (
+                        <div className="ms-list">
+                          {!(qs[i] || "").trim() ? <div className="text-xs text-slate-500 px-2 pt-1 pb-1">Top pickups</div> : null}
+                          {ml.map((p) => (
+                            <button key={p.id} type="button" className="ms-opt" onMouseDown={(e) => e.preventDefault()} onClick={() => setAdd(i, p.id)}>
+                              <TeamLogo t={p.t} size={22} />
+                              <span className="truncate flex-1 text-left">{p.n} <span className="text-xs text-slate-500">{p.p}</span></span>
+                              <span className="text-xs text-slate-500 whitespace-nowrap">{gamesIn(p)} gms · {f1(effAvg(p, K))}</span>
+                            </button>
+                          ))}
+                          {ml.length === 0 ? <div className="text-sm text-slate-400 px-2 py-2">No free agent matches.</div> : null}
+                          {a ? <button type="button" className="text-xs text-slate-500 px-2 py-1" onMouseDown={(e) => e.preventDefault()} onClick={() => setOpenI(-1)}>Keep {a.n}</button> : null}
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs text-slate-500 mb-1">Drop{m.drop && m.drop === m.sug ? " · suggested" : ""}</div>
+                  <select className={inp + " w-full"} value={m.drop} onChange={(e) => setDrop(i, e.target.value)}>
+                    <option value="">Choose who to drop</option>
+                    {drops.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}) · {f1(effAvg(p, K))}/g{protectedIds.has(p.id) ? " · protected" : ""}</option>)}
+                  </select>
+                </div>
+              </div>
+              {it ? (
+                <div className={"text-xs mt-2 " + (sd >= 0 ? "text-green-700" : "text-amber-600")}>
+                  {sd >= 0 ? `Keeper: ${f1(sd)}/game better than ${it.d.n} long-term` : `Stream only: ${f1(-sd)}/game worse than ${it.d.n} long-term`}{protectedIds.has(it.d.id) ? ` · ${it.d.n} is protected` : ""}
+                </div>
+              ) : a && m.drop && !r.some((x) => x.id === m.drop) ? <div className="text-xs mt-2 text-red-600">That player is already dropped in an earlier move. Choose another drop.</div> : null}
+            </div>
+          );
+        })}
+        {addF && alts.length ? (
+          <div className="mt-3">
+            <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Other {posName[addF.p]} to consider</div>
+            {alts.map((r) => (
+              <div key={r.f.id} className="flex items-center gap-2.5 py-2 border-t border-slate-100">
+                <TeamLogo t={r.f.t} size={22} />
+                <div className="min-w-0 flex-1"><div className="truncate">{r.f.n}</div><div className="text-xs text-slate-500">{gamesIn(r.f)} gms · {f1(effAvg(r.f, K))}/g · drop {r.d.n}</div></div>
+                <span className="text-green-700 font-semibold text-sm">+{f1(r.gain)}</span>
+                <button className="text-xs text-blue-600" onClick={() => setAdd(focus, r.f.id)}>Use</button>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {moves.length < cap ? <button className="text-sm text-blue-600 mt-3" onClick={addMove}>+ Add another move</button>
+          : <div className="text-xs text-slate-500 mt-3">{left === 0 ? "No moves left this week on ESPN, so this is only a what-if." : `That's all ${cap} of your moves left this week.`}</div>}
+        <div className="ms-res">
+          {R.ok.length ? (
+            <div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div><div className="text-xs text-slate-500">Points</div><div className="text-xl"><Dlt v={R.gain} /></div><div className="text-xs text-slate-500">{hLabel}</div></div>
+                <div><div className="text-xs text-slate-500">Win this week</div><div className={"text-xl font-semibold " + (R.win != null && wBase != null ? (R.win > wBase ? "text-green-700" : R.win < wBase ? "text-red-600" : "") : "")}>{R.win == null ? "–" : wpTxt(R.win)}</div><div className="text-xs text-slate-500">now {wBase == null ? "–" : wpTxt(wBase)}</div></div>
+                <div><div className="text-xs text-slate-500">Roster after</div><div className="text-sm font-semibold mt-1">F {R.c.F} · D {R.c.D} · G {R.c.G}</div><div className="text-xs text-slate-500">was F {before.F} · D {before.D} · G {before.G}</div></div>
+              </div>
+              {R.short.length ? <div className="text-sm text-red-600 mt-2">Below your minimum at {R.short.join(", ")}. Pick a different drop.</div> : null}
+              <div className="flex flex-wrap items-center gap-3 mt-3">
+                <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={apply}>Apply here</button>
+                <span className="text-xs text-slate-500">Updates this app only. Make the real move on ESPN; the next sync confirms it.</span>
+              </div>
+            </div>
+          ) : <div className="text-sm text-slate-400">Pick a player to add and one to drop to see the result.</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+'''
+
+
+def round11(t):
+    t = lit(t, "add/drop styles", "</style>", R11_CSS + "</style>", "round 11 add/drop")
+    t = block(t, "add/drop: cleaner table + pop-up simulator", "function AddDrop({ s, setS }) {",
+              "// ---------- Players ----------", ADDDROP11, "add/drop v11")
+    for must in ("function MoveSim(", "function AddDrop({ s, setS, wk })", "// ---------- Players ----------"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 11 (" + must + ").")
+    return t
+
+
+_fix_before_r11 = fix
+
+
+def fix(t):
+    return round11(_fix_before_r11(t))
+
 if __name__ == "__main__":
     main()
