@@ -557,6 +557,27 @@ def fix(t):
             '["planner", "Planner"], ["goalies", "Goalie streams"], ["adddrop", "Add / Drop"]', '["goalies", "Goalie streams"]')
     t = lit(t, "moves: goalie streams page", 'sub === "planner" ? <PlannerAll {...P} /> :',
             'sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> :', "<GoalieStreams {...P} />")
+    # --- round 7: moves used filled in from ESPN ---
+    t = lit(t, "moves used from ESPN (helper)", ROOT,
+            r'''// ---------- moves used from ESPN (news_logos.py) ----------
+function movesUsedESPN(s, w) {
+  const E = window.ESPN_DATA || {};
+  if (!E.acq || !w || w.period == null) return null;
+  const a = E.acq[String(s.me).replace(/^t/, "")];
+  return a ? (+a[String(w.period)] || 0) : null;
+}
+
+''' + ROOT, "function movesUsedESPN(")
+    t = lit(t, "planner: moves used from ESPN", "const used = ((s.movesUsed || {})[s.wk]) || 0;",
+            "const espnUsed = movesUsedESPN(s, wk); const used = espnUsed != null ? espnUsed : ((s.movesUsed || {})[s.wk]) || 0;",
+            "const espnUsed = movesUsedESPN(s, wk);")
+    t = lit(t, "planner: show ESPN count instead of the menu",
+            r'''<label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>''',
+            r'''{espnUsed != null ? <span>Moves used this week: <b>{used} of 3</b> <span className="text-xs text-slate-500">from ESPN</span></span> : <label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>}''',
+            "{espnUsed != null ? <span>Moves used this week")
+    t = lit(t, "planner: note under the plan", 'Set "moves already used" after each one.',
+            '''{espnUsed != null ? "Your moves count updates from ESPN at the next sync." : 'Set "moves already used" after each one.'}''',
+            "Your moves count updates from ESPN at the next sync.")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
