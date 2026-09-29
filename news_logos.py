@@ -354,6 +354,37 @@ def fix_alerts(t):
 
 PY_FIXES = {SYNC: fix_sync, ALERTS: fix_alerts}
 
+# ---------- lines-tab.js: logos next to team names only (applied in live mode) ----------
+LINES = "lines-tab.js"
+PY_BAK[LINES] = "lines-tab.backup-news.js"
+PY_DONE[LINES] = "H.TeamLogo t={x.t} size={32}"
+
+
+def babel_ok(code, name):
+    if not shutil.which("node") or not os.path.exists(BABEL):
+        print(f"(news) {name}: syntax check skipped (checker not installed)")
+        return
+    pathlib.Path("/tmp/check.jsx").write_text(code, encoding="utf-8")
+    js = ("const B=require(%r);const fs=require('fs');try{B.transform(fs.readFileSync('/tmp/check.jsx','utf8'),"
+          "{presets:['react']});console.log('ok')}catch(e){console.log(e.message);process.exit(1)}") % BABEL
+    r = subprocess.run(["node", "-e", js], capture_output=True, text=True)
+    if r.returncode:
+        fail(f"{name} would have a syntax error: " + (r.stdout or r.stderr)[:600])
+    print(f"(news) {name}: syntax check ok")
+
+
+def fix_lines_tab(t):
+    t = lit(t, "lines: logo on each team row", '<div className="lt-tmain">',
+            '{H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}<div className="lt-tmain">',
+            "H.TeamLogo t={x.t} size={32}")
+    t = lit(t, "lines: logo in grouped changes", "<b>{nm}</b>",
+            "{H.TeamLogo ? <H.TeamLogo t={t} size={22} /> : null}<b>{nm}</b>", "H.TeamLogo t={t} size={22}")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES = {LINES: fix_lines_tab}
+
 HELPERS = r'''// ---------- team logos, game times and news filter (news_logos.py) ----------
 const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
@@ -578,6 +609,8 @@ function movesUsedESPN(s, w) {
     t = lit(t, "planner: note under the plan", 'Set "moves already used" after each one.',
             '''{espnUsed != null ? "Your moves count updates from ESPN at the next sync." : 'Set "moves already used" after each one.'}''',
             "Your moves count updates from ESPN at the next sync.")
+    # --- round 8: give the Lines tab access to team logos ---
+    t = lit(t, "lines tab can use logos", "todayISO, dayLabel, TL };", "todayISO, dayLabel, TL, TeamLogo };", "dayLabel, TL, TeamLogo };")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
@@ -671,7 +704,7 @@ def main():
     new = fix(old)
     jsx_check(new)
     py = {}
-    for f, fn in PY_FIXES.items():
+    for f, fn in {**PY_FIXES, **JS_FIXES}.items():
         fp = pathlib.Path(f)
         if not fp.exists():
             print(f"(news) {f} not found - skipped")
