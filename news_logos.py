@@ -432,6 +432,191 @@ const NewsItem = ({ n }) => (
 
 '''
 
+# ---------- round 9: phone layout (only screens 640 px wide or less; desktop unchanged) ----------
+R9_CSS = r'''  /* round 9 mobile (news_logos.py) */
+  .m-only { display: none !important; }
+  .m-tab { padding: 11px 2px 9px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; border-bottom: 3px solid transparent; white-space: nowrap; text-align: center; }
+  .m-icon { width: 34px; height: 34px; border-radius: 999px; background: #202020; color: var(--ink); font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .m-wk { font-size: 16px; padding: 4px 8px; max-width: 190px; border: 1px solid var(--line2); }
+  .m-h2h-head { display: grid; grid-template-columns: minmax(0,1fr) 40px minmax(0,1fr); align-items: end; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .m-big { font-size: 26px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .m-row { display: grid; grid-template-columns: minmax(0,1fr) 24px minmax(0,1fr); border-bottom: 1px solid var(--line); }
+  .m-cell { display: flex; align-items: center; gap: 6px; padding: 8px; min-width: 0; min-height: 54px; }
+  .m-slot { display: flex; align-items: center; justify-content: center; background: #151515; font-size: 11px; font-weight: 700; color: var(--mute); }
+  .m-pts { font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; flex-shrink: 0; min-width: 30px; text-align: center; }
+  .m-ghead, .m-rrow { display: grid; gap: 8px; align-items: center; }
+  .m-ghead { grid-template-columns: minmax(0,1fr) 42px 34px 46px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); padding: 10px 2px 6px; }
+  .m-rrow { grid-template-columns: 28px minmax(0,1fr) 42px 34px 46px; padding: 9px 2px; border-top: 1px solid var(--line); cursor: pointer; }
+  .m-ghead span + span, .m-num { text-align: right; font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px) {
+    .m-only { display: block !important; }
+    .m-hide { display: none !important; }
+    body { overflow-x: hidden; }
+    input:not([type=checkbox]), select, textarea { font-size: 16px !important; }
+    .max-w-6xl.mx-auto.px-3.py-4 { padding: 12px 10px 90px !important; }
+    .bg-white.rounded-xl.p-4 { padding: 1rem .9rem !important; }
+    .font-semibold.text-base, .font-bold.text-lg { font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 700 !important; font-size: 1.05rem !important; }
+    .text-4xl { font-size: 2.1rem !important; }
+    .overflow-x-auto > table th:first-child, .overflow-x-auto > table td:first-child { position: sticky; left: 0; z-index: 1; background: var(--card); }
+    .lg\:grid-cols-5.gap-3.mb-4 { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+    .lg\:grid-cols-5.gap-3.mb-4 > * { flex: 0 0 72%; scroll-snap-align: start; }
+    .fixed.bottom-5.right-5.rounded-full { bottom: 14px !important; right: 12px !important; padding: 8px 16px !important; font-size: 13px !important; }
+    .lt-pills { flex-direction: column !important; align-items: flex-end !important; gap: 4px !important; }
+    .lt-rk { width: auto !important; min-width: 26px; font-size: 13px; }
+    .lt-tn { font-size: 15px; }
+  }
+'''
+
+R9_HELPERS = r'''// ---------- round 9: phone layout (news_logos.py) ----------
+const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "My Team"], ["moves", "Moves"]];
+const M_MORE = [["teams", "Teams"], ["lines", "Lines"], ["league", "League"], ["news", "News"], ["setup", "Setup"]];
+const M_MODES = [["espn", "ESPN"], ["blend", "Blend"], ["model", "GM model"], ["ai", "AI (beta)"]];
+const M_ST = { DAY_TO_DAY: "DTD", OUT: "Out", INJURY_RESERVE: "IR", SUSPENSION: "Susp." };
+const shortN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x[0][0] + ". " + x.slice(1).join(" ") : x[0]; };
+const mGame = (p) => { const g = gameOf(p.t, p.dt); return g ? (g.h ? "vs " : "@") + g.o + " " + gameTime(g) : ""; };
+const mStart = (gs) => (!gs ? "" : gs.includes("confirmed") && !gs.includes("un") ? "Confirmed" : /not starting|rests|backup/.test(gs) ? "May sit" : /likely/.test(gs) ? "Likely" : "Unconfirmed");
+function MobileHeader({ s, setS, tab, go, ageH }) {
+  const [menu, setMenu] = useState(false);
+  const [opts, setOpts] = useState(false);
+  const more = M_MORE.find(([k]) => k === tab);
+  const pick = (k) => { setMenu(false); setOpts(false); go(k); };
+  const dot = !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)";
+  const can = (k) => k === "espn" || (!!window.__MODEL && (k !== "ai" || !!window.__AI));
+  const tabBtn = (k, l, on, fn) => (
+    <button key={k} onClick={fn} className="m-tab" style={{ color: on ? "var(--ink)" : "var(--mute)", borderBottomColor: on ? "var(--accent)" : "transparent" }}>{l}</button>
+  );
+  return (
+    <div className="m-only">
+      <div className="flex items-center gap-2 px-3 pt-2">
+        <span className="font-semibold text-white truncate" style={{ fontSize: 18 }}>{teamName(s, s.me) || "Islands GM"}</span>
+        <span title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"} style={{ width: 7, height: 7, borderRadius: 99, background: dot, flexShrink: 0 }}></span>
+        <select className="m-wk ml-auto" value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>
+          {s.weeks.map((w, i) => <option key={i} value={i}>{(w.label || "").replace(/^Week /, "Wk ")}</option>)}
+        </select>
+        <button className="m-icon" aria-label="Options" onClick={() => { setOpts(!opts); setMenu(false); }}>⋯</button>
+      </div>
+      {opts && (
+        <div className="px-3 pt-2 pb-1">
+          <div className="text-xs text-slate-500 mb-1">Projections</div>
+          <div className="flex gap-2 overflow-x-auto navscroll">
+            {M_MODES.map(([k, l]) => <button key={k} disabled={!can(k)} onClick={() => setS({ ...s, pmode: k, players: [...s.players] })} className={"px-3 py-1 rounded-full text-sm border whitespace-nowrap " + (window.__PMODE === k ? "bg-blue-600 border-blue-600" : "border-slate-300 text-slate-600") + (can(k) ? "" : " opacity-40")}>{l}</button>)}
+          </div>
+          <div className="flex items-center gap-3 text-xs text-slate-500 mt-2">
+            <span>{s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"}</span>
+            <a href="ai-dashboard.html" className="text-blue-600 ml-auto">AI Lab</a>
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-5 mt-1">
+        {M_TABS.map(([k, l]) => tabBtn(k, l, tab === k && !menu, () => pick(k)))}
+        {tabBtn("more", more ? more[1] : "More", !!more || menu, () => { setMenu(!menu); setOpts(false); })}
+      </div>
+      {menu && (
+        <div className="border-t border-slate-800">
+          {M_MORE.map(([k, l]) => <button key={k} onClick={() => pick(k)} className="block w-full text-left px-4 py-3 border-b border-slate-800" style={{ color: tab === k ? "var(--accent)" : "var(--ink)" }}>{l}</button>)}
+        </div>
+      )}
+    </div>
+  );
+}
+function MSide({ p, right }) {
+  const al = right ? "flex-end" : "flex-start";
+  if (!p) return <div className="m-cell" style={{ justifyContent: al }}><span className="text-sm text-slate-400">Empty</span></div>;
+  const st = p.p === "G" ? mStart(p.gs) : "";
+  const stc = st === "Confirmed" ? "text-green-700" : st === "May sit" ? "text-red-600" : "text-amber-600";
+  const inj = p.status && p.status !== "ACTIVE" ? M_ST[p.status] || "" : "";
+  const info = (
+    <div className="min-w-0" style={{ flex: 1, textAlign: right ? "right" : "left" }}>
+      <div className="flex items-center gap-1 min-w-0" style={{ justifyContent: al }}>
+        <button type="button" className="truncate font-medium" style={{ minWidth: 0 }} onClick={() => window.__NAV && window.__NAV.player(p)}>{shortN(p.n)}</button>
+        <span style={{ flexShrink: 0, lineHeight: 0 }}><TeamLogo t={p.t} size={16} /></span>
+        {inj ? <span className="text-xs text-red-600" style={{ flexShrink: 0 }}>{inj}</span> : null}
+      </div>
+      <div className="text-xs text-slate-500 truncate">{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</div>
+    </div>
+  );
+  const pts = <div className="m-pts">{f1(p.x)}</div>;
+  return <div className="m-cell">{right ? pts : info}{right ? info : pts}</div>;
+}
+function H2H({ x, y, s, a, b, wk, d }) {
+  const rows = [];
+  ["F", "D", "UTIL", "G"].forEach((sl) => {
+    const A = x.start.filter((p) => p.slot === sl), B = y.start.filter((p) => p.slot === sl);
+    for (let i = 0; i < Math.max(A.length, B.length); i++) rows.push([sl, A[i] || null, B[i] || null]);
+  });
+  const sit = (l, id) => (l.bench.length ? <div className="text-xs text-slate-500 px-3 pt-2">{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
+  return (
+    <div>
+      <div className="m-h2h-head">
+        <div className="min-w-0"><div className="text-xs text-slate-500 truncate">{teamName(s, a)}</div><div className="m-big">{f1(x.total)}</div></div>
+        <div className="text-xs text-slate-500 text-center pb-1">vs</div>
+        <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate">{teamName(s, b)}</div><div className="m-big">{f1(y.total)}</div></div>
+      </div>
+      {rows.length ? rows.map(([sl, p, q], i) => (
+        <div key={i} className="m-row"><MSide p={p} /><div className="m-slot">{sl === "UTIL" ? "U" : sl}</div><MSide p={q} right /></div>
+      )) : <div className="text-sm text-slate-400 px-3 py-3">No games for either team.</div>}
+      {sit(x, a)}{sit(y, b)}
+      {x.empty || y.empty ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots: {teamName(s, a)} {x.empty} · {teamName(s, b)} {y.empty}</div> : null}
+      {a === s.me ? <div className="px-3"><FillSlot l={x} s={s} wk={wk} d={d} /></div> : null}
+      <div className="h-2"></div>
+    </div>
+  );
+}
+
+'''
+
+ROSTERVIEW = r'''function RosterView({ s, wk, team }) {
+  // roster view v9: no Signals column, phone list by position (news_logos.py)
+  const K = s.blend, done = wk.done || 0;
+  const roster = s.players.filter((p) => p.ft === team);
+  const order = { F: 0, D: 1, G: 2 };
+  const sorted = [...roster].sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || order[a.p] - order[b.p] || effAvg(b, K) - effAvg(a, K));
+  const Ls = wk.days.map((_, d) => (d < done ? null : dayLineup(roster, wk, d, K)));
+  const wkPts = (p) => Ls.reduce((a, L) => { if (!L) return a; const x = L.start.find((y) => y.id === p.id); return a + (x ? x.x : 0); }, 0);
+  const left = (p) => (wk.games[p.t] || []).filter((d) => d >= done).length;
+  const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
+  const groups = [["Forwards", sorted.filter((p) => !p.ir && p.p === "F")], ["Defence", sorted.filter((p) => !p.ir && p.p === "D")], ["Goalies", sorted.filter((p) => !p.ir && p.p === "G")], ["Injured reserve", sorted.filter((p) => p.ir)]].filter((g) => g[1].length);
+  return (
+    <div>
+      <div className="m-hide overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="text-left"><tr>{["Player", "", "Proj / game", "Games left", "Week pts"].map((h, i) => <th key={i} className="px-2 py-2">{h}</th>)}</tr></thead>
+          <tbody>{sorted.map((p) => (
+            <tr key={p.id} className="border-t border-slate-100 align-top">
+              <td className="px-2 py-2 whitespace-nowrap"><PN p={p} />{p.ir ? <span className="text-red-600 text-xs ml-1">IR</span> : p.status && p.status !== "ACTIVE" ? <span className="text-red-600 text-xs ml-1">{p.status.replace(/_/g, " ")}</span> : null}</td>
+              <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+              <td className="px-2 py-2">{f1(effAvg(p, K))}</td>
+              <td className="px-2 py-2">{p.ir ? "–" : left(p)}</td>
+              <td className="px-2 py-2 font-semibold">{p.ir ? "–" : f1(wkPts(p))}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+      <div className="m-only">
+        {groups.map(([title, list]) => (
+          <div key={title} className="mb-2">
+            <div className="m-ghead"><span>{title}</span><span>Proj</span><span>Gms</span><span>Week</span></div>
+            {list.map((p) => { const tg = stTag(p); return (
+              <div key={p.id} className="m-rrow" role="button" onClick={() => window.__NAV && window.__NAV.player(p)}>
+                <TeamLogo t={p.t} size={26} />
+                <div className="min-w-0">
+                  <div className="truncate font-medium">{p.n}</div>
+                  <div className="text-xs text-slate-500">{p.p}{tg ? <span className="text-red-600"> · {tg}</span> : null}</div>
+                </div>
+                <span className="m-num">{f1(effAvg(p, K))}</span>
+                <span className="m-num">{p.ir ? "–" : left(p)}</span>
+                <span className="m-num font-semibold">{p.ir ? "–" : f1(wkPts(p))}</span>
+              </div>
+            ); })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+'''
+
 TEAM_PAT = r"(?<!\$)\{([A-Za-z_][\w.]*)\.p\}( · | )\{\1\.t\}"
 
 
@@ -613,7 +798,19 @@ function movesUsedESPN(s, w) {
     t = lit(t, "lines tab can use logos", "todayISO, dayLabel, TL };", "todayISO, dayLabel, TL, TeamLogo };", "dayLabel, TL, TeamLogo };")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
-    for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
+    # --- round 9: phone layout (ESPN-style header and tabs, head-to-head Matchup, clean rosters, no Signals column) ---
+    t = lit(t, "phone: styles", "</style>", R9_CSS + "</style>", "round 9 mobile")
+    t = lit(t, "phone: helpers", ROOT, R9_HELPERS + ROOT, "function MobileHeader(")
+    t = lit(t, "phone: header", '<div className="max-w-6xl mx-auto px-3 pt-2 pb-1 flex flex-wrap items-center gap-2">',
+            '<MobileHeader s={s} setS={setS} tab={tab} go={go} ageH={ageH} />\n        <div className="m-hide max-w-6xl mx-auto px-3 pt-2 pb-1 flex flex-wrap items-center gap-2">',
+            "<MobileHeader s={s}")
+    t = lit(t, "phone: hide desktop tabs", '<div className="max-w-6xl mx-auto px-2 flex gap-1 overflow-x-auto navscroll">',
+            '<div className="m-hide max-w-6xl mx-auto px-2 flex gap-1 overflow-x-auto navscroll">', "m-hide max-w-6xl mx-auto px-2")
+    t = lit(t, "phone: head-to-head matchup", '<div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">',
+            '<div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>\n            <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">',
+            "<H2H x={x}")
+    t = block(t, "rosters: no Signals column + phone list", "function RosterView({ s, wk, team }) {", "function MyTeam(", ROSTERVIEW, "roster view v9")
+    for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today(", "function MobileHeader(", "function RosterView("):
         if must not in t:
             fail("fantasy-gm.html looks damaged after the changes (" + must + ").")
     return t
