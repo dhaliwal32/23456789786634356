@@ -366,6 +366,23 @@ def fix(t):
     t = lit(t, "add/drop: empty row width", "colSpan={9}>No moves clear", "colSpan={10}>No moves clear", "colSpan={10}>No moves clear")
     t = lit(t, "add/drop: simulator win chance", "{simBreaks && <span",
             "{A && D ? <WinDelta s={s} add={A} drop={D} base={wBase} /> : null}{simBreaks && <span", "base={wBase} /> : null}")
+    # --- round 5: one clean footer per day: day difference + running total ---
+    t = sub_once(t, "matchup: clean day footer",
+                 r'<Side l=\{x\} s=\{s\} id=\{a\} /><Side l=\{y\} s=\{s\} id=\{b\} />.*?data-v="daydiff2".*?</span>\s*</span>\s*</div>',
+                 r'''<Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />
+            </div>
+            <div data-v="daydiff2" data-w="daydiff3" className="border-t border-slate-200 px-3 py-2">
+              {[["Day difference", x.total - y.total], ["Total so far", run]].map(([lab, v]) => (
+                <div key={lab} className="flex justify-between items-center py-1.5 font-semibold">
+                  <span>{lab}</span>
+                  <span className="flex items-center gap-3">
+                    <span className="text-sm text-slate-500 font-normal">{Math.abs(v) < 0.05 ? "even" : (v > 0 ? teamName(s, a) : teamName(s, b)) + " ahead"}</span>
+                    <span className={"min-w-[64px] text-center px-2.5 py-0.5 rounded-md " + (v >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{v >= 0 ? "+" : ""}{f1(v)}</span>
+                  </span>
+                </div>
+              ))}
+            </div>''',
+                 'data-w="daydiff3"', re.S)
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
