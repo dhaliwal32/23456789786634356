@@ -617,6 +617,307 @@ ROSTERVIEW = r'''function RosterView({ s, wk, team }) {
 
 '''
 
+# ---------- round 10: Lines tab on phones, cleaner Players list, one trade builder ----------
+R10_CSS = r'''  /* round 10 trades (news_logos.py) */
+  .tb-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; }
+  .tb-p { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 8px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 6px; background: transparent; color: var(--ink); }
+  .tb-p.on { border-color: var(--accent); background: var(--accentSoft); }
+  .tb-p.ir { opacity: .5; }
+  .tb-chk { width: 22px; height: 22px; border-radius: 999px; border: 1px solid var(--line2); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; color: var(--mute); }
+  .tb-p.on .tb-chk { background: var(--accent); border-color: var(--accent); color: #111; }
+  .tb-sel { min-height: 70px; border: 1px dashed var(--line2); border-radius: 12px; padding: 10px; min-width: 0; }
+  .tb-chip { display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 14px; min-width: 0; }
+  .tb-x { margin-left: auto; color: var(--mute); padding: 0 4px; font-size: 16px; }
+  .tb-tiles { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .tb-pk { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .m-inl { display: none !important; }
+  @media (min-width: 768px) { .tb-tiles { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+  @media (max-width: 640px) {
+    .m-inl { display: inline !important; }
+    .m-tab { font-size: 11px; letter-spacing: .01em; }
+    .tb-grid { gap: 8px; }
+    .tb-p { padding: 7px 6px; gap: 6px; }
+  }
+'''
+
+R10_HELPERS = r'''// ---------- round 10: one trade builder (analyzer + 2-for-1 + best waiver pickup) (news_logos.py) ----------
+const Dlt = ({ v }) => <span className={"font-semibold " + (v >= 0 ? "text-green-700" : "text-red-600")}>{v >= 0 ? "+" : ""}{f1(v)}</span>;
+const tbFlags = (p, K) => {
+  const f = [], g = sigOf(p), l = g.luck, id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
+  if (mb != null && p.proj && p.avg > 0) {
+    if (mb / p.avg <= 0.85 && p.avg - mb >= 1) f.push({ t: "ESPN overrates", sell: true });
+    else if (mb / p.avg >= 1.15 && mb - p.avg >= 1) f.push({ t: "underrated", sell: false });
+  }
+  if (l && ((l.t === "s" && l.d >= 2) || (l.t === "g" && l.d >= 4))) f.push({ t: "lucky", sell: true });
+  if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) f.push({ t: "unlucky", sell: false });
+  if ((formRatio(p, K) || 0) >= 1.25) f.push({ t: "hot", sell: true });
+  return f;
+};
+function TradeBuilder({ s, initPartner }) {
+  const K = s.blend, today = todayISO();
+  const others = s.teams.filter((t) => t.id !== s.me);
+  const [partner, setPartner] = useState(initPartner || (others[0] || {}).id || "");
+  const [give, setGive] = useState([]);
+  const [get, setGet] = useState([]);
+  const [pick, setPick] = useState({});
+  const [busy, setBusy] = useState("");
+  const [ideas, setIdeas] = useState(null);
+  const nR = s.weeks.length - s.wk;
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const order = { F: 0, D: 1, G: 2 };
+  const mine = s.players.filter((p) => p.ft === s.me);
+  const theirs = s.players.filter((p) => p.ft === partner);
+  const pg = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const vv = (p) => effAvg0(p, K) * (p.p === "G" ? p.prob : 1);
+  const gl = (p) => [...(SCHED[p.t] || [])].filter((d) => d >= today && avail(p, d) > 0).length;
+  const cnt = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
+  const tv = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.ft !== "fa" || p.proj !== false || p.gp > 0) o[p.id] = rosRaw(p, K); }); return o; }, [s.players, K, window.__PMODE]);
+  const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60), [tv]);
+  const rep = useMemo(() => { const o = {}; ["F", "D", "G"].forEach((k) => { const l = s.players.filter((p) => p.ft === "fa" && p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map(vv).sort((a, b) => b - a).slice(0, 5); o[k] = l.length ? l.reduce((a, b) => a + b, 0) / l.length : 0; }); return o; }, [s.players, K]);
+  const pe = (p) => Math.max(0, vv(p) - (rep[p.p] || 0)) * gl(p);
+  const Gv = mine.filter((p) => give.includes(p.id)), Rv = theirs.filter((p) => get.includes(p.id));
+  const extra = Math.max(0, Gv.length - Rv.length), need = Math.max(0, Rv.length - Gv.length);
+  const ready = Gv.length > 0 && Rv.length > 0;
+  const picks = [...Array(extra)].map((_, k) => fas.find((f) => f.id === pick[k]) || null);
+  const myAfter0 = mine.filter((p) => !give.includes(p.id)).concat(Rv.map((p) => ({ ...p, ft: s.me })));
+  const base = useMemo(() => (ready ? { r: horizonTotal(mine, s, nR), w4: horizonTotal(mine, s, 4), th: horizonTotal(theirs, s, nR) } : null), [ready, partner, s.players, s.wk, K]);
+  const res = useMemo(() => {
+    if (!ready || !base) return null;
+    const got = picks.filter(Boolean).map((f) => ({ ...f, ft: s.me }));
+    const after = myAfter0.concat(got);
+    const thAfter = theirs.filter((p) => !get.includes(p.id)).concat(Gv.map((p) => ({ ...p, ft: partner })));
+    const my = horizonTotal(after, s, nR) - base.r;
+    return { my, my4: horizonTotal(after, s, 4) - base.w4, noPick: got.length ? horizonTotal(myAfter0, s, nR) - base.r : my, th: horizonTotal(thAfter, s, nR) - base.th, after };
+  }, [base, give.join(), get.join(), JSON.stringify(pick)]);
+  const toggle = (sel, set, id) => { set(sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]); setPick({}); };
+  const findPickup = (k) => {
+    setBusy("pick" + k);
+    setTimeout(() => {
+      const cur = myAfter0.concat(picks.filter((f, i) => f && i !== k).map((f) => ({ ...f, ft: s.me })));
+      const c = cnt(cur), short = ["F", "D", "G"].filter((x) => c[x] < mins[x]);
+      const used = new Set(picks.filter(Boolean).map((f) => f.id));
+      const cands = fas.filter((f) => !used.has(f.id) && (!short.length || short.includes(f.p))).slice(0, 15);
+      let best = null;
+      cands.forEach((f) => { const v = horizonTotal(cur.concat([{ ...f, ft: s.me }]), s, nR); if (!best || v > best.v) best = { f, v }; });
+      setPick((x) => ({ ...x, [k]: best ? best.f.id : undefined }));
+      setBusy("");
+    }, 30);
+  };
+  const findIdeas = () => {
+    setBusy("ideas");
+    setTimeout(() => {
+      const mineR = mine.filter((p) => !p.ir);
+      const keep = new Set([...mineR].sort((a, b) => (tv[b.id] || 0) - (tv[a.id] || 0)).slice(0, 2).map((p) => p.id));
+      const bestFA = {}; ["F", "D", "G"].forEach((k) => (bestFA[k] = fas.find((f) => f.p === k)));
+      const cands = [];
+      others.forEach((t) => {
+        s.players.filter((p) => p.ft === t.id && !p.ir).sort((a, b) => (tv[b.id] || 0) - (tv[a.id] || 0)).slice(0, 4).forEach((T) => {
+          const pool = mineR.filter((p) => !keep.has(p.id) && (tv[p.id] || 0) < (tv[T.id] || 0));
+          for (let i = 0; i < pool.length; i++) for (let j = i + 1; j < pool.length; j++) {
+            const A = pool[i], B = pool[j];
+            if (pe(T) <= 0 || pe(A) + pe(B) < 0.95 * pe(T) || Math.max(vv(A), vv(B)) < 0.75 * vv(T)) continue;
+            const c = cnt(mineR); c[A.p]--; c[B.p]--; c[T.p]++;
+            const short = ["F", "D", "G"].filter((k) => c[k] < mins[k]);
+            if (short.length > 1) continue;
+            const fa = short.length ? bestFA[short[0]] : ["F", "D", "G"].map((k) => bestFA[k]).filter(Boolean).sort((a, b) => tv[b.id] - tv[a.id])[0];
+            if (!fa) continue;
+            const pre = (tv[T.id] || 0) + tv[fa.id] - (tv[A.id] || 0) - (tv[B.id] || 0);
+            if (pre > 0) cands.push({ t, T, A, B, fa, pre });
+          }
+        });
+      });
+      cands.sort((a, b) => b.pre - a.pre);
+      const seen = new Set(), top = [];
+      for (const c of cands) { if (seen.has(c.T.id)) continue; seen.add(c.T.id); top.push(c); if (top.length >= 12) break; }
+      const b0 = horizonTotal(mine, s, nR);
+      const out = top.map((c) => {
+        const after = mine.filter((p) => p.id !== c.A.id && p.id !== c.B.id).concat([{ ...c.T, ft: s.me }, { ...c.fa, ft: s.me }]);
+        return { ...c, myR: horizonTotal(after, s, nR) - b0, perc: (pe(c.A) + pe(c.B) - pe(c.T)) / Math.max(1, pe(c.T)) };
+      }).filter((x) => x.myR > 0).sort((a, b) => b.myR - a.myR).slice(0, 6);
+      setIdeas(out); setBusy("");
+    }, 30);
+  };
+  const load = (x) => { setPartner(x.t.id); setGive([x.A.id, x.B.id]); setGet([x.T.id]); setPick({ 0: x.fa.id }); window.scrollTo(0, 0); };
+  const sum = (l, f) => l.reduce((a, p) => a + f(p), 0);
+  const vGive = sum(Gv, (p) => tv[p.id] || 0), vGet = sum(Rv, (p) => tv[p.id] || 0);
+  const peG = sum(Gv, pe), peR = sum(Rv, pe);
+  const theyThink = peR > 0 ? (peG - peR) / peR : 0;
+  const edge = vGive > 0 ? (vGet - vGive) / vGive : 0;
+  const hasPick = picks.some(Boolean);
+  const vd = !res ? null : res.my <= 0 ? ["Bad for you", "bg-red-100 text-red-600", "Your lineup gets worse" + (extra && !hasPick ? ". Try adding the best waiver pickup." : ".")]
+    : theyThink >= -0.05 ? ["Good trade", "bg-green-100 text-green-700", "You gain, and by ESPN's numbers it looks fair or better to them."]
+    : ["Good for you, hard sell", "bg-amber-100 text-amber-800", "You gain, but by ESPN's numbers they lose. Expect a counter-offer."];
+  const drops = need ? myAfter0.filter((p) => !p.ir && !get.includes(p.id)).sort((a, b) => pg(a) - pg(b)).slice(0, need) : [];
+  const rows = (list, sel, set) => [...list].sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || order[a.p] - order[b.p] || pg(b) - pg(a)).map((p) => {
+    const on = sel.includes(p.id), fl = tbFlags(p, K)[0];
+    return (
+      <button key={p.id} type="button" className={"tb-p" + (on ? " on" : "") + (p.ir ? " ir" : "")} onClick={() => toggle(sel, set, p.id)}>
+        <TeamLogo t={p.t} size={22} />
+        <div className="min-w-0" style={{ flex: 1 }}>
+          <div className="truncate font-medium"><span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span></div>
+          <div className="text-xs text-slate-500 truncate">{p.p} · {f1(pg(p))}/g{p.ir ? " · IR" : ""}{fl ? <span className={fl.sell ? "text-amber-600" : "text-green-700"}> · {fl.t}</span> : null}</div>
+        </div>
+        <span className="tb-chk">{on ? "✓" : "+"}</span>
+      </button>
+    );
+  });
+  const sideBox = (lab, list, sel, set) => (
+    <div className="tb-sel">
+      <div className="text-xs uppercase tracking-wide text-slate-500">{lab}</div>
+      {list.length ? list.map((p) => (
+        <div key={p.id} className="tb-chip"><TeamLogo t={p.t} size={18} /><span className="truncate">{shortN(p.n)}</span><span className="text-xs text-slate-500">{p.p}</span><button type="button" className="tb-x" onClick={() => toggle(sel, set, p.id)}>×</button></div>
+      )) : <div className="text-sm text-slate-400 mt-1">Tap players below</div>}
+      {list.length ? <div className="text-xs text-slate-500 mt-1 pt-1 border-t border-slate-100">{f1(sum(list, pg))}/g · {f1(sum(list, (p) => tv[p.id] || 0))} pts rest of season</div> : null}
+    </div>
+  );
+  return (
+    <div className="space-y-4">
+      <Section title="Trade builder" sub="Pick a team, then tap players in the rosters below. Lineup numbers are rest-of-season points in your best daily lineups.">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-slate-500 whitespace-nowrap">Trade with</span>
+          <select className={inp + " flex-1"} value={partner} onChange={(e) => { setPartner(e.target.value); setGet([]); setPick({}); }}>{others.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
+          {give.length || get.length ? <button className="text-xs text-slate-500 underline whitespace-nowrap" onClick={() => { setGive([]); setGet([]); setPick({}); }}>Clear</button> : null}
+        </div>
+        <div className="tb-grid mt-3">
+          {sideBox("You give", Gv, give, setGive)}
+          {sideBox("You get", Rv, get, setGet)}
+        </div>
+        {res && vd ? (
+          <div className="mt-4">
+            <div className="flex flex-wrap items-center gap-2 mb-3"><span className={"px-3 py-1 rounded-full font-semibold text-sm " + vd[1]}>{vd[0]}</span><span className="text-sm text-slate-500">{vd[2]}</span></div>
+            <div className="tb-tiles">
+              <Card label="Your lineup" value={<Dlt v={res.my} />} sub={<>rest of season{hasPick ? " incl. pickup" : ""} · next 4 wks <Dlt v={res.my4} /></>} />
+              <Card label="Their lineup" value={<Dlt v={res.th} />} sub="rest of season" />
+              <Card label="How they see it" value={(theyThink >= 0 ? "+" : "") + Math.round(theyThink * 100) + "%"} sub={theyThink >= -0.05 ? "a win or even for them (ESPN view)" : "looks like a loss to them"} />
+              <Card label="Raw value" value={f1(vGive) + " → " + f1(vGet)} sub={edge > 0.25 ? "lopsided: veto risk (4 votes)" : Math.abs(edge) <= 0.1 ? "fair for a league vote" : edge > 0 ? "slightly in your favour" : "you give more value"} />
+            </div>
+            {(() => { const a = cnt(res.after), b = cnt(mine); return (
+              <div className="text-xs text-slate-500 mt-3">Your roster after: {["F", "D", "G"].map((k) => <span key={k} className={"mr-3 " + (a[k] < mins[k] ? "text-red-600 font-semibold" : "")}>{k} {b[k]}→{a[k]}</span>)}{res.after.filter((p) => !p.ir).length}/22 active</div>
+            ); })()}
+            {drops.length ? <div className="text-sm text-amber-600 mt-2">You'd be over 22 players. Likely drop{drops.length > 1 ? "s" : ""}: {drops.map((p) => p.n).join(", ")} (your lowest projected).</div> : null}
+          </div>
+        ) : null}
+        {ready && extra > 0 ? (
+          <div className="tb-pk mt-4">
+            <div className="font-semibold">You free {extra} roster spot{extra > 1 ? "s" : ""}</div>
+            <div className="text-xs text-slate-500">Fill {extra > 1 ? "them" : "it"} from waivers and see how much it adds.</div>
+            {[...Array(extra)].map((_, k) => { const f = picks[k]; return (
+              <div key={k} className="mt-3">
+                {f ? (
+                  <div className="flex items-center gap-2"><TeamLogo t={f.t} size={24} /><PN p={f} /><span className="text-xs text-slate-500">{f.p} · {f1(pg(f))}/g</span><button className="text-xs text-slate-500 ml-auto" onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>Remove</button></div>
+                ) : (
+                  <button className="bg-blue-600 rounded-lg px-3 py-1.5 text-sm font-semibold" disabled={!!busy} onClick={() => findPickup(k)}>{busy === "pick" + k ? "Searching…" : "Find best waiver pickup"}</button>
+                )}
+                <select className={inp + " w-full mt-2"} value={pick[k] || ""} onChange={(e) => { const v = e.target.value; setPick((x) => ({ ...x, [k]: v || undefined })); }}>
+                  <option value="">Or choose a free agent…</option>
+                  {fas.map((x) => <option key={x.id} value={x.id}>{x.n} ({x.p}, {x.t}) · {f1(pg(x))}/g</option>)}
+                </select>
+              </div>
+            ); })}
+            {hasPick && res ? (
+              <div className="grid grid-cols-3 gap-2 mt-3 text-center">
+                <div><div className="text-xs text-slate-500">Without pickup</div><div className="text-lg"><Dlt v={res.noPick} /></div></div>
+                <div><div className="text-xs text-slate-500">With pickup</div><div className="text-lg"><Dlt v={res.my} /></div></div>
+                <div><div className="text-xs text-slate-500">Pickup adds</div><div className="text-lg"><Dlt v={res.my - res.noPick} /></div></div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </Section>
+      <Section title="Trade ideas" sub="2-for-1 offers: give two players, get one better one, then fill the open spot from waivers. Picked so they look fair by ESPN's numbers, which is how most managers judge trades.">
+        <button className="bg-blue-600 rounded-lg px-4 py-1.5 text-sm font-semibold" disabled={!!busy} onClick={findIdeas}>{busy === "ideas" ? "Searching…" : "Find 2-for-1 trades"}</button>
+        {ideas && (ideas.length ? ideas.map((x, i) => (
+          <div key={i} className="py-3 border-t border-slate-100 mt-2">
+            <div className="tb-grid">
+              <div className="min-w-0"><div className="text-xs text-slate-500">You give</div><div className="truncate">{shortN(x.A.n)}</div><div className="truncate">{shortN(x.B.n)}</div></div>
+              <div className="min-w-0"><div className="text-xs text-slate-500">You get · {x.t.name}</div><div className="truncate font-semibold">{shortN(x.T.n)}</div><div className="truncate text-slate-500 text-sm">+ pick up {shortN(x.fa.n)}</div></div>
+            </div>
+            <div className="flex items-center gap-3 mt-2 text-sm">
+              <span>You <Dlt v={x.myR} /></span>
+              <span className={"text-xs " + (x.perc >= 0.05 ? "text-green-700" : "text-amber-600")}>{x.perc >= 0.05 ? "Likely accepted" : "About even for them"}</span>
+              <button className="text-blue-600 ml-auto" onClick={() => load(x)}>Load</button>
+            </div>
+          </div>
+        )) : <div className="text-sm text-slate-400 mt-2">No 2-for-1 trade helps you right now while still looking fair to the other side.</div>)}
+      </Section>
+      <Section title="Rosters" sub="Tap to add or remove. Amber tags are sell-high signs, green are buy-low signs.">
+        <div className="tb-grid">
+          <div className="min-w-0"><div className="text-xs uppercase tracking-wide text-slate-500 mb-2 truncate">{teamName(s, s.me)}</div>{rows(mine, give, setGive)}</div>
+          <div className="min-w-0"><div className="text-xs uppercase tracking-wide text-slate-500 mb-2 truncate">{teamName(s, partner)}</div>{rows(theirs, get, setGet)}</div>
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+'''
+
+TRADES_PANEL = r'''function TradesPanel(props) {
+  // trades v10: analyzer and 2-for-1 merged into one builder (news_logos.py)
+  return <TradeBuilder {...props} />;
+}
+
+'''
+
+PLAYERS10 = r'''function Players({ s, wk }) {
+  // players v10: no Signals column, phone list (news_logos.py)
+  const K = s.blend;
+  const [ft, setFt] = useState("all"); const [pos, setPos] = useState("all"); const [q, setQ] = useState(""); const [sort, setSort] = useState("week");
+  const rows = s.players
+    .filter((p) => (ft === "all" || p.ft === ft) && (pos === "all" || p.p === pos) && p.n.toLowerCase().includes(q.toLowerCase()))
+    .map((p) => { const g = (wk.games[p.t] || []).filter((d) => !p.ir && avail(p, wk.dates ? wk.dates[d] : null)).length; const r = sigOf(p).rec; return { ...p, g, ea: effAvg(p, K), wkp: g * effAvg(p, K) * p.prob, rp: r ? r.ppg : null, rg: r ? r.gp : 0 }; })
+    .sort((a, b) => (sort === "week" ? b.wkp - a.wkp : sort === "avg" ? b.ea - a.ea : sort === "hot" ? (b.rp || 0) - (a.rp || 0) : b.tot - a.tot)).slice(0, 300);
+  const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2">
+        <input className={inp + " flex-1 min-w-[160px]"} placeholder="Search player" value={q} onChange={(e) => setQ(e.target.value)} />
+        <select className={inp} value={ft} onChange={(e) => setFt(e.target.value)}><option value="all">All teams</option><option value="fa">Free agents</option>{s.teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
+        <select className={inp} value={pos} onChange={(e) => setPos(e.target.value)}><option value="all">All positions</option><option>F</option><option>D</option><option>G</option></select>
+        <select className={inp} value={sort} onChange={(e) => setSort(e.target.value)}><option value="week">Sort: this week</option><option value="avg">Sort: projected avg</option><option value="hot">Sort: last 14 days</option><option value="tot">Sort: season total</option></select>
+      </div>
+      <div className="m-hide bg-white rounded-xl border border-slate-200 overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="text-left"><tr>{["Player", "", "Team", "Gms", "Avg", "Last 14d", "Season", "Week"].map((h, i) => <th key={i} className="px-3 py-2">{h}</th>)}</tr></thead>
+          <tbody>
+            {rows.map((p) => (
+              <tr key={p.id} className={"border-t border-slate-100 " + (p.ft === s.me ? "bg-blue-50" : "")}>
+                <td className="px-3 py-2"><PN p={p} />{stTag(p) ? <span className="text-red-600 text-xs ml-1">{stTag(p)}</span> : null}</td>
+                <td className="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+                <td className="px-3 py-2 text-xs text-slate-500"><TL s={s} id={p.ft} /></td>
+                <td className="px-3 py-2">{p.g}</td><td className="px-3 py-2 font-semibold">{f1(p.ea)}</td>
+                <td className="px-3 py-2">{p.rp !== null ? `${f1(p.rp)} (${p.rg})` : "–"}</td>
+                <td className="px-3 py-2">{p.gp ? `${f1(p.tot)} (${p.gp})` : "–"}</td>
+                <td className="px-3 py-2 font-semibold">{f1(p.wkp)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="text-xs text-slate-500 p-3">Up to 300 shown — use the filters to narrow down.</div>
+      </div>
+      <div className="m-only bg-white rounded-xl border border-slate-200 px-3">
+        <div className="m-ghead"><span>Player</span><span>Gms</span><span>Avg</span><span>Week</span></div>
+        {rows.slice(0, 100).map((p) => { const tg = stTag(p); return (
+          <div key={p.id} className="m-rrow" role="button" onClick={() => window.__NAV && window.__NAV.player(p)}>
+            <TeamLogo t={p.t} size={26} />
+            <div className="min-w-0">
+              <div className={"truncate font-medium" + (p.ft === s.me ? " text-blue-600" : "")}>{p.n}</div>
+              <div className="text-xs text-slate-500 truncate">{p.p} · {teamName(s, p.ft)}{tg ? <span className="text-red-600"> · {tg}</span> : null}</div>
+            </div>
+            <span className="m-num">{p.g}</span>
+            <span className="m-num">{f1(p.ea)}</span>
+            <span className="m-num font-semibold">{f1(p.wkp)}</span>
+          </div>
+        ); })}
+        <div className="text-xs text-slate-500 py-3">Up to 100 shown — use the filters to narrow down.</div>
+      </div>
+    </div>
+  );
+}
+
+'''
+
 TEAM_PAT = r"(?<!\$)\{([A-Za-z_][\w.]*)\.p\}( · | )\{\1\.t\}"
 
 
@@ -810,7 +1111,17 @@ function movesUsedESPN(s, w) {
             '<div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>\n            <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">',
             "<H2H x={x}")
     t = block(t, "rosters: no Signals column + phone list", "function RosterView({ s, wk, team }) {", "function MyTeam(", ROSTERVIEW, "roster view v9")
-    for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today(", "function MobileHeader(", "function RosterView("):
+    # --- round 10: Lines gets its own phone tab, cleaner Players list, one trade builder ---
+    t = lit(t, "phone: Lines tab", 'const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "My Team"], ["moves", "Moves"]];',
+            'const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "My Team"], ["moves", "Moves"], ["lines", "Lines"]];', '["lines", "Lines"]];')
+    t = lit(t, "phone: Lines out of More", 'const M_MORE = [["teams", "Teams"], ["lines", "Lines"], ["league", "League"], ["news", "News"], ["setup", "Setup"]];',
+            'const M_MORE = [["teams", "Teams"], ["league", "League"], ["news", "News"], ["setup", "Setup"]];', 'const M_MORE = [["teams", "Teams"], ["league"')
+    t = lit(t, "phone: six tabs", '<div className="grid grid-cols-5 mt-1">', '<div className="grid grid-cols-6 mt-1">', "grid grid-cols-6 mt-1")
+    t = lit(t, "trade builder styles", "</style>", R10_CSS + "</style>", "round 10 trades")
+    t = lit(t, "trade builder", ROOT, R10_HELPERS + ROOT, "function TradeBuilder(")
+    t = block(t, "trades: one builder", "function TradesPanel(props) {", "// ---------- Phone notifications feed", TRADES_PANEL, "trades v10")
+    t = block(t, "players: no Signals column + phone list", "function Players({ s, wk }) {", "// ---------- Setup ----------", PLAYERS10, "players v10")
+    for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today(", "function MobileHeader(", "function RosterView(", "function TradeBuilder("):
         if must not in t:
             fail("fantasy-gm.html looks damaged after the changes (" + must + ").")
     return t
