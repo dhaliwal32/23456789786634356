@@ -1617,10 +1617,14 @@ function Matchup({ s, setS, wk, setWk }) {
           <div key={d} className="bg-white rounded-xl border border-slate-200 mb-3">
             <div className="flex justify-between items-center px-3 py-2 border-b border-slate-200 text-sm">
               <span className="font-semibold">{dl}</span>
-              <span>{f1(x.total)} – {f1(y.total)} · <span className={run >= 0 ? "text-green-700 font-semibold" : "text-red-700 font-semibold"}>running {run >= 0 ? "+" : ""}{f1(run)}</span></span>
+              {/* day header: running total removed */}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               <Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />
+            </div>
+            <div className="flex flex-wrap justify-between items-center gap-2 px-3 py-2.5 border-t border-slate-200 text-sm">
+              <span className="text-xs uppercase tracking-wide text-slate-500">Day difference</span>
+              <span className={"font-semibold " + (x.total - y.total >= 0 ? "text-green-700" : "text-red-600")}>{x.total - y.total >= 0 ? "+" : ""}{f1(x.total - y.total)} · {x.total === y.total ? "even" : teamName(s, x.total > y.total ? a : b) + " ahead"}</span>
             </div>
             <div data-v="daydiff2" className="flex justify-between items-center gap-3 px-3 py-3 border-t border-slate-200 font-semibold">
               <span>Difference</span>
