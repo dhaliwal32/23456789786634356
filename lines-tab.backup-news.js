@@ -238,7 +238,7 @@
               <div key={t}>
                 <div className="lt-grp-h" onClick={() => setOpenG({ ...openG, [t]: !isOpen })}>
                   <span className="lt-chev" style={{ transform: isOpen ? "rotate(180deg)" : "none" }}>▾</span>
-                  {H.TeamLogo ? <H.TeamLogo t={t} size={22} /> : null}<b>{nm}</b>
+                  <b>{nm}</b>
                   <span className="lt-mu" style={{ fontSize: 12 }}>{xs.length} change{xs.length > 1 ? "s" : ""} · <span className="lt-up">▲{up}</span> <span className="lt-dn">▼{dn}</span>{inj ? <span> ✚{inj}</span> : null}</span>
                 </div>
                 {isOpen && <div className="lt-grp-b">{xs.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={onPick} dim />)}</div>}
@@ -387,7 +387,7 @@
             <div key={x.t} className={"lt-team" + (isOpen ? " open" : "")}>
               <div className="lt-tr" onClick={() => setOpen({ ...open, [x.t]: !isOpen })}>
                 <div className="lt-rk">#{x.rank}</div>
-                {H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}<div className="lt-tmain">
+                <div className="lt-tmain">
                   <div className="lt-tn">{sd.name || x.t}</div>
                   <div className="lt-meta">
                     {sd.gp ? `${sd.w}-${sd.l}-${sd.otl} · ${sd.pts} pts · ` : ""}{Math.round(x.T.fp || 0)} fantasy pts
