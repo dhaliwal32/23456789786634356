@@ -137,6 +137,12 @@
   .ms-opt:hover { background: var(--accentSoft); }
   .ms-res { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 14px; }
   @media (max-width: 640px) { .ms-card { padding: 14px; } .ms-move .tb-grid { grid-template-columns: minmax(0,1fr); } }
+  /* round 15 advice (news_logos.py) */
+  .adv-head, .adv-row { display: grid; grid-template-columns: 28px minmax(0,1fr) 60px 74px 36px; gap: 12px; align-items: center; }
+  .adv-head { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); padding: 4px 0 8px; }
+  .adv-row { padding: 10px 0; border-top: 1px solid var(--line); }
+  .adv-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  @media (max-width: 640px) { .adv-head, .adv-row { grid-template-columns: 26px minmax(0,1fr) 46px 64px 18px; gap: 8px; } }
 </style>
 </head>
 <body>
@@ -490,12 +496,20 @@ const Pills = ({ items, value, onChange }) => (
   </div>
 );
 const teamName = (s, id) => (id === "fa" ? "Free agent" : (s.teams.find((t) => t.id === id) || {}).name || "");
-const PlayerLine = ({ s, p, extra }) => (
-  <div className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-2 text-sm">
-    <PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /> · <TL s={s} id={p.ft} /></span>
-    <span className="text-xs text-slate-500">avg {f1(effAvg(p, s.blend))}</span>{extra}<Tags p={p} K={s.blend} />
-  </div>
-);
+const PlayerLine = ({ s, p, extra }) => {
+  // player line v15: logo, name, one short note (news_logos.py)
+  const tg = shortTag(p, s.blend);
+  return (
+    <div className="flex items-center gap-3 py-2.5 border-t border-slate-100 text-sm">
+      <TeamLogo t={p.t} size={26} />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 min-w-0"><PN p={p} className="truncate font-medium" /><span className="text-xs text-slate-500">{p.p}</span>{tg ? <span className={"text-xs truncate " + tg.c}>{tg.t}</span> : null}</div>
+        <div className="text-xs text-slate-500 flex flex-wrap items-baseline gap-x-2 mt-0.5"><TL s={s} id={p.ft} />{extra}</div>
+      </div>
+      <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(effAvg(p, s.blend))}</div><div className="text-xs text-slate-500">pts/g</div></div>
+    </div>
+  );
+};
 const Section = ({ title, sub, link, children }) => (
   <div className="bg-white rounded-xl border border-slate-200 p-4 text-sm">
     <div className="flex items-start gap-2 mb-2">
@@ -753,61 +767,90 @@ function Today({ s, wk, go }) {
 }
 
 // ---------- Advice ----------
+const advDot = (k, z) => ({ display: "inline-block", width: z || 10, height: z || 10, borderRadius: 99, margin: z ? 0 : "0 5px 0 6px", background: k ? "var(--good)" : "var(--bad)" });
+const KeepLegend = () => <div className="text-xs text-slate-500 mt-3">Keep:<span style={advDot(true)}></span>add and keep ·<span style={advDot(false)}></span>stream this week, then drop</div>;
+const AdvMove = ({ s, r, K, showDrop, base }) => {
+  const sd = effAvg(r.f, K) - effAvg(r.d, K), keep = r.gain > 0 && sd >= 0, tg = shortTag(r.f, K);
+  return (
+    <div className="adv-row">
+      <TeamLogo t={r.f.t} size={28} />
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 min-w-0"><PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>{tg ? <span className={"text-xs truncate m-hide " + tg.c}>{tg.t}</span> : null}</div>
+        <div className="text-xs text-slate-500 truncate">{showDrop ? "drop " + r.d.n + " · " : ""}{sd >= 0 ? "+" : ""}{f1(sd)}/g long-term</div>
+      </div>
+      <div className="adv-num font-semibold text-green-700">+{f1(r.gain)}</div>
+      <div className="adv-num"><WinCell s={s} add={r.f} drop={r.d} base={base} /></div>
+      <div className="adv-num"><span title={keep ? "Add and keep" : "Stream this week, then drop"} style={advDot(keep, 12)}></span></div>
+    </div>
+  );
+};
 function AdvicePanel({ s }) {
+  // advice v15: clean rows (news_logos.py) · older marker kept: advice={1}
   const K = s.blend;
   const minGain = s.minGain ?? 3;
   const now = useMemo(() => computeMoves(s, { H: 1, pool: 60 }), [s]);
   const later = useMemo(() => computeMoves(s, { H: 4, pool: 40 }), [s]);
+  const base = useMemo(() => winChance(s), [s]);
   const sdOf = (r) => effAvg(r.f, K) - effAvg(r.d, K);
   const topNow = now.res.filter((r) => r.gain >= minGain).slice(0, 5);
   const topLong = later.res.filter((r) => r.gain >= minGain && sdOf(r) >= 0).slice(0, 5);
-  const mine = s.players.filter((p) => p.ft === s.me);
-  const hotFA = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && ((formRatio(p, K) || 0) >= 1.25 || (p.chg || 0) >= 5 || sigOf(p).ppChg === "added"))
-    .sort((a, b) => ((sigOf(b).rec || {}).ppg || effAvg(b, K)) - ((sigOf(a).rec || {}).ppg || effAvg(a, K))).slice(0, 12);
-  const myHot = mine.filter((p) => (formRatio(p, K) || 0) >= 1.3);
-  const myCold = mine.filter((p) => { const r = formRatio(p, K); return r !== null && r <= 0.7; });
-  const buyLow = s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && effAvg(p, K) >= 7 && (formRatio(p, K) ?? 9) <= 0.75).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
-  const strength = (tid) => { const r = s.players.filter((p) => p.ft === tid && !p.ir); const top = (pos, n) => r.filter((p) => p.p === pos).map((p) => effAvg(p, K) * (pos === "G" ? p.prob || 0.5 : 1)).sort((a, b) => b - a).slice(0, n).reduce((a, b) => a + b, 0); return { F: top("F", 10), D: top("D", 5), G: top("G", 2) }; };
-  const all = s.teams.map((t) => ({ id: t.id, ...strength(t.id) }));
-  const meS = all.find((x) => x.id === s.me) || { F: 0, D: 0, G: 0 };
-  const ranks = { F: 1 + all.filter((t) => t.F > meS.F).length, D: 1 + all.filter((t) => t.D > meS.D).length, G: 1 + all.filter((t) => t.G > meS.G).length };
-  const order = Object.entries(ranks).sort((a, b) => b[1] - a[1]);
-  const weak = order[0], strong = order[order.length - 1];
-  const posName = { F: "forwards", D: "defence", G: "goalies" };
-  const depth = (pos) => mine.filter((p) => p.p === pos && !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(pos === "F" ? 10 : pos === "D" ? 5 : 2);
-  const MoveRow = ({ r }) => { const sd = sdOf(r); const [v, c] = verdict(r.gain, sd); return (
-    <div className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-2">
-      <span className={"text-xs px-2 py-0.5 rounded " + c}>{v}</span>
-      <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} <TeamLogo t={r.f.t} /></span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
-      <WinDelta s={s} add={r.f} drop={r.d} advice={1} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span>
-      <span className={"text-xs " + (sd >= 0 ? "text-green-700" : "text-red-600")}>{sd >= 0 ? "+" : ""}{f1(sd)}/game long-term</span>
-      <Tags p={r.f} K={K} />
-    </div>
-  ); };
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const why = (p) => {
+    const g = sigOf(p), r = [], fr = formRatio(p, K), t = g.toi;
+    if (g.ppChg === "added") r.push("new on PP1");
+    if (fr !== null && fr >= 1.25) r.push(f1(g.rec.ppg) + "/g last 14 days");
+    if (t && t.d >= 90) r.push(mm(t.d) + " ice time");
+    if (t && t.pd >= 45) r.push("PP " + mm(t.pd));
+    if ((p.chg || 0) >= 5) r.push("+" + f1(p.chg) + "% rostered");
+    return r.join(" · ");
+  };
+  const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
+  const form = mine.map((p) => {
+    const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
+    if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
+    if (fr !== null && fr <= 0.7) return { p, n: "Cold: " + f1(rec.ppg) + "/g lately. Check his role before dropping.", c: "text-sky-600" };
+    if (t && (t.d <= -90 || t.pd <= -45)) return { p, n: "Losing minutes (" + mm(t.d) + " a game). Watch closely.", c: "text-red-600" };
+    if (t && (t.d >= 90 || t.pd >= 45)) return { p, n: "Bigger role (" + mm(t.d) + " a game).", c: "text-green-700" };
+    return null;
+  }).filter(Boolean);
+  const buyLow = s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && effAvg(p, K) >= 7 && (formRatio(p, K) ?? 9) <= 0.75).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 5);
+  const T = leagueTable(s), g = T.grpRank[s.me] || {};
+  const posName = { F: "forwards", D: "defence", G: "goalies" }, need = { F: 10, D: 5, G: 2 };
+  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0)), weak = by[0], strong = by[2];
+  const spare = mine.filter((p) => p.p === strong).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(need[strong]);
+  const oneDrop = (l) => (l.length > 1 && l.every((r) => r.d.id === l[0].d.id) ? l[0].d : null);
+  const moves = (list, label, empty) => {
+    const d1 = oneDrop(list);
+    if (!list.length) return <div className="text-slate-400">{empty}</div>;
+    return (
+      <div>
+        {d1 ? <div className="text-sm mb-2"><span className="text-slate-500">Drop for each: </span><PN p={d1} /></div> : null}
+        <div className="adv-head"><span></span><span>Pickup</span><span className="adv-num">{label}</span><span className="adv-num" title="Your chance to win this week right now">{base == null ? "Win" : wpTxt(base)}</span><span className="adv-num">Keep</span></div>
+        {list.map((r) => <AdvMove key={r.f.id} s={s} r={r} K={K} showDrop={!d1} base={base} />)}
+      </div>
+    );
+  };
   return (
     <div className="space-y-4">
-      {!window.__SIG && <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm">Form, PP1 and news signals appear once gm_signals.py runs in the sync.</div>}
-      <Section title="Best moves this week" sub={'Lineup-aware; respects your roster minimums and protected players. "Stream only" = helps now, worse player long-term.'}>
-        {topNow.length ? topNow.map((r) => <MoveRow key={r.f.id} r={r} />) : <div className="text-slate-400">No move clears your {minGain}-pt minimum this week — save your acquisitions.</div>}
+      {!window.__SIG ? <div className="text-sm text-slate-500">Form, PP1 and news signals appear after the next sync.</div> : null}
+      <Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week.">
+        {moves(topNow, "Gain", `No move adds ${minGain}+ points this week. Save your moves.`)}
+        {topNow.length ? <KeepLegend /> : null}
       </Section>
-      <Section title="Best long-term upgrades" sub="Next 4 weeks, and a better player per game.">
-        {topLong.length ? topLong.map((r) => <MoveRow key={r.f.id} r={r} />) : <div className="text-slate-400">No free agent is a clear long-term upgrade right now.</div>}
+      <Section title="Long-term upgrades" sub="Better per game, and more points over the next 4 weeks.">
+        {moves(topLong, "4 wks", "No free agent is a clear long-term upgrade right now.")}
       </Section>
-      <Section title="Hot & trending free agents" sub="Scoring well above projection (last 14 days), gaining ownership fast, or newly on PP1.">
-        {hotFA.length ? hotFA.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <div className="text-slate-400">Nothing yet — needs a couple of weeks of games or a fresh PP1 change.</div>}
+      {watch.length ? (
+        <Section title="Free agents to watch" sub="Hot lately, new on PP1, more ice time, or gaining owners fast.">
+          {watch.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span>· {why(p)}</span>} />)}
+        </Section>
+      ) : null}
+      <Section title="Your players" sub="Recent form and ice time compared with their projection.">
+        {form.length ? form.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>· {n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
       </Section>
-      <ToiMovers s={s} />
-      <Section title="Your players — form check">
-        {myHot.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className="text-xs text-orange-600">hot — start every game; sell-high if his role hasn't changed</span>} />)}
-        {myCold.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className="text-xs text-sky-600">cold — check ice time/PP role before dropping</span>} />)}
-        {!myHot.length && !myCold.length && <div className="text-slate-400">Everyone is playing close to projection (or not enough games yet).</div>}
-      </Section>
-      <Section title="Trade advice" sub={`Your lineup ranks #${ranks.F} in forwards, #${ranks.D} in defence and #${ranks.G} in goalies (of ${s.teams.length}).`}>
-        <div className="mb-2">{weak[1] > strong[1] ? <>Trade from <b>{posName[strong[0]]}</b> depth to improve your <b>{posName[weak[0]]}</b>.</> : "Your roster is balanced — trade only for clear upgrades."}</div>
-        {depth(strong[0]).length > 0 && weak[1] > strong[1] && <div className="text-xs text-slate-500 mb-2">Trade chips (your {posName[strong[0]]} beyond the starters): {depth(strong[0]).map((p) => p.n).join(", ")}</div>}
-        <div className="font-medium mt-2">Buy-low targets (good players in a slump)</div>
-        {buyLow.length ? buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <div className="text-slate-400 text-xs">None yet — needs recent-form data.</div>}
-        {myHot.length > 0 && <><div className="font-medium mt-3">Sell-high candidates</div>{myHot.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</>}
+      <Section title="Trade advice" sub={`Your ranks: forwards #${g.F || "–"}, defence #${g.D || "–"}, goalies #${g.G || "–"} of ${T.rows.length}.`}>
+        <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
+        {buyLow.length ? <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Buy low: good players in a slump</div>{buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</div> : null}
       </Section>
     </div>
   );
@@ -1073,64 +1116,65 @@ function AcqPlanner({ s, setS, wk }) {
 
 // ---------- Edges: line promotions, luck, model vs ESPN ----------
 function EdgesPanel({ s }) {
-  const K = s.blend; const S = window.__SIG || {}; const M = window.__MODEL;
+  // edges v15: only groups with players, 5 each (news_logos.py)
+  const K = s.blend, S = window.__SIG || {}, M = window.__MODEL;
   const pid = (p) => (typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null);
+  const top5 = (l) => l.slice(0, 5);
+  const byAvg = (a, b) => effAvg(b, K) - effAvg(a, K);
   const ln = (p) => sigOf(p).lines || {};
-  const promoFA = s.players.filter((p) => p.ft === "fa" && ln(p).chg === "up");
-  const promoOther = s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && ln(p).chg === "up").slice(0, 10);
+  const promoFA = top5(s.players.filter((p) => p.ft === "fa" && ln(p).chg === "up").sort(byAvg));
+  const promoOther = top5(s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && ln(p).chg === "up").sort(byAvg));
   const mineChg = s.players.filter((p) => p.ft === s.me && ln(p).chg);
   const lk = (p) => sigOf(p).luck;
   const lucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d >= 2 : l.d >= 4); };
   const unlucky = (p) => { const l = lk(p); return l && (l.t === "s" ? l.d <= -2 : l.d <= -4); };
   const byLuck = (a, b) => Math.abs(lk(b).d) - Math.abs(lk(a).d);
-  const sellHigh = s.players.filter((p) => p.ft === s.me && lucky(p)).sort(byLuck);
-  const myUnlucky = s.players.filter((p) => p.ft === s.me && unlucky(p)).sort(byLuck);
-  const buyLow = s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && unlucky(p) && effAvg(p, K) >= 5).sort(byLuck).slice(0, 12);
-  const buyFA = s.players.filter((p) => p.ft === "fa" && unlucky(p)).sort(byLuck).slice(0, 10);
-  const luckInfo = (p) => { const l = lk(p); return <span className="text-xs text-slate-500">{l.t === "s" ? `${l.g} G on ${l.sh} shots (${l.pct}% vs career ${l.cpct}%) · ${l.d > 0 ? "+" : ""}${f1(l.d)} goals vs expected ≈ ${l.d > 0 ? "+" : ""}${f1(l.d * 6)} pts` : `SV% ${l.sv.toFixed(3)} vs career ${l.csv.toFixed(3)} · ${l.d > 0 ? "+" : ""}${f1(l.d)} goals vs normal ≈ ${l.d > 0 ? "+" : ""}${f1(l.d * 3.6)} pts`}</span>; };
+  const sellHigh = top5(s.players.filter((p) => p.ft === s.me && lucky(p)).sort(byLuck));
+  const myUnlucky = top5(s.players.filter((p) => p.ft === s.me && unlucky(p)).sort(byLuck));
+  const buyLow = top5(s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && unlucky(p) && effAvg(p, K) >= 5).sort(byLuck));
+  const buyFA = top5(s.players.filter((p) => p.ft === "fa" && unlucky(p)).sort(byLuck));
+  const luckInfo = (p) => { const l = lk(p); return <span>· {l.t === "s" ? `${l.g} G on ${l.sh} shots, ${l.pct}% vs ${l.cpct}% career` : `SV% ${l.sv.toFixed(3)} vs ${l.csv.toFixed(3)} career`}</span>; };
   const mv = (p) => { const id = pid(p); const mb = M && id ? (M.base || {})[id] : null; return mb != null && p.proj && p.avg > 0 ? { mb, e: p.avg, d: mb - p.avg, r: mb / p.avg } : null; };
   const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15; };
   const over = (p) => { const x = mv(p); return x && x.d <= -1 && x.r <= 0.85; };
-  const uFA = s.players.filter((p) => p.ft === "fa" && under(p)).sort((a, b) => mv(b).d - mv(a).d).slice(0, 12);
-  const uOther = s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && under(p)).sort((a, b) => mv(b).d - mv(a).d).slice(0, 12);
-  const oMine = s.players.filter((p) => p.ft === s.me && over(p)).sort((a, b) => mv(a).d - mv(b).d);
-  const uMine = s.players.filter((p) => p.ft === s.me && under(p));
-  const mvInfo = (p) => { const x = mv(p); return <span className={"text-xs " + (x.d > 0 ? "text-green-700" : "text-red-600")}>GM model {f1(x.mb)}/g vs ESPN {f1(x.e)}/g ({x.d > 0 ? "+" : ""}{f1(x.d)})</span>; };
-  const Sub = ({ t }) => <div className="font-medium mt-3 mb-1">{t}</div>;
-  const None = ({ t }) => <div className="text-slate-400 text-xs">{t}</div>;
+  const uFA = top5(s.players.filter((p) => p.ft === "fa" && under(p)).sort((a, b) => mv(b).d - mv(a).d));
+  const uOther = top5(s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && under(p)).sort((a, b) => mv(b).d - mv(a).d));
+  const oMine = top5(s.players.filter((p) => p.ft === s.me && over(p)).sort((a, b) => mv(a).d - mv(b).d));
+  const uMine = top5(s.players.filter((p) => p.ft === s.me && under(p)));
+  const mvInfo = (p) => { const x = mv(p); return <span className={x.d > 0 ? "text-green-700" : "text-red-600"}>· model {f1(x.mb)} vs ESPN {f1(x.e)} pts/g</span>; };
+  const lineNote = (p) => <span className={ln(p).chg === "up" ? "text-green-700" : "text-red-600"}>· {ln(p).chg === "up" ? "moved up to " + (LBL[ln(p).grp] || "a bigger role") : "moved down the lineup"}</span>;
+  const None = ({ t }) => <div className="text-slate-400">{t}</div>;
+  const Grp = ({ t, list, note }) => (list.length ? (
+    <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{t}</div>{list.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={note ? note(p) : null} />)}</div>
+  ) : null);
+  const promoAny = promoFA.length + promoOther.length + mineChg.length;
+  const luckAny = sellHigh.length + myUnlucky.length + buyLow.length + buyFA.length;
+  const mvAny = uFA.length + uOther.length + oMine.length + uMine.length;
   return (
     <div className="space-y-4">
-      <Section title="↑ Line promotions" sub={`Daily Faceoff even-strength lines${S.lines ? `, checked ${S.lines.asof}` : ""}. Top-6 forwards and top-4 D get more minutes and better linemates — points usually follow within a week.`}>
-        {!S.lines ? <None t="Line data appears after the next sync (needs the updated gm_signals.py)." /> : (<>
-          <Sub t="Free agents just promoted (pickup targets)" />
-          {promoFA.length ? promoFA.map((p) => <PlayerLine key={p.id} s={s} p={p} />) : <None t="No free-agent promotions since yesterday." />}
-          <Sub t="Your players" />
-          {mineChg.length ? mineChg.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={"text-xs " + (ln(p).chg === "up" ? "text-green-700" : "text-red-600")}>{ln(p).chg === "up" ? "↑ start him" : "↓ moved down the lineup — watch his minutes"}</span>} />) : <None t="No line changes for your players." />}
-          {promoOther.length > 0 && <><Sub t="Promoted on other fantasy teams (trade targets)" />{promoOther.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</>}
-        </>)}
+      <Section title="Line promotions" sub="Top-6 forwards and top-4 D get more minutes. Points usually follow within a week.">
+        {!S.lines ? <None t="Line data appears after the next sync." /> : promoAny ? (<>
+          <Grp t="Free agents: pickup targets" list={promoFA} note={lineNote} />
+          <Grp t="Your players" list={mineChg} note={lineNote} />
+          <Grp t="Other teams: trade targets" list={promoOther} note={lineNote} />
+        </>) : <None t="No line changes since yesterday." />}
       </Section>
-      <Section title="Luck detector" sub="Compares this season's shooting % (skaters) and save % (goalies) with their last two seasons. Luck evens out — other managers judge by recent points, so trade on it.">
-        {!S.luck ? <None t="Luck data appears after the next sync (needs the updated gm_signals.py)." /> : !Object.keys(S.luck).length ? <None t="Needs about 25 shots per skater / 150 shots against per goalie — usually by late October." /> : (<>
-          <Sub t="Sell high — your lucky players (points will likely drop)" />
-          {sellHigh.length ? sellHigh.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None of your players are running unusually hot." />}
-          <Sub t="Buy low — unlucky players on other teams (points are coming)" />
-          {buyLow.length ? buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None right now." />}
-          <Sub t="Unlucky free agents (cheap upside)" />
-          {buyFA.length ? buyFA.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />) : <None t="None right now." />}
-          {myUnlucky.length > 0 && <><Sub t="Your unlucky players — don't sell low" />{myUnlucky.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={luckInfo(p)} />)}</>}
-        </>)}
+      <Section title="Luck" sub="Shooting % and save % this season vs career. Luck evens out, so trade on it.">
+        {!S.luck || !Object.keys(S.luck).length ? <None t="Fills in once players have enough shots, usually by late October." /> : luckAny ? (<>
+          <Grp t="Sell high: your lucky players" list={sellHigh} note={luckInfo} />
+          <Grp t="Buy low: unlucky players on other teams" list={buyLow} note={luckInfo} />
+          <Grp t="Unlucky free agents" list={buyFA} note={luckInfo} />
+          <Grp t="Your unlucky players: don't sell low" list={myUnlucky} note={luckInfo} />
+        </>) : <None t="Nobody is running unusually lucky or unlucky." />}
       </Section>
-      <Section title="Model vs ESPN" sub="Where your GM model (usage, ice time, betting lines, matchups) disagrees with ESPN's projection by 15%+. Most managers only see ESPN's number — so these players are mispriced in your league.">
-        {!M ? <None t="Needs the GM model in the sync." /> : (<>
-          <Sub t="Undervalued free agents" />
-          {uFA.length ? uFA.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None right now." />}
-          <Sub t="Undervalued on other teams (trade targets — their owner thinks they're worth less)" />
-          {uOther.length ? uOther.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None right now." />}
-          <Sub t="Your players ESPN overrates (sell to managers who trust ESPN)" />
-          {oMine.length ? oMine.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />) : <None t="None — your roster isn't overrated by ESPN." />}
-          {uMine.length > 0 && <><Sub t="Your players ESPN underrates (keep — they're worth more than they look)" />{uMine.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={mvInfo(p)} />)}</>}
-          <div className="text-xs text-slate-500 mt-3">Early in the season the model leans on last year's stats, so check the tags (PP1, ice time, lines) to see <i>why</i> it disagrees before acting.</div>
-        </>)}
+      <Section title="Model vs ESPN" sub="Where your GM model and ESPN disagree by 15% or more. Most managers only see ESPN's number.">
+        {!M ? <None t="Needs the GM model in the sync." /> : mvAny ? (<>
+          <Grp t="Undervalued free agents" list={uFA} note={mvInfo} />
+          <Grp t="Undervalued on other teams: trade targets" list={uOther} note={mvInfo} />
+          <Grp t="Yours that ESPN overrates: sell" list={oMine} note={mvInfo} />
+          <Grp t="Yours that ESPN underrates: keep" list={uMine} note={mvInfo} />
+          <div className="text-xs text-slate-500 mt-3">Early in the season the model leans on last year's stats, so check why before acting.</div>
+        </>) : <None t="The model and ESPN agree on everyone right now." />}
       </Section>
     </div>
   );
