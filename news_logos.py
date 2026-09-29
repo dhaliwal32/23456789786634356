@@ -1592,5 +1592,34 @@ def fix(t):
         t = t.replace("  // add/drop v11:", OLD_MARKS + "  // add/drop v11:", 1)
     return _fix_before_marks(t)
 
+# ---------- round 13: plain win % header, only green and red ----------
+R13_WIN_OLD = '<span className="whitespace-nowrap"><span className="font-medium">{wpTxt(n)}</span>'
+R13_WIN_NEW = '<span className="whitespace-nowrap" data-win="col"><span className={"font-medium " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "")}>{wpTxt(n)}</span>'
+R13_LEG_OLD = (R12_DOT % "var(--warn)" + '></span>stream this week, then drop</span> · <span className="whitespace-nowrap"><span '
+               + R12_DOT % "var(--bad)" + '></span>not worth a move</span>')
+R13_LEG_NEW = R12_DOT % "var(--bad)" + '></span>stream only or not worth a move</span>'
+
+
+def round13(t):
+    t = lit(t, "add/drop: header shows just the win %", '<th className="px-3 py-2 whitespace-nowrap">Win · now {wBase',
+            '<th className="px-3 py-2 whitespace-nowrap" data-win="now" title="Your chance to win this week right now">{wBase',
+            'data-win="now"')
+    t = lit(t, "add/drop: win % green or red", R13_WIN_OLD, R13_WIN_NEW, 'data-win="col"')
+    t = lit(t, "add/drop: yellow dot becomes red",
+            'background: v === "Add & keep" ? "var(--good)" : v === "Stream only" ? "var(--warn)" : "var(--bad)"',
+            'background: v === "Add & keep" ? "var(--good)" : "var(--bad)"',
+            'v === "Add & keep" ? "var(--good)" : "var(--bad)"')
+    t = lit(t, "add/drop: keep hover text", 'title="Green: add and keep · Yellow: stream this week only · Red: pass"',
+            'title="Green: add and keep · Red: stream only or pass"', "Red: stream only or pass")
+    t = lit(t, "add/drop: legend green and red only", R13_LEG_OLD, R13_LEG_NEW, "stream only or not worth a move")
+    return t
+
+
+_fix_before_r13 = fix
+
+
+def fix(t):
+    return round13(_fix_before_r13(t))
+
 if __name__ == "__main__":
     main()
