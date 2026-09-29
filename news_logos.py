@@ -231,7 +231,7 @@ def fix(t):
     t = lit(t, "playoff schedule logos", PO_OLD, PO_NEW, "<TeamLogo t={r.t}")
     t = lit(t, "logo, game time and news helpers", ROOT, HELPERS + ROOT, DONE)
     # --- round 2: bigger logos, day totals and difference in Matchup ---
-    t = lit(t, "bigger logos", "const z = size || 16;", "const z = size || 20;", "const z = size || 20;")
+    t = sub_once(t, "bigger logos", r"const z = size \|\| \d+;", "const z = size || 28;", "const z = size || 28;")
     t = sub_once(t, "matchup: both sides same height",
                  r'<div className="p-3">(?=\r?\n[ \t]*<div className="flex justify-between font-semibold mb-1"><TL s=\{s\} id=\{id\})',
                  '<div className="p-3 flex flex-col h-full">', 'className="p-3 flex flex-col h-full"')
