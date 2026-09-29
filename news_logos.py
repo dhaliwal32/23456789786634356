@@ -128,6 +128,50 @@ SIDE = r'''function Side({ l, s, id }) {
 }
 '''
 
+SIDE2 = r'''function Side({ l, s, id }) {
+  // matchup row layout v3: big logo beside name + opponent/time
+  return (
+    <div className="p-3 flex flex-col h-full">
+      <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1(l.total)}</span></div>
+      <table className="w-full text-sm"><tbody>
+        {l.start.map((p) => {
+          const g = gameOf(p.t, p.dt), o = oddsFor(p.t, p.dt);
+          const gc = p.gs ? (p.gs.includes("confirmed") && !p.gs.includes("un") ? "text-green-700 font-semibold" : p.gs === "not starting" ? "text-red-600" : "text-amber-600") : "";
+          return (
+            <tr key={p.id} className="border-t border-slate-100">
+              <td className="py-2 pr-2 text-xs text-slate-500 w-10 align-middle">{p.slot}</td>
+              <td className="py-2 align-middle">
+                <div className="flex items-center gap-3 min-w-0">
+                  <TeamLogo t={p.t} size={36} />
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <PN p={p} className="truncate" />
+                      {!p.gs && p.prob < 1 ? <span className="text-xs text-slate-400">{Math.round(p.prob * 100)}%</span> : null}
+                      {p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
+                    </div>
+                    {g ? <div className="text-xs text-slate-500 mt-0.5">{(g.h ? "vs " : "@") + g.o} · {gameTime(g)}</div> : null}
+                  </div>
+                </div>
+              </td>
+              <td className="py-2 text-right whitespace-nowrap align-middle">
+                {o && window.__PMODE !== "espn" ? (p.p === "G"
+                  ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span>
+                  : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>) : null}
+                {f1(p.x)}
+              </td>
+            </tr>
+          );
+        })}
+        {l.start.length === 0 && <tr><td className="text-slate-400 py-1">No games</td></tr>}
+      </tbody></table>
+      {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
+      {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
+      <div className="mt-auto pt-3"><div className="flex justify-between items-baseline border-t border-slate-200 pt-2"><span className="text-xs uppercase tracking-wide text-slate-500">Projected today</span><span className="font-semibold text-base">{f1(l.total)}</span></div></div>
+    </div>
+  );
+}
+'''
+
 HELPERS = r'''// ---------- team logos, game times and news filter (news_logos.py) ----------
 const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
@@ -249,6 +293,10 @@ def fix(t):
               <span className={"font-semibold " + (x.total - y.total >= 0 ? "text-green-700" : "text-red-600")}>{x.total - y.total >= 0 ? "+" : ""}{f1(x.total - y.total)} · {x.total === y.total ? "even" : teamName(s, x.total > y.total ? a : b) + " ahead"}</span>
             </div>''',
                  "Day difference")
+    # --- round 3: big logos in Matchup and News ---
+    t = block(t, "matchup rows with big logos", "function Side({ l, s, id }) {", "function MatchCard(", SIDE2, "matchup row layout v3")
+    t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
+                 '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
         if must not in t:
             fail("fantasy-gm.html looks damaged after the changes (" + must + ").")
