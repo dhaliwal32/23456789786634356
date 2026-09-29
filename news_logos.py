@@ -1553,5 +1553,34 @@ _fix_before_r11 = fix
 def fix(t):
     return round11(_fix_before_r11(t))
 
+# ---------- round 12: short colour dot instead of the advice pill ----------
+R12_DOT = 'style={{ display: "inline-block", width: 10, height: 10, borderRadius: 99, marginRight: 5, background: "%s" }}'
+R12_CELL_OLD = r'''<td className="px-3 py-2.5 whitespace-nowrap"><span className={"text-xs px-2 py-0.5 rounded " + c}>{v}</span>{tg ? <span className={"text-xs ml-2 " + tg.c}>{tg.t}</span> : null}</td>'''
+R12_CELL_NEW = r'''<td className="px-3 py-2.5" data-keep="dot"><span title={v} style={{ display: "inline-block", width: 12, height: 12, borderRadius: 99, background: v === "Add & keep" ? "var(--good)" : v === "Stream only" ? "var(--warn)" : "var(--bad)" }}></span></td>'''
+R12_NAME_OLD = r'''<span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}</div>'''
+R12_NAME_NEW = r'''<span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}{tg ? <span className={"text-xs " + tg.c}>{tg.t}</span> : null}</div>'''
+R12_FOOT_OLD = r'''Stream only = helps now but is a worse player long-term.</div>'''
+R12_FOOT_NEW = ('<span data-keep="legend">Keep: </span>'
+                '<span className="whitespace-nowrap"><span ' + R12_DOT % "var(--good)" + '></span>add and keep</span> · '
+                '<span className="whitespace-nowrap"><span ' + R12_DOT % "var(--warn)" + '></span>stream this week, then drop</span> · '
+                '<span className="whitespace-nowrap"><span ' + R12_DOT % "var(--bad)" + '></span>not worth a move</span></div>')
+
+
+def round12(t):
+    t = lit(t, "add/drop: short Keep header", '<th className="px-3 py-2">Advice</th>',
+            '<th className="px-3 py-2" title="Green: add and keep · Yellow: stream this week only · Red: pass">Keep</th>',
+            'title="Green: add and keep')
+    t = lit(t, "add/drop: colour dot", R12_CELL_OLD, R12_CELL_NEW, 'data-keep="dot"')
+    t = lit(t, "add/drop: label next to name", R12_NAME_OLD, R12_NAME_NEW, '{tg ? <span className={"text-xs " + tg.c}>{tg.t}</span> : null}</div>')
+    t = lit(t, "add/drop: colour legend", R12_FOOT_OLD, R12_FOOT_NEW, 'data-keep="legend"')
+    return t
+
+
+_fix_before_r12 = fix
+
+
+def fix(t):
+    return round12(_fix_before_r12(t))
+
 if __name__ == "__main__":
     main()
