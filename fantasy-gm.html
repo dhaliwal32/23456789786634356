@@ -450,7 +450,7 @@ const NAV = [
   ["today", "Today", null],
   ["myteam", "My Team", null],
   ["matchup", "Matchup", null],
-  ["moves", "Moves", [["advice", "Advice"], ["planner", "Planner"], ["adddrop", "Add / Drop"], ["players", "Players"], ["trades", "Trades"], ["playoffs", "Playoffs"]]],
+  ["moves", "Moves", [["advice", "Advice"], ["planner", "Planner"], ["goalies", "Goalie streams"], ["adddrop", "Add / Drop"], ["players", "Players"], ["trades", "Trades"], ["playoffs", "Playoffs"]]],
   ["teams", "Teams", null],
   ["lines", "Lines", null],
   ["league", "League", [["power", "Power rankings"], ["standings", "Standings"], ["odds", "Betting lines"]]],
@@ -554,7 +554,7 @@ function App() {
   else if (tab === "teams") content = teamView ? <TeamPage {...P} id={teamView} back={backFromTeam} /> : <TeamsTab {...P} openTeam={openTeam} />;
   else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
-  else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "adddrop" ? <AddDrop {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
+  else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> : sub === "adddrop" ? <AddDrop {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : <Settings {...P} />;
   return (
@@ -646,7 +646,7 @@ function Today({ s, wk, go }) {
           <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate"><TL s={s} id={opp} /></div><div className="text-4xl">{f1(fb)}</div><div className="text-xs text-slate-500">{f1(aB)} actual + {f1(B.total)} proj</div></div>
         </div>
         <div className="h-1.5 rounded-full bg-slate-200 mt-5 overflow-hidden"><div className={"h-full rounded-full " + (margin >= 0 ? "bg-green-500" : "bg-red-500")} style={{ width: pct + "%" }}></div></div>
-        <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected · {wpTxt(winProb(A, B, aA, aB))} chance to win</span></div>
+        <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected · {wpTxt(winProb(A, B, aA, aB))} chance to win</span></div>{done < dates.length ? <StrategyLine p={winProb(A, B, aA, aB)} /> : null}
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         <Section title={dday ? (dday === today ? "Tonight" : `Next game day · ${dayLabel(dday)}`) : "No games left this week"} sub={L ? `${L.start.length} of your players play · projected ${f1(L.total)} vs ${f1(OL.total)}` : ""} link={["Matchup", () => go("matchup")]}>
@@ -1522,7 +1522,7 @@ function LiveBar({ s, wk, setWk, ids }) {
     </div>
   );
 }
-function Side({ l, s, id }) {
+function Side({ l, s, id, wk, d }) {
   // matchup row layout v4: big logo beside name + opponent/time, same font for totals
   return (
     <div className="p-3 flex flex-col h-full">
@@ -1560,6 +1560,7 @@ function Side({ l, s, id }) {
       </tbody></table>
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
       {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
+      {wk && id === s.me ? <FillSlot l={l} s={s} wk={wk} d={d} /> : null}
       <div className="mt-auto pt-3"><div className="flex justify-between font-semibold border-t border-slate-200 pt-2"><span>Projected today</span><span>{f1(l.total)}</span></div></div>
     </div>
   );
@@ -1573,7 +1574,7 @@ function MatchCard({ s, a, b, P, on, mine, onSel }) {
       <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{mine ? "Your matchup" : "Matchup"}</div>
       <div className="flex justify-between gap-2"><TL s={s} id={a} className={"truncate " + (fx >= fy ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(fx)}</span></div>
       <div className="flex justify-between gap-2 mt-1"><TL s={s} id={b} className={"truncate " + (fy > fx ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(fy)}</span></div>
-      <div className="h-1 rounded-full bg-slate-200 mt-2 overflow-hidden"><div className="h-full bg-green-500" style={{ width: pct + "%" }}></div></div>
+      <div className="h-1 rounded-full bg-slate-200 mt-2 overflow-hidden"><div className="h-full bg-green-500" style={{ width: Math.round(winProb(X.r, Y.r, X.act, Y.act) * 100) + "%" }}></div></div><div className="flex justify-between text-xs text-slate-500 mt-1.5"><span>{wpTxt(winProb(X.r, Y.r, X.act, Y.act))} to win</span><span>{wpTxt(1 - winProb(X.r, Y.r, X.act, Y.act))}</span></div>
       {X.act || Y.act ? <div className="text-xs text-slate-500 mt-1">Actual so far {f1(X.act)} – {f1(Y.act)}</div> : null}
     </div>
   );
@@ -1604,8 +1605,8 @@ function Matchup({ s, setS, wk, setWk }) {
         {sel === 0 && !pairOpp ? <select className={inp} value={s.opp} onChange={(e) => setS({ ...s, opp: e.target.value })}>{s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select> : <TL s={s} id={b} className="font-semibold" />}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <Card label={teamName(s, a)} value={f1(fa)} sub={`${f1(aA)} actual + ${f1(A.total)} proj`} />
-        <Card label={teamName(s, b)} value={f1(fb)} sub={`${f1(aB)} actual + ${f1(B.total)} proj`} />
+        <Card label={teamName(s, a)} value={f1(fa)} sub={<>{f1(aA)} actual + {f1(A.total)} proj<br />{gamesMoves(s, a, wk, A)}</>} />
+        <Card label={teamName(s, b)} value={f1(fb)} sub={<>{f1(aB)} actual + {f1(B.total)} proj<br />{gamesMoves(s, b, wk, B)}</>} />
         <Card label={final ? "Final margin" : "Projected margin"} value={(margin >= 0 ? "+" : "") + f1(margin)} tone={margin >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"} />
         <Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))} sub={final ? "Week complete" : `${wk.days.length - done} day(s) left · ${A.wasted} games wasted`} />
       </div>
@@ -1620,7 +1621,7 @@ function Matchup({ s, setS, wk, setWk }) {
               {/* day header: running total removed */}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
-              <Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />
+              <Side l={x} s={s} id={a} wk={wk} d={d} /><Side l={y} s={s} id={b} wk={wk} d={d} />
             </div>
             <div data-v="daydiff2" data-w="daydiff3" className="border-t border-slate-200 px-3 py-2">
               {[["Day difference", x.total - y.total], ["Total so far", run]].map(([lab, v]) => (
@@ -2586,6 +2587,99 @@ const WinDelta = ({ s, add, drop, base }) => {
   const d = Math.round(n * 100) - Math.round(b * 100);
   return <span className={"text-xs whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Chance to win this week's matchup, before and after the move">win {wpTxt(b)} → {wpTxt(n)}</span>;
 };
+
+// ---------- round 6: moves left, fill slots, ESPN lineup check, goalie streams, strategy (news_logos.py) ----------
+const movesLeft = (s, tid, w) => {
+  const E = window.ESPN_DATA || {};
+  if (E.acq && w && w.period != null) { const a = E.acq[String(tid).replace(/^t/, "")]; if (a) return Math.max(0, 3 - (+a[String(w.period)] || 0)); }
+  return tid === s.me ? Math.max(0, 3 - (((s.movesUsed || {})[s.wk]) || 0)) : null;
+};
+const gamesMoves = (s, tid, w, R) => { const m = movesLeft(s, tid, w); return R.used + " games left" + (m != null ? " · " + m + " move" + (m === 1 ? "" : "s") + " left" : ""); };
+const dropFor = (s, add) => {
+  const K = s.blend, mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const prot = new Set([...mine].sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, s.protectTop ?? 8).map((p) => p.id));
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const cnt = { F: 0, D: 0, G: 0 }; mine.forEach((p) => { cnt[p.p]++; });
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  return mine.filter((p) => !prot.has(p.id) && !p.keep && (p.p === add.p || cnt[p.p] - 1 >= mins[p.p])).sort((a, b) => pv(a) - pv(b))[0] || null;
+};
+const strategy = (p) => (p == null ? null : p >= 0.75 ? ["Play it safe", "You're a clear favourite. Keep steady skaters in, skip risky goalie streams and save moves for injuries."]
+  : p >= 0.55 ? ["Protect the edge", "Slight favourite. Take sure points: stream skaters with extra games before goalies."]
+  : p >= 0.4 ? ["Toss-up", "Every game counts. Fill every empty slot and use all your moves."]
+  : ["Swing big", "You're the underdog. Chase upside: confirmed goalies with good win odds and players on hot power plays."]);
+const StrategyLine = ({ p }) => { const t = strategy(p); return t ? <div className="text-sm mt-2"><span className="font-semibold">{t[0]}</span><span className="text-slate-500"> · {t[1]}</span></div> : null; };
+function FillSlot({ l, s, wk, d }) {
+  const K = s.blend, dt = wk.dates ? wk.dates[d] : null;
+  if (!dt || dt < todayISO() || l.empty <= 0) return null;
+  const c = { F: 0, D: 0, UTIL: 0, G: 0 }; l.start.forEach((p) => { c[p.slot] = (c[p.slot] || 0) + 1; });
+  const open = { F: 9 - c.F, D: 5 - c.D, U: 1 - c.UTIL, G: 2 - c.G };
+  const fits = (p) => (p.p === "G" ? open.G > 0 : open[p.p] > 0 || open.U > 0);
+  const val = (p) => effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt);
+  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p))
+    .map((p) => ({ p, v: val(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 2);
+  if (!best.length) return null;
+  const ml = movesLeft(s, s.me, wk);
+  return (
+    <div className="mt-3 rounded-lg border border-slate-200 px-3 py-2">
+      <div className="text-xs uppercase tracking-wide text-slate-500">Fill an empty spot{ml != null ? " · " + ml + " move" + (ml === 1 ? "" : "s") + " left" : ""}</div>
+      {best.map(({ p, v }) => { const dr = dropFor(s, p), g = gameOf(p.t, dt); return (
+        <div key={p.id} className="flex items-center gap-3 py-2">
+          <TeamLogo t={p.t} size={28} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2"><PN p={p} className="truncate" /><span className="text-xs text-slate-400">{p.p}</span></div>
+            <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
+          </div>
+          <div className="text-right whitespace-nowrap"><div className="font-semibold text-green-700">+{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} /> : null}</div>
+        </div>
+      ); })}
+    </div>
+  );
+}
+function espnLineupChecks(mine, L, wk, di, dday, today) {
+  const SL = (window.ESPN_DATA || {}).slots;
+  if (!SL || !L || dday !== today) return [];
+  const sid = (p) => SL[String(p.id).slice(1)];
+  if (!mine.some((p) => sid(p) != null)) return [];
+  const act = (p) => { const v = sid(p); return v != null && v !== 7 && v !== 8; };
+  const locked = (p) => { const g = gameOf(p.t, dday); return !!(g && g.st && new Date(g.st) <= new Date()); };
+  const plays = (p) => (wk.games[p.t] || []).includes(di);
+  const best = new Set(L.start.map((p) => p.id));
+  const toStart = L.start.filter((p) => !act(p) && !locked(p));
+  if (!toStart.length) return [["good", "Your ESPN lineup is already the best one for today"]];
+  const out = mine.filter((p) => act(p) && !best.has(p.id) && !locked(p)).sort((a, b) => (plays(a) ? 1 : 0) - (plays(b) ? 1 : 0)).slice(0, toStart.length);
+  return [["bad", "On ESPN, start " + toStart.map((p) => p.n).join(", ") + (out.length ? " and bench " + out.map((p) => p.n).join(", ") : "")]];
+}
+const startTag = (gs) => ((gs.l || "").includes("confirmed") && !(gs.l || "").includes("un") ? ["Confirmed", "bg-green-100 text-green-700"]
+  : gs.v >= 0.85 ? ["Likely starter", "bg-amber-100 text-amber-800"] : [Math.round(gs.v * 100) + "% to start", "bg-slate-200 text-slate-600"]);
+function GoalieStreams({ s, wk }) {
+  const K = s.blend, today = todayISO(), dates = wk.dates || [];
+  const base = useMemo(() => winChance(s), [s]);
+  const st = strategy(base);
+  const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, list: s.players
+    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0)
+    .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
+    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
+  return (
+    <Section title="Goalie streams" sub="Free-agent goalies for each day left this week, best first. Start status from Daily Faceoff, win chance from betting odds.">
+      {st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
+      {days.length ? days.map(({ dt, list }) => (
+        <div key={dt} className="mt-4">
+          <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{dt === today ? "Today" : dayLabel(dt)}</div>
+          {list.length ? list.map(({ p, gs, o, g, v }) => { const tg = startTag(gs), dr = dropFor(s, p); return (
+            <div key={p.id} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
+              <TeamLogo t={p.t} size={30} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2"><PN p={p} /><span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span></div>
+                <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, o ? "W " + Math.round(o.win * 100) + "%" : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
+              </div>
+              <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} base={base} /> : null}</div>
+            </div>
+          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>}
+        </div>
+      )) : <div className="text-slate-400">No days left this week.</div>}
+    </Section>
+  );
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
