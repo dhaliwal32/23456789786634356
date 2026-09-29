@@ -305,6 +305,9 @@ def fix(t):
               </span>
             </div>''',
                  'data-v="daydiff2"', re.S)
+    t = sub_once(t, "remove running total from day header",
+                 r'<span>\{f1\(x\.total\)\} . \{f1\(y\.total\)\} . <span className=\{run >= 0[^\n]*?</span></span>',
+                 "{/* day header: running total removed */}", "day header: running total removed")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
