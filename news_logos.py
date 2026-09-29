@@ -172,6 +172,32 @@ SIDE2 = r'''function Side({ l, s, id }) {
 }
 '''
 
+WIN_HELPERS = r'''// ---------- win probability (news_logos.py) ----------
+const normCdf = (z) => { const t = 1 / (1 + 0.2316419 * Math.abs(z)); const d = 0.3989423 * Math.exp(-z * z / 2); const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
+// spread of a team's remaining points: game-to-game swings of every lineup player-game + 10% projection error
+const projVar = (R) => { let v = (0.1 * R.total) ** 2; R.days.forEach((L) => { if (L) L.start.forEach((p) => { const sd = p.p === "G" ? 3 + 0.8 * p.x : 1.5 + 0.6 * p.x; v += sd * sd; }); }); return v; };
+const winProb = (A, B, aA, aB) => { const m = aA + A.total - (aB + B.total); const sd = Math.sqrt(projVar(A) + projVar(B)); return sd > 0 ? normCdf(m / sd) : m > 0 ? 1 : m < 0 ? 0 : 0.5; };
+const wpTxt = (v) => Math.round(Math.max(0.01, Math.min(0.99, v)) * 100) + "%";
+function winChance(s, roster) {
+  const w = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone);
+  const opp = oppOf(w, s.me) || s.opp;
+  if (!opp) return null;
+  const K = s.blend, done = w.done || 0;
+  const A = weekProj(roster || s.players.filter((p) => p.ft === s.me), w, K, done);
+  const B = weekProj(s.players.filter((p) => p.ft === opp), w, K, done);
+  return winProb(A, B, +((w.act || {})[s.me]) || 0, +((w.act || {})[opp]) || 0);
+}
+const afterMove = (s, add, drop) => s.players.filter((p) => p.ft === s.me && p.id !== drop.id).concat([{ ...add, ft: s.me }]);
+const WinDelta = ({ s, add, drop, base }) => {
+  const b = base === undefined ? winChance(s) : base;
+  const n = winChance(s, afterMove(s, add, drop));
+  if (b == null || n == null) return null;
+  const d = Math.round(n * 100) - Math.round(b * 100);
+  return <span className={"text-xs whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Chance to win this week's matchup, before and after the move">win {wpTxt(b)} → {wpTxt(n)}</span>;
+};
+
+'''
+
 HELPERS = r'''// ---------- team logos, game times and news filter (news_logos.py) ----------
 const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
@@ -308,6 +334,38 @@ def fix(t):
     t = sub_once(t, "remove running total from day header",
                  r'<span>\{f1\(x\.total\)\} . \{f1\(y\.total\)\} . <span className=\{run >= 0[^\n]*?</span></span>',
                  "{/* day header: running total removed */}", "day header: running total removed")
+    # --- round 4: win probability + how each move changes it ---
+    t = lit(t, "win probability helpers", ROOT, WIN_HELPERS + ROOT, "function winChance(")
+    t = sub_once(t, "matchup: win chance instead of Favoured/Coin flip",
+                 r'<Card label=\{"Lean . " \+ teamName\(s, a\)\} value=\{[^\n]*?"Underdog"\}',
+                 '<Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))}',
+                 'label={"Win chance · "')
+    t = sub_once(t, "home: win chance",
+                 r'projected\{Math\.abs\(margin\) < 15 \? ". close, every move matters" : ""\}',
+                 "projected · {wpTxt(winProb(A, B, aA, aB))} chance to win", "chance to win</span>")
+    t = lit(t, "home: moves change win chance",
+            '<span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>',
+            '<WinDelta s={s} add={r.f} drop={r.d} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>',
+            "<WinDelta s={s} add={r.f} drop={r.d} /><span")
+    t = sub_once(t, "advice: moves change win chance",
+                 r'<span className="text-green-700 font-semibold">\+\{f1\(r\.gain\)\}</span>(?=\s*<span className=\{"text-xs " \+ \(sd >= 0)',
+                 '<WinDelta s={s} add={r.f} drop={r.d} advice={1} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span>',
+                 "advice={1}")
+    t = lit(t, "add/drop: win chance baseline",
+            "const M = useMemo(() => computeMoves(s, { H, pos, q }), [s, H, pos, q]);",
+            "const M = useMemo(() => computeMoves(s, { H, pos, q }), [s, H, pos, q]);\n  const wBase = useMemo(() => winChance(s), [s]);",
+            "const wBase")
+    t = lit(t, "add/drop: win column header",
+            '{["Add", "", "Gms", "Avg", "Drop", "Gain", "Δ/game", "Advice", ""].map(',
+            '{["Add", "", "Gms", "Avg", "Drop", "Gain", "Win this week", "Δ/game", "Advice", ""].map(',
+            '"Gain", "Win this week"')
+    t = lit(t, "add/drop: win column",
+            '<td className={"px-3 py-2 font-semibold " + (r.gain > 0 ? "text-green-700" : "text-red-700")}>{r.gain >= 0 ? "+" : ""}{f1(r.gain)}</td>',
+            '<td className={"px-3 py-2 font-semibold " + (r.gain > 0 ? "text-green-700" : "text-red-700")}>{r.gain >= 0 ? "+" : ""}{f1(r.gain)}</td><td className="px-3 py-2"><WinDelta s={s} add={r.f} drop={r.d} base={wBase} /></td>',
+            "base={wBase} /></td>")
+    t = lit(t, "add/drop: empty row width", "colSpan={9}>No moves clear", "colSpan={10}>No moves clear", "colSpan={10}>No moves clear")
+    t = lit(t, "add/drop: simulator win chance", "{simBreaks && <span",
+            "{A && D ? <WinDelta s={s} add={A} drop={D} base={wBase} /> : null}{simBreaks && <span", "base={wBase} /> : null}")
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
