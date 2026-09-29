@@ -1524,7 +1524,7 @@ function LiveBar({ s, wk, setWk, ids }) {
 }
 function Side({ l, s, id }) {
   return (
-    <div className="p-3">
+    <div className="p-3 flex flex-col h-full">
       <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1(l.total)}</span></div>
       <table className="w-full text-sm"><tbody>
         {l.start.map((p) => {
@@ -1555,6 +1555,7 @@ function Side({ l, s, id }) {
       </tbody></table>
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
       {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
+      <div className="mt-auto pt-3"><div className="flex justify-between items-baseline border-t border-slate-200 pt-2"><span className="text-xs uppercase tracking-wide text-slate-500">Projected today</span><span className="font-semibold text-base">{f1(l.total)}</span></div></div>
     </div>
   );
 }
@@ -1615,6 +1616,10 @@ function Matchup({ s, setS, wk, setWk }) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               <Side l={x} s={s} id={a} /><Side l={y} s={s} id={b} />
+            </div>
+            <div className="flex flex-wrap justify-between items-center gap-2 px-3 py-2.5 border-t border-slate-200 text-sm">
+              <span className="text-xs uppercase tracking-wide text-slate-500">Day difference</span>
+              <span className={"font-semibold " + (x.total - y.total >= 0 ? "text-green-700" : "text-red-600")}>{x.total - y.total >= 0 ? "+" : ""}{f1(x.total - y.total)} · {x.total === y.total ? "even" : teamName(s, x.total > y.total ? a : b) + " ahead"}</span>
             </div>
           </div>
         );
@@ -2505,7 +2510,7 @@ const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
   const [bad, setBad] = useState(false);
   if (!t) return null;
-  const z = size || 16;
+  const z = size || 20;
   if (bad) return <span>{t}</span>;
   return <img src={"https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[t] || t) + "_dark.svg"} alt={t} title={t} loading="lazy" onError={() => setBad(true)} style={{ width: z, height: z, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} />;
 }
