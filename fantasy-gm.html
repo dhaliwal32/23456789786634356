@@ -2510,7 +2510,7 @@ const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
 function TeamLogo({ t, size }) {
   const [bad, setBad] = useState(false);
   if (!t) return null;
-  const z = size || 20;
+  const z = size || 28;
   if (bad) return <span>{t}</span>;
   return <img src={"https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[t] || t) + "_dark.svg"} alt={t} title={t} loading="lazy" onError={() => setBad(true)} style={{ width: z, height: z, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} />;
 }
