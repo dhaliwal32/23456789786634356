@@ -542,7 +542,7 @@ function App() {
   window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } };
   if (!loaded) return <div className="p-8 text-slate-500">Loading your league…</div>;
   const P = { s, setS, wk, setWk, go };
-  const LH = { effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel, TL };
+  const LH = { effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel, TL, TeamLogo };
   const genAt = E && toDate(E.generated);
   const ageH = genAt ? (Date.now() - genAt.getTime()) / 36e5 : null;
   const nav = NAV.find((n) => n[0] === tab);
