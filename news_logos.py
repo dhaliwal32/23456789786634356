@@ -129,7 +129,7 @@ SIDE = r'''function Side({ l, s, id }) {
 '''
 
 SIDE2 = r'''function Side({ l, s, id }) {
-  // matchup row layout v3: big logo beside name + opponent/time
+  // matchup row layout v4: big logo beside name + opponent/time, same font for totals
   return (
     <div className="p-3 flex flex-col h-full">
       <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1(l.total)}</span></div>
@@ -166,7 +166,7 @@ SIDE2 = r'''function Side({ l, s, id }) {
       </tbody></table>
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
       {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
-      <div className="mt-auto pt-3"><div className="flex justify-between items-baseline border-t border-slate-200 pt-2"><span className="text-xs uppercase tracking-wide text-slate-500">Projected today</span><span className="font-semibold text-base">{f1(l.total)}</span></div></div>
+      <div className="mt-auto pt-3"><div className="flex justify-between font-semibold border-t border-slate-200 pt-2"><span>Projected today</span><span>{f1(l.total)}</span></div></div>
     </div>
   );
 }
@@ -294,7 +294,17 @@ def fix(t):
             </div>''',
                  "Day difference")
     # --- round 3: big logos in Matchup and News ---
-    t = block(t, "matchup rows with big logos", "function Side({ l, s, id }) {", "function MatchCard(", SIDE2, "matchup row layout v3")
+    t = block(t, "matchup rows with big logos", "function Side({ l, s, id }) {", "function MatchCard(", SIDE2, "matchup row layout v4")
+    t = sub_once(t, "cleaner day difference",
+                 re.escape('<div className="flex flex-wrap justify-between items-center gap-2 px-3 py-2.5 border-t border-slate-200 text-sm">') + r'.*?" ahead"\}</span>\s*</div>',
+                 r'''<div data-v="daydiff2" className="flex justify-between items-center gap-3 px-3 py-3 border-t border-slate-200 font-semibold">
+              <span>Difference</span>
+              <span className="flex items-center gap-2">
+                {x.total !== y.total ? <span className="text-sm text-slate-500 font-normal">{teamName(s, x.total > y.total ? a : b)} ahead</span> : null}
+                <span className={"px-2.5 py-0.5 rounded-md " + (x.total - y.total >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{x.total - y.total >= 0 ? "+" : ""}{f1(x.total - y.total)}</span>
+              </span>
+            </div>''',
+                 'data-v="daydiff2"', re.S)
     t = sub_once(t, "bigger logos in News", r'<div className="pt-0\.5"><TeamLogo t=\{p\.t\} size=\{\d+\} /></div>',
                  '<div className="pt-0.5"><TeamLogo t={p.t} size={36} /></div>', '<TeamLogo t={p.t} size={36} /></div>')
     for must in (ROOT, "const SR = {", DONE, "function Side(", "function NewsView({ s, wk })", "function Matchup(", "function Today("):
