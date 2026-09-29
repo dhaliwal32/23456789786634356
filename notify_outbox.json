@@ -7,7 +7,9 @@
    "text": "Troy Terry (ANA) injury status: Out -> Injury Reserve",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-29T15:01:19Z"
   },
   {
    "k": "2026-09-28|5544065c8b50",
@@ -16,14 +18,25 @@
    "text": "Nicholas Robertson (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-29T15:01:19Z"
   }
  ],
  "sent": {
   "2026-09-28": [
    "morning"
   ],
-  "2026-09-29": []
+  "2026-09-29": [
+   "morning"
+  ]
  },
- "log": []
+ "log": [
+  {
+   "at": "2026-09-29T15:01:19Z",
+   "kind": "morning",
+   "title": "Morning summary - Tue Sep 29 (2 updates)",
+   "body": "YOUR PLAYERS\n- Troy Terry (ANA) injury status: Out -> Injury Reserve\n\nPICKUP IDEAS\n- Nicholas Robertson (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n\nToday: 8 of your players play, first puck drop 2:00 PM."
+  }
+ ]
 }
