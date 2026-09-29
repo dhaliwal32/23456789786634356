@@ -79,7 +79,6 @@
 </style>
 </head>
 <body>
-<script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
 <script>window.LINES_DATA = null; document.write('<script src="lines-data.js?t=' + Date.now() + '"><\/script>'); document.write('<script type="text/babel" data-presets="react" src="lines-tab.js?t=' + Date.now() + '"><\/script>');</script>
 <script>document.write('<script type="text/babel" data-presets="react" src="ask-panel.js?t=' + Date.now() + '"><\/script>');</script>
 <div id="root"></div>
@@ -339,7 +338,7 @@ const tags = (p, K) => {
   if (t && t.pd >= 60) out.push({ t: `PP ${mm(t.pd)}`, c: "text-green-700" });
   else if (t && t.pd <= -60) out.push({ t: `PP ${mm(t.pd)}`, c: "text-red-600" });
   if ((p.chg || 0) >= 5) out.push({ t: `+${f1(p.chg)}% rostered`, c: "text-green-700" });
-  { const nw = newsOf(p)[0]; if (nw) out.push({ t: (nw.label ? nw.label + ": " : "") + (nw.h || "").slice(0, 60), c: NEWS_CLS[nw.kind] || "text-slate-500", u: nw.u }); }
+  if (g.news && g.news.length) out.push({ t: "" + (g.news[0].h || "").slice(0, 60), c: g.news[0].tone === "-" ? "text-red-600" : "text-slate-500", u: g.news[0].u });
   return out;
 };
 const Tags = ({ p, K }) => (
@@ -431,7 +430,7 @@ const Pills = ({ items, value, onChange }) => (
 const teamName = (s, id) => (id === "fa" ? "Free agent" : (s.teams.find((t) => t.id === id) || {}).name || "");
 const PlayerLine = ({ s, p, extra }) => (
   <div className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-2 text-sm">
-    <PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /> · <TL s={s} id={p.ft} /></span>
+    <PN p={p} /><span className="text-xs text-slate-400">{p.p} · {p.t} · <TL s={s} id={p.ft} /></span>
     <span className="text-xs text-slate-500">avg {f1(effAvg(p, s.blend))}</span>{extra}<Tags p={p} K={s.blend} />
   </div>
 );
@@ -553,7 +552,7 @@ function App() {
   else if (tab === "matchup") content = <Matchup {...P} />;
   else if (tab === "teams") content = teamView ? <TeamPage {...P} id={teamView} back={backFromTeam} /> : <TeamsTab {...P} openTeam={openTeam} />;
   else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
-  else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
+  else if (tab === "news") content = <div className="space-y-4"><PhoneFeed /><NewsView s={s} /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "adddrop" ? <AddDrop {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
   else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : <Settings {...P} />;
@@ -626,7 +625,7 @@ function Today({ s, wk, go }) {
   const hot = mine.filter((p) => !p.ir && (formRatio(p, K) || 0) >= 1.25);
   const cold = mine.filter((p) => { const r = formRatio(p, K); return !p.ir && r !== null && r <= 0.7; });
   const lastName = (n) => nrm(n).split(" ").pop();
-  const allNews = mine.map((p) => { const all = sigOf(p).news || []; return { p, all, items: newsOf(p) }; }).sort((a, b) => (a.items.length ? NEWS_RANK[a.items[0].kind] : 9) - (b.items.length ? NEWS_RANK[b.items[0].kind] : 9));
+  const allNews = mine.map((p) => { const all = sigOf(p).news || []; return { p, all, items: all.filter((n) => nrm(n.h || "").includes(lastName(p.n))) }; });
   const news = allNews.filter((x) => x.items.length).slice(0, 5);
   const hidden = allNews.reduce((a, x) => a + x.all.length - x.items.length, 0);
   const pct = Math.max(6, Math.min(94, 50 + margin / 2));
@@ -654,7 +653,7 @@ function Today({ s, wk, go }) {
         </Section>
         <Section title="Best moves this week" sub={sameDrop ? `All free up ${moves[0].d.n}'s spot` : ""} link={["All moves", () => go("moves", "adddrop")]}>
           {moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
-            <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <PN p={r.f} className="font-semibold" /> <span className="text-xs text-slate-400">{r.f.p} · <TeamLogo t={r.f.t} /></span>{sameDrop ? null : <> · drop <PN p={r.d} className="font-semibold" /></>}</span><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
+            <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <PN p={r.f} className="font-semibold" /> <span className="text-xs text-slate-400">{r.f.p} · {r.f.t}</span>{sameDrop ? null : <> · drop <PN p={r.d} className="font-semibold" /></>}</span><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
           ); }) : <div className="text-slate-400">No move worth an acquisition right now.</div>}
         </Section>
       </div>
@@ -673,17 +672,17 @@ function Today({ s, wk, go }) {
       <div className="grid md:grid-cols-2 gap-4">
         <Section title="Injuries" link={["My Team", () => go("myteam")]}>
           {outNow.length ? outNow.map((p) => { const b = effBack(p); const soon = b.d && dates.length && b.d <= dates[dates.length - 1]; return (
-            <Row key={p.id}><PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? "Back " + mdL(b.d) : "No return date"}</span></Row>
+            <Row key={p.id}><PN p={p} /><span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? "Back " + mdL(b.d) : "No return date"}</span></Row>
           ); }) : <div className="text-green-700">Everyone healthy.</div>}
         </Section>
         <Section title="News on your players" link={["All news", () => go("news")]}>
           {news.length ? news.map(({ p, items }) => (
             <div key={p.id} className="py-2.5 border-t border-slate-100">
-              <div><PN p={p} /> <span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /></span></div>
-              {items.slice(0, 2).map((n, i) => <NewsItem key={i} n={n} />)}
+              <div><PN p={p} /> <span className="text-xs text-slate-400">{p.p} · {p.t}</span></div>
+              {items.slice(0, 2).map((n, i) => <a key={i} href={n.u} target="_blank" rel="noreferrer" className={"block text-sm mt-0.5 hover:underline " + (n.tone === "-" ? "text-red-600" : "text-slate-600")}>{n.h}</a>)}
             </div>
           )) : <div className="text-slate-400">No headlines about your players right now.</div>}
-          {hidden > 0 && <div className="text-xs text-slate-400 mt-2">{hidden} old or minor headline{hidden === 1 ? "" : "s"} hidden</div>}
+          {hidden > 0 && <div className="text-xs text-slate-400 mt-2">{hidden} general headline{hidden === 1 ? "" : "s"} hidden (they don't mention the player)</div>}
         </Section>
       </div>
     </div>
@@ -716,7 +715,7 @@ function AdvicePanel({ s }) {
   const MoveRow = ({ r }) => { const sd = sdOf(r); const [v, c] = verdict(r.gain, sd); return (
     <div className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-2">
       <span className={"text-xs px-2 py-0.5 rounded " + c}>{v}</span>
-      <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} <TeamLogo t={r.f.t} /></span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
+      <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} {r.f.t}</span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
       <span className="text-green-700 font-semibold">+{f1(r.gain)}</span>
       <span className={"text-xs " + (sd >= 0 ? "text-green-700" : "text-red-600")}>{sd >= 0 ? "+" : ""}{f1(sd)}/game long-term</span>
       <Tags p={r.f} K={K} />
@@ -751,38 +750,24 @@ function AdvicePanel({ s }) {
   );
 }
 
-function NewsView({ s, wk }) {
-  const [f, setF] = useState("all");
-  const [open, setOpen] = useState({});
-  const opp = wk ? oppOf(wk, s.me) : null;
-  const pass = (n) => f === "all" || (f === "inj" ? NEWS_OUT.has(n.kind) : f === "moves" ? n.kind === "trade" || n.kind === "roster" : n.kind === "hot");
-  const rows = s.players.map((p) => ({ p, items: newsOf(p).filter(pass) })).filter((x) => x.items.length)
-    .sort((a, b) => NEWS_RANK[a.items[0].kind] - NEWS_RANK[b.items[0].kind] || a.items[0].age - b.items[0].age);
-  const only = (list, keep) => list.map((x) => ({ ...x, items: x.items.filter(keep) })).filter((x) => x.items.length);
-  const groups = [
-    ["mine", "Your players", "Regular news shows for a day, hot streaks for 3 days, and injuries, scratches, trades and roster moves for a week.", rows.filter((x) => x.p.ft === s.me), true],
-    ["opp", opp ? "Your opponent · " + teamName(s, opp) : "", "Everything current on the team you play this week.", opp ? rows.filter((x) => x.p.ft === opp) : [], false],
-    ["league", "Around your league", "Other fantasy teams: important news and hot streaks only.", only(rows.filter((x) => x.p.ft !== s.me && x.p.ft !== opp && x.p.ft !== "fa"), (n) => n.kind !== "news"), false],
-    ["fa", "Free agents", "Only important news: injuries, scratches, trades and roster moves.", only(rows.filter((x) => x.p.ft === "fa"), (n) => NEWS_BIG.has(n.kind)), false],
-  ];
+function NewsView({ s }) {
+  const groups = [["Your players", (p) => p.ft === s.me], ["Free agents", (p) => p.ft === "fa"], ["Other fantasy teams", (p) => p.ft !== s.me && p.ft !== "fa"]];
+  const withNews = s.players.filter((p) => (sigOf(p).news || []).length);
   return (
     <div className="space-y-4">
-      <Pills items={[["all", "All"], ["inj", "Injuries & scratches"], ["moves", "Trades & roster moves"], ["hot", "Hot"]]} value={f} onChange={setF} />
       {!window.__SIG && <div className={box + " text-slate-400"}>No news loaded yet.</div>}
-      {groups.filter((g) => g[4] || g[3].length).map(([k, title, sub, list]) => {
-        const shown = open[k] ? list : list.slice(0, 8);
+      {groups.map(([title, f]) => {
+        const list = withNews.filter(f);
         return (
-          <Section key={k} title={title + " (" + list.length + ")"} sub={sub}>
-            {shown.length ? shown.map(({ p, items }) => (
-              <div key={p.id} className="flex gap-3 py-2.5 border-t border-slate-100">
-                <div className="pt-0.5"><TeamLogo t={p.t} size={22} /></div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-baseline gap-2"><PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TL s={s} id={p.ft} /></span></div>
-                  {items.slice(0, 2).map((n, i) => <NewsItem key={i} n={n} />)}
-                </div>
+          <Section key={title} title={`${title} (${list.length})`}>
+            {list.length ? list.map((p) => (
+              <div key={p.id} className="border-t border-slate-100 py-2">
+                <div className="flex flex-wrap items-baseline gap-2"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t} · {teamName(s, p.ft)}</span></div>
+                {(sigOf(p).news || []).map((n, i) => (
+                  <div key={i} className="text-xs mt-1 ml-3"><span className="text-slate-400 mr-2">{n.d}</span><a href={n.u} target="_blank" rel="noreferrer" className={"underline " + (n.tone === "-" ? "text-red-600" : n.tone === "+" ? "text-green-700" : "text-slate-600")}>{n.h}</a></div>
+                ))}
               </div>
-            )) : <div className="text-slate-400 text-xs">Nothing current.</div>}
-            {list.length > shown.length && <button className="text-sm text-blue-600 mt-2" onClick={() => setOpen({ ...open, [k]: true })}>Show all {list.length}</button>}
+            )) : <div className="text-slate-400 text-xs">No recent headlines.</div>}
           </Section>
         );
       })}
@@ -899,7 +884,7 @@ function OddsBoard({ s }) {
                   const fav = v.win >= 0.5 ? home : v.opp;
                   return (
                     <tr key={home} className={"border-t border-slate-100 " + (mineN ? "bg-blue-50" : "")}>
-                      <td className="px-3 py-2 font-medium whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><TeamLogo t={v.opp} size={18} />{v.opp} @ <TeamLogo t={home} size={18} />{home}</span></td>
+                      <td className="px-3 py-2 font-medium whitespace-nowrap">{v.opp} @ {home}</td>
                       <td className="px-3 py-2 whitespace-nowrap"><span className={fav === v.opp ? "font-semibold text-green-700" : ""}>{v.opp} {Math.round((a.win ?? 1 - v.win) * 100)}%</span> · <span className={fav === home ? "font-semibold text-green-700" : ""}>{home} {Math.round(v.win * 100)}%</span></td>
                       <td className="px-3 py-2 whitespace-nowrap">{v.opp} {(a.gf ?? v.ga).toFixed(1)} · {home} {v.gf.toFixed(1)}</td>
                       <td className="px-3 py-2">{(v.gf + v.ga).toFixed(1)}</td>
@@ -995,7 +980,7 @@ function AcqPlanner({ s, setS, wk }) {
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="text-xs px-2 py-0.5 rounded bg-blue-600">{i + 1}</span>
                 <span className="font-semibold">{wk.days[st.day]}</span>
-                <span>Add <b>{st.add.n}</b> <span className="text-xs text-slate-400">{st.add.p} · <TeamLogo t={st.add.t} /></span></span>
+                <span>Add <b>{st.add.n}</b> <span className="text-xs text-slate-400">{st.add.p} · {st.add.t}</span></span>
                 <span>· drop <b>{st.drop.n}</b>{st.dropWasStream ? <span className="text-xs text-slate-400"> (streamer from step {plan.steps.findIndex((x) => x.add.id === st.drop.id) + 1})</span> : <span className="text-xs text-slate-400"> {st.drop.p}</span>}</span>
                 <span className="text-green-700 font-semibold ml-auto">+{f1(st.gain)}</span>
               </div>
@@ -1139,12 +1124,12 @@ function BenchFixer({ s }) {
           {w.wl.length ? (
             <div className="mb-2">
               <div className="text-xs text-slate-500 mb-1">Sitting on your bench:</div>
-              {w.wl.map((x) => <div key={x.p.id} className="flex flex-wrap gap-2 py-1 border-t border-slate-100"><span className="font-medium">{x.p.n}</span><span className="text-xs text-slate-400">{x.p.p} · <TeamLogo t={x.p.t} /></span><span className="text-xs text-red-600">{x.g} game{x.g > 1 ? "s" : ""} wasted ({x.days.join(", ")}) ≈ {f1(x.pts)} pts</span>{prot.has(x.p.id) && <span className="text-xs text-slate-500">protected</span>}</div>)}
+              {w.wl.map((x) => <div key={x.p.id} className="flex flex-wrap gap-2 py-1 border-t border-slate-100"><span className="font-medium">{x.p.n}</span><span className="text-xs text-slate-400">{x.p.p} · {x.p.t}</span><span className="text-xs text-red-600">{x.g} game{x.g > 1 ? "s" : ""} wasted ({x.days.join(", ")}) ≈ {f1(x.pts)} pts</span>{prot.has(x.p.id) && <span className="text-xs text-slate-500">protected</span>}</div>)}
             </div>
           ) : <div className="text-green-700 text-sm">No wasted games this week.</div>}
           {w.fix ? (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
-              <div className="font-semibold">Fix: drop <b>{w.fix.d.n}</b> <span className="text-xs text-slate-500 font-normal">({w.fix.d.p})</span> → add <b>{w.fix.f.n}</b> <span className="text-xs text-slate-500 font-normal">{w.fix.f.p} · <TeamLogo t={w.fix.f.t} /></span> <span className="text-green-700 ml-2">+{f1(w.fix.gain)} this week</span>{H > 1 && i < res.weeks.length - 1 ? <span className="text-xs text-slate-500 ml-2">(+{f1(w.fix.rest)} through week {s.wk + res.weeks.length})</span> : null}</div>
+              <div className="font-semibold">Fix: drop <b>{w.fix.d.n}</b> <span className="text-xs text-slate-500 font-normal">({w.fix.d.p})</span> → add <b>{w.fix.f.n}</b> <span className="text-xs text-slate-500 font-normal">{w.fix.f.p} · {w.fix.f.t}</span> <span className="text-green-700 ml-2">+{f1(w.fix.gain)} this week</span>{H > 1 && i < res.weeks.length - 1 ? <span className="text-xs text-slate-500 ml-2">(+{f1(w.fix.rest)} through week {s.wk + res.weeks.length})</span> : null}</div>
               <div className="text-xs text-slate-500 mt-1">Fills your empty {w.openPos.join("/")} slots with a player who actually gets into your lineup.{effAvg(w.fix.f, K) < effAvg(w.fix.d, K) ? ` Long-term ${w.fix.f.n} is ${f1(effAvg(w.fix.d, K) - effAvg(w.fix.f, K))}/game worse — treat it as a stream.` : " He's also as good or better per game — a keeper."} <Tags p={w.fix.f} K={K} /></div>
             </div>
           ) : w.wl.length && !w.openPos.length ? <div className="text-xs text-slate-500 mt-1">No empty slots elsewhere this week — the wasted games are just a busy schedule. A 2-for-1 trade is the long-term fix.</div>
@@ -1202,7 +1187,7 @@ function PlayoffPlanner({ s, setS }) {
         </Section>
         <Section title="Your players with weak playoff schedules">
           {weakSched.length ? weakSched.map(({ p, g }) => (
-            <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /></span><span className="ml-auto text-red-600 text-xs">{g} games ({(g - avgGames).toFixed(1)} vs avg)</span></div>
+            <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><span className="font-medium">{p.n}</span><span className="text-xs text-slate-400">{p.p} · {p.t}</span><span className="ml-auto text-red-600 text-xs">{g} games ({(g - avgGames).toFixed(1)} vs avg)</span></div>
           )) : <div className="text-green-700">None of your players have a clearly light playoff schedule.</div>}
           <div className="text-xs text-slate-500 mt-2">Trade candidates before the deadline — swap them for similar players with more games.</div>
         </Section>
@@ -1220,7 +1205,7 @@ function PlayoffPlanner({ s, setS }) {
               {rows.map(({ p, v, g, off, per, bonus }) => (
                 <tr key={p.id} className={"border-t border-slate-100 " + (p.ft === s.me ? "bg-blue-50" : "")}>
                   <td className="px-2 py-2 font-medium whitespace-nowrap">{p.n}{p.ir ? <span className="text-red-600 text-xs ml-1">IR</span> : ""}</td>
-                  <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+                  <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · {p.t}</td>
                   <td className="px-2 py-2 text-xs text-slate-500">{teamName(s, p.ft)}</td>
                   {per.map((n, i) => <td key={i} className={"px-2 py-2 " + (n >= 4 ? "text-green-700 font-semibold" : n <= 2 ? "text-red-600" : "")}>{n}</td>)}
                   <td className={"px-2 py-2 " + gCls(g, avgGames)}>{g}</td>
@@ -1244,7 +1229,7 @@ function PlayoffPlanner({ s, setS }) {
               <tbody>
                 {teamRows.map((r) => (
                   <tr key={r.t} className="border-t border-slate-100">
-                    <td className="px-2 py-1.5 font-medium whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><TeamLogo t={r.t} size={16} />{r.t}</span></td>
+                    <td className="px-2 py-1.5 font-medium">{r.t}</td>
                     {r.per.map((n, i) => <td key={i} className={"px-2 py-1.5 " + (n >= 4 ? "text-green-700 font-semibold" : n <= 2 ? "text-red-600" : "")}>{n}</td>)}
                     <td className={"px-2 py-1.5 " + gCls(r.tot, avgGames)}>{r.tot}</td>
                     <td className="px-2 py-1.5">{r.off}</td>
@@ -1358,7 +1343,7 @@ function TwoForOne({ s, initPartner }) {
       {list.sort((a, b) => order[a.p] - order[b.p] || (tv[b.id] || 0) - (tv[a.id] || 0)).map((p) => (
         <label key={p.id} className={"flex items-center gap-2 py-1 px-1 rounded " + (sel.includes(p.id) ? "bg-blue-50" : "")}>
           <input type="checkbox" checked={sel.includes(p.id)} onChange={() => toggle(sel, set, p.id)} />
-          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · IR" : ""}</span> {valueFlags(p).map((f) => <span key={f.t} className={"text-xs ml-1 " + (f.sell ? "text-amber-600" : "text-green-700")}>{f.t}</span>)}</span>
+          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span> {valueFlags(p).map((f) => <span key={f.t} className={"text-xs ml-1 " + (f.sell ? "text-amber-600" : "text-green-700")}>{f.t}</span>)}</span>
           <span className="text-xs text-slate-500 whitespace-nowrap" title="Per game: your model vs what other managers see (ESPN projection + actual points)">{f1(effAvg(p, K) * (p.p === "G" ? p.prob : 1))} <span className="text-slate-400">vs {f1(vv(p))}</span>/g</span>
         </label>
       ))}
@@ -1378,8 +1363,8 @@ function TwoForOne({ s, initPartner }) {
         {sugg && (sugg.length ? sugg.map((x, i) => (
           <div key={i} className="border-t border-slate-100 py-3 mt-2">
             <div className="flex flex-wrap items-baseline gap-2">
-              <span>Give <b>{x.A.n}</b> + <b>{x.B.n}</b></span><span>→ get <b>{x.T.n}</b> <span className="text-xs text-slate-400">{x.T.p} · <TeamLogo t={x.T.t} /></span> from {x.t.name}</span>
-              <span>+ pick up <b>{x.fa.n}</b> <span className="text-xs text-slate-400">{x.fa.p} · <TeamLogo t={x.fa.t} /></span></span>
+              <span>Give <b>{x.A.n}</b> + <b>{x.B.n}</b></span><span>→ get <b>{x.T.n}</b> <span className="text-xs text-slate-400">{x.T.p} · {x.T.t}</span> from {x.t.name}</span>
+              <span>+ pick up <b>{x.fa.n}</b> <span className="text-xs text-slate-400">{x.fa.p} · {x.fa.t}</span></span>
               <span className="ml-auto">You <D v={x.myR} /> ROS</span>
             </div>
             <div className="text-xs text-slate-500 mt-1">
@@ -1468,7 +1453,7 @@ function TradeAnalyzer({ s, initPartner }) {
       {list.sort((a, b) => order[a.p] - order[b.p] || (vals[b.id] || 0) - (vals[a.id] || 0)).map((p) => (
         <label key={p.id} className={"flex items-center gap-2 py-1 px-1 rounded " + (sel.includes(p.id) ? "bg-blue-50" : "")}>
           <input type="checkbox" checked={sel.includes(p.id)} onChange={() => toggle(sel, set, p.id)} />
-          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · IR" : ""}</span></span>
+          <span className="flex-1">{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span></span>
           <span className="text-xs text-slate-500">{f1(vals[p.id])}</span>
         </label>
       ))}
@@ -1527,30 +1512,13 @@ function Side({ l, s, id }) {
     <div className="p-3">
       <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1(l.total)}</span></div>
       <table className="w-full text-sm"><tbody>
-        {l.start.map((p) => {
-          const g = gameOf(p.t, p.dt), o = oddsFor(p.t, p.dt);
-          const gc = p.gs ? (p.gs.includes("confirmed") && !p.gs.includes("un") ? "text-green-700 font-semibold" : p.gs === "not starting" ? "text-red-600" : "text-amber-600") : "";
-          return (
-            <tr key={p.id} className="border-t border-slate-100">
-              <td className="py-2 pr-2 text-xs text-slate-500 w-10 align-top">{p.slot}</td>
-              <td className="py-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  <TeamLogo t={p.t} size={20} />
-                  <PN p={p} className="truncate" />
-                  {!p.gs && p.prob < 1 ? <span className="text-xs text-slate-400">{Math.round(p.prob * 100)}%</span> : null}
-                  {p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
-                </div>
-                {g ? <div className="text-xs text-slate-500 mt-0.5" style={{ paddingLeft: 28 }}>{(g.h ? "vs " : "@") + g.o} · {gameTime(g)}</div> : null}
-              </td>
-              <td className="py-2 text-right whitespace-nowrap align-top">
-                {o && window.__PMODE !== "espn" ? (p.p === "G"
-                  ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span>
-                  : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>) : null}
-                {f1(p.x)}
-              </td>
-            </tr>
-          );
-        })}
+        {l.start.map((p) => (
+          <tr key={p.id} className="border-t border-slate-100">
+            <td className="py-1.5 pr-2 text-xs text-slate-500 w-10">{p.slot}</td>
+            <td className="py-1.5"><PN p={p} className="" /><span className="text-xs text-slate-400 ml-1">{p.t}{p.gs ? "" : p.prob < 1 ? " · " + Math.round(p.prob * 100) + "%" : ""}</span>{p.gs ? <span className={"text-xs ml-1 " + (p.gs.includes("confirmed") && !p.gs.includes("un") ? "text-green-700 font-semibold" : p.gs === "not starting" ? "text-red-600" : "text-amber-600")}>{p.gs}</span> : ""}</td>
+            <td className="py-1.5 text-right whitespace-nowrap">{(() => { const o = oddsFor(p.t, p.dt); if (!o || window.__PMODE === "espn") return null; return p.p === "G" ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span> : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>; })()}{f1(p.x)}</td>
+          </tr>
+        ))}
         {l.start.length === 0 && <tr><td className="text-slate-400 py-1">No games</td></tr>}
       </tbody></table>
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
@@ -1750,7 +1718,7 @@ function ClimbPanel({ s, data, ranks }) {
       <Sub t={`1 · Pickups that raise your strength (next 4 weeks)`} />
       {moves.length ? moves.map((r) => (
         <div key={r.f.id} className="flex flex-wrap items-baseline gap-2 border-t border-slate-100 py-1.5">
-          <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} · <TeamLogo t={r.f.t} /></span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
+          <span>Add <b>{r.f.n}</b> <span className="text-xs text-slate-400">{r.f.p} · {r.f.t}</span> · drop <b>{r.d.n}</b> <span className="text-xs text-slate-400">{r.d.p}</span></span>
           <span className="text-green-700 font-semibold">+{f1(r.gain / 4)}/wk</span><span className="text-xs text-slate-500">(+{f1(r.gain)} over 4 weeks)</span><Tags p={r.f} K={K} />
         </div>
       )) : <div className="text-slate-400 text-xs">No free agent is a clear long-term upgrade right now — improvement will come from trades.</div>}
@@ -1771,7 +1739,7 @@ function ClimbPanel({ s, data, ranks }) {
         : <div className="text-green-700 text-sm">Almost no games wasted — your roster fits your lineup slots well.</div>}
 
       <Sub t="4 · Injuries & IR" />
-      {outNow.length ? <div className="text-sm">{outNow.map((p) => { const b = effBack(p).d; return <div key={p.id}>{p.n} <span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · on IR" : ""}</span> <span className="text-xs text-slate-500">— {b ? "back " + mdL(b) : "no return date"}</span></div>; })}</div> : <div className="text-green-700 text-sm">Everyone healthy.</div>}
+      {outNow.length ? <div className="text-sm">{outNow.map((p) => { const b = effBack(p).d; return <div key={p.id}>{p.n} <span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · on IR" : ""}</span> <span className="text-xs text-slate-500">— {b ? "back " + mdL(b) : "no return date"}</span></div>; })}</div> : <div className="text-green-700 text-sm">Everyone healthy.</div>}
       {!irUsed && irCandidate ? <div className="text-amber-600 text-sm mt-1">Your IR slot is empty — move {irCandidate.n} there (if ESPN lists him as IR-eligible) to free a roster spot for a pickup.</div> : null}
       {outNow.length >= 3 ? <div className="text-xs text-slate-500 mt-1">With {outNow.length} players out, stream the open spots with Moves → Weekly planner each week until they return.</div> : null}
 
@@ -1887,7 +1855,7 @@ function AddDrop({ s, setS }) {
             {shown.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
               <tr key={r.f.id} className="border-t border-slate-100 align-top">
                 <td className="px-3 py-2"><PN p={r.f} />{r.f.status && r.f.status !== "ACTIVE" ? <span className="text-red-600 text-xs ml-1">{r.f.status.replace(/_/g, " ")}</span> : ""}</td>
-                <td className="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">{r.f.p} · <TeamLogo t={r.f.t} /></td>
+                <td className="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">{r.f.p} · {r.f.t}</td>
                 <td className="px-3 py-2">{gamesIn(r.f)}</td><td className="px-3 py-2">{f1(effAvg(r.f, K))}</td>
                 <td className="px-3 py-2 whitespace-nowrap">{r.d.n} <span className="text-xs text-slate-400">{r.d.p}</span></td>
                 <td className={"px-3 py-2 font-semibold " + (r.gain > 0 ? "text-green-700" : "text-red-700")}>{r.gain >= 0 ? "+" : ""}{f1(r.gain)}</td>
@@ -1937,7 +1905,7 @@ function Players({ s, wk }) {
             {rows.map((p) => (
               <tr key={p.id} className={"border-t border-slate-100 align-top " + (p.ft === s.me ? "bg-blue-50" : "")}>
                 <td className="px-3 py-2"><PN p={p} />{p.ir ? <span className="text-red-600 text-xs ml-1">IR</span> : ""}{p.status && p.status !== "ACTIVE" && !p.ir ? <span className="text-red-600 text-xs ml-1">{p.status.replace(/_/g, " ")}</span> : ""}</td>
-                <td className="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+                <td className="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · {p.t}</td>
                 <td className="px-3 py-2 text-xs text-slate-500"><TL s={s} id={p.ft} /></td>
                 <td className="px-3 py-2">{p.g}</td><td className="px-3 py-2 font-semibold">{f1(p.ea)}</td>
                 <td className="px-3 py-2">{p.rp !== null ? `${f1(p.rp)} (${p.rg})` : "–"}</td>
@@ -2020,7 +1988,7 @@ function InjuryPanel({ s, setS }) {
           <tbody>
             {list.map((p) => { const eb = effBack(p), a = autoInj(p); return (
               <tr key={p.id} className={"border-t border-slate-100 align-top " + (p.ft === s.me ? "bg-blue-50" : "")}>
-                <td className="px-2 py-2"><div className="font-medium">{p.n}</div><div className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /></div></td>
+                <td className="px-2 py-2"><div className="font-medium">{p.n}</div><div className="text-xs text-slate-400">{p.p} · {p.t}</div></td>
                 <td className="px-2 py-2 text-xs text-slate-500">{teamName(s, p.ft)}</td>
                 <td className="px-2 py-2 text-red-600 text-xs">{((a && a.status) || p.status || "").replace(/_/g, " ")}</td>
                 <td className="px-2 py-2">
@@ -2074,7 +2042,7 @@ function RosterTable({ s, setS, wk, team }) {
             {list.map((p) => (
               <tr key={p.id} className="border-t border-slate-100">
                 <td className="px-2 py-1.5 font-medium whitespace-nowrap">{p.n}{p.status && p.status !== "ACTIVE" ? <span className="text-red-600 text-xs ml-1">{p.status.replace(/_/g, " ")}</span> : ""}</td>
-                <td className="px-2 py-1.5 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+                <td className="px-2 py-1.5 text-xs text-slate-500 whitespace-nowrap">{p.p} · {p.t}</td>
                 <td className="px-2 py-1.5"><input type="number" step="0.1" className={inp + " w-20"} value={p.avg} onChange={(e) => upd(p.id, { avg: parseFloat(e.target.value) || 0, est: false })} /></td>
                 <td className="px-2 py-1.5"><input type="number" min="0" max="100" className={inp + " w-16"} value={Math.round(p.prob * 100)} onChange={(e) => upd(p.id, { prob: Math.max(0, Math.min(100, parseFloat(e.target.value) || 0)) / 100 })} /></td>
                 <td className="px-2 py-1.5"><input type="checkbox" checked={!!p.ir} onChange={(e) => upd(p.id, { ir: e.target.checked })} /></td>
@@ -2133,7 +2101,7 @@ function Schedule({ s, setS, wk, setWk }) {
           <tbody>
             {NHL.map((t) => (
               <tr key={t} className="border-t border-slate-100">
-                <td className="px-2 py-1 font-medium whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><TeamLogo t={t} size={16} />{t}</span></td>
+                <td className="px-2 py-1 font-medium">{t}</td>
                 {wk.days.map((_, d) => { const on = (wk.games[t] || []).includes(d); const b2 = on && wk.dates && SCHED[t] && SCHED[t].has(addDays(wk.dates[d], -1)); return <td key={d} className="px-1 py-1 text-center"><span title={b2 ? "2nd night of a back-to-back — backup goalie likely" : ""} className={"inline-block w-7 h-4 rounded " + (b2 ? "bg-amber-500" : on ? "bg-blue-600" : "bg-slate-200")}></span></td>; })}
                 <td className={"px-2 py-1 text-center font-semibold " + (gms(wk, t) >= 4 ? "text-green-700" : gms(wk, t) <= 1 ? "text-red-600" : "")}>{gms(wk, t)}</td>
               </tr>
@@ -2258,7 +2226,7 @@ function RosterView({ s, wk, team }) {
         <tbody>{sorted.map((p) => (
           <tr key={p.id} className="border-t border-slate-100 align-top">
             <td className="px-2 py-2 whitespace-nowrap"><PN p={p} />{p.ir ? <span className="text-red-600 text-xs ml-1">IR</span> : p.status && p.status !== "ACTIVE" ? <span className="text-red-600 text-xs ml-1">{p.status.replace(/_/g, " ")}</span> : null}</td>
-            <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · <TeamLogo t={p.t} /></td>
+            <td className="px-2 py-2 text-xs text-slate-500 whitespace-nowrap">{p.p} · {p.t}</td>
             <td className="px-2 py-2">{f1(effAvg(p, K))}</td>
             <td className="px-2 py-2">{p.ir ? "–" : left(p)}</td>
             <td className="px-2 py-2 font-semibold">{p.ir ? "–" : f1(wkPts(p))}</td>
@@ -2335,7 +2303,7 @@ function MyTeam({ s, setS, wk, go }) {
       <Section title="Injuries & settings" sub="Return dates fill in from ESPN automatically; pick a date to override. Protected players are never suggested as drops.">
         {outList.length ? outList.map((p) => { const eb = effBack(p); return (
           <div key={p.id} className="flex flex-wrap items-center gap-2 py-2 border-t border-slate-100">
-            <PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · IR" : ""}</span>
+            <PN p={p} /><span className="text-xs text-slate-400">{p.p} · {p.t}{p.ir ? " · IR" : ""}</span>
             <span className="text-xs text-red-600">{(p.status || "").replace(/_/g, " ")}</span>
             <span className="ml-auto flex items-center gap-2">
               <input type="date" className={inp} value={eb.d} onChange={(e) => upd(p.id, { back: e.target.value })} />
@@ -2395,7 +2363,7 @@ function TeamPage({ s, wk, id, back, go }) {
   const myAt = s.players.filter((p) => p.ft === s.me && !p.ir && p.p === myWeak).map(pv).sort((a, b) => b - a);
   const bar = myAt.length ? myAt[Math.min(need[myWeak], myAt.length) - 1] : 0;
   const targets = roster.filter((p) => !p.ir && p.p === myWeak && pv(p) > bar).sort((a, b) => pv(b) - pv(a)).slice(0, 4);
-  const news = roster.filter((p) => newsOf(p).length).slice(0, 6);
+  const news = roster.filter((p) => (sigOf(p).news || []).length).slice(0, 6);
   return (
     <div className="space-y-4">
       <button className="text-sm text-blue-600" onClick={back}>← Back</button>
@@ -2422,7 +2390,7 @@ function TeamPage({ s, wk, id, back, go }) {
         <Section title="Trade fit with you" sub={`Your weakest group: ${posName[myWeak]} (#${mg[myWeak]}). Theirs: F #${g.F} · D #${g.D} · G #${g.G}.`}>
           {theyStrong.length ? <div className="mb-2">They're stronger than you at <b>{theyStrong.map((k) => posName[k]).join(" and ")}</b>.</div> : <div className="mb-2 text-slate-500">They're not stronger than you anywhere, so trade only for specific players.</div>}
           <div className="font-medium mt-2 mb-1">Players who'd upgrade your {posName[myWeak]}</div>
-          {targets.length ? targets.map((p) => <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /></span><span className="ml-auto text-xs text-slate-500">{f1(pv(p))}/game</span></div>) : <div className="text-xs text-slate-400">None of their {posName[myWeak]} beat your current starters.</div>}
+          {targets.length ? targets.map((p) => <div key={p.id} className="flex gap-2 py-1.5 border-t border-slate-100"><PN p={p} /><span className="text-xs text-slate-400">{p.p} · {p.t}</span><span className="ml-auto text-xs text-slate-500">{f1(pv(p))}/game</span></div>) : <div className="text-xs text-slate-400">None of their {posName[myWeak]} beat your current starters.</div>}
           <button className="bg-blue-600 rounded-lg px-3 py-1.5 mt-3 text-sm font-semibold" onClick={() => go("moves", "trades", { partner: id })}>Trade with them</button>
         </Section>
       </div>
@@ -2454,7 +2422,7 @@ function TradesPanel(props) {
 function PhoneFeed() {
   const [box, setBox] = useState(null);
   const [err, setErr] = useState("");
-  const [show, setShow] = useState(5);
+  const [show, setShow] = useState(12);
   const load = () => fetch("notify_outbox.json?t=" + Date.now())
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
     .then((b) => { setBox(b); setErr(""); })
@@ -2500,51 +2468,6 @@ function PhoneFeed() {
     </Section>
   );
 }
-// ---------- team logos, game times and news filter (news_logos.py) ----------
-const NHL_LOGO = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL" };
-function TeamLogo({ t, size }) {
-  const [bad, setBad] = useState(false);
-  if (!t) return null;
-  const z = size || 16;
-  if (bad) return <span>{t}</span>;
-  return <img src={"https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[t] || t) + "_dark.svg"} alt={t} title={t} loading="lazy" onError={() => setBad(true)} style={{ width: z, height: z, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} />;
-}
-const gameOf = (t, dt) => { const G = (window.GAMES_DATA || {}).games || {}; return dt && G[dt] ? G[dt][t] || null : null; };
-const gameTime = (g) => { const d = g && g.st ? new Date(g.st) : null; return d && !isNaN(d) ? d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "time TBD"; };
-const NEWS_JUNK = /highlights|draft board|rankings|mailbag|podcast|give me a reason|league-winners|sleepers|\bbusts\b|best bets|predictions|betting|\bodds\b|takeaways|\bgrades\b|cheat sheet|start.?sit|waiver wire|what we learned/i;
-const NEWS_KINDS = [
-  ["trade", "Trade", /\btrade|traded|acquir|deal sends/i],
-  ["scratch", "Scratched", /scratch/i],
-  ["susp", "Suspended", /suspen/i],
-  ["injury", "Injury", /injur|\bIR\b|surgery|day-to-day|week-to-week|month-to-month|out for|out indefinitely|will miss|expected to miss|sidelined|concussion|upper-body|lower-body|leaves game|left the game|ruled out|won't play|will not play|questionable|doubtful/i],
-  ["roster", "Roster move", /waive|claimed|recall|reassign|sent down|assigned to|loaned|signs|signed|extension|contract|released|buyout|activated|returns|back in the lineup|cleared/i],
-  ["hot", "Hot", /streak|hat trick|multi-point|career-high|promot|top line|top-line|first line|pp1|two goals|three points|four points|scores twice|milestone|\brecord\b/i],
-];
-const NEWS_DAYS = { trade: 7, scratch: 7, susp: 7, injury: 7, roster: 7, hot: 3, news: 1 };
-const NEWS_RANK = { injury: 0, scratch: 0, susp: 0, trade: 1, roster: 2, hot: 3, news: 4 };
-const NEWS_BIG = new Set(["trade", "scratch", "susp", "injury", "roster"]);
-const NEWS_OUT = new Set(["injury", "scratch", "susp"]);
-const NEWS_CLS = { injury: "text-red-600", scratch: "text-red-600", susp: "text-red-600", trade: "text-blue-600", roster: "text-blue-600", hot: "text-orange-600" };
-const NEWS_BADGE = { injury: "bg-red-100 text-red-600", scratch: "bg-red-100 text-red-600", susp: "bg-red-100 text-red-600", trade: "bg-blue-50 text-blue-600", roster: "bg-slate-200 text-slate-600", hot: "bg-amber-100 text-orange-600" };
-const newsAge = (d) => { if (!d) return 0; const a = Math.round((fromIso(todayISO()) - fromIso(String(d).slice(0, 10))) / 864e5); return isNaN(a) ? 0 : Math.max(0, a); };
-const newsOf = (p) => {
-  const last = nrm(p.n).split(" ").pop();
-  return (sigOf(p).news || []).map((n) => {
-    const h = n.h || "";
-    if (!h || NEWS_JUNK.test(h) || !nrm(h).includes(last)) return null;
-    const k = NEWS_KINDS.find((x) => x[2].test(h));
-    const kind = k ? k[0] : "news", age = newsAge(n.d);
-    return age < NEWS_DAYS[kind] ? { ...n, kind, label: k ? k[1] : "", age } : null;
-  }).filter(Boolean).sort((a, b) => NEWS_RANK[a.kind] - NEWS_RANK[b.kind] || a.age - b.age);
-};
-const NewsItem = ({ n }) => (
-  <div className="flex flex-wrap items-baseline gap-x-2 mt-1 text-sm">
-    {n.label ? <span className={"text-xs px-1.5 py-0.5 rounded " + (NEWS_BADGE[n.kind] || "")}>{n.label}</span> : null}
-    <a href={n.u} target="_blank" rel="noreferrer" className="hover:underline text-slate-700">{n.h}</a>
-    <span className="text-xs text-slate-400">{n.age <= 0 ? "today" : n.age === 1 ? "yesterday" : n.age + " days ago"}</span>
-  </div>
-);
-
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
