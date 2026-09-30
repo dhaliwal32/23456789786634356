@@ -2414,5 +2414,62 @@ _fix_before_r18 = fix
 def fix(t):
     return round18(_fix_before_r18(t))
 
+# ---------- round 19: player pop-up uses real ESPN points (season total, tonight, games already played) ----------
+
+LT19_ANCHOR = "  // ---------- styles (dark, matches the app) ----------"
+LT19_HELPER = r'''  // real ESPN points for one player on one day (news_logos.py round 19)
+  const realPts = (p, d) => {
+    const D = (((window.ESPN_DATA || {}).daily) || {})[d] || {}, id = String(p.id || "").replace(/^e/, "");
+    for (const tm of Object.values(D)) { const v = (tm || {})[id]; if (v && v[0] != null) return v[0]; }
+    return null;
+  };
+
+'''
+
+_fix_lines_before_r19 = JS_FIXES[LINES]
+
+
+def fix_lines19(t):
+    t = _fix_lines_before_r19(t)
+    t = lit(t, "pop-up: real points helper", LT19_ANCHOR, LT19_HELPER + LT19_ANCHOR, "const realPts =")
+    t = lit(t, "pop-up: rest of week skips games already started",
+            'const wkIdx = hasId ? (wk.games[p.t] || []).filter((i) => ((wk.dates || [])[i] || "") >= today) : [];',
+            'const wkIdx = hasId ? (wk.games[p.t] || []).filter((i) => ((wk.dates || [])[i] || "") >= today && !(H.gState && H.gState(p.t, wk.dates[i]).s !== "P")) : [];',
+            "H.gState(p.t, wk.dates[i]).s")
+    t = lit(t, "pop-up: tonight's game",
+            'const hurt = hasId && ((p.status && p.status !== "ACTIVE") || (back.d && back.d > today));',
+            'const hurt = hasId && ((p.status && p.status !== "ACTIVE") || (back.d && back.d > today));\n'
+            '    const LT = H.LiveTag || (() => null), started = (d) => !!(H.gState && H.gState(it.t, d).s !== "P"), tn = hasId && started(today) ? { a: realPts(p, today), st: H.gState(it.t, today).s } : null;',
+            "const LT = H.LiveTag")
+    t = lit(t, "pop-up: season points from ESPN",
+            '<H.Card label={`${L.season} fantasy pts`} value={f.cur ? H.f1(f.cur[0]) : "–"} sub={fmt(f.cur)} />',
+            '<H.Card label={`${L.season} fantasy pts`} value={hasId ? H.f1(p.tot || 0) : f.cur ? H.f1(f.cur[0]) : "–"} sub={hasId ? <>{p.gp ? `${p.gp} GP · ${H.f1(p.tot / p.gp)}/game` : "no games yet"}{tn ? <> · tonight {tn.a == null ? "–" : H.f1(tn.a)} <LT st={tn.st} /></> : null}</> : fmt(f.cur)} />',
+            "tonight {tn.a")
+    t = lit(t, "pop-up: projection shows how it moved",
+            '<H.Card label="Projection / game" value={hasId ? H.f1(H.effAvg(p, K)) : "–"} sub={hasId ? `${MODE[window.__PMODE] || ""} mode · ESPN ${H.f1(p.pavg)}` : "no projection"} />',
+            '<H.Card label="Projection / game" value={hasId ? H.f1(H.effAvg(p, K)) : "–"} sub={hasId ? `${MODE[window.__PMODE] || ""} mode · ESPN ${H.f1(p.avg)}${p.gp ? ` · was ${H.f1(H.effAvg({ ...p, gp: 0, tot: 0 }, K))} before ${p.gp} game${p.gp === 1 ? "" : "s"}` : ""}` : "no projection"} />',
+            "before ${p.gp} game")
+    t = lit(t, "pop-up: real points for games already played",
+            '<td className="py-1 text-right font-semibold">{r ? H.f1(r.x) : ""}</td>',
+            '<td className="py-1 text-right font-semibold">{hasId && started(g.d) ? <>{realPts(p, g.d) == null ? "–" : H.f1(realPts(p, g.d))} <LT st={H.gState(it.t, g.d).s} /></> : r ? H.f1(r.x) : ""}</td>',
+            "realPts(p, g.d) == null")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines19
+
+
+def round19(t):
+    t = lit(t, "pop-up gets live helpers", "const LH = { effAvg,", "const LH = { gState, actDay, LiveTag, effAvg,", "const LH = { gState, actDay, LiveTag,")
+    return t
+
+
+_fix_before_r19 = fix
+
+
+def fix(t):
+    return round19(_fix_before_r19(t))
+
 if __name__ == "__main__":
     main()
