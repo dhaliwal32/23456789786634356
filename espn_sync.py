@@ -159,31 +159,44 @@ data = {"generated": datetime.now().isoformat(timespec="seconds"),
 try:
     today_et = datetime.now(ET).date()
     sp_of = {d_.isoformat(): pid_ for pid_, d_ in period_date.items()}
+    # 3c) per-player points from ESPN box scores (news_logos.py round 17)
+    cur_sp_ = lg.get("scoringPeriodId") or (lg.get("status") or {}).get("latestScoringPeriod")
+    if cur_sp_:
+        span_ = [(pdate(x_), x_) for x_ in range(max(1, int(cur_sp_) - 6), int(cur_sp_) + 1)]
+    else:
+        span_ = [(dd_, sp_of.get(dd_)) for dd_ in ((today_et - timedelta(days=b_)).isoformat() for b_ in range(6, -1, -1))]
     daily = {}
-    for back_ in range(6, -1, -1):
-        dd_ = (today_et - timedelta(days=back_)).isoformat()
-        sp_ = sp_of.get(dd_)
+    for dd_, sp_ in span_:
         if not sp_:
             continue
-        try:
-            rs_ = get(LEAGUE, params={"view": "mRoster", "scoringPeriodId": sp_})
-        except Exception as ex:
-            print(f"(daily) ESPN rosters for {dd_} failed: {ex}")
-            continue
-        dump(f"espn-raw-daily-{dd_}.json", rs_)
         day_ = {}
-        for tt_ in rs_.get("teams", []):
-            tm_ = {}
-            for en_ in (tt_.get("roster") or {}).get("entries", []):
-                pl_ = (en_.get("playerPoolEntry") or {}).get("player") or {}
-                pts_ = None
-                for st_ in pl_.get("stats") or []:
-                    if st_.get("scoringPeriodId") == sp_ and st_.get("statSourceId") == 0:
-                        pts_ = round(st_.get("appliedTotal") or 0, 2)
-                        break
-                tm_[str(en_.get("playerId"))] = [pts_, en_.get("lineupSlotId")]
-            day_[str(tt_.get("id"))] = tm_
-        daily[dd_] = day_
+        try:
+            rs_ = get(LEAGUE, params=[("view", "mMatchupScore"), ("view", "mScoreboard"), ("scoringPeriodId", sp_)])
+            dump(f"espn-raw-daily-{dd_}.json", rs_)
+            for m_ in rs_.get("schedule", []):
+                for side_ in ("home", "away"):
+                    ts_ = m_.get(side_) or {}
+                    ents_ = (ts_.get("rosterForCurrentScoringPeriod") or {}).get("entries") or []
+                    if not ents_:
+                        continue
+                    tm_ = {}
+                    for en_ in ents_:
+                        pe_ = en_.get("playerPoolEntry") or {}
+                        pts_ = None
+                        for st_ in (pe_.get("player") or {}).get("stats") or []:
+                            if st_.get("scoringPeriodId") == sp_ and st_.get("statSourceId") == 0:
+                                pts_ = st_.get("appliedTotal")
+                                break
+                        if pts_ is None:
+                            pts_ = pe_.get("appliedStatTotal")
+                        tm_[str(en_.get("playerId"))] = [None if pts_ is None else round(pts_, 2), en_.get("lineupSlotId")]
+                    day_[str(ts_.get("teamId"))] = tm_
+        except Exception as ex:
+            print(f"(daily) ESPN box scores for {dd_} failed: {ex}")
+        mine_n_ = sum(1 for v in day_.get(str(MY_TEAM_ID), {}).values() if v[0])
+        print(f"(daily) {dd_} (scoring period {sp_}): {len(day_)} teams, {mine_n_} of your players with points")
+        if day_:
+            daily[dd_] = day_
     gstate = {}
     for back_ in (1, 0):
         dd_ = (today_et - timedelta(days=back_)).isoformat()
