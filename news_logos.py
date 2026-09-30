@@ -3055,5 +3055,52 @@ _fix_before_r25 = fix
 def fix(t):
     return round25(_fix_before_r25(t))
 
+# ---------- round 26: planner never drops the same player twice + win chance per step (news_logos.py) ----------
+R26_HELPERS = r'''// ---------- round 26: planner win chance (news_logos.py) ----------
+const planRoster = (s, wk, steps) => {
+  let r = s.players.filter((p) => p.ft === s.me);
+  steps.forEach((st) => { const a = wk.dates[st.day]; r = r.map((p) => (p.id === st.drop.id ? { ...p, untilD: a } : p)).concat([{ ...st.add, ft: s.me, fromD: a }]); });
+  return r;
+};
+const PlanWin = ({ a, b }) => {
+  if (a == null || b == null) return null;
+  const d = Math.round(b * 100) - Math.round(a * 100);
+  return <span className={"text-sm whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Your chance to win this week before and after this move">win {wpTxt(a)} → {wpTxt(b)} <span className="font-semibold">{d > 0 ? "+" : ""}{d}%</span></span>;
+};
+
+'''
+
+
+def round26(t):
+    t = lit(t, "planner: never drop the same player twice",
+            "const drops = active.filter((x) => !x.p.ir && x.from < d + (x.orig ? 1 : 0)",
+            "const drops = active.filter((x) => !x.p.ir && x.to === nD - 1 && x.from < d + (x.orig ? 1 : 0)",
+            "x.to === nD - 1 &&")
+    t = lit(t, "planner: win chance helpers", ROOT, R26_HELPERS + ROOT, "const planRoster =")
+    t = lit(t, "planner: work out win chance after each step",
+            "const run = () => { setBusy(true); setTimeout(() => { setPlan(buildPlan(s, wk, d0, left)); setBusy(false); }, 30); };",
+            "const run = () => { setBusy(true); setTimeout(() => { setPlan(buildPlan(s, wk, d0, left)); setBusy(false); }, 30); };\n"
+            "  const wins = useMemo(() => (plan ? { b: winChance(s), after: plan.steps.map((_, i) => winChance(s, planRoster(s, wk, plan.steps.slice(0, i + 1)))) } : null), [plan]);",
+            "const wins = useMemo(")
+    t = lit(t, "planner: win chance on each step",
+            '<span className="text-green-700 font-semibold ml-auto">+{f1(st.gain)}</span>',
+            '<span className="ml-auto flex items-baseline gap-3">{wins ? <PlanWin a={i ? wins.after[i - 1] : wins.b} b={wins.after[i]} /> : null}<span className="text-green-700 font-semibold">+{f1(st.gain)}</span></span>',
+            "<PlanWin")
+    t = lit(t, "planner: win chance for the whole plan",
+            "${f1(aA + plan.final - aB - oppProj)}`}>",
+            "${f1(aA + plan.final - aB - oppProj)}${wins && wins.after.length ? ` · win chance ${wpTxt(wins.b)} → ${wpTxt(wins.after[wins.after.length - 1])}` : \"\"}`}>",
+            "win chance ${wpTxt(wins.b)}")
+    for must in ("function buildPlan(", "function AcqPlanner(", "const planRoster ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 26 (" + must + ").")
+    return t
+
+
+_fix_before_r26 = fix
+
+
+def fix(t):
+    return round26(_fix_before_r26(t))
+
 if __name__ == "__main__":
     main()
