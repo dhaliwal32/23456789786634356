@@ -194,7 +194,9 @@
    "text": "Matt Duchene (DAL) injury status: Day To Day -> Out",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|5b813ea96f97",
@@ -203,7 +205,9 @@
    "text": "Matt Duchene (DAL) is no longer in the lineup (was 3rd line) - scratched, hurt or moved",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|3439ed6fb2a6",
@@ -212,7 +216,9 @@
    "text": "Matt Duchene (DAL) is off PP1",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|c9789649beb8",
@@ -221,7 +227,9 @@
    "text": "Anton Frondell (CHI) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|69edbfe3d55d",
@@ -230,7 +238,9 @@
    "text": "Tyler Bertuzzi (CHI) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|02b1ee1d2590",
@@ -239,7 +249,9 @@
    "text": "Teuvo Teravainen (CHI) is in the lineup on the 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|3a48526d4b09",
@@ -248,7 +260,9 @@
    "text": "Drew Doughty (LA) promoted: 2nd pair -> top pair",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   },
   {
    "k": "2026-09-30|b4380fa19af2",
@@ -257,7 +271,9 @@
    "text": "Matt Duchene (DAL) injury status: Out -> Injury Reserve",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-09-30T22:37:48Z"
   }
  ],
  "sent": {
@@ -269,7 +285,8 @@
    "pregame"
   ],
   "2026-09-30": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -290,6 +307,12 @@
    "kind": "morning",
    "title": "Morning summary - Wed Sep 30 (7 updates)",
    "body": "LINEUP\n- Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.\n\nToday: 4 of your players play, first puck drop 4:30 PM."
+  },
+  {
+   "at": "2026-09-30T22:37:48Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:30 PM (8 updates)",
+   "body": "YOUR PLAYERS\n- Matt Duchene (DAL) injury status: Day To Day -> Out\n- Matt Duchene (DAL) is no longer in the lineup (was 3rd line) - scratched, hurt or moved\n- Matt Duchene (DAL) is off PP1\n- Matt Duchene (DAL) injury status: Out -> Injury Reserve\n\nPICKUP IDEAS\n- Anton Frondell (CHI) promoted: 2nd line -> 1st line\n- Tyler Bertuzzi (CHI) promoted: 2nd line -> 1st line\n- Teuvo Teravainen (CHI) is in the lineup on the 2nd line\n- Drew Doughty (LA) promoted: 2nd pair -> top pair"
   }
  ]
 }
