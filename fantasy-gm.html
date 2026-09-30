@@ -264,7 +264,7 @@ function applyESPN(s, E) {
     const prob = p.p === "G" ? (gsAuto ? gsAuto.share : pv && pv.p === "G" && pv.prob > 0 ? pv.prob : 0.5) : p.status === "DAY_TO_DAY" ? 0.8 : 1;
     const avg = p.pavg > 0 ? p.pavg : pv ? pv.avg : p.avg > 0 ? p.avg : p.p === "G" ? 7 : 5;
     const back = pv && pv.back !== undefined ? pv.back : DEFAULT_BACK[p.n] || "";
-    return { id: "e" + p.id, n: p.n, t: p.t, p: p.p, avg: Math.round(avg * 100) / 100, prob, ft: p.ft ? "t" + p.ft : "fa", ir: p.ir !== undefined ? !!p.ir : !!(pv && pv.ir), est: !(p.pavg > 0) && !pv, gp: p.gp || 0, tot: p.tot || 0, status: p.status || "", back, proj: p.pavg > 0, keep: pv ? pv.keep : false, own: p.own || 0, chg: p.chg || 0 };
+    return { id: "e" + p.id, n: p.n, t: p.t, p: p.p, avg: Math.round(avg * 100) / 100, prob, ft: p.ft ? "t" + p.ft : "fa", ir: p.ir !== undefined ? !!p.ir : !!(pv && pv.ir), est: !(p.pavg > 0) && !pv, gp: p.gp || 0, tot: p.tot || 0, status: p.status || "", back, proj: p.pavg > 0, keep: pv ? pv.keep : false, own: p.own || 0, chg: p.chg || 0, wv: !!p.wv };
   });
   const ms = E.matchups || [];
   const pack = (mm) => { const act = {}; mm.forEach((m) => { act["t" + m.home] = m.hs; act["t" + m.away] = m.as; }); return { pairs: mm.map((m) => ["t" + m.home, "t" + m.away]), act }; };
@@ -356,7 +356,7 @@ const gStart = (p, dt) => {
 function dayLineup(roster, wk, d, K, cap) {
   const c = cap || { F: 9, D: 5, U: 1, G: 2 };
   const dt = wk.dates ? wk.dates[d] : null;
-  const pl = roster.filter((p) => !p.ir && p.prob > 0 && avail(p, dt) > 0 && (wk.games[p.t] || []).includes(d)).map((p) => { const g = p.p === "G" ? gStart(p, dt) : null; return { ...p, x: effAvg(p, K, dt) * (g ? g.v : p.prob) * avail(p, dt), gs: g ? g.l : "", dt }; });
+  const pl = roster.filter((p) => !p.ir && p.prob > 0 && onDay(p, dt) && avail(p, dt) > 0 && (wk.games[p.t] || []).includes(d)).map((p) => { const g = p.p === "G" ? gStart(p, dt) : null; return { ...p, x: effAvg(p, K, dt) * (g ? g.v : p.prob) * avail(p, dt), gs: g ? g.l : "", dt }; });
   const by = (a, b) => b.x - a.x;
   const F = pl.filter((p) => p.p === "F").sort(by), D = pl.filter((p) => p.p === "D").sort(by), G = pl.filter((p) => p.p === "G").sort(by);
   const fs = F.slice(0, c.F), ds = D.slice(0, c.D);
@@ -457,8 +457,8 @@ function computeMoves(s, o) {
   const horizon = s.weeks.slice(s.wk, s.wk + n).map((w, i) => { const dw = deriveWeek(w, s.autoDone); return { wk: dw, from: i === 0 ? dw.done : 0 }; });
   const lineupAware = H !== 0;
   const total = (roster) => { const r = roster.map(wt); return horizon.reduce((t, h) => t + weekProj(r, h.wk, K, h.from).total, 0); };
-  const gamesIn = (p) => { let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { if (d >= h.from && !p.ir && avail(p, h.wk.dates ? h.wk.dates[d] : null)) g++; })); return g; };
-  const rawPts = (p) => { let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };
+  const gamesIn = (p) => { const a = pickStart(p); let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) g++; })); return g; };
+  const rawPts = (p, ref) => { const a = pickStart(ref || p); let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };
   const ranked = myR.filter((p) => !p.ir).sort((a, b) => effAvg(wt(b), K) - effAvg(wt(a), K));
   const autoProt = new Set(ranked.slice(0, protectTop).map((p) => p.id));
   const protectedIds = new Set([...autoProt, ...myR.filter((p) => p.keep).map((p) => p.id)]);
@@ -476,7 +476,7 @@ function computeMoves(s, o) {
     let best = null;
     myR.forEach((d) => {
       if (!canDrop(d, f)) return;
-      const gain = lineupAware ? total([...myR.filter((x) => x.id !== d.id), { ...f, ft: s.me }]) - base : raw - rawPts(d);
+      const gain = lineupAware ? total(timedMove(myR, s.me, [{ add: f, drop: d }])) - base : raw - rawPts(d, f);
       if (!best || gain > best.gain) best = { gain, d };
     });
     if (best) res.push({ f, ...best });
@@ -758,7 +758,7 @@ function Today({ s, wk, go }) {
           {checks.length ? checks.map(([k, t], i) => <Row key={i}><span className={dot[k]}>●</span><span className="text-slate-700">{t}</span></Row>) : <div className="text-green-700">Lineup looks good.</div>}
         </Section>
         <Section title="Best moves this week" sub={sameDrop ? `All free up ${moves[0].d.n}'s spot` : ""} link={["All moves", () => go("moves", "adddrop")]}>
-          {moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
+          <PickNote where="today" />{moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
             <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <PN p={r.f} className="font-semibold" /> <span className="text-xs text-slate-400">{r.f.p} · <TeamLogo t={r.f.t} /></span>{sameDrop ? null : <> · drop <PN p={r.d} className="font-semibold" /></>}</span><WinDelta s={s} add={r.f} drop={r.d} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
           ); }) : <div className="text-slate-400">No move worth an acquisition right now.</div>}
         </Section>
@@ -804,7 +804,7 @@ const AdvMove = ({ s, r, K, showDrop, base }) => {
     <div className="adv-row">
       <TeamLogo t={r.f.t} size={28} />
       <div className="min-w-0">
-        <div className="flex items-center gap-2 min-w-0"><PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>{tg ? <span className={"text-xs truncate m-hide " + tg.c}>{tg.t}</span> : null}</div>
+        <div className="flex items-center gap-2 min-w-0"><PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs text-amber-600 whitespace-nowrap">Waivers</span> : null}{tg ? <span className={"text-xs truncate m-hide " + tg.c}>{tg.t}</span> : null}</div>
         <div className="text-xs text-slate-500 truncate">{showDrop ? "drop " + r.d.n + " · " : ""}{sd >= 0 ? "+" : ""}{f1(sd)}/g long-term</div>
       </div>
       <div className="adv-num font-semibold text-green-700">+{f1(r.gain)}</div>
@@ -862,7 +862,7 @@ function AdvicePanel({ s }) {
   return (
     <div className="space-y-4">
       {!window.__SIG ? <div className="text-sm text-slate-500">Form, PP1 and news signals appear after the next sync.</div> : null}
-      <Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week.">
+      <Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week."><PickNote where="adv" />
         {moves(topNow, "Gain", `No move adds ${minGain}+ points this week. Save your moves.`)}
         {topNow.length ? <KeepLegend /> : null}
       </Section>
@@ -1078,7 +1078,7 @@ function buildPlan(s, wk, d0, M) {
       const cand = []; ["F", "D", "G"].forEach((ps) => drops.filter((y) => y.x.p.p === ps).slice(0, 4).forEach((y) => cand.push(y.x)));
       const before = suffix(d);
       for (const f of fas) {
-        if (usedFA.has(f.id) || !(wk.games[f.t] || []).includes(d)) continue;
+        if (usedFA.has(f.id) || !(wk.games[f.t] || []).includes(d) || wk.dates[d] < pickStart(f)) continue;
         for (const x of cand) {
           if (x.p.p !== f.p && cnt[x.p.p] - 1 < mins[x.p.p]) continue;
           const tl2 = tl.map((y) => (y === x ? { ...y, to: d - 1 } : y)).concat([{ p: { ...f, ft: s.me }, from: d, to: nD - 1, orig: false }]);
@@ -1099,7 +1099,7 @@ function AcqPlanner({ s, setS, wk }) {
   const K = s.blend;
   const espnUsed = movesUsedESPN(s, wk); const used = espnUsed != null ? espnUsed : ((s.movesUsed || {})[s.wk]) || 0;
   const setUsed = (v) => setS((x) => ({ ...x, movesUsed: { ...(x.movesUsed || {}), [x.wk]: v } }));
-  const [fromTomorrow, setFT] = useState(false);
+  const [fromTomorrow, setFT] = useState(() => lockedToday());
   const [plan, setPlan] = useState(null); const [busy, setBusy] = useState(false);
   const dates = wk.dates || [];
   const ti = dates.indexOf(todayISO());
@@ -1116,7 +1116,7 @@ function AcqPlanner({ s, setS, wk }) {
       <Section title="Weekly acquisition planner" sub="Plans all your remaining pickups together — which player, which day, and who to drop — to squeeze the most points out of this week's lineup slots.">
         <div className="flex flex-wrap gap-3 items-center">
           {espnUsed != null ? <span>Moves used this week: <b>{used} of 3</b> <span className="text-xs text-slate-500">from ESPN</span></span> : <label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>}
-          <label className="flex items-center gap-1"><input type="checkbox" checked={fromTomorrow} onChange={(e) => setFT(e.target.checked)} /> Start from tomorrow (today's games already started)</label>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={fromTomorrow} onChange={(e) => setFT(e.target.checked)} /> Start from tomorrow (today's first game has started, so adds play tomorrow)</label>
           <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy || !left || d0 >= dates.length} onClick={run}>{busy ? "Planning…" : `Build my plan (${left} move${left === 1 ? "" : "s"} left)`}</button>
         </div>
         <div className="text-xs text-slate-500 mt-2">Planning from {dates[d0] ? dayLabel(dates[d0]) : "—"} · uses your roster minimums, protected players and minimum gain from Add / Drop settings · counts only games that fit your daily lineup · goalies use Daily Faceoff starters, back-to-back logic and betting odds.</div>
@@ -1242,7 +1242,7 @@ function BenchFixer({ s }) {
         const base = weekProj(mine, dw, K, from).total, baseRest = tot(mine, i);
         drops.forEach((d) => pool.forEach((f) => {
           if (d.p !== f.p && cnt[d.p] - 1 < mins[d.p]) return;
-          const r2 = [...mine.filter((x) => x.id !== d.id), { ...f, ft: s.me }];
+          const r2 = timedMove(mine, s.me, [{ add: f, drop: d }]);
           const g = weekProj(r2, dw, K, from).total - base;
           if (!fix || g > fix.gain) fix = { d, f, gain: g, r2 };
         }));
@@ -2031,7 +2031,7 @@ function AddDrop({ s, setS, wk }) {
   const rows = useMemo(() => {
     if (!forced) return res;
     const base = lineupAware ? total(myR) : 0;
-    return res.filter((r) => keepsMins(forced, r.f)).map((r) => ({ ...r, d: forced, gain: lineupAware ? total(myR.filter((x) => x.id !== forced.id).concat([{ ...r.f, ft: s.me }])) - base : rawPts(r.f) - rawPts(forced) })).sort((a, b) => b.gain - a.gain);
+    return res.filter((r) => keepsMins(forced, r.f)).map((r) => ({ ...r, d: forced, gain: lineupAware ? total(timedMove(myR, s.me, [{ add: r.f, drop: forced }])) - base : rawPts(r.f) - rawPts(forced, r.f) })).sort((a, b) => b.gain - a.gain);
   }, [M, dropSel]);
   const worth = rows.filter((r) => r.gain >= minGain);
   const shown = worth.slice(0, limit === 0 ? 9999 : limit);
@@ -2050,7 +2050,7 @@ function AddDrop({ s, setS, wk }) {
           <select className={inp} value={H} onChange={(e) => setH(+e.target.value)}><option value={1}>Rest of this week</option><option value={2}>This week + next</option><option value={4}>Next 4 weeks</option><option value={0}>Rest of season</option></select>
           <input className={inp + " flex-1 min-w-[140px]"} placeholder="Search free agents" value={q} onChange={(e) => setQ(e.target.value)} />
           <select className={inp} value={limit} onChange={(e) => setLimit(+e.target.value)}><option value={25}>Show 25</option><option value={50}>Show 50</option><option value={100}>Show 100</option><option value={0}>Show all</option></select>
-          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => setSim({})}>Build a move</button>
+          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => setSim({})}>Build a move</button><PickNote where="ad" />
         </div>
         {showSet && (
           <div className="mt-3 pt-3 border-t border-slate-200 space-y-3">
@@ -2107,7 +2107,7 @@ function AddDrop({ s, setS, wk }) {
                   <div className="flex items-center gap-2.5">
                     <TeamLogo t={r.f.t} size={26} />
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2 whitespace-nowrap"><PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{st ? <span className="text-xs text-red-600">{st}</span> : null}{tg ? <span className={"text-xs " + tg.c}>{tg.t}</span> : null}</div>
+                      <div className="flex items-center gap-2 whitespace-nowrap"><PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs text-amber-600">Waivers</span> : null}{st ? <span className="text-xs text-red-600">{st}</span> : null}{tg ? <span className={"text-xs " + tg.c}>{tg.t}</span> : null}</div>
                       {common && r.d.id !== common.id ? <div className="text-xs text-slate-500">drops {r.d.n}</div> : null}
                     </div>
                   </div>
@@ -2151,7 +2151,7 @@ function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
     if (!cands.length) cands = r.filter(ok);
     const b = lineupAware ? total(r) : 0;
     let best = null;
-    cands.forEach((d) => { const g = lineupAware ? total(r.filter((x) => x.id !== d.id).concat([{ ...f, ft: s.me }])) - b : rawPts(f) - rawPts(d); if (!best || g > best.g) best = { d, g }; });
+    cands.forEach((d) => { const g = lineupAware ? total(timedMove(r, s.me, [{ add: f, drop: d }])) - b : rawPts(f) - rawPts(d, f); if (!best || g > best.g) best = { d, g }; });
     return best ? best.d.id : "";
   };
   const setAdd = (i, id) => {
@@ -2173,9 +2173,10 @@ function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
     const ok = list.filter(Boolean);
     if (!ok.length) return { list, ok };
     const after = rosterBefore(moves.length);
-    const gain = lineupAware ? total(after) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d), 0);
+    const timed = timedMove(myR, s.me, ok.map((x) => ({ add: x.a, drop: x.d })));
+    const gain = lineupAware ? total(timed) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d, x.a), 0);
     const c = cntOf(after);
-    return { list, ok, after, gain, c, win: winChance(s, after), short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
+    return { list, ok, after, gain, c, win: winChance(s, timed), short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
   }, [key]);
   const addF = byId((moves[focus] || {}).add);
   const alts = useMemo(() => (addF ? computeMoves(s, { H, pos: addF.p, pool: 40 }).res.filter((r) => r.f.id !== addF.id && !moves.some((m) => m.add === r.f.id)).slice(0, 3) : []), [addF ? addF.id : "", H]);
@@ -2946,7 +2947,7 @@ function winChance(s, roster) {
   const B = weekLive(s.players.filter((p) => p.ft === opp), w, K, opp);
   return winProb(A, B, +((w.act || {})[s.me]) || 0, +((w.act || {})[opp]) || 0);
 }
-const afterMove = (s, add, drop) => s.players.filter((p) => p.ft === s.me && p.id !== drop.id).concat([{ ...add, ft: s.me }]);
+const afterMove = (s, add, drop) => timedMove(s.players.filter((p) => p.ft === s.me), s.me, [{ add, drop }]);
 const WinDelta = ({ s, add, drop, base }) => {
   const b = base === undefined ? winChance(s) : base;
   const n = winChance(s, afterMove(s, add, drop));
@@ -2982,7 +2983,7 @@ function FillSlot({ l, s, wk, d }) {
   const open = { F: 9 - c.F, D: 5 - c.D, U: 1 - c.UTIL, G: 2 - c.G };
   const fits = (p) => (p.p === "G" ? open.G > 0 : open[p.p] > 0 || open.U > 0);
   const val = (p) => effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt);
-  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p) && gState(p.t, dt).s === "P")
+  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p) && gState(p.t, dt).s === "P" && dt >= pickStart(p))
     .map((p) => ({ p, v: val(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 2);
   if (!best.length) return null;
   const ml = movesLeft(s, s.me, wk);
@@ -3034,7 +3035,7 @@ function GoalieStreams({ s, wk }) {
       .sort((a, b) => String(a.st || "").localeCompare(String(b.st || "")));
   };
   const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, games: starters(dt), list: s.players
-    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P")
+    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p))
     .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
     .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
   const own = (p) => (!p ? null : p.ft === s.me ? <span className="text-blue-600 font-semibold">yours</span> : p.ft === "fa" ? <span className="text-green-700 font-semibold">FA</span> : <span>{teamName(s, p.ft)}</span>);
@@ -3573,6 +3574,30 @@ const statLine = (x) => {
 
 // ---------- round 24: a player counts on a day only if ESPN has him on that day's roster (news_logos.py) ----------
 const onEspnDay = (AD, p) => !AD || !Object.keys(AD).length || AD[String(p.id).replace(/^e/, "")] != null;
+
+// ---------- round 25: pickups start after the daily lock (news_logos.py) ----------
+// ESPN locks the whole day at the first puck drop, so anyone added after that plays from tomorrow.
+// Players on waivers (1-day waivers) can play from tomorrow at the earliest.
+let __LK = null;
+const lockedToday = () => {
+  const today = todayISO(), k = today + ":" + Math.floor(Date.now() / 30000);
+  if (__LK && __LK.k === k) return __LK.v;
+  const G = ((window.GAMES_DATA || {}).games || {})[today] || {};
+  const first = Object.values(G).reduce((m, g) => { const t = g && g.st ? Date.parse(g.st) : NaN; return isNaN(t) ? m : Math.min(m, t); }, Infinity);
+  const live = Object.values((window.__LIVESC || {})[today] || {}).some((x) => x && x.s && x.s !== "P");
+  const espn = Object.values((((window.ESPN_DATA || {}).gstate || {})[today]) || {}).some((x) => x && x.s && x.s !== "P");
+  const v = live || espn || first <= Date.now();
+  __LK = { k, v };
+  return v;
+};
+const pickStart = (p) => ((p && p.wv) || lockedToday() ? addDays(todayISO(), 1) : todayISO());
+const onDay = (p, dt) => !dt || ((!p.fromD || dt >= p.fromD) && (!p.untilD || dt < p.untilD));
+const timedMove = (roster, me, moves) => {
+  let r = roster;
+  moves.forEach(({ add, drop }) => { const a = pickStart(add); r = r.map((p) => (drop && p.id === drop.id ? { ...p, untilD: a } : p)).concat([{ ...add, ft: me, fromD: a }]); });
+  return r;
+};
+const PickNote = () => { const a = pickStart(null); return a === todayISO() ? null : <div className="w-full text-xs text-amber-600 mt-1">Today's first game has started, so anyone you add now plays from {dayLabel(a)}. Players on waivers show a Waivers tag and can't play before tomorrow.</div>; };
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
