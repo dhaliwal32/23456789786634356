@@ -2556,5 +2556,128 @@ _fix_before_r20 = fix
 def fix(t):
     return round20(_fix_before_r20(t))
 
+# ---------- round 21: live game scores, nicer LIVE / FINAL tags ----------
+
+# --- espn_sync.py: keep each game's score, period and clock with the game state ---
+SYNC21_OLD = '''            for side_ in ("homeTeam", "awayTeam"):
+                ab_ = str((g_.get(side_) or {}).get("abbrev") or "").upper()
+                gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2)}
+'''
+SYNC21_NEW = '''            pd_ = g_.get("periodDescriptor") or {}
+            ck_ = g_.get("clock") or {}
+            pdl_ = "OT" if pd_.get("periodType") == "OT" else "SO" if pd_.get("periodType") == "SO" else {1: "1st", 2: "2nd", 3: "3rd"}.get(per_, str(per_))
+            hs_, as_ = (g_.get("homeTeam") or {}).get("score"), (g_.get("awayTeam") or {}).get("score")
+            for side_, me_, op_ in (("homeTeam", hs_, as_), ("awayTeam", as_, hs_)):
+                ab_ = str((g_.get(side_) or {}).get("abbrev") or "").upper()
+                gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2), "my": me_, "op": op_, "per": pdl_,
+                                            "clk": ck_.get("timeRemaining") or "", "int": bool(ck_.get("inIntermission"))}
+'''
+
+_fix_sync_before_r21 = PY_FIXES[SYNC]
+
+
+def fix_sync21(t):
+    t = _fix_sync_before_r21(t)
+    t = lit(t, "sync: game scores and clock", SYNC21_OLD, SYNC21_NEW, '"my": me_')
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync21
+
+# --- lines-tab.js: pop-up tags show the score too ---
+_fix_lines_before_r21 = JS_FIXES[LINES]
+
+
+def fix_lines21(t):
+    t = _fix_lines_before_r21(t)
+    t = lit(t, "pop-up: score on tonight's tag", "<LT st={tn.st} />", "<LT st={tn.st} t={it.t} dt={today} />", "<LT st={tn.st} t={it.t}")
+    t = lit(t, "pop-up: score on played games", "<LT st={H.gState(it.t, g.d).s} />",
+            "<LT st={H.gState(it.t, g.d).s} t={it.t} dt={g.d} />", "<LT st={H.gState(it.t, g.d).s} t={it.t}")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines21
+
+# --- fantasy-gm.html ---
+R21_CSS = r'''  /* round 21 live (news_logos.py) */
+  .gm-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--bad); display: inline-block; animation: gmPulse 1.4s ease-in-out infinite; }
+  @keyframes gmPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .gm-pill { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 2px 6px; border-radius: 5px; line-height: 1.3; }
+'''
+
+R21_TAG_OLD = r'''const LiveTag = ({ st }) => (st === "L" ? <span className="text-xs font-semibold text-red-600">LIVE</span> : st === "F" ? <span className="text-xs text-slate-500">FINAL</span> : null);'''
+R21_TAG_NEW = r'''const gScore = (t, dt) => { const L = ((window.__LIVESC || {})[dt] || {})[t]; return L || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t] || null; };
+const LiveTag = ({ st, t, dt }) => {
+  // live tag v21: pill + score from the player's team's side (news_logos.py)
+  if (st !== "L" && st !== "F") return null;
+  const sc = t && dt ? gScore(t, dt) : null;
+  const has = !!(sc && sc.my != null && sc.op != null);
+  const res = has && st === "F" ? (sc.my > sc.op ? "W" : sc.my < sc.op ? "L" : "") : "";
+  const tail = !sc ? "" : st === "F" ? (sc.per === "OT" || sc.per === "SO" ? " " + sc.per : "") : sc.int ? " · " + sc.per + " int." : sc.per ? " · " + sc.per + (sc.clk ? " " + sc.clk : "") : "";
+  return (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
+      {st === "L" ? <span className="gm-pill inline-flex items-center gap-1 bg-red-100 text-red-600"><span className="gm-dot"></span>LIVE</span> : <span className="gm-pill bg-slate-200 text-slate-500">FINAL</span>}
+      {has ? <span className={"text-xs font-semibold " + (res === "W" ? "text-green-700" : res === "L" ? "text-red-600" : "text-slate-700")}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
+    </span>
+  );
+};'''
+
+R21_POLL = r'''const [, tick] = useState(0);
+  useEffect(() => {
+    // round 21: live NHL scores straight from the NHL every minute (falls back to the sync's copy if blocked)
+    let dead = false;
+    const AL = { LAK: "LA", NJD: "NJ", SJS: "SJ", TBL: "TB", UTAH: "UTA", ARI: "UTA" };
+    const pull = () => fetch("https://api-web.nhle.com/v1/score/now").then((r) => (r.ok ? r.json() : null)).then((js) => {
+      if (dead || !js || !js.games) return;
+      const out = {};
+      js.games.forEach((g) => {
+        const d = g.gameDate; if (!d) return;
+        const st = g.gameState, s = st === "FINAL" || st === "OFF" ? "F" : st === "LIVE" || st === "CRIT" ? "L" : "P";
+        const pd = g.periodDescriptor || {}, n = pd.number || 1, ck = g.clock || {};
+        const rem = ck.secondsRemaining == null ? 1200 : ck.secondsRemaining;
+        const f = s === "F" ? 1 : s === "P" ? 0 : Math.min(0.99, ((n - 1) * 1200 + 1200 - rem) / 3600);
+        const per = pd.periodType === "OT" ? "OT" : pd.periodType === "SO" ? "SO" : ["", "1st", "2nd", "3rd"][n] || String(n);
+        const hs = (g.homeTeam || {}).score, as = (g.awayTeam || {}).score;
+        out[d] = out[d] || {};
+        [[g.homeTeam, hs, as], [g.awayTeam, as, hs]].forEach(([T, my, op]) => { const a = T && (AL[T.abbrev] || T.abbrev); if (a) out[d][a] = { s, f, my, op, per, clk: ck.timeRemaining || "", int: !!ck.inIntermission }; });
+      });
+      window.__LIVESC = out; tick((x) => x + 1);
+    }).catch(() => {});
+    pull();
+    const id = setInterval(pull, 60 * 1000);
+    return () => { dead = true; clearInterval(id); };
+  }, []);'''
+
+
+def round21(t):
+    t = lit(t, "live: styles", "</style>", R21_CSS + "</style>", "round 21 live")
+    t = lit(t, "live: tag with score", R21_TAG_OLD, R21_TAG_NEW, "live tag v21")
+    t = lit(t, "live: newest game state first",
+            "const x = ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];",
+            "const x = ((window.__LIVESC || {})[dt] || {})[t] || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];",
+            "(window.__LIVESC || {})[dt] || {})[t] ||")
+    t = lit(t, "live: scores every minute", "const [, tick] = useState(0);", R21_POLL, "round 21: live NHL scores")
+    t = lit(t, "matchup rows: score on tag", "{p.st ? <LiveTag st={p.st} /> : gameTime(g)}",
+            "{p.st ? <LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)}", "<LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)")
+    t = lit(t, "phone matchup: score on tag", '<><LiveTag st={p.st} />{p.st === "L"',
+            '<><LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "L"', '<LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "L"')
+    t = lit(t, "matchup day header: tag",
+            '{tag ? <span className={"text-xs font-semibold " + (tag === "LIVE" ? "text-red-600" : "text-slate-500")}>{tag}</span> : null}',
+            '{tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}', '<LiveTag st={tag === "LIVE" ? "L" : "F"} />')
+    t = lit(t, "goalie streams: game score",
+            '{gs.s !== "P" ? <LiveTag st={gs.s} /> : gameTime({ st: gm.st })}',
+            '{gs.s !== "P" ? <><LiveTag st={gs.s} />{(() => { const sc = gScore(gm.home.t, dt); return sc && sc.my != null ? <div className="text-sm font-semibold text-slate-700 mt-0.5">{sc.op} – {sc.my}{sc.s === "L" && sc.per ? <div className="text-xs text-slate-500 font-normal">{sc.int ? sc.per + " int." : sc.per + " " + (sc.clk || "")}</div> : null}</div> : null; })()}</> : gameTime({ st: gm.st })}',
+            "gScore(gm.home.t, dt)")
+    return t
+
+
+_fix_before_r21 = fix
+
+
+def fix(t):
+    return round21(_fix_before_r21(t))
+
 if __name__ == "__main__":
     main()
