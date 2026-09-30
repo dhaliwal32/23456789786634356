@@ -264,11 +264,11 @@ try:
                         if not x_.get("toi") or x_.get("toi") == "00:00":
                             continue
                         pst_[str(pid_)] = {"sv": x_.get("saves") or 0, "ga": x_.get("goalsAgainst") or 0,
-                                           "dec": x_.get("decision") or "", "toi": x_.get("toi") or ""}
+                                           "dec": x_.get("decision") or "", "toi": x_.get("toi") or "", "sa": x_.get("shotsAgainst"), "svp": x_.get("savePctg"), "es": x_.get("evenStrengthShotsAgainst") or "", "pp": x_.get("powerPlayShotsAgainst") or "", "sh": x_.get("shorthandedShotsAgainst") or ""}
                     else:
                         pst_[str(pid_)] = {"g": x_.get("goals") or 0, "a": x_.get("assists") or 0, "pm": x_.get("plusMinus") or 0,
                                            "sog": x_.get("sog") or 0, "pim": x_.get("pim") or 0, "hit": x_.get("hits") or 0,
-                                           "blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or ""}
+                                           "blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or "", "ppg": x_.get("powerPlayGoals") or 0, "fo": x_.get("faceoffWinningPctg"), "shf": x_.get("shifts"), "gv": x_.get("giveaways") or 0, "tk": x_.get("takeaways") or 0}
         pstat[dd_] = pst_
         print(f"(daily) {dd_}: box-score lines for {len(pst_)} league players")
         gstate[dd_] = gs_
