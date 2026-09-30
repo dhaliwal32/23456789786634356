@@ -2789,5 +2789,91 @@ _fix_before_r22 = fix
 def fix(t):
     return round22(_fix_before_r22(t))
 
+# ---------- round 23: full game box score in the player pop-up ----------
+
+# --- espn_sync.py: keep the rest of the box-score stats ---
+_fix_sync_before_r23 = PY_FIXES[SYNC]
+
+
+def fix_sync23(t):
+    t = _fix_sync_before_r23(t)
+    t = lit(t, "sync: full skater box score",
+            '"blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or ""}',
+            '"blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or "", "ppg": x_.get("powerPlayGoals") or 0, '
+            '"fo": x_.get("faceoffWinningPctg"), "shf": x_.get("shifts"), "gv": x_.get("giveaways") or 0, "tk": x_.get("takeaways") or 0}',
+            '"ppg": x_.get("powerPlayGoals")')
+    t = lit(t, "sync: full goalie box score",
+            '"dec": x_.get("decision") or "", "toi": x_.get("toi") or ""}',
+            '"dec": x_.get("decision") or "", "toi": x_.get("toi") or "", "sa": x_.get("shotsAgainst"), "svp": x_.get("savePctg"), '
+            '"es": x_.get("evenStrengthShotsAgainst") or "", "pp": x_.get("powerPlayShotsAgainst") or "", "sh": x_.get("shorthandedShotsAgainst") or ""}',
+            '"svp": x_.get("savePctg")')
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync23
+
+# --- lines-tab.js: box-score section in the pop-up, for the day you tapped on ---
+LT23_BOX = r'''        {(() => {
+          // game box score v23 (news_logos.py)
+          const gd = it.gd || today, gst = hasId && H.gState ? H.gState(it.t, gd) : null;
+          if (!gst || gst.s === "P" || !H.pStat) return null;
+          const x = H.pStat(p, gd), fp = realPts(p, gd), sc = s.sc || {};
+          const tile = (l, v, hl) => <div key={l} className="rounded-lg border border-slate-200 px-2 py-1.5 text-center"><div className="text-[10px] uppercase tracking-wide text-slate-500">{l}</div><div className={"font-semibold " + (hl ? "text-green-700" : "")}>{v}</div></div>;
+          let tiles = [], rows = [];
+          if (x && x.sv != null) {
+            tiles = [tile("Decision", x.dec || "–", x.dec === "W"), tile("Saves", x.sa != null ? x.sv + "/" + x.sa : x.sv), tile("SV%", x.svp != null ? Number(x.svp).toFixed(3).replace(/^0/, "") : "–"), tile("GA", x.ga), tile("TOI", x.toi || "–"), tile("EV shots", x.es || "–"), tile("PP shots", x.pp || "–"), tile("SH shots", x.sh || "–")];
+            rows = [["Win", x.dec === "W" ? 1 : 0, sc.W ?? 5], ["OT loss", x.dec === "O" ? 1 : 0, sc.OTL ?? 1], ["Saves", x.sv, sc.SV ?? 0.6], ["Goals against", x.ga, sc.GA ?? -3]];
+          } else if (x) {
+            tiles = [tile("G", x.g, x.g > 0), tile("A", x.a, x.a > 0), tile("PTS", (x.g || 0) + (x.a || 0), (x.g || 0) + (x.a || 0) > 0), tile("+/-", (x.pm > 0 ? "+" : "") + (x.pm || 0), x.pm > 0), tile("SOG", x.sog), tile("PPG", x.ppg ?? 0), tile("PIM", x.pim), tile("HIT", x.hit), tile("BLK", x.blk), tile("FO%", x.fo ? Math.round(x.fo * 100) + "%" : "–"), tile("Takeaways", x.tk ?? 0), tile("Giveaways", x.gv ?? 0), tile("Shifts", x.shf ?? "–"), tile("TOI", x.toi || "–")];
+            rows = [["Goals", x.g, sc.G ?? 6], ["Assists", x.a, sc.A ?? 4], ["+/-", x.pm, sc.PM ?? 2], ["Shots", x.sog, sc.SOG ?? 1], ["Hits", x.hit, sc.HIT ?? 0.1], ["Blocks", x.blk, sc.BLK ?? 1]];
+          }
+          const est = rows.reduce((a, r) => a + (r[1] || 0) * r[2], 0);
+          const parts = rows.filter((r) => r[1]).map((r) => `${r[0]} ${r[1]} × ${r[2]} = ${H.f1(r[1] * r[2])}`);
+          if (fp != null && rows.length && Math.abs(fp - est) >= 0.05) parts.push(`other (power play, shorthanded, shutout) ${fp - est > 0 ? "+" : ""}${H.f1(fp - est)}`);
+          return (
+            <div className="mt-4">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <div className="font-medium text-sm">Game box score · {H.dayLabel(gd)}</div>
+                {H.LiveTag ? <H.LiveTag st={gst.s} t={it.t} dt={gd} /> : null}
+                <span className="ml-auto font-semibold">{fp == null ? "–" : H.f1(fp)} <span className="text-xs text-slate-500 font-normal">fantasy pts</span></span>
+              </div>
+              {x ? <div className="grid grid-cols-4 md:grid-cols-7 gap-2">{tiles}</div> : <div className="text-xs text-slate-400">The box score appears after the next sync (every 10 minutes during games).</div>}
+              {parts.length ? <div className="mt-2 text-xs text-slate-500">{parts.join(" · ")}</div> : null}
+            </div>
+          );
+        })()}
+'''
+
+_fix_lines_before_r23 = JS_FIXES[LINES]
+
+
+def fix_lines23(t):
+    t = _fix_lines_before_r23(t)
+    t = lit(t, "pop-up: remember the game day you tapped",
+            "const cur = it || { name: real.n, key: nk(real.n), t: real.t, g: real.p, p: real };",
+            "const cur = it || { name: real.n, key: nk(real.n), t: real.t, g: real.p, p: real, gd: p.dt };",
+            "gd: p.dt")
+    t = lit(t, "pop-up: game box score", "        {games.length > 0 && (", LT23_BOX + "        {games.length > 0 && (", "game box score v23")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines23
+
+
+# --- fantasy-gm.html: give the pop-up the box-score helpers ---
+def round23(t):
+    t = lit(t, "pop-up gets box-score helpers", "const LH = { gState, actDay, LiveTag, effAvg,",
+            "const LH = { gState, actDay, LiveTag, pStat, gScore, effAvg,", "LiveTag, pStat, gScore,")
+    return t
+
+
+_fix_before_r23 = fix
+
+
+def fix(t):
+    return round23(_fix_before_r23(t))
+
 if __name__ == "__main__":
     main()
