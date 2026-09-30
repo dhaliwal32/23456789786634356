@@ -3422,7 +3422,7 @@ function liveNudges(K) {
   const P = pby(), acc = {};
   Object.entries(E.daily || {}).forEach(([dt, T]) => Object.values(T || {}).forEach((tm) => Object.entries(tm || {}).forEach(([pid, v]) => {
     const p = P["e" + pid];
-    if (!p || !v || v[0] == null || gState(p.t, dt).s !== "F") return;
+    if (!p || !v || v[0] == null || !(SCHED[p.t] && SCHED[p.t].has(dt)) || gState(p.t, dt).s !== "F") return;
     const a = (acc[p.id] = acc[p.id] || { s: 0, n: 0, seen: {} });
     if (a.seen[dt]) return;
     a.seen[dt] = 1; a.s += v[0] - effAvg(p, K, dt); a.n++;
@@ -3465,7 +3465,7 @@ function weekLive(roster, wk, K, tid, opt) {
       adAct.forEach(([pid, v]) => {
         const p = P["e" + pid];
         if (!p) { if (v[0] != null) { act += v[0]; actSoFar += v[0]; } return; }
-        if (plays(p) ? gState(p.t, dt).s === "P" : v[0] == null) return;
+        if (plays(p) ? gState(p.t, dt).s === "P" : !v[0]) return;
         take(p, byId[p.id] || p, ESLOT[v[1]], v[0], false);
       });
     } else {
@@ -3475,7 +3475,7 @@ function weekLive(roster, wk, K, tid, opt) {
     Object.keys(cap).forEach((k) => (cap[k] = Math.max(0, cap[k])));
     const L = dayLineup(r.filter((p) => !done.has(p.id) && !lk(p)), wk, d, K, cap);
     const liveN = rows.filter((x) => x.vf > 0).length;
-    return { start: [...rows, ...L.start], bench: L.bench, total: rows.reduce((s2, x) => s2 + x.x, 0) + L.total, act, proj: full, locked: rows.length, liveN, openN: L.start.length, allDone: !rows.some((x) => x.st === "L") && !L.start.length, benchAct, empty: dt < today ? 0 : L.empty, sched: L.sched + liveN };
+    return { start: [...rows, ...L.start].sort((a, b) => ({ F: 0, D: 1, UTIL: 2, G: 3 }[a.slot] ?? 4) - ({ F: 0, D: 1, UTIL: 2, G: 3 }[b.slot] ?? 4)), bench: L.bench, total: rows.reduce((s2, x) => s2 + x.x, 0) + L.total, act, proj: full, locked: rows.length, liveN, openN: L.start.length, allDone: !rows.some((x) => x.st === "L") && !L.start.length, benchAct, empty: dt < today ? 0 : L.empty, sched: L.sched + liveN };
   });
   const sum = (f) => days.reduce((a, x) => a + f(x), 0);
   return { days, total: sum((x) => x.total), act: sum((x) => x.act), actSoFar, projSoFar, used: sum((x) => x.openN + x.liveN), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty), sched: sum((x) => x.sched) };
