@@ -1681,6 +1681,7 @@ function Side({ l, s, id, wk, d }) {
                       {!p.st && p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
                     </div>
                     {g || p.st ? <div className="text-xs text-slate-500 mt-0.5">{g ? (g.h ? "vs " : "@") + g.o + " · " : ""}{p.st ? <LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)}</div> : null}
+                    {p.st && statLine(pStat(p, p.dt)) ? <div className="text-xs text-slate-400 mt-0.5">{statLine(pStat(p, p.dt))}</div> : null}
                   </div>
                 </div>
               </td>
@@ -3159,7 +3160,7 @@ function MSide({ p, right }) {
         <span style={{ flexShrink: 0, lineHeight: 0 }}><TeamLogo t={p.t} size={16} /></span>
         {inj ? <span className="text-xs text-red-600" style={{ flexShrink: 0 }}>{inj}</span> : null}
       </div>
-      <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "L" ? " · proj " + f1(p.x0) : ""}</> : <>{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</>}</div>
+      <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "L" ? " · proj " + f1(p.x0) : ""}</> : <>{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</>}</div>{p.st && statLine(pStat(p, p.dt)) ? <div className="text-xs text-slate-400 truncate">{statLine(pStat(p, p.dt))}</div> : null}
     </div>
   );
   const pts = <div className="m-pts">{p.st ? (p.a == null ? "–" : f1(p.a)) : f1(p.x)}</div>;
@@ -3560,6 +3561,15 @@ function weekLive(roster, wk, K, tid, opt) {
   const sum = (f) => days.reduce((a, x) => a + f(x), 0);
   return { days, total: sum((x) => x.total), act: sum((x) => x.act), actSoFar, projSoFar, used: sum((x) => x.openN + x.liveN), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty), sched: sum((x) => x.sched) };
 }
+
+// ---------- round 22: NHL box-score stat lines (news_logos.py) ----------
+const pStat = (p, dt) => { const id = String((p && p.id) || "").replace(/^e/, ""); return ((((window.ESPN_DATA || {}).pstat || {})[dt]) || {})[id] || null; };
+const statLine = (x) => {
+  if (!x) return "";
+  if (x.sv != null) return [x.dec || null, x.sv + " SV", x.ga + " GA", x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
+  const n = (v, l) => (v ? (v > 1 ? v + " " + l : l) : null);
+  return [n(x.g, "G"), n(x.a, "A"), (x.pm > 0 ? "+" : "") + (x.pm || 0), n(x.sog, "SOG"), n(x.pim, "PIM"), n(x.hit, "HIT"), n(x.blk, "BLK"), x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

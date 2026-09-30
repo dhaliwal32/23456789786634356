@@ -197,7 +197,27 @@ try:
         print(f"(daily) {dd_} (scoring period {sp_}): {len(day_)} teams, {mine_n_} of your players with points")
         if day_:
             daily[dd_] = day_
+    import unicodedata as ud_
+
+    def _toks(n):
+        n = ud_.normalize("NFD", n or "").encode("ascii", "ignore").decode().lower().replace(".", " ").replace("-", " ").replace("'", "")
+        return n.split()
+
+    def _nk(n):
+        p = _toks(n)
+        return (p[0][0] + " " + " ".join(p[1:])) if len(p) > 1 else " ".join(p)
+
+    def _nk2(n):
+        p = _toks(n)
+        return (p[0][0] + " " + p[-1]) if len(p) > 1 else " ".join(p)
+
+    _pidx = {}
+    for p_ in players:
+        if p_.get("n"):
+            for k_ in {_nk(p_["n"]), _nk2(p_["n"])}:
+                _pidx.setdefault((k_, p_["t"]), p_["id"])
     gstate = {}
+    pstat = {}
     for back_ in (1, 0):
         dd_ = (today_et - timedelta(days=back_)).isoformat()
         try:
@@ -221,9 +241,40 @@ try:
                 ab_ = str((g_.get(side_) or {}).get("abbrev") or "").upper()
                 gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2), "my": me_, "op": op_, "per": pdl_,
                                             "clk": ck_.get("timeRemaining") or "", "int": bool(ck_.get("inIntermission"))}
+        pst_ = {}
+        for g_ in js_.get("games", []):  # 3d) player box scores (news_logos.py round 22)
+            if str(g_.get("gameState") or "") not in ("LIVE", "CRIT", "FINAL", "OFF") or not g_.get("id"):
+                continue
+            try:
+                bx_ = requests.get(f"https://api-web.nhle.com/v1/gamecenter/{g_['id']}/boxscore", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+            except Exception as ex:
+                print(f"(daily) box score {g_.get('id')} failed: {ex}")
+                continue
+            pbg_ = bx_.get("playerByGameStats") or {}
+            for side_ in ("homeTeam", "awayTeam"):
+                tab_ = str((bx_.get(side_) or g_.get(side_) or {}).get("abbrev") or "").upper()
+                tab_ = ALIAS.get(tab_, tab_)
+                grp_ = pbg_.get(side_) or {}
+                for x_ in (grp_.get("forwards") or []) + (grp_.get("defense") or []) + (grp_.get("goalies") or []):
+                    nm_ = (x_.get("name") or {}).get("default") or ""
+                    pid_ = _pidx.get((_nk(nm_), tab_)) or _pidx.get((_nk2(nm_), tab_))
+                    if not pid_:
+                        continue
+                    if "saves" in x_ or "goalsAgainst" in x_ or "saveShotsAgainst" in x_:
+                        if not x_.get("toi") or x_.get("toi") == "00:00":
+                            continue
+                        pst_[str(pid_)] = {"sv": x_.get("saves") or 0, "ga": x_.get("goalsAgainst") or 0,
+                                           "dec": x_.get("decision") or "", "toi": x_.get("toi") or ""}
+                    else:
+                        pst_[str(pid_)] = {"g": x_.get("goals") or 0, "a": x_.get("assists") or 0, "pm": x_.get("plusMinus") or 0,
+                                           "sog": x_.get("sog") or 0, "pim": x_.get("pim") or 0, "hit": x_.get("hits") or 0,
+                                           "blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or ""}
+        pstat[dd_] = pst_
+        print(f"(daily) {dd_}: box-score lines for {len(pst_)} league players")
         gstate[dd_] = gs_
     data["daily"] = daily
     data["gstate"] = gstate
+    data["pstat"] = pstat
     mine_ = str(MY_TEAM_ID)
     for dd_, day_ in daily.items():
         tot_ = sum((v[0] or 0) for v in day_.get(mine_, {}).values() if v[1] in (3, 4, 5, 6))
