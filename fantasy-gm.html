@@ -349,17 +349,18 @@ const gStart = (p, dt) => {
   }
   return fallback;
 };
-function dayLineup(roster, wk, d, K) {
+function dayLineup(roster, wk, d, K, cap) {
+  const c = cap || { F: 9, D: 5, U: 1, G: 2 };
   const dt = wk.dates ? wk.dates[d] : null;
   const pl = roster.filter((p) => !p.ir && p.prob > 0 && avail(p, dt) > 0 && (wk.games[p.t] || []).includes(d)).map((p) => { const g = p.p === "G" ? gStart(p, dt) : null; return { ...p, x: effAvg(p, K, dt) * (g ? g.v : p.prob) * avail(p, dt), gs: g ? g.l : "", dt }; });
   const by = (a, b) => b.x - a.x;
   const F = pl.filter((p) => p.p === "F").sort(by), D = pl.filter((p) => p.p === "D").sort(by), G = pl.filter((p) => p.p === "G").sort(by);
-  const fs = F.slice(0, 9), ds = D.slice(0, 5);
-  const rest = [...F.slice(9), ...D.slice(5)].sort(by);
-  const u = rest.slice(0, 1), gs = G.slice(0, 2);
-  const bench = [...rest.slice(1), ...G.slice(2)];
+  const fs = F.slice(0, c.F), ds = D.slice(0, c.D);
+  const rest = [...F.slice(c.F), ...D.slice(c.D)].sort(by);
+  const u = rest.slice(0, c.U), gs = G.slice(0, c.G);
+  const bench = [...rest.slice(c.U), ...G.slice(c.G)];
   const start = [...fs.map((p) => ({ ...p, slot: "F" })), ...ds.map((p) => ({ ...p, slot: "D" })), ...u.map((p) => ({ ...p, slot: "UTIL" })), ...gs.map((p) => ({ ...p, slot: "G" }))];
-  return { start, bench, total: start.reduce((s, p) => s + p.x, 0), empty: 9 - fs.length + (5 - ds.length) + (1 - u.length) + (2 - gs.length), sched: pl.length };
+  return { start, bench, total: start.reduce((s, p) => s + p.x, 0), empty: c.F - fs.length + (c.D - ds.length) + (c.U - u.length) + (c.G - gs.length), sched: pl.length };
 }
 function weekProj(roster, wk, K, from = 0) {
   const days = wk.days.map((_, d) => (d < from ? null : dayLineup(roster, wk, d, K)));
@@ -593,7 +594,7 @@ function App() {
   }, [s, loaded]);
   const E = window.ESPN_DATA;
   window.__MODEL = (E && E.model) || null;
-  window.__SIG = (E && E.signals) || null; livePP1(E);
+  window.__SIG = (E && E.signals) || null; livePP1(E); window.__PLAYERS = s.players;
   useEffect(() => { fetch("ai/models/ai_proj.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((A) => { if (!A || !A.proj || !((Date.now() - Date.parse(A.asof)) / 36e5 < 36)) return; const avg = {}; Object.entries(A.proj).forEach(([id, m]) => { const v = Object.values(m).filter((x) => x != null); if (v.length) avg[id] = v.reduce((a, b) => a + b, 0) / v.length; }); window.__AI = A; window.__AIAVG = avg; setS((st) => ({ ...st, players: [...st.players] })); }).catch(() => {}); }, []);
   window.__PMODE = window.__MODEL ? s.pmode || "blend" : "espn";
   window.__GOALIES = useMemo(() => { const o = {}; Object.entries(s.goalies || {}).forEach(([d, m]) => { o[d] = {}; Object.entries(m || {}).forEach(([n, v]) => { o[d][nrm(n)] = v; }); }); return o; }, [s.goalies]);
@@ -675,7 +676,7 @@ function Today({ s, wk, go }) {
   const opp = oppOf(wk, s.me) || s.opp;
   const done = wk.done || 0;
   const mine = s.players.filter((p) => p.ft === s.me), theirs = s.players.filter((p) => p.ft === opp);
-  const A = weekProj(mine, wk, K, done), B = weekProj(theirs, wk, K, done);
+  const A = weekLive(mine, wk, K, s.me), B = weekLive(theirs, wk, K, opp);
   const aA = +((wk.act || {})[s.me]) || 0, aB = +((wk.act || {})[opp]) || 0;
   const fa = aA + A.total, fb = aB + B.total, margin = fa - fb;
   const today = todayISO();
@@ -717,9 +718,9 @@ function Today({ s, wk, go }) {
           <button className="ml-auto text-blue-600" onClick={() => go("matchup")}>All matchups →</button>
         </div>
         <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-end mt-4">
-          <div className="min-w-0"><div className="text-xs text-slate-500 truncate"><TL s={s} id={s.me} /></div><div className="text-4xl">{f1(fa)}</div><div className="text-xs text-slate-500">{f1(aA)} actual + {f1(A.total)} proj</div></div>
+          <div className="min-w-0"><div className="text-xs text-slate-500 truncate"><TL s={s} id={s.me} /></div><div className="text-4xl">{f1(aA)}</div><div className="text-xs text-slate-500">+ {f1(A.total)} still projected · {f1(fa)} final est.</div></div>
           <div className="text-sm text-slate-400 pb-7">vs</div>
-          <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate"><TL s={s} id={opp} /></div><div className="text-4xl">{f1(fb)}</div><div className="text-xs text-slate-500">{f1(aB)} actual + {f1(B.total)} proj</div></div>
+          <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate"><TL s={s} id={opp} /></div><div className="text-4xl">{f1(aB)}</div><div className="text-xs text-slate-500">+ {f1(B.total)} still projected · {f1(fb)} final est.</div></div>
         </div>
         <div className="h-1.5 rounded-full bg-slate-200 mt-5 overflow-hidden"><div className={"h-full rounded-full " + (margin >= 0 ? "bg-green-500" : "bg-red-500")} style={{ width: pct + "%" }}></div></div>
         <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected · {wpTxt(winProb(A, B, aA, aB))} chance to win</span></div>{done < dates.length ? <StrategyLine p={winProb(A, B, aA, aB)} /> : null}
@@ -1630,9 +1631,11 @@ function LiveBar({ s, wk, setWk, ids }) {
 }
 function Side({ l, s, id, wk, d }) {
   // matchup row layout v4: big logo beside name + opponent/time, same font for totals
+  // matchup row v16: real ESPN points once a game starts (news_logos.py)
+  const locked = (l.locked || 0) > 0;
   return (
     <div className="p-3 flex flex-col h-full">
-      <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1(l.total)}</span></div>
+      <div className="flex justify-between font-semibold mb-1"><TL s={s} id={id} className="truncate" /><span>{f1((l.act || 0) + l.total)}</span></div>
       <table className="w-full text-sm"><tbody>
         {l.start.map((p) => {
           const g = gameOf(p.t, p.dt), o = oddsFor(p.t, p.dt);
@@ -1646,28 +1649,44 @@ function Side({ l, s, id, wk, d }) {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
                       <PN p={p} className="truncate" />
-                      {!p.gs && p.prob < 1 ? <span className="text-xs text-slate-400">{Math.round(p.prob * 100)}%</span> : null}
-                      {p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
+                      {!p.st && !p.gs && p.prob < 1 ? <span className="text-xs text-slate-400">{Math.round(p.prob * 100)}%</span> : null}
+                      {!p.st && p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
                     </div>
-                    {g ? <div className="text-xs text-slate-500 mt-0.5">{(g.h ? "vs " : "@") + g.o} · {gameTime(g)}</div> : null}
+                    {g || p.st ? <div className="text-xs text-slate-500 mt-0.5">{g ? (g.h ? "vs " : "@") + g.o + " · " : ""}{p.st ? <LiveTag st={p.st} /> : gameTime(g)}</div> : null}
                   </div>
                 </div>
               </td>
               <td className="py-2 text-right whitespace-nowrap align-middle">
-                {o && window.__PMODE !== "espn" ? (p.p === "G"
-                  ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span>
-                  : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>) : null}
-                {f1(p.x)}
+                {p.st ? (
+                  <div>
+                    <div className="font-semibold">{p.a == null ? (p.st === "F" ? <span className="text-xs text-slate-400 font-normal">DNP</span> : "–") : f1(p.a)}</div>
+                    {p.st === "L" ? <div className="text-xs text-slate-400">proj {f1(p.x0)}</div> : null}
+                  </div>
+                ) : (<>
+                  {o && window.__PMODE !== "espn" ? (p.p === "G"
+                    ? <span className={"text-xs mr-2 " + (o.win >= 0.55 ? "text-green-700" : o.win <= 0.45 ? "text-red-600" : "text-slate-500")} title="Win chance from betting odds">W {Math.round(o.win * 100)}%</span>
+                    : <span className={"text-xs mr-2 " + (o.gf >= 3.3 ? "text-green-700" : o.gf <= 2.7 ? "text-red-600" : "text-slate-400")} title="Team expected goals from betting odds">xG {o.gf.toFixed(1)}</span>) : null}
+                  {f1(p.x)}
+                </>)}
               </td>
             </tr>
           );
         })}
         {l.start.length === 0 && <tr><td className="text-slate-400 py-1">No games</td></tr>}
       </tbody></table>
+      {l.benchAct && l.benchAct.length ? <div className="text-xs text-slate-500 mt-1">On the ESPN bench (not counted): {l.benchAct.map((x) => x.p.n + " " + f1(x.a)).join(", ")}</div> : null}
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
       {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
       {wk && id === s.me ? <FillSlot l={l} s={s} wk={wk} d={d} /> : null}
-      <div className="mt-auto pt-3"><div className="flex justify-between font-semibold border-t border-slate-200 pt-2"><span>Projected today</span><span>{f1(l.total)}</span></div></div>
+      <div className="mt-auto pt-3"><div className="border-t border-slate-200 pt-2 space-y-1">
+        {locked && l.allDone ? (<>
+          <div className="flex justify-between text-sm text-slate-500"><span>Projected</span><span>{l.proj != null ? f1(l.proj) : "–"}</span></div>
+          <div className="flex justify-between font-semibold"><span>Actual</span><span>{f1(l.act)}</span></div>
+        </>) : locked ? (<>
+          <div className="flex justify-between font-semibold"><span>Actual so far</span><span>{f1(l.act)}</span></div>
+          <div className="flex justify-between text-sm text-slate-500"><span>Still projected</span><span>{f1(l.total)}</span></div>
+        </>) : <div className="flex justify-between font-semibold"><span>Projected today</span><span>{f1(l.total)}</span></div>}
+      </div></div>
     </div>
   );
 }
@@ -1678,14 +1697,15 @@ function MatchCard({ s, a, b, P, on, mine, onSel }) {
   return (
     <div role="button" onClick={onSel} className={"rounded-xl border p-3 cursor-pointer text-sm " + (on ? "border-blue-500 bg-blue-50" : "bg-white border-slate-200")}>
       <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">{mine ? "Your matchup" : "Matchup"}</div>
-      <div className="flex justify-between gap-2"><TL s={s} id={a} className={"truncate " + (fx >= fy ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(fx)}</span></div>
-      <div className="flex justify-between gap-2 mt-1"><TL s={s} id={b} className={"truncate " + (fy > fx ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(fy)}</span></div>
+      <div className="flex justify-between gap-2"><TL s={s} id={a} className={"truncate " + (fx >= fy ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(X.act)}</span></div>
+      <div className="flex justify-between gap-2 mt-1"><TL s={s} id={b} className={"truncate " + (fy > fx ? "font-semibold" : "text-slate-500")} /><span className="font-semibold">{f1(Y.act)}</span></div>
       <div className="h-1 rounded-full bg-slate-200 mt-2 overflow-hidden"><div className="h-full bg-green-500" style={{ width: Math.round(winProb(X.r, Y.r, X.act, Y.act) * 100) + "%" }}></div></div><div className="flex justify-between text-xs text-slate-500 mt-1.5"><span>{wpTxt(winProb(X.r, Y.r, X.act, Y.act))} to win</span><span>{wpTxt(1 - winProb(X.r, Y.r, X.act, Y.act))}</span></div>
-      {X.act || Y.act ? <div className="text-xs text-slate-500 mt-1">Actual so far {f1(X.act)} – {f1(Y.act)}</div> : null}
+      <div className="text-xs text-slate-500 mt-1">Projected final {f1(fx)} – {f1(fy)}</div>
     </div>
   );
 }
 function Matchup({ s, setS, wk, setWk }) {
+  // matchup v16: actual points on top, what's still projected underneath (news_logos.py)
   const K = s.blend, done = wk.done || 0;
   const pairOpp = oppOf(wk, s.me);
   const myPair = [s.me, pairOpp || s.opp];
@@ -1693,16 +1713,18 @@ function Matchup({ s, setS, wk, setWk }) {
   const all = [myPair, ...others];
   const [sel, setSel] = useState(0);
   const cur = all[Math.min(sel, all.length - 1)];
+  const gen = (window.ESPN_DATA || {}).generated;
   const P = useMemo(() => {
     const o = {};
-    all.forEach((pr) => pr.forEach((id) => { if (!id || o[id]) return; o[id] = { r: weekProj(s.players.filter((p) => p.ft === id), wk, K, done), act: +((wk.act || {})[id]) || 0 }; }));
+    all.forEach((pr) => pr.forEach((id) => { if (!id || o[id]) return; o[id] = { r: weekLive(s.players.filter((p) => p.ft === id), wk, K, id, { detail: true }), act: +((wk.act || {})[id]) || 0 }; }));
     return o;
-  }, [s.players, wk, K, done, s.opp]);
+  }, [s.players, wk, K, done, s.opp, gen]);
   const [a, b] = cur;
   const A = P[a].r, B = P[b].r, aA = P[a].act, aB = P[b].act;
   const fa = aA + A.total, fb = aB + B.total, margin = fa - fb;
   const final = done >= wk.days.length;
-  let run = aA - aB;
+  const vsP = (R) => { if (!(R.projSoFar > 0 || R.actSoFar > 0)) return null; const v = R.actSoFar - R.projSoFar; return <><br /><span className={v >= 0 ? "text-green-700" : "text-red-600"}>{(v >= 0 ? "+" : "") + f1(v)} vs projected so far</span></>; };
+  let run = (aA - aB) - (A.act - B.act);
   return (
     <div>
       {all.length > 1 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">{all.map(([x, y], i) => <MatchCard key={x + "-" + y} s={s} a={x} b={y} P={P} on={i === sel} mine={i === 0} onSel={() => setSel(i)} />)}</div>}
@@ -1711,27 +1733,29 @@ function Matchup({ s, setS, wk, setWk }) {
         {sel === 0 && !pairOpp ? <select className={inp} value={s.opp} onChange={(e) => setS({ ...s, opp: e.target.value })}>{s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select> : <TL s={s} id={b} className="font-semibold" />}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <Card label={teamName(s, a)} value={f1(fa)} sub={<>{f1(aA)} actual + {f1(A.total)} proj<br />{gamesMoves(s, a, wk, A)}</>} />
-        <Card label={teamName(s, b)} value={f1(fb)} sub={<>{f1(aB)} actual + {f1(B.total)} proj<br />{gamesMoves(s, b, wk, B)}</>} />
+        <Card label={teamName(s, a)} value={f1(aA)} sub={<>+ {f1(A.total)} still projected · {f1(fa)} final est.{vsP(A)}<br />{gamesMoves(s, a, wk, A)}</>} />
+        <Card label={teamName(s, b)} value={f1(aB)} sub={<>+ {f1(B.total)} still projected · {f1(fb)} final est.{vsP(B)}<br />{gamesMoves(s, b, wk, B)}</>} />
         <Card label={final ? "Final margin" : "Projected margin"} value={(margin >= 0 ? "+" : "") + f1(margin)} tone={margin >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"} />
         <Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))} sub={final ? "Week complete" : `${wk.days.length - done} day(s) left · ${A.wasted} games wasted`} />
       </div>
       <LiveBar s={s} wk={wk} setWk={setWk} ids={[a, b]} />
       {wk.days.map((dl, d) => {
-        if (d < done) return <div key={d} className="bg-slate-200 rounded-lg px-3 py-2 mb-2 text-sm text-slate-500">{dl} — completed</div>;
-        const x = A.days[d], y = B.days[d]; run += x.total - y.total;
+        const x = A.days[d], y = B.days[d];
+        const dv = x.act + x.total - (y.act + y.total); run += dv;
+        const tag = x.locked || y.locked ? (x.allDone && y.allDone ? "FINAL" : "LIVE") : "";
         return (
           <div key={d} className="bg-white rounded-xl border border-slate-200 mb-3">
             <div className="flex justify-between items-center px-3 py-2 border-b border-slate-200 text-sm">
               <span className="font-semibold">{dl}</span>
               {/* day header: running total removed */}
+              {tag ? <span className={"text-xs font-semibold " + (tag === "LIVE" ? "text-red-600" : "text-slate-500")}>{tag}</span> : null}
             </div>
             <div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>
             <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               <Side l={x} s={s} id={a} wk={wk} d={d} /><Side l={y} s={s} id={b} wk={wk} d={d} />
             </div>
             <div data-v="daydiff2" data-w="daydiff3" className="border-t border-slate-200 px-3 py-2">
-              {[["Day difference", x.total - y.total], ["Total so far", run]].map(([lab, v]) => (
+              {[["Day difference", dv], ["Total so far", run]].map(([lab, v]) => (
                 <div key={lab} className="flex justify-between items-center py-1.5 font-semibold">
                   <span>{lab}</span>
                   <span className="flex items-center gap-3">
@@ -1744,7 +1768,7 @@ function Matchup({ s, setS, wk, setWk }) {
           </div>
         );
       })}
-      <div className="text-xs text-slate-500">Lineups auto-optimized (9 F, 5 D, 1 UTIL, 2 G). W % / xG = betting line for that game. Tap any matchup above to switch.</div>
+      <div className="text-xs text-slate-500">Games that have started show real ESPN points (LIVE, then FINAL). Everything still to come is projected, with lineups auto-optimized (9 F, 5 D, 1 UTIL, 2 G). W % / xG = betting line for that game. Tap any matchup above to switch.</div>
     </div>
   );
 }
@@ -1910,7 +1934,7 @@ function ClimbPanel({ s, data, ranks }) {
 function League({ s, wk }) {
   const K = s.blend, done = wk.done || 0;
   const P = {};
-  s.teams.forEach((t) => { const r = weekProj(s.players.filter((p) => p.ft === t.id), wk, K, done); const a = +((wk.act || {})[t.id]) || 0; P[t.id] = { ...r, a, fin: a + r.total }; });
+  s.teams.forEach((t) => { const r = weekLive(s.players.filter((p) => p.ft === t.id), wk, K, t.id); const a = +((wk.act || {})[t.id]) || 0; P[t.id] = { ...r, a, fin: a + r.total }; });
   const rec = {}; s.teams.forEach((t) => (rec[t.id] = { w: 0, l: 0, ties: 0, pf: 0 }));
   s.weeks.forEach((w) => {
     const len = (w.dates || w.days || []).length;
@@ -2724,7 +2748,7 @@ function TeamPage({ s, wk, id, back, go }) {
   const roster = s.players.filter((p) => p.ft === id);
   const done = wk.done || 0, o = oppOf(wk, id);
   const act = (t) => +((wk.act || {})[t]) || 0;
-  const mine = weekProj(roster, wk, K, done), theirs = o ? weekProj(s.players.filter((p) => p.ft === o), wk, K, done) : null;
+  const mine = weekLive(roster, wk, K, id), theirs = o ? weekLive(s.players.filter((p) => p.ft === o), wk, K, o) : null;
   const posName = { F: "forwards", D: "defence", G: "goalies" };
   const need = { F: 10, D: 5, G: 2 };
   const myWeak = ["F", "D", "G"].sort((a, b) => (mg[b] || 0) - (mg[a] || 0))[0];
@@ -2881,7 +2905,7 @@ const NewsItem = ({ n }) => (
 // ---------- win probability (news_logos.py) ----------
 const normCdf = (z) => { const t = 1 / (1 + 0.2316419 * Math.abs(z)); const d = 0.3989423 * Math.exp(-z * z / 2); const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
 // spread of a team's remaining points: game-to-game swings of every lineup player-game + 10% projection error
-const projVar = (R) => { let v = (0.1 * R.total) ** 2; R.days.forEach((L) => { if (L) L.start.forEach((p) => { const sd = p.p === "G" ? 3 + 0.8 * p.x : 1.5 + 0.6 * p.x; v += sd * sd; }); }); return v; };
+const projVar = (R) => { let v = (0.1 * R.total) ** 2; R.days.forEach((L) => { if (L) L.start.forEach((p) => { const z = p.x0 != null ? p.x0 : p.x, sd = p.p === "G" ? 3 + 0.8 * z : 1.5 + 0.6 * z; v += sd * sd * (p.vf != null ? p.vf : 1); }); }); return v; };
 const winProb = (A, B, aA, aB) => { const m = aA + A.total - (aB + B.total); const sd = Math.sqrt(projVar(A) + projVar(B)); return sd > 0 ? normCdf(m / sd) : m > 0 ? 1 : m < 0 ? 0 : 0.5; };
 const wpTxt = (v) => Math.round(Math.max(0.01, Math.min(0.99, v)) * 100) + "%";
 function winChance(s, roster) {
@@ -2889,8 +2913,8 @@ function winChance(s, roster) {
   const opp = oppOf(w, s.me) || s.opp;
   if (!opp) return null;
   const K = s.blend, done = w.done || 0;
-  const A = weekProj(roster || s.players.filter((p) => p.ft === s.me), w, K, done);
-  const B = weekProj(s.players.filter((p) => p.ft === opp), w, K, done);
+  const A = weekLive(roster || s.players.filter((p) => p.ft === s.me), w, K, s.me);
+  const B = weekLive(s.players.filter((p) => p.ft === opp), w, K, opp);
   return winProb(A, B, +((w.act || {})[s.me]) || 0, +((w.act || {})[opp]) || 0);
 }
 const afterMove = (s, add, drop) => s.players.filter((p) => p.ft === s.me && p.id !== drop.id).concat([{ ...add, ft: s.me }]);
@@ -2929,7 +2953,7 @@ function FillSlot({ l, s, wk, d }) {
   const open = { F: 9 - c.F, D: 5 - c.D, U: 1 - c.UTIL, G: 2 - c.G };
   const fits = (p) => (p.p === "G" ? open.G > 0 : open[p.p] > 0 || open.U > 0);
   const val = (p) => effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt);
-  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p))
+  const best = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && (wk.games[p.t] || []).includes(d) && fits(p) && gState(p.t, dt).s === "P")
     .map((p) => ({ p, v: val(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 2);
   if (!best.length) return null;
   const ml = movesLeft(s, s.me, wk);
@@ -2970,7 +2994,7 @@ function GoalieStreams({ s, wk }) {
   const base = useMemo(() => winChance(s), [s]);
   const st = strategy(base);
   const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, list: s.players
-    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0)
+    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P")
     .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
     .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
   return (
@@ -3056,9 +3080,10 @@ function MobileHeader({ s, setS, tab, go, ageH }) {
   );
 }
 function MSide({ p, right }) {
+  // msside v16: real ESPN points once a game starts (news_logos.py)
   const al = right ? "flex-end" : "flex-start";
   if (!p) return <div className="m-cell" style={{ justifyContent: al }}><span className="text-sm text-slate-400">Empty</span></div>;
-  const st = p.p === "G" ? mStart(p.gs) : "";
+  const st = p.p === "G" && !p.st ? mStart(p.gs) : "";
   const stc = st === "Confirmed" ? "text-green-700" : st === "May sit" ? "text-red-600" : "text-amber-600";
   const inj = p.status && p.status !== "ACTIVE" ? M_ST[p.status] || "" : "";
   const info = (
@@ -3068,10 +3093,10 @@ function MSide({ p, right }) {
         <span style={{ flexShrink: 0, lineHeight: 0 }}><TeamLogo t={p.t} size={16} /></span>
         {inj ? <span className="text-xs text-red-600" style={{ flexShrink: 0 }}>{inj}</span> : null}
       </div>
-      <div className="text-xs text-slate-500 truncate">{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</div>
+      <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} />{p.st === "L" ? " · proj " + f1(p.x0) : ""}</> : <>{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</>}</div>
     </div>
   );
-  const pts = <div className="m-pts">{f1(p.x)}</div>;
+  const pts = <div className="m-pts">{p.st ? (p.a == null ? "–" : f1(p.a)) : f1(p.x)}</div>;
   return <div className="m-cell">{right ? pts : info}{right ? info : pts}</div>;
 }
 function H2H({ x, y, s, a, b, wk, d }) {
@@ -3081,18 +3106,20 @@ function H2H({ x, y, s, a, b, wk, d }) {
     for (let i = 0; i < Math.max(A.length, B.length); i++) rows.push([sl, A[i] || null, B[i] || null]);
   });
   const sit = (l, id) => (l.bench.length ? <div className="text-xs text-slate-500 px-3 pt-2">{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
+  const line = (l) => (l.locked ? "actual " + f1(l.act) + (l.allDone ? (l.proj != null ? " (projected " + f1(l.proj) + ")" : "") : " + " + f1(l.total) + " to come") : "projected " + f1(l.total));
   return (
     <div>
       <div className="m-h2h-head">
-        <div className="min-w-0"><div className="text-xs text-slate-500 truncate">{teamName(s, a)}</div><div className="m-big">{f1(x.total)}</div></div>
+        <div className="min-w-0"><div className="text-xs text-slate-500 truncate">{teamName(s, a)}</div><div className="m-big">{f1((x.act || 0) + x.total)}</div></div>
         <div className="text-xs text-slate-500 text-center pb-1">vs</div>
-        <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate">{teamName(s, b)}</div><div className="m-big">{f1(y.total)}</div></div>
+        <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate">{teamName(s, b)}</div><div className="m-big">{f1((y.act || 0) + y.total)}</div></div>
       </div>
       {rows.length ? rows.map(([sl, p, q], i) => (
         <div key={i} className="m-row"><MSide p={p} /><div className="m-slot">{sl === "UTIL" ? "U" : sl}</div><MSide p={q} right /></div>
       )) : <div className="text-sm text-slate-400 px-3 py-3">No games for either team.</div>}
       {sit(x, a)}{sit(y, b)}
       {x.empty || y.empty ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots: {teamName(s, a)} {x.empty} · {teamName(s, b)} {y.empty}</div> : null}
+      {x.locked || y.locked ? <div className="text-xs text-slate-500 px-3 pt-2">{teamName(s, a)}: {line(x)} · {teamName(s, b)}: {line(y)}</div> : null}
       {a === s.me ? <div className="px-3"><FillSlot l={x} s={s} wk={wk} d={d} /></div> : null}
       <div className="h-2"></div>
     </div>
@@ -3371,6 +3398,87 @@ function MyInjProt({ s, setS, wk }) {
       </div>
     </div>
   );
+}
+
+// ---------- round 16: live and final points from ESPN (news_logos.py) ----------
+const ESLOT = { 3: "F", 4: "D", 6: "UTIL", 5: "G" };
+const CAPK = { F: "F", D: "D", UTIL: "U", G: "G" };
+let __PB = null, __NG = null;
+const pby = () => { const L = window.__PLAYERS || []; if (!__PB || __PB.k !== L) __PB = { k: L, m: Object.fromEntries(L.map((p) => [p.id, p])) }; return __PB.m; };
+const actDay = (tid, dt) => { const D = ((window.ESPN_DATA || {}).daily || {})[dt]; return D ? D[String(tid).replace(/^t/, "")] || null : null; };
+const gState = (t, dt) => {
+  const x = ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];
+  if (x && x.s === "F") return { s: "F", f: 1 };
+  if (x && x.s === "L") return { s: "L", f: x.f || 0 };
+  const g = gameOf(t, dt), st = g && g.st ? Date.parse(g.st) : NaN;
+  if (!isNaN(st)) { const el = (Date.now() - st) / 36e5; return el < 0 ? { s: "P", f: 0 } : el > 3.5 ? { s: "F", f: 1 } : { s: "L", f: Math.min(0.95, el / 2.6) }; }
+  return dt && dt < todayISO() ? { s: "F", f: 1 } : { s: "P", f: 0 };
+};
+const LiveTag = ({ st }) => (st === "L" ? <span className="text-xs font-semibold text-red-600">LIVE</span> : st === "F" ? <span className="text-xs text-slate-500">FINAL</span> : null);
+// players who beat or missed their projection get 10% of the average miss per game, capped at 15%
+function liveNudges(K) {
+  const E = window.ESPN_DATA || {}, key = [E.generated, K, window.__PMODE, window.__PLAYERS];
+  if (__NG && __NG.k.every((v, i) => v === key[i])) return __NG.m;
+  const P = pby(), acc = {};
+  Object.entries(E.daily || {}).forEach(([dt, T]) => Object.values(T || {}).forEach((tm) => Object.entries(tm || {}).forEach(([pid, v]) => {
+    const p = P["e" + pid];
+    if (!p || !v || v[0] == null || gState(p.t, dt).s !== "F") return;
+    const a = (acc[p.id] = acc[p.id] || { s: 0, n: 0, seen: {} });
+    if (a.seen[dt]) return;
+    a.seen[dt] = 1; a.s += v[0] - effAvg(p, K, dt); a.n++;
+  })));
+  const m = {};
+  Object.entries(acc).forEach(([id, a]) => { const b = effAvg(P[id], K); if (!(b > 0) || !a.n) return; const adj = Math.max(-0.15, Math.min(0.15, (0.1 * a.s / a.n) / b)); if (Math.abs(adj) >= 0.005) m[id] = 1 + adj; });
+  __NG = { k: key, m };
+  return m;
+}
+function weekLive(roster, wk, K, tid, opt) {
+  // live week v16: real points for games that started (ESPN lineup), projection for everything still to come
+  const dates = wk.dates || [], ng = liveNudges(K), P = pby(), today = todayISO();
+  const r = roster.map((p) => (ng[p.id] ? { ...p, gwMul: (p.gwMul || 1) * ng[p.id] } : p));
+  const byId = {}; r.forEach((p) => (byId[p.id] = p));
+  let actSoFar = 0, projSoFar = 0;
+  const days = wk.days.map((_, d) => {
+    const dt = dates[d];
+    const plays = (p) => (wk.games[p.t] || []).includes(d);
+    const lk = (p) => !!dt && plays(p) && gState(p.t, dt).s !== "P";
+    const full = opt && opt.detail ? dayLineup(roster, wk, d, K).total : null;
+    const AD = dt ? actDay(tid, dt) : null;
+    const adAct = AD ? Object.entries(AD).filter(([, v]) => v && ESLOT[v[1]]) : [];
+    if (!dt || (!r.some(lk) && !adAct.some(([, v]) => v[0] != null))) {
+      const L = dayLineup(r, wk, d, K);
+      return { ...L, act: 0, proj: full != null ? full : L.total, locked: 0, liveN: 0, openN: L.start.length, allDone: !!dt && dt < today, benchAct: [], empty: dt && dt < today ? 0 : L.empty };
+    }
+    const cap = { F: 9, D: 5, U: 1, G: 2 }, rows = [], done = new Set();
+    let act = 0;
+    const take = (p, pp, slot, a, assume) => {
+      const g = gState(p.t, dt), gs = p.p === "G" ? gStart(p, dt) : null;
+      const base = (q) => effAvg(q, K, dt) * (a != null ? 1 : (gs ? gs.v : p.prob) * avail(p, dt));
+      const x0 = base(pp), playing = assume || a != null || (g.s === "L" && g.f < 0.3);
+      const vf = g.s === "L" && playing ? 1 - g.f : 0;
+      rows.push({ ...pp, slot, st: g.s, a, x0, x: x0 * vf, vf, dt, gs: gs ? gs.l : "" });
+      if (a != null) { act += a; actSoFar += a; projSoFar += base(p) * (g.s === "F" ? 1 : g.f); }
+      done.add(p.id);
+      if (CAPK[slot]) cap[CAPK[slot]]--;
+    };
+    if (AD) {
+      adAct.forEach(([pid, v]) => {
+        const p = P["e" + pid];
+        if (!p) { if (v[0] != null) { act += v[0]; actSoFar += v[0]; } return; }
+        if (plays(p) ? gState(p.t, dt).s === "P" : v[0] == null) return;
+        take(p, byId[p.id] || p, ESLOT[v[1]], v[0], false);
+      });
+    } else {
+      dayLineup(r, wk, d, K).start.filter(lk).forEach((q) => { const raw = roster.find((x) => x.id === q.id) || q; take(raw, byId[q.id] || raw, q.slot, null, true); });
+    }
+    const benchAct = AD ? Object.entries(AD).filter(([, v]) => v && v[1] === 7 && v[0]).map(([pid, v]) => ({ p: P["e" + pid], a: v[0] })).filter((x) => x.p && gState(x.p.t, dt).s !== "P") : [];
+    Object.keys(cap).forEach((k) => (cap[k] = Math.max(0, cap[k])));
+    const L = dayLineup(r.filter((p) => !done.has(p.id) && !lk(p)), wk, d, K, cap);
+    const liveN = rows.filter((x) => x.vf > 0).length;
+    return { start: [...rows, ...L.start], bench: L.bench, total: rows.reduce((s2, x) => s2 + x.x, 0) + L.total, act, proj: full, locked: rows.length, liveN, openN: L.start.length, allDone: !rows.some((x) => x.st === "L") && !L.start.length, benchAct, empty: dt < today ? 0 : L.empty, sched: L.sched + liveN };
+  });
+  const sum = (f) => days.reduce((a, x) => a + f(x), 0);
+  return { days, total: sum((x) => x.total), act: sum((x) => x.act), actSoFar, projSoFar, used: sum((x) => x.openN + x.liveN), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty), sched: sum((x) => x.sched) };
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);

@@ -155,6 +155,67 @@ data = {"generated": datetime.now().isoformat(timespec="seconds"),
         "leagueName": lg.get("settings", {}).get("name", ""), "myTeamId": MY_TEAM_ID,
         "currentPeriod": current, "teams": teams, "players": players,
         "periods": periods, "matchups": matchups, "slots": {str(k): v for k, v in slots.items()}, "acq": ({str(t.get("id")): ((t.get("transactionCounter") or {}).get("matchupAcquisitionTotals") or {}) for t in lg.get("teams", [])} if any("transactionCounter" in t for t in lg.get("teams", [])) else None)}
+# 3b) actual points per player per day + NHL game states (news_logos.py round 16)
+try:
+    today_et = datetime.now(ET).date()
+    sp_of = {d_.isoformat(): pid_ for pid_, d_ in period_date.items()}
+    daily = {}
+    for back_ in range(6, -1, -1):
+        dd_ = (today_et - timedelta(days=back_)).isoformat()
+        sp_ = sp_of.get(dd_)
+        if not sp_:
+            continue
+        try:
+            rs_ = get(LEAGUE, params={"view": "mRoster", "scoringPeriodId": sp_})
+        except Exception as ex:
+            print(f"(daily) ESPN rosters for {dd_} failed: {ex}")
+            continue
+        dump(f"espn-raw-daily-{dd_}.json", rs_)
+        day_ = {}
+        for tt_ in rs_.get("teams", []):
+            tm_ = {}
+            for en_ in (tt_.get("roster") or {}).get("entries", []):
+                pl_ = (en_.get("playerPoolEntry") or {}).get("player") or {}
+                pts_ = None
+                for st_ in pl_.get("stats") or []:
+                    if st_.get("scoringPeriodId") == sp_ and st_.get("statSourceId") == 0:
+                        pts_ = round(st_.get("appliedTotal") or 0, 2)
+                        break
+                tm_[str(en_.get("playerId"))] = [pts_, en_.get("lineupSlotId")]
+            day_[str(tt_.get("id"))] = tm_
+        daily[dd_] = day_
+    gstate = {}
+    for back_ in (1, 0):
+        dd_ = (today_et - timedelta(days=back_)).isoformat()
+        try:
+            js_ = requests.get(f"https://api-web.nhle.com/v1/score/{dd_}", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+        except Exception as ex:
+            print(f"(daily) NHL scores for {dd_} failed: {ex}")
+            continue
+        gs_ = {}
+        for g_ in js_.get("games", []):
+            s_ = str(g_.get("gameState") or "")
+            s_ = "F" if s_ in ("FINAL", "OFF") else "L" if s_ in ("LIVE", "CRIT") else "P"
+            per_ = (g_.get("periodDescriptor") or {}).get("number") or 1
+            rem_ = (g_.get("clock") or {}).get("secondsRemaining")
+            rem_ = 1200 if rem_ is None else rem_
+            f_ = 1.0 if s_ == "F" else 0.0 if s_ == "P" else min(0.99, ((per_ - 1) * 1200 + (1200 - rem_)) / 3600)
+            for side_ in ("homeTeam", "awayTeam"):
+                ab_ = str((g_.get(side_) or {}).get("abbrev") or "").upper()
+                gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2)}
+        gstate[dd_] = gs_
+    data["daily"] = daily
+    data["gstate"] = gstate
+    mine_ = str(MY_TEAM_ID)
+    for dd_, day_ in daily.items():
+        tot_ = sum((v[0] or 0) for v in day_.get(mine_, {}).values() if v[1] in (3, 4, 5, 6))
+        print(f"(daily) {dd_}: your active players scored {round(tot_, 1)}")
+    for m_ in matchups:
+        if m_["period"] == current and MY_TEAM_ID in (m_["home"], m_["away"]):
+            print(f"(daily) ESPN week score for you: {m_['hs'] if m_['home'] == MY_TEAM_ID else m_['as']}")
+    print("(daily) NHL game states:", {k_: sorted(set(v["s"] for v in g2_.values())) for k_, g2_ in gstate.items()})
+except Exception as ex:
+    print(f"(check) daily actual points failed: {ex}")
 # 4) Starting goalies from Daily Faceoff (today + tomorrow)
 import re
 TEAM_WORDS = [("blue jackets", "CBJ"), ("red wings", "DET"), ("maple leafs", "TOR"), ("golden knights", "VGK"),
