@@ -2875,5 +2875,39 @@ _fix_before_r23 = fix
 def fix(t):
     return round23(_fix_before_r23(t))
 
+# ---------- round 24: a player only counts on a day if ESPN has him on that day's roster ----------
+R24_HELPER = r'''// ---------- round 24: a player counts on a day only if ESPN has him on that day's roster (news_logos.py) ----------
+const onEspnDay = (AD, p) => !AD || !Object.keys(AD).length || AD[String(p.id).replace(/^e/, "")] != null;
+
+'''
+
+
+def round24(t):
+    t = lit(t, "roster check: helper", ROOT, R24_HELPER + ROOT, "const onEspnDay =")
+    t = lit(t, "roster check: projected day total",
+            "const full = opt && opt.detail ? dayLineup(roster, wk, d, K).total : null;",
+            "const full = opt && opt.detail ? dayLineup(roster.filter((p) => onEspnDay(dt ? actDay(tid, dt) : null, p)), wk, d, K).total : null;",
+            "dayLineup(roster.filter((p) => onEspnDay(")
+    t = lit(t, "roster check: days with no games started",
+            "const L = dayLineup(r, wk, d, K);",
+            "const L = dayLineup(r.filter((p) => onEspnDay(AD, p)), wk, d, K);",
+            "dayLineup(r.filter((p) => onEspnDay(AD, p)), wk, d, K);")
+    t = lit(t, "roster check: rest of a live day",
+            "dayLineup(r.filter((p) => !done.has(p.id) && !lk(p)), wk, d, K, cap)",
+            "dayLineup(r.filter((p) => onEspnDay(AD, p) && !done.has(p.id) && !lk(p)), wk, d, K, cap)",
+            "onEspnDay(AD, p) && !done.has(p.id)")
+    t = lit(t, "roster check: ESPN lineup check",
+            "const toStart = L.start.filter((p) => !act(p) && !locked(p));",
+            "const toStart = L.start.filter((p) => sid(p) != null && !act(p) && !locked(p));",
+            "sid(p) != null && !act(p)")
+    return t
+
+
+_fix_before_r24 = fix
+
+
+def fix(t):
+    return round24(_fix_before_r24(t))
+
 if __name__ == "__main__":
     main()
