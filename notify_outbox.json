@@ -249,6 +249,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-09-30|b4380fa19af2",
+   "at": "2026-09-30T22:08:07Z",
+   "title": "Your player: injury update",
+   "text": "Matt Duchene (DAL) injury status: Out -> Injury Reserve",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
