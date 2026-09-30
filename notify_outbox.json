@@ -125,6 +125,15 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-09-30T00:53:23Z"
+  },
+  {
+   "k": "2026-09-29|c55200fd9f3f",
+   "at": "2026-09-30T04:04:07Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
