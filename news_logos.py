@@ -2314,6 +2314,79 @@ def round16(t):
 _fix_before_r16 = fix
 
 
+# ---------- round 17: player points from ESPN box scores (same numbers as FantasyCast), no "DNP" ----------
+
+SYNC17_START = "    sp_of = {d_.isoformat(): pid_ for pid_, d_ in period_date.items()}\n"
+SYNC17_END = "        daily[dd_] = day_\n"
+SYNC17_NEW = r'''    sp_of = {d_.isoformat(): pid_ for pid_, d_ in period_date.items()}
+    # 3c) per-player points from ESPN box scores (news_logos.py round 17)
+    cur_sp_ = lg.get("scoringPeriodId") or (lg.get("status") or {}).get("latestScoringPeriod")
+    if cur_sp_:
+        span_ = [(pdate(x_), x_) for x_ in range(max(1, int(cur_sp_) - 6), int(cur_sp_) + 1)]
+    else:
+        span_ = [(dd_, sp_of.get(dd_)) for dd_ in ((today_et - timedelta(days=b_)).isoformat() for b_ in range(6, -1, -1))]
+    daily = {}
+    for dd_, sp_ in span_:
+        if not sp_:
+            continue
+        day_ = {}
+        try:
+            rs_ = get(LEAGUE, params=[("view", "mMatchupScore"), ("view", "mScoreboard"), ("scoringPeriodId", sp_)])
+            dump(f"espn-raw-daily-{dd_}.json", rs_)
+            for m_ in rs_.get("schedule", []):
+                for side_ in ("home", "away"):
+                    ts_ = m_.get(side_) or {}
+                    ents_ = (ts_.get("rosterForCurrentScoringPeriod") or {}).get("entries") or []
+                    if not ents_:
+                        continue
+                    tm_ = {}
+                    for en_ in ents_:
+                        pe_ = en_.get("playerPoolEntry") or {}
+                        pts_ = None
+                        for st_ in (pe_.get("player") or {}).get("stats") or []:
+                            if st_.get("scoringPeriodId") == sp_ and st_.get("statSourceId") == 0:
+                                pts_ = st_.get("appliedTotal")
+                                break
+                        if pts_ is None:
+                            pts_ = pe_.get("appliedStatTotal")
+                        tm_[str(en_.get("playerId"))] = [None if pts_ is None else round(pts_, 2), en_.get("lineupSlotId")]
+                    day_[str(ts_.get("teamId"))] = tm_
+        except Exception as ex:
+            print(f"(daily) ESPN box scores for {dd_} failed: {ex}")
+        mine_n_ = sum(1 for v in day_.get(str(MY_TEAM_ID), {}).values() if v[0])
+        print(f"(daily) {dd_} (scoring period {sp_}): {len(day_)} teams, {mine_n_} of your players with points")
+        if day_:
+            daily[dd_] = day_
+'''
+
+_fix_sync_before_r17 = PY_FIXES[SYNC]
+
+
+def fix_sync17(t):
+    t = _fix_sync_before_r17(t)
+    t = sub_once(t, "sync: player points from ESPN box scores", re.escape(SYNC17_START) + r".*?" + re.escape(SYNC17_END),
+                 SYNC17_NEW, "# 3c) per-player points from ESPN box scores", re.S)
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync17
+
+
+def round17(t):
+    t = lit(t, "matchup rows: no DNP",
+            '<div className="font-semibold">{p.a == null ? (p.st === "F" ? <span className="text-xs text-slate-400 font-normal">DNP</span> : "–") : f1(p.a)}</div>',
+            '<div className="font-semibold">{p.a == null ? "–" : f1(p.a)}</div>',
+            '<div className="font-semibold">{p.a == null ? "–" : f1(p.a)}</div>')
+    return t
+
+
+_fix_before_r17 = fix
+
+
+def fix(t):
+    return round17(_fix_before_r17(t))
+
 def fix(t):
     return round16(_fix_before_r16(t))
 
