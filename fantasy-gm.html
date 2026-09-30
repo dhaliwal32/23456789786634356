@@ -3011,7 +3011,7 @@ function espnLineupChecks(mine, L, wk, di, dday, today) {
   const locked = (p) => { const g = gameOf(p.t, dday); return !!(g && g.st && new Date(g.st) <= new Date()); };
   const plays = (p) => (wk.games[p.t] || []).includes(di);
   const best = new Set(L.start.map((p) => p.id));
-  const toStart = L.start.filter((p) => !act(p) && !locked(p));
+  const toStart = L.start.filter((p) => sid(p) != null && !act(p) && !locked(p));
   if (!toStart.length) return [["good", "Your ESPN lineup is already the best one for today"]];
   const out = mine.filter((p) => act(p) && !best.has(p.id) && !locked(p)).sort((a, b) => (plays(a) ? 1 : 0) - (plays(b) ? 1 : 0)).slice(0, toStart.length);
   return [["bad", "On ESPN, start " + toStart.map((p) => p.n).join(", ") + (out.length ? " and bench " + out.map((p) => p.n).join(", ") : "")]];
@@ -3523,11 +3523,11 @@ function weekLive(roster, wk, K, tid, opt) {
     const dt = dates[d];
     const plays = (p) => (wk.games[p.t] || []).includes(d);
     const lk = (p) => !!dt && plays(p) && gState(p.t, dt).s !== "P";
-    const full = opt && opt.detail ? dayLineup(roster, wk, d, K).total : null;
+    const full = opt && opt.detail ? dayLineup(roster.filter((p) => onEspnDay(dt ? actDay(tid, dt) : null, p)), wk, d, K).total : null;
     const AD = dt ? actDay(tid, dt) : null;
     const adAct = AD ? Object.entries(AD).filter(([, v]) => v && ESLOT[v[1]]) : [];
     if (!dt || (!r.some(lk) && !adAct.some(([, v]) => v[0] != null))) {
-      const L = dayLineup(r, wk, d, K);
+      const L = dayLineup(r.filter((p) => onEspnDay(AD, p)), wk, d, K);
       return { ...L, act: 0, proj: full != null ? full : L.total, locked: 0, liveN: 0, openN: L.start.length, allDone: !!dt && dt < today, benchAct: [], empty: dt && dt < today ? 0 : L.empty };
     }
     const cap = { F: 9, D: 5, U: 1, G: 2 }, rows = [], done = new Set();
@@ -3554,7 +3554,7 @@ function weekLive(roster, wk, K, tid, opt) {
     }
     const benchAct = AD ? Object.entries(AD).filter(([, v]) => v && v[1] === 7 && v[0]).map(([pid, v]) => ({ p: P["e" + pid], a: v[0] })).filter((x) => x.p && gState(x.p.t, dt).s !== "P") : [];
     Object.keys(cap).forEach((k) => (cap[k] = Math.max(0, cap[k])));
-    const L = dayLineup(r.filter((p) => !done.has(p.id) && !lk(p)), wk, d, K, cap);
+    const L = dayLineup(r.filter((p) => onEspnDay(AD, p) && !done.has(p.id) && !lk(p)), wk, d, K, cap);
     const liveN = rows.filter((x) => x.vf > 0).length;
     return { start: [...rows, ...L.start].sort((a, b) => ({ F: 0, D: 1, UTIL: 2, G: 3 }[a.slot] ?? 4) - ({ F: 0, D: 1, UTIL: 2, G: 3 }[b.slot] ?? 4)), bench: L.bench, total: rows.reduce((s2, x) => s2 + x.x, 0) + L.total, act, proj: full, locked: rows.length, liveN, openN: L.start.length, allDone: !rows.some((x) => x.st === "L") && !L.start.length, benchAct, empty: dt < today ? 0 : L.empty, sched: L.sched + liveN };
   });
@@ -3570,6 +3570,9 @@ const statLine = (x) => {
   const n = (v, l) => (v ? (v > 1 ? v + " " + l : l) : null);
   return [n(x.g, "G"), n(x.a, "A"), (x.pm > 0 ? "+" : "") + (x.pm || 0), n(x.sog, "SOG"), n(x.pim, "PIM"), n(x.hit, "HIT"), n(x.blk, "BLK"), x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
 };
+
+// ---------- round 24: a player counts on a day only if ESPN has him on that day's roster (news_logos.py) ----------
+const onEspnDay = (AD, p) => !AD || !Object.keys(AD).length || AD[String(p.id).replace(/^e/, "")] != null;
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
