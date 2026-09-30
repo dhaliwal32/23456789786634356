@@ -175,6 +175,17 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-09-30T15:06:39Z"
+  },
+  {
+   "k": "2026-09-30|a150e9fafc63",
+   "at": "2026-09-30T16:36:32Z",
+   "title": "Goalie not starting tonight",
+   "text": "Scott Wedgewood (COL, 7:00 PM): Daily Faceoff lists Mackenzie Blackwood (Confirmed). Swap in a goalie who is starting.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-09-30T16:36:32Z"
   }
  ],
  "sent": {
