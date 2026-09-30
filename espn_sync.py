@@ -133,13 +133,14 @@ for e in raw:
                     "gp": round(tot / avg) if tot and avg else 0, "tot": round(tot or 0, 1),
                     "avg": round(avg or 0, 2), "pavg": round(pavg or 0, 2),
                     "own": round((p.get("ownership") or {}).get("percentOwned") or 0, 1),
-                    "chg": round((p.get("ownership") or {}).get("percentChange") or 0, 1)})
+                    "chg": round((p.get("ownership") or {}).get("percentChange") or 0, 1), "wv": 1 if e.get("status") == "WAIVERS" else 0})
 if skipped:
     print(f"(check) players skipped, unknown NHL team id: {skipped}")
 if players:
     x = players[0]
     print(f"(check) example: {x['n']} {x['t']} {x['p']}  team={x['ft']}  proj avg={x['pavg']}")
 
+print(f"(check) players on waivers: {sum(1 for x_ in players if x_.get('wv'))}")
 slots = {}
 try:
     rl = get(LEAGUE, params={"view": "mRoster"})
