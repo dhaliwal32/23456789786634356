@@ -87,6 +87,33 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-09-29T20:02:23Z"
+  },
+  {
+   "k": "2026-09-29|4a69791fc53e",
+   "at": "2026-09-30T00:03:10Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-09-29|2d0799a5c870",
+   "at": "2026-09-30T00:03:10Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-09-29|f5f782e9626f",
+   "at": "2026-09-30T00:03:10Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
