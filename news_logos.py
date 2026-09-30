@@ -2471,5 +2471,90 @@ _fix_before_r19 = fix
 def fix(t):
     return round19(_fix_before_r19(t))
 
+# ---------- round 20: Goalie streams lists every game's Daily Faceoff starting goalies ----------
+
+R20_GOALIES = r'''function GoalieStreams({ s, wk }) {
+  // goalie streams v20: every game's Daily Faceoff starters, then the best free agents (news_logos.py)
+  const K = s.blend, today = todayISO(), dates = wk.dates || [];
+  const base = useMemo(() => winChance(s), [s]);
+  const st = strategy(base);
+  const byName = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.p === "G") o[nrm(p.n)] = p; }); return o; }, [s.players]);
+  const raw = (window.ESPN_DATA || {}).goalies || s.goalies || {};
+  const GD = (window.GAMES_DATA || {}).games || {};
+  const tagOf = (status) => { const x = (status || "").toLowerCase(); return x.includes("confirm") && !x.includes("un") ? ["Confirmed", "bg-green-100 text-green-700"] : /likely|expected|project/.test(x) ? ["Likely", "bg-amber-100 text-amber-800"] : ["Unconfirmed", "bg-slate-200 text-slate-600"]; };
+  const starters = (dt) => {
+    const day = raw[dt] || {}, g = GD[dt] || {};
+    const side = (t) => { const e = Object.entries(day).find(([, x]) => x && x.team === t); return { t, name: e ? e[0] : null, status: e ? e[1].status : "", p: e ? byName[nrm(e[0])] || null : null, o: oddsFor(t, dt) }; };
+    return Object.entries(g).filter(([, v]) => v.h === 1).map(([home, v]) => ({ away: side(v.o), home: side(home), st: v.st, dt }))
+      .sort((a, b) => String(a.st || "").localeCompare(String(b.st || "")));
+  };
+  const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, games: starters(dt), list: s.players
+    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P")
+    .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
+    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
+  const own = (p) => (!p ? null : p.ft === s.me ? <span className="text-blue-600 font-semibold">yours</span> : p.ft === "fa" ? <span className="text-green-700 font-semibold">FA</span> : <span>{teamName(s, p.ft)}</span>);
+  const Gl = ({ x, right }) => {
+    const tg = x.name ? tagOf(x.status) : null;
+    const bits = [own(x.p), x.o ? "W " + Math.round(x.o.win * 100) + "%" : null].filter(Boolean);
+    return (
+      <div className={"flex items-center gap-2 min-w-0 flex-1" + (right ? " flex-row-reverse text-right" : "")}>
+        <TeamLogo t={x.t} size={28} />
+        <div className="min-w-0">
+          <div className={"flex flex-wrap items-center gap-x-2 gap-y-0.5" + (right ? " justify-end" : "")}>
+            {x.name ? (x.p ? <PN p={x.p} className="truncate font-medium" /> : <span className="font-medium truncate">{x.name}</span>) : <span className="text-slate-400">Not announced</span>}
+            {tg ? <span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span> : null}
+          </div>
+          {bits.length ? <div className="text-xs text-slate-500">{bits.map((b, i) => <span key={i}>{i ? " · " : ""}{b}</span>)}</div> : null}
+        </div>
+      </div>
+    );
+  };
+  const head = (t) => <div className="text-xs uppercase tracking-wide text-slate-500 mt-3 mb-1">{t}</div>;
+  return (
+    <Section title="Goalie streams" sub="Every game's starting goalies from Daily Faceoff, then the best free-agent goalies for each day left this week. Win chance from betting odds.">
+      {st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
+      {days.length ? days.map(({ dt, games, list }) => (
+        <div key={dt} className="mt-5">
+          <div className="font-semibold">{dt === today ? "Today" : dayLabel(dt)}</div>
+          {head("Starting goalies (Daily Faceoff)")}
+          {games.length ? games.map((gm, i) => { const gs = gState(gm.home.t, dt); return (
+            <div key={i} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
+              <Gl x={gm.away} />
+              <div className="text-xs text-slate-500 text-center whitespace-nowrap" style={{ minWidth: 60 }}>{gs.s !== "P" ? <LiveTag st={gs.s} /> : gameTime({ st: gm.st })}<div className="text-slate-400">@</div></div>
+              <Gl x={gm.home} right />
+            </div>
+          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No game times loaded for this day.</div>}
+          {head("Free agents to stream")}
+          {list.length ? list.map(({ p, gs, o, g, v }) => { const tg = startTag(gs), dr = dropFor(s, p); return (
+            <div key={p.id} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
+              <TeamLogo t={p.t} size={30} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2"><PN p={p} /><span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span></div>
+                <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, o ? "W " + Math.round(o.win * 100) + "%" : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
+              </div>
+              <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} base={base} /> : null}</div>
+            </div>
+          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>}
+        </div>
+      )) : <div className="text-slate-400">No days left this week.</div>}
+    </Section>
+  );
+}
+
+'''
+
+
+def round20(t):
+    t = block(t, "goalie streams: every game's starting goalies", "function GoalieStreams({ s, wk }) {",
+              "// ---------- moves used from ESPN", R20_GOALIES, "goalie streams v20")
+    return t
+
+
+_fix_before_r20 = fix
+
+
+def fix(t):
+    return round20(_fix_before_r20(t))
+
 if __name__ == "__main__":
     main()
