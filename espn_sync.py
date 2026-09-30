@@ -213,9 +213,14 @@ try:
             rem_ = (g_.get("clock") or {}).get("secondsRemaining")
             rem_ = 1200 if rem_ is None else rem_
             f_ = 1.0 if s_ == "F" else 0.0 if s_ == "P" else min(0.99, ((per_ - 1) * 1200 + (1200 - rem_)) / 3600)
-            for side_ in ("homeTeam", "awayTeam"):
+            pd_ = g_.get("periodDescriptor") or {}
+            ck_ = g_.get("clock") or {}
+            pdl_ = "OT" if pd_.get("periodType") == "OT" else "SO" if pd_.get("periodType") == "SO" else {1: "1st", 2: "2nd", 3: "3rd"}.get(per_, str(per_))
+            hs_, as_ = (g_.get("homeTeam") or {}).get("score"), (g_.get("awayTeam") or {}).get("score")
+            for side_, me_, op_ in (("homeTeam", hs_, as_), ("awayTeam", as_, hs_)):
                 ab_ = str((g_.get(side_) or {}).get("abbrev") or "").upper()
-                gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2)}
+                gs_[ALIAS.get(ab_, ab_)] = {"s": s_, "f": round(f_, 2), "my": me_, "op": op_, "per": pdl_,
+                                            "clk": ck_.get("timeRemaining") or "", "int": bool(ck_.get("inIntermission"))}
         gstate[dd_] = gs_
     data["daily"] = daily
     data["gstate"] = gstate
