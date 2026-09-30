@@ -195,6 +195,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-09-30|5b813ea96f97",
+   "at": "2026-09-30T19:07:28Z",
+   "title": "Your player: lineup change",
+   "text": "Matt Duchene (DAL) is no longer in the lineup (was 3rd line) - scratched, hurt or moved",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-09-30|3439ed6fb2a6",
+   "at": "2026-09-30T19:07:28Z",
+   "title": "Your player: power-play change",
+   "text": "Matt Duchene (DAL) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
