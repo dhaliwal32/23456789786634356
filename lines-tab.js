@@ -463,7 +463,7 @@
         </div>
         {hurt && <div className="text-sm text-red-600 mt-1">✚ {String(p.status || "").replace(/_/g, " ")}{back.d ? ` · back around ${H.dayLabel(back.d)} (${back.src})` : ""}{inj && inj.note ? ` — ${inj.note}` : ""}</div>}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3">
-          <H.Card label={`${L.season} fantasy pts`} value={hasId ? H.f1(p.tot || 0) : f.cur ? H.f1(f.cur[0]) : "–"} sub={hasId ? <>{p.gp ? `${p.gp} GP · ${H.f1(p.tot / p.gp)}/game` : "no games yet"}{tn ? <> · tonight {tn.a == null ? "–" : H.f1(tn.a)} <LT st={tn.st} /></> : null}</> : fmt(f.cur)} />
+          <H.Card label={`${L.season} fantasy pts`} value={hasId ? H.f1(p.tot || 0) : f.cur ? H.f1(f.cur[0]) : "–"} sub={hasId ? <>{p.gp ? `${p.gp} GP · ${H.f1(p.tot / p.gp)}/game` : "no games yet"}{tn ? <> · tonight {tn.a == null ? "–" : H.f1(tn.a)} <LT st={tn.st} t={it.t} dt={today} /></> : null}</> : fmt(f.cur)} />
           <H.Card label="Last season" value={f.last ? H.f1(f.last[0]) : "–"} sub={fmt(f.last)} />
           <H.Card label="Projection / game" value={hasId ? H.f1(H.effAvg(p, K)) : "–"} sub={hasId ? `${MODE[window.__PMODE] || ""} mode · ESPN ${H.f1(p.avg)}${p.gp ? ` · was ${H.f1(H.effAvg({ ...p, gp: 0, tot: 0 }, K))} before ${p.gp} game${p.gp === 1 ? "" : "s"}` : ""}` : "no projection"} />
           <H.Card label="Rest of this week" value={hasId ? H.f1(wkPts) : "–"} sub={`${wkIdx.length} game${wkIdx.length === 1 ? "" : "s"} left`} />
@@ -477,7 +477,7 @@
                   <td className="py-1 pr-2 whitespace-nowrap">{H.dayLabel(g.d)}</td>
                   <td className="py-1 pr-2">{g.h ? "vs" : "@"} {g.o}</td>
                   <td className="py-1 pr-2 text-xs text-slate-500">{r && r.g ? r.g.l || `${Math.round(r.g.v * 100)}% start chance` : ""}</td>
-                  <td className="py-1 text-right font-semibold">{hasId && started(g.d) ? <>{realPts(p, g.d) == null ? "–" : H.f1(realPts(p, g.d))} <LT st={H.gState(it.t, g.d).s} /></> : r ? H.f1(r.x) : ""}</td>
+                  <td className="py-1 text-right font-semibold">{hasId && started(g.d) ? <>{realPts(p, g.d) == null ? "–" : H.f1(realPts(p, g.d))} <LT st={H.gState(it.t, g.d).s} t={it.t} dt={g.d} /></> : r ? H.f1(r.x) : ""}</td>
                 </tr>); })}
             </tbody></table>
           </div>

@@ -143,6 +143,10 @@
   .adv-row { padding: 10px 0; border-top: 1px solid var(--line); }
   .adv-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   @media (max-width: 640px) { .adv-head, .adv-row { grid-template-columns: 26px minmax(0,1fr) 46px 64px 18px; gap: 8px; } }
+  /* round 21 live (news_logos.py) */
+  .gm-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--bad); display: inline-block; animation: gmPulse 1.4s ease-in-out infinite; }
+  @keyframes gmPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .gm-pill { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 2px 6px; border-radius: 5px; line-height: 1.3; }
 </style>
 </head>
 <body>
@@ -560,6 +564,30 @@ function App() {
   const [player, setPlayer] = useState(null);
   const [tradePartner, setTradePartner] = useState(null);
   const [, tick] = useState(0);
+  useEffect(() => {
+    // round 21: live NHL scores straight from the NHL every minute (falls back to the sync's copy if blocked)
+    let dead = false;
+    const AL = { LAK: "LA", NJD: "NJ", SJS: "SJ", TBL: "TB", UTAH: "UTA", ARI: "UTA" };
+    const pull = () => fetch("https://api-web.nhle.com/v1/score/now").then((r) => (r.ok ? r.json() : null)).then((js) => {
+      if (dead || !js || !js.games) return;
+      const out = {};
+      js.games.forEach((g) => {
+        const d = g.gameDate; if (!d) return;
+        const st = g.gameState, s = st === "FINAL" || st === "OFF" ? "F" : st === "LIVE" || st === "CRIT" ? "L" : "P";
+        const pd = g.periodDescriptor || {}, n = pd.number || 1, ck = g.clock || {};
+        const rem = ck.secondsRemaining == null ? 1200 : ck.secondsRemaining;
+        const f = s === "F" ? 1 : s === "P" ? 0 : Math.min(0.99, ((n - 1) * 1200 + 1200 - rem) / 3600);
+        const per = pd.periodType === "OT" ? "OT" : pd.periodType === "SO" ? "SO" : ["", "1st", "2nd", "3rd"][n] || String(n);
+        const hs = (g.homeTeam || {}).score, as = (g.awayTeam || {}).score;
+        out[d] = out[d] || {};
+        [[g.homeTeam, hs, as], [g.awayTeam, as, hs]].forEach(([T, my, op]) => { const a = T && (AL[T.abbrev] || T.abbrev); if (a) out[d][a] = { s, f, my, op, per, clk: ck.timeRemaining || "", int: !!ck.inIntermission }; });
+      });
+      window.__LIVESC = out; tick((x) => x + 1);
+    }).catch(() => {});
+    pull();
+    const id = setInterval(pull, 60 * 1000);
+    return () => { dead = true; clearInterval(id); };
+  }, []);
   useEffect(() => {
     let st = init();
     try { const v = JSON.parse(localStorage.getItem(KEY) || "null"); if (v && v.players && v.weeks) st = migrate(v); } catch (e) {}
@@ -1652,7 +1680,7 @@ function Side({ l, s, id, wk, d }) {
                       {!p.st && !p.gs && p.prob < 1 ? <span className="text-xs text-slate-400">{Math.round(p.prob * 100)}%</span> : null}
                       {!p.st && p.gs ? <span className={"text-xs " + gc}>{p.gs}</span> : null}
                     </div>
-                    {g || p.st ? <div className="text-xs text-slate-500 mt-0.5">{g ? (g.h ? "vs " : "@") + g.o + " · " : ""}{p.st ? <LiveTag st={p.st} /> : gameTime(g)}</div> : null}
+                    {g || p.st ? <div className="text-xs text-slate-500 mt-0.5">{g ? (g.h ? "vs " : "@") + g.o + " · " : ""}{p.st ? <LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)}</div> : null}
                   </div>
                 </div>
               </td>
@@ -1748,7 +1776,7 @@ function Matchup({ s, setS, wk, setWk }) {
             <div className="flex justify-between items-center px-3 py-2 border-b border-slate-200 text-sm">
               <span className="font-semibold">{dl}</span>
               {/* day header: running total removed */}
-              {tag ? <span className={"text-xs font-semibold " + (tag === "LIVE" ? "text-red-600" : "text-slate-500")}>{tag}</span> : null}
+              {tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}
             </div>
             <div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>
             <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
@@ -3036,7 +3064,7 @@ function GoalieStreams({ s, wk }) {
           {games.length ? games.map((gm, i) => { const gs = gState(gm.home.t, dt); return (
             <div key={i} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
               <Gl x={gm.away} />
-              <div className="text-xs text-slate-500 text-center whitespace-nowrap" style={{ minWidth: 60 }}>{gs.s !== "P" ? <LiveTag st={gs.s} /> : gameTime({ st: gm.st })}<div className="text-slate-400">@</div></div>
+              <div className="text-xs text-slate-500 text-center whitespace-nowrap" style={{ minWidth: 60 }}>{gs.s !== "P" ? <><LiveTag st={gs.s} />{(() => { const sc = gScore(gm.home.t, dt); return sc && sc.my != null ? <div className="text-sm font-semibold text-slate-700 mt-0.5">{sc.op} – {sc.my}{sc.s === "L" && sc.per ? <div className="text-xs text-slate-500 font-normal">{sc.int ? sc.per + " int." : sc.per + " " + (sc.clk || "")}</div> : null}</div> : null; })()}</> : gameTime({ st: gm.st })}<div className="text-slate-400">@</div></div>
               <Gl x={gm.home} right />
             </div>
           ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No game times loaded for this day.</div>}
@@ -3131,7 +3159,7 @@ function MSide({ p, right }) {
         <span style={{ flexShrink: 0, lineHeight: 0 }}><TeamLogo t={p.t} size={16} /></span>
         {inj ? <span className="text-xs text-red-600" style={{ flexShrink: 0 }}>{inj}</span> : null}
       </div>
-      <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} />{p.st === "L" ? " · proj " + f1(p.x0) : ""}</> : <>{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</>}</div>
+      <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "L" ? " · proj " + f1(p.x0) : ""}</> : <>{st ? <span className={stc}>{st} · </span> : null}{mGame(p)}</>}</div>
     </div>
   );
   const pts = <div className="m-pts">{p.st ? (p.a == null ? "–" : f1(p.a)) : f1(p.x)}</div>;
@@ -3445,14 +3473,28 @@ let __PB = null, __NG = null;
 const pby = () => { const L = window.__PLAYERS || []; if (!__PB || __PB.k !== L) __PB = { k: L, m: Object.fromEntries(L.map((p) => [p.id, p])) }; return __PB.m; };
 const actDay = (tid, dt) => { const D = ((window.ESPN_DATA || {}).daily || {})[dt]; return D ? D[String(tid).replace(/^t/, "")] || null : null; };
 const gState = (t, dt) => {
-  const x = ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];
+  const x = ((window.__LIVESC || {})[dt] || {})[t] || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];
   if (x && x.s === "F") return { s: "F", f: 1 };
   if (x && x.s === "L") return { s: "L", f: x.f || 0 };
   const g = gameOf(t, dt), st = g && g.st ? Date.parse(g.st) : NaN;
   if (!isNaN(st)) { const el = (Date.now() - st) / 36e5; return el < 0 ? { s: "P", f: 0 } : el > 3.5 ? { s: "F", f: 1 } : { s: "L", f: Math.min(0.95, el / 2.6) }; }
   return dt && dt < todayISO() ? { s: "F", f: 1 } : { s: "P", f: 0 };
 };
-const LiveTag = ({ st }) => (st === "L" ? <span className="text-xs font-semibold text-red-600">LIVE</span> : st === "F" ? <span className="text-xs text-slate-500">FINAL</span> : null);
+const gScore = (t, dt) => { const L = ((window.__LIVESC || {})[dt] || {})[t]; return L || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t] || null; };
+const LiveTag = ({ st, t, dt }) => {
+  // live tag v21: pill + score from the player's team's side (news_logos.py)
+  if (st !== "L" && st !== "F") return null;
+  const sc = t && dt ? gScore(t, dt) : null;
+  const has = !!(sc && sc.my != null && sc.op != null);
+  const res = has && st === "F" ? (sc.my > sc.op ? "W" : sc.my < sc.op ? "L" : "") : "";
+  const tail = !sc ? "" : st === "F" ? (sc.per === "OT" || sc.per === "SO" ? " " + sc.per : "") : sc.int ? " · " + sc.per + " int." : sc.per ? " · " + sc.per + (sc.clk ? " " + sc.clk : "") : "";
+  return (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
+      {st === "L" ? <span className="gm-pill inline-flex items-center gap-1 bg-red-100 text-red-600"><span className="gm-dot"></span>LIVE</span> : <span className="gm-pill bg-slate-200 text-slate-500">FINAL</span>}
+      {has ? <span className={"text-xs font-semibold " + (res === "W" ? "text-green-700" : res === "L" ? "text-red-600" : "text-slate-700")}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
+    </span>
+  );
+};
 // players who beat or missed their projection get 10% of the average miss per game, capped at 15%
 function liveNudges(K) {
   const E = window.ESPN_DATA || {}, key = [E.generated, K, window.__PMODE, window.__PLAYERS];
