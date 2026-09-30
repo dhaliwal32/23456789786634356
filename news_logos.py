@@ -2390,5 +2390,29 @@ def fix(t):
 def fix(t):
     return round16(_fix_before_r16(t))
 
+# ---------- round 18: only players whose team plays that day, sorted F / D / UTIL / G ----------
+
+def round18(t):
+    t = lit(t, "matchup: skip players with no game",
+            'if (plays(p) ? gState(p.t, dt).s === "P" : v[0] == null) return;',
+            'if (plays(p) ? gState(p.t, dt).s === "P" : !v[0]) return;',
+            ': !v[0]) return;')
+    t = lit(t, "matchup: sort rows by slot",
+            "return { start: [...rows, ...L.start], bench: L.bench,",
+            "return { start: [...rows, ...L.start].sort((a, b) => ({ F: 0, D: 1, UTIL: 2, G: 3 }[a.slot] ?? 4) - ({ F: 0, D: 1, UTIL: 2, G: 3 }[b.slot] ?? 4)), bench: L.bench,",
+            "UTIL: 2, G: 3 }[a.slot]")
+    t = lit(t, "nudges: only real games",
+            'if (!p || !v || v[0] == null || gState(p.t, dt).s !== "F") return;',
+            'if (!p || !v || v[0] == null || !(SCHED[p.t] && SCHED[p.t].has(dt)) || gState(p.t, dt).s !== "F") return;',
+            "SCHED[p.t].has(dt)) || gState")
+    return t
+
+
+_fix_before_r18 = fix
+
+
+def fix(t):
+    return round18(_fix_before_r18(t))
+
 if __name__ == "__main__":
     main()
