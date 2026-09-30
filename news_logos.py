@@ -2679,5 +2679,115 @@ _fix_before_r21 = fix
 def fix(t):
     return round21(_fix_before_r21(t))
 
+# ---------- round 22: NHL box-score stat line under each player (G, A, +/-, SOG, PIM, HIT, BLK, TOI / goalie W, SV, GA) ----------
+
+# --- espn_sync.py: download box scores for games that started today / yesterday and match them to league players ---
+SYNC22_DEFS_OLD = "    gstate = {}\n"
+SYNC22_DEFS_NEW = '''    import unicodedata as ud_
+
+    def _toks(n):
+        n = ud_.normalize("NFD", n or "").encode("ascii", "ignore").decode().lower().replace(".", " ").replace("-", " ").replace("'", "")
+        return n.split()
+
+    def _nk(n):
+        p = _toks(n)
+        return (p[0][0] + " " + " ".join(p[1:])) if len(p) > 1 else " ".join(p)
+
+    def _nk2(n):
+        p = _toks(n)
+        return (p[0][0] + " " + p[-1]) if len(p) > 1 else " ".join(p)
+
+    _pidx = {}
+    for p_ in players:
+        if p_.get("n"):
+            for k_ in {_nk(p_["n"]), _nk2(p_["n"])}:
+                _pidx.setdefault((k_, p_["t"]), p_["id"])
+    gstate = {}
+    pstat = {}
+'''
+
+SYNC22_BOX_OLD = "        gstate[dd_] = gs_\n"
+SYNC22_BOX_NEW = '''        pst_ = {}
+        for g_ in js_.get("games", []):  # 3d) player box scores (news_logos.py round 22)
+            if str(g_.get("gameState") or "") not in ("LIVE", "CRIT", "FINAL", "OFF") or not g_.get("id"):
+                continue
+            try:
+                bx_ = requests.get(f"https://api-web.nhle.com/v1/gamecenter/{g_['id']}/boxscore", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+            except Exception as ex:
+                print(f"(daily) box score {g_.get('id')} failed: {ex}")
+                continue
+            pbg_ = bx_.get("playerByGameStats") or {}
+            for side_ in ("homeTeam", "awayTeam"):
+                tab_ = str((bx_.get(side_) or g_.get(side_) or {}).get("abbrev") or "").upper()
+                tab_ = ALIAS.get(tab_, tab_)
+                grp_ = pbg_.get(side_) or {}
+                for x_ in (grp_.get("forwards") or []) + (grp_.get("defense") or []) + (grp_.get("goalies") or []):
+                    nm_ = (x_.get("name") or {}).get("default") or ""
+                    pid_ = _pidx.get((_nk(nm_), tab_)) or _pidx.get((_nk2(nm_), tab_))
+                    if not pid_:
+                        continue
+                    if "saves" in x_ or "goalsAgainst" in x_ or "saveShotsAgainst" in x_:
+                        if not x_.get("toi") or x_.get("toi") == "00:00":
+                            continue
+                        pst_[str(pid_)] = {"sv": x_.get("saves") or 0, "ga": x_.get("goalsAgainst") or 0,
+                                           "dec": x_.get("decision") or "", "toi": x_.get("toi") or ""}
+                    else:
+                        pst_[str(pid_)] = {"g": x_.get("goals") or 0, "a": x_.get("assists") or 0, "pm": x_.get("plusMinus") or 0,
+                                           "sog": x_.get("sog") or 0, "pim": x_.get("pim") or 0, "hit": x_.get("hits") or 0,
+                                           "blk": x_.get("blockedShots") or 0, "toi": x_.get("toi") or ""}
+        pstat[dd_] = pst_
+        print(f"(daily) {dd_}: box-score lines for {len(pst_)} league players")
+        gstate[dd_] = gs_
+'''
+
+SYNC22_SAVE_OLD = '    data["gstate"] = gstate\n'
+SYNC22_SAVE_NEW = '    data["gstate"] = gstate\n    data["pstat"] = pstat\n'
+
+_fix_sync_before_r22 = PY_FIXES[SYNC]
+
+
+def fix_sync22(t):
+    t = _fix_sync_before_r22(t)
+    t = lit(t, "sync: name matching for box scores", SYNC22_DEFS_OLD, SYNC22_DEFS_NEW, "def _nk(")
+    t = lit(t, "sync: player box scores", SYNC22_BOX_OLD, SYNC22_BOX_NEW, "3d) player box scores")
+    t = lit(t, "sync: save box scores", SYNC22_SAVE_OLD, SYNC22_SAVE_NEW, 'data["pstat"] = pstat')
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync22
+
+# --- fantasy-gm.html: stat line under each player whose game has started ---
+R22_HELPERS = r'''// ---------- round 22: NHL box-score stat lines (news_logos.py) ----------
+const pStat = (p, dt) => { const id = String((p && p.id) || "").replace(/^e/, ""); return ((((window.ESPN_DATA || {}).pstat || {})[dt]) || {})[id] || null; };
+const statLine = (x) => {
+  if (!x) return "";
+  if (x.sv != null) return [x.dec || null, x.sv + " SV", x.ga + " GA", x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
+  const n = (v, l) => (v ? (v > 1 ? v + " " + l : l) : null);
+  return [n(x.g, "G"), n(x.a, "A"), (x.pm > 0 ? "+" : "") + (x.pm || 0), n(x.sog, "SOG"), n(x.pim, "PIM"), n(x.hit, "HIT"), n(x.blk, "BLK"), x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
+};
+
+'''
+
+
+def round22(t):
+    t = lit(t, "stat lines: helpers", ROOT, R22_HELPERS + ROOT, "const statLine =")
+    t = lit(t, "matchup rows: stat line",
+            "{p.st ? <LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)}</div> : null}",
+            '{p.st ? <LiveTag st={p.st} t={p.t} dt={p.dt} /> : gameTime(g)}</div> : null}\n'
+            '                    {p.st && statLine(pStat(p, p.dt)) ? <div className="text-xs text-slate-400 mt-0.5">{statLine(pStat(p, p.dt))}</div> : null}',
+            '<div className="text-xs text-slate-400 mt-0.5">{statLine(pStat(p, p.dt))}</div>')
+    t = lit(t, "phone matchup: stat line", "{mGame(p)}</>}</div>",
+            '{mGame(p)}</>}</div>{p.st && statLine(pStat(p, p.dt)) ? <div className="text-xs text-slate-400 truncate">{statLine(pStat(p, p.dt))}</div> : null}',
+            '<div className="text-xs text-slate-400 truncate">{statLine(')
+    return t
+
+
+_fix_before_r22 = fix
+
+
+def fix(t):
+    return round22(_fix_before_r22(t))
+
 if __name__ == "__main__":
     main()
