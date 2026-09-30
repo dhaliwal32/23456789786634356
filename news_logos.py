@@ -2909,5 +2909,151 @@ _fix_before_r24 = fix
 def fix(t):
     return round24(_fix_before_r24(t))
 
+# ---------- round 25: pickups start after the daily lock + waivers (news_logos.py) ----------
+# ESPN locks the whole day at the first puck drop: anyone added after that plays from tomorrow,
+# even if his team plays later. Players on waivers (1-day waivers) play from tomorrow at the earliest.
+
+# --- espn_sync.py: mark players on waivers ---
+SYNC25_WV_OLD = '"chg": round((p.get("ownership") or {}).get("percentChange") or 0, 1)})'
+SYNC25_WV_NEW = '"chg": round((p.get("ownership") or {}).get("percentChange") or 0, 1), "wv": 1 if e.get("status") == "WAIVERS" else 0})'
+SYNC25_LOG_OLD = "\nslots = {}\ntry:\n"
+SYNC25_LOG_NEW = "\nprint(f\"(check) players on waivers: {sum(1 for x_ in players if x_.get('wv'))}\")\nslots = {}\ntry:\n"
+
+_fix_sync_before_r25 = PY_FIXES[SYNC]
+
+
+def fix_sync25(t):
+    t = _fix_sync_before_r25(t)
+    t = lit(t, "sync: mark players on waivers", SYNC25_WV_OLD, SYNC25_WV_NEW, '"wv": 1 if e.get("status")')
+    t = lit(t, "sync: count players on waivers", SYNC25_LOG_OLD, SYNC25_LOG_NEW, "players on waivers")
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync25
+
+# --- fantasy-gm.html ---
+R25_HELPERS = r'''// ---------- round 25: pickups start after the daily lock (news_logos.py) ----------
+// ESPN locks the whole day at the first puck drop, so anyone added after that plays from tomorrow.
+// Players on waivers (1-day waivers) can play from tomorrow at the earliest.
+let __LK = null;
+const lockedToday = () => {
+  const today = todayISO(), k = today + ":" + Math.floor(Date.now() / 30000);
+  if (__LK && __LK.k === k) return __LK.v;
+  const G = ((window.GAMES_DATA || {}).games || {})[today] || {};
+  const first = Object.values(G).reduce((m, g) => { const t = g && g.st ? Date.parse(g.st) : NaN; return isNaN(t) ? m : Math.min(m, t); }, Infinity);
+  const live = Object.values((window.__LIVESC || {})[today] || {}).some((x) => x && x.s && x.s !== "P");
+  const espn = Object.values((((window.ESPN_DATA || {}).gstate || {})[today]) || {}).some((x) => x && x.s && x.s !== "P");
+  const v = live || espn || first <= Date.now();
+  __LK = { k, v };
+  return v;
+};
+const pickStart = (p) => ((p && p.wv) || lockedToday() ? addDays(todayISO(), 1) : todayISO());
+const onDay = (p, dt) => !dt || ((!p.fromD || dt >= p.fromD) && (!p.untilD || dt < p.untilD));
+const timedMove = (roster, me, moves) => {
+  let r = roster;
+  moves.forEach(({ add, drop }) => { const a = pickStart(add); r = r.map((p) => (drop && p.id === drop.id ? { ...p, untilD: a } : p)).concat([{ ...add, ft: me, fromD: a }]); });
+  return r;
+};
+const PickNote = () => { const a = pickStart(null); return a === todayISO() ? null : <div className="w-full text-xs text-amber-600 mt-1">Today's first game has started, so anyone you add now plays from {dayLabel(a)}. Players on waivers show a Waivers tag and can't play before tomorrow.</div>; };
+
+'''
+
+
+def round25(t):
+    t = lit(t, "lock: helpers", ROOT, R25_HELPERS + ROOT, "const pickStart =")
+    t = lit(t, "lock: lineups respect pickup and drop days",
+            "const pl = roster.filter((p) => !p.ir && p.prob > 0 && avail(p, dt) > 0",
+            "const pl = roster.filter((p) => !p.ir && p.prob > 0 && onDay(p, dt) && avail(p, dt) > 0",
+            "p.prob > 0 && onDay(p, dt)")
+    t = lit(t, "lock: games left for a pickup",
+            "const gamesIn = (p) => { let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { if (d >= h.from && !p.ir && avail(p, h.wk.dates ? h.wk.dates[d] : null)) g++; })); return g; };",
+            "const gamesIn = (p) => { const a = pickStart(p); let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) g++; })); return g; };",
+            "const gamesIn = (p) => { const a = pickStart(p);")
+    t = lit(t, "lock: points for a pickup",
+            "const rawPts = (p) => { let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };",
+            "const rawPts = (p, ref) => { const a = pickStart(ref || p); let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };",
+            "const rawPts = (p, ref) =>")
+    t = lit(t, "lock: move gain",
+            "const gain = lineupAware ? total([...myR.filter((x) => x.id !== d.id), { ...f, ft: s.me }]) - base : raw - rawPts(d);",
+            "const gain = lineupAware ? total(timedMove(myR, s.me, [{ add: f, drop: d }])) - base : raw - rawPts(d, f);",
+            "total(timedMove(myR, s.me, [{ add: f, drop: d }]))")
+    t = lit(t, "lock: add/drop with your chosen drop",
+            "gain: lineupAware ? total(myR.filter((x) => x.id !== forced.id).concat([{ ...r.f, ft: s.me }])) - base : rawPts(r.f) - rawPts(forced) }",
+            "gain: lineupAware ? total(timedMove(myR, s.me, [{ add: r.f, drop: forced }])) - base : rawPts(r.f) - rawPts(forced, r.f) }",
+            "[{ add: r.f, drop: forced }]")
+    t = lit(t, "lock: simulator suggested drop",
+            "const g = lineupAware ? total(r.filter((x) => x.id !== d.id).concat([{ ...f, ft: s.me }])) - b : rawPts(f) - rawPts(d);",
+            "const g = lineupAware ? total(timedMove(r, s.me, [{ add: f, drop: d }])) - b : rawPts(f) - rawPts(d, f);",
+            "total(timedMove(r, s.me")
+    t = lit(t, "lock: simulator points",
+            "const gain = lineupAware ? total(after) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d), 0);",
+            "const timed = timedMove(myR, s.me, ok.map((x) => ({ add: x.a, drop: x.d })));\n    const gain = lineupAware ? total(timed) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d, x.a), 0);",
+            "const timed = timedMove(myR")
+    t = lit(t, "lock: simulator win chance", "win: winChance(s, after)", "win: winChance(s, timed)", "winChance(s, timed)")
+    t = lit(t, "lock: win change per move",
+            "const afterMove = (s, add, drop) => s.players.filter((p) => p.ft === s.me && p.id !== drop.id).concat([{ ...add, ft: s.me }]);",
+            "const afterMove = (s, add, drop) => timedMove(s.players.filter((p) => p.ft === s.me), s.me, [{ add, drop }]);",
+            "timedMove(s.players.filter((p) => p.ft === s.me), s.me")
+    t = lit(t, "lock: bench fixer",
+            "const r2 = [...mine.filter((x) => x.id !== d.id), { ...f, ft: s.me }];",
+            "const r2 = timedMove(mine, s.me, [{ add: f, drop: d }]);",
+            "timedMove(mine, s.me")
+    t = lit(t, "lock: planner starts tomorrow by itself",
+            "const [fromTomorrow, setFT] = useState(false);",
+            "const [fromTomorrow, setFT] = useState(() => lockedToday());",
+            "useState(() => lockedToday())")
+    t = lit(t, "lock: planner label",
+            "Start from tomorrow (today's games already started)",
+            "Start from tomorrow (today's first game has started, so adds play tomorrow)",
+            "so adds play tomorrow")
+    t = lit(t, "lock: planner skips days a pickup can't play",
+            "if (usedFA.has(f.id) || !(wk.games[f.t] || []).includes(d)) continue;",
+            "if (usedFA.has(f.id) || !(wk.games[f.t] || []).includes(d) || wk.dates[d] < pickStart(f)) continue;",
+            "wk.dates[d] < pickStart(f)")
+    t = lit(t, "lock: fill an empty spot",
+            'fits(p) && gState(p.t, dt).s === "P")',
+            'fits(p) && gState(p.t, dt).s === "P" && dt >= pickStart(p))',
+            'fits(p) && gState(p.t, dt).s === "P" && dt >= pickStart')
+    t = lit(t, "lock: goalie streams",
+            'avail(p, dt) > 0 && gState(p.t, dt).s === "P")',
+            'avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p))',
+            'avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart')
+    t = lit(t, "lock: note on Advice",
+            'sub="Most extra points in your daily lineups for the rest of this week.">',
+            'sub="Most extra points in your daily lineups for the rest of this week."><PickNote where="adv" />',
+            'PickNote where="adv"')
+    t = lit(t, "lock: note on Add / Drop",
+            "onClick={() => setSim({})}>Build a move</button>",
+            'onClick={() => setSim({})}>Build a move</button><PickNote where="ad" />',
+            'PickNote where="ad"')
+    t = lit(t, "lock: note on Today",
+            "{moves.length ? moves.map((r) => { const sd = effAvg(r.f, K)",
+            '<PickNote where="today" />{moves.length ? moves.map((r) => { const sd = effAvg(r.f, K)',
+            'PickNote where="today"')
+    t = lit(t, "waivers: keep the flag from ESPN",
+            "own: p.own || 0, chg: p.chg || 0 };",
+            "own: p.own || 0, chg: p.chg || 0, wv: !!p.wv };",
+            "wv: !!p.wv")
+    t = lit(t, "waivers: tag in Add / Drop",
+            '<PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{st ?',
+            '<PN p={r.f} /><span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs text-amber-600">Waivers</span> : null}{st ?',
+            '{r.f.wv ? <span className="text-xs text-amber-600">Waivers</span>')
+    t = lit(t, "waivers: tag in Advice",
+            '<PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>',
+            '<PN p={r.f} className="truncate font-medium" /><span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs text-amber-600 whitespace-nowrap">Waivers</span> : null}',
+            'text-amber-600 whitespace-nowrap">Waivers')
+    for must in ("const pickStart =", "function computeMoves(", "function MoveSim(", "function AddDrop(", "function buildPlan("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 25 (" + must + ").")
+    return t
+
+
+_fix_before_r25 = fix
+
+
+def fix(t):
+    return round25(_fix_before_r25(t))
+
 if __name__ == "__main__":
     main()
