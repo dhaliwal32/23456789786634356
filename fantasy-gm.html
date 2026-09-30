@@ -1073,7 +1073,7 @@ function buildPlan(s, wk, d0, M) {
     for (let d = d0; d < nD; d++) {
       const active = tl.filter((x) => x.from <= d && x.to >= d);
       const cnt = { F: 0, D: 0, G: 0 }; active.forEach((x) => { if (!x.p.ir) cnt[x.p.p]++; });
-      const drops = active.filter((x) => !x.p.ir && x.from < d + (x.orig ? 1 : 0) && !(x.orig && prot.has(x.p.id)) && !(!x.orig && x.from >= d))
+      const drops = active.filter((x) => !x.p.ir && x.to === nD - 1 && x.from < d + (x.orig ? 1 : 0) && !(x.orig && prot.has(x.p.id)) && !(!x.orig && x.from >= d))
         .map((x) => ({ x, v: val(x.p, d) })).sort((a, b) => a.v - b.v);
       const cand = []; ["F", "D", "G"].forEach((ps) => drops.filter((y) => y.x.p.p === ps).slice(0, 4).forEach((y) => cand.push(y.x)));
       const before = suffix(d);
@@ -1110,6 +1110,7 @@ function AcqPlanner({ s, setS, wk }) {
   const aA = +((wk.act || {})[s.me]) || 0, aB = +((wk.act || {})[opp]) || 0;
   useEffect(() => { setPlan(null); }, [s.wk, used, fromTomorrow, s.players]);
   const run = () => { setBusy(true); setTimeout(() => { setPlan(buildPlan(s, wk, d0, left)); setBusy(false); }, 30); };
+  const wins = useMemo(() => (plan ? { b: winChance(s), after: plan.steps.map((_, i) => winChance(s, planRoster(s, wk, plan.steps.slice(0, i + 1)))) } : null), [plan]);
   const gamesFrom = (p, a) => (wk.games[p.t] || []).filter((d) => d >= a).map((d) => wk.days[d].split(",")[0]).join(", ");
   return (
     <div className="space-y-4">
@@ -1123,7 +1124,7 @@ function AcqPlanner({ s, setS, wk }) {
       </Section>
       {!left && <div className={box + " text-slate-400"}>No moves left this week.</div>}
       {plan && (
-        <Section title={plan.steps.length ? `Your plan: +${f1(plan.gain)} points this week` : "No move is worth it this week"} sub={`${teamName(s, s.me)} ${f1(aA + plan.base)} → ${f1(aA + plan.final)} projected vs ${teamName(s, opp)} ${f1(aB + oppProj)} · margin ${aA + plan.base - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.base - aB - oppProj)} → ${aA + plan.final - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.final - aB - oppProj)}`}>
+        <Section title={plan.steps.length ? `Your plan: +${f1(plan.gain)} points this week` : "No move is worth it this week"} sub={`${teamName(s, s.me)} ${f1(aA + plan.base)} → ${f1(aA + plan.final)} projected vs ${teamName(s, opp)} ${f1(aB + oppProj)} · margin ${aA + plan.base - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.base - aB - oppProj)} → ${aA + plan.final - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.final - aB - oppProj)}${wins && wins.after.length ? ` · win chance ${wpTxt(wins.b)} → ${wpTxt(wins.after[wins.after.length - 1])}` : ""}`}>
           {plan.steps.length ? plan.steps.map((st, i) => { const sd = effAvg(st.add, K) - effAvg(st.drop, K); return (
             <div key={i} className="border-t border-slate-100 py-3">
               <div className="flex flex-wrap items-baseline gap-2">
@@ -1131,7 +1132,7 @@ function AcqPlanner({ s, setS, wk }) {
                 <span className="font-semibold">{wk.days[st.day]}</span>
                 <span>Add <b>{st.add.n}</b> <span className="text-xs text-slate-400">{st.add.p} · <TeamLogo t={st.add.t} /></span></span>
                 <span>· drop <b>{st.drop.n}</b>{st.dropWasStream ? <span className="text-xs text-slate-400"> (streamer from step {plan.steps.findIndex((x) => x.add.id === st.drop.id) + 1})</span> : <span className="text-xs text-slate-400"> {st.drop.p}</span>}</span>
-                <span className="text-green-700 font-semibold ml-auto">+{f1(st.gain)}</span>
+                <span className="ml-auto flex items-baseline gap-3">{wins ? <PlanWin a={i ? wins.after[i - 1] : wins.b} b={wins.after[i]} /> : null}<span className="text-green-700 font-semibold">+{f1(st.gain)}</span></span>
               </div>
               <div className="text-xs text-slate-500 mt-1 ml-8">{st.add.n} plays: {gamesFrom(st.add, st.day) || "—"}{!st.dropWasStream && sd < 0 ? <span className="text-amber-600"> · stream only: {f1(Math.abs(sd))}/game worse long-term than {st.drop.n}</span> : ""} <Tags p={st.add} K={K} /></div>
             </div>
@@ -3598,6 +3599,18 @@ const timedMove = (roster, me, moves) => {
   return r;
 };
 const PickNote = () => { const a = pickStart(null); return a === todayISO() ? null : <div className="w-full text-xs text-amber-600 mt-1">Today's first game has started, so anyone you add now plays from {dayLabel(a)}. Players on waivers show a Waivers tag and can't play before tomorrow.</div>; };
+
+// ---------- round 26: planner win chance (news_logos.py) ----------
+const planRoster = (s, wk, steps) => {
+  let r = s.players.filter((p) => p.ft === s.me);
+  steps.forEach((st) => { const a = wk.dates[st.day]; r = r.map((p) => (p.id === st.drop.id ? { ...p, untilD: a } : p)).concat([{ ...st.add, ft: s.me, fromD: a }]); });
+  return r;
+};
+const PlanWin = ({ a, b }) => {
+  if (a == null || b == null) return null;
+  const d = Math.round(b * 100) - Math.round(a * 100);
+  return <span className={"text-sm whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Your chance to win this week before and after this move">win {wpTxt(a)} → {wpTxt(b)} <span className="font-semibold">{d > 0 ? "+" : ""}{d}%</span></span>;
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
