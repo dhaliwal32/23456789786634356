@@ -95,7 +95,9 @@
    "text": "Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-29|2d0799a5c870",
@@ -104,7 +106,9 @@
    "text": "Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-29|f5f782e9626f",
@@ -113,7 +117,9 @@
    "text": "Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-29|2665aa53104c",
@@ -133,7 +139,9 @@
    "text": "Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-30|4a69791fc53e",
@@ -142,7 +150,9 @@
    "text": "Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-30|2d0799a5c870",
@@ -151,7 +161,9 @@
    "text": "Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   },
   {
    "k": "2026-09-30|f5f782e9626f",
@@ -160,7 +172,9 @@
    "text": "Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-09-30T15:06:39Z"
   }
  ],
  "sent": {
@@ -171,7 +185,9 @@
    "morning",
    "pregame"
   ],
-  "2026-09-30": []
+  "2026-09-30": [
+   "morning"
+  ]
  },
  "log": [
   {
@@ -185,6 +201,12 @@
    "kind": "pregame",
    "title": "Before puck drop - first game 2:00 PM (6 updates)",
    "body": "YOUR PLAYERS\n- Matthew Knies moved TOR -> CBJ (trade or waiver claim)\n- Troy Terry removed from ANA's NHL roster (sent down, waived, released or retired)\n\nPICKUP IDEAS\n- Josh Norris (BUF) promoted: 2nd line -> 1st line\n- Jack Quinn (BUF) promoted: 3rd line -> 2nd line\n- Jordan Spence (OTT) promoted: 2nd pair -> top pair\n- Tyson Foerster (PHI) promoted: 3rd line -> 2nd line"
+  },
+  {
+   "at": "2026-09-30T15:06:39Z",
+   "kind": "morning",
+   "title": "Morning summary - Wed Sep 30 (7 updates)",
+   "body": "LINEUP\n- Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.\n\nToday: 4 of your players play, first puck drop 4:30 PM."
   }
  ]
 }
