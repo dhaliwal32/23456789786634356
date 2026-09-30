@@ -21,6 +21,13 @@
     return Math.round(m / 1440) + " days ago";
   };
 
+  // real ESPN points for one player on one day (news_logos.py round 19)
+  const realPts = (p, d) => {
+    const D = (((window.ESPN_DATA || {}).daily) || {})[d] || {}, id = String(p.id || "").replace(/^e/, "");
+    for (const tm of Object.values(D)) { const v = (tm || {})[id]; if (v && v[0] != null) return v[0]; }
+    return null;
+  };
+
   // ---------- styles (dark, matches the app) ----------
   const CSS = `
 .lt-it{display:grid;grid-template-columns:26px 1fr auto;gap:8px;padding:8px 2px;border-top:1px solid #292929;align-items:start;cursor:pointer}
@@ -425,7 +432,7 @@
     const f = ctx.fpOf(it.key, it.g);
     const per = (d) => { if (!hasId) return null; const g = isG ? H.gStart(p, d) : null; return { x: H.effAvg(p, K, d) * (g ? g.v : p.prob) * H.avail(p, d), g }; };
     const games = ((L.sched || {})[it.t] || []).filter((x) => x.d >= today).slice(0, 6);
-    const wkIdx = hasId ? (wk.games[p.t] || []).filter((i) => ((wk.dates || [])[i] || "") >= today) : [];
+    const wkIdx = hasId ? (wk.games[p.t] || []).filter((i) => ((wk.dates || [])[i] || "") >= today && !(H.gState && H.gState(p.t, wk.dates[i]).s !== "P")) : [];
     const wkPts = wkIdx.reduce((a, i) => a + ((per(wk.dates[i]) || {}).x || 0), 0);
     const back = hasId ? H.effBack(p) : { d: "" };
     const inj = hasId ? (((window.__SIG || {}).injuries) || {})[p.id.slice(1)] : null;
@@ -433,6 +440,7 @@
     const hist = (L.changes || []).filter((c) => c.key === it.key && (c.team === it.t || c.from === it.t || c.to === it.t)).slice(0, 6);
     const fmt = (v) => (v ? `${v[1]} GP · ${H.f1(v[1] ? v[0] / v[1] : 0)}/game` : "no games");
     const hurt = hasId && ((p.status && p.status !== "ACTIVE") || (back.d && back.d > today));
+    const LT = H.LiveTag || (() => null), started = (d) => !!(H.gState && H.gState(it.t, d).s !== "P"), tn = hasId && started(today) ? { a: realPts(p, today), st: H.gState(it.t, today).s } : null;
     return (
       <div className="mt-3 border border-slate-200 rounded-xl p-3 bg-slate-50">
         <div className="flex items-start gap-2">
@@ -455,9 +463,9 @@
         </div>
         {hurt && <div className="text-sm text-red-600 mt-1">✚ {String(p.status || "").replace(/_/g, " ")}{back.d ? ` · back around ${H.dayLabel(back.d)} (${back.src})` : ""}{inj && inj.note ? ` — ${inj.note}` : ""}</div>}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3">
-          <H.Card label={`${L.season} fantasy pts`} value={f.cur ? H.f1(f.cur[0]) : "–"} sub={fmt(f.cur)} />
+          <H.Card label={`${L.season} fantasy pts`} value={hasId ? H.f1(p.tot || 0) : f.cur ? H.f1(f.cur[0]) : "–"} sub={hasId ? <>{p.gp ? `${p.gp} GP · ${H.f1(p.tot / p.gp)}/game` : "no games yet"}{tn ? <> · tonight {tn.a == null ? "–" : H.f1(tn.a)} <LT st={tn.st} /></> : null}</> : fmt(f.cur)} />
           <H.Card label="Last season" value={f.last ? H.f1(f.last[0]) : "–"} sub={fmt(f.last)} />
-          <H.Card label="Projection / game" value={hasId ? H.f1(H.effAvg(p, K)) : "–"} sub={hasId ? `${MODE[window.__PMODE] || ""} mode · ESPN ${H.f1(p.pavg)}` : "no projection"} />
+          <H.Card label="Projection / game" value={hasId ? H.f1(H.effAvg(p, K)) : "–"} sub={hasId ? `${MODE[window.__PMODE] || ""} mode · ESPN ${H.f1(p.avg)}${p.gp ? ` · was ${H.f1(H.effAvg({ ...p, gp: 0, tot: 0 }, K))} before ${p.gp} game${p.gp === 1 ? "" : "s"}` : ""}` : "no projection"} />
           <H.Card label="Rest of this week" value={hasId ? H.f1(wkPts) : "–"} sub={`${wkIdx.length} game${wkIdx.length === 1 ? "" : "s"} left`} />
         </div>
         {games.length > 0 && (
@@ -469,7 +477,7 @@
                   <td className="py-1 pr-2 whitespace-nowrap">{H.dayLabel(g.d)}</td>
                   <td className="py-1 pr-2">{g.h ? "vs" : "@"} {g.o}</td>
                   <td className="py-1 pr-2 text-xs text-slate-500">{r && r.g ? r.g.l || `${Math.round(r.g.v * 100)}% start chance` : ""}</td>
-                  <td className="py-1 text-right font-semibold">{r ? H.f1(r.x) : ""}</td>
+                  <td className="py-1 text-right font-semibold">{hasId && started(g.d) ? <>{realPts(p, g.d) == null ? "–" : H.f1(realPts(p, g.d))} <LT st={H.gState(it.t, g.d).s} /></> : r ? H.f1(r.x) : ""}</td>
                 </tr>); })}
             </tbody></table>
           </div>
