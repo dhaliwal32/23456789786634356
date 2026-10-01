@@ -503,6 +503,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-01|bd6a0f9aa465",
+   "at": "2026-10-01T23:03:00Z",
+   "title": "Your player's line changed",
+   "text": "Trevor Zegras (PHI) moved down: 1st line -> 2nd line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-01|5556560766b4",
+   "at": "2026-10-01T23:03:00Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Christian Dvorak (PHI) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
