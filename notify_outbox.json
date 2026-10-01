@@ -282,7 +282,9 @@
    "text": "Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|023e02df34dc",
@@ -291,7 +293,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 10.5% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|2c1dceaea219",
@@ -300,7 +304,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|4ee3805ed91d",
@@ -309,7 +315,9 @@
    "text": "Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|f584e78665c4",
@@ -318,7 +326,9 @@
    "text": "Jared McCann (SEA, 6:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|2c211ea54735",
@@ -327,7 +337,9 @@
    "text": "Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-09-30|2f42325f85ec",
@@ -336,7 +348,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.6% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|2c1dceaea219",
@@ -345,7 +359,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|d44dda173cc6",
@@ -354,7 +370,9 @@
    "text": "Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|90f2395dd8c6",
@@ -363,7 +381,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.2% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|fe3e98613893",
@@ -372,7 +392,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.3% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|4b419d41d4ea",
@@ -381,7 +403,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.4% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|34066797245a",
@@ -390,7 +414,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.8% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   },
   {
    "k": "2026-10-01|d2db7e5784e8",
@@ -399,7 +425,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.7% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-01T15:01:00Z"
   }
  ],
  "sent": {
@@ -414,7 +442,9 @@
    "morning",
    "pregame"
   ],
-  "2026-10-01": []
+  "2026-10-01": [
+   "morning"
+  ]
  },
  "log": [
   {
@@ -440,6 +470,12 @@
    "kind": "pregame",
    "title": "Before puck drop - first game 4:30 PM (8 updates)",
    "body": "YOUR PLAYERS\n- Matt Duchene (DAL) injury status: Day To Day -> Out\n- Matt Duchene (DAL) is no longer in the lineup (was 3rd line) - scratched, hurt or moved\n- Matt Duchene (DAL) is off PP1\n- Matt Duchene (DAL) injury status: Out -> Injury Reserve\n\nPICKUP IDEAS\n- Anton Frondell (CHI) promoted: 2nd line -> 1st line\n- Tyler Bertuzzi (CHI) promoted: 2nd line -> 1st line\n- Teuvo Teravainen (CHI) is in the lineup on the 2nd line\n- Drew Doughty (LA) promoted: 2nd pair -> top pair"
+  },
+  {
+   "at": "2026-10-01T15:01:00Z",
+   "kind": "morning",
+   "title": "Morning summary - Thu Oct 1 (14 updates)",
+   "body": "LINEUP\n- Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Jared McCann (SEA, 6:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.\n\nPICKUP IDEAS\n- Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) ownership is up 10.5% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.6% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.\n- Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.\n  + 5 more in the app\n\nToday: 13 of your players play, first puck drop 4:00 PM."
   }
  ]
 }
