@@ -428,6 +428,15 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-01T15:01:00Z"
+  },
+  {
+   "k": "2026-10-01|2f8467538bbd",
+   "at": "2026-10-01T15:11:37Z",
+   "title": "Your player's line changed",
+   "text": "Luke Hughes (NJ) promoted: 2nd pair -> top pair",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
