@@ -446,6 +446,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-01|82f2e1b0f007",
+   "at": "2026-10-01T19:12:10Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Vasily Podkolzin (EDM) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
