@@ -436,7 +436,9 @@
    "text": "Luke Hughes (NJ) promoted: 2nd pair -> top pair",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   },
   {
    "k": "2026-10-01|b3f8cd0b1d63",
@@ -445,7 +447,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 11.9% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   },
   {
    "k": "2026-10-01|82f2e1b0f007",
@@ -454,7 +458,9 @@
    "text": "Vasily Podkolzin (EDM) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   },
   {
    "k": "2026-10-01|84b98db4efde",
@@ -463,7 +469,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 12.3% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   },
   {
    "k": "2026-10-01|065c829b3d80",
@@ -472,7 +480,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 12.7% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   },
   {
    "k": "2026-10-01|15034727742f",
@@ -481,7 +491,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.0% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-01T22:02:52Z"
   }
  ],
  "sent": {
@@ -497,7 +509,8 @@
    "pregame"
   ],
   "2026-10-01": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -530,6 +543,12 @@
    "kind": "morning",
    "title": "Morning summary - Thu Oct 1 (14 updates)",
    "body": "LINEUP\n- Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Jared McCann (SEA, 6:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.\n\nPICKUP IDEAS\n- Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) ownership is up 10.5% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.6% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 11.1% - other managers are grabbing him.\n- Zeev Buium (D, VAN) was just moved onto his team's top power-play unit and is a free agent.\n  + 5 more in the app\n\nToday: 13 of your players play, first puck drop 4:00 PM."
+  },
+  {
+   "at": "2026-10-01T22:02:52Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:00 PM (6 updates)",
+   "body": "YOUR PLAYERS\n- Luke Hughes (NJ) promoted: 2nd pair -> top pair\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) ownership is up 11.9% - other managers are grabbing him.\n- Vasily Podkolzin (EDM) promoted: 2nd line -> 1st line\n- Vasily Podkolzin (F, EDM) ownership is up 12.3% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 12.7% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 13.0% - other managers are grabbing him."
   }
  ]
 }
