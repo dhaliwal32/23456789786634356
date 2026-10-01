@@ -521,6 +521,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-01|62b84d0cb335",
+   "at": "2026-10-01T23:32:48Z",
+   "title": "Pickup: trending free agent",
+   "text": "Vasily Podkolzin (F, EDM) ownership is up 13.7% - other managers are grabbing him.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
