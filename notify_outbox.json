@@ -714,6 +714,24 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-02T15:06:22Z"
+  },
+  {
+   "k": "2026-10-02|b37528a83bc1",
+   "at": "2026-10-02T17:06:43Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Emil Heineman (NYI) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-02|2d35491f8c45",
+   "at": "2026-10-02T17:06:43Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Philip Broberg (STL) promoted: 2nd pair -> top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
