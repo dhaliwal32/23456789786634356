@@ -631,6 +631,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-02|817d531d16e0",
+   "at": "2026-10-02T07:04:15Z",
+   "title": "Lineup: starter is OUT",
+   "text": "Matt Duchene (DAL, 6:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": false
+  },
+  {
+   "k": "2026-10-02|1eb35a2cc85d",
+   "at": "2026-10-02T07:04:15Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
@@ -648,7 +666,8 @@
   "2026-10-01": [
    "morning",
    "pregame"
-  ]
+  ],
+  "2026-10-02": []
  },
  "log": [
   {
