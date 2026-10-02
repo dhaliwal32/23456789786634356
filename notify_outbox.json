@@ -502,7 +502,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.3% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|bd6a0f9aa465",
@@ -511,7 +513,9 @@
    "text": "Trevor Zegras (PHI) moved down: 1st line -> 2nd line",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|5556560766b4",
@@ -520,7 +524,9 @@
    "text": "Christian Dvorak (PHI) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|62b84d0cb335",
@@ -529,7 +535,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.7% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|1eb35a2cc85d",
@@ -538,7 +546,9 @@
    "text": "Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|2a3c0eb28094",
@@ -547,7 +557,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.5% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|2665aa53104c",
@@ -567,7 +579,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.4% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|6bd9e34acbbe",
@@ -576,7 +590,9 @@
    "text": "Vasily Podkolzin (F, EDM) ownership is up 13.2% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|ab0dda465b50",
@@ -585,7 +601,9 @@
    "text": "Alexander Wennberg (SJ) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|d533e9cebeb8",
@@ -594,7 +612,9 @@
    "text": "Collin Graf (SJ) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|4015797e6efb",
@@ -603,7 +623,9 @@
    "text": "Mikko Rantanen (DAL, 6:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|eba69b6bb4a3",
@@ -612,7 +634,9 @@
    "text": "Lucas Raymond (DET, 3:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|84c4bcfc8425",
@@ -621,7 +645,9 @@
    "text": "Lukas Dostal (ANA, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-01|729ba421b070",
@@ -630,7 +656,9 @@
    "text": "Aleksander Barkov (FLA) injury status: Active -> Day To Day",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-02|817d531d16e0",
@@ -639,7 +667,9 @@
    "text": "Matt Duchene (DAL, 6:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
    "section": "lineup",
    "urgent": true,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   },
   {
    "k": "2026-10-02|1eb35a2cc85d",
@@ -648,7 +678,42 @@
    "text": "Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
+  },
+  {
+   "k": "2026-10-02|864053e1d3de",
+   "at": "2026-10-02T15:06:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Frank Nazar (CHI) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
+  },
+  {
+   "k": "2026-10-02|bf049aef3a5b",
+   "at": "2026-10-02T15:06:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Dmitri Voronkov (CBJ) promoted: 4th line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
+  },
+  {
+   "k": "2026-10-02|de04b28f055e",
+   "at": "2026-10-02T15:06:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Paul Cotter (VAN) promoted: 4th line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-02T15:06:22Z"
   }
  ],
  "sent": {
@@ -667,7 +732,9 @@
    "morning",
    "pregame"
   ],
-  "2026-10-02": []
+  "2026-10-02": [
+   "morning"
+  ]
  },
  "log": [
   {
@@ -705,6 +772,12 @@
    "kind": "pregame",
    "title": "Before puck drop - first game 4:00 PM (6 updates)",
    "body": "YOUR PLAYERS\n- Luke Hughes (NJ) promoted: 2nd pair -> top pair\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) ownership is up 11.9% - other managers are grabbing him.\n- Vasily Podkolzin (EDM) promoted: 2nd line -> 1st line\n- Vasily Podkolzin (F, EDM) ownership is up 12.3% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 12.7% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 13.0% - other managers are grabbing him."
+  },
+  {
+   "at": "2026-10-02T15:06:22Z",
+   "kind": "morning",
+   "title": "Morning summary - Fri Oct 2 (19 updates)",
+   "body": "LINEUP\n- Mikko Rantanen (DAL, 6:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Lucas Raymond (DET, 3:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Lukas Dostal (ANA, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.\n[!] Matt Duchene (DAL, 6:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.\n\nYOUR PLAYERS\n- Trevor Zegras (PHI) moved down: 1st line -> 2nd line\n- Aleksander Barkov (FLA) injury status: Active -> Day To Day\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) ownership is up 13.3% - other managers are grabbing him.\n- Christian Dvorak (PHI) promoted: 2nd line -> 1st line\n- Vasily Podkolzin (F, EDM) ownership is up 13.7% - other managers are grabbing him.\n- Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) ownership is up 13.5% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 13.4% - other managers are grabbing him.\n  + 7 more in the app\n\nToday: 7 of your players play, first puck drop 3:30 PM."
   }
  ]
 }
