@@ -722,7 +722,9 @@
    "text": "Emil Heineman (NYI) promoted: 3rd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-02T21:37:20Z"
   },
   {
    "k": "2026-10-02|2d35491f8c45",
@@ -731,7 +733,9 @@
    "text": "Philip Broberg (STL) promoted: 2nd pair -> top pair",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-02T21:37:20Z"
   }
  ],
  "sent": {
@@ -751,7 +755,8 @@
    "pregame"
   ],
   "2026-10-02": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -796,6 +801,12 @@
    "kind": "morning",
    "title": "Morning summary - Fri Oct 2 (19 updates)",
    "body": "LINEUP\n- Mikko Rantanen (DAL, 6:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Lucas Raymond (DET, 3:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Lukas Dostal (ANA, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.\n[!] Matt Duchene (DAL, 6:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.\n\nYOUR PLAYERS\n- Trevor Zegras (PHI) moved down: 1st line -> 2nd line\n- Aleksander Barkov (FLA) injury status: Active -> Day To Day\n\nPICKUP IDEAS\n- Vasily Podkolzin (F, EDM) ownership is up 13.3% - other managers are grabbing him.\n- Christian Dvorak (PHI) promoted: 2nd line -> 1st line\n- Vasily Podkolzin (F, EDM) ownership is up 13.7% - other managers are grabbing him.\n- Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Vasily Podkolzin (F, EDM) ownership is up 13.5% - other managers are grabbing him.\n- Vasily Podkolzin (F, EDM) ownership is up 13.4% - other managers are grabbing him.\n  + 7 more in the app\n\nToday: 7 of your players play, first puck drop 3:30 PM."
+  },
+  {
+   "at": "2026-10-02T21:37:20Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 3:30 PM (2 updates)",
+   "body": "PICKUP IDEAS\n- Emil Heineman (NYI) promoted: 3rd line -> 1st line\n- Philip Broberg (STL) promoted: 2nd pair -> top pair"
   }
  ]
 }
