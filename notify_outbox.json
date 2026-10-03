@@ -1022,6 +1022,15 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-10-03T22:02:04Z"
+  },
+  {
+   "k": "2026-10-03|44db4525d096",
+   "at": "2026-10-03T23:02:07Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jake McCabe (TOR) promoted: 2nd pair -> top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
