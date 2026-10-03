@@ -909,7 +909,9 @@
    "text": "Frank Nazar (CHI) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|09ba4e0c3b9c",
@@ -918,7 +920,9 @@
    "text": "Roman Kantserov (CHI) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|7724e3862848",
@@ -949,7 +953,9 @@
    "text": "Aleksander Barkov (FLA) injury status: Day To Day -> Injury Reserve",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|722de2891a5a",
@@ -969,7 +975,9 @@
    "text": "Jake DeBrusk (VAN) is off PP1",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|2145b2403b59",
@@ -978,7 +986,9 @@
    "text": "Marco Rossi (VAN) promoted: 4th line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|641be4242faf",
@@ -987,7 +997,9 @@
    "text": "Aleksander Barkov (FLA) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|3e6d621c8d2b",
@@ -996,7 +1008,9 @@
    "text": "Sam Bennett (FLA) moved onto PP1",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   },
   {
    "k": "2026-10-03|6142532eb0e3",
@@ -1005,7 +1019,9 @@
    "text": "Aleksander Barkov (FLA) is off PP1",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-03T22:02:04Z"
   }
  ],
  "sent": {
@@ -1026,7 +1042,8 @@
    "pregame"
   ],
   "2026-10-03": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -1083,6 +1100,12 @@
    "kind": "morning",
    "title": "Morning summary - Sat Oct 3 (14 updates)",
    "body": "LINEUP\n- Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Jared McCann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Bobby McMann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Lukas Dostal (ANA) is starting with no game. Swap them.\n[!] Matt Duchene (DAL, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.\n\nPICKUP IDEAS\n- Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.\n- Ben Kindel (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Kasperi Kapanen (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.\n  + 2 more in the app\n\nToday: 14 of your players play, first puck drop 4:00 PM."
+  },
+  {
+   "at": "2026-10-03T22:02:04Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:00 PM (8 updates)",
+   "body": "YOUR PLAYERS\n- Aleksander Barkov (FLA) injury status: Day To Day -> Injury Reserve\n- Jake DeBrusk (VAN) is off PP1\n- Aleksander Barkov (FLA) is no longer in the lineup (was 1st line) - scratched, hurt or moved\n- Sam Bennett (FLA) moved onto PP1\n- Aleksander Barkov (FLA) is off PP1\n\nPICKUP IDEAS\n- Frank Nazar (CHI) promoted: 2nd line -> 1st line\n- Roman Kantserov (CHI) promoted: 2nd line -> 1st line\n- Marco Rossi (VAN) promoted: 4th line -> 1st line"
   }
  ]
 }
