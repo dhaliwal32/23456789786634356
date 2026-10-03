@@ -919,6 +919,28 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-03|7724e3862848",
+   "at": "2026-10-03T18:30:53Z",
+   "title": "Lineup: starter is OUT",
+   "text": "Jake DeBrusk (VAN, 7:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-03T18:30:53Z"
+  },
+  {
+   "k": "2026-10-03|03aae2f0cdf6",
+   "at": "2026-10-03T18:30:54Z",
+   "title": "Your player: injury update",
+   "text": "Jake DeBrusk (VAN) injury status: Active -> Out",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-03T18:30:54Z"
   }
  ],
  "sent": {
