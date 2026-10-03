@@ -736,6 +736,42 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-10-02T21:37:20Z"
+  },
+  {
+   "k": "2026-10-02|0c72e6544ac8",
+   "at": "2026-10-03T00:07:47Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-02|40c82dac6252",
+   "at": "2026-10-03T00:07:47Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-02|ec0d38e98ea9",
+   "at": "2026-10-03T00:07:47Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Ben Kindel (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-02|a360ac1b5cc8",
+   "at": "2026-10-03T00:07:47Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Kasperi Kapanen (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
