@@ -744,7 +744,9 @@
    "text": "Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|40c82dac6252",
@@ -753,7 +755,9 @@
    "text": "Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|ec0d38e98ea9",
@@ -762,7 +766,9 @@
    "text": "Ben Kindel (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|a360ac1b5cc8",
@@ -771,7 +777,9 @@
    "text": "Kasperi Kapanen (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|29be6b23d28a",
@@ -791,7 +799,9 @@
    "text": "Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|035b6d663648",
@@ -800,7 +810,9 @@
    "text": "Jared McCann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|bcba5abe7cc8",
@@ -809,7 +821,9 @@
    "text": "Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|f4ac0a54d0ce",
@@ -818,7 +832,9 @@
    "text": "Bobby McMann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-02|cedb77f5bdbb",
@@ -827,7 +843,9 @@
    "text": "Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Lukas Dostal (ANA) is starting with no game. Swap them.",
    "section": "lineup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-03|29be6b23d28a",
@@ -836,7 +854,9 @@
    "text": "Matt Duchene (DAL, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
    "section": "lineup",
    "urgent": true,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-03|0c72e6544ac8",
@@ -845,7 +865,9 @@
    "text": "Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-03|40c82dac6252",
@@ -854,7 +876,9 @@
    "text": "Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-03|ec0d38e98ea9",
@@ -863,7 +887,9 @@
    "text": "Ben Kindel (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   },
   {
    "k": "2026-10-03|a360ac1b5cc8",
@@ -872,7 +898,9 @@
    "text": "Kasperi Kapanen (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "morning",
+   "sent_at": "2026-10-03T15:00:21Z"
   }
  ],
  "sent": {
@@ -892,7 +920,9 @@
    "morning",
    "pregame"
   ],
-  "2026-10-03": []
+  "2026-10-03": [
+   "morning"
+  ]
  },
  "log": [
   {
@@ -942,6 +972,12 @@
    "kind": "pregame",
    "title": "Before puck drop - first game 3:30 PM (2 updates)",
    "body": "PICKUP IDEAS\n- Emil Heineman (NYI) promoted: 3rd line -> 1st line\n- Philip Broberg (STL) promoted: 2nd pair -> top pair"
+  },
+  {
+   "at": "2026-10-03T15:00:21Z",
+   "kind": "morning",
+   "title": "Morning summary - Sat Oct 3 (14 updates)",
+   "body": "LINEUP\n- Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Jared McCann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Bobby McMann (SEA, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n- Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Lukas Dostal (ANA) is starting with no game. Swap them.\n[!] Matt Duchene (DAL, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.\n\nPICKUP IDEAS\n- Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.\n- Ben Kindel (F, PIT) was just moved onto his team's top power-play unit and is a free agent.\n- Kasperi Kapanen (F, EDM) was just moved onto his team's top power-play unit and is a free agent.\n- Marco Rossi (F, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Cam Fowler (D, STL) was just moved onto his team's top power-play unit and is a free agent.\n  + 2 more in the app\n\nToday: 14 of your players play, first puck drop 4:00 PM."
   }
  ]
 }
