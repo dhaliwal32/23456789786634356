@@ -941,6 +941,15 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-03T18:30:54Z"
+  },
+  {
+   "k": "2026-10-03|840e191d38af",
+   "at": "2026-10-03T18:40:55Z",
+   "title": "Your player: injury update",
+   "text": "Aleksander Barkov (FLA) injury status: Day To Day -> Injury Reserve",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
