@@ -901,6 +901,24 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-03T15:00:21Z"
+  },
+  {
+   "k": "2026-10-03|815448e8514b",
+   "at": "2026-10-03T17:10:50Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Frank Nazar (CHI) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-03|09ba4e0c3b9c",
+   "at": "2026-10-03T17:10:50Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Roman Kantserov (CHI) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
