@@ -1042,6 +1042,24 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-03T23:51:51Z"
+  },
+  {
+   "k": "2026-10-03|5943d1dd52f8",
+   "at": "2026-10-04T00:02:04Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Artyom Levshunov (D, CHI) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-03|5b5a0552725e",
+   "at": "2026-10-04T00:02:04Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Jonathan Lekkerimaki (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
