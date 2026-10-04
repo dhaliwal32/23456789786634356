@@ -1372,6 +1372,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-04|63e6933af9ed",
+   "at": "2026-10-04T12:34:39Z",
+   "title": "Your player: injury update",
+   "text": "Jake DeBrusk (VAN) injury status: Out -> Day To Day",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
