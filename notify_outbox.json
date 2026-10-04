@@ -1471,6 +1471,17 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-04|4ea44fb26247",
+   "at": "2026-10-04T22:46:10Z",
+   "title": "Goalie not confirmed yet",
+   "text": "Lukas Dostal (ANA, 5:00 PM) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-04T22:46:10Z"
   }
  ],
  "sent": {
