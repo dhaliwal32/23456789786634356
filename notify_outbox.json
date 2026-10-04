@@ -1201,6 +1201,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-03|785c972fe8fd",
+   "at": "2026-10-04T05:33:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Jamie Oleksiak (D, VAN) is playing 20.9 min per game lately, up +4.0 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-03|61c802e424a9",
+   "at": "2026-10-04T05:33:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Drew O'Connor (F, VAN) is playing 16.3 min per game lately, up +1.7 (PP +2.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-03|cf5d7ad5badc",
+   "at": "2026-10-04T05:33:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Liam Ohgren (F, VAN) is playing 17.8 min per game lately, up +4.6 (PP +1.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-03|106ebf4e4355",
+   "at": "2026-10-04T05:33:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tom Willander (D, VAN) is playing 20.7 min per game lately, up +3.7 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
