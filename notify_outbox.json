@@ -1943,7 +1943,9 @@
    "text": "Cole Perfetti (F, WPG) ownership is up 16.5% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|43e6677ad512",
@@ -1952,7 +1954,9 @@
    "text": "Cole Perfetti (F, WPG) ownership is up 17.8% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|24b7a5681373",
@@ -1961,7 +1965,9 @@
    "text": "Mikko Rantanen (DAL) moved down: 1st line -> 2nd line",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|937e7858c724",
@@ -1970,7 +1976,9 @@
    "text": "Dmitri Voronkov (CBJ) promoted: 4th line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|10ad48b9184e",
@@ -1979,7 +1987,9 @@
    "text": "Jamie Benn (DAL) promoted: 3rd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|99038ca6161e",
@@ -1988,7 +1998,9 @@
    "text": "Jordan Spence (OTT) promoted: 2nd pair -> top pair",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|b022649931a8",
@@ -1997,7 +2009,9 @@
    "text": "Cole Perfetti (F, WPG) ownership is up 18.8% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   },
   {
    "k": "2026-10-05|9e925135ae65",
@@ -2006,7 +2020,9 @@
    "text": "Cole Perfetti (F, WPG) ownership is up 18.9% - other managers are grabbing him.",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-05T22:00:45Z"
   }
  ],
  "sent": {
@@ -2027,7 +2043,8 @@
    "pregame"
   ],
   "2026-10-05": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -2102,6 +2119,12 @@
    "kind": "morning",
    "title": "Morning summary - Mon Oct 5 (41 updates)",
    "body": "LINEUP\n- Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n[!] Matt Duchene (DAL, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.\n\nYOUR PLAYERS\n- Sam Bennett (FLA) is off PP1\n- Bobby McMann (SEA) is off PP1\n- Jared McCann (SEA) is off PP1\n- Sam Bennett (FLA) moved onto PP1\n- Jake DeBrusk (VAN) injury status: Out -> Day To Day\n\nPICKUP IDEAS\n- Frank Nazar (F, CHI) was just moved onto his team's top power-play unit and is a free agent.\n- Yegor Sharangovich (CGY) promoted: 3rd line -> 1st line\n- Anton Lundell (F, FLA) is playing 19.1 min per game lately, up -0.1 (PP +1.6). Likely promoted - free agent.\n- Samuel Honzek (F, CGY) is playing 15.6 min per game lately, up +3.2 (PP -0.1). Likely promoted - free agent.\n- Jamie Oleksiak (D, VAN) is playing 20.2 min per game lately, up +3.2 (PP -0.0). Likely promoted - free agent.\n- William Karlsson (F, VGK) is playing 18.7 min per game lately, up +3.5 (PP +0.3). Likely promoted - free agent.\n  + 27 more in the app\n\nToday: 5 of your players play, first puck drop 4:00 PM."
+  },
+  {
+   "at": "2026-10-05T22:00:45Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:00 PM (8 updates)",
+   "body": "YOUR PLAYERS\n- Mikko Rantanen (DAL) moved down: 1st line -> 2nd line\n\nPICKUP IDEAS\n- Cole Perfetti (F, WPG) ownership is up 16.5% - other managers are grabbing him.\n- Cole Perfetti (F, WPG) ownership is up 17.8% - other managers are grabbing him.\n- Dmitri Voronkov (CBJ) promoted: 4th line -> 2nd line\n- Jamie Benn (DAL) promoted: 3rd line -> 1st line\n- Jordan Spence (OTT) promoted: 2nd pair -> top pair\n- Cole Perfetti (F, WPG) ownership is up 18.8% - other managers are grabbing him.\n  + 1 more in the app"
   }
  ]
 }
