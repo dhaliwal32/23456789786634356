@@ -1511,6 +1511,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-04|b87a6ab1f0b0",
+   "at": "2026-10-05T01:06:57Z",
+   "title": "Your player: power-play change",
+   "text": "Bobby McMann (SEA) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-04|fcd65d7c0c80",
+   "at": "2026-10-05T01:06:57Z",
+   "title": "Your player: power-play change",
+   "text": "Jared McCann (SEA) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
