@@ -1953,6 +1953,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-05|24b7a5681373",
+   "at": "2026-10-05T17:10:07Z",
+   "title": "Your player's line changed",
+   "text": "Mikko Rantanen (DAL) moved down: 1st line -> 2nd line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|937e7858c724",
+   "at": "2026-10-05T17:10:07Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Dmitri Voronkov (CBJ) promoted: 4th line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|10ad48b9184e",
+   "at": "2026-10-05T17:10:07Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jamie Benn (DAL) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|99038ca6161e",
+   "at": "2026-10-05T17:10:07Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jordan Spence (OTT) promoted: 2nd pair -> top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
