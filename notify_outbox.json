@@ -1772,6 +1772,15 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-05|29be6b23d28a",
+   "at": "2026-10-05T08:08:03Z",
+   "title": "Lineup: starter is OUT",
+   "text": "Matt Duchene (DAL, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": false
   }
  ],
  "sent": {
