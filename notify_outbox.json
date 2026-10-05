@@ -1529,6 +1529,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-04|a64e5ecc6192",
+   "at": "2026-10-05T03:37:06Z",
+   "title": "Pickup: ice time jump",
+   "text": "Anton Lundell (F, FLA) is playing 19.1 min per game lately, up -0.1 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-04|16a4162967ce",
+   "at": "2026-10-05T03:37:06Z",
+   "title": "Pickup: ice time jump",
+   "text": "Samuel Honzek (F, CGY) is playing 15.6 min per game lately, up +3.2 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
