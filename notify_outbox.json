@@ -1493,6 +1493,24 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-04T23:46:28Z"
+  },
+  {
+   "k": "2026-10-04|4df6c2b77167",
+   "at": "2026-10-05T00:06:36Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Frank Nazar (F, CHI) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-04|65995b004e37",
+   "at": "2026-10-05T00:06:56Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Yegor Sharangovich (CGY) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
