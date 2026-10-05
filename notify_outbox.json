@@ -1547,6 +1547,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-04|11dd3e4df8fd",
+   "at": "2026-10-05T04:07:09Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
