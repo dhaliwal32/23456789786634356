@@ -1935,6 +1935,15 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-05T15:08:46Z"
+  },
+  {
+   "k": "2026-10-05|555b07ad44cd",
+   "at": "2026-10-05T15:39:27Z",
+   "title": "Pickup: trending free agent",
+   "text": "Cole Perfetti (F, WPG) ownership is up 16.5% - other managers are grabbing him.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
