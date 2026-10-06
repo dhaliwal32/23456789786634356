@@ -2471,7 +2471,9 @@
    "text": "Viktor Arvidsson (DET) promoted: 2nd line -> 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-06T22:06:21Z"
   },
   {
    "k": "2026-10-06|380dfb5d9f61",
@@ -2480,7 +2482,9 @@
    "text": "Jake DeBrusk (VAN) is in the lineup on the 1st line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-06T22:06:21Z"
   },
   {
    "k": "2026-10-06|76ad4f48618d",
@@ -2489,7 +2493,9 @@
    "text": "Zeev Buium (VAN) promoted: 3rd pair -> top pair",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-06T22:06:21Z"
   },
   {
    "k": "2026-10-06|54b7ec842780",
@@ -2498,7 +2504,9 @@
    "text": "Joel Farabee (CGY) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-06T22:06:21Z"
   },
   {
    "k": "2026-10-06|d3e9d9ca697d",
@@ -2507,7 +2515,9 @@
    "text": "Mikael Backlund (CGY) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-06T22:06:21Z"
   }
  ],
  "sent": {
@@ -2528,7 +2538,8 @@
    "pregame"
   ],
   "2026-10-06": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -2615,6 +2626,12 @@
    "kind": "morning",
    "title": "Morning summary - Tue Oct 6 (48 updates)",
    "body": "LINEUP\n- Bobby McMann (SEA, 6:40 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n\nYOUR PLAYERS\n- Victor Hedman (TB) is down 3.1 min per game lately (15.8 vs 18.9). Possible demotion - watch his role.\n- Victor Hedman (TB) is down 3.1 min per game lately (15.8 vs 18.9). Possible demotion - watch his role.\n\nPICKUP IDEAS\n- Tommy Novak (F, PIT) ownership is up 10.0% - other managers are grabbing him.\n- Tommy Novak (F, PIT) ownership is up 10.4% - other managers are grabbing him.\n- Matty Beniers (F, SEA) was just moved onto his team's top power-play unit and is a free agent.\n- Kaapo Kakko (F, SEA) was just moved onto his team's top power-play unit and is a free agent.\n- Noah Ostlund (F, BUF) was just moved onto his team's top power-play unit and is a free agent.\n- Shane Wright (F, SEA) was just moved onto his team's top power-play unit and is a free agent.\n  + 39 more in the app\n\nToday: 9 of your players play, first puck drop 4:00 PM."
+  },
+  {
+   "at": "2026-10-06T22:06:21Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:00 PM (5 updates)",
+   "body": "PICKUP IDEAS\n- Viktor Arvidsson (DET) promoted: 2nd line -> 1st line\n- Jake DeBrusk (VAN) is in the lineup on the 1st line\n- Zeev Buium (VAN) promoted: 3rd pair -> top pair\n- Joel Farabee (CGY) promoted: 3rd line -> 2nd line\n- Mikael Backlund (CGY) promoted: 3rd line -> 2nd line"
   }
  ]
 }
