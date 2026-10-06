@@ -2172,6 +2172,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-05|12873c366d9b",
+   "at": "2026-10-06T04:01:53Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Bobby McMann (SEA, 6:40 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
