@@ -2091,6 +2091,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-05|24345800d5ca",
+   "at": "2026-10-06T03:01:49Z",
+   "title": "Pickup: ice time jump",
+   "text": "Mason Lohrei (D, BOS) is playing 20.8 min per game lately, up +3.9 (PP +0.8). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|0f53d7e72da4",
+   "at": "2026-10-06T03:01:49Z",
+   "title": "Pickup: ice time jump",
+   "text": "Connor Clifton (D, BOS) is playing 19.8 min per game lately, up +3.1 (PP +0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
