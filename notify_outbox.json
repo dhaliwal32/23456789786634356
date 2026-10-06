@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-09-28|2a29f7a7274a",
-   "at": "2026-09-28T23:58:17Z",
-   "title": "Your player: injury update",
-   "text": "Troy Terry (ANA) injury status: Out -> Injury Reserve",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-09-29T15:01:19Z"
-  },
-  {
    "k": "2026-09-28|5544065c8b50",
    "at": "2026-09-29T00:08:20Z",
    "title": "Pickup: new PP1 free agent",
@@ -2038,6 +2027,51 @@
    "at": "2026-10-05T23:31:47Z",
    "title": "Pickup: trending free agent",
    "text": "Tommy Novak (F, PIT) ownership is up 10.4% - other managers are grabbing him.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|2856cf21c19f",
+   "at": "2026-10-06T00:01:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Matty Beniers (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|cb29587ec639",
+   "at": "2026-10-06T00:01:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Kaapo Kakko (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|4ec32e905330",
+   "at": "2026-10-06T00:01:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Noah Ostlund (F, BUF) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|1836444692f2",
+   "at": "2026-10-06T00:01:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Shane Wright (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|070d97689a26",
+   "at": "2026-10-06T00:01:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Berkly Catton (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
    "sent": false
