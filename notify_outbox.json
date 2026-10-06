@@ -1,50 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-09-29|880890e12a26",
-   "at": "2026-09-29T17:12:00Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Josh Norris (BUF) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-29T20:02:23Z"
-  },
-  {
-   "k": "2026-09-29|d9cf0b938336",
-   "at": "2026-09-29T17:12:00Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jack Quinn (BUF) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-29T20:02:23Z"
-  },
-  {
-   "k": "2026-09-29|e6a5d05440be",
-   "at": "2026-09-29T17:12:00Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jordan Spence (OTT) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-29T20:02:23Z"
-  },
-  {
-   "k": "2026-09-29|788f8a13fd6a",
-   "at": "2026-09-29T17:12:00Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Tyson Foerster (PHI) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-29T20:02:23Z"
-  },
-  {
    "k": "2026-09-29|4a69791fc53e",
    "at": "2026-09-30T00:03:10Z",
    "title": "Pickup: new PP1 free agent",
