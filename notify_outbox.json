@@ -2472,6 +2472,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-06|380dfb5d9f61",
+   "at": "2026-10-06T17:55:32Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jake DeBrusk (VAN) is in the lineup on the 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|76ad4f48618d",
+   "at": "2026-10-06T17:55:32Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Zeev Buium (VAN) promoted: 3rd pair -> top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
