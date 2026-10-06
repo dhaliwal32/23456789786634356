@@ -2118,6 +2118,60 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-05|0e7a712003f8",
+   "at": "2026-10-06T03:21:47Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tommy Novak (F, PIT) is playing 15.3 min per game lately, up +1.0 (PP +1.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|0be27bda6330",
+   "at": "2026-10-06T03:21:48Z",
+   "title": "Pickup: ice time jump",
+   "text": "Egor Chinakhov (F, PIT) is playing 16.3 min per game lately, up +2.8 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|a2d59699d42e",
+   "at": "2026-10-06T03:21:48Z",
+   "title": "Pickup: ice time jump",
+   "text": "Declan Carlile (D, PIT) is playing 18.5 min per game lately, up +3.7 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|d1d39aa49344",
+   "at": "2026-10-06T03:21:48Z",
+   "title": "Pickup: ice time jump",
+   "text": "Hendrix Lapierre (F, PIT) is playing 11.8 min per game lately, up +3.0 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|eeadf9668e19",
+   "at": "2026-10-06T03:21:48Z",
+   "title": "Pickup: ice time jump",
+   "text": "Trevor van Riemsdyk (D, PIT) is playing 19.5 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-05|eed292d6df74",
+   "at": "2026-10-06T03:21:48Z",
+   "title": "Pickup: ice time jump",
+   "text": "Morgan Barron (F, WPG) is playing 16.5 min per game lately, up +3.7 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
