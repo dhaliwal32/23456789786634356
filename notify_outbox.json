@@ -2654,6 +2654,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-06|dc43b12cac2d",
+   "at": "2026-10-07T03:27:00Z",
+   "title": "Pickup: ice time jump",
+   "text": "Brayden Schenn (F, NYI) is playing 15.1 min per game lately, up -1.6 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|811032826a3b",
+   "at": "2026-10-07T03:27:00Z",
+   "title": "Pickup: ice time jump",
+   "text": "Matias Maccelli (F, NYI) is playing 15.4 min per game lately, up +0.9 (PP +2.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
