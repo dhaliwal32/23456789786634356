@@ -1,50 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-09-30|c9789649beb8",
-   "at": "2026-09-30T21:07:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Anton Frondell (CHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-30T22:37:48Z"
-  },
-  {
-   "k": "2026-09-30|69edbfe3d55d",
-   "at": "2026-09-30T21:07:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Tyler Bertuzzi (CHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-30T22:37:48Z"
-  },
-  {
-   "k": "2026-09-30|02b1ee1d2590",
-   "at": "2026-09-30T21:07:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Teuvo Teravainen (CHI) is in the lineup on the 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-30T22:37:48Z"
-  },
-  {
-   "k": "2026-09-30|3a48526d4b09",
-   "at": "2026-09-30T21:07:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Drew Doughty (LA) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-09-30T22:37:48Z"
-  },
-  {
    "k": "2026-09-30|b4380fa19af2",
    "at": "2026-09-30T22:08:07Z",
    "title": "Your player: injury update",
