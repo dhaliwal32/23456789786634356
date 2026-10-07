@@ -2510,6 +2510,33 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-06|c81d480d083e",
+   "at": "2026-10-07T02:16:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Matthew Wood (F, NSH) is playing 16.8 min per game lately, up +4.5 (PP +1.8). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|d63440dec717",
+   "at": "2026-10-07T02:16:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Alexander Kerfoot (F, NSH) is playing 16.2 min per game lately, up +3.4 (PP +1.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|c6be8b58d977",
+   "at": "2026-10-07T02:16:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Adam Edstrom (F, NSH) is playing 12.8 min per game lately, up +3.4 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
