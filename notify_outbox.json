@@ -3142,7 +3142,9 @@
    "text": "Victor Hedman (TB) is no longer in the lineup (was 2nd pair) - scratched, hurt or moved",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-07T22:30:39Z"
   },
   {
    "k": "2026-10-07|17d512011770",
@@ -3151,7 +3153,9 @@
    "text": "Fraser Minten (BOS) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-07T22:30:39Z"
   },
   {
    "k": "2026-10-07|c965a6da9a10",
@@ -3183,7 +3187,8 @@
    "pregame"
   ],
   "2026-10-07": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -3282,6 +3287,12 @@
    "kind": "morning",
    "title": "Morning summary - Wed Oct 7 (73 updates)",
    "body": "LINEUP\n- Lukas Dostal (ANA, 7:00 PM) is on your bench with a game today, while Kevin Lankinen (VAN) is starting with no game. Swap them.\n- Josh Manson (COL, 4:30 PM) is on your bench with a game today, while Victor Hedman (TB) is starting with no game. Swap them.\n- Pierre-Luc Dubois (WSH, 4:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.\n\nYOUR PLAYERS\n- Sam Bennett (FLA) promoted: 2nd line -> 1st line\n- Brady Tkachuk (FLA) moved down: 1st line -> 2nd line\n- Sam Reinhart (FLA) moved down: 1st line -> 2nd line\n- Victor Hedman (TB) is down 3.1 min per game lately (15.8 vs 18.9). Possible demotion - watch his role.\n\nPICKUP IDEAS\n- Jake DeBrusk (F, VAN) was just moved onto his team's top power-play unit and is a free agent.\n- Mason Marchment (F, SJ) was just moved onto his team's top power-play unit and is a free agent.\n- Claude Giroux (F, OTT) was just moved onto his team's top power-play unit and is a free agent.\n- Carter Yakemchuk (D, OTT) was just moved onto his team's top power-play unit and is a free agent.\n- Matthew Wood (F, NSH) is playing 16.8 min per game lately, up +4.5 (PP +1.8). Likely promoted - free agent.\n- Alexander Kerfoot (F, NSH) is playing 16.2 min per game lately, up +3.4 (PP +1.1). Likely promoted - free agent.\n  + 60 more in the app\n\nToday: 7 of your players play, first puck drop 4:30 PM."
+  },
+  {
+   "at": "2026-10-07T22:30:39Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:30 PM (2 updates)",
+   "body": "YOUR PLAYERS\n- Victor Hedman (TB) is no longer in the lineup (was 2nd pair) - scratched, hurt or moved\n\nPICKUP IDEAS\n- Fraser Minten (BOS) promoted: 3rd line -> 2nd line"
   }
  ]
 }
