@@ -1,39 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-09-29|4a69791fc53e",
-   "at": "2026-09-30T00:03:10Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Vasily Podkolzin (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-09-30T15:06:39Z"
-  },
-  {
-   "k": "2026-09-29|2d0799a5c870",
-   "at": "2026-09-30T00:03:10Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Egor Chinakhov (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-09-30T15:06:39Z"
-  },
-  {
-   "k": "2026-09-29|f5f782e9626f",
-   "at": "2026-09-30T00:03:10Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Victor Olofsson (F, VGK) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-09-30T15:06:39Z"
-  },
-  {
    "k": "2026-09-29|2665aa53104c",
    "at": "2026-09-30T00:53:23Z",
    "title": "Goalie not confirmed yet",
@@ -2518,6 +2485,42 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-10-06T22:06:21Z"
+  },
+  {
+   "k": "2026-10-06|b666254664b2",
+   "at": "2026-10-07T00:06:24Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Jake DeBrusk (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|f58080124072",
+   "at": "2026-10-07T00:06:24Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Mason Marchment (F, SJ) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|ca45e53f9ba9",
+   "at": "2026-10-07T00:06:24Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Claude Giroux (F, OTT) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|bbe679a87268",
+   "at": "2026-10-07T00:06:24Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Carter Yakemchuk (D, OTT) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
