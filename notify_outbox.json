@@ -3222,6 +3222,24 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-07T15:29:41Z"
+  },
+  {
+   "k": "2026-10-07|b427b42ce416",
+   "at": "2026-10-07T17:29:54Z",
+   "title": "Your player: lineup change",
+   "text": "Victor Hedman (TB) is no longer in the lineup (was 2nd pair) - scratched, hurt or moved",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|17d512011770",
+   "at": "2026-10-07T17:29:54Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Fraser Minten (BOS) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
