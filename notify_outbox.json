@@ -2688,6 +2688,33 @@
    "section": "lineup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-06|d1dd0c6d08ee",
+   "at": "2026-10-07T05:17:13Z",
+   "title": "Pickup: ice time jump",
+   "text": "William Karlsson (F, VGK) is playing 18.7 min per game lately, up +3.5 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|3edc2c8e7f2a",
+   "at": "2026-10-07T05:17:13Z",
+   "title": "Pickup: ice time jump",
+   "text": "Berkly Catton (F, SEA) is playing 15.7 min per game lately, up +2.8 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|75e4e9eb9928",
+   "at": "2026-10-07T05:17:13Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryker Evans (D, SEA) is playing 21.6 min per game lately, up +3.8 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
