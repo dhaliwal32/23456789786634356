@@ -2627,6 +2627,33 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-06|42a144a9d835",
+   "at": "2026-10-07T03:17:12Z",
+   "title": "Your player's line changed",
+   "text": "Sam Bennett (FLA) promoted: 2nd line -> 1st line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|fdeaf9cee7fe",
+   "at": "2026-10-07T03:17:12Z",
+   "title": "Your player's line changed",
+   "text": "Brady Tkachuk (FLA) moved down: 1st line -> 2nd line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-06|20048ac8e51b",
+   "at": "2026-10-07T03:17:12Z",
+   "title": "Your player's line changed",
+   "text": "Sam Reinhart (FLA) moved down: 1st line -> 2nd line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
