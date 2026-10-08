@@ -3218,6 +3218,69 @@
    "section": "lineup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-07|e918e9bd460a",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tristan Luneau (D, ANA) is playing 25.0 min per game lately, up +13.4 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|8c55b4ae814c",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryan Shea (D, EDM) is playing 22.9 min per game lately, up +4.1 (PP +1.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|2e8317d9d2b6",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kasperi Kapanen (F, EDM) is playing 17.7 min per game lately, up +3.1 (PP +3.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|f016e0b6d74f",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Isaac Howard (F, EDM) is playing 10.1 min per game lately, up -0.2 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|6eb27362cdc6",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Trent Frederic (F, EDM) is playing 10.0 min per game lately, up -1.0 (PP +1.8). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|4b48998adb99",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tim Washe (F, ANA) is playing 16.6 min per game lately, up +4.5 (PP +0.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|6670fb3a0411",
+   "at": "2026-10-08T05:31:50Z",
+   "title": "Pickup: ice time jump",
+   "text": "Travis Mitchell (D, ANA) is playing 16.0 min per game lately, up +4.5 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
