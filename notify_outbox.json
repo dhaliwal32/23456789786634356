@@ -3244,6 +3244,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-07|bcba5abe7cc8",
+   "at": "2026-10-08T04:01:40Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|8d356521ca19",
+   "at": "2026-10-08T04:01:40Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Kevin Lankinen (VAN, 4:00 PM) is on your bench with a game today, while Lukas Dostal (ANA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
