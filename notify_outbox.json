@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|bd6a0f9aa465",
-   "at": "2026-10-01T23:03:00Z",
-   "title": "Your player's line changed",
-   "text": "Trevor Zegras (PHI) moved down: 1st line -> 2nd line",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
-   "k": "2026-10-01|5556560766b4",
-   "at": "2026-10-01T23:03:00Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Christian Dvorak (PHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
    "k": "2026-10-01|62b84d0cb335",
    "at": "2026-10-01T23:32:48Z",
    "title": "Pickup: trending free agent",
@@ -3717,6 +3695,15 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-08T21:45:17Z"
+  },
+  {
+   "k": "2026-10-08|c374a5d7410c",
+   "at": "2026-10-08T23:05:40Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Josh Anderson (MTL) promoted: 4th line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
