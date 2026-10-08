@@ -3192,6 +3192,24 @@
    "section": "mine",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-07|640a9e8fc980",
+   "at": "2026-10-08T02:51:31Z",
+   "title": "Pickup: ice time jump",
+   "text": "Egor Chinakhov (F, PIT) is playing 16.1 min per game lately, up +2.6 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|61c0adbd2d8e",
+   "at": "2026-10-08T02:51:31Z",
+   "title": "Pickup: ice time jump",
+   "text": "Hendrix Lapierre (F, PIT) is playing 12.1 min per game lately, up +3.3 (PP +1.4). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
