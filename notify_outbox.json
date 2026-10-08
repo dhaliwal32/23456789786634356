@@ -3178,6 +3178,33 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-07T23:20:49Z"
+  },
+  {
+   "k": "2026-10-07|6258dab2ef16",
+   "at": "2026-10-08T00:00:58Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Anton Frondell (F, CHI) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|0e7e6e63375f",
+   "at": "2026-10-08T00:00:58Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Charle-Edouard D'Astous (D, TB) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|765e0d89d1c6",
+   "at": "2026-10-08T00:00:58Z",
+   "title": "Pickup: ice time jump",
+   "text": "Carter Yakemchuk (D, OTT) is playing 16.6 min per game lately, up +2.1 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
