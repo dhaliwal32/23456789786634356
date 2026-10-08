@@ -1,39 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-09-30|4ee3805ed91d",
-   "at": "2026-10-01T04:08:45Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Matthew Knies (CBJ, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-01T15:01:00Z"
-  },
-  {
-   "k": "2026-09-30|f584e78665c4",
-   "at": "2026-10-01T04:08:45Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Jared McCann (SEA, 6:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-01T15:01:00Z"
-  },
-  {
-   "k": "2026-09-30|2c211ea54735",
-   "at": "2026-10-01T04:08:45Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Kevin Lankinen (VAN, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-01T15:01:00Z"
-  },
-  {
    "k": "2026-09-30|2f42325f85ec",
    "at": "2026-10-01T04:38:49Z",
    "title": "Pickup: trending free agent",
