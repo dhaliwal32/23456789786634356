@@ -3194,6 +3194,15 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-07|92ca8cce052f",
+   "at": "2026-10-08T01:41:24Z",
+   "title": "Your player: injury update",
+   "text": "Josh Morrissey (WPG) injury status: Active -> Day To Day",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
