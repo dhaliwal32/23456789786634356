@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|82f2e1b0f007",
-   "at": "2026-10-01T19:12:10Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Vasily Podkolzin (EDM) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-01T22:02:52Z"
-  },
-  {
    "k": "2026-10-01|84b98db4efde",
    "at": "2026-10-01T19:31:59Z",
    "title": "Pickup: trending free agent",
@@ -3733,6 +3722,15 @@
    "title": "Pickup idea: bigger role",
    "text": "Jamie Drysdale (PHI) promoted: 2nd pair -> top pair",
    "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|9ce20903ce9c",
+   "at": "2026-10-08T19:15:07Z",
+   "title": "Your player's line changed",
+   "text": "Mikko Rantanen (DAL) promoted: 2nd line -> 1st line",
+   "section": "mine",
    "urgent": false,
    "sent": false
   }
