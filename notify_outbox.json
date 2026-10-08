@@ -3210,6 +3210,51 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-07|07f35d123299",
+   "at": "2026-10-08T03:11:29Z",
+   "title": "Your player is losing ice time",
+   "text": "Nathan MacKinnon (COL) is down 3.5 min per game lately (18.7 vs 22.3). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|f90e4f1d48af",
+   "at": "2026-10-08T03:11:29Z",
+   "title": "Your player is losing ice time",
+   "text": "Josh Morrissey (WPG) is down 4.7 min per game lately (20.1 vs 24.7). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|ad26967d125c",
+   "at": "2026-10-08T03:11:29Z",
+   "title": "Pickup: ice time jump",
+   "text": "Morgan Barron (F, WPG) is playing 16.8 min per game lately, up +4.0 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|fde044bf68f9",
+   "at": "2026-10-08T03:11:48Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Alexander Wennberg (SJ) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-07|fb708fda3d2b",
+   "at": "2026-10-08T03:11:48Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Kiefer Sherwood (SJ) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
