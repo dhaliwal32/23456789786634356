@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|2f8467538bbd",
-   "at": "2026-10-01T15:11:37Z",
-   "title": "Your player's line changed",
-   "text": "Luke Hughes (NJ) promoted: 2nd pair -> top pair",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-01T22:02:52Z"
-  },
-  {
    "k": "2026-10-01|b3f8cd0b1d63",
    "at": "2026-10-01T18:31:43Z",
    "title": "Pickup: trending free agent",
@@ -3739,6 +3728,15 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-08T15:04:07Z"
+  },
+  {
+   "k": "2026-10-08|f9914b40d178",
+   "at": "2026-10-08T15:14:07Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jacob Fowler added to MTL's NHL roster (call-up, signing or claim)",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
