@@ -3687,6 +3687,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-08|5d29307465ce",
+   "at": "2026-10-09T02:17:12Z",
+   "title": "Pickup: ice time jump",
+   "text": "John Marino (D, UTA) is playing 20.3 min per game lately, up +0.1 (PP +1.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|f75dd3c98a3d",
+   "at": "2026-10-09T02:17:12Z",
+   "title": "Pickup: ice time jump",
+   "text": "Liam Ohgren (F, VAN) is playing 16.3 min per game lately, up +3.1 (PP +1.3). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|106ebf4e4355",
+   "at": "2026-10-09T02:17:12Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tom Willander (D, VAN) is playing 20.7 min per game lately, up +3.7 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|fd16b3bc1bac",
+   "at": "2026-10-09T02:17:12Z",
+   "title": "Pickup: ice time jump",
+   "text": "Connor Clifton (D, BOS) is playing 20.2 min per game lately, up +3.4 (PP +0.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
