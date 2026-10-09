@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|729ba421b070",
-   "at": "2026-10-02T05:24:33Z",
-   "title": "Your player: injury update",
-   "text": "Aleksander Barkov (FLA) injury status: Active -> Day To Day",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
    "k": "2026-10-02|817d531d16e0",
    "at": "2026-10-02T07:04:15Z",
    "title": "Lineup: starter is OUT",
@@ -3825,6 +3814,15 @@
    "at": "2026-10-09T04:16:24Z",
    "title": "Pickup: ice time jump",
    "text": "Samuel Honzek (F, CGY) is playing 15.6 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|32a3eeed3e9b",
+   "at": "2026-10-09T05:26:32Z",
+   "title": "Pickup: ice time jump",
+   "text": "William Karlsson (F, VGK) is playing 18.7 min per game lately, up +3.6 (PP +0.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
    "sent": false
