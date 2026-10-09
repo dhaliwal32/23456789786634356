@@ -4333,6 +4333,17 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-09T16:28:48Z"
+  },
+  {
+   "k": "2026-10-09|3b0a65aec275",
+   "at": "2026-10-09T16:38:41Z",
+   "title": "Lineup: starter is OUT",
+   "text": "Josh Morrissey (WPG, 5:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-09T16:38:41Z"
   }
  ],
  "sent": {
