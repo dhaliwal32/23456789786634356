@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|1eb35a2cc85d",
-   "at": "2026-10-02T00:03:05Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Isaac Howard (F, EDM) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
    "k": "2026-10-01|2a3c0eb28094",
    "at": "2026-10-02T00:33:02Z",
    "title": "Pickup: trending free agent",
@@ -3704,6 +3693,33 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-08T23:45:36Z"
+  },
+  {
+   "k": "2026-10-08|9ba75e1c4523",
+   "at": "2026-10-09T00:05:40Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Jake Neighbours (F, STL) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|43609a70bac3",
+   "at": "2026-10-09T00:05:40Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Trevor Connelly (F, VGK) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|8f33c0b48610",
+   "at": "2026-10-09T00:05:40Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "David Jiricek (D, PHI) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
