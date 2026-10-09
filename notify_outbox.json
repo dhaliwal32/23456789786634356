@@ -4191,6 +4191,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|41fe99bcaf09",
+   "at": "2026-10-09T13:08:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Ryan Hartman (MIN) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|5dcefb2dbc52",
+   "at": "2026-10-09T13:08:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jonathan Marchessault (NSH) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
