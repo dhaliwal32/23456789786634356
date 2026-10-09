@@ -3810,6 +3810,24 @@
    "section": "lineup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-08|d1cdc38b7b77",
+   "at": "2026-10-09T04:16:23Z",
+   "title": "Pickup: ice time jump",
+   "text": "Martin Pospisil (F, CGY) is playing 13.4 min per game lately, up +3.2 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|dfd6cc17f184",
+   "at": "2026-10-09T04:16:24Z",
+   "title": "Pickup: ice time jump",
+   "text": "Samuel Honzek (F, CGY) is playing 15.6 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
