@@ -4322,6 +4322,17 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-09T15:08:53Z"
+  },
+  {
+   "k": "2026-10-09|4f2acbac16e7",
+   "at": "2026-10-09T16:28:48Z",
+   "title": "Your player: injury update",
+   "text": "Josh Morrissey (WPG) injury status: Day To Day -> Out",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-09T16:28:48Z"
   }
  ],
  "sent": {
