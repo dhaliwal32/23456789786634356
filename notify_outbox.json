@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-02|b37528a83bc1",
-   "at": "2026-10-02T17:06:43Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Emil Heineman (NYI) promoted: 3rd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-02T21:37:20Z"
-  },
-  {
-   "k": "2026-10-02|2d35491f8c45",
-   "at": "2026-10-02T17:06:43Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Philip Broberg (STL) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-02T21:37:20Z"
-  },
-  {
    "k": "2026-10-02|0c72e6544ac8",
    "at": "2026-10-03T00:07:47Z",
    "title": "Pickup: new PP1 free agent",
@@ -4344,6 +4322,35 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-09T16:38:41Z"
+  },
+  {
+   "k": "2026-10-09|69777cd3d708",
+   "at": "2026-10-09T17:09:16Z",
+   "title": "Your player: lineup change",
+   "text": "Josh Morrissey (WPG) is no longer in the lineup (was top pair) - scratched, hurt or moved",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-09T17:09:16Z"
+  },
+  {
+   "k": "2026-10-09|33a09f277f8c",
+   "at": "2026-10-09T17:09:17Z",
+   "title": "Your player: power-play change",
+   "text": "Josh Morrissey (WPG) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|540d7636793f",
+   "at": "2026-10-09T17:09:17Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Aaron Ekblad (FLA) is in the lineup on the top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
