@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|ab0dda465b50",
-   "at": "2026-10-02T03:03:41Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Alexander Wennberg (SJ) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
-   "k": "2026-10-01|d533e9cebeb8",
-   "at": "2026-10-02T03:03:41Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Collin Graf (SJ) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
    "k": "2026-10-01|4015797e6efb",
    "at": "2026-10-02T04:03:46Z",
    "title": "Lineup: bench player has a game",
