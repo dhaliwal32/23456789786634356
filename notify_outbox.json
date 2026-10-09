@@ -4351,6 +4351,24 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|36843a2afa36",
+   "at": "2026-10-09T21:10:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Erik Haula (LA) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|e53f9d610174",
+   "at": "2026-10-09T21:10:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Trevor Moore (LA) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
