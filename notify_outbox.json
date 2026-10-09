@@ -4341,7 +4341,9 @@
    "text": "Josh Morrissey (WPG) is off PP1",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-09T22:09:55Z"
   },
   {
    "k": "2026-10-09|540d7636793f",
@@ -4350,7 +4352,9 @@
    "text": "Aaron Ekblad (FLA) is in the lineup on the top pair",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-09T22:09:55Z"
   },
   {
    "k": "2026-10-09|36843a2afa36",
@@ -4359,7 +4363,9 @@
    "text": "Erik Haula (LA) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-09T22:09:55Z"
   },
   {
    "k": "2026-10-09|e53f9d610174",
@@ -4368,7 +4374,9 @@
    "text": "Trevor Moore (LA) promoted: 3rd line -> 2nd line",
    "section": "pickup",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-09T22:09:55Z"
   }
  ],
  "sent": {
@@ -4389,7 +4397,8 @@
    "pregame"
   ],
   "2026-10-09": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -4512,6 +4521,12 @@
    "kind": "morning",
    "title": "Morning summary - Fri Oct 9 (73 updates)",
    "body": "LINEUP\n- Bobby McMann (SEA, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Lukas Dostal (ANA, 5:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.\n- Pierre-Luc Dubois (WSH, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Viktor Arvidsson (DET, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n\nYOUR PLAYERS\n- Victor Hedman (TB) is down 4.0 min per game lately (14.8 vs 18.9). Possible demotion - watch his role.\n- Nathan MacKinnon (COL) is down 3.5 min per game lately (18.7 vs 22.3). Possible demotion - watch his role.\n- Josh Morrissey (WPG) is down 4.7 min per game lately (20.1 vs 24.7). Possible demotion - watch his role.\n- Victor Hedman (TB) is down 4.0 min per game lately (14.8 vs 18.9). Possible demotion - watch his role.\n\nPICKUP IDEAS\n- Josh Anderson (MTL) promoted: 4th line -> 2nd line\n- Jake Neighbours (F, STL) was just moved onto his team's top power-play unit and is a free agent.\n- Trevor Connelly (F, VGK) was just moved onto his team's top power-play unit and is a free agent.\n- David Jiricek (D, PHI) was just moved onto his team's top power-play unit and is a free agent.\n- John Marino (D, UTA) is playing 20.3 min per game lately, up +0.1 (PP +1.9). Likely promoted - free agent.\n- Liam Ohgren (F, VAN) is playing 16.3 min per game lately, up +3.1 (PP +1.3). Likely promoted - free agent.\n  + 59 more in the app\n\nToday: 9 of your players play, first puck drop 4:00 PM."
+  },
+  {
+   "at": "2026-10-09T22:09:55Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 4:00 PM (4 updates)",
+   "body": "YOUR PLAYERS\n- Josh Morrissey (WPG) is off PP1\n\nPICKUP IDEAS\n- Aaron Ekblad (FLA) is in the lineup on the top pair\n- Erik Haula (LA) promoted: 3rd line -> 2nd line\n- Trevor Moore (LA) promoted: 3rd line -> 2nd line"
   }
  ]
 }
