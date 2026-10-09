@@ -1,39 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-01|4015797e6efb",
-   "at": "2026-10-02T04:03:46Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Mikko Rantanen (DAL, 6:00 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
-   "k": "2026-10-01|eba69b6bb4a3",
-   "at": "2026-10-02T04:03:46Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Lucas Raymond (DET, 3:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
-   "k": "2026-10-01|84c4bcfc8425",
-   "at": "2026-10-02T04:03:46Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Lukas Dostal (ANA, 7:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-02T15:06:22Z"
-  },
-  {
    "k": "2026-10-01|729ba421b070",
    "at": "2026-10-02T05:24:33Z",
    "title": "Your player: injury update",
@@ -3805,6 +3772,42 @@
    "title": "Pickup: ice time jump",
    "text": "Michael Kesselring (D, SJ) is playing 19.7 min per game lately, up +6.3 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|a90ef53a1d81",
+   "at": "2026-10-09T04:06:17Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Bobby McMann (SEA, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|040065958fcc",
+   "at": "2026-10-09T04:06:17Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Lukas Dostal (ANA, 5:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|a3d58ebfcd6b",
+   "at": "2026-10-09T04:06:17Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Pierre-Luc Dubois (WSH, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-08|2dfbb59212ef",
+   "at": "2026-10-09T04:06:17Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Viktor Arvidsson (DET, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
    "urgent": false,
    "sent": false
   }
