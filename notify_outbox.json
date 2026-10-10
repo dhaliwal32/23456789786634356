@@ -4605,6 +4605,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|aef7b576941d",
+   "at": "2026-10-10T03:10:41Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tristan Luneau (D, ANA) is playing 22.4 min per game lately, up +10.8 (PP +0.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|dcae4bc4aee3",
+   "at": "2026-10-10T03:10:41Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tim Washe (F, ANA) is playing 16.2 min per game lately, up +4.2 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|1c76bbacb484",
+   "at": "2026-10-10T03:10:41Z",
+   "title": "Pickup: ice time jump",
+   "text": "Morgan Barron (F, WPG) is playing 16.2 min per game lately, up +3.4 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|88ca9e7beca4",
+   "at": "2026-10-10T03:10:41Z",
+   "title": "Pickup: ice time jump",
+   "text": "Travis Mitchell (D, ANA) is playing 16.4 min per game lately, up +4.8 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
