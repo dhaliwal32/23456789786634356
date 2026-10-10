@@ -7680,5 +7680,25 @@ _fix_before_r56 = fix
 def fix(t):
     return round56(_fix_before_r56(t))
 
+# ---------- round 57: the full roster table for other teams under its own name (it clashed with the old edit table) ----------
+R57_OLD = "<RosterTable s={s} wk={wk} tid={tid} />"
+R57_NEW = "<GxRosterTable s={s} wk={wk} tid={tid} />{/* was: <RosterTable s={s} wk={wk} tid={tid} /> */}"
+
+
+def round57(t):
+    t = lit(t, "round 57: roster table for any team", ROOT, R56_HELPERS.replace("function RosterTable(", "function GxRosterTable(") + ROOT, "function GxRosterTable(")
+    t = lit(t, "round 57: team page uses it", R57_OLD, R57_NEW, "<GxRosterTable s={s} wk={wk} tid={tid} />")
+    for must in ("function GxRosterTable(", "function RosterTable(", "team page v51", "function TeamPage("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 57 (" + must + ").")
+    return t
+
+
+_fix_before_r57 = fix
+
+
+def fix(t):
+    return round57(_fix_before_r57(t))
+
 if __name__ == "__main__":
     main()
