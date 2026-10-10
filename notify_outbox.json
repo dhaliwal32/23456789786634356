@@ -5224,6 +5224,60 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-10-10T16:12:16Z"
+  },
+  {
+   "k": "2026-10-10|27458aa8ce3f",
+   "at": "2026-10-10T17:23:22Z",
+   "title": "Your player's line changed",
+   "text": "Trevor Zegras (PHI) promoted: 2nd line -> 1st line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1152ce2117df",
+   "at": "2026-10-10T17:23:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Jack Quinn (BUF) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|6f63a188107e",
+   "at": "2026-10-10T17:23:22Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Josh Norris (BUF) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b816d4fb90e1",
+   "at": "2026-10-10T17:23:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Josh Doan (BUF) promoted: 4th line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|6dfe881ef1b6",
+   "at": "2026-10-10T17:23:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Christian Dvorak (PHI) promoted: 2nd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|185d005d86b2",
+   "at": "2026-10-10T17:23:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Tyson Foerster (PHI) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
