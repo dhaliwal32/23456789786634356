@@ -243,6 +243,20 @@
   .gx-gl { display: grid; grid-template-columns: 26px minmax(0,1fr) 104px 44px 60px; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
   .gx-gl .n { text-align: right; }
   @media (max-width: 640px) { .gx-gl { grid-template-columns: 24px minmax(0,1fr) 92px 52px; gap: 6px; } }
+  /* round 44 league and setup (news_logos.py) */
+  .gx-lt { display: grid; grid-template-columns: 24px minmax(0,1fr) 52px 60px 68px 100px; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-lt .n, .gx-lm .n { text-align: right; }
+  .gx-lt.cut { border-top: 1px dashed var(--faint); }
+  .gx-lm { display: grid; grid-template-columns: minmax(0,1fr) 54px 40px minmax(50px,1.2fr) 40px 54px minmax(0,1fr); gap: 8px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; cursor: pointer; }
+  .gx-seg { display: inline-flex; border: 1px solid var(--line2); border-radius: 8px; overflow: hidden; }
+  .gx-seg button { padding: 5px 11px; font-size: 13px; color: var(--mute); border-left: 1px solid var(--line2); }
+  .gx-seg button:first-child { border-left: 0; }
+  .gx-seg button.on { background: var(--ink); color: var(--on); font-weight: 600; }
+  .gx-seg button:disabled { opacity: .4; }
+  .gx-sr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid var(--line); }
+  .gx-sr > :last-child { margin-left: auto; }
+  .gx-lk { display: flex; align-items: center; width: 100%; text-align: left; padding: 11px 0; border-top: 1px solid var(--line); color: var(--ink); }
+  @media (max-width: 640px) { .gx-lt { grid-template-columns: 20px minmax(0,1fr) 44px 88px; } .gx-lm { grid-template-columns: minmax(0,1fr) 36px 50px 36px minmax(0,1fr); } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -797,8 +811,8 @@ function App() {
   else if (tab === "lines") content = window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> : sub === "adddrop" ? <Pickups {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
-  else if (tab === "league") content = sub === "odds" ? <OddsBoard s={s} /> : sub === "standings" ? <League {...P} /> : <PowerRankings {...P} />;
-  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : <Settings {...P} />;
+  else if (tab === "league") content = sub === "playoffs" ? <PlayoffPlanner {...P} /> : <LeaguePage {...P} />;
+  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <PhoneFeed /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} />;
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800">
@@ -1876,7 +1890,7 @@ function Matchup({ s, setS, wk, setWk }) {
   const myPair = [s.me, pairOpp || s.opp];
   const others = (wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me);
   const all = [myPair, ...others];
-  const [sel, setSel] = useState(0);
+  const [sel, setSel] = useState(() => { const v44 = window.__MATCH_SEL || 0; window.__MATCH_SEL = 0; return v44; });
   const [day, setDay] = useState(null);
   const touch = React.useRef(null);
   const [a, b] = all[Math.min(sel, all.length - 1)];
@@ -3481,8 +3495,8 @@ function MobileHeader({ s, setS, tab, go, ageH }) {
         </div>
       )}
       <div className="grid grid-cols-6 mt-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
-        {M_TABS.map(([k, l]) => tabBtn(k, l, (tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) && !menu, () => pick(k)))}
-        {tabBtn("more", more ? more[1] : "Setup", !!more || menu, () => { setMenu(!menu); setOpts(false); })}
+        {M_TABS.map(([k, l]) => tabBtn(k, l, (tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) && !menu || (k === "league" && tab === "teams"), () => (k === "league" ? (setMenu(false), setOpts(false), go("league", "power")) : pick(k))))}
+        {tabBtn("setup", "Setup", tab === "setup" || tab === "news", () => { setMenu(false); setOpts(false); go("setup", "settings"); })}{/* older marker kept: more ? more[1] : "Setup", */}
       </div>
       {menu && (
         <div className="border-t border-slate-800">
@@ -4052,22 +4066,17 @@ const lastN = (n) => { const x = String(n || "").split(" "); return x.length > 1
 const GX_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["league", "League"]];
 const GX_MORE = [["setup", "Settings"], ["news", "News"], ["teams", "Teams"]];
 function TopBar({ s, setS, tab, go, ageH }) {
-  const [open, setOpen] = useState(false);
+  // top bar v44: five plain tabs, Setup is a page (news_logos.py)
+  // older done markers kept: className={"gx-tab" + ((tab === k || (k === "myteam" && (tab === "moves" || tab === "lines")))
+  // older done markers kept: {"Setup"}</button>
   const [rank, setRank] = useState(null);
   useEffect(() => {
     const id = setTimeout(() => { try { const T = leagueTable(s), i = T.rows.findIndex((x) => x.t.id === s.me); setRank(i >= 0 ? [i + 1, T.rows.length] : null); } catch (e) {} }, 400);
     return () => clearTimeout(id);
   }, [s.players, s.wk, s.blend, window.__PMODE]);
-  useEffect(() => {
-    if (!open) return;
-    const h = (e) => { if (!e.target.closest || !e.target.closest(".gx-more")) setOpen(false); };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
-  }, [open]);
   const name = teamName(s, s.me) || "My team";
-  const more = GX_MORE.find(([k]) => k === tab);
   const sync = s.lastSync ? toDate(s.lastSync) : null;
-  const pick = (k) => { setOpen(false); go(k); };
+  const TABS = [["today", "Today", ["today"]], ["matchup", "Matchup", ["matchup"]], ["myteam", "Team", ["myteam", "moves", "lines"]], ["league", "League", ["league", "teams"]], ["setup", "Setup", ["setup", "news"]]];
   return (
     <div className="m-hide max-w-6xl mx-auto px-3 flex items-end gap-1" style={{ paddingTop: 10 }}>
       <span className="gx-badge">{(name[0] || "K").toUpperCase()}</span>
@@ -4075,29 +4084,7 @@ function TopBar({ s, setS, tab, go, ageH }) {
         <span className="block font-semibold truncate" style={{ maxWidth: 180 }}>{name}</span>
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
       </span>
-      {GX_TABS.map(([k, l]) => <button key={k} onClick={() => pick(k)} className={"gx-tab" + ((tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) ? " on" : "")}>{l}</button>)}
-      <div className="relative gx-more">
-        <button onClick={() => setOpen(!open)} className={"gx-tab" + (more || open ? " on" : "")}>{"Setup"}</button>
-        {open ? (
-          <div className="gx-menu">
-            {GX_MORE.map(([k, l]) => <button key={k} className="gx-mi" onClick={() => pick(k)}>{l}</button>)}
-            <a className="gx-mi" href="ai-dashboard.html">AI Lab</a>
-            <div style={{ borderTop: "1px solid var(--line)", margin: "6px 0" }}></div>
-            <div className="px-2 pb-1 text-xs text-slate-500">Week</div>
-            <select className={inp + " w-full"} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>
-              {s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}
-            </select>
-            <div className="px-2 pt-2 pb-1 text-xs text-slate-500">Projections</div>
-            <select className={inp + " w-full"} value={window.__PMODE} onChange={(e) => setS({ ...s, pmode: e.target.value, players: [...s.players] })}>
-              <option value="espn">ESPN</option>
-              <option value="blend" disabled={!window.__MODEL}>Blend</option>
-              <option value="model" disabled={!window.__MODEL}>GM model</option>
-              <option value="ai" disabled={!window.__MODEL || !window.__AI}>AI (beta)</option>
-            </select>
-            <div className="pt-2"><ThemeBtn cls="gx-mi" /></div>
-          </div>
-        ) : null}
-      </div>
+      {TABS.map(([k, l, grp]) => <button key={k} onClick={() => go(k, k === "setup" ? "settings" : k === "league" ? "power" : undefined)} className={"gx-tab" + (grp.indexOf(tab) >= 0 ? " on" : "")}>{l}</button>)}
       <span className="ml-auto text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12 }} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : ""}>
         <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, marginRight: 6, verticalAlign: 1, background: !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)" }}></span>
         {sync ? "Synced " + sync.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "Not synced yet"}
@@ -4420,10 +4407,13 @@ function GxGames({ wk, A, B }) {
 
 // ---------- round 37: Team sub-pages and box-score history for the roster (news_logos.py) ----------
 const TEAM_SUBS = [["roster", "Roster"], ["pickups", "Pickups"], ["plan", "Plan"], ["trades", "Trades"], ["lines", "Lines"]];
-const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"], ["playoffs", "Playoffs"]];
+const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"]];
 function SubBar({ tab, sub, go, setSubs, nav }) {
   const team = tab === "myteam" || tab === "moves" || tab === "lines";
-  if (!team) return nav && nav[2] ? <div className="mb-4"><Pills items={nav[2]} value={sub} onChange={(v) => setSubs((x) => ({ ...x, [tab]: v }))} /></div> : null;
+  if (!team) {
+    const back = tab === "news" || (tab === "setup" && sub && sub !== "settings") ? ["Setup", () => go("setup", "settings")] : tab === "league" && sub === "playoffs" ? ["League", () => go("league", "power")] : null;
+    return back ? <div className="mb-3"><button type="button" className="text-sm text-blue-600" onClick={back[1]}>{"\u2039 Back to " + back[0]}</button></div> : null;
+  }
   const inPick = PICK_SUBS.some((x) => x[0] === sub);
   const cur = tab === "myteam" ? "roster" : tab === "lines" ? "lines" : sub === "planner" ? "plan" : sub === "trades" ? "trades" : "pickups";
   const to = (k) => (k === "roster" ? go("myteam") : k === "lines" ? go("lines") : k === "plan" ? go("moves", "planner") : k === "trades" ? go("moves", "trades") : go("moves", "adddrop"));
@@ -4754,6 +4744,200 @@ function AdvicePage({ s, setS, wk }) {
       </div>
       <div className="text-xs text-slate-500">The number is expected points a game. Tap a free agent to try the swap.</div>
       {sim && M ? <MoveSim s={sP} setS={setS} wk={wkP} M={M} H={1} hLabel={sP !== s ? "next week" : "rest of this week"} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
+    </div>
+  );
+}
+
+// ---------- round 44: League page and Setup page (news_logos.py) ----------
+// playoff odds for every team: 2,000 simulated seasons from each team's strength and the real schedule
+function leagueSim(s) {
+  const ids = s.teams.map((t) => t.id);
+  if (ids.length < 2) return null;
+  const T = leagueTable(s), str = {}, K = s.blend, today = todayISO();
+  T.rows.forEach((x) => (str[x.t.id] = x.strength));
+  const end = Math.min(s.weeks.length, s.poStart ?? 24), w0 = {}, pf = {}, todo = [];
+  ids.forEach((id) => { w0[id] = 0; pf[id] = 0; });
+  s.weeks.slice(0, end).forEach((w) => {
+    const len = (w.dates || []).length, pairs = (w.pairs || []).filter((p) => p[0] && p[1] && w0[p[0]] != null && w0[p[1]] != null);
+    if (!len || !pairs.length) return;
+    if (effDone(w, s.autoDone) >= len) {
+      pairs.forEach(([a, b]) => {
+        const x = +((w.act || {})[a]) || 0, y = +((w.act || {})[b]) || 0;
+        if (!x && !y) return;
+        pf[a] += x; pf[b] += y;
+        if (x > y) w0[a]++; else if (y > x) w0[b]++; else { w0[a] += 0.5; w0[b] += 0.5; }
+      });
+      return;
+    }
+    const live = w.dates[0] <= today ? deriveWeek(w, s.autoDone) : null;
+    pairs.forEach(([a, b]) => {
+      let p;
+      if (live) {
+        const R = (id) => weekLive(s.players.filter((q) => q.ft === id), live, K, id), act = (id) => +((live.act || {})[id]) || 0;
+        p = winProb(R(a), R(b), act(a), act(b));
+      } else p = normCdf((((str[a] || 0) - (str[b] || 0)) * (len / 7)) / (80 * Math.sqrt(len / 7)));
+      pf[a] += (str[a] || 0) * (len / 7); pf[b] += (str[b] || 0) * (len / 7);
+      todo.push([a, b, Math.max(0.02, Math.min(0.98, p))]);
+    });
+  });
+  let seed = 20262027;
+  const rnd = () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const N = 2000, cut = Math.min(6, ids.length - 1), inN = {};
+  ids.forEach((id) => (inN[id] = 0));
+  for (let k = 0; k < N; k++) {
+    const w = Object.assign({}, w0);
+    for (let j = 0; j < todo.length; j++) { const m = todo[j]; if (rnd() < m[2]) w[m[0]]++; else w[m[1]]++; }
+    const order = ids.slice().sort((a, b) => w[b] - w[a] || pf[b] - pf[a]);
+    for (let r = 0; r < cut; r++) inN[order[r]]++;
+  }
+  const out = {};
+  ids.forEach((id) => (out[id] = inN[id] / N));
+  return { odds: out, cut };
+}
+function LeaguePage({ s, wk, go }) {
+  const K = s.blend, gen = (window.ESPN_DATA || {}).generated;
+  const [by, setBy] = useState("st");
+  const [sim, setSim] = useState(null);
+  const T = leagueTable(s);
+  useEffect(() => {
+    const id = setTimeout(() => { try { setSim(leagueSim(s)); } catch (e) { setSim(null); } }, 500);
+    return () => clearTimeout(id);
+  }, [s.players, s.weeks, s.wk, s.blend, window.__PMODE]);
+  const wins = (x) => x.rec.w + x.rec.t / 2;
+  const stand = [...T.rows].sort((a, b) => wins(b) - wins(a) || b.rec.pf - a.rec.pf || b.strength - a.strength);
+  const list = by === "st" ? stand : T.rows;
+  const cut = sim ? sim.cut : 6;
+  const myOpp = oppOf(wk, s.me);
+  const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter((p) => p[0] && p[1]);
+  const games = useMemo(() => all.map(([a, b]) => {
+    const R = (id) => weekLive(s.players.filter((p) => p.ft === id), wk, K, id), act = (id) => +((wk.act || {})[id]) || 0;
+    return { a, b, sa: act(a), sb: act(b), p: winProb(R(a), R(b), act(a), act(b)) };
+  }), [s.players, wk, K, gen, s.opp]);
+  return (
+    <div className="space-y-3">
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+          <span className="gx-tag">League table</span>
+          <span className="gx-seg" style={{ marginLeft: "auto" }}>
+            <button type="button" className={by === "st" ? "on" : ""} onClick={() => setBy("st")}>Standings</button>
+            <button type="button" className={by === "pw" ? "on" : ""} onClick={() => setBy("pw")}>Strength</button>
+          </span>
+        </div>
+        <div className="gx-lt text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}><span></span><span></span><span className="n">Record</span><span className="n m-hide">Points</span><span className="n m-hide">Strength</span><span className="n">Playoffs</span></div>
+        {list.map((x, i) => {
+          const me = x.t.id === s.me, od = sim ? sim.odds[x.t.id] : null;
+          return (
+            <div key={x.t.id} className={"gx-lt" + (by === "st" && i === cut ? " cut" : "") + (me ? " font-semibold" : "")}>
+              <span className="text-slate-500" style={{ fontWeight: 400 }}>{i + 1}</span>
+              <span className="truncate"><TL s={s} id={x.t.id} /></span>
+              <span className="n">{x.rec.n ? x.rec.w + "-" + x.rec.l + (x.rec.t ? "-" + x.rec.t : "") : "\u2013"}</span>
+              <span className="n m-hide">{x.rec.n ? Math.round(x.rec.pf) : "\u2013"}</span>
+              <span className="n m-hide">{Math.round(x.strength)}</span>
+              <span className="n">{od == null ? "\u2026" : <><span style={{ display: "inline-block", width: 38, height: 4, background: "var(--track)", verticalAlign: "middle", marginRight: 6 }}><span style={{ display: "block", height: 4, width: Math.round(od * 100) + "%", background: od >= 0.5 ? "var(--good)" : "var(--bad)" }}></span></span>{wpTxt(od)}</>}</span>
+            </div>
+          );
+        })}
+        <div className="text-xs text-slate-500" style={{ paddingTop: 10, borderTop: "1px solid var(--line)" }}>{by === "st" ? "The dashed line is the playoff cut. " : ""}Strength is projected points a week from here on. Tap a team for its roster and how it matches up with yours.</div>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-tag" style={{ marginBottom: 4 }}>This week</div>
+        {games.length ? games.map((g, i) => {
+          const la = g.p >= 0.5;
+          return (
+            <div key={g.a + "-" + g.b} className="gx-lm" role="button" style={i ? null : { borderTop: 0 }} onClick={() => { window.__MATCH_SEL = i; go("matchup"); }}>
+              <span className={"truncate" + (g.a === s.me ? " font-semibold" : "")}>{teamName(s, g.a)}</span>
+              <span className="n m-hide">{f1(g.sa)}</span>
+              <span className="n" style={{ color: la ? "var(--good)" : "var(--bad)" }}>{wpTxt(g.p)}</span>
+              <span style={{ display: "flex", height: 4, gap: 2 }}><i style={{ display: "block", width: Math.round(g.p * 100) + "%", background: la ? "var(--good)" : "var(--bad)" }}></i><i style={{ display: "block", flex: 1, background: la ? "var(--bad)" : "var(--good)" }}></i></span>
+              <span style={{ color: la ? "var(--bad)" : "var(--good)" }}>{wpTxt(1 - g.p)}</span>
+              <span className="m-hide">{f1(g.sb)}</span>
+              <span className="truncate text-right">{teamName(s, g.b)}</span>
+            </div>
+          );
+        }) : <div className="text-sm text-slate-500">No matchups loaded for this week.</div>}
+        {games.length ? <div className="text-xs text-slate-500" style={{ paddingTop: 8, borderTop: "1px solid var(--line)" }}>Tap a matchup to open it on the Matchup page.</div> : null}
+      </div>
+      <button type="button" className="gx-lk" onClick={() => go("league", "playoffs")}>
+        <span>Playoff schedule</span><span className="text-sm text-slate-500" style={{ marginLeft: 8 }}>who has the most games in the playoff weeks</span>
+        <span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span>
+      </button>
+    </div>
+  );
+}
+function SetupPage({ s, setS, go }) {
+  const E = window.ESPN_DATA, K = s.blend, Sg = E && E.signals;
+  const [msg, setMsg] = useState("");
+  const theme = window.__themePref ? window.__themePref() : "auto";
+  const seg = (items, value, onPick) => <span className="gx-seg">{items.map(([k, l, off]) => <button key={k} type="button" disabled={!!off} className={value === k ? "on" : ""} onClick={() => onPick(k)}>{l}</button>)}</span>;
+  const num = (k, v, fb) => setS((st) => ({ ...st, [k]: isNaN(parseFloat(v)) ? fb : parseFloat(v) }));
+  const roster = s.players.filter((p) => p.ft === s.me && !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const top = s.protectTop ?? 8, autoIds = new Set(roster.slice(0, top).map((p) => p.id));
+  const kept = roster.filter((p) => p.keep && !autoIds.has(p.id)), addable = roster.filter((p) => !p.keep && !autoIds.has(p.id));
+  const keep = (id, v) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, keep: v } : p)) }));
+  const src = [["ESPN league", !!E], ["GM model", !!(E && E.model)], ["betting lines", !!(E && E.model && E.model.odds && Object.keys(E.model.odds).length)], ["recent form", !!(Sg && Sg.recent)],
+    ["power-play units", !!(Sg && Sg.pp1)], ["news", !!(Sg && Sg.news)], ["injuries", !!(Sg && Sg.injuries)], ["starting goalies", !!(E && E.goalies)]];
+  const bad = src.filter((x) => !x[1]).map((x) => x[0]);
+  const genAt = E && toDate(E.generated), old = genAt ? (Date.now() - genAt.getTime()) / 36e5 > 2 : true;
+  const download = () => { const blob = new Blob([JSON.stringify(s)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "fantasy-gm-backup-" + todayISO() + ".json"; a.click(); setMsg("Backup downloaded."); };
+  const upload = (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const v = JSON.parse(r.result); if (v.players && v.weeks) { setS(migrate(v)); setMsg("Backup restored."); } else setMsg("That file isn't a backup."); } catch (ex) { setMsg("Couldn't read that file."); } }; r.readAsText(f); };
+  const newsN = s.players.filter((p) => p.ft === s.me && newsOf(p).length).length;
+  const link = (label, note, fn) => (
+    <button type="button" className="gx-lk" onClick={fn}>
+      <span>{label}</span>{note ? <span className="text-sm text-slate-500" style={{ marginLeft: 8 }}>{note}</span> : null}
+      <span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span>
+    </button>
+  );
+  const box = inp + " text-sm";
+  return (
+    <div className="space-y-3">
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-tag">Display</div>
+        <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
+        <div className="gx-sr"><span>Projections</span>{seg([["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], window.__PMODE, (k) => setS({ ...s, pmode: k, players: [...s.players] }))}</div>
+        <div className="gx-sr"><span>Week on screen</span><select className={box} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>{s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}</select></div>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-tag">Pickup rules</div>
+        <div className="gx-sr" style={{ borderTop: 0 }}><span>A move must add at least</span><span><input type="number" step="0.5" className={box + " w-20"} value={s.minGain ?? 3} onChange={(e) => num("minGain", e.target.value, 3)} /> points</span></div>
+        <div className="gx-sr"><span>Never suggest dropping my top</span><span><select className={box} value={top} onChange={(e) => setS((st) => ({ ...st, protectTop: +e.target.value }))}>{[...Array(13)].map((_, n) => <option key={n} value={n}>{n}</option>)}</select> players</span></div>
+        <div className="gx-sr"><span>Also protect</span>
+          <span className="flex flex-wrap gap-2 items-center justify-end">
+            {kept.map((p) => <span key={p.id} className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-slate-300 text-xs">{p.n}<button type="button" aria-label={"Stop protecting " + p.n} className="text-slate-500" style={{ fontSize: 14, lineHeight: 1 }} onClick={() => keep(p.id, false)}>{"\u00d7"}</button></span>)}
+            {addable.length ? <select className={box} value="" onChange={(e) => { if (e.target.value) keep(e.target.value, true); }}><option value="">+ add a player</option>{addable.map((p) => <option key={p.id} value={p.id}>{p.n + " (" + p.p + ")"}</option>)}</select> : null}
+          </span>
+        </div>
+        <div className="gx-sr"><span>Always keep at least</span>
+          <span className="flex gap-2 items-center">
+            <input type="number" className={box + " w-14"} value={s.minF ?? 10} onChange={(e) => num("minF", e.target.value, 10)} /> F
+            <input type="number" className={box + " w-14"} value={s.minD ?? 5} onChange={(e) => num("minD", e.target.value, 5)} /> D
+            <input type="number" className={box + " w-14"} value={s.minGo ?? 2} onChange={(e) => num("minGo", e.target.value, 2)} /> G
+          </span>
+        </div>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-tag">Data</div>
+        <div className="gx-sr" style={{ borderTop: 0 }}>
+          <span><span style={{ display: "inline-block", width: 7, height: 7, borderRadius: 99, marginRight: 8, background: !E ? "var(--faint)" : old ? "var(--bad)" : "var(--good)" }}></span>{E ? "Synced " + fmtTime(E.generated) : "No data file found"}</span>
+          <span className="text-sm" style={{ color: bad.length ? "var(--bad)" : "var(--mute)" }}>{bad.length ? "Not working: " + bad.join(", ") : "all " + src.length + " sources working"}</span>
+        </div>
+        <div className="gx-sr"><span>Your settings on this device</span>
+          <span className="flex gap-2 items-center">
+            <button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" onClick={download}>Download backup</button>
+            <label className="border border-slate-300 rounded-lg px-3 py-1 text-sm cursor-pointer">Restore<input type="file" accept=".json,application/json" className="hidden" onChange={upload} /></label>
+          </span>
+        </div>
+        {msg ? <div className="text-xs" style={{ color: "var(--good)", paddingTop: 6 }}>{msg}</div> : null}
+      </div>
+      <div>
+        {link("News", newsN ? newsN + " on your players" : "", () => go("news"))}
+        {link("Betting lines", "", () => go("setup", "odds"))}
+        {link("Phone alerts", "what was sent to your phone", () => go("setup", "alerts"))}
+        {link("Schedule", "games per NHL team this week", () => go("setup", "sched"))}
+        {link("Injury return dates", "", () => go("setup", "inj"))}
+        {link("Edit players", "", () => go("setup", "bulk"))}
+        {link("Advanced settings", "team names, projection weight, reset", () => go("setup", "adv"))}
+        <a className="gx-lk" href="ai-dashboard.html"><span>AI Lab</span><span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span></a>
+      </div>
     </div>
   );
 }
