@@ -1,6 +1,6 @@
 {
-  "injuries": true,
+  "injuries": false,
   "lines": true,
   "goalies": true,
-  "pickups": true
+  "pickups": false
 }
