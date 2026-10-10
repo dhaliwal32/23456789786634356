@@ -4514,5 +4514,143 @@ _fix_before_r34 = fix
 def fix(t):
     return round34(_fix_before_r34(t))
 
+# ---------- round 35: half dial for win chance everywhere, new Matchup page with swipe between matchups ----------
+R35_CSS = r'''  /* round 35 matchup (news_logos.py) */
+  .gx-day { border: 1px solid var(--line); border-radius: 8px; padding: 7px 2px; text-align: center; background: var(--card); font-variant-numeric: tabular-nums; }
+  .gx-day.on { border-color: var(--accent); box-shadow: inset 0 0 0 0.5px var(--accent); }
+  .gx-h2h { display: grid; grid-template-columns: minmax(0,1fr) 48px 28px 48px minmax(0,1fr); align-items: center; gap: 6px; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-arw { width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line2); color: var(--mute); font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .gx-arw:hover { color: var(--ink); border-color: var(--accent); }
+'''
+
+R35_DIAL = r'''const GxRing = ({ v, big }) => {
+  // dial v35: half dial with a needle in place of the ring (news_logos.py)
+  const w = big ? 104 : 88, p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
+  const col = v == null ? "var(--faint)" : v >= 0.5 ? "var(--good)" : "var(--bad)";
+  const th = Math.PI * (1 - p), nx = 50 + 33 * Math.cos(th), ny = 50 - 33 * Math.sin(th);
+  return (
+    <svg viewBox="0 0 100 68" width={w} height={Math.round(w * 0.68)} className="gx-svg" style={{ display: "block", flexShrink: 0 }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
+      <path d="M10 50 A40 40 0 0 1 90 50" style={{ fill: "none", stroke: "var(--track)", strokeWidth: 7 }} />
+      {v == null ? null : <path d="M10 50 A40 40 0 0 1 90 50" style={{ fill: "none", stroke: col, strokeWidth: 7, strokeDasharray: (p * 125.66).toFixed(1) + " 200" }} />}
+      {v == null ? null : <line x1={50} y1={50} x2={nx.toFixed(1)} y2={ny.toFixed(1)} style={{ stroke: "var(--ink)", strokeWidth: 2 }} />}
+      <circle cx={50} cy={50} r={3.5} style={{ fill: "var(--ink)" }} />
+      <text x={50} y={66} textAnchor="middle" style={{ fontSize: 14, fontWeight: 600, fill: col }}>{v == null ? "\u2013" : wpTxt(v) + (big ? " to win" : "")}</text>
+    </svg>
+  );
+};
+'''
+
+# done markers of older rounds that lived inside the old Matchup page; kept as comments so those rounds stay "already done"
+R35_KEEP = [
+    "Day difference", 'data-v="daydiff2"', "day header: running total removed", 'label={"Win chance \u00b7 "', 'data-w="daydiff3"',
+    "<H2H x={x}", '<LiveTag st={tag === "LIVE" ? "L" : "F"} />', "round 28: actual-score row removed", "const openDay =",
+    "<DayFold key=", "</DayFold>",
+]
+
+R35_MATCHUP_BODY = r'''  const K = s.blend, done = wk.done || 0;
+  const pairOpp = oppOf(wk, s.me);
+  const myPair = [s.me, pairOpp || s.opp];
+  const others = (wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me);
+  const all = [myPair, ...others];
+  const [sel, setSel] = useState(0);
+  const [day, setDay] = useState(null);
+  const touch = React.useRef(null);
+  const [a, b] = all[Math.min(sel, all.length - 1)];
+  const gen = (window.ESPN_DATA || {}).generated;
+  const P = useMemo(() => {
+    const o = {};
+    [a, b].forEach((id) => { o[id] = { r: weekLive(s.players.filter((p) => p.ft === id), wk, K, id, { detail: true }), act: +((wk.act || {})[id]) || 0 }; });
+    return o;
+  }, [s.players, wk, K, done, a, b, gen]);
+  const A = P[a].r, B = P[b].r, aA = P[a].act, aB = P[b].act;
+  const fa = aA + A.total, fb = aB + B.total, margin = fa - fb;
+  const dates = wk.dates || [], n = dates.length, today = todayISO();
+  const first = dates.findIndex((x) => x >= today);
+  const d = Math.max(0, Math.min(n - 1, day != null ? day : first >= 0 ? first : n - 1));
+  const over = n > 0 && done >= n;
+  const move = (k) => setSel((Math.min(sel, all.length - 1) + k + all.length) % all.length);
+  const onStart = (e) => { const t = e.touches[0]; touch.current = [t.clientX, t.clientY]; };
+  const onEnd = (e) => {
+    const t0 = touch.current, t = e.changedTouches[0];
+    touch.current = null;
+    if (!t0 || all.length < 2) return;
+    const dx = t.clientX - t0[0], dy = t.clientY - t0[1];
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) move(dx < 0 ? 1 : -1);
+  };
+  const x = A.days[d] || { start: [], bench: [], act: 0, total: 0 }, y = B.days[d] || { start: [], bench: [], act: 0, total: 0 };
+  const dvOf = (i) => { const p = A.days[i], q = B.days[i]; return p && q ? p.act + p.total - (q.act + q.total) : 0; };
+  const state = x.locked || y.locked ? (x.allDone && y.allDone ? "final" : "live") : dates[d] < today ? "final" : "projected";
+  const rows = [];
+  ["F", "D", "UTIL", "G"].forEach((sl) => {
+    const L = x.start.filter((p) => p.slot === sl), R = y.start.filter((p) => p.slot === sl);
+    for (let i = 0; i < Math.max(L.length, R.length); i++) rows.push([sl, L[i] || null, R[i] || null]);
+  });
+  const val = (p) => (!p ? null : p.st ? (p.a == null ? 0 : p.a) : p.x);
+  const cell = (p, right) => {
+    if (!p) return <div className={"text-sm text-slate-500" + (right ? " text-right" : "")}>empty</div>;
+    const st = p.p === "G" && !p.st ? mStart(p.gs) : "", line = p.st ? statLine(pStat(p, p.dt)) : "";
+    return (
+      <div className={"min-w-0" + (right ? " text-right" : "")}>
+        <div className="truncate"><PN p={p} className="" /></div>
+        <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} t={p.t} dt={p.dt} />{line ? " " + line : ""}</> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>
+      </div>
+    );
+  };
+  const num = (p, q, right) => {
+    const v = val(p), o = val(q);
+    if (v == null) return <div className={"text-slate-500" + (right ? "" : " text-right")}>{"\u2013"}</div>;
+    const win = o == null || v - o >= 0.05;
+    return <div className={right ? "" : "text-right"} style={win ? { color: "var(--good)", fontWeight: 600 } : null}>{p.st && p.a == null ? "\u2013" : f1(v)}</div>;
+  };
+  const sit = (l, id) => (l.bench && l.bench.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
+  const dayTot = x.act + x.total - (y.act + y.total);
+  const mine = a === s.me;
+  return (
+    <div>
+      <div onTouchStart={onStart} onTouchEnd={onEnd} style={{ touchAction: "pan-y" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {all.length > 1 ? <button type="button" className="m-hide gx-arw" aria-label="Previous matchup" onClick={() => move(-1)}>{"\u2039"}</button> : null}
+          <div className="min-w-0" style={{ flex: 1 }}>
+            <div className="text-sm font-semibold truncate" style={mine ? { color: "var(--accent)" } : null}><TL s={s} id={a} /></div>
+            <div className="gx-num" style={{ fontSize: 28 }}>{f1(aA)}</div>
+          </div>
+          <GxRing v={winProb(A, B, aA, aB)} />
+          <div className="min-w-0 text-right" style={{ flex: 1 }}>
+            <div className="text-sm text-slate-500 truncate"><TL s={s} id={b} /></div>
+            <div className="gx-num" style={{ fontSize: 28, color: "var(--ink2)" }}>{f1(aB)}</div>
+          </div>
+          {all.length > 1 ? <button type="button" className="m-hide gx-arw" aria-label="Next matchup" onClick={() => move(1)}>{"\u203a"}</button> : null}
+        </div>
+        {all.length > 1 ? (
+          <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 8 }}>
+            {all.map((pr, i) => <button key={i} type="button" aria-label={"Matchup " + (i + 1)} onClick={() => setSel(i)} style={{ width: 6, height: 6, borderRadius: 99, background: i === Math.min(sel, all.length - 1) ? "var(--accent)" : "var(--line2)" }}></button>)}
+          </div>
+        ) : null}
+        <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 8 }}>
+          <span>{(over ? "Final " : "Projected ") + Math.round(fa)}</span>
+          <span style={{ margin: "0 auto", color: margin >= 0 ? "var(--good)" : "var(--bad)" }}>{mine ? (margin >= 0 ? "Ahead by " : "Behind by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " ahead by " + f1(Math.abs(margin))}</span>
+          <span>{Math.round(fb)}</span>
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(" + Math.max(1, n) + ", minmax(0,1fr))", gap: 6, marginTop: 14 }}>
+        {dates.map((dt, i) => {
+          const dv = dvOf(i), flat = Math.abs(dv) < 0.05;
+          return (
+            <button key={dt} type="button" onClick={() => setDay(i)} className={"gx-day" + (i === d ? " on" : "")}>
+              <span className={"block text-xs " + (i === d ? "font-semibold" : "text-slate-500")}>{dt === today ? "Today" : dayLabel(dt).split(",")[0]}</span>
+              <span className="block text-sm" style={{ color: flat ? "var(--faint)" : dv > 0 ? "var(--good)" : "var(--bad)" }}>{flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="gx-pn" style={{ marginTop: 12 }}><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
+          <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
+          <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>
+            <span className="font-semibold">{f1(x.act + x.total)}</span> <span className="text-slate-500">to {f1(y.act + y.total)}</span>
+            <span style={{ marginLeft: 8, color: dayTot >= 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot >= 0 ? "+" : "") + f1(dayTot)}</span>
+          </span>
+        </div>
+
 if __name__ == "__main__":
     main()
