@@ -6966,5 +6966,184 @@ _fix_before_r49 = fix
 def fix(t):
     return round49(_fix_before_r49(t))
 
+# ---------- round 50: bottom tabs on phones, search everywhere, warning dots, swipe between days, home-screen app ----------
+R50_CSS = r'''  /* round 50 (news_logos.py) */
+  .gx-wd { display: inline-block; width: 6px; height: 6px; border-radius: 99px; background: var(--bad); margin-left: 5px; vertical-align: top; }
+  .gx-bb { display: none; }
+  .gx-so { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.6); display: flex; justify-content: center; align-items: flex-start; padding: 10vh 12px 0; }
+  .gx-sbx { width: 100%; max-width: 520px; background: var(--card); border: 1px solid var(--line2); border-radius: 12px; padding: 12px; max-height: 70vh; overflow: auto; }
+  @media (max-width: 640px) {
+    div:has(> .grid.grid-cols-6.mt-1) { display: none !important; }
+    .gx-bb { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .gx-bb button { padding: 9px 0 8px; font-size: 11px; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; }
+    .gx-bb button.on { color: var(--ink); font-weight: 600; }
+    .gx-bb svg { width: 20px; height: 20px; }
+    .gx-bb .gx-wd { position: absolute; top: 6px; left: 58%; margin: 0; }
+    body { padding-bottom: 136px; }
+  }
+'''
+
+R50_META = '''<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Islands GM">
+<meta name="theme-color" content="#0c0d0f">
+<!-- round 50 home-screen app -->
+'''
+
+R50_HELPERS = r'''// ---------- round 50: warning dots, search, bottom tabs, swipe days, home-screen icon (news_logos.py) ----------
+function gxWarn(s) {
+  const o = { myteam: false, matchup: false };
+  try {
+    const today = todayISO(), wk = deriveWeek(s.weeks[s.wk], s.autoDone), mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+    const open = (p) => { const g = gStart(p, today), l = (g.l || "").toLowerCase(); return g.v >= 0.5 && !(l.includes("confirmed") && !l.includes("un")); };
+    o.myteam = mine.some((p) => p.status && /OUT|INJURY_RESERVE|SUSPENSION/.test(p.status))
+      || mine.some((p) => p.p === "G" && SCHED[p.t] && SCHED[p.t].has(today) && gState(p.t, today).s === "P" && open(p));
+    const opp = oppOf(wk, s.me) || s.opp, a = +((wk.act || {})[s.me]) || 0, b = +((wk.act || {})[opp]) || 0, sign = String(a === b ? 0 : a > b ? 1 : -1);
+    const key = "gm-lead-" + s.wk, seen = localStorage.getItem(key);
+    window.__leadNow = [key, sign];
+    if (seen == null) localStorage.setItem(key, sign); else o.matchup = sign !== "0" && seen !== sign;
+  } catch (e) {}
+  return o;
+}
+const GX_ICON = {
+  today: <path d="M4 11l8-7 8 7v9H4z" />,
+  matchup: <path d="M4 8h13l-3-3M20 16H7l3 3" />,
+  myteam: <><circle cx="12" cy="8" r="3.5" /><path d="M5 20c0-4 3-6 7-6s7 2 7 6" /></>,
+  league: <path d="M5 6h14M5 12h14M5 18h14" />,
+  setup: <><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" /></>,
+  search: <><circle cx="11" cy="11" r="6" /><path d="M16 16l4 4" /></>,
+};
+function GxExtras({ s, tab, go }) {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const K = s.blend, W = gxWarn(s);
+  useEffect(() => {
+    const show = () => { setQ(""); setOpen(true); };
+    const key = (e) => {
+      const el = document.activeElement, typing = el && /INPUT|TEXTAREA|SELECT/.test(el.tagName);
+      if (e.key === "/" && !typing) { e.preventDefault(); show(); }
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("gm-search", show);
+    document.addEventListener("keydown", key);
+    return () => { window.removeEventListener("gm-search", show); document.removeEventListener("keydown", key); };
+  }, []);
+  useEffect(() => { if (tab === "matchup" && window.__leadNow) { try { localStorage.setItem(window.__leadNow[0], window.__leadNow[1]); } catch (e) {} } }, [tab, s.lastSync]);
+  useEffect(() => {
+    // lift the floating Ask button above the bottom tabs on phones
+    const fix = () => {
+      if (window.innerWidth > 640) return;
+      Array.prototype.forEach.call(document.querySelectorAll("button, a"), (b) => {
+        if ((b.textContent || "").trim() === "Ask" && getComputedStyle(b).position === "fixed") b.style.bottom = "calc(74px + env(safe-area-inset-bottom))";
+      });
+    };
+    fix();
+    const id = setInterval(fix, 2000);
+    return () => clearInterval(id);
+  }, []);
+  const TABS = [["today", "Today", ["today"]], ["matchup", "Matchup", ["matchup"]], ["myteam", "Team", ["myteam", "moves", "lines"]], ["league", "League", ["league", "teams"]], ["setup", "Setup", ["setup", "news"]]];
+  const qq = nrm(q);
+  const teams = qq.length < 2 ? [] : s.teams.filter((t) => nrm(t.name || "").includes(qq)).slice(0, 4);
+  const players = qq.length < 2 ? [] : s.players.filter((p) => nrm(p.n).includes(qq))
+    .sort((a, b) => (nrm(b.n).indexOf(qq) === 0) - (nrm(a.n).indexOf(qq) === 0) || (b.own || 0) - (a.own || 0)).slice(0, 10);
+  const svg = (k) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{GX_ICON[k]}</svg>;
+  return (
+    <>
+      <nav className="gx-bb" aria-label="Main">
+        {TABS.map(([k, l, grp]) => (
+          <button key={k} type="button" className={grp.indexOf(tab) >= 0 ? "on" : ""} onClick={() => go(k, k === "setup" ? "settings" : k === "league" ? "power" : undefined)}>
+            {svg(k)}{l}{W[k] ? <i className="gx-wd"></i> : null}
+          </button>
+        ))}
+        <button type="button" onClick={() => { setQ(""); setOpen(true); }}>{svg("search")}Search</button>
+      </nav>
+      {open ? (
+        <div className="gx-so" role="dialog" aria-label="Search" onClick={() => setOpen(false)}>
+          <div className="gx-sbx" onClick={(e) => e.stopPropagation()}>
+            <input autoFocus className={inp + " w-full"} placeholder="Search a player or a team" value={q} onChange={(e) => setQ(e.target.value)} />
+            {teams.map((t) => (
+              <div key={t.id} role="button" className="gx-row" style={{ cursor: "pointer" }} onClick={() => { setOpen(false); if (window.__NAV && window.__NAV.team) window.__NAV.team(t.id); }}>
+                <span style={{ flex: 1 }}>{t.name}</span><span className="text-xs text-slate-500">fantasy team</span>
+              </div>
+            ))}
+            {players.map((p) => (
+              <div key={p.id} role="button" className="gx-row" style={{ cursor: "pointer" }} onClick={() => { setOpen(false); if (window.__NAV) window.__NAV.player(p); }}>
+                <TeamLogo t={p.t} size={22} />
+                <span className="min-w-0 truncate" style={{ flex: 1 }}>{p.n} <span className="text-xs text-slate-500">{p.p + " \u00b7 " + (p.ft === "fa" ? "free agent" : teamName(s, p.ft))}</span></span>
+                <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+              </div>
+            ))}
+            {qq.length >= 2 && !teams.length && !players.length ? <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>Nothing matches that.</div> : null}
+            {qq.length < 2 ? <div className="text-xs text-slate-500" style={{ paddingTop: 10 }}>Type at least two letters.</div> : null}
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}
+(function gxSwipeAndIcon() {
+  if (window.__gx50) return;
+  window.__gx50 = 1;
+  let x0 = 0, y0 = 0, ok = false;
+  document.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    x0 = t.clientX; y0 = t.clientY;
+    ok = !(e.target.closest && e.target.closest(".gx-ms, .navscroll, .overflow-x-auto, .gx-so, .gx-bb, input, select"));
+  }, { capture: true, passive: true });
+  document.addEventListener("touchend", (e) => {
+    if (!ok || window.innerWidth > 640) return;
+    const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Math.abs(dx) < 70 || Math.abs(dy) > 50) return;
+    const cur = document.querySelector(".gx-day.on");
+    if (!cur) return;
+    e.stopPropagation();
+    const nxt = dx < 0 ? cur.nextElementSibling : cur.previousElementSibling;
+    if (nxt && nxt.classList.contains("gx-day")) nxt.click();
+  }, { capture: true });
+  try {
+    const c = document.createElement("canvas");
+    c.width = c.height = 180;
+    const g = c.getContext("2d");
+    g.fillStyle = "#0c0d0f"; g.fillRect(0, 0, 180, 180);
+    g.strokeStyle = "#ffffff"; g.lineWidth = 8; g.beginPath(); g.arc(90, 90, 58, 0, Math.PI * 2); g.stroke();
+    g.fillStyle = "#ffffff"; g.font = "600 72px Inter, -apple-system, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("K", 90, 95);
+    const l = document.createElement("link");
+    l.rel = "apple-touch-icon"; l.href = c.toDataURL("image/png");
+    document.head.appendChild(l);
+  } catch (e) {}
+})();
+
+'''
+
+R50_TABS = ('  const TABS = [["today", "Today", ["today"]], ["matchup", "Matchup", ["matchup"]], ["myteam", "Team", ["myteam", "moves", "lines"]], '
+            '["league", "League", ["league", "teams"]], ["setup", "Setup", ["setup", "news"]]];\n  return (\n    <div className="m-hide max-w-6xl')
+R50_SYNC_OLD = '<span className="ml-auto text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12 }}'
+R50_SYNC_NEW = ('<button type="button" className="ml-auto gx-tab" onClick={() => window.dispatchEvent(new Event("gm-search"))}>Search</button>\n'
+                '      <span className="text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12, marginLeft: 12 }}')
+R50_SUB = "<SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} />"
+
+
+def round50(t):
+    t = lit(t, "round 50: styles", "</style>", R50_CSS + "</style>", "round 50 (news_logos.py)")
+    t = lit(t, "round 50: home-screen app", "</head>", R50_META + "</head>", "round 50 home-screen app")
+    t = lit(t, "round 50: helpers", ROOT, R50_HELPERS + ROOT, "function GxExtras(")
+    t = lit(t, "round 50: warning dots worked out in the top bar", R50_TABS, R50_TABS.replace("\n  return (", "\n  const W = gxWarn(s);\n  return ("), "const W = gxWarn(s);\n  return (\n    <div className=\"m-hide max-w-6xl")
+    t = lit(t, "round 50: warning dots on the tabs", 'className={"gx-tab" + (grp.indexOf(tab) >= 0 ? " on" : "")}>{l}</button>)}',
+            'className={"gx-tab" + (grp.indexOf(tab) >= 0 ? " on" : "")}>{l}{W[k] ? <i className="gx-wd" title="Needs a look"></i> : null}</button>)}', 'title="Needs a look"')
+    t = lit(t, "round 50: Search in the top bar", R50_SYNC_OLD, R50_SYNC_NEW, 'new Event("gm-search"))}>Search</button>')
+    t = lit(t, "round 50: bottom tabs and search on every page", R50_SUB, R50_SUB + "<GxExtras s={s} tab={tab} go={go} />", "<GxExtras s={s} tab={tab} go={go} />")
+    for must in ("function GxExtras(", "function gxWarn(", "top bar v44", "function TopBar(", "function SubBar(", "nav={nav} s={s} wk={wk} />"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 50 (" + must + ").")
+    return t
+
+
+_fix_before_r50 = fix
+
+
+def fix(t):
+    return round50(_fix_before_r50(t))
+
 if __name__ == "__main__":
     main()
