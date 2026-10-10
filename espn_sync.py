@@ -213,10 +213,12 @@ try:
         return (p[0][0] + " " + p[-1]) if len(p) > 1 else " ".join(p)
 
     _pidx = {}
+    _pidx3 = {}
     for p_ in players:
         if p_.get("n"):
             for k_ in {_nk(p_["n"]), _nk2(p_["n"])}:
                 _pidx.setdefault((k_, p_["t"]), p_["id"])
+                _pidx3.setdefault((k_, p_["t"], p_["p"]), p_["id"])
     gstate = {}
     pstat = {}
     for back_ in (1, 0):
@@ -256,9 +258,9 @@ try:
                 tab_ = str((bx_.get(side_) or g_.get(side_) or {}).get("abbrev") or "").upper()
                 tab_ = ALIAS.get(tab_, tab_)
                 grp_ = pbg_.get(side_) or {}
-                for x_ in (grp_.get("forwards") or []) + (grp_.get("defense") or []) + (grp_.get("goalies") or []):
+                for x_, gp_ in [(y_, "F") for y_ in (grp_.get("forwards") or [])] + [(y_, "D") for y_ in (grp_.get("defense") or [])] + [(y_, "G") for y_ in (grp_.get("goalies") or [])]:
                     nm_ = (x_.get("name") or {}).get("default") or ""
-                    pid_ = _pidx.get((_nk(nm_), tab_)) or _pidx.get((_nk2(nm_), tab_))
+                    pid_ = _pidx3.get((_nk(nm_), tab_, gp_)) or _pidx3.get((_nk2(nm_), tab_, gp_))
                     if not pid_:
                         continue
                     if "saves" in x_ or "goalsAgainst" in x_ or "saveShotsAgainst" in x_:
@@ -286,6 +288,8 @@ try:
                 idx31_ = json.load(f31_)
         except Exception:
             idx31_ = {}
+        if idx31_.get("v") != 2:
+            idx31_ = {"none": idx31_.get("none") or []}
         have31_, none31_ = set(idx31_.get("dates") or []), set(idx31_.get("none") or [])
         d31_ = min(period_date.values()) if period_date else day1
         todo31_ = []
@@ -322,9 +326,9 @@ try:
                         grp31_ = pbg31_.get(s31_) or {}
                         base31_ = {"t": ab31_[s31_], "o": ab31_[o31_], "h": 1 if s31_ == "homeTeam" else 0,
                                    "my": sc31_[s31_].get("score"), "op": sc31_[o31_].get("score")}
-                        for x31_ in (grp31_.get("forwards") or []) + (grp31_.get("defense") or []) + (grp31_.get("goalies") or []):
+                        for x31_, gp31_ in [(y31_, "F") for y31_ in (grp31_.get("forwards") or [])] + [(y31_, "D") for y31_ in (grp31_.get("defense") or [])] + [(y31_, "G") for y31_ in (grp31_.get("goalies") or [])]:
                             nm31_ = (x31_.get("name") or {}).get("default") or ""
-                            pid31_ = _pidx.get((_nk(nm31_), ab31_[s31_])) or _pidx.get((_nk2(nm31_), ab31_[s31_]))
+                            pid31_ = _pidx3.get((_nk(nm31_), ab31_[s31_], gp31_)) or _pidx3.get((_nk2(nm31_), ab31_[s31_], gp31_))
                             if not pid31_:
                                 continue
                             if "saves" in x31_ or "goalsAgainst" in x31_ or "saveShotsAgainst" in x31_:
@@ -341,6 +345,14 @@ try:
                             if str(pid31_) in fp31_:
                                 ln31_["fp"] = fp31_[str(pid31_)]
                             out31_[str(pid31_)] = ln31_
+                try:
+                    with open(os.path.join(bdir31_, dd31_ + ".json"), encoding="utf-8") as f31_:
+                        old41_ = (json.load(f31_) or {}).get("p") or {}
+                    for k41_, v41_ in out31_.items():
+                        if "fp" not in v41_ and "fp" in (old41_.get(k41_) or {}):
+                            v41_["fp"] = old41_[k41_]["fp"]
+                except Exception:
+                    pass
                 with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:
                     json.dump({"d": dd31_, "p": out31_}, f31_, separators=(",", ":"))
                 have31_.add(dd31_)
@@ -348,7 +360,7 @@ try:
             except Exception as ex31_:
                 print(f"(box) history for {dd31_} failed: {ex31_}")
         with open(ipath31_, "w", encoding="utf-8") as f31_:
-            json.dump({"dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))
+            json.dump({"v": 2, "dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))
         print(f"(box) history: {new31_} new day(s), {len(have31_)} saved in total")
     except Exception as ex31_:
         print(f"(box) history failed: {ex31_}")

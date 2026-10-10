@@ -495,7 +495,7 @@
                   <span className="whitespace-nowrap" style={{ minWidth: 84 }}>{H.dayLabel(r.d)}</span>
                   <span className="text-slate-500 whitespace-nowrap">{o ? (h ? "vs " : "@ ") + o : ""}</span>
                   <span className={"whitespace-nowrap text-xs " + (my > op ? "text-green-700" : my < op ? "text-red-600" : "text-slate-500")}>{res}</span>
-                  <span className="ml-auto font-semibold whitespace-nowrap">{(r.pt.est ? "~" : "") + H.f1(r.pt.v)}</span>
+                  <span className="ml-auto font-semibold whitespace-nowrap">{H.f1(r.pt.v)}{r.pt.est ? <span className="text-xs text-slate-500" style={{ fontWeight: 400, marginLeft: 4 }}>est.</span> : null}</span>
                 </div>
                 <div className="text-xs text-slate-500 mt-0.5">{glLine(x)}</div>
                 {open === r.d ? <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mt-2">{glTiles(x).map(([l, v]) => (
@@ -505,7 +505,7 @@
             );
           })}
         {!all && past.length > 14 ? <button className="lt-link" onClick={() => setAll(true)}>Show all games</button> : null}
-        {shown.length ? <div className="text-xs text-slate-400 mt-1">Tap a game for its full box score.{anyEst ? " ~ means estimated from the box score, without power-play assists or shorthanded points." : ""}</div> : null}
+        {shown.length ? <div className="text-xs text-slate-400 mt-1">Tap a game for its full box score.{anyEst ? " est. means worked out from the box score, without power-play assists or shorthanded points." : ""}</div> : null}
       </div>
     );
   }
