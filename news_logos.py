@@ -6579,5 +6579,208 @@ _fix_before_r45 = fix
 def fix(t):
     return round45(_fix_before_r45(t))
 
+# ---------- round 46: matchup score strip, trades rosters side by side on phones, AI retrain when a week old, AI Lab new look ----------
+R46_CSS = r'''  /* round 46 (news_logos.py) */
+  .gx-ms { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
+  .gx-ms::-webkit-scrollbar { display: none; }
+  .gx-ms button { flex: 0 0 auto; border: 1px solid var(--line2); border-radius: 999px; padding: 7px 12px; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--mute); }
+  .gx-ms button.on { border-color: var(--accent); color: var(--ink); }
+  .gx-ms b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 640px) {
+    .gx-pn > .tb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .gx-pn > .tb-grid > div.m-hide, .gx-pn > .tb-grid > div > div.m-hide { display: block !important; }
+    .m-seg { display: none !important; }
+  }
+'''
+
+R46_HELPERS = r'''// ---------- round 46: every matchup's score in a strip above the Matchup page (news_logos.py) ----------
+function MatchStrip({ s, wk }) {
+  const [cur, setCur] = useState(window.__matchSel || 0);
+  useEffect(() => {
+    const h = () => setCur(window.__matchSel || 0);
+    window.addEventListener("gm-match", h);
+    return () => window.removeEventListener("gm-match", h);
+  }, []);
+  const myOpp = oppOf(wk, s.me);
+  const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter((p) => p[0] && p[1]);
+  if (all.length < 2) return null;
+  const sc = (id) => +((wk.act || {})[id]) || 0;
+  const nm = (id) => { const w = (teamName(s, id) || "").split(" ")[0]; return w.length > 10 ? w.slice(0, 9) + "\u2026" : w; };
+  return (
+    <div className="gx-ms" role="tablist" aria-label="Matchups this week">
+      {all.map(([a, b], i) => {
+        const x = sc(a), y = sc(b);
+        return (
+          <button key={a + "-" + b} type="button" role="tab" aria-selected={i === cur} className={i === cur ? "on" : ""}
+            onClick={(e) => { if (window.__setMatch) window.__setMatch(i); e.currentTarget.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }}>
+            {nm(a)} {x >= y ? <b>{f1(x)}</b> : f1(x)} <span style={{ opacity: 0.6 }}>vs</span> {y > x ? <b>{f1(y)}</b> : f1(y)} {nm(b)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+'''
+
+R46_SEL = "const [sel, setSel] = useState(() => { const v44 = window.__MATCH_SEL || 0; window.__MATCH_SEL = 0; return v44; });"
+
+
+def round46(t):
+    t = lit(t, "round 46: styles", "</style>", R46_CSS + "</style>", "round 46 (news_logos.py)")
+    t = lit(t, "round 46: matchup strip helper", ROOT, R46_HELPERS + ROOT, "function MatchStrip(")
+    t = lit(t, "round 46: strip follows the open matchup", R46_SEL,
+            R46_SEL + '\n  useEffect(() => { window.__matchSel = sel; window.__setMatch = setSel; window.dispatchEvent(new Event("gm-match")); }, [sel]);',
+            "window.__setMatch = setSel;")
+    t = lit(t, "round 46: strip sits above the Matchup page", "function SubBar({ tab, sub, go, setSubs, nav }) {",
+            'function SubBar({ tab, sub, go, setSubs, nav, s, wk }) {\n  if (tab === "matchup") return s && wk ? <MatchStrip s={s} wk={wk} /> : null;', "function SubBar({ tab, sub, go, setSubs, nav, s, wk })")
+    t = lit(t, "round 46: strip gets the league data", "<SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} />",
+            "<SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} />", "nav={nav} s={s} wk={wk} />")
+    for must in ("function MatchStrip(", "function SubBar(", "<SubBar tab={tab}", "matchup v35", "trades v42"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 46 (" + must + ").")
+    return t
+
+
+_fix_before_r46 = fix
+
+
+def fix(t):
+    return round46(_fix_before_r46(t))
+
+
+# --- AI: retrain whenever the models are a week old, not only on Mondays
+AIRES = "ai_research.py"
+PY_BAK[AIRES] = "ai_research.backup-news.py"
+PY_DONE[AIRES] = "last46_"
+AIRES46 = '''    try:
+        last46_ = E.parse_utc(reg["last_train"]) if reg.get("last_train") else None
+    except Exception:
+        last46_ = None
+    if last46_ is not None and now - last46_ >= timedelta(days=7):
+        print("(research) models are a week old or more - retraining today")
+        force = True
+    due = (force or reg.get("feature_hash")'''
+
+
+def fix_aires46(t):
+    t = lit(t, "AI retrain when a week old", '    due = (force or reg.get("feature_hash")', AIRES46, "last46_")
+    py_ok(AIRES, t)
+    return t
+
+
+PY_FIXES[AIRES] = fix_aires46
+
+# --- AI Lab page: new look, answer first, technical sections folded away
+AILAB = "ai-dashboard.html"
+PY_BAK[AILAB] = "ai-dashboard.backup-news.html"
+PY_DONE[AILAB] = "AI Lab v2"
+AL_ROOT_OLD = ':root{--bg:#0b0f17;--card:#111827;--card2:#0f172a;--line:#1f2937;--tx:#e5e7eb;--mu:#9ca3af;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--acc:#60a5fa}'
+AL_ROOT_NEW = (':root{--bg:#0c0d0f;--card:#141518;--card2:#0c0d0f;--line:#232529;--tx:#f4f5f6;--mu:#8a8d93;--ok:#5fd08a;--warn:#f5c451;--bad:#f06a6a;--acc:#f4f5f6}\n'
+               'html[data-t="light"]{--bg:#f5f5f4;--card:#ffffff;--card2:#f5f5f4;--line:#e4e4e1;--tx:#111111;--mu:#6b6b68;--ok:#16a34a;--warn:#b45309;--bad:#dc2626;--acc:#111111}')
+AL_G = "linear-gradient(var(--tx),var(--tx))"
+AL_CSS = ("/* AI Lab v2 (news_logos.py) */\n"
+          'section::before{content:"";position:absolute;inset:0;pointer-events:none;background:'
+          + ",".join(AL_G + " " + pos + "/" + size + " no-repeat" for pos in ("0 0", "100% 0", "0 100%", "100% 100%") for size in ("10px 1.5px", "1.5px 10px")) + "}\n"
+          + r'''.lab{font-size:12px;color:var(--mu);letter-spacing:.06em}
+.vd{font-size:17px;font-weight:600;margin:8px 0 10px}
+.rk{display:grid;grid-template-columns:86px minmax(0,1fr) 48px;gap:10px;align-items:center;padding:6px 0;font-variant-numeric:tabular-nums}
+.rk .bar{height:8px;background:var(--line)}.rk .bar i{display:block;height:8px}.rk b{text-align:right}
+.r{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}.r>span:first-child{flex:1}
+details.grp{margin-bottom:12px}
+details.grp>summary{list-style:none;padding:12px 0;border-top:1px solid var(--line);color:var(--tx);font-size:14px}
+details.grp[open]>summary{margin-bottom:12px}
+''')
+AL_HEADER = '''<header>
+  <h1>AI Lab</h1>
+  <span style="flex:1"></span>
+  <button onclick="location.reload()">Refresh</button>
+  <a href="fantasy-gm.html">Back to the app</a>
+</header>'''
+AL_THEME = '''(function () {
+  try {
+    var p = localStorage.getItem("fantasy-islands-gm-theme") || "auto";
+    var dark = p === "dark" || (p !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-t", dark ? "dark" : "light");
+  } catch (e) {}
+})();
+'''
+AL_FUNCS = r'''// ---- AI Lab v2: the answer first, in plain words
+function secVerdict(D) {
+  const rep = D.rep || {}, t = (rep.tasks || {}).skater || {}, c = rep.counts || {}, pr = (rep.paired || {}).skater || {};
+  let html = `<section id="verdict"><div class="lab">Which projection is most accurate</div>`;
+  const rows = M.filter(m => t[m]).map(m => [m, t[m].mae, t[m].n]).sort((a, b) => a[1] - b[1]);
+  if (!rows.length) return html + `<div class="empty">No finished games graded yet.</div></section>`;
+  const best = rows[0], second = rows[1], last = rows[rows.length - 1];
+  const k = second ? (pr[best[0] + "_vs_" + second[0]] || pr[second[0] + "_vs_" + best[0]]) : null;
+  const level = !!(k && !/more accurate$/.test(k.verdict));
+  let line = level ? `${NAME[best[0]]} and ${NAME[second[0]]} are level.` : `${NAME[best[0]]} is the most accurate so far.`;
+  if (rows.length > 2) line += ` ${level ? "Both beat" : "It beats"} ${NAME[last[0]]} by ${f(last[1] - best[1], 1)} points a game.`;
+  html += `<p class="vd">${line}</p>`;
+  for (const [m, mae] of rows) html += `<div class="rk"><span>${NAME[m]}</span><div class="bar"><i style="width:${Math.round(mae / last[1] * 100)}%;background:${m === best[0] ? "var(--tx)" : m === last[0] ? "var(--bad)" : "var(--mu)"}"></i></div><b>${f(mae)}</b></div>`;
+  return html + `<p class="muted small">How many fantasy points each projection is off by per game, on average, for skaters. Shorter is better. ${c.graded_days || 0} game days, ${(best[2] || 0).toLocaleString()} player-games. Goalies need more games before there is a winner.</p></section>`;
+}
+function secOff(D) {
+  const seg = (D.rep || {}).segments || {}, out = [];
+  const LAB = {venue: {away: "Players on the road", home: "Players at home"},
+    "power play": {"not on PP1": "Players off the top power play", "on PP1": "Players on the top power play"},
+    rest: {"back-to-back": "Players on the second night of a back-to-back"},
+    line: {D1: "Top-pair defencemen", F1: "First-line forwards", "lower lines": "Lower-line players"}};
+  const add = (label, m, s) => { if (s && s.n >= 40 && s.bias_se > 0 && Math.abs(s.bias) >= 0.4 && Math.abs(s.bias) >= 2.4 * s.bias_se) out.push({label, m, b: s.bias}); };
+  for (const [key, vals] of Object.entries(LAB)) for (const [v, label] of Object.entries(vals)) for (const m of ["ai", "espn"]) add(label, m, ((seg[key] || {})[v] || {})[m]);
+  for (const [tm, ms] of Object.entries(seg.team || {})) add(tm + " skaters", "ai", ms.ai);
+  out.sort((a, b) => Math.abs(b.b) - Math.abs(a.b));
+  let html = `<section id="off"><div class="lab">Where the projections are off</div>`;
+  if (!out.length) return html + `<div class="empty">No pattern is large enough to trust yet.</div></section>`;
+  html += out.slice(0, 10).map((x, i) => `<div class="r"${i ? "" : ' style="border-top:0"'}><span>${esc(x.label)}</span><span class="muted small">${NAME[x.m]} projects them</span><b class="${x.b > 0 ? "over" : "under"}" style="min-width:86px;text-align:right">${f(Math.abs(x.b), 1)} too ${x.b > 0 ? "high" : "low"}</b></div>`).join("");
+  return html + `<p class="muted small" style="margin-top:8px">Points a game. Only patterns too large to be luck are listed. They are clues, not proven causes.</p></section>`;
+}
+
+'''
+AL_BOOT = r'''const run = fns => fns.map(fn => { try { return fn(D); } catch (e) { return `<section><div class="empty">This section failed to load: ${esc(e.message)}</div></section>`; } }).join("");
+  document.getElementById("app").innerHTML = run([secVerdict, secHealth, secOff, secPlayers])
+    + `<details class="grp"><summary>Goalie start chances: did 70% mean 70%</summary>${run([secGoalies])}</details>`
+    + `<details class="grp"><summary>Under the hood: accuracy tables, model tests, research log</summary>${run([secLive, secTime, secWhere, secLab, secResearch, secHelp])}</details>`;'''
+
+
+def fix_ailab46(t):
+    if "AI Lab v2" in t:
+        print("(news) AI Lab: new look: already done")
+        return t
+
+    def rep(old, new):
+        nonlocal t
+        if t.count(old) != 1:
+            fail("AI Lab: could not find this text in ai-dashboard.html: " + old[:60] + " ... Send this log to the AI helper.")
+        t = t.replace(old, new, 1)
+
+    def resub(pat, new):
+        nonlocal t
+        t, n = re.subn(pat, lambda m: new, t, count=1, flags=re.S)
+        if n != 1:
+            fail("AI Lab: could not find the pattern " + pat[:40] + " in ai-dashboard.html. Send this log to the AI helper.")
+
+    rep(AL_ROOT_OLD, AL_ROOT_NEW)
+    rep("background:#0b0f17ee;backdrop-filter:blur(6px);", "background:var(--bg);")
+    rep("section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}",
+        "section{background:var(--card);padding:16px 18px;margin-bottom:12px;position:relative}")
+    rep("tr.best td{background:#064e3b55}", "tr.best td{background:color-mix(in srgb,var(--ok) 14%,transparent)}")
+    rep(".chart .grid{stroke:#1f2937}", ".chart .grid{stroke:var(--line)}")
+    rep("</style>", AL_CSS + "</style>")
+    resub(r"<header>.*?</header>", AL_HEADER)
+    rep('const M = ["espn", "gm", "blend", "ai"];', AL_THEME + 'const M = ["espn", "gm", "blend", "ai"];')
+    rep('"Mondays 4:20 AM"', '"Whenever they are a week old"')
+    rep("(useful days ahead).</p>", "(useful days ahead). The app's rule is graded on its last reading before puck drop, when most starters are already confirmed, so its table says little about how good it is days ahead.</p>")
+    resub(r"// -+ boot", AL_FUNCS + "// ------------------------------------------------------------ boot")
+    resub(r'document\.getElementById\("app"\)\.innerHTML = \[secHealth.*?\.join\(""\);', AL_BOOT)
+    for must in ("function secVerdict(", "function secOff(", "function secHealth(", "function secPlayers(", "function drawPlayer(", "</html>"):
+        if must not in t:
+            fail("ai-dashboard.html looks damaged after the AI Lab update (" + must + ").")
+    print("(news) AI Lab: new look: updated")
+    return t
+
+
+PY_FIXES[AILAB] = fix_ailab46
+
 if __name__ == "__main__":
     main()
