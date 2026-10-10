@@ -3102,5 +3102,117 @@ _fix_before_r26 = fix
 def fix(t):
     return round26(_fix_before_r26(t))
 
+# ---------- round 27: no moves left this week -> no pickup or drop suggestions, plan next week instead ----------
+R27_HELPERS = r'''// ---------- round 27: no moves left this week, so plan next week instead (news_logos.py) ----------
+const noMovesWk = (s, w) => !!w && movesLeft(s, s.me, w) === 0;
+const outOfMoves = (s) => noMovesWk(s, s.weeks[s.wk]);
+const nextWkS = (s) => (s.wk + 1 < s.weeks.length ? { ...s, wk: s.wk + 1 } : null);
+const planS = (s) => (outOfMoves(s) && nextWkS(s)) || s;
+const planBase = (s, sP) => (sP !== s && !oppOf(sP.weeks[sP.wk] || {}, sP.me) ? null : winChance(sP));
+const planNote = (sP) => { const w = sP.weeks[sP.wk] || {}, d = (w.dates || [])[0]; return "No moves left this week. These are for " + (w.label || "next week") + (d ? ", once your moves reset on " + dayLabel(d) : "") + "."; };
+const PlanNote = ({ sP }) => <div className="w-full text-xs text-amber-600 mt-1 mb-1">{planNote(sP)}</div>;
+
+'''
+
+R27_TODAY_OLD = r'''const moves = useMemo(() => computeMoves(s, { H: 1, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3)).slice(0, 3), [s]);'''
+R27_TODAY_NEW = r'''const sP = useMemo(() => planS(s), [s]); // round 27, older marker kept: <WinDelta s={s} add={r.f} drop={r.d} /><span
+  const pBase = useMemo(() => (sP !== s ? planBase(s, sP) : undefined), [sP]);
+  const moves = useMemo(() => computeMoves(sP, { H: 1, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3)).slice(0, 3), [sP]);'''
+
+R27_ADV_OLD = r'''<Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week."><PickNote where="adv" />'''
+R27_ADV_NEW = r'''<Section title={sP !== s ? "Plan for next week" : "Best moves this week"} sub={sP !== s ? "Most extra points in next week's daily lineups." : "Most extra points in your daily lineups for the rest of this week."}>{sP !== s ? <PlanNote sP={sP} /> : <PickNote where="adv" />}'''
+
+R27_LONG_OLD = r'''<Section title="Long-term upgrades" sub="Better per game, and more points over the next 4 weeks.">'''
+R27_LONG_NEW = r'''<Section title="Long-term upgrades" sub={sP !== s ? "Better per game, and more points over the 4 weeks starting next week. Win shows next week's matchup." : "Better per game, and more points over the next 4 weeks."}>'''
+
+R27_PLANNER_NEW = r'''function AcqPlanner({ s: s0, setS, wk: wk0 }) {
+  // round 27: with no moves left this week, the planner plans next week
+  // older marker kept: {espnUsed != null ? <span>Moves used this week
+  const s = planS(s0), wk = s === s0 ? wk0 : deriveWeek(s.weeks[s.wk], s.autoDone), tw = s === s0 ? "this week" : "next week";'''
+
+R27_USED_OLD = r'''{espnUsed != null ? <span>Moves used this week: <b>{used} of 3</b>'''
+R27_USED_NEW = r'''{s !== s0 ? <div className="w-full text-sm text-amber-600">No moves left this week, so this plans next week: {wk.label}.</div> : null}{espnUsed != null ? <span>Moves used {tw}: <b>{used} of 3</b>'''
+
+R27_TITLE_OLD = r'''`Your plan: +${f1(plan.gain)} points this week` : "No move is worth it this week"}'''
+R27_TITLE_NEW = r'''`Your plan: +${f1(plan.gain)} points ${tw}` : "No move is worth it " + tw}'''
+
+R27_GNOTE_OLD = r'''{st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span>'''
+R27_GNOTE_NEW = r'''{noMovesWk(s, wk) ? <div className="text-sm text-amber-600 mb-2">No moves left this week, so no free-agent streams are shown. Next week's best pickups, goalies included, are on Advice, and the Planner builds the full plan.</div> : st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span>'''
+
+R27_GEMPTY_OLD = r'''<div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>'''
+R27_GEMPTY_NEW = r'''(noMovesWk(s, wk) ? null : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>)'''
+
+R27_AD_NEW = r'''{outOfMoves(s) ? <div className="w-full text-xs text-amber-600 mt-1">No moves left this week, so this list is only a what-if until your moves reset. Next week's plan is on Advice and in the Planner.</div> : <PickNote where="ad" />}'''
+
+
+def round27(t):
+    t = lit(t, "no moves: helpers", ROOT, R27_HELPERS + ROOT, "const outOfMoves =")
+    # Today
+    t = lit(t, "no moves: Today uses next week", R27_TODAY_OLD, R27_TODAY_NEW, "computeMoves(sP, { H: 1, pool: 40 })")
+    t = lit(t, "no moves: Today card title", '<Section title="Best moves this week" sub={sameDrop ?',
+            '<Section title={sP !== s ? "Best moves for next week" : "Best moves this week"} sub={sameDrop ?',
+            '"Best moves for next week" : "Best moves this week"} sub={sameDrop ?')
+    t = lit(t, "no moves: Today note", '<PickNote where="today" />',
+            '{sP !== s ? <PlanNote sP={sP} /> : <PickNote where="today" />}',
+            '<PlanNote sP={sP} /> : <PickNote where="today" />')
+    t = lit(t, "no moves: Today win chance",
+            '<WinDelta s={s} add={r.f} drop={r.d} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>',
+            '<WinDelta s={sP} add={r.f} drop={r.d} base={pBase} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>',
+            "<WinDelta s={sP} add={r.f} drop={r.d} base={pBase} />")
+    # Advice
+    t = lit(t, "no moves: Advice uses next week", "const now = useMemo(() => computeMoves(s, { H: 1, pool: 60 }), [s]);",
+            "const sP = useMemo(() => planS(s), [s]);\n  const now = useMemo(() => computeMoves(sP, { H: 1, pool: 60 }), [sP]);",
+            "computeMoves(sP, { H: 1, pool: 60 })")
+    t = sub_once(t, "no moves: Advice long-term list and win chance",
+                 re.escape("const later = useMemo(() => computeMoves(s, { H: 4, pool: 40 }), [s]);") + r"\s*"
+                 + re.escape("const base = useMemo(() => winChance(s), [s]);"),
+                 "const later = useMemo(() => computeMoves(sP, { H: 4, pool: 40 }), [sP]);\n  const base = useMemo(() => planBase(s, sP), [sP]);",
+                 "computeMoves(sP, { H: 4, pool: 40 })")
+    t = lit(t, "no moves: Advice rows", "<AdvMove key={r.f.id} s={s} r={r} K={K} showDrop={!d1} base={base} />",
+            "<AdvMove key={r.f.id} s={sP} r={r} K={K} showDrop={!d1} base={base} />", "<AdvMove key={r.f.id} s={sP}")
+    t = lit(t, "no moves: Advice plan for next week", R27_ADV_OLD, R27_ADV_NEW, '<PlanNote sP={sP} /> : <PickNote where="adv" />')
+    t = lit(t, "no moves: Advice empty text", "No move adds ${minGain}+ points this week. Save your moves.",
+            'No move adds ${minGain}+ points ${sP !== s ? "next week" : "this week"}. Save your moves.',
+            'points ${sP !== s ? "next week" : "this week"}. Save your moves.')
+    t = lit(t, "no moves: Advice long-term text", R27_LONG_OLD, R27_LONG_NEW, "over the 4 weeks starting next week")
+    # Matchup: fill an empty spot
+    t = lit(t, "no moves: hide fill an empty spot", "if (!dt || dt < todayISO() || l.empty <= 0) return null;",
+            "if (!dt || dt < todayISO() || l.empty <= 0 || noMovesWk(s, wk)) return null;", "l.empty <= 0 || noMovesWk(s, wk)")
+    # Goalie streams
+    t = lit(t, "no moves: goalie streams list", ".filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));",
+            ".filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, noMovesWk(s, wk) ? 0 : 3) }));",
+            ".slice(0, noMovesWk(s, wk) ? 0 : 3)")
+    t = lit(t, "no moves: goalie streams heading", '{head("Free agents to stream")}',
+            '{noMovesWk(s, wk) ? null : head("Free agents to stream")}', 'noMovesWk(s, wk) ? null : head("Free agents to stream")')
+    t = lit(t, "no moves: goalie streams empty text", R27_GEMPTY_OLD, R27_GEMPTY_NEW, "(noMovesWk(s, wk) ? null : <div")
+    t = lit(t, "no moves: goalie streams note", R27_GNOTE_OLD, R27_GNOTE_NEW, "so no free-agent streams are shown")
+    # Bench fixer
+    t = lit(t, "no moves: bench fixer", "{w.fix ? (",
+            '{i === 0 && w.fix && outOfMoves(s) ? <div className="text-xs text-slate-500 mt-1">No moves left this week, so no swap is suggested for it.</div> : w.fix ? (',
+            "i === 0 && w.fix && outOfMoves(s)")
+    # Planner
+    t = lit(t, "no moves: planner plans next week", "function AcqPlanner({ s, setS, wk }) {", R27_PLANNER_NEW,
+            "function AcqPlanner({ s: s0, setS, wk: wk0 })")
+    t = lit(t, "no moves: planner start day", "+ (fromTomorrow ? 1 : 0));", "+ (fromTomorrow && ti >= 0 ? 1 : 0));", "fromTomorrow && ti >= 0")
+    t = lit(t, "no moves: planner tomorrow box", '<label className="flex items-center gap-1"><input type="checkbox" checked={fromTomorrow}',
+            '<label className="flex items-center gap-1" style={{ display: ti >= 0 ? "" : "none" }}><input type="checkbox" checked={fromTomorrow}',
+            'style={{ display: ti >= 0 ? "" : "none" }}')
+    t = lit(t, "no moves: planner banner", R27_USED_OLD, R27_USED_NEW, "<span>Moves used {tw}: <b>")
+    t = lit(t, "no moves: planner title", R27_TITLE_OLD, R27_TITLE_NEW, "points ${tw}`")
+    # Add / Drop
+    t = lit(t, "no moves: add/drop note", '<PickNote where="ad" />', R27_AD_NEW, "this list is only a what-if")
+    for must in ("const outOfMoves =", "function Today(", "function AdvicePanel(", "function AcqPlanner(", "function GoalieStreams(", "function FillSlot(",
+                 "<WinDelta s={s} add={r.f} drop={r.d} /><span", "{espnUsed != null ? <span>Moves used this week", 'PickNote where="adv"', 'PickNote where="ad"', 'PickNote where="today"'):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 27 (" + must + ").")
+    return t
+
+
+_fix_before_r27 = fix
+
+
+def fix(t):
+    return round27(_fix_before_r27(t))
+
 if __name__ == "__main__":
     main()
