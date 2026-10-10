@@ -4668,6 +4668,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|69f0455c8a09",
+   "at": "2026-10-10T04:00:49Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Sam Bennett (FLA, 3:00 PM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|12e35fbc2fb3",
+   "at": "2026-10-10T04:00:49Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Patrick Kane (CHI, 4:00 PM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|f24341e6fcdf",
+   "at": "2026-10-10T04:00:49Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Trevor Zegras (PHI, 10:00 AM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|b8fc3c7f7bf1",
+   "at": "2026-10-10T04:00:49Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Josh Manson (COL, 4:00 PM) is on your bench with a game today, while Josh Morrissey (WPG) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
