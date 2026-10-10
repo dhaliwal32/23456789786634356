@@ -4524,6 +4524,51 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|47444b8862b5",
+   "at": "2026-10-10T02:30:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "Charlie Coyle (F, CBJ) is playing 19.3 min per game lately, up +1.2 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|b42178645635",
+   "at": "2026-10-10T02:30:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tommy Novak (F, PIT) is playing 15.2 min per game lately, up +0.9 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|e26f4553203d",
+   "at": "2026-10-10T02:30:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kent Johnson (F, CBJ) is playing 16.8 min per game lately, up +3.5 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|0e4af62fcddb",
+   "at": "2026-10-10T02:30:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "Denton Mateychuk (D, CBJ) is playing 26.4 min per game lately, up +7.2 (PP +0.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|a6a43677f52c",
+   "at": "2026-10-10T02:30:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "Hendrix Lapierre (F, PIT) is playing 12.1 min per game lately, up +3.2 (PP +1.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
