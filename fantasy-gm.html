@@ -290,6 +290,17 @@
     body .lt-ps { font-size: 10px; }
     body .lt-pc { padding: 7px 8px; }
   }
+  /* round 46 (news_logos.py) */
+  .gx-ms { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
+  .gx-ms::-webkit-scrollbar { display: none; }
+  .gx-ms button { flex: 0 0 auto; border: 1px solid var(--line2); border-radius: 999px; padding: 7px 12px; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--mute); }
+  .gx-ms button.on { border-color: var(--accent); color: var(--ink); }
+  .gx-ms b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 640px) {
+    .gx-pn > .tb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .gx-pn > .tb-grid > div.m-hide, .gx-pn > .tb-grid > div > div.m-hide { display: block !important; }
+    .m-seg { display: none !important; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -857,7 +868,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} />
+        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} />
         {content}
         {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -1924,6 +1935,7 @@ function Matchup({ s, setS, wk, setWk }) {
   const others = (wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me);
   const all = [myPair, ...others];
   const [sel, setSel] = useState(() => { const v44 = window.__MATCH_SEL || 0; window.__MATCH_SEL = 0; return v44; });
+  useEffect(() => { window.__matchSel = sel; window.__setMatch = setSel; window.dispatchEvent(new Event("gm-match")); }, [sel]);
   const [day, setDay] = useState(null);
   const touch = React.useRef(null);
   const [a, b] = all[Math.min(sel, all.length - 1)];
@@ -4442,7 +4454,8 @@ function GxGames({ wk, A, B }) {
 // ---------- round 37: Team sub-pages and box-score history for the roster (news_logos.py) ----------
 const TEAM_SUBS = [["roster", "Roster"], ["pickups", "Pickups"], ["plan", "Plan"], ["trades", "Trades"], ["lines", "Lines"]];
 const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"]];
-function SubBar({ tab, sub, go, setSubs, nav }) {
+function SubBar({ tab, sub, go, setSubs, nav, s, wk }) {
+  if (tab === "matchup") return s && wk ? <MatchStrip s={s} wk={wk} /> : null;
   const team = tab === "myteam" || tab === "moves" || tab === "lines";
   if (!team) {
     const back = tab === "news" || (tab === "setup" && sub && sub !== "settings") ? ["Setup", () => go("setup", "settings")] : tab === "league" && sub === "playoffs" ? ["League", () => go("league", "power")] : null;
@@ -4991,6 +5004,34 @@ function SetupPage({ s, setS, go }) {
     if (el && el.getAttribute && el.getAttribute("role") === "button" && el.tagName !== "BUTTON") { e.preventDefault(); el.click(); }
   });
 })();
+
+// ---------- round 46: every matchup's score in a strip above the Matchup page (news_logos.py) ----------
+function MatchStrip({ s, wk }) {
+  const [cur, setCur] = useState(window.__matchSel || 0);
+  useEffect(() => {
+    const h = () => setCur(window.__matchSel || 0);
+    window.addEventListener("gm-match", h);
+    return () => window.removeEventListener("gm-match", h);
+  }, []);
+  const myOpp = oppOf(wk, s.me);
+  const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter((p) => p[0] && p[1]);
+  if (all.length < 2) return null;
+  const sc = (id) => +((wk.act || {})[id]) || 0;
+  const nm = (id) => { const w = (teamName(s, id) || "").split(" ")[0]; return w.length > 10 ? w.slice(0, 9) + "\u2026" : w; };
+  return (
+    <div className="gx-ms" role="tablist" aria-label="Matchups this week">
+      {all.map(([a, b], i) => {
+        const x = sc(a), y = sc(b);
+        return (
+          <button key={a + "-" + b} type="button" role="tab" aria-selected={i === cur} className={i === cur ? "on" : ""}
+            onClick={(e) => { if (window.__setMatch) window.__setMatch(i); e.currentTarget.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }}>
+            {nm(a)} {x >= y ? <b>{f1(x)}</b> : f1(x)} <span style={{ opacity: 0.6 }}>vs</span> {y > x ? <b>{f1(y)}</b> : f1(y)} {nm(b)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
