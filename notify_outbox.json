@@ -4641,6 +4641,33 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|d39d993538e9",
+   "at": "2026-10-10T03:21:08Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Maxim Tsyplakov (CGY) is in the lineup on the 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|0395d8b85a84",
+   "at": "2026-10-10T03:21:08Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Simon Nemec (CGY) promoted: 2nd pair -> top pair",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|d7933773e5c7",
+   "at": "2026-10-10T03:21:08Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Claude Giroux (OTT) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
