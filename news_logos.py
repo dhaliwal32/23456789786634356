@@ -3500,5 +3500,60 @@ _fix_before_r29 = fix
 def fix(t):
     return round29(_fix_before_r29(t))
 
+# ---------- round 30: trade builder shows the waiver pickup under "You get" and your league ranks after the trade ----------
+R30_HELPERS = r'''// ---------- round 30: league ranks before and after a trade (news_logos.py) ----------
+function TradeRanks({ s, partner, give, get, adds, drops }) {
+  const addIds = adds.filter(Boolean).map((p) => p.id), dropIds = drops.map((p) => p.id);
+  const key = [partner, give.join(), get.join(), addIds.join(), dropIds.join()].join("|");
+  const R = useMemo(() => {
+    const G = new Set(give), T = new Set(get), A = new Set(addIds), D = new Set(dropIds);
+    const players = s.players.map((p) => (G.has(p.id) ? { ...p, ft: partner } : T.has(p.id) || A.has(p.id) ? { ...p, ft: s.me } : D.has(p.id) ? { ...p, ft: "fa" } : p));
+    const pos = (t) => { const i = t.rows.findIndex((x) => x.t.id === s.me); return { o: i + 1, st: i >= 0 ? t.rows[i].strength : 0, ...(t.grpRank[s.me] || {}) }; };
+    const keep = __LT, after = leagueTable({ ...s, players });
+    __LT = keep;
+    return { b: pos(leagueTable(s)), a: pos(after) };
+  }, [key, s.players, s.wk, s.blend, window.__PMODE]);
+  const cell = (lab, b, a) => (
+    <span key={lab} className="mr-4 whitespace-nowrap">{lab} <span className="text-slate-500">#{b || "-"}</span>{" \u2192 "}<span className={"font-semibold " + (a < b ? "text-green-700" : a > b ? "text-red-600" : "")}>#{a || "-"}</span></span>
+  );
+  const up = R.a.st - R.b.st;
+  return (
+    <div className="text-sm mt-3">
+      <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Your league ranks after this trade</div>
+      {cell("Overall", R.b.o, R.a.o)}{cell("Forwards", R.b.F, R.a.F)}{cell("Defence", R.b.D, R.a.D)}{cell("Goalies", R.b.G, R.a.G)}
+      <span className="text-xs text-slate-500 whitespace-nowrap">Strength {f1(R.b.st)}{" \u2192 "}<span className={up > 0.05 ? "text-green-700" : up < -0.05 ? "text-red-600" : ""}>{f1(R.a.st)}</span> pts/week</span>
+    </div>
+  );
+}
+
+'''
+
+R30_GET_OLD = r'''{sideBox("You get", Rv, get, setGet)}'''
+R30_GET_NEW = r'''{sideBox("You get", Rv, get, setGet, picks.map((f, k) => (f ? <div key={"pk" + k} className="tb-chip"><TeamLogo t={f.t} size={18} /><span className="truncate">{shortN(f.n)}</span><span className="text-xs text-slate-500">{f.p}</span><span className="text-xs text-green-700 whitespace-nowrap">waiver pickup</span><button type="button" className="tb-x" onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>{"\u00d7"}</button></div> : null)))}'''
+R30_TOTAL_OLD = r'''{list.length ? <div className="text-xs text-slate-500 mt-1 pt-1 border-t border-slate-100">'''
+R30_RANKS_OLD = r'''{(() => { const a = cnt(res.after), b = cnt(mine); return ('''
+R30_RANKS_NEW = r'''<TradeRanks s={s} partner={partner} give={give} get={get} adds={picks} drops={drops} />
+            ''' + R30_RANKS_OLD
+
+
+def round30(t):
+    t = lit(t, "trade ranks: side box takes extras", "const sideBox = (lab, list, sel, set) => (",
+            "const sideBox = (lab, list, sel, set, extra) => (", "const sideBox = (lab, list, sel, set, extra)")
+    t = lit(t, "trade ranks: extras shown in the box", R30_TOTAL_OLD, "{extra || null}" + R30_TOTAL_OLD, "{extra || null}")
+    t = lit(t, "trade ranks: pickup under You get", R30_GET_OLD, R30_GET_NEW, "waiver pickup</span>")
+    t = lit(t, "trade ranks: ranks after the trade", R30_RANKS_OLD, R30_RANKS_NEW, "<TradeRanks s={s}")
+    t = lit(t, "trade ranks: helpers", ROOT, R30_HELPERS + ROOT, "function TradeRanks(")
+    for must in ("function TradeRanks(", "function TradeBuilder(", "<TradeAdvice s={s}", "<FaSearch s={s}", 'sideBox("You give", Gv, give, setGive)'):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 30 (" + must + ").")
+    return t
+
+
+_fix_before_r30 = fix
+
+
+def fix(t):
+    return round30(_fix_before_r30(t))
+
 if __name__ == "__main__":
     main()
