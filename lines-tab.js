@@ -30,59 +30,60 @@
 
   // ---------- styles (dark, matches the app) ----------
   const CSS = `
-.lt-it{display:grid;grid-template-columns:26px 1fr auto;gap:8px;padding:8px 2px;border-top:1px solid #292929;align-items:start;cursor:pointer}
+/* round 32 theme */
+.lt-it{display:grid;grid-template-columns:26px 1fr auto;gap:8px;padding:8px 2px;border-top:1px solid var(--line);align-items:start;cursor:pointer}
 .lt-it:first-child{border-top:none}
-.lt-it:hover{background:rgba(139,124,255,.06)}
+.lt-it:hover{background:var(--hover)}
 .lt-low{opacity:.55}
 .lt-ic{font-weight:700;font-size:12px;text-align:center;padding-top:2px}
-.lt-up{color:#5fd08a}.lt-dn{color:#f06a6a}.lt-mu{color:#8f8f8f}
-.lt-tm{font-size:11px;color:#8f8f8f;margin-right:2px}
-.lt-why{font-size:12px;color:#8f8f8f;margin-top:1px}
-.lt-own{font-size:12px;white-space:nowrap;padding-top:2px;color:#8f8f8f;max-width:130px;overflow:hidden;text-overflow:ellipsis}
-.lt-own.me{color:#8b7cff;font-weight:600}.lt-own.fa{color:#5fd08a}
-.lt-link{background:none;border:none;color:#8b7cff;cursor:pointer;padding:8px 0 0;font-size:13px}
-.lt-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #292929;font-size:12px;color:#8f8f8f}
-.lt-grp-h{display:flex;gap:8px;align-items:center;padding:8px 2px;border-top:1px solid #292929;cursor:pointer;font-size:13px}
+.lt-up{color:var(--good)}.lt-dn{color:var(--bad)}.lt-mu{color:var(--mute)}
+.lt-tm{font-size:11px;color:var(--mute);margin-right:2px}
+.lt-why{font-size:12px;color:var(--mute);margin-top:1px}
+.lt-own{font-size:12px;white-space:nowrap;padding-top:2px;color:var(--mute);max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.lt-own.me{color:var(--accent);font-weight:600}.lt-own.fa{color:var(--good)}
+.lt-link{background:none;border:none;color:var(--accent);cursor:pointer;padding:8px 0 0;font-size:13px}
+.lt-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+.lt-grp-h{display:flex;gap:8px;align-items:center;padding:8px 2px;border-top:1px solid var(--line);cursor:pointer;font-size:13px}
 .lt-grp-b{padding:0 0 6px 16px}
-.lt-team{border:1px solid #292929;border-radius:12px;background:#161616;margin-bottom:8px;overflow:hidden}
-.lt-team.open{border-color:#4a4a4a}
+.lt-team{border:1px solid var(--line);border-radius:12px;background:var(--card2);margin-bottom:8px;overflow:hidden}
+.lt-team.open{border-color:var(--line2)}
 .lt-tr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
-.lt-tr:hover{background:#1f1f1f}
-.lt-rk{font-weight:700;width:34px;color:#8f8f8f;flex-shrink:0}
+.lt-tr:hover{background:var(--card3)}
+.lt-rk{font-weight:700;width:34px;color:var(--mute);flex-shrink:0}
 .lt-tmain{min-width:0;flex:1}
-.lt-tn{font-weight:600;color:#fafafa}
-.lt-meta{font-size:12px;color:#8f8f8f}
-.lt-hint{font-size:12px;margin-top:2px;color:#d4d4d4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-tn{font-weight:600;color:var(--ink)}
+.lt-meta{font-size:12px;color:var(--mute)}
+.lt-hint{font-size:12px;margin-top:2px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lt-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.lt-pill{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #363636;color:#8f8f8f;white-space:nowrap}
-.lt-pill.me{color:#8b7cff;border-color:rgba(139,124,255,.45)}
-.lt-chev{color:#8f8f8f;transition:transform .2s;flex-shrink:0;display:inline-block}
+.lt-pill{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line2);color:var(--mute);white-space:nowrap}
+.lt-pill.me{color:var(--accent);border-color:var(--line2)}
+.lt-chev{color:var(--mute);transition:transform .2s;flex-shrink:0;display:inline-block}
 .lt-team.open .lt-chev{transform:rotate(180deg)}
-.lt-body{padding:10px 12px 14px;border-top:1px solid #292929}
+.lt-body{padding:10px 12px 14px;border-top:1px solid var(--line)}
 .lt-stabs{display:flex;gap:6px;flex-wrap:wrap}
-.lt-stab{background:transparent;border:1px solid #363636;color:#d4d4d4;border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
-.lt-stab.on{border-color:#8b7cff;color:#8b7cff;background:rgba(139,124,255,.1)}
-.lt-sec{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#bdbdbd;margin:14px 0 8px;background:#202020;padding:5px 8px;border-radius:6px;text-align:center;font-weight:600}
+.lt-stab{background:transparent;border:1px solid var(--line2);color:var(--ink2);border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
+.lt-stab.on{border-color:var(--accent);color:var(--accent);background:var(--accentSoft)}
+.lt-sec{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:14px 0 8px;background:var(--card3);padding:5px 8px;border-radius:6px;text-align:center;font-weight:600}
 .lt-grid{display:grid;grid-template-columns:28px repeat(3,minmax(0,1fr));gap:6px}
 .lt-grid.d{grid-template-columns:28px repeat(2,minmax(0,1fr));max-width:680px;margin:0 auto}
-.lt-rl{font-size:12px;color:#8f8f8f;display:flex;align-items:center}
-.lt-pc{display:block;width:100%;background:#1a1a1a;border:1px solid #292929;border-left:3px solid #4d4d4d;border-radius:8px;padding:7px 8px;min-width:0;text-align:left;cursor:pointer;color:#fafafa;font:inherit}
-.lt-pc:hover{border-color:#4a4a4a}
-.lt-pc.me{border-left-color:#8b7cff}.lt-pc.me .lt-nm{color:#8b7cff}
-.lt-pc.fa{border-left-color:#5fd08a}
+.lt-rl{font-size:12px;color:var(--mute);display:flex;align-items:center}
+.lt-pc{display:block;width:100%;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--faint);border-radius:8px;padding:7px 8px;min-width:0;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.lt-pc:hover{border-color:var(--line2)}
+.lt-pc.me{border-left-color:var(--accent)}.lt-pc.me .lt-nm{color:var(--accent)}
+.lt-pc.fa{border-left-color:var(--good)}
 .lt-nm{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lt-pc small{display:block;font-size:11px;color:#8f8f8f;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lt-pp{color:#8b7cff}
-.lt-empty{opacity:.4;text-align:center;cursor:default;border-left-color:#292929}
+.lt-pc small{display:block;font-size:11px;color:var(--mute);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-pp{color:var(--accent)}
+.lt-empty{opacity:.4;text-align:center;cursor:default;border-left-color:var(--line)}
 .lt-short{display:none}
 .lt-ppu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .lt-ppd{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:66%;margin:6px auto 0}
 .lt-gg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-width:680px;margin:0 auto}
-.lt-legend{font-size:12px;color:#8f8f8f;display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 10px}
+.lt-legend{font-size:12px;color:var(--mute);display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 10px}
 .lt-dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
-.lt-msg{font-size:13px;color:#8f8f8f;padding:10px 0}
-.lt-how{font-size:12px;color:#8f8f8f;margin-top:8px}
-.lt-how summary{cursor:pointer;color:#8b7cff}
+.lt-msg{font-size:13px;color:var(--mute);padding:10px 0}
+.lt-how{font-size:12px;color:var(--mute);margin-top:8px}
+.lt-how summary{cursor:pointer;color:var(--accent)}
 @media(max-width:640px){.lt-full{display:none}.lt-short{display:inline}.lt-ppd{width:100%}.lt-next{display:none}
 .lt-grid{grid-template-columns:22px repeat(3,minmax(0,1fr));gap:4px}.lt-grid.d{grid-template-columns:22px repeat(2,minmax(0,1fr))}
 .lt-pc{padding:6px}.lt-tr{padding:10px 8px;gap:8px}}
@@ -393,9 +394,9 @@
           <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
         </div>
         <details className="lt-how lt-legend-wrap"><summary>What the colours and marks mean</summary><div className="lt-legend">
-          <span><span className="lt-dot" style={{ background: "#8b7cff" }}></span>Yours</span>
-          <span><span className="lt-dot" style={{ background: "#5fd08a" }}></span>Free agent</span>
-          <span><span className="lt-dot" style={{ background: "#4d4d4d" }}></span>Rostered</span>
+          <span><span className="lt-dot" style={{ background: "var(--accent)" }}></span>Yours</span>
+          <span><span className="lt-dot" style={{ background: "var(--good)" }}></span>Free agent</span>
+          <span><span className="lt-dot" style={{ background: "var(--faint)" }}></span>Rostered</span>
           <span><span className="lt-up">▲</span>/<span className="lt-dn">▼</span> moved in last 48 h</span>
           <span><span className="lt-dn">✚</span> injured</span>
           <span>Numbers = {L.fp_season} fantasy pts</span>
