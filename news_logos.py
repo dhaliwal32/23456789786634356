@@ -7373,5 +7373,78 @@ def fix_lines51(t):
 
 JS_FIXES[LINES] = fix_lines51
 
+# ---------- round 52: Ask button clears the bottom tabs on phones; white corner marks removed ----------
+R52_CSS = r'''  /* round 52 (news_logos.py) */
+  .gx-pn > b { display: none !important; }
+  @media (max-width: 640px) { html.gx-noask .gx-bb { padding-right: 84px; } }
+'''
+
+R52_HELPERS = r'''// ---------- round 52: keep the floating Ask button clear of the bottom tabs (news_logos.py) ----------
+(function gxAsk() {
+  if (window.__gxAsk) return;
+  window.__gxAsk = 1;
+  let box = null;
+  const lift = (el) => {
+    let n = el;
+    while (n && n !== document.body && n !== document.documentElement) {
+      if (getComputedStyle(n).position === "fixed") { n.style.setProperty("bottom", "calc(72px + env(safe-area-inset-bottom))", "important"); return n; }
+      n = n.parentElement;
+    }
+    return null;
+  };
+  const run = () => {
+    const root = document.documentElement;
+    if (window.innerWidth > 640) { root.classList.remove("gx-noask"); return; }
+    if (box && box.isConnected) { lift(box); root.classList.remove("gx-noask"); return; }
+    box = null;
+    const all = document.querySelectorAll("button, a, div, span");
+    for (let i = 0; i < all.length && !box; i++) {
+      const el = all[i], leaf = el.tagName === "BUTTON" || el.tagName === "A" || !el.childElementCount;
+      if (!leaf || (el.closest && el.closest(".gx-bb, .gx-so"))) continue;
+      if ((el.textContent || "").trim() === "Ask") box = lift(el);
+    }
+    root.classList.toggle("gx-noask", !box);
+  };
+  setTimeout(run, 300);
+  setInterval(run, 1500);
+  window.addEventListener("resize", run);
+})();
+
+'''
+
+
+def round52(t):
+    t = lit(t, "round 52: styles", "</style>", R52_CSS + "</style>", "round 52 (news_logos.py)")
+    t = lit(t, "round 52: Ask button clears the bottom tabs", ROOT, R52_HELPERS + ROOT, "function gxAsk()")
+    for must in ("function gxAsk()", "function GxExtras(", "round 52 (news_logos.py)"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 52 (" + must + ").")
+    return t
+
+
+_fix_before_r52 = fix
+
+
+def fix(t):
+    return round52(_fix_before_r52(t))
+
+
+_fix_ailab_before_r52 = PY_FIXES[AILAB]
+
+
+def fix_ailab52(t):
+    t = _fix_ailab_before_r52(t)
+    if "r52 no corners" in t:
+        print("(news) AI Lab: corner marks removed: already done")
+    elif t.count("</style>") == 1:
+        t = t.replace("</style>", "/* r52 no corners */\nsection::before{display:none}\n</style>", 1)
+        print("(news) AI Lab: corner marks removed: updated")
+    else:
+        print("(news) AI Lab: corner marks removed: skipped, the page's style block was not found")
+    return t
+
+
+PY_FIXES[AILAB] = fix_ailab52
+
 if __name__ == "__main__":
     main()
