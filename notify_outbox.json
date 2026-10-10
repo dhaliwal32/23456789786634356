@@ -5234,6 +5234,15 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-10T19:03:30Z"
+  },
+  {
+   "k": "2026-10-10|1c3c3d9db6b9",
+   "at": "2026-10-10T20:03:38Z",
+   "title": "Pickup: ice time jump",
+   "text": "David Jiricek (D, PHI) is playing 16.8 min per game lately, up +4.8 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
