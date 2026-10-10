@@ -1,39 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|641be4242faf",
-   "at": "2026-10-03T21:01:40Z",
-   "title": "Your player: lineup change",
-   "text": "Aleksander Barkov (FLA) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
-   "k": "2026-10-03|3e6d621c8d2b",
-   "at": "2026-10-03T21:01:40Z",
-   "title": "Your player: power-play change",
-   "text": "Sam Bennett (FLA) moved onto PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
-   "k": "2026-10-03|6142532eb0e3",
-   "at": "2026-10-03T21:01:40Z",
-   "title": "Your player: power-play change",
-   "text": "Aleksander Barkov (FLA) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
    "k": "2026-10-03|44db4525d096",
    "at": "2026-10-03T23:02:07Z",
    "title": "Pickup idea: bigger role",
