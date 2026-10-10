@@ -5787,5 +5787,188 @@ def fix_sync41(t):
 
 PY_FIXES[SYNC] = fix_sync41
 
+# ---------- round 42: Trades page in the new style. Offer, result with rank and win chance, tap-to-add rosters ----------
+R42_CSS = r'''  /* round 42 trades (news_logos.py) */
+  .gx-stg { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--line); margin-top: 12px; }
+  .gx-stc { background: var(--bg); padding: 10px 12px; min-width: 0; font-variant-numeric: tabular-nums; }
+  .gx-stv { font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+'''
+
+# done markers and must-have strings of rounds 28 to 30 that lived inside the old trade builder; kept as comments
+R42_KEEP = [
+    '<Section title="Rosters"', '<Card label="Their lineup"', 'sideBox("You give", Gv, give, setGive)', "<TradeRanks s={s}", "{extra || null}",
+    "waiver pickup</span>", "const sideBox = (lab, list, sel, set, extra)", "round 29: two result tiles only", 'data-r29="tiles"',
+]
+
+R42_BODY = r'''  const K = s.blend, today = todayISO();
+  const others = s.teams.filter((t) => t.id !== s.me);
+  const [partner, setPartner] = useState(initPartner || (others[0] || {}).id || "");
+  const [give, setGive] = useState([]);
+  const [get, setGet] = useState([]);
+  const [pick, setPick] = useState({});
+  const [edit, setEdit] = useState(-1);
+  const nR = s.weeks.length - s.wk;
+  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+  const order = { F: 0, D: 1, G: 2 };
+  const mine = s.players.filter((p) => p.ft === s.me);
+  const theirs = s.players.filter((p) => p.ft === partner);
+  const pg = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const vv = (p) => effAvg0(p, K) * (p.p === "G" ? p.prob : 1);
+  const gl = (p) => [...(SCHED[p.t] || [])].filter((d) => d >= today && avail(p, d) > 0).length;
+  const cnt = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
+  const tv = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.ft !== "fa" || p.proj !== false || p.gp > 0) o[p.id] = rosRaw(p, K); }); return o; }, [s.players, K, window.__PMODE]);
+  const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0 && !goalieOut(p)).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60), [tv]);
+  const rep = useMemo(() => { const o = {}; ["F", "D", "G"].forEach((k) => { const l = s.players.filter((p) => p.ft === "fa" && p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map(vv).sort((a, b) => b - a).slice(0, 5); o[k] = l.length ? l.reduce((a, b) => a + b, 0) / l.length : 0; }); return o; }, [s.players, K]);
+  const pe = (p) => Math.max(0, vv(p) - (rep[p.p] || 0)) * gl(p);
+  const Gv = mine.filter((p) => give.includes(p.id)), Rv = theirs.filter((p) => get.includes(p.id));
+  const extra = Math.max(0, Gv.length - Rv.length), need = Math.max(0, Rv.length - Gv.length);
+  const ready = Gv.length > 0 && Rv.length > 0;
+  const myAfter0 = mine.filter((p) => !give.includes(p.id)).concat(Rv.map((p) => ({ ...p, ft: s.me })));
+  // free agents for the spots you free: your choice, or the best one available
+  const picks = [];
+  for (let k = 0; k < extra; k++) {
+    if (pick[k] === "none") { picks.push(null); continue; }
+    let f = (pick[k] ? s.players.find((f) => f.ft === "fa" && f.id === pick[k]) : null) || null;
+    if (!f) {
+      const c = cnt(myAfter0.concat(picks.filter(Boolean))), short = ["F", "D", "G"].filter((x) => c[x] < mins[x]);
+      f = fas.find((x) => !picks.some((y) => y && y.id === x.id) && (!short.length || short.includes(x.p))) || null;
+    }
+    picks.push(f);
+  }
+  const drops = need ? myAfter0.filter((p) => !p.ir && !get.includes(p.id)).sort((a, b) => pg(a) - pg(b)).slice(0, need) : [];
+  const key = [partner, give.join(), get.join(), picks.map((f) => (f ? f.id : "-")).join(), drops.map((p) => p.id).join()].join("|");
+  const res = useMemo(() => {
+    if (!ready) return null;
+    const dropIds = new Set(drops.map((p) => p.id)), got = picks.filter(Boolean).map((f) => ({ ...f, ft: s.me }));
+    const after = myAfter0.filter((p) => !dropIds.has(p.id)).concat(got);
+    const thAfter = theirs.filter((p) => !get.includes(p.id)).concat(Gv.map((p) => ({ ...p, ft: partner })));
+    const my = horizonTotal(after, s, nR) - horizonTotal(mine, s, nR), th = horizonTotal(thAfter, s, nR) - horizonTotal(theirs, s, nR);
+    const G = new Set(give), T = new Set(get), A = new Set(got.map((f) => f.id));
+    const players = s.players.map((p) => (G.has(p.id) ? { ...p, ft: partner } : T.has(p.id) || A.has(p.id) ? { ...p, ft: s.me } : dropIds.has(p.id) ? { ...p, ft: "fa" } : p));
+    const pos = (t) => ({ o: t.rows.findIndex((x) => x.t.id === s.me) + 1, ...(t.grpRank[s.me] || {}) });
+    const keep = __LT, t2 = leagueTable({ ...s, players });
+    __LT = keep;
+    const rb = pos(leagueTable(s)), ra = pos(t2);
+    const sN = nextWkS(s), hasOpp = sN && oppOf(sN.weeks[sN.wk] || {}, s.me);
+    const wb = hasOpp ? winChance(sN) : null, wa = hasOpp ? winChance(sN, after) : null;
+    const c = cnt(after);
+    return { my, th, rb, ra, wb, wa, short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
+  }, [key, s.players, s.wk, K, window.__PMODE]);
+  const sum = (l, f) => l.reduce((a, p) => a + f(p), 0);
+  const peG = sum(Gv, pe), peR = sum(Rv, pe), theyThink = peR > 0 ? (peG - peR) / peR : 0;
+  const toggle = (sel, set, id) => { set(sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]); setPick({}); setEdit(-1); };
+  const vd = !res ? null : res.my <= 0 ? ["Bad for you", "var(--bad)", "Your lineup gets worse."]
+    : theyThink >= -0.05 ? ["Good trade", "var(--good)", "You gain, and it should look fair to them."]
+    : ["Good for you, hard to sell", "var(--warn)", "You gain, but they would see it as a loss. Expect a counter-offer."];
+  const GN = { F: "forwards", D: "defence", G: "goalies" };
+  const grp = res ? ["F", "D", "G"].map((k) => [k, (res.rb[k] || 0) - (res.ra[k] || 0)]).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0] : null;
+  const arrow = (b, a, fmt, up) => <><span>{fmt(b)}</span><span className="text-slate-500" style={{ fontSize: 14, margin: "0 6px" }}>{"\u2192"}</span><span style={{ color: up > 0 ? "var(--good)" : up < 0 ? "var(--bad)" : "var(--ink)" }}>{fmt(a)}</span></>;
+  const offerRow = (p, i, onX, note) => (
+    <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+      <TeamLogo t={p.t} size={22} />
+      <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" />{note ? <span className="text-xs text-slate-500" style={{ marginLeft: 6 }}>{note}</span> : null}</span>
+      <span className="text-slate-500" style={{ fontVariantNumeric: "tabular-nums" }}>{f1(pg(p))}</span>
+      <button type="button" aria-label={"Remove " + p.n} className="text-slate-500" style={{ padding: "0 4px", fontSize: 16 }} onClick={onX}>{"\u00d7"}</button>
+    </div>
+  );
+  const rosterRows = (list, sel, set, mySide) => [...list].sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || order[a.p] - order[b.p] || pg(b) - pg(a)).map((p) => {
+    const on = sel.includes(p.id), fl = tbFlags(p, K).find((f) => (mySide ? f.sell : !f.sell));
+    return (
+      <div key={p.id} role="button" className="gx-row" style={{ cursor: "pointer", padding: "8px 6px", background: on ? "var(--card3)" : "transparent", opacity: p.ir ? 0.5 : 1 }} onClick={() => toggle(sel, set, p.id)}>
+        <TeamLogo t={p.t} size={22} />
+        <span className="min-w-0 truncate" style={{ flex: 1 }}>
+          <span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span> <span className="text-xs text-slate-500">{p.p + (p.ir ? " \u00b7 IR" : "")}</span>
+          {fl ? <span className="text-xs" style={{ marginLeft: 6, color: mySide ? "var(--warn)" : "var(--good)" }}>{mySide ? "sell high" : "buy low"}</span> : null}
+        </span>
+        <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(pg(p))}</span>
+      </div>
+    );
+  });
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-slate-500 whitespace-nowrap">Trade with</span>
+        <select className={inp + " flex-1"} value={partner} onChange={(e) => { setPartner(e.target.value); setGet([]); setPick({}); setEdit(-1); }}>{others.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
+        {give.length || get.length ? <button className="text-xs text-slate-500 underline whitespace-nowrap" onClick={() => { setGive([]); setGet([]); setPick({}); setEdit(-1); }}>Clear</button> : null}
+      </div>
+      <div className="tb-grid">
+        <div className="gx-pn" style={{ minWidth: 0 }}><b></b><b></b><b></b><b></b>
+          <div className="gx-tag" style={{ marginBottom: 4 }}>You give</div>
+          {Gv.length ? Gv.map((p, i) => offerRow(p, i, () => toggle(give, setGive, p.id))) : <div className="text-sm text-slate-500">Tap your players below</div>}
+        </div>
+        <div className="gx-pn" style={{ minWidth: 0 }}><b></b><b></b><b></b><b></b>
+          <div className="gx-tag" style={{ marginBottom: 4 }}>You get</div>
+          {Rv.length ? Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id))) : <div className="text-sm text-slate-500">Tap their players below</div>}
+          {picks.map((f, k) => (f ? offerRow(f, 1, () => { setPick((x) => ({ ...x, [k]: "none" })); setEdit(-1); },
+            <>free agent <button type="button" className="text-blue-600" style={{ marginLeft: 6 }} onClick={(e) => { e.stopPropagation(); setEdit(edit === k ? -1 : k); }}>change</button></>)
+            : ready ? <button key={"add" + k} type="button" className="text-xs text-blue-600" style={{ marginTop: 8 }} onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>Add a free agent to the open spot</button> : null))}
+          {edit >= 0 && edit < extra ? <FaSearch s={s} top={fas} taken={new Set(picks.filter(Boolean).map((x) => x.id))} val={pg} onPick={(id) => { setPick((x) => ({ ...x, [edit]: id })); setEdit(-1); }} /> : null}
+        </div>
+      </div>
+      {res && vd ? (
+        <div className="gx-pn"><b></b><b></b><b></b><b></b>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+            <span className="font-semibold" style={{ color: vd[1] }}>{vd[0]}</span>
+            <span className="text-sm text-slate-500">{vd[2]}</span>
+          </div>
+          <div className="gx-stg">
+            <div className="gx-stc"><div className="text-xs text-slate-500">Your lineup</div><div className="gx-stv" style={{ color: res.my >= 0 ? "var(--good)" : "var(--bad)" }}>{(res.my >= 0 ? "+" : "") + Math.round(res.my)}</div><div className="text-xs text-slate-500">points, rest of season</div></div>
+            <div className="gx-stc"><div className="text-xs text-slate-500">Their lineup</div><div className="gx-stv" style={{ color: res.th >= 0 ? "var(--good)" : "var(--bad)" }}>{(res.th >= 0 ? "+" : "") + Math.round(res.th)}</div><div className="text-xs text-slate-500">points, rest of season</div></div>
+            <div className="gx-stc"><div className="text-xs text-slate-500">Your league rank</div><div className="gx-stv">{arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)}</div><div className="text-xs text-slate-500">{grp && grp[1] ? GN[grp[0]] + " " + ordN(res.rb[grp[0]]) + " \u2192 " + ordN(res.ra[grp[0]]) : "position ranks unchanged"}</div></div>
+            {res.wb != null && res.wa != null ? <div className="gx-stc"><div className="text-xs text-slate-500">Next week</div><div className="gx-stv">{arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
+          </div>
+          {res.short.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--bad)" }}>This leaves you short at {res.short.map((k) => GN[k]).join(" and ")}.</div> : null}
+          {drops.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--warn)" }}>You would be over 22 players, so this counts {drops.map((p) => p.n).join(" and ")} as dropped.</div> : null}
+        </div>
+      ) : <div className="text-sm text-slate-500">Pick at least one player on each side to see the result.</div>}
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
+          <span className="gx-tag">Rosters</span>
+          <span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span>
+        </div>
+        <div className="tb-grid">
+          <div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, s.me)}</div>{rosterRows(mine, give, setGive, true)}</div>
+          <div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>{rosterRows(theirs, get, setGet, false)}</div>
+        </div>
+      </div>
+      <TradeAdvice s={s} onPick={(p) => { setPartner(p.ft); setGet(p.ft === partner ? [...get.filter((x) => x !== p.id), p.id] : [p.id]); setPick({}); setEdit(-1); window.scrollTo(0, 0); }} />
+    </div>
+  );
+}
+
+'''
+
+R42_TRADE = ("function TradeBuilder({ s, initPartner }) {\n"
+             "  // trades v42: offer, result and rosters in the new style (news_logos.py)\n"
+             "  // older done markers kept so earlier rounds stay finished:\n"
+             + "".join("  // " + m42 + "\n" for m42 in R42_KEEP) + R42_BODY)
+
+R42_ADV_OLD = r'''<Section title="Trade advice" sub={"Your ranks: forwards #" + (g.F || "-") + ", defence #" + (g.D || "-") + ", goalies #" + (g.G || "-") + " of " + T.rows.length + "."}>'''
+R42_ADV_NEW = r'''<Section title="Buy low" sub="Good players on other teams who are cold, unlucky or underrated.">'''
+R42_PARA_PAT = (re.escape('<div>{weak !== strong && g[weak] > g[strong] ?') + r".*?"
+                + re.escape('Sell high: {sell.map((p) => p.n).join(", ")}.</div> : null}'))
+
+
+def round42(t):
+    t = lit(t, "trades 2: styles", "</style>", R42_CSS + "</style>", "round 42 trades")
+    t = block(t, "trades 2: new trade page", "function TradeBuilder({ s, initPartner }) {",
+              "// ---------- round 14: My Team injuries + protected players", R42_TRADE, "trades v42")
+    t = lit(t, "trades 2: buy-low box title", R42_ADV_OLD, R42_ADV_NEW, '<Section title="Buy low"')
+    t = sub_once(t, "trades 2: rank paragraph removed", R42_PARA_PAT, "{/* round 42: rank paragraph removed */}", "round 42: rank paragraph removed", re.S)
+    t = lit(t, "trades 2: buy-low list heading", '<div className="flex flex-wrap items-center gap-2 mt-4 mb-1">',
+            '<div className="flex flex-wrap items-center gap-2 mb-1" data-r42="bl">', 'data-r42="bl"')
+    for must in R42_KEEP + ["trades v42", "function TradeBuilder(", "function TradeAdvice(", "function FaSearch(", "function TradeRanks(", "<TradeAdvice s={s}", "<FaSearch s={s}",
+                            'f.ft === "fa" && f.id === pick[k]', "tv[p.id] > 0 && !goalieOut(p)", "function MyInjProt("]:
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 42 (" + must + ").")
+    return t
+
+
+_fix_before_r42 = fix
+
+
+def fix(t):
+    return round42(_fix_before_r42(t))
+
 if __name__ == "__main__":
     main()
