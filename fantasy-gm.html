@@ -239,6 +239,10 @@
   .gx-stg { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--line); margin-top: 12px; }
   .gx-stc { background: var(--bg); padding: 10px 12px; min-width: 0; font-variant-numeric: tabular-nums; }
   .gx-stv { font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+  /* round 43 advice and goalies (news_logos.py) */
+  .gx-gl { display: grid; grid-template-columns: 26px minmax(0,1fr) 104px 44px 60px; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-gl .n { text-align: right; }
+  @media (max-width: 640px) { .gx-gl { grid-template-columns: 24px minmax(0,1fr) 92px 52px; gap: 6px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -3135,8 +3139,8 @@ function TeamPage({ s, wk, id, back, go }) {
   );
 }
 
-function AdviceAll({ s }) {
-  return <div className="space-y-4"><AdvicePanel s={s} /><EdgesPanel s={s} /></div>;
+function AdviceAll(props) {
+  return <AdvicePage {...props} />;
 }
 function PlannerAll(props) {
   return <PlanPage {...props} />;
@@ -3329,70 +3333,102 @@ function espnLineupChecks(mine, L, wk, di, dday, today) {
 const startTag = (gs) => ((gs.l || "").includes("confirmed") && !(gs.l || "").includes("un") ? ["Confirmed", "bg-green-100 text-green-700"]
   : gs.v >= 0.85 ? ["Likely starter", "bg-amber-100 text-amber-800"] : [Math.round(gs.v * 100) + "% to start", "bg-slate-200 text-slate-600"]);
 function GoalieStreams({ s, wk }) {
-  // goalie streams v20: every game's Daily Faceoff starters, then the best free agents (news_logos.py)
+  // goalies v43: day buttons, your goalies, free agents starting, every starter (news_logos.py)
+  // older done markers kept so earlier rounds stay finished:
+  // goalie streams v20
+  // gScore(gm.home.t, dt)
+  // avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p)
+  // .slice(0, noMovesWk(s, wk) ? 0 : 3)
+  // noMovesWk(s, wk) ? null : head("Free agents to stream")
+  // (noMovesWk(s, wk) ? null : <div
+  // so no free-agent streams are shown
   const K = s.blend, today = todayISO(), dates = wk.dates || [];
-  const base = useMemo(() => winChance(s), [s]);
-  const st = strategy(base);
-  const byName = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.p === "G") o[nrm(p.n)] = p; }); return o; }, [s.players]);
-  const raw = (window.ESPN_DATA || {}).goalies || s.goalies || {};
-  const GD = (window.GAMES_DATA || {}).games || {};
-  const tagOf = (status) => { const x = (status || "").toLowerCase(); return x.includes("confirm") && !x.includes("un") ? ["Confirmed", "bg-green-100 text-green-700"] : /likely|expected|project/.test(x) ? ["Likely", "bg-amber-100 text-amber-800"] : ["Unconfirmed", "bg-slate-200 text-slate-600"]; };
-  const starters = (dt) => {
-    const day = raw[dt] || {}, g = GD[dt] || {};
-    const side = (t) => { const e = Object.entries(day).find(([, x]) => x && x.team === t); return { t, name: e ? e[0] : null, status: e ? e[1].status : "", p: e ? byName[nrm(e[0])] || null : null, o: oddsFor(t, dt) }; };
-    return Object.entries(g).filter(([, v]) => v.h === 1).map(([home, v]) => ({ away: side(v.o), home: side(home), st: v.st, dt }))
-      .sort((a, b) => String(a.st || "").localeCompare(String(b.st || "")));
+  const first = dates.findIndex((x) => x >= today);
+  const [day, setDay] = useState(null);
+  const [all, setAll] = useState(false);
+  const d = Math.max(0, Math.min(dates.length - 1, day != null ? day : first >= 0 ? first : dates.length - 1));
+  const dt = dates[d];
+  const noMv = noMovesWk(s, wk);
+  const mineG = s.players.filter((p) => p.ft === s.me && p.p === "G" && !p.ir);
+  const plays = (p, i) => (wk.games[p.t] || []).includes(i);
+  const stat = (p, x) => {
+    const g = gStart(p, x), l = (g.l || "").toLowerCase();
+    if (l.includes("confirmed") && !l.includes("un")) return ["Confirmed", "var(--good)", false];
+    if (l === "not starting" || l.indexOf("backup") === 0 || l.includes("rests") || g.v < 0.35) return [l.includes("rests") ? "Likely sitting" : "Backup", "var(--mute)", true];
+    if (l.includes("likely") || g.v >= 0.8) return ["Likely", "var(--warn)", false];
+    return ["Not confirmed", "var(--warn)", false];
   };
-  const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, games: starters(dt), list: s.players
-    .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p))
-    .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
-    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, noMovesWk(s, wk) ? 0 : 3) }));
-  const own = (p) => (!p ? null : p.ft === s.me ? <span className="text-blue-600 font-semibold">yours</span> : p.ft === "fa" ? <span className="text-green-700 font-semibold">FA</span> : <span>{teamName(s, p.ft)}</span>);
-  const Gl = ({ x, right }) => {
-    const tg = x.name ? tagOf(x.status) : null;
-    const bits = [own(x.p), x.o ? "W " + Math.round(x.o.win * 100) + "%" : null].filter(Boolean);
+  const gameTxt = (p, x) => { const gm = gameOf(p.t, x); return gm ? (gm.h ? "vs " : "@ ") + gm.o + " \u00b7 " + gameTime(gm) : ""; };
+  const mineOn = mineG.filter((p) => plays(p, d)), mineOff = mineG.filter((p) => !plays(p, d));
+  const fas = !dt || noMv ? [] : s.players
+    .filter((p) => p.ft === "fa" && p.p === "G" && plays(p, d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p))
+    .map((p) => { const gs = gStart(p, dt); return { p, gs, v: effAvg(p, K, dt) * gs.v }; })
+    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 4);
+  const raw = (window.ESPN_DATA || {}).goalies || s.goalies || {}, GD = (window.GAMES_DATA || {}).games || {};
+  const games = !dt ? [] : Object.entries(GD[dt] || {}).filter(([, v]) => v.h === 1).map(([home, v]) => {
+    const side = (t) => { const e = Object.entries(raw[dt] || {}).find(([, x]) => x && x.team === t); return { t, name: e ? e[0] : null, status: e ? String(e[1].status || "").toLowerCase() : "" }; };
+    return { away: side(v.o), home: side(home), st: v.st };
+  }).sort((a, b) => String(a.st || "").localeCompare(String(b.st || "")));
+  const word = (x) => (!x.name ? "not announced" : x.status.includes("confirm") && !x.status.includes("un") ? "confirmed" : /likely|expected|project/.test(x.status) ? "likely" : "not confirmed");
+  const head = (title) => (
+    <div className="gx-gl text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}>
+      <span></span><span className="gx-tag">{title}</span><span className="n">Starting</span><span className="n m-hide">Win</span><span className="n">Expected</span>
+    </div>
+  );
+  const line = (p, note) => {
+    const live = gState(p.t, dt).s, o = oddsFor(p.t, dt), stt = stat(p, dt);
+    const AD = actDay(s.me, dt), v = AD ? AD[String(p.id).slice(1)] : null, pts = live !== "P" && p.ft === s.me && v && v[0] != null ? v[0] : null;
     return (
-      <div className={"flex items-center gap-2 min-w-0 flex-1" + (right ? " flex-row-reverse text-right" : "")}>
-        <TeamLogo t={x.t} size={28} />
-        <div className="min-w-0">
-          <div className={"flex flex-wrap items-center gap-x-2 gap-y-0.5" + (right ? " justify-end" : "")}>
-            {x.name ? (x.p ? <PN p={x.p} className="truncate font-medium" /> : <span className="font-medium truncate">{x.name}</span>) : <span className="text-slate-400">Not announced</span>}
-            {tg ? <span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span> : null}
-          </div>
-          {bits.length ? <div className="text-xs text-slate-500">{bits.map((b, i) => <span key={i}>{i ? " · " : ""}{b}</span>)}</div> : null}
-        </div>
+      <div key={p.id} className="gx-gl">
+        <TeamLogo t={p.t} size={24} />
+        <div className="min-w-0"><div className="truncate"><PN p={p} className="" /></div><div className="text-xs text-slate-500 truncate">{[gameTxt(p, dt), note].filter(Boolean).join(" \u00b7 ")}</div></div>
+        <span className="n text-sm" style={{ color: live !== "P" ? "var(--mute)" : stt[1] }}>{live === "F" ? "Final" : live === "L" ? "Live" : stt[0]}</span>
+        <span className="n m-hide">{o ? Math.round(o.win * 100) + "%" : "\u2013"}</span>
+        <span className="n" style={pts != null ? { fontWeight: 600, color: pts > 5 ? "var(--good)" : pts < 0 ? "var(--bad)" : "var(--ink)" } : null}>{pts != null ? f1(pts) : live === "P" && stt[2] ? "\u2013" : f1(effAvg(p, K, dt))}</span>
       </div>
     );
   };
-  const head = (t) => <div className="text-xs uppercase tracking-wide text-slate-500 mt-3 mb-1">{t}</div>;
   return (
-    <Section title="Goalie streams" sub="Every game's starting goalies from Daily Faceoff, then the best free-agent goalies for each day left this week. Win chance from betting odds.">
-      {noMovesWk(s, wk) ? <div className="text-sm text-amber-600 mb-2">No moves left this week, so no free-agent streams are shown. Next week's best pickups, goalies included, are on Advice, and the Planner builds the full plan.</div> : st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
-      {days.length ? days.map(({ dt, games, list }) => (
-        <div key={dt} className="mt-5">
-          <div className="font-semibold">{dt === today ? "Today" : dayLabel(dt)}</div>
-          {head("Starting goalies (Daily Faceoff)")}
-          {games.length ? games.map((gm, i) => { const gs = gState(gm.home.t, dt); return (
-            <div key={i} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
-              <Gl x={gm.away} />
-              <div className="text-xs text-slate-500 text-center whitespace-nowrap" style={{ minWidth: 60 }}>{gs.s !== "P" ? <><LiveTag st={gs.s} />{(() => { const sc = gScore(gm.home.t, dt); return sc && sc.my != null ? <div className="text-sm font-semibold text-slate-700 mt-0.5">{sc.op} – {sc.my}{sc.s === "L" && sc.per ? <div className="text-xs text-slate-500 font-normal">{sc.int ? sc.per + " int." : sc.per + " " + (sc.clk || "")}</div> : null}</div> : null; })()}</> : gameTime({ st: gm.st })}<div className="text-slate-400">@</div></div>
-              <Gl x={gm.home} right />
-            </div>
-          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No game times loaded for this day.</div>}
-          {noMovesWk(s, wk) ? null : head("Free agents to stream")}
-          {list.length ? list.map(({ p, gs, o, g, v }) => { const tg = startTag(gs), dr = dropFor(s, p); return (
-            <div key={p.id} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
-              <TeamLogo t={p.t} size={30} />
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2"><PN p={p} /><span className={"text-xs px-1.5 py-0.5 rounded " + tg[1]}>{tg[0]}</span></div>
-                <div className="text-xs text-slate-500 mt-0.5">{[g ? (g.h ? "vs " : "@") + g.o + " · " + gameTime(g) : null, o ? "W " + Math.round(o.win * 100) + "%" : null, dr ? "drop " + dr.n : null].filter(Boolean).join(" · ")}</div>
-              </div>
-              <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} base={base} /> : null}</div>
-            </div>
-          ); }) : (noMovesWk(s, wk) ? null : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>)}
+    <div className="space-y-3">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(" + Math.max(1, dates.length) + ", minmax(0,1fr))", gap: 6 }}>
+        {dates.map((x, i) => {
+          const n = mineG.filter((p) => plays(p, i) && avail(p, x) > 0 && gStart(p, x).v >= 0.5).length;
+          return (
+            <button key={x} type="button" onClick={() => { setDay(i); setAll(false); }} className={"gx-day" + (i === d ? " on" : "")}>
+              <span className={"block text-xs " + (i === d ? "font-semibold" : "text-slate-500")}>{x === today ? "Today" : dayLabel(x).split(",")[0]}</span>
+              <span className="block text-xs text-slate-500">{n ? n + " start" + (n === 1 ? "" : "s") : "\u2013"}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        {head("Your goalies")}
+        {mineOn.length ? mineOn.map((p) => line(p, "")) : <div className="text-sm text-slate-500" style={{ padding: "8px 0" }}>None of your goalies has a game on this day.</div>}
+        {mineOn.length && mineOff.length ? <div className="text-xs text-slate-500" style={{ paddingTop: 8, borderTop: "1px solid var(--line)" }}>{mineOff.map((p) => p.n).join(" and ") + (mineOff.length === 1 ? " has" : " have") + " no game."}</div> : null}
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        {head("Free agents starting")}
+        {noMv ? <div className="text-sm text-slate-500" style={{ padding: "8px 0" }}>No moves left this week, so pickups are hidden.</div>
+          : fas.length ? fas.map(({ p }) => { const dr = dropFor(s, p); return line(p, dr ? "swap for " + dr.n : ""); })
+          : <div className="text-sm text-slate-500" style={{ padding: "8px 0" }}>{dt && dt < today ? "This day has passed." : "No free-agent goalie is likely to start this day."}</div>}
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div role="button" className="flex items-center" style={{ cursor: "pointer" }} onClick={() => setAll(!all)}>
+          <span style={{ flex: 1 }}>Every starter {dt === today ? "today" : dt ? "on " + dayLabel(dt).split(",")[0] : ""}</span>
+          <span className="text-slate-500 text-sm">{games.length} game{games.length === 1 ? "" : "s"}</span>
+          <span className={"sec-chev" + (all ? "" : " shut")} style={{ margin: "0 4px 2px 10px" }}></span>
         </div>
-      )) : <div className="text-slate-400">No days left this week.</div>}
-    </Section>
+        {all ? (games.length ? games.map((gm, i) => (
+          <div key={i} className="gx-row" style={{ marginTop: i ? 0 : 8 }}>
+            <TeamLogo t={gm.away.t} size={22} />
+            <div className="min-w-0" style={{ flex: 1 }}><div className="truncate">{gm.away.name || gm.away.t}</div><div className="text-xs text-slate-500">{word(gm.away)}</div></div>
+            <span className="text-xs text-slate-500 whitespace-nowrap">{gameTime({ st: gm.st })}</span>
+            <div className="min-w-0 text-right" style={{ flex: 1 }}><div className="truncate">{gm.home.name || gm.home.t}</div><div className="text-xs text-slate-500">{word(gm.home)}</div></div>
+            <TeamLogo t={gm.home.t} size={22} />
+          </div>
+        )) : <div className="text-sm text-slate-500" style={{ paddingTop: 8 }}>No game times loaded for this day.</div>) : null}
+      </div>
+    </div>
   );
 }
 
@@ -4642,6 +4678,82 @@ function PlanPage({ s, setS, wk }) {
           {waste.chronic.length ? "Most often stuck: " + waste.chronic.map((c) => c.p.n + " (" + c.g + " games)").join(", ") + ". " : ""}Tap a week to see who sits and the swap that fixes it.
         </div>
       </div>
+    </div>
+  );
+}
+
+// ---------- round 43: Advice page, four plain lists (news_logos.py) ----------
+function AdvicePage({ s, setS, wk }) {
+  const K = s.blend;
+  const [sim, setSim] = useState(null);
+  const sP = useMemo(() => planS(s), [s]);
+  const wkP = useMemo(() => (sP !== s ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk), [sP, wk]);
+  const M = useMemo(() => (sim ? computeMoves(sP, { H: 1, pool: 40 }) : null), [sP, !!sim]);
+  const base = useMemo(() => (sim ? planBase(s, sP) : null), [sP, !!sim]);
+  const L = useMemo(() => {
+    const mb = (p) => { const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null; return window.__MODEL && id ? (window.__MODEL.base || {})[id] : null; };
+    const UP = { F1: "line 1", F2: "line 2", D1: "the top pair", D2: "the second pair" };
+    const rise = (p) => {
+      const g = sigOf(p), fr = formRatio(p, K), t = g.toi;
+      if (g.lines && g.lines.chg === "up") return "Moved up to " + (UP[g.lines.grp] || "a bigger role");
+      if (g.ppChg === "added") return "New on the top power play";
+      if (t && t.d >= 90) return "More ice time: " + (t.d / 60).toFixed(1) + " more minutes a game";
+      if (fr !== null && fr >= 1.25) return "Hot: " + f1(g.rec.ppg) + " a game over two weeks";
+      if ((p.chg || 0) >= 5) return "Being picked up fast: +" + f1(p.chg) + "% of leagues";
+      return "";
+    };
+    const under = (p) => {
+      const m = mb(p), l = sigOf(p).luck;
+      if (m != null && p.proj && p.avg > 0 && m - p.avg >= 1 && m / p.avg >= 1.15) return "Your model rates him " + f1(m - p.avg) + " above ESPN";
+      if (l && l.t === "s" && l.d <= -2) return "Unlucky: " + l.g + " goal" + (l.g === 1 ? "" : "s") + " on " + l.sh + " shots";
+      if (l && l.t === "g" && l.d <= -4) return "Unlucky: stopping fewer shots than he usually does";
+      return "";
+    };
+    const sell = (p) => {
+      const m = mb(p), l = sigOf(p).luck, fr = formRatio(p, K);
+      if (m != null && p.proj && p.avg > 0 && p.avg - m >= 1 && m / p.avg <= 0.85) return "ESPN rates him higher than your model";
+      if (l && l.t === "s" && l.d >= 2) return "Lucky: " + l.g + " goals on " + l.sh + " shots";
+      if (l && l.t === "g" && l.d >= 4) return "Lucky: stopping more shots than he usually does";
+      if (fr !== null && fr >= 1.3) return "Hot: " + f1(sigOf(p).rec.ppg) + " a game over two weeks";
+      return "";
+    };
+    const watch = (p) => {
+      const g = sigOf(p), fr = formRatio(p, K), t = g.toi;
+      if (g.lines && g.lines.chg === "down") return "Moved down the lineup";
+      if (g.ppChg === "removed") return "Off the top power play";
+      if (t && t.d <= -90) return "Losing ice time: " + (Math.abs(t.d) / 60).toFixed(1) + " minutes less a game";
+      if (fr !== null && fr <= 0.7) return "Cold: " + f1(g.rec.ppg) + " a game over two weeks";
+      return "";
+    };
+    const pickL = (list, fn) => list.map((p) => ({ p, why: fn(p) })).filter((x) => x.why).sort((a, b) => effAvg(b.p, K) - effAvg(a.p, K)).slice(0, 6);
+    const fa = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && !goalieOut(p)), mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+    return { rise: pickL(fa, rise), under: pickL(fa, under), sell: pickL(mine, sell), watch: pickL(mine, watch) };
+  }, [s.players, K, window.__PMODE, (window.ESPN_DATA || {}).generated]);
+  const open = (p) => { const dr = dropFor(s, p); setSim({ add: p.id, drop: dr ? dr.id : "" }); };
+  const list = (title, rows, fa, bad, empty) => (
+    <GxPanel title={title}>
+      {rows.length ? rows.map((x, i) => (
+        <div key={x.p.id} className="gx-row" role={fa ? "button" : undefined} style={{ borderTop: i ? undefined : 0, cursor: fa ? "pointer" : "default" }} onClick={fa ? () => open(x.p) : undefined}>
+          <TeamLogo t={x.p.t} size={22} />
+          <div className="min-w-0" style={{ flex: 1 }}>
+            <div className="truncate">{fa ? x.p.n : <PN p={x.p} className="" />} <span className="text-xs text-slate-500">{x.p.p}</span></div>
+            <div className="text-xs truncate" style={{ color: bad ? "var(--bad)" : "var(--mute)" }}>{x.why}</div>
+          </div>
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(x.p, K))}</span>
+        </div>
+      )) : <div className="text-sm text-slate-500">{empty}</div>}
+    </GxPanel>
+  );
+  return (
+    <div className="space-y-3">
+      <div className="grid md:grid-cols-2 gap-3">
+        {list("Free agents on the rise", L.rise, true, false, "No free agent is clearly on the way up right now.")}
+        {list("Better than they look", L.under, true, false, "Nobody stands out as underrated right now.")}
+        {list("Your players to sell high", L.sell, false, false, "None of your players is at a peak right now.")}
+        {list("Your players to watch", L.watch, false, true, "None of your players is slipping right now.")}
+      </div>
+      <div className="text-xs text-slate-500">The number is expected points a game. Tap a free agent to try the swap.</div>
+      {sim && M ? <MoveSim s={sP} setS={setS} wk={wkP} M={M} H={1} hLabel={sP !== s ? "next week" : "rest of this week"} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
     </div>
   );
 }
