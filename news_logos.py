@@ -5559,5 +5559,233 @@ def fix_lines40(t):
 
 JS_FIXES[LINES] = fix_lines40
 
+# ---------- round 41: Plan page, "est." label, box scores matched on position so same-name teammates stay separate ----------
+R41_CSS = r'''  /* round 41 plan (news_logos.py) */
+  .gx-ps { display: grid; grid-template-columns: 54px minmax(0,1fr) 60px 92px; gap: 10px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-dayc { font-size: 12px; border: 1px solid var(--line2); border-radius: 6px; padding: 3px 0; text-align: center; }
+  .gx-wk { display: grid; grid-template-columns: minmax(0,1fr) 110px 96px; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-ps .n, .gx-wk .n { text-align: right; }
+  @media (max-width: 640px) { .gx-ps { grid-template-columns: 44px minmax(0,1fr) 50px 74px; gap: 6px; } .gx-wk { grid-template-columns: minmax(0,1fr) 84px 64px; } }
+'''
+
+R41_HELPERS = r'''// ---------- round 41: Plan page (news_logos.py) ----------
+function PlanPage({ s, setS, wk }) {
+  const K = s.blend, today = todayISO();
+  const sP = useMemo(() => planS(s), [s]);
+  const plan = sP !== s;
+  const wkP = useMemo(() => (plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk), [sP, wk]);
+  const dates = wkP.dates || [], ti = dates.indexOf(today);
+  const d0 = Math.min(dates.length, Math.max(wkP.done || 0, ti >= 0 ? ti : 0) + (ti >= 0 && lockedToday() ? 1 : 0));
+  const ml = movesLeft(sP, sP.me, wkP), left = ml == null ? 3 : ml;
+  const [res, setRes] = useState(null);
+  const [busy, setBusy] = useState(true);
+  const [openW, setOpenW] = useState(-1);
+  useEffect(() => {
+    let dead = false;
+    setBusy(true);
+    const id = setTimeout(() => {
+      let r = null;
+      try {
+        if (left > 0 && d0 < dates.length) {
+          const p = buildPlan(sP, wkP, d0, left), b = planBase(s, sP);
+          r = { p, b, after: p.steps.map((_, i) => (b == null ? null : winChance(sP, planRoster(sP, wkP, p.steps.slice(0, i + 1))))) };
+        }
+      } catch (e) { r = null; }
+      if (!dead) { setRes(r); setBusy(false); }
+    }, 60);
+    return () => { dead = true; clearTimeout(id); };
+  }, [s.players, sP.wk, left, d0, window.__PMODE]);
+  const waste = useMemo(() => {
+    const mine = s.players.filter((p) => p.ft === s.me), chronic = {};
+    const weeks = s.weeks.slice(s.wk, s.wk + 4).map((w, i) => {
+      const dw = deriveWeek(w, s.autoDone), from = i === 0 ? dw.done || 0 : 0, sit = {};
+      let empty = 0, g = 0, pts = 0;
+      dw.days.forEach((dl, d) => {
+        if (d < from) return;
+        const L = dayLineup(mine, dw, d, K);
+        empty += L.empty;
+        L.bench.forEach((p) => {
+          const x = (sit[p.id] = sit[p.id] || { p, days: [] });
+          x.days.push(dl.split(",")[0]); g++; pts += p.x;
+          const c = (chronic[p.id] = chronic[p.id] || { p, g: 0 }); c.g++;
+        });
+      });
+      return { dw, from, sit: Object.values(sit), empty, g, pts };
+    });
+    return { weeks, chronic: Object.values(chronic).filter((c) => c.g >= 2).sort((a, b) => b.g - a.g).slice(0, 3), g: weeks.reduce((a, w) => a + w.g, 0), pts: weeks.reduce((a, w) => a + w.pts, 0) };
+  }, [s.players, s.wk, K, window.__PMODE]);
+  const fix = useMemo(() => {
+    const w = waste.weeks[openW];
+    if (!w || !w.sit.length || (openW === 0 && outOfMoves(s))) return null;
+    const mine = s.players.filter((p) => p.ft === s.me), mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
+    const healthy = mine.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+    const prot = new Set([...healthy.slice(0, s.protectTop ?? 8).map((p) => p.id), ...mine.filter((p) => p.keep).map((p) => p.id)]);
+    const cnt = { F: 0, D: 0, G: 0 }; healthy.forEach((p) => { cnt[p.p]++; });
+    const drops = w.sit.map((x) => x.p).filter((p) => !p.ir && !prot.has(p.id)).slice(0, 5);
+    const weekPts = (p) => (w.dw.games[p.t] || []).filter((d) => d >= w.from).reduce((t, d) => { const dt = w.dw.dates[d]; return t + effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt); }, 0);
+    const pool = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && !goalieOut(p)).map((p) => ({ p, v: weekPts(p) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 25).map((x) => x.p);
+    const base = weekProj(mine, w.dw, K, w.from).total;
+    let best = null;
+    drops.forEach((d) => pool.forEach((f) => {
+      if (d.p !== f.p && cnt[d.p] - 1 < mins[d.p]) return;
+      const g = weekProj(timedMove(mine, s.me, [{ add: f, drop: d }]), w.dw, K, w.from).total - base;
+      if (!best || g > best.g) best = { d, f, g };
+    }));
+    return best && best.g >= 1 ? best : null;
+  }, [openW, waste]);
+  const playDays = (p, a) => (wkP.games[p.t] || []).filter((d) => d >= a && (p.p !== "G" || gStart(p, dates[d]).v >= 0.5)).map((d) => wkP.days[d].split(",")[0]).join(", ");
+  const steps = res ? res.p.steps : [];
+  const lastWin = res && res.after.length ? res.after[res.after.length - 1] : null;
+  const wkName = (w) => { const ds = w.dw.dates || []; return ds.length ? mdL(ds[0]) + " to " + mdL(ds[ds.length - 1]) : w.dw.label; };
+  return (
+    <div className="space-y-3">
+      <div className="text-sm">
+        <span className="font-semibold">{plan ? "No moves left this week." : left === 0 ? "No moves left this week." : left + " move" + (left === 1 ? "" : "s") + " left this week."}</span>
+        {plan ? <span className="text-slate-500"> Planning {wkP.label || "next week"} with {left === 3 ? "all 3 moves" : left + " move" + (left === 1 ? "" : "s")}.</span> : null}
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline" }}>
+          <span className="gx-tag">Your plan</span>
+          {steps.length ? (
+            <span className="text-sm" style={{ marginLeft: "auto" }}>
+              <span className="font-semibold" style={{ color: "var(--good)" }}>{"+" + f1(res.p.gain) + " points"}</span>
+              {res.b != null && lastWin != null ? <span className="text-slate-500">{" \u00b7 win chance " + wpTxt(res.b) + " to " + wpTxt(lastWin)}</span> : null}
+            </span>
+          ) : null}
+        </div>
+        {busy ? <div className="text-sm text-slate-500" style={{ padding: "12px 0 2px" }}>Working it out...</div>
+          : steps.length ? steps.map((st, i) => {
+            const a = i ? res.after[i - 1] : res.b, b = res.after[i], dy = playDays(st.add, st.day);
+            return (
+              <div key={i} className="gx-ps" style={i ? null : { marginTop: 6 }}>
+                <span className="gx-dayc">{(wkP.days[st.day] || "").split(",")[0]}</span>
+                <div className="min-w-0">
+                  <div className="truncate"><PN p={st.add} className="" /> in, <PN p={st.drop} className="" /> out</div>
+                  <div className="text-xs text-slate-500 truncate">{(st.add.p === "G" ? "Likely starts " : "Plays ") + (dy || "\u2013")}{st.add.wv ? " \u00b7 on waivers" : ""}</div>
+                </div>
+                <span className="n font-semibold" style={{ color: "var(--good)" }}>{"+" + f1(st.gain)}</span>
+                <span className="n text-slate-500">{a != null && b != null ? wpTxt(a).replace("%", "") + " \u2192 " + wpTxt(b) : ""}</span>
+              </div>
+            );
+          }) : <div className="text-sm text-slate-500" style={{ padding: "12px 0 2px" }}>{left === 0 ? "Nothing to plan until your moves reset." : "No move adds " + (s.minGain ?? 3) + " or more points. Save your moves."}</div>}
+        {!busy && steps.length ? <div className="text-xs text-slate-500" style={{ paddingTop: 10, borderTop: "1px solid var(--line)" }}>Make each move before that day's first game. The plan updates itself as injuries and starting goalies change.</div> : null}
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline" }}>
+          <span className="gx-tag">Games going to waste</span>
+          <span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>{"Next 4 weeks \u00b7 " + waste.g + " game" + (waste.g === 1 ? "" : "s") + (waste.g ? ", about " + Math.round(waste.pts) + " points" : "")}</span>
+        </div>
+        <div className="gx-wk text-xs text-slate-500" style={{ borderTop: 0, marginTop: 6, paddingBottom: 4 }}><span></span><span className="n">Stuck on bench</span><span className="n">Empty slots</span></div>
+        {waste.weeks.map((w, i) => (
+          <div key={i}>
+            <div className="gx-wk" role="button" style={{ cursor: "pointer" }} onClick={() => setOpenW(openW === i ? -1 : i)}>
+              <span>{wkName(w)}</span>
+              <span className="n" style={{ color: w.g ? "var(--bad)" : "var(--mute)" }}>{w.g ? w.g + " game" + (w.g === 1 ? "" : "s") : "0"}</span>
+              <span className="n text-slate-500">{w.empty}</span>
+            </div>
+            {openW === i ? (
+              <div className="text-xs text-slate-500" style={{ padding: "0 0 10px" }}>
+                {w.sit.length ? <div>Sitting: {w.sit.map((x) => x.p.n + " (" + x.days.join(", ") + ")").join("; ")}</div> : <div>Nobody is stuck on your bench this week.</div>}
+                {w.sit.length ? (fix ? <div style={{ marginTop: 4, color: "var(--ink)" }}>Swap that fixes it: <PN p={fix.f} className="font-semibold" /> in, <PN p={fix.d} className="font-semibold" /> out <span style={{ color: "var(--good)" }}>{"+" + f1(fix.g)}</span></div>
+                  : <div style={{ marginTop: 4 }}>{i === 0 && outOfMoves(s) ? "No moves left this week to fix it." : "No free agent helps more than keeping who you have."}</div>) : null}
+              </div>
+            ) : null}
+          </div>
+        ))}
+        <div className="text-xs text-slate-500" style={{ paddingTop: 10, borderTop: "1px solid var(--line)" }}>
+          {waste.chronic.length ? "Most often stuck: " + waste.chronic.map((c) => c.p.n + " (" + c.g + " games)").join(", ") + ". " : ""}Tap a week to see who sits and the swap that fixes it.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+'''
+
+
+def round41(t):
+    t = lit(t, "plan: styles", "</style>", R41_CSS + "</style>", "round 41 plan")
+    t = lit(t, "plan: new page", 'return <div className="space-y-4"><AcqPlanner {...props} /><BenchFixer {...props} /></div>;',
+            "return <PlanPage {...props} />;", "<PlanPage {...props} />")
+    t = lit(t, "plan: helpers", ROOT, R41_HELPERS + ROOT, "function PlanPage(")
+    for must in ("function PlanPage(", "function buildPlan(", "const planRoster =", "function PlannerAll(", "function AcqPlanner(", "const goalieOut ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 41 (" + must + ").")
+    return t
+
+
+_fix_before_r41 = fix
+
+
+def fix(t):
+    return round41(_fix_before_r41(t))
+
+
+_fix_lines_before_r41 = JS_FIXES[LINES]
+
+
+def fix_lines41(t):
+    t = _fix_lines_before_r41(t)
+    t = lit(t, "lines: est label on scores", '{(r.pt.est ? "~" : "") + H.f1(r.pt.v)}',
+            '{H.f1(r.pt.v)}{r.pt.est ? <span className="text-xs text-slate-500" style={{ fontWeight: 400, marginLeft: 4 }}>est.</span> : null}',
+            'marginLeft: 4 }}>est.</span>')
+    t = lit(t, "lines: est note", '" ~ means estimated from the box score, without power-play assists or shorthanded points."',
+            '" est. means worked out from the box score, without power-play assists or shorthanded points."', '" est. means worked out')
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines41
+
+SYNC41_KEEP = '''                try:
+                    with open(os.path.join(bdir31_, dd31_ + ".json"), encoding="utf-8") as f31_:
+                        old41_ = (json.load(f31_) or {}).get("p") or {}
+                    for k41_, v41_ in out31_.items():
+                        if "fp" not in v41_ and "fp" in (old41_.get(k41_) or {}):
+                            v41_["fp"] = old41_[k41_]["fp"]
+                except Exception:
+                    pass
+                with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:
+'''
+
+_fix_sync_before_r41 = PY_FIXES[SYNC]
+
+
+def fix_sync41(t):
+    t = _fix_sync_before_r41(t)
+    t = lit(t, "sync: name and position index", "    _pidx = {}\n", "    _pidx = {}\n    _pidx3 = {}\n", "_pidx3 = {}")
+    t = lit(t, "sync: name and position index (fill)", '_pidx.setdefault((k_, p_["t"]), p_["id"])',
+            '_pidx.setdefault((k_, p_["t"]), p_["id"])\n                _pidx3.setdefault((k_, p_["t"], p_["p"]), p_["id"])', '_pidx3.setdefault((k_, p_["t"], p_["p"])')
+    t = lit(t, "sync: name match uses position (today)",
+            'for x_ in (grp_.get("forwards") or []) + (grp_.get("defense") or []) + (grp_.get("goalies") or []):',
+            'for x_, gp_ in [(y_, "F") for y_ in (grp_.get("forwards") or [])] + [(y_, "D") for y_ in (grp_.get("defense") or [])] + [(y_, "G") for y_ in (grp_.get("goalies") or [])]:',
+            'for x_, gp_ in [(y_, "F")')
+    t = lit(t, "sync: name match uses position (today, lookup)", "pid_ = _pidx.get((_nk(nm_), tab_)) or _pidx.get((_nk2(nm_), tab_))",
+            "pid_ = _pidx3.get((_nk(nm_), tab_, gp_)) or _pidx3.get((_nk2(nm_), tab_, gp_))", "_pidx3.get((_nk(nm_), tab_, gp_))")
+    t = lit(t, "sync: name match uses position (history)",
+            'for x31_ in (grp31_.get("forwards") or []) + (grp31_.get("defense") or []) + (grp31_.get("goalies") or []):',
+            'for x31_, gp31_ in [(y31_, "F") for y31_ in (grp31_.get("forwards") or [])] + [(y31_, "D") for y31_ in (grp31_.get("defense") or [])] + [(y31_, "G") for y31_ in (grp31_.get("goalies") or [])]:',
+            'for x31_, gp31_ in [(y31_, "F")')
+    t = lit(t, "sync: name match uses position (history, lookup)",
+            "pid31_ = _pidx.get((_nk(nm31_), ab31_[s31_])) or _pidx.get((_nk2(nm31_), ab31_[s31_]))",
+            "pid31_ = _pidx3.get((_nk(nm31_), ab31_[s31_], gp31_)) or _pidx3.get((_nk2(nm31_), ab31_[s31_], gp31_))", "ab31_[s31_], gp31_))")
+    if '{"v": 2, "dates": sorted(have31_)' in t:
+        print("(news) sync: name fix re-saves stored days: already done")
+    else:
+        a41 = '        have31_, none31_ = set(idx31_.get("dates") or []), set(idx31_.get("none") or [])\n'
+        b41 = '                with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:\n'
+        c41 = 'json.dump({"dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))'
+        if t.count(a41) != 1 or t.count(b41) != 1 or t.count(c41) != 1:
+            fail("sync: could not find the box-score history block (round 31). Send this log to the AI helper.")
+        t = t.replace(a41, '        if idx31_.get("v") != 2:\n            idx31_ = {"none": idx31_.get("none") or []}\n' + a41, 1)
+        t = t.replace(b41, SYNC41_KEEP, 1)
+        t = t.replace(c41, 'json.dump({"v": 2, "dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))', 1)
+        print("(news) sync: name fix re-saves stored days: updated")
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync41
+
 if __name__ == "__main__":
     main()
