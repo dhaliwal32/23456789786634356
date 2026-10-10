@@ -3358,13 +3358,13 @@ function TradeBuilder({ s, initPartner }) {
       </button>
     );
   });
-  const sideBox = (lab, list, sel, set) => (
+  const sideBox = (lab, list, sel, set, extra) => (
     <div className="tb-sel">
       <div className="text-xs uppercase tracking-wide text-slate-500">{lab}</div>
       {list.length ? list.map((p) => (
         <div key={p.id} className="tb-chip"><TeamLogo t={p.t} size={18} /><span className="truncate">{shortN(p.n)}</span><span className="text-xs text-slate-500">{p.p}</span><button type="button" className="tb-x" onClick={() => toggle(sel, set, p.id)}>×</button></div>
       )) : <div className="text-sm text-slate-400 mt-1">Tap players below</div>}
-      {list.length ? <div className="text-xs text-slate-500 mt-1 pt-1 border-t border-slate-100">{f1(sum(list, pg))}/g · {f1(sum(list, (p) => tv[p.id] || 0))} pts rest of season</div> : null}
+      {extra || null}{list.length ? <div className="text-xs text-slate-500 mt-1 pt-1 border-t border-slate-100">{f1(sum(list, pg))}/g · {f1(sum(list, (p) => tv[p.id] || 0))} pts rest of season</div> : null}
     </div>
   );
   return (
@@ -3377,7 +3377,7 @@ function TradeBuilder({ s, initPartner }) {
         </div>
         <div className="tb-grid mt-3">
           {sideBox("You give", Gv, give, setGive)}
-          {sideBox("You get", Rv, get, setGet)}
+          {sideBox("You get", Rv, get, setGet, picks.map((f, k) => (f ? <div key={"pk" + k} className="tb-chip"><TeamLogo t={f.t} size={18} /><span className="truncate">{shortN(f.n)}</span><span className="text-xs text-slate-500">{f.p}</span><span className="text-xs text-green-700 whitespace-nowrap">waiver pickup</span><button type="button" className="tb-x" onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>{"\u00d7"}</button></div> : null)))}
         </div>
         {res && vd ? (
           <div className="mt-4">
@@ -3387,6 +3387,7 @@ function TradeBuilder({ s, initPartner }) {
               <Card label="Their lineup" value={<Dlt v={res.th} />} sub="rest of season" />
               {/* round 29: two result tiles only */}
             </div>
+            <TradeRanks s={s} partner={partner} give={give} get={get} adds={picks} drops={drops} />
             {(() => { const a = cnt(res.after), b = cnt(mine); return (
               <div className="text-xs text-slate-500 mt-3">Your roster after: {["F", "D", "G"].map((k) => <span key={k} className={"mr-3 " + (a[k] < mins[k] ? "text-red-600 font-semibold" : "")}>{k} {b[k]}→{a[k]}</span>)}{res.after.filter((p) => !p.ir).length}/22 active</div>
             ); })()}
@@ -3740,6 +3741,31 @@ function FaSearch({ s, top, taken, val, onPick }) {
           {list.length === 0 ? <div className="text-sm text-slate-400 px-2 py-2">No free agent matches.</div> : null}
         </div>
       ) : null}
+    </div>
+  );
+}
+
+// ---------- round 30: league ranks before and after a trade (news_logos.py) ----------
+function TradeRanks({ s, partner, give, get, adds, drops }) {
+  const addIds = adds.filter(Boolean).map((p) => p.id), dropIds = drops.map((p) => p.id);
+  const key = [partner, give.join(), get.join(), addIds.join(), dropIds.join()].join("|");
+  const R = useMemo(() => {
+    const G = new Set(give), T = new Set(get), A = new Set(addIds), D = new Set(dropIds);
+    const players = s.players.map((p) => (G.has(p.id) ? { ...p, ft: partner } : T.has(p.id) || A.has(p.id) ? { ...p, ft: s.me } : D.has(p.id) ? { ...p, ft: "fa" } : p));
+    const pos = (t) => { const i = t.rows.findIndex((x) => x.t.id === s.me); return { o: i + 1, st: i >= 0 ? t.rows[i].strength : 0, ...(t.grpRank[s.me] || {}) }; };
+    const keep = __LT, after = leagueTable({ ...s, players });
+    __LT = keep;
+    return { b: pos(leagueTable(s)), a: pos(after) };
+  }, [key, s.players, s.wk, s.blend, window.__PMODE]);
+  const cell = (lab, b, a) => (
+    <span key={lab} className="mr-4 whitespace-nowrap">{lab} <span className="text-slate-500">#{b || "-"}</span>{" \u2192 "}<span className={"font-semibold " + (a < b ? "text-green-700" : a > b ? "text-red-600" : "")}>#{a || "-"}</span></span>
+  );
+  const up = R.a.st - R.b.st;
+  return (
+    <div className="text-sm mt-3">
+      <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Your league ranks after this trade</div>
+      {cell("Overall", R.b.o, R.a.o)}{cell("Forwards", R.b.F, R.a.F)}{cell("Defence", R.b.D, R.a.D)}{cell("Goalies", R.b.G, R.a.G)}
+      <span className="text-xs text-slate-500 whitespace-nowrap">Strength {f1(R.b.st)}{" \u2192 "}<span className={up > 0.05 ? "text-green-700" : up < -0.05 ? "text-red-600" : ""}>{f1(R.a.st)}</span> pts/week</span>
     </div>
   );
 }
