@@ -350,7 +350,8 @@
       const arr = ln[sl] || [];
       if (!arr.length) return <div className="lt-msg">Not available.</div>;
       const fw = arr.filter((n) => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F")), df = arr.filter((n) => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
-      return <div className="lt-pp5">{[...fw, ...df].map((n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n))}</div>;
+      const all5 = [...fw, ...df], ppc = (n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n);
+      return <div><div className="lt-ppu">{all5.slice(0, 3).map(ppc)}</div>{all5.length > 3 ? <div className="lt-ppd">{all5.slice(3).map(ppc)}</div> : null}</div>;
     };
     return (
       <div>
