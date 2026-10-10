@@ -511,7 +511,26 @@
   }
 
   // ---------- player detail card (unchanged from the old Lines tab) ----------
-  function PlayerCard({ it, s, wk, H, L, ctx, onClose, onPick }) {
+  function QuickActions({ p, onClose }) {
+    const [, tick] = useState(0);
+    const Q = window.__QA;
+    if (!p || !Q) return null;
+    const act = (fn) => () => { fn(p); if (onClose) onClose(); };
+    const b = "px-3 py-1 rounded-lg border border-slate-300 text-xs";
+    return (
+      <div className="flex flex-wrap gap-2" style={{ marginTop: 12 }}>
+        <button className={b} onClick={act(Q.swap)}>{Q.mine(p) ? "Find a replacement" : "Find a swap"}</button>
+        {Q.tradeable(p) ? <button className={b} onClick={act(Q.trade)}>Add to a trade</button> : null}
+        <button className={b} onClick={act(Q.lines)}>See his line</button>
+        <button className={b} onClick={() => Q.espn(p)}>{Q.fa(p) ? "Add on ESPN" : "Open on ESPN"}</button>
+        {Q.fa(p) ? <button className={b} onClick={() => { Q.star(p); tick((x) => x + 1); }}>{Q.starred(p) ? "\u2605 Watching" : "\u2606 Watch"}</button> : null}
+      </div>
+    );
+  }
+  function PlayerCard(props) {
+    return <div><PlayerCard0 {...props} /><QuickActions p={(props.it && props.it.p) || props.p} onClose={props.onClose} /></div>;
+  }
+  function PlayerCard0({ it, s, wk, H, L, ctx, onClose, onPick }) {
     const K = s.blend, today = H.todayISO(), p = it.p;
     const hasId = !!(p && typeof p.id === "string" && p.id[0] === "e");
     const isG = it.g === "G";

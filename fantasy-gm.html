@@ -888,7 +888,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} />
+        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} />
         {content}
         {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -3161,7 +3161,70 @@ function TeamsTab({ s, wk, openTeam }) {
   );
 }
 
-function TeamPage({ s, wk, id, back, go }) {
+function TeamPage(props) {
+  // team page v51: new style, with the older detailed view one tap away (news_logos.py)
+  const { s, wk } = props, tid = props.id, back = props.back;
+  const [old, setOld] = useState(false);
+  if (old || !tid || !s || !wk) return <TeamPage0 {...props} />;
+  const K = s.blend, today = todayISO(), dates = wk.dates || [];
+  const T = leagueTable(s), pr = T.rows.findIndex((x) => x.t.id === tid), row = pr >= 0 ? T.rows[pr] : null;
+  const g = T.grpRank[tid] || {}, mg = T.grpRank[s.me] || {};
+  const roster = s.players.filter((p) => p.ft === tid);
+  const opp = oppOf(wk, tid), sc = (id) => +((wk.act || {})[id]) || 0;
+  const left = (p) => (wk.games[p.t] || []).filter((d) => dates[d] >= today && gState(p.t, dates[d]).s === "P").length;
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const grp = (k) => roster.filter((p) => !p.ir && p.p === k).sort((a, b) => pv(b) - pv(a));
+  const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter((p) => p.ir)]].filter((x) => x[1].length);
+  const trade = () => { window.__TRADE_P = { id: null, ft: tid }; if (props.go) props.go("moves", "trades"); setTimeout(() => window.dispatchEvent(new Event("gm-trade")), 50); };
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        {back ? <button type="button" className="text-sm text-blue-600" onClick={back}>{"\u2039 Back"}</button> : null}
+        <span className="font-semibold" style={{ fontSize: 18 }}>{teamName(s, tid)}</span>
+        <span className="text-sm text-slate-500">{[row && row.rec.n ? row.rec.w + "-" + row.rec.l : "", pr >= 0 ? ordN(pr + 1) + " in strength" : "", row ? Math.round(row.strength) + " a week" : ""].filter(Boolean).join(" \u00b7 ")}</span>
+        {tid !== s.me ? <button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" style={{ marginLeft: "auto" }} onClick={trade}>Trade with them</button> : null}
+      </div>
+      <div className="grid md:grid-cols-2 gap-3">
+        <GxPanel title="This week">
+          {opp ? (
+            <div className="flex items-baseline gap-3">
+              <span className="gx-stv">{f1(sc(tid))}</span><span className="text-slate-500">to</span><span className="gx-stv" style={{ color: "var(--ink2)" }}>{f1(sc(opp))}</span>
+              <span className="text-sm text-slate-500 truncate">vs {teamName(s, opp)}</span>
+            </div>
+          ) : <div className="text-sm text-slate-500">No matchup this week.</div>}
+        </GxPanel>
+        <GxPanel title="Against you" right="league rank by position">
+          {[["Forwards", "F"], ["Defence", "D"], ["Goalies", "G"]].map(([lab, k], i) => (
+            <div key={k} className="gx-row" style={i ? null : { borderTop: 0 }}>
+              <span style={{ flex: 1 }}>{lab}</span>
+              <span style={{ color: g[k] && mg[k] && g[k] < mg[k] ? "var(--good)" : "var(--ink)" }}>{g[k] ? ordN(g[k]) : "\u2013"}</span>
+              <span className="text-xs text-slate-500" style={{ minWidth: 76, textAlign: "right" }}>{tid === s.me ? "" : "you " + (mg[k] ? ordN(mg[k]) : "\u2013")}</span>
+            </div>
+          ))}
+        </GxPanel>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-row text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}><span style={{ flex: 1 }}>Roster</span><span style={{ minWidth: 40, textAlign: "right" }}>Left</span><span style={{ minWidth: 64, textAlign: "right" }}>Expected</span></div>
+        {groups.map(([title, list]) => (
+          <div key={title}>
+            <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
+            {list.map((p) => (
+              <div key={p.id} className="gx-row">
+                <TeamLogo t={p.t} size={22} />
+                <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" />{p.status && p.status !== "ACTIVE" ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{M_ST[p.status] || p.status.replace(/_/g, " ")}</span> : null}</span>
+                <span className="text-slate-500" style={{ minWidth: 40, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{p.ir ? "\u2013" : left(p)}</span>
+                <span style={{ minWidth: 64, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <button type="button" className="text-xs text-slate-500 underline" onClick={() => setOld(true)}>Show the older detailed view</button>
+    </div>
+  );
+}
+
+function TeamPage0({ s, wk, id, back, go }) {
   const K = s.blend;
   const T = leagueTable(s);
   const x = T.rows.find((r) => r.t.id === id);
@@ -3646,9 +3709,21 @@ function TradeBuilder({ s, initPartner }) {
   // data-r29="tiles"
   const K = s.blend, today = todayISO();
   const others = s.teams.filter((t) => t.id !== s.me);
-  const [partner, setPartner] = useState(initPartner || (others[0] || {}).id || "");
-  const [give, setGive] = useState([]);
-  const [get, setGet] = useState([]);
+  const [tp0] = useState(() => { const v = window.__TRADE_P || null; window.__TRADE_P = null; return v; });
+  const tpThem = tp0 && tp0.ft !== s.me && tp0.ft !== "fa";
+  const [partner, setPartner] = useState((tpThem ? tp0.ft : null) || initPartner || (others[0] || {}).id || "");
+  const [give, setGive] = useState(tp0 && tp0.ft === s.me && tp0.id ? [tp0.id] : []);
+  const [get, setGet] = useState(tpThem && tp0.id ? [tp0.id] : []);
+  useEffect(() => {
+    const h = () => {
+      const v = window.__TRADE_P; window.__TRADE_P = null;
+      if (!v) return;
+      if (v.ft === s.me) { if (v.id) setGive((g) => (g.indexOf(v.id) >= 0 ? g : g.concat([v.id]))); }
+      else if (v.ft !== "fa") { setPartner(v.ft); setGet(v.id ? [v.id] : []); }
+    };
+    window.addEventListener("gm-trade", h);
+    return () => window.removeEventListener("gm-trade", h);
+  }, []);
   const [pick, setPick] = useState({});
   const [edit, setEdit] = useState(-1);
   const [side, setSide] = useState("me");
@@ -4516,9 +4591,14 @@ const gxLast5 = (ids, sc) => gxBoxIdx().then((ds) => Promise.all(ds.slice(-14).m
 function Pickups({ s, setS, wk }) {
   const K = s.blend;
   const [H, setH] = useState(1);
-  const [pos, setPos] = useState("all");
-  const [q, setQ] = useState("");
+  const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
+  const [q, setQ] = useState(() => { const v = window.__PICK_Q || ""; window.__PICK_Q = ""; return v; });
   const [limit, setLimit] = useState(25);
+  useEffect(() => {
+    const h = () => { if (window.__PICK_Q) { setQ(window.__PICK_Q); window.__PICK_Q = ""; } if (window.__PICK_POS) { setPos(window.__PICK_POS); window.__PICK_POS = ""; } };
+    window.addEventListener("gm-pick", h);
+    return () => window.removeEventListener("gm-pick", h);
+  }, []);
   const [sim, setSim] = useState(null);
   const [hist, setHist] = useState({});
   const sP = useMemo(() => planS(s), [s]);
@@ -4565,6 +4645,7 @@ function Pickups({ s, setS, wk }) {
         <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(25); }} />
         <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(25); }} />
       </div>
+      <GxWatchPanel s={s} />
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <div className="gx-pk text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}>
@@ -4579,7 +4660,7 @@ function Pickups({ s, setS, wk }) {
               <TeamLogo t={r.f.t} size={26} />
               <div className="min-w-0">
                 <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
-                <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}</div>
+                <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button></div>
               </div>
               {spark(r.f)}
               <div className="n text-slate-500 m-hide">{M.gamesIn(r.f)}</div>
@@ -4702,7 +4783,7 @@ function PlanPage({ s, setS, wk }) {
                 <span className="gx-dayc">{(wkP.days[st.day] || "").split(",")[0]}</span>
                 <div className="min-w-0">
                   <div className="truncate"><PN p={st.add} className="" /> in, <PN p={st.drop} className="" /> out</div>
-                  <div className="text-xs text-slate-500 truncate">{(st.add.p === "G" ? "Likely starts " : "Plays ") + (dy || "\u2013")}{st.add.wv ? " \u00b7 on waivers" : ""}</div>
+                  <div className="text-xs text-slate-500 truncate">{(st.add.p === "G" ? "Likely starts " : "Plays ") + (dy || "\u2013")}{st.add.wv ? " \u00b7 on waivers" : ""}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={() => window.__QA && window.__QA.espn(st.add)}>Add on ESPN</button></div>
                 </div>
                 <span className="n font-semibold" style={{ color: "var(--good)" }}>{"+" + f1(st.gain)}</span>
                 <span className="n text-slate-500">{a != null && b != null ? wpTxt(a).replace("%", "") + " \u2192 " + wpTxt(b) : ""}</span>
@@ -5177,6 +5258,57 @@ function GxExtras({ s, tab, go }) {
     document.head.appendChild(l);
   } catch (e) {}
 })();
+
+// ---------- round 51: watchlist and quick actions (news_logos.py) ----------
+const gxWatch = {
+  list: () => { try { return JSON.parse(localStorage.getItem("gm-watch") || "[]"); } catch (e) { return []; } },
+  has: (id) => gxWatch.list().indexOf(id) >= 0,
+  toggle: (id) => {
+    const l = gxWatch.list(), i = l.indexOf(id);
+    if (i >= 0) l.splice(i, 1); else l.push(id);
+    try { localStorage.setItem("gm-watch", JSON.stringify(l)); } catch (e) {}
+    window.dispatchEvent(new Event("gm-watch"));
+  },
+};
+function GxWatchPanel({ s }) {
+  const [, tick] = useState(0);
+  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gm-watch", h); return () => window.removeEventListener("gm-watch", h); }, []);
+  const K = s.blend, list = gxWatch.list().map((id) => s.players.find((p) => p.id === id)).filter(Boolean);
+  if (!list.length) return null;
+  const note = (p) => {
+    if (p.ft !== "fa") return "now on " + teamName(s, p.ft);
+    const g = sigOf(p), fr = formRatio(p, K);
+    return g.lines && g.lines.chg === "up" ? "moved up a line" : g.ppChg === "added" ? "new on the top power play" : g.lines && g.lines.chg === "down" ? "moved down a line" : fr !== null && fr >= 1.25 ? "hot" : fr !== null && fr <= 0.7 ? "cold" : "";
+  };
+  return (
+    <GxPanel title="Watchlist">
+      {list.map((p, i) => (
+        <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+          <TeamLogo t={p.t} size={22} />
+          <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /> <span className="text-xs text-slate-500">{p.p}</span>{note(p) ? <span className="text-xs text-slate-500" style={{ marginLeft: 8 }}>{note(p)}</span> : null}</span>
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+          <button type="button" aria-label={"Stop watching " + p.n} className="text-slate-500" style={{ padding: "0 4px", fontSize: 16 }} onClick={() => gxWatch.toggle(p.id)}>{"\u00d7"}</button>
+        </div>
+      ))}
+    </GxPanel>
+  );
+}
+function GxQA({ s, go }) {
+  const lid = (window.ESPN_DATA || {}).leagueId || 1363781006, num = (x) => String(x).replace(/\D/g, "");
+  window.__QA = {
+    mine: (p) => p.ft === s.me, fa: (p) => p.ft === "fa", tradeable: (p) => p.ft !== "fa",
+    swap: (p) => { if (p.ft === "fa") window.__PICK_Q = p.n; else window.__PICK_POS = p.p; go("moves", "adddrop"); setTimeout(() => window.dispatchEvent(new Event("gm-pick")), 50); },
+    trade: (p) => { window.__TRADE_P = { id: p.id, ft: p.ft }; go("moves", "trades"); setTimeout(() => window.dispatchEvent(new Event("gm-trade")), 50); },
+    lines: (p) => { if (window.__NAV && window.__NAV.lines) window.__NAV.lines(p.t); else go("lines"); },
+    espn: (p) => {
+      try { if (navigator.clipboard) navigator.clipboard.writeText(p.n); } catch (e) {}
+      window.open(p.ft === "fa" ? "https://fantasy.espn.com/hockey/players/add?leagueId=" + lid + "&teamId=" + num(s.me)
+        : "https://fantasy.espn.com/hockey/team?leagueId=" + lid + "&teamId=" + num(p.ft), "_blank");
+    },
+    star: (p) => gxWatch.toggle(p.id), starred: (p) => gxWatch.has(p.id),
+  };
+  return null;
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
