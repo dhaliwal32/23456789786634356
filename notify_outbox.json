@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|815448e8514b",
-   "at": "2026-10-03T17:10:50Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Frank Nazar (CHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
-   "k": "2026-10-03|09ba4e0c3b9c",
-   "at": "2026-10-03T17:10:50Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Roman Kantserov (CHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
    "k": "2026-10-03|7724e3862848",
    "at": "2026-10-03T18:30:53Z",
    "title": "Lineup: starter is OUT",
