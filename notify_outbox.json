@@ -5239,6 +5239,78 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-10|9dc82512d8db",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryan Shea (D, EDM) is playing 23.3 min per game lately, up +4.0 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1e0eeb8f8500",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kasperi Kapanen (F, EDM) is playing 17.6 min per game lately, up +2.7 (PP +3.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|a5b5b4acd5d3",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Connor Murphy (D, EDM) is playing 22.0 min per game lately, up +4.3 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|bd6c37068cae",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Michael Kesselring (D, SJ) is playing 19.6 min per game lately, up +6.2 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|a355fbf5c0f4",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Owen Michaels (F, EDM) is playing 13.8 min per game lately, up +5.5 (PP +0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1d8284ab238e",
+   "at": "2026-10-10T23:14:08Z",
+   "title": "Pickup: ice time jump",
+   "text": "Trent Frederic (F, EDM) is playing 10.2 min per game lately, up -0.7 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|21b41336fba4",
+   "at": "2026-10-10T23:14:23Z",
+   "title": "Your player: lineup change",
+   "text": "Victor Hedman (TB) is in the lineup on the 3rd pair",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|9ef24edd9516",
+   "at": "2026-10-10T23:14:23Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Lawson Crouse (UTA) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
