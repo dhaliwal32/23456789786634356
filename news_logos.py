@@ -3389,5 +3389,116 @@ _fix_before_r28 = fix
 def fix(t):
     return round28(_fix_before_r28(t))
 
+# ---------- round 29: trades. Trade advice with a league-wide buy-low list, no 2-for-1 box, searchable pickup, two result tiles ----------
+R29_HELPERS = r'''// ---------- round 29: trade advice with buy-low list, free-agent search (news_logos.py) ----------
+function TradeAdvice({ s, onPick }) {
+  const K = s.blend;
+  const [team, setTeam] = useState("all");
+  const [more, setMore] = useState(false);
+  const T = leagueTable(s), g = T.grpRank[s.me] || {};
+  const posName = { F: "forwards", D: "defence", G: "goalies" }, need = { F: 10, D: 5, G: 2 };
+  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0)), weak = by[0], strong = by[2];
+  const pg = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const spare = mine.filter((p) => p.p === strong).sort((a, b) => pg(b) - pg(a)).slice(need[strong]);
+  const sell = mine.filter((p) => tbFlags(p, K).some((f) => f.sell)).sort((a, b) => pg(b) - pg(a)).slice(0, 6);
+  const all = useMemo(() => {
+    const why = (p) => {
+      const r = [], fr = formRatio(p, K), sg = sigOf(p), rec = sg.rec, l = sg.luck;
+      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+      const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
+      if (fr !== null && fr <= 0.75 && rec) r.push("cold: " + f1(rec.ppg) + "/g last 14 days");
+      if (mb != null && p.proj && p.avg > 0 && mb / p.avg >= 1.15 && mb - p.avg >= 1) r.push("model " + f1(mb) + " vs ESPN " + f1(p.avg));
+      if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) r.push("unlucky");
+      return r;
+    };
+    return s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && !p.ir && pg(p) >= 6 && !goalieOut(p))
+      .map((p) => ({ p, r: why(p) })).filter((x) => x.r.length).sort((a, b) => pg(b.p) - pg(a.p));
+  }, [s.players, K, window.__PMODE]);
+  const list = all.filter((x) => team === "all" || x.p.ft === team);
+  const shown = list.slice(0, more ? 20 : 8);
+  return (
+    <Section title="Trade advice" sub={"Your ranks: forwards #" + (g.F || "-") + ", defence #" + (g.D || "-") + ", goalies #" + (g.G || "-") + " of " + T.rows.length + "."}>
+      <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
+      {sell.length ? <div className="mt-1 text-slate-500">Sell high: {sell.map((p) => p.n).join(", ")}.</div> : null}
+      <div className="flex flex-wrap items-center gap-2 mt-4 mb-1">
+        <div className="text-xs uppercase tracking-wide text-slate-500">Buy low ({list.length}): good players who are cold, unlucky or underrated</div>
+        <select className={inp + " ml-auto"} value={team} onChange={(e) => { setTeam(e.target.value); setMore(false); }}>
+          <option value="all">All teams</option>
+          {s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+        </select>
+      </div>
+      {shown.length ? shown.map(({ p, r }) => (
+        <PlayerLine key={p.id} s={s} p={p} extra={<><span className="text-sky-600">{"\u00b7 " + r.join(", ")}</span><button type="button" className="text-blue-600" onClick={() => onPick(p)}>Add to trade</button></>} />
+      )) : <div className="text-slate-400">No buy-low players here right now. Cold streaks need 3 or more recent games to show.</div>}
+      {list.length > shown.length && !more ? <button className="text-sm text-blue-600 mt-2" onClick={() => setMore(true)}>Show all {Math.min(20, list.length)}</button> : null}
+    </Section>
+  );
+}
+function FaSearch({ s, top, taken, val, onPick }) {
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState(false);
+  const qq = nrm(q);
+  const list = !open ? [] : qq
+    ? s.players.filter((p) => p.ft === "fa" && p.prob > 0 && !taken.has(p.id) && nrm(p.n).includes(qq)).sort((a, b) => val(b) - val(a)).slice(0, 8)
+    : top.filter((p) => !taken.has(p.id)).slice(0, 6);
+  return (
+    <div className="relative mt-2">
+      <input className={inp + " w-full"} placeholder="Search any free agent by name" value={q}
+        onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} />
+      {open ? (
+        <div className="ms-list">
+          {!qq ? <div className="text-xs text-slate-500 px-2 pt-1 pb-1">Best available</div> : null}
+          {list.map((p) => (
+            <button key={p.id} type="button" className="ms-opt" onMouseDown={(e) => e.preventDefault()} onClick={() => { onPick(p.id); setQ(""); setOpen(false); }}>
+              <TeamLogo t={p.t} size={22} />
+              <span className="truncate flex-1 text-left">{p.n} <span className="text-xs text-slate-500">{p.p}</span></span>
+              <span className="text-xs text-slate-500 whitespace-nowrap">{f1(val(p))}/g</span>
+            </button>
+          ))}
+          {list.length === 0 ? <div className="text-sm text-slate-400 px-2 py-2">No free agent matches.</div> : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+'''
+
+R29_ADVICE_NEW = r'''<TradeAdvice s={s} onPick={(p) => { setPartner(p.ft); setGet(p.ft === partner ? [...get.filter((x) => x !== p.id), p.id] : [p.id]); setPick({}); window.scrollTo(0, 0); }} />'''
+R29_SEARCH_NEW = r'''<FaSearch s={s} top={fas} taken={new Set(picks.filter(Boolean).map((x) => x.id))} val={pg} onPick={(id) => setPick((x) => ({ ...x, [k]: id }))} />'''
+
+
+def round29(t):
+    t = lit(t, "trades: helpers", ROOT, R29_HELPERS + ROOT, "function TradeAdvice(")
+    t = sub_once(t, "trades: trade advice leaves Advice",
+                 re.escape('<Section title="Trade advice" sub={') + r".*?" + re.escape("</Section>"),
+                 "{/* round 29: trade advice moved to Trades */}", "round 29: trade advice moved to Trades", re.S)
+    t = sub_once(t, "trades: buy-low list replaces trade ideas",
+                 re.escape('<Section title="Trade ideas" sub="') + r".*?" + re.escape("</Section>"),
+                 R29_ADVICE_NEW, "<TradeAdvice s={s}", re.S)
+    t = lit(t, "trades: any free agent can be the pickup", "fas.find((f) => f.id === pick[k]) || null",
+            '(pick[k] ? s.players.find((f) => f.ft === "fa" && f.id === pick[k]) : null) || null',
+            'f.ft === "fa" && f.id === pick[k]')
+    t = sub_once(t, "trades: search box for the pickup",
+                 re.escape('<select className={inp + " w-full mt-2"} value={pick[k] || ""}') + r".*?" + re.escape("</select>"),
+                 R29_SEARCH_NEW, "<FaSearch s={s}", re.S)
+    t = sub_once(t, "trades: two result tiles",
+                 re.escape('<Card label="How they see it" ') + r".*?" + re.escape('<Card label="Raw value" ') + r".*?/>",
+                 "{/* round 29: two result tiles only */}", "round 29: two result tiles only", re.S)
+    t = lit(t, "trades: tiles side by side", '<div className="tb-tiles">', '<div className="tb-grid" data-r29="tiles">', 'data-r29="tiles"')
+    for must in ("function TradeAdvice(", "function FaSearch(", "function TradeBuilder(", "function AdvicePanel(", "trades v10",
+                 '<Section title="Rosters"', '<Card label="Their lineup"', "const goalieOut ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 29 (" + must + ").")
+    return t
+
+
+_fix_before_r29 = fix
+
+
+def fix(t):
+    return round29(_fix_before_r29(t))
+
 if __name__ == "__main__":
     main()
