@@ -5528,7 +5528,36 @@ def round40(t):
     t = lit(t, "pickups: Pickups button opens the list", ': go("moves", inPick ? sub : "advice"));', ': go("moves", "adddrop"));', ': go("moves", "adddrop"));')
     t = lit(t, "pickups: list is the default page", '(sub === k || (k === "advice" && !inPick) ? "font-semibold" : "text-slate-500")',
             '(sub === k || (k === "adddrop" && !inPick) ? "font-semibold" : "text-slate-500")', 'k === "adddrop" && !inPick')
-    t = lit(t, "pickups: new
+    t = lit(t, "pickups: new list replaces Add / Drop", 'sub === "adddrop" ? <AddDrop {...P} /> :', 'sub === "adddrop" ? <Pickups {...P} /> :', "<Pickups {...P} />")
+    t = lit(t, "pickups: helpers", ROOT, R40_HELPERS + ROOT, "function Pickups(")
+    for must in ("function Pickups(", "section v40", "const Section = (", "const SectionShut =", "const SEC_SHUT =", "function SubBar(", "function MoveSim(", "const gxBoxIdx ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 40 (" + must + ").")
+    return t
+
+
+_fix_before_r40 = fix
+
+
+def fix(t):
+    return round40(_fix_before_r40(t))
+
+
+LT40_PP_OLD = r'''return <div className="lt-pp5">{[...fw, ...df].map((n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n))}</div>;'''
+LT40_PP_NEW = r'''const all5 = [...fw, ...df], ppc = (n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n);
+      return <div><div className="lt-ppu">{all5.slice(0, 3).map(ppc)}</div>{all5.length > 3 ? <div className="lt-ppd">{all5.slice(3).map(ppc)}</div> : null}</div>;'''
+
+_fix_lines_before_r40 = JS_FIXES[LINES]
+
+
+def fix_lines40(t):
+    t = _fix_lines_before_r40(t)
+    t = lit(t, "lines: power play as three and two", LT40_PP_OLD, LT40_PP_NEW, "all5.slice(0, 3).map(ppc)")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines40
 
 if __name__ == "__main__":
     main()
