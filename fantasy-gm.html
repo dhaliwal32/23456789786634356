@@ -725,7 +725,9 @@ function Today({ s, wk, go }) {
     if (L.empty > 0) checks.push(["warn", `${L.empty} empty slot${L.empty > 1 ? "s" : ""} — a streamer could fill ${L.empty > 1 ? "them" : "it"}`]);
   }
   const outNow = mine.filter((p) => { const b = effBack(p).d; return (b && b > today) || (!b && avail(p, today) === 0); });
-  const moves = useMemo(() => computeMoves(s, { H: 1, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3)).slice(0, 3), [s]);
+  const sP = useMemo(() => planS(s), [s]); // round 27, older marker kept: <WinDelta s={s} add={r.f} drop={r.d} /><span
+  const pBase = useMemo(() => (sP !== s ? planBase(s, sP) : undefined), [sP]);
+  const moves = useMemo(() => computeMoves(sP, { H: 1, pool: 40 }).res.filter((r) => r.gain >= (s.minGain ?? 3)).slice(0, 3), [sP]);
   const sameDrop = moves.length > 1 && moves.every((r) => r.d.id === moves[0].d.id);
   const trend = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && ((formRatio(p, K) || 0) >= 1.25 || (p.chg || 0) >= 5)).sort((a, b) => (b.chg || 0) - (a.chg || 0)).slice(0, 2);
   const hot = mine.filter((p) => !p.ir && (formRatio(p, K) || 0) >= 1.25);
@@ -757,9 +759,9 @@ function Today({ s, wk, go }) {
         <Section title={dday ? (dday === today ? "Tonight" : `Next game day · ${dayLabel(dday)}`) : "No games left this week"} sub={L ? `${L.start.length} of your players play · projected ${f1(L.total)} vs ${f1(OL.total)}` : ""} link={["Matchup", () => go("matchup")]}>
           {checks.length ? checks.map(([k, t], i) => <Row key={i}><span className={dot[k]}>●</span><span className="text-slate-700">{t}</span></Row>) : <div className="text-green-700">Lineup looks good.</div>}
         </Section>
-        <Section title="Best moves this week" sub={sameDrop ? `All free up ${moves[0].d.n}'s spot` : ""} link={["All moves", () => go("moves", "adddrop")]}>
-          <PickNote where="today" />{moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
-            <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <PN p={r.f} className="font-semibold" /> <span className="text-xs text-slate-400">{r.f.p} · <TeamLogo t={r.f.t} /></span>{sameDrop ? null : <> · drop <PN p={r.d} className="font-semibold" /></>}</span><WinDelta s={s} add={r.f} drop={r.d} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
+        <Section title={sP !== s ? "Best moves for next week" : "Best moves this week"} sub={sameDrop ? `All free up ${moves[0].d.n}'s spot` : ""} link={["All moves", () => go("moves", "adddrop")]}>
+          {sP !== s ? <PlanNote sP={sP} /> : <PickNote where="today" />}{moves.length ? moves.map((r) => { const sd = effAvg(r.f, K) - effAvg(r.d, K); const [v, c] = verdict(r.gain, sd); return (
+            <Row key={r.f.id}><span className={"text-xs px-2 py-0.5 rounded whitespace-nowrap " + c}>{v}</span><span className="flex-1">Add <PN p={r.f} className="font-semibold" /> <span className="text-xs text-slate-400">{r.f.p} · <TeamLogo t={r.f.t} /></span>{sameDrop ? null : <> · drop <PN p={r.d} className="font-semibold" /></>}</span><WinDelta s={sP} add={r.f} drop={r.d} base={pBase} /><span className="text-green-700 font-semibold">+{f1(r.gain)}</span></Row>
           ); }) : <div className="text-slate-400">No move worth an acquisition right now.</div>}
         </Section>
       </div>
@@ -817,9 +819,10 @@ function AdvicePanel({ s }) {
   // advice v15: clean rows (news_logos.py) · older marker kept: advice={1}
   const K = s.blend;
   const minGain = s.minGain ?? 3;
-  const now = useMemo(() => computeMoves(s, { H: 1, pool: 60 }), [s]);
-  const later = useMemo(() => computeMoves(s, { H: 4, pool: 40 }), [s]);
-  const base = useMemo(() => winChance(s), [s]);
+  const sP = useMemo(() => planS(s), [s]);
+  const now = useMemo(() => computeMoves(sP, { H: 1, pool: 60 }), [sP]);
+  const later = useMemo(() => computeMoves(sP, { H: 4, pool: 40 }), [sP]);
+  const base = useMemo(() => planBase(s, sP), [sP]);
   const sdOf = (r) => effAvg(r.f, K) - effAvg(r.d, K);
   const topNow = now.res.filter((r) => r.gain >= minGain).slice(0, 5);
   const topLong = later.res.filter((r) => r.gain >= minGain && sdOf(r) >= 0).slice(0, 5);
@@ -855,18 +858,18 @@ function AdvicePanel({ s }) {
       <div>
         {d1 ? <div className="text-sm mb-2"><span className="text-slate-500">Drop for each: </span><PN p={d1} /></div> : null}
         <div className="adv-head"><span></span><span>Pickup</span><span className="adv-num">{label}</span><span className="adv-num" title="Your chance to win this week right now">{base == null ? "Win" : wpTxt(base)}</span><span className="adv-num">Keep</span></div>
-        {list.map((r) => <AdvMove key={r.f.id} s={s} r={r} K={K} showDrop={!d1} base={base} />)}
+        {list.map((r) => <AdvMove key={r.f.id} s={sP} r={r} K={K} showDrop={!d1} base={base} />)}
       </div>
     );
   };
   return (
     <div className="space-y-4">
       {!window.__SIG ? <div className="text-sm text-slate-500">Form, PP1 and news signals appear after the next sync.</div> : null}
-      <Section title="Best moves this week" sub="Most extra points in your daily lineups for the rest of this week."><PickNote where="adv" />
-        {moves(topNow, "Gain", `No move adds ${minGain}+ points this week. Save your moves.`)}
+      <Section title={sP !== s ? "Plan for next week" : "Best moves this week"} sub={sP !== s ? "Most extra points in next week's daily lineups." : "Most extra points in your daily lineups for the rest of this week."}>{sP !== s ? <PlanNote sP={sP} /> : <PickNote where="adv" />}
+        {moves(topNow, "Gain", `No move adds ${minGain}+ points ${sP !== s ? "next week" : "this week"}. Save your moves.`)}
         {topNow.length ? <KeepLegend /> : null}
       </Section>
-      <Section title="Long-term upgrades" sub="Better per game, and more points over the next 4 weeks.">
+      <Section title="Long-term upgrades" sub={sP !== s ? "Better per game, and more points over the 4 weeks starting next week. Win shows next week's matchup." : "Better per game, and more points over the next 4 weeks."}>
         {moves(topLong, "4 wks", "No free agent is a clear long-term upgrade right now.")}
       </Section>
       {watch.length ? (
@@ -1095,7 +1098,10 @@ function buildPlan(s, wk, d0, M) {
   let final = 0; for (let d = d0; d < nD; d++) final += dayTotal(tl, d);
   return { steps: steps.sort((a, b) => a.day - b.day), gain: final - base0, base: base0, final, pool: fas.length, d0 };
 }
-function AcqPlanner({ s, setS, wk }) {
+function AcqPlanner({ s: s0, setS, wk: wk0 }) {
+  // round 27: with no moves left this week, the planner plans next week
+  // older marker kept: {espnUsed != null ? <span>Moves used this week
+  const s = planS(s0), wk = s === s0 ? wk0 : deriveWeek(s.weeks[s.wk], s.autoDone), tw = s === s0 ? "this week" : "next week";
   const K = s.blend;
   const espnUsed = movesUsedESPN(s, wk); const used = espnUsed != null ? espnUsed : ((s.movesUsed || {})[s.wk]) || 0;
   const setUsed = (v) => setS((x) => ({ ...x, movesUsed: { ...(x.movesUsed || {}), [x.wk]: v } }));
@@ -1103,7 +1109,7 @@ function AcqPlanner({ s, setS, wk }) {
   const [plan, setPlan] = useState(null); const [busy, setBusy] = useState(false);
   const dates = wk.dates || [];
   const ti = dates.indexOf(todayISO());
-  const d0 = Math.min(dates.length, Math.max(wk.done || 0, ti >= 0 ? ti : 0) + (fromTomorrow ? 1 : 0));
+  const d0 = Math.min(dates.length, Math.max(wk.done || 0, ti >= 0 ? ti : 0) + (fromTomorrow && ti >= 0 ? 1 : 0));
   const left = Math.max(0, 3 - used);
   const opp = oppOf(wk, s.me) || s.opp;
   const oppProj = weekProj(s.players.filter((p) => p.ft === opp), wk, K, d0).total;
@@ -1116,15 +1122,15 @@ function AcqPlanner({ s, setS, wk }) {
     <div className="space-y-4">
       <Section title="Weekly acquisition planner" sub="Plans all your remaining pickups together — which player, which day, and who to drop — to squeeze the most points out of this week's lineup slots.">
         <div className="flex flex-wrap gap-3 items-center">
-          {espnUsed != null ? <span>Moves used this week: <b>{used} of 3</b> <span className="text-xs text-slate-500">from ESPN</span></span> : <label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>}
-          <label className="flex items-center gap-1"><input type="checkbox" checked={fromTomorrow} onChange={(e) => setFT(e.target.checked)} /> Start from tomorrow (today's first game has started, so adds play tomorrow)</label>
+          {s !== s0 ? <div className="w-full text-sm text-amber-600">No moves left this week, so this plans next week: {wk.label}.</div> : null}{espnUsed != null ? <span>Moves used {tw}: <b>{used} of 3</b> <span className="text-xs text-slate-500">from ESPN</span></span> : <label>Moves already used this week <select className={inp} value={used} onChange={(e) => setUsed(+e.target.value)}>{[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>}
+          <label className="flex items-center gap-1" style={{ display: ti >= 0 ? "" : "none" }}><input type="checkbox" checked={fromTomorrow} onChange={(e) => setFT(e.target.checked)} /> Start from tomorrow (today's first game has started, so adds play tomorrow)</label>
           <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" disabled={busy || !left || d0 >= dates.length} onClick={run}>{busy ? "Planning…" : `Build my plan (${left} move${left === 1 ? "" : "s"} left)`}</button>
         </div>
         <div className="text-xs text-slate-500 mt-2">Planning from {dates[d0] ? dayLabel(dates[d0]) : "—"} · uses your roster minimums, protected players and minimum gain from Add / Drop settings · counts only games that fit your daily lineup · goalies use Daily Faceoff starters, back-to-back logic and betting odds.</div>
       </Section>
       {!left && <div className={box + " text-slate-400"}>No moves left this week.</div>}
       {plan && (
-        <Section title={plan.steps.length ? `Your plan: +${f1(plan.gain)} points this week` : "No move is worth it this week"} sub={`${teamName(s, s.me)} ${f1(aA + plan.base)} → ${f1(aA + plan.final)} projected vs ${teamName(s, opp)} ${f1(aB + oppProj)} · margin ${aA + plan.base - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.base - aB - oppProj)} → ${aA + plan.final - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.final - aB - oppProj)}${wins && wins.after.length ? ` · win chance ${wpTxt(wins.b)} → ${wpTxt(wins.after[wins.after.length - 1])}` : ""}`}>
+        <Section title={plan.steps.length ? `Your plan: +${f1(plan.gain)} points ${tw}` : "No move is worth it " + tw} sub={`${teamName(s, s.me)} ${f1(aA + plan.base)} → ${f1(aA + plan.final)} projected vs ${teamName(s, opp)} ${f1(aB + oppProj)} · margin ${aA + plan.base - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.base - aB - oppProj)} → ${aA + plan.final - aB - oppProj >= 0 ? "+" : ""}${f1(aA + plan.final - aB - oppProj)}${wins && wins.after.length ? ` · win chance ${wpTxt(wins.b)} → ${wpTxt(wins.after[wins.after.length - 1])}` : ""}`}>
           {plan.steps.length ? plan.steps.map((st, i) => { const sd = effAvg(st.add, K) - effAvg(st.drop, K); return (
             <div key={i} className="border-t border-slate-100 py-3">
               <div className="flex flex-wrap items-baseline gap-2">
@@ -1278,7 +1284,7 @@ function BenchFixer({ s }) {
               {w.wl.map((x) => <div key={x.p.id} className="flex flex-wrap gap-2 py-1 border-t border-slate-100"><span className="font-medium">{x.p.n}</span><span className="text-xs text-slate-400">{x.p.p} · <TeamLogo t={x.p.t} /></span><span className="text-xs text-red-600">{x.g} game{x.g > 1 ? "s" : ""} wasted ({x.days.join(", ")}) ≈ {f1(x.pts)} pts</span>{prot.has(x.p.id) && <span className="text-xs text-slate-500">protected</span>}</div>)}
             </div>
           ) : <div className="text-green-700 text-sm">No wasted games this week.</div>}
-          {w.fix ? (
+          {i === 0 && w.fix && outOfMoves(s) ? <div className="text-xs text-slate-500 mt-1">No moves left this week, so no swap is suggested for it.</div> : w.fix ? (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
               <div className="font-semibold">Fix: drop <b>{w.fix.d.n}</b> <span className="text-xs text-slate-500 font-normal">({w.fix.d.p})</span> → add <b>{w.fix.f.n}</b> <span className="text-xs text-slate-500 font-normal">{w.fix.f.p} · <TeamLogo t={w.fix.f.t} /></span> <span className="text-green-700 ml-2">+{f1(w.fix.gain)} this week</span>{H > 1 && i < res.weeks.length - 1 ? <span className="text-xs text-slate-500 ml-2">(+{f1(w.fix.rest)} through week {s.wk + res.weeks.length})</span> : null}</div>
               <div className="text-xs text-slate-500 mt-1">Fills your empty {w.openPos.join("/")} slots with a player who actually gets into your lineup.{effAvg(w.fix.f, K) < effAvg(w.fix.d, K) ? ` Long-term ${w.fix.f.n} is ${f1(effAvg(w.fix.d, K) - effAvg(w.fix.f, K))}/game worse — treat it as a stream.` : " He's also as good or better per game — a keeper."} <Tags p={w.fix.f} K={K} /></div>
@@ -2051,7 +2057,7 @@ function AddDrop({ s, setS, wk }) {
           <select className={inp} value={H} onChange={(e) => setH(+e.target.value)}><option value={1}>Rest of this week</option><option value={2}>This week + next</option><option value={4}>Next 4 weeks</option><option value={0}>Rest of season</option></select>
           <input className={inp + " flex-1 min-w-[140px]"} placeholder="Search free agents" value={q} onChange={(e) => setQ(e.target.value)} />
           <select className={inp} value={limit} onChange={(e) => setLimit(+e.target.value)}><option value={25}>Show 25</option><option value={50}>Show 50</option><option value={100}>Show 100</option><option value={0}>Show all</option></select>
-          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => setSim({})}>Build a move</button><PickNote where="ad" />
+          <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => setSim({})}>Build a move</button>{outOfMoves(s) ? <div className="w-full text-xs text-amber-600 mt-1">No moves left this week, so this list is only a what-if until your moves reset. Next week's plan is on Advice and in the Planner.</div> : <PickNote where="ad" />}
         </div>
         {showSet && (
           <div className="mt-3 pt-3 border-t border-slate-200 space-y-3">
@@ -2979,7 +2985,7 @@ const strategy = (p) => (p == null ? null : p >= 0.75 ? ["Play it safe", "You're
 const StrategyLine = ({ p }) => { const t = strategy(p); return t ? <div className="text-sm mt-2"><span className="font-semibold">{t[0]}</span><span className="text-slate-500"> · {t[1]}</span></div> : null; };
 function FillSlot({ l, s, wk, d }) {
   const K = s.blend, dt = wk.dates ? wk.dates[d] : null;
-  if (!dt || dt < todayISO() || l.empty <= 0) return null;
+  if (!dt || dt < todayISO() || l.empty <= 0 || noMovesWk(s, wk)) return null;
   const c = { F: 0, D: 0, UTIL: 0, G: 0 }; l.start.forEach((p) => { c[p.slot] = (c[p.slot] || 0) + 1; });
   const open = { F: 9 - c.F, D: 5 - c.D, U: 1 - c.UTIL, G: 2 - c.G };
   const fits = (p) => (p.p === "G" ? open.G > 0 : open[p.p] > 0 || open.U > 0);
@@ -3038,7 +3044,7 @@ function GoalieStreams({ s, wk }) {
   const days = dates.map((dt, d) => ({ dt, d })).filter((x) => x.dt >= today).map(({ dt, d }) => ({ dt, games: starters(dt), list: s.players
     .filter((p) => p.ft === "fa" && p.p === "G" && (wk.games[p.t] || []).includes(d) && avail(p, dt) > 0 && gState(p.t, dt).s === "P" && dt >= pickStart(p))
     .map((p) => { const gs = gStart(p, dt); return { p, gs, o: oddsFor(p.t, dt), g: gameOf(p.t, dt), v: effAvg(p, K, dt) * gs.v }; })
-    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, 3) }));
+    .filter((x) => x.gs.v >= 0.4).sort((a, b) => b.v - a.v).slice(0, noMovesWk(s, wk) ? 0 : 3) }));
   const own = (p) => (!p ? null : p.ft === s.me ? <span className="text-blue-600 font-semibold">yours</span> : p.ft === "fa" ? <span className="text-green-700 font-semibold">FA</span> : <span>{teamName(s, p.ft)}</span>);
   const Gl = ({ x, right }) => {
     const tg = x.name ? tagOf(x.status) : null;
@@ -3059,7 +3065,7 @@ function GoalieStreams({ s, wk }) {
   const head = (t) => <div className="text-xs uppercase tracking-wide text-slate-500 mt-3 mb-1">{t}</div>;
   return (
     <Section title="Goalie streams" sub="Every game's starting goalies from Daily Faceoff, then the best free-agent goalies for each day left this week. Win chance from betting odds.">
-      {st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
+      {noMovesWk(s, wk) ? <div className="text-sm text-amber-600 mb-2">No moves left this week, so no free-agent streams are shown. Next week's best pickups, goalies included, are on Advice, and the Planner builds the full plan.</div> : st ? <div className="text-sm mb-2"><span className="font-semibold">{st[0]}</span><span className="text-slate-500"> · You're {wpTxt(base)} to win this week. {base >= 0.75 ? "Only stream a confirmed starter with a good win chance." : base < 0.4 ? "A good goalie stream is your best upside." : "Stream when a confirmed starter has a good matchup."}</span></div> : null}
       {days.length ? days.map(({ dt, games, list }) => (
         <div key={dt} className="mt-5">
           <div className="font-semibold">{dt === today ? "Today" : dayLabel(dt)}</div>
@@ -3071,7 +3077,7 @@ function GoalieStreams({ s, wk }) {
               <Gl x={gm.home} right />
             </div>
           ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No game times loaded for this day.</div>}
-          {head("Free agents to stream")}
+          {noMovesWk(s, wk) ? null : head("Free agents to stream")}
           {list.length ? list.map(({ p, gs, o, g, v }) => { const tg = startTag(gs), dr = dropFor(s, p); return (
             <div key={p.id} className="flex items-center gap-3 py-2.5 border-t border-slate-100">
               <TeamLogo t={p.t} size={30} />
@@ -3081,7 +3087,7 @@ function GoalieStreams({ s, wk }) {
               </div>
               <div className="text-right whitespace-nowrap"><div className="font-semibold">{f1(v)}</div>{dr ? <WinDelta s={s} add={p} drop={dr} base={base} /> : null}</div>
             </div>
-          ); }) : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>}
+          ); }) : (noMovesWk(s, wk) ? null : <div className="text-sm text-slate-400 py-2 border-t border-slate-100">No free-agent starters play.</div>)}
         </div>
       )) : <div className="text-slate-400">No days left this week.</div>}
     </Section>
@@ -3611,6 +3617,15 @@ const PlanWin = ({ a, b }) => {
   const d = Math.round(b * 100) - Math.round(a * 100);
   return <span className={"text-sm whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Your chance to win this week before and after this move">win {wpTxt(a)} → {wpTxt(b)} <span className="font-semibold">{d > 0 ? "+" : ""}{d}%</span></span>;
 };
+
+// ---------- round 27: no moves left this week, so plan next week instead (news_logos.py) ----------
+const noMovesWk = (s, w) => !!w && movesLeft(s, s.me, w) === 0;
+const outOfMoves = (s) => noMovesWk(s, s.weeks[s.wk]);
+const nextWkS = (s) => (s.wk + 1 < s.weeks.length ? { ...s, wk: s.wk + 1 } : null);
+const planS = (s) => (outOfMoves(s) && nextWkS(s)) || s;
+const planBase = (s, sP) => (sP !== s && !oppOf(sP.weeks[sP.wk] || {}, sP.me) ? null : winChance(sP));
+const planNote = (sP) => { const w = sP.weeks[sP.wk] || {}, d = (w.dates || [])[0]; return "No moves left this week. These are for " + (w.label || "next week") + (d ? ", once your moves reset on " + dayLabel(d) : "") + "."; };
+const PlanNote = ({ sP }) => <div className="w-full text-xs text-amber-600 mt-1 mb-1">{planNote(sP)}</div>;
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
