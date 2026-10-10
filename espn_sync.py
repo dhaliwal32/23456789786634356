@@ -276,6 +276,82 @@ try:
     data["daily"] = daily
     data["gstate"] = gstate
     data["pstat"] = pstat
+    # 3e) box-score history for the player pop-up: one small file per finished day (news_logos.py round 31)
+    try:
+        bdir31_ = os.path.join(HERE, "box")
+        os.makedirs(bdir31_, exist_ok=True)
+        ipath31_ = os.path.join(bdir31_, "index.json")
+        try:
+            with open(ipath31_, encoding="utf-8") as f31_:
+                idx31_ = json.load(f31_)
+        except Exception:
+            idx31_ = {}
+        have31_, none31_ = set(idx31_.get("dates") or []), set(idx31_.get("none") or [])
+        d31_ = min(period_date.values()) if period_date else day1
+        todo31_ = []
+        while d31_ <= today_et:
+            if d31_.isoformat() not in have31_ and d31_.isoformat() not in none31_:
+                todo31_.append(d31_.isoformat())
+            d31_ += timedelta(days=1)
+        new31_ = 0
+        for dd31_ in todo31_[:12]:
+            try:
+                sj31_ = requests.get(f"https://api-web.nhle.com/v1/score/{dd31_}", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+                gms31_ = [g31_ for g31_ in sj31_.get("games", []) if g31_.get("gameType", 2) == 2 and str(g31_.get("gameScheduleState") or "OK") == "OK"]
+                if not gms31_:
+                    if dd31_ < today_et.isoformat():
+                        none31_.add(dd31_)
+                    continue
+                if not all(str(g31_.get("gameState") or "") in ("FINAL", "OFF") for g31_ in gms31_):
+                    continue
+                fp31_ = {}
+                for tm31_ in (daily.get(dd31_) or {}).values():
+                    for pid31_, v31_ in tm31_.items():
+                        if v31_ and v31_[0] is not None:
+                            fp31_[str(pid31_)] = v31_[0]
+                out31_ = {}
+                for g31_ in gms31_:
+                    bx31_ = requests.get(f"https://api-web.nhle.com/v1/gamecenter/{g31_['id']}/boxscore", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+                    pbg31_ = bx31_.get("playerByGameStats") or {}
+                    sc31_ = {s31_: (bx31_.get(s31_) or g31_.get(s31_) or {}) for s31_ in ("homeTeam", "awayTeam")}
+                    ab31_ = {}
+                    for s31_ in ("homeTeam", "awayTeam"):
+                        a31_ = str(sc31_[s31_].get("abbrev") or "").upper()
+                        ab31_[s31_] = ALIAS.get(a31_, a31_)
+                    for s31_, o31_ in (("homeTeam", "awayTeam"), ("awayTeam", "homeTeam")):
+                        grp31_ = pbg31_.get(s31_) or {}
+                        base31_ = {"t": ab31_[s31_], "o": ab31_[o31_], "h": 1 if s31_ == "homeTeam" else 0,
+                                   "my": sc31_[s31_].get("score"), "op": sc31_[o31_].get("score")}
+                        for x31_ in (grp31_.get("forwards") or []) + (grp31_.get("defense") or []) + (grp31_.get("goalies") or []):
+                            nm31_ = (x31_.get("name") or {}).get("default") or ""
+                            pid31_ = _pidx.get((_nk(nm31_), ab31_[s31_])) or _pidx.get((_nk2(nm31_), ab31_[s31_]))
+                            if not pid31_:
+                                continue
+                            if "saves" in x31_ or "goalsAgainst" in x31_ or "saveShotsAgainst" in x31_:
+                                if not x31_.get("toi") or x31_.get("toi") == "00:00":
+                                    continue
+                                ln31_ = {"sv": x31_.get("saves") or 0, "ga": x31_.get("goalsAgainst") or 0, "dec": x31_.get("decision") or "",
+                                         "toi": x31_.get("toi") or "", "sa": x31_.get("shotsAgainst"), "svp": x31_.get("savePctg")}
+                            else:
+                                ln31_ = {"g": x31_.get("goals") or 0, "a": x31_.get("assists") or 0, "pm": x31_.get("plusMinus") or 0,
+                                         "sog": x31_.get("sog") or 0, "pim": x31_.get("pim") or 0, "hit": x31_.get("hits") or 0,
+                                         "blk": x31_.get("blockedShots") or 0, "toi": x31_.get("toi") or "", "ppg": x31_.get("powerPlayGoals") or 0,
+                                         "fo": x31_.get("faceoffWinningPctg"), "shf": x31_.get("shifts"), "gv": x31_.get("giveaways") or 0, "tk": x31_.get("takeaways") or 0}
+                            ln31_.update(base31_)
+                            if str(pid31_) in fp31_:
+                                ln31_["fp"] = fp31_[str(pid31_)]
+                            out31_[str(pid31_)] = ln31_
+                with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:
+                    json.dump({"d": dd31_, "p": out31_}, f31_, separators=(",", ":"))
+                have31_.add(dd31_)
+                new31_ += 1
+            except Exception as ex31_:
+                print(f"(box) history for {dd31_} failed: {ex31_}")
+        with open(ipath31_, "w", encoding="utf-8") as f31_:
+            json.dump({"dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))
+        print(f"(box) history: {new31_} new day(s), {len(have31_)} saved in total")
+    except Exception as ex31_:
+        print(f"(box) history failed: {ex31_}")
     mine_ = str(MY_TEAM_ID)
     for dd_, day_ in daily.items():
         tot_ = sum((v[0] or 0) for v in day_.get(mine_, {}).values() if v[1] in (3, 4, 5, 6))
