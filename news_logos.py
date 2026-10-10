@@ -6782,5 +6782,79 @@ def fix_ailab46(t):
 
 PY_FIXES[AILAB] = fix_ailab46
 
+# ---------- round 47: logos on Today's suggestion, every-starter list open, matchup dots hidden ----------
+def r47_region(t, name):
+    a = t.find("function " + name + "(")
+    if a < 0:
+        return -1, -1
+    ends = [x for x in (t.find("\nfunction ", a + 10), t.find("\nconst ", a + 10)) if x > 0]
+    return a, (min(ends) if ends else len(t))
+
+
+def r47_today_logos(t):
+    if 'className="gx-pl"' in t:
+        print("(news) round 47: logos on Today's suggestion: already done")
+        return t
+    a, b = r47_region(t, "Today")
+    if a < 0:
+        print("(news) round 47: logos on Today's suggestion: NOT DONE, the Today page was not found. Send this log to the AI helper.")
+        return t
+    lines = t[a:b].split("\n")
+    pats = [(re.compile(r"<PN p=\{([A-Za-z_$][\w$.]*)\}([^<>]*?)/>"),
+             lambda m: '<span className="gx-pl"><TeamLogo t={' + m.group(1) + '.t} size={18} />' + m.group(0) + "</span>"),
+            (re.compile(r"(?<![=\w$])\{([A-Za-z_$][\w$.]*)\.n\}"),
+             lambda m: '<span className="gx-pl"><TeamLogo t={' + m.group(1) + '.t} size={18} />{' + m.group(1) + ".n}</span>")]
+    for pat, fn in pats:
+        out, n = [], 0
+        for ln in lines:
+            if ln.strip().startswith("//") or "/*" in ln or "TeamLogo" in ln:
+                out.append(ln)
+                continue
+            new, k = pat.subn(fn, ln)
+            n += k
+            out.append(new)
+        if n:
+            print("(news) round 47: logos on Today's suggestion: updated (" + str(n) + " names)")
+            return t[:a] + "\n".join(out) + t[b:]
+    print("(news) round 47: logos on Today's suggestion: NOT DONE, no player names found. Send these lines to the AI helper:")
+    for ln in [x for x in lines if re.search(r"[Mm]ove|[Aa]dd |drop", x)][:8]:
+        print("(news)   | " + ln.strip()[:260])
+    return t
+
+
+def r47_dots(t):
+    if "round 47 dots" in t:
+        print("(news) round 47: matchup dots hidden: already done")
+        return t
+    a, b = r47_region(t, "Matchup")
+    names = sorted(set(re.findall(r'className=\{?"([\w-]*dot[\w-]*)', t[a:b]))) if a >= 0 else []
+    if not names:
+        print("(news) round 47: matchup dots hidden: NOT DONE, could not tell which element draws them. Send these lines to the AI helper:")
+        for ln in [x for x in (t[a:b].split("\n") if a >= 0 else []) if "sel ===" in x or "i === sel" in x][:8]:
+            print("(news)   | " + ln.strip()[:260])
+        return t
+    css = "  /* round 47 dots (news_logos.py) */\n  " + ", ".join("." + n for n in names) + " { display: none !important; }\n"
+    print("(news) round 47: matchup dots hidden: updated (" + ", ".join(names) + ")")
+    return t.replace("</style>", css + "</style>", 1)
+
+
+def round47(t):
+    t = lit(t, "round 47: every-starter list starts open", "  const [day, setDay] = useState(null);\n  const [all, setAll] = useState(false);",
+            "  const [day, setDay] = useState(null);\n  const [all, setAll] = useState(true);", "const [all, setAll] = useState(true);")
+    t = lit(t, "round 47: every-starter list stays open", "onClick={() => { setDay(i); setAll(false); }}", "onClick={() => setDay(i)}", 'onClick={() => setDay(i)} className={"gx-day"')
+    t = r47_today_logos(t)
+    t = r47_dots(t)
+    for must in ("goalies v43", "function GoalieStreams(", "function Today(", "function Matchup(", "matchup v35"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 47 (" + must + ").")
+    return t
+
+
+_fix_before_r47 = fix
+
+
+def fix(t):
+    return round47(_fix_before_r47(t))
+
 if __name__ == "__main__":
     main()
