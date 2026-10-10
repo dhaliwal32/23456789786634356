@@ -196,6 +196,12 @@
   .gx-lg { grid-template-columns: minmax(0,1fr) 44px minmax(80px, 2fr) 44px minmax(0,1fr); }
   .gx-gm .bars { height: 64px; gap: 5px; }
   .gx-gm .bars i { width: 14px; }
+  /* round 35 matchup (news_logos.py) */
+  .gx-day { border: 1px solid var(--line); border-radius: 8px; padding: 7px 2px; text-align: center; background: var(--card); font-variant-numeric: tabular-nums; }
+  .gx-day.on { border-color: var(--accent); box-shadow: inset 0 0 0 0.5px var(--accent); }
+  .gx-h2h { display: grid; grid-template-columns: minmax(0,1fr) 48px 28px 48px minmax(0,1fr); align-items: center; gap: 6px; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-arw { width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line2); color: var(--mute); font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .gx-arw:hover { color: var(--ink); border-color: var(--accent); }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -1810,66 +1816,135 @@ function MatchCard({ s, a, b, P, on, mine, onSel }) {
   );
 }
 function Matchup({ s, setS, wk, setWk }) {
-  // matchup v16: actual points on top, what's still projected underneath (news_logos.py)
+  // matchup v35: one day at a time, head to head, swipe or arrows between matchups (news_logos.py)
+  // matchup v16: older marker kept, with these done markers from earlier rounds:
+  // Day difference
+  // data-v="daydiff2"
+  // day header: running total removed
+  // label={"Win chance · "
+  // data-w="daydiff3"
+  // <H2H x={x}
+  // <LiveTag st={tag === "LIVE" ? "L" : "F"} />
+  // round 28: actual-score row removed
+  // const openDay =
+  // <DayFold key=
+  // </DayFold>
   const K = s.blend, done = wk.done || 0;
   const pairOpp = oppOf(wk, s.me);
   const myPair = [s.me, pairOpp || s.opp];
   const others = (wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me);
   const all = [myPair, ...others];
   const [sel, setSel] = useState(0);
-  const cur = all[Math.min(sel, all.length - 1)];
+  const [day, setDay] = useState(null);
+  const touch = React.useRef(null);
+  const [a, b] = all[Math.min(sel, all.length - 1)];
   const gen = (window.ESPN_DATA || {}).generated;
   const P = useMemo(() => {
     const o = {};
-    all.forEach((pr) => pr.forEach((id) => { if (!id || o[id]) return; o[id] = { r: weekLive(s.players.filter((p) => p.ft === id), wk, K, id, { detail: true }), act: +((wk.act || {})[id]) || 0 }; }));
+    [a, b].forEach((id) => { o[id] = { r: weekLive(s.players.filter((p) => p.ft === id), wk, K, id, { detail: true }), act: +((wk.act || {})[id]) || 0 }; });
     return o;
-  }, [s.players, wk, K, done, s.opp, gen]);
-  const [a, b] = cur;
+  }, [s.players, wk, K, done, a, b, gen]);
   const A = P[a].r, B = P[b].r, aA = P[a].act, aB = P[b].act;
   const fa = aA + A.total, fb = aB + B.total, margin = fa - fb;
-  const final = done >= wk.days.length;
-  const vsP = (R) => { if (!(R.projSoFar > 0 || R.actSoFar > 0)) return null; const v = R.actSoFar - R.projSoFar; return <><br /><span className={v >= 0 ? "text-green-700" : "text-red-600"}>{(v >= 0 ? "+" : "") + f1(v)} vs projected so far</span></>; };
-  let run = (aA - aB) - (A.act - B.act);
-  const openDay = (wk.dates || []).findIndex((x) => x >= todayISO());
+  const dates = wk.dates || [], n = dates.length, today = todayISO();
+  const first = dates.findIndex((x) => x >= today);
+  const d = Math.max(0, Math.min(n - 1, day != null ? day : first >= 0 ? first : n - 1));
+  const over = n > 0 && done >= n;
+  const move = (k) => setSel((Math.min(sel, all.length - 1) + k + all.length) % all.length);
+  const onStart = (e) => { const t = e.touches[0]; touch.current = [t.clientX, t.clientY]; };
+  const onEnd = (e) => {
+    const t0 = touch.current, t = e.changedTouches[0];
+    touch.current = null;
+    if (!t0 || all.length < 2) return;
+    const dx = t.clientX - t0[0], dy = t.clientY - t0[1];
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) move(dx < 0 ? 1 : -1);
+  };
+  const x = A.days[d] || { start: [], bench: [], act: 0, total: 0 }, y = B.days[d] || { start: [], bench: [], act: 0, total: 0 };
+  const dvOf = (i) => { const p = A.days[i], q = B.days[i]; return p && q ? p.act + p.total - (q.act + q.total) : 0; };
+  const state = x.locked || y.locked ? (x.allDone && y.allDone ? "final" : "live") : dates[d] < today ? "final" : "projected";
+  const rows = [];
+  ["F", "D", "UTIL", "G"].forEach((sl) => {
+    const L = x.start.filter((p) => p.slot === sl), R = y.start.filter((p) => p.slot === sl);
+    for (let i = 0; i < Math.max(L.length, R.length); i++) rows.push([sl, L[i] || null, R[i] || null]);
+  });
+  const val = (p) => (!p ? null : p.st ? (p.a == null ? 0 : p.a) : p.x);
+  const cell = (p, right) => {
+    if (!p) return <div className={"text-sm text-slate-500" + (right ? " text-right" : "")}>empty</div>;
+    const st = p.p === "G" && !p.st ? mStart(p.gs) : "", line = p.st ? statLine(pStat(p, p.dt)) : "";
+    return (
+      <div className={"min-w-0" + (right ? " text-right" : "")}>
+        <div className="truncate"><PN p={p} className="" /></div>
+        <div className="text-xs text-slate-500 truncate">{p.st ? <><LiveTag st={p.st} t={p.t} dt={p.dt} />{line ? " " + line : ""}</> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>
+      </div>
+    );
+  };
+  const num = (p, q, right) => {
+    const v = val(p), o = val(q);
+    if (v == null) return <div className={"text-slate-500" + (right ? "" : " text-right")}>{"\u2013"}</div>;
+    const win = o == null || v - o >= 0.05;
+    return <div className={right ? "" : "text-right"} style={win ? { color: "var(--good)", fontWeight: 600 } : null}>{p.st && p.a == null ? "\u2013" : f1(v)}</div>;
+  };
+  const sit = (l, id) => (l.bench && l.bench.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
+  const dayTot = x.act + x.total - (y.act + y.total);
+  const mine = a === s.me;
   return (
     <div>
-      {all.length > 1 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">{all.map(([x, y], i) => <MatchCard key={x + "-" + y} s={s} a={x} b={y} P={P} on={i === sel} mine={i === 0} onSel={() => setSel(i)} />)}</div>}
-      <div className="flex flex-wrap gap-2 items-center mb-3 text-sm">
-        <TL s={s} id={a} className="font-semibold" /><span className="text-slate-500">vs</span>
-        {sel === 0 && !pairOpp ? <select className={inp} value={s.opp} onChange={(e) => setS({ ...s, opp: e.target.value })}>{s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select> : <TL s={s} id={b} className="font-semibold" />}
+      <div onTouchStart={onStart} onTouchEnd={onEnd} style={{ touchAction: "pan-y" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {all.length > 1 ? <button type="button" className="m-hide gx-arw" aria-label="Previous matchup" onClick={() => move(-1)}>{"\u2039"}</button> : null}
+          <div className="min-w-0" style={{ flex: 1 }}>
+            <div className="text-sm font-semibold truncate" style={mine ? { color: "var(--accent)" } : null}><TL s={s} id={a} /></div>
+            <div className="gx-num" style={{ fontSize: 28 }}>{f1(aA)}</div>
+          </div>
+          <GxRing v={winProb(A, B, aA, aB)} />
+          <div className="min-w-0 text-right" style={{ flex: 1 }}>
+            <div className="text-sm text-slate-500 truncate"><TL s={s} id={b} /></div>
+            <div className="gx-num" style={{ fontSize: 28, color: "var(--ink2)" }}>{f1(aB)}</div>
+          </div>
+          {all.length > 1 ? <button type="button" className="m-hide gx-arw" aria-label="Next matchup" onClick={() => move(1)}>{"\u203a"}</button> : null}
+        </div>
+        {all.length > 1 ? (
+          <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 8 }}>
+            {all.map((pr, i) => <button key={i} type="button" aria-label={"Matchup " + (i + 1)} onClick={() => setSel(i)} style={{ width: 6, height: 6, borderRadius: 99, background: i === Math.min(sel, all.length - 1) ? "var(--accent)" : "var(--line2)" }}></button>)}
+          </div>
+        ) : null}
+        <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 8 }}>
+          <span>{(over ? "Final " : "Projected ") + Math.round(fa)}</span>
+          <span style={{ margin: "0 auto", color: margin >= 0 ? "var(--good)" : "var(--bad)" }}>{mine ? (margin >= 0 ? "Ahead by " : "Behind by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " ahead by " + f1(Math.abs(margin))}</span>
+          <span>{Math.round(fb)}</span>
+        </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <Card label={teamName(s, a)} value={f1(aA)} sub={<>+ {f1(A.total)} still projected · {f1(fa)} final est.{vsP(A)}<br />{gamesMoves(s, a, wk, A)}</>} />
-        <Card label={teamName(s, b)} value={f1(aB)} sub={<>+ {f1(B.total)} still projected · {f1(fb)} final est.{vsP(B)}<br />{gamesMoves(s, b, wk, B)}</>} />
-        <Card label={final ? "Final margin" : "Projected margin"} value={(margin >= 0 ? "+" : "") + f1(margin)} tone={margin >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"} />
-        <Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))} sub={final ? "Week complete" : `${wk.days.length - done} day(s) left · ${A.wasted} games wasted`} />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(" + Math.max(1, n) + ", minmax(0,1fr))", gap: 6, marginTop: 14 }}>
+        {dates.map((dt, i) => {
+          const dv = dvOf(i), flat = Math.abs(dv) < 0.05;
+          return (
+            <button key={dt} type="button" onClick={() => setDay(i)} className={"gx-day" + (i === d ? " on" : "")}>
+              <span className={"block text-xs " + (i === d ? "font-semibold" : "text-slate-500")}>{dt === today ? "Today" : dayLabel(dt).split(",")[0]}</span>
+              <span className="block text-sm" style={{ color: flat ? "var(--faint)" : dv > 0 ? "var(--good)" : "var(--bad)" }}>{flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)}</span>
+            </button>
+          );
+        })}
       </div>
-      {/* round 28: actual-score row removed */}
-      {wk.days.map((dl, d) => {
-        const x = A.days[d], y = B.days[d];
-        const dv = x.act + x.total - (y.act + y.total); run += dv;
-        const tag = x.locked || y.locked ? (x.allDone && y.allDone ? "FINAL" : "LIVE") : "";
-        return (
-          <DayFold key={(wk.dates || [])[d] || d} id={(wk.dates || [])[d] || "d" + d} open0={d === openDay} head={dl} right={<>{/* day header: running total removed */}{tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}<span className="text-slate-500">{f1(x.act + x.total) + " \u2013 " + f1(y.act + y.total)}</span><span className={"min-w-[56px] text-center px-2 py-0.5 rounded-md font-semibold " + (dv >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{dv >= 0 ? "+" : ""}{f1(dv)}</span></>}>
-            <div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>
-            <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
-              <Side l={x} s={s} id={a} wk={wk} d={d} /><Side l={y} s={s} id={b} wk={wk} d={d} />
-            </div>
-            <div data-v="daydiff2" data-w="daydiff3" className="border-t border-slate-200 px-3 py-2">
-              {[["Day difference", dv], ["Total so far", run]].map(([lab, v]) => (
-                <div key={lab} className="flex justify-between items-center py-1.5 font-semibold">
-                  <span>{lab}</span>
-                  <span className="flex items-center gap-3">
-                    <span className="text-sm text-slate-500 font-normal">{Math.abs(v) < 0.05 ? "even" : (v > 0 ? teamName(s, a) : teamName(s, b)) + " ahead"}</span>
-                    <span className={"min-w-[64px] text-center px-2.5 py-0.5 rounded-md " + (v >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{v >= 0 ? "+" : ""}{f1(v)}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </DayFold>
-        );
-      })}
-      <div className="text-xs text-slate-500">Games that have started show real ESPN points (LIVE, then FINAL). Everything still to come is projected, with lineups auto-optimized (9 F, 5 D, 1 UTIL, 2 G). W % / xG = betting line for that game. Tap any matchup above to switch.</div>
+      <div className="gx-pn" style={{ marginTop: 12 }}><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
+          <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
+          <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>
+            <span className="font-semibold">{f1(x.act + x.total)}</span> <span className="text-slate-500">to {f1(y.act + y.total)}</span>
+            <span style={{ marginLeft: 8, color: dayTot >= 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot >= 0 ? "+" : "") + f1(dayTot)}</span>
+          </span>
+        </div>
+        {rows.length ? rows.map(([sl, p, q], i) => (
+          <div key={i} className="gx-h2h" style={i ? null : { borderTop: 0 }}>
+            {cell(p, false)}{num(p, q, false)}
+            <div className="text-xs text-center" style={{ color: "var(--faint)" }}>{sl === "UTIL" ? "U" : sl}</div>
+            {num(q, p, true)}{cell(q, true)}
+          </div>
+        )) : <div className="text-sm text-slate-500">No games for either team on this day.</div>}
+        {sit(x, a)}{sit(y, b)}
+      </div>
+      <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 10 }}>
+        <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
+      </div>
     </div>
   );
 }
@@ -3866,16 +3941,17 @@ function TopBar({ s, setS, tab, go, ageH }) {
   );
 }
 const GxRing = ({ v, big }) => {
-  const size = big ? 104 : 64, m = size / 2, r = big ? 36 : 26, w = big ? 6 : 5, c = 2 * Math.PI * r;
-  const p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
+  // dial v35: half dial with a needle in place of the ring (news_logos.py)
+  const w = big ? 104 : 88, p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
   const col = v == null ? "var(--faint)" : v >= 0.5 ? "var(--good)" : "var(--bad)";
+  const th = Math.PI * (1 - p), nx = 50 + 33 * Math.cos(th), ny = 50 - 33 * Math.sin(th);
   return (
-    <svg viewBox={"0 0 " + size + " " + size} width={size} height={size} className="gx-svg" style={{ flexShrink: 0, display: "block" }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
-      {big ? <circle cx={m} cy={m} r={44} style={{ fill: "none", stroke: "var(--track)", strokeWidth: 1, strokeDasharray: "1 5.9" }} /> : null}
-      <circle cx={m} cy={m} r={r} style={{ fill: "none", stroke: "var(--track)", strokeWidth: w }} />
-      <circle cx={m} cy={m} r={r} transform={"rotate(-90 " + m + " " + m + ")"} style={{ fill: "none", stroke: col, strokeWidth: w, strokeDasharray: (p * c).toFixed(1) + " " + c.toFixed(1) }} />
-      <text x={m} y={big ? m + 3 : m + 5} textAnchor="middle" style={{ fontSize: big ? 21 : 15, fontWeight: 600, fill: big ? col : "var(--ink)" }}>{v == null ? "\u2013" : wpTxt(v)}</text>
-      {big ? <text x={m} y={m + 18} textAnchor="middle" style={{ fontSize: 11, fill: "var(--mute)" }}>to win</text> : null}
+    <svg viewBox="0 0 100 68" width={w} height={Math.round(w * 0.68)} className="gx-svg" style={{ display: "block", flexShrink: 0 }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
+      <path d="M10 50 A40 40 0 0 1 90 50" style={{ fill: "none", stroke: "var(--track)", strokeWidth: 7 }} />
+      {v == null ? null : <path d="M10 50 A40 40 0 0 1 90 50" style={{ fill: "none", stroke: col, strokeWidth: 7, strokeDasharray: (p * 125.66).toFixed(1) + " 200" }} />}
+      {v == null ? null : <line x1={50} y1={50} x2={nx.toFixed(1)} y2={ny.toFixed(1)} style={{ stroke: "var(--ink)", strokeWidth: 2 }} />}
+      <circle cx={50} cy={50} r={3.5} style={{ fill: "var(--ink)" }} />
+      <text x={50} y={66} textAnchor="middle" style={{ fontSize: 14, fontWeight: 600, fill: col }}>{v == null ? "\u2013" : wpTxt(v) + (big ? " to win" : "")}</text>
     </svg>
   );
 };
