@@ -7460,5 +7460,25 @@ _fix_before_r53 = fix
 def fix(t):
     return round53(_fix_before_r53(t))
 
+# ---------- round 54: Refresh button in Setup ----------
+R54_OLD = '<div className="gx-sr"><span>Your settings on this device</span>'
+R54_NEW = ('<div className="gx-sr"><span>Get the latest data and app version</span>'
+           '<button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" '
+           'onClick={() => { window.location.href = window.location.pathname + "?v=" + Date.now(); }}>Refresh</button></div>\n        ' + R54_OLD)
+
+
+def round54(t):
+    t = lit(t, "round 54: Refresh button in Setup", R54_OLD, R54_NEW, "Get the latest data and app version")
+    if "function SetupPage(" not in t:
+        fail("fantasy-gm.html looks damaged after round 54 (function SetupPage().")
+    return t
+
+
+_fix_before_r54 = fix
+
+
+def fix(t):
+    return round54(_fix_before_r54(t))
+
 if __name__ == "__main__":
     main()
