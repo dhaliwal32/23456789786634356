@@ -4378,5 +4378,141 @@ _fix_before_r33 = fix
 def fix(t):
     return round33(_fix_before_r33(t))
 
+# ---------- round 34: home page tweaks. Games this matchup, full-width league, red and green everywhere, cleaner week chart ----------
+R34_CSS = r'''  /* round 34 home tweaks (news_logos.py) */
+  .gx-lg { grid-template-columns: minmax(0,1fr) 44px minmax(80px, 2fr) 44px minmax(0,1fr); }
+  .gx-gm .bars { height: 64px; gap: 5px; }
+  .gx-gm .bars i { width: 14px; }
+'''
+
+R34_WEEK = r'''function GxWeek({ wk, A, B, aA, aB }) {
+  // week chart v34: drawn at real size so text stays readable, cleaner projection line (news_logos.py)
+  const [W, setW] = useState(620);
+  const box = React.useRef(null);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const fit = () => setW(Math.max(300, Math.round(el.clientWidth)));
+    fit();
+    if (window.ResizeObserver) { const ro = new ResizeObserver(fit); ro.observe(el); return () => ro.disconnect(); }
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+  const dates = wk.dates || [], n = dates.length, today = todayISO();
+  if (!n) return <div ref={box}></div>;
+  let run = (aA - aB) - (A.act - B.act);
+  const rows = dates.map((dt, d) => { const x = A.days[d], y = B.days[d], dv = x.act + x.total - (y.act + y.total); run += dv; return { dt, dv, run, st: dt < today ? "f" : dt === today ? "t" : "p" }; });
+  const grid = Math.max(10, Math.ceil(rows.reduce((mx, r) => Math.max(mx, Math.abs(r.dv)), 0) / 10) * 10), sc = 46 / grid;
+  const L = 34, R = W - 16, colW = (R - L) / n, cx = (i) => L + colW * (i + 0.5), bw = Math.min(40, colW * 0.36);
+  const lo = Math.min.apply(null, rows.map((r) => r.run)), hi = Math.max.apply(null, rows.map((r) => r.run));
+  const ry = (v) => (hi === lo ? 167 : 178 - ((v - lo) / (hi - lo)) * 22);
+  const ci = rows.findIndex((r) => r.st !== "f"), last = ci < 0 ? n - 1 : ci - 1;
+  const pts = (a, b) => rows.slice(a, b + 1).map((r, i) => cx(a + i).toFixed(1) + "," + ry(r.run).toFixed(1)).join(" ");
+  const sg = (v) => (v > 0 ? "+" : "") + Math.round(v);
+  const col = (v) => (v >= 0 ? "var(--good)" : "var(--bad)");
+  const tx = (size, fill, weight) => ({ fontSize: size, fill, fontWeight: weight || 400 });
+  const nowLeft = last >= n - 3;
+  return (
+    <div ref={box} style={{ overflow: "hidden" }}>
+      <svg viewBox={"0 0 " + W + " 196"} width={W} height={196} className="gx-svg" style={{ display: "block", marginTop: 6 }} role="img" aria-label="Margin each day this week and the running total">
+        {rows.map((r, i) => (r.st === "t" ? <rect key={"h" + i} x={cx(i) - colW / 2 + 2} y={4} width={colW - 4} height={136} style={{ fill: "var(--accentSoft)" }} /> : null))}
+        <line x1={L} y1={36} x2={R} y2={36} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
+        <line x1={L} y1={82} x2={R} y2={82} style={{ stroke: "var(--faint)" }} />
+        <line x1={L} y1={128} x2={R} y2={128} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
+        <text x={26} y={40} textAnchor="end" style={tx(11, "var(--faint)")}>{"+" + grid}</text>
+        <text x={26} y={86} textAnchor="end" style={tx(11, "var(--faint)")}>0</text>
+        <text x={26} y={132} textAnchor="end" style={tx(11, "var(--faint)")}>{"-" + grid}</text>
+        {rows.map((r, i) => {
+          const h = Math.max(1, Math.abs(r.dv) * sc), up = r.dv >= 0, y = up ? 81 - h : 83, flat = Math.abs(r.dv) < 0.05;
+          return (
+            <g key={r.dt}>
+              <text x={cx(i)} y={18} textAnchor="middle" style={tx(12, r.st === "t" ? "var(--accent)" : "var(--mute)", r.st === "t" ? 600 : 400)}>{r.st === "t" ? "Today" : dayLabel(r.dt).split(",")[0]}</text>
+              {flat ? null : r.st === "p"
+                ? <rect x={cx(i) - bw / 2 + 0.5} y={y + 0.5} width={bw - 1} height={Math.max(1, h - 1)} style={{ fill: "none", stroke: col(r.dv), strokeWidth: 1, strokeDasharray: "3 3" }} />
+                : <rect x={cx(i) - bw / 2} y={y} width={bw} height={h} style={{ fill: col(r.dv) }} />}
+              <text x={cx(i)} y={up && !flat ? 98 : 76} textAnchor="middle" style={tx(12, flat ? "var(--faint)" : col(r.dv))}>{flat ? "0" : sg(r.dv)}</text>
+            </g>
+          );
+        })}
+        <line x1={L} y1={152} x2={R} y2={152} style={{ stroke: "var(--line)" }} />
+        {last < n - 1 ? <polyline points={pts(Math.max(last, 0), n - 1)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1, opacity: 0.35 }} /> : null}
+        {last >= 1 ? <polyline points={pts(0, last)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1.5 }} /> : null}
+        {rows.map((r, i) => (i > last ? <circle key={"p" + i} cx={cx(i)} cy={ry(r.run)} r={2.5} style={{ fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 1, opacity: 0.55 }} /> : null))}
+        {rows.map((r, i) => (i <= last ? <circle key={"c" + i} cx={cx(i)} cy={ry(r.run)} r={i === last ? 3.5 : 2.5} style={i === last ? { fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 1.5 } : { fill: "var(--accent)" }} /> : null))}
+        {last >= 0 && ci >= 0 ? <text x={cx(last) + (nowLeft ? -8 : 8)} y={192} textAnchor={nowLeft ? "end" : "start"} style={tx(11, "var(--accent)")}>{sg(aA - aB) + " now"}</text> : null}
+        <text x={R} y={192} textAnchor="end" style={tx(11, "var(--mute)")}>{sg(rows[n - 1].run) + (ci < 0 ? " final" : " projected")}</text>
+      </svg>
+    </div>
+  );
+}
+
+'''
+
+R34_HOME = r'''function GxHome({ s, wk, A, B }) {
+  // home v34: games this matchup and the league are full width (news_logos.py)
+  return (
+    <>
+      <GxGames wk={wk} A={A} B={B} />
+      <GxLeague s={s} wk={wk} />
+      <div className="grid md:grid-cols-2 gap-3">
+        <GxCarry s={s} wk={wk} />
+        <GxGoalies s={s} wk={wk} />
+      </div>
+      <GxPlayoff s={s} />
+    </>
+  );
+}
+
+'''
+
+R34_HELPERS = r'''// ---------- round 34: lineup games for each day of this matchup (news_logos.py) ----------
+function GxGames({ wk, A, B }) {
+  const dates = wk.dates || [], today = todayISO();
+  if (!dates.length || !A || !B) return null;
+  const rows = dates.map((dt, d) => ({ dt, a: ((A.days[d] || {}).start || []).length, b: ((B.days[d] || {}).start || []).length }));
+  const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
+  const mx = Math.max(1, Math.max.apply(null, rows.map((r) => Math.max(r.a, r.b))));
+  const open = dates[dates.length - 1] >= today;
+  return (
+    <GxPanel title="Games this matchup" right={"Lineup games \u00b7 you " + tot("a", "") + ", them " + tot("b", "") + (open ? " \u00b7 from today " + tot("a", today) + " and " + tot("b", today) : "")}>
+      <div className="gx-n7 gx-gm" style={{ gridTemplateColumns: "repeat(" + rows.length + ", minmax(0,1fr))" }}>
+        {rows.map((r) => {
+          const on = r.dt === today, past = r.dt < today;
+          return (
+            <div key={r.dt} style={{ padding: "6px 0", borderRadius: 6, background: on ? "var(--accentSoft)" : "transparent" }}>
+              <div className="bars"><i style={{ height: (r.a / mx) * 64, background: "var(--accent)", opacity: past ? 0.45 : 1 }}></i><i style={{ height: (r.b / mx) * 64, background: "var(--faint)", opacity: past ? 0.45 : 1 }}></i></div>
+              <div className="text-sm" style={{ marginTop: 4 }}>{r.a} <span className="text-slate-500">{r.b}</span></div>
+              <div className={"text-xs " + (on ? "font-semibold" : "text-slate-500")}>{on ? "Today" : dayLabel(r.dt).split(",")[0]}</div>
+            </div>
+          );
+        })}
+      </div>
+    </GxPanel>
+  );
+}
+
+'''
+
+
+def round34(t):
+    t = lit(t, "home 2: styles", "</style>", R34_CSS + "</style>", "round 34 home tweaks")
+    t = block(t, "home 2: cleaner week chart", "function GxWeek({ wk, A, B, aA, aB }) {", "// ---------- round 33: home page panels", R34_WEEK, "week chart v34")
+    t = lit(t, "home 2: red and green on every matchup", 'const bar = (win) => (close ? "var(--mute)" : win ? "var(--good)" : "var(--bad)");',
+            'const bar = (win) => (win ? "var(--good)" : "var(--bad)");', 'const bar = (win) => (win ? "var(--good)" : "var(--bad)");')
+    t = block(t, "home 2: full-width panels", "function GxHome({ s, wk }) {", ROOT, R34_HOME, "home v34")
+    t = lit(t, "home 2: Today passes both lineups", "<GxHome s={s} wk={wk} />", "<GxHome s={s} wk={wk} A={A} B={B} />", "<GxHome s={s} wk={wk} A={A} B={B} />")
+    t = lit(t, "home 2: games this matchup", ROOT, R34_HELPERS + ROOT, "function GxGames(")
+    for must in ("function GxGames(", "function GxHome(", "function GxWeek(", "function GxLeague(", "<GxHome s={s}", "today v32", "function playoffSim("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 34 (" + must + ").")
+    return t
+
+
+_fix_before_r34 = fix
+
+
+def fix(t):
+    return round34(_fix_before_r34(t))
+
 if __name__ == "__main__":
     main()
