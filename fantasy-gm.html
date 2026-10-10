@@ -147,6 +147,10 @@
   .gm-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--bad); display: inline-block; animation: gmPulse 1.4s ease-in-out infinite; }
   @keyframes gmPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
   .gm-pill { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 2px 6px; border-radius: 5px; line-height: 1.3; }
+  /* round 28 clean-up (news_logos.py) */
+  .sec-chev { width: 8px; height: 8px; border-right: 2px solid var(--mute); border-bottom: 2px solid var(--mute); transform: rotate(45deg); transition: transform .15s ease; flex-shrink: 0; display: inline-block; margin: 6px 6px 0 10px; }
+  .sec-chev.shut { transform: rotate(-45deg); }
+  .sec-head { flex: 1; min-width: 0; text-align: left; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -468,7 +472,7 @@ function computeMoves(s, o) {
   const inTab = (f) => pos === "all" || (pos === "pp1" ? !!sigOf(f).pp1 : pos === "sk" ? f.p !== "G" : f.p === pos);
   const base = lineupAware ? total(myR) : 0;
   const pool = fas
-    .filter((f) => f.prob > 0 && (f.proj !== false || f.gp > 0) && inTab(f) && f.n.toLowerCase().includes(q))
+    .filter((f) => f.prob > 0 && (f.proj !== false || f.gp > 0) && inTab(f) && f.n.toLowerCase().includes(q) && (!!q || !goalieOut(f)))
     .map((f) => ({ f, raw: rawPts(f) })).filter((x) => x.raw > 0)
     .sort((a, b) => b.raw - a.raw).slice(0, lineupAware ? o.pool || 120 : 500);
   const res = [];
@@ -515,15 +519,54 @@ const PlayerLine = ({ s, p, extra }) => {
     </div>
   );
 };
-const Section = ({ title, sub, link, children }) => (
-  <div className="bg-white rounded-xl border border-slate-200 p-4 text-sm">
-    <div className="flex items-start gap-2 mb-2">
-      <div><div className="font-semibold text-base">{title}</div>{sub && <div className="text-xs text-slate-500">{sub}</div>}</div>
-      {link && <button className="ml-auto text-xs text-blue-600 whitespace-nowrap" onClick={link[1]}>{link[0]} →</button>}
+// round 28: every box opens and closes; the choice is remembered on this device (news_logos.py)
+const UIKEY = "fantasy-islands-gm-ui";
+let __UI = null;
+const uiGet = () => { if (!__UI) { try { __UI = JSON.parse(localStorage.getItem(UIKEY) || "{}") || {}; } catch (e) { __UI = {}; } } return __UI; };
+const uiSet = (k, v) => { const u = uiGet(); u[k] = v; try { localStorage.setItem(UIKEY, JSON.stringify(u)); } catch (e) {} };
+const secKey = (t) => (typeof t === "string" ? t.toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim().slice(0, 40) : "box");
+// boxes that start closed: "tab:start of the title"
+const SEC_SHUT = ["today:your lineup", "today:injuries", "today:news on your players",
+  "myteam:this week day by day", "myteam:player updates", "myteam:injuries", "myteam:protected players",
+  "moves/advice:free agents to watch", "moves/advice:trade advice", "moves/advice:line promotions", "moves/advice:luck", "moves/advice:model vs espn",
+  "moves/planner:week ", "moves/planner:chronic bench players", "moves/trades:trade ideas",
+  "teams:news", "league/power:how to climb the rankings", "league/standings:all teams this week",
+  "news:your opponent", "news:around your league", "news:free agents", "news:phone notifications", "setup/settings:team names"];
+const Section = ({ title, sub, link, children, closed, id }) => {
+  const [k] = useState(() => "sec:" + (window.__TAB || "") + ":" + (id || secKey(title)));
+  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !(closed || SEC_SHUT.some((x) => k.indexOf("sec:" + x) === 0)) : !!v; });
+  const flip = () => { uiSet(k, !open); setOpen(!open); };
+  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  return (
+    <div className={"bg-white rounded-xl border border-slate-200 p-4 text-sm" + (open ? "" : " self-start")}>
+      <div className={"flex items-start gap-2" + (open ? " mb-2" : "")}>
+        <div role="button" tabIndex={0} aria-expanded={open} className="sec-head" onClick={flip} onKeyDown={onKey}>
+          <div className="font-semibold text-base">{title}</div>{open && sub ? <div className="text-xs text-slate-500">{sub}</div> : null}
+        </div>
+        {open && link ? <button className="text-xs text-blue-600 whitespace-nowrap" onClick={link[1]}>{link[0] + " \u2192"}</button> : null}
+        <button type="button" onClick={flip} aria-label={open ? "Close this box" : "Open this box"} style={{ lineHeight: 0, padding: "2px 0" }}><span className={"sec-chev" + (open ? "" : " shut")}></span></button>
+      </div>
+      {open ? children : null}
     </div>
-    {children}
-  </div>
-);
+  );
+};
+const SectionShut = (p) => <Section {...p} closed />;
+const DayFold = ({ id, open0, head, right, children }) => {
+  const k = "day:" + id;
+  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !!open0 : !!v; });
+  const flip = () => { uiSet(k, !open); setOpen(!open); };
+  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 mb-3">
+      <div role="button" tabIndex={0} aria-expanded={open} onClick={flip} onKeyDown={onKey} className={"flex items-center gap-3 px-3 py-2 text-sm cursor-pointer" + (open ? " border-b border-slate-200" : "")}>
+        <span className="font-semibold">{head}</span>
+        <span className="ml-auto flex items-center gap-3">{right}</span>
+        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 2px 2px" }}></span>
+      </div>
+      {open ? children : null}
+    </div>
+  );
+};
 
 // ---------- App ----------
 const NAV = [
@@ -643,7 +686,7 @@ function App() {
     setPrevTab(tab === "teams" ? null : tab); setTeamView(id); setTab("teams"); window.scrollTo(0, 0);
   };
   const backFromTeam = () => { setTeamView(null); if (prevTab) setTab(prevTab); window.scrollTo(0, 0); };
-  window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } };
+  window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } }; window.__TAB = tab + (subs[tab] ? "/" + subs[tab] : "");
   if (!loaded) return <div className="p-8 text-slate-500">Loading your league…</div>;
   const P = { s, setS, wk, setWk, go };
   const LH = { gState, actDay, LiveTag, pStat, gScore, effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel, TL, TeamLogo };
@@ -722,7 +765,7 @@ function Today({ s, wk, go }) {
       else checks.push(["warn", `${p.n}: ${g.l || "starter not announced yet"} — check before lock`]);
     });
     if (L.bench.length) checks.push(["warn", `More players than slots — ${L.bench.map((p) => p.n).join(", ")} would sit`]);
-    if (L.empty > 0) checks.push(["warn", `${L.empty} empty slot${L.empty > 1 ? "s" : ""} — a streamer could fill ${L.empty > 1 ? "them" : "it"}`]);
+    if (L.empty > 0 && !outOfMoves(s)) checks.push(["warn", `${L.empty} empty slot${L.empty > 1 ? "s" : ""} — a streamer could fill ${L.empty > 1 ? "them" : "it"}`]);
   }
   const outNow = mine.filter((p) => { const b = effBack(p).d; return (b && b > today) || (!b && avail(p, today) === 0); });
   const sP = useMemo(() => planS(s), [s]); // round 27, older marker kept: <WinDelta s={s} add={r.f} drop={r.d} /><span
@@ -748,12 +791,12 @@ function Today({ s, wk, go }) {
           <button className="ml-auto text-blue-600" onClick={() => go("matchup")}>All matchups →</button>
         </div>
         <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-end mt-4">
-          <div className="min-w-0"><div className="text-xs text-slate-500 truncate"><TL s={s} id={s.me} /></div><div className="text-4xl">{f1(aA)}</div><div className="text-xs text-slate-500">+ {f1(A.total)} still projected · {f1(fa)} final est.</div></div>
+          <div className="min-w-0"><div className="text-xs text-slate-500 truncate"><TL s={s} id={s.me} /></div><div className="text-4xl">{f1(aA)}</div><div className="hidden">+ {f1(A.total)} still projected · {f1(fa)} final est.</div></div>
           <div className="text-sm text-slate-400 pb-7">vs</div>
-          <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate"><TL s={s} id={opp} /></div><div className="text-4xl">{f1(aB)}</div><div className="text-xs text-slate-500">+ {f1(B.total)} still projected · {f1(fb)} final est.</div></div>
+          <div className="min-w-0 text-right"><div className="text-xs text-slate-500 truncate"><TL s={s} id={opp} /></div><div className="text-4xl">{f1(aB)}</div><div className="hidden">+ {f1(B.total)} still projected · {f1(fb)} final est.</div></div>
         </div>
         <div className="h-1.5 rounded-full bg-slate-200 mt-5 overflow-hidden"><div className={"h-full rounded-full " + (margin >= 0 ? "bg-green-500" : "bg-red-500")} style={{ width: pct + "%" }}></div></div>
-        <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected · {wpTxt(winProb(A, B, aA, aB))} chance to win</span></div>{done < dates.length ? <StrategyLine p={winProb(A, B, aA, aB)} /> : null}
+        <div className="flex flex-wrap items-baseline gap-2 mt-3 text-sm"><span className={"font-semibold " + (margin >= 0 ? "text-green-700" : "text-red-600")}>{margin >= 0 ? "Ahead" : "Behind"} by {f1(Math.abs(margin))}</span><span className="text-slate-500">projected · {wpTxt(winProb(A, B, aA, aB))} chance to win</span></div>{/* round 28: advice sentence removed (older marker kept: <StrategyLine) */}
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         <Section title={dday ? (dday === today ? "Tonight" : `Next game day · ${dayLabel(dday)}`) : "No games left this week"} sub={L ? `${L.start.length} of your players play · projected ${f1(L.total)} vs ${f1(OL.total)}` : ""} link={["Matchup", () => go("matchup")]}>
@@ -776,14 +819,14 @@ function Today({ s, wk, go }) {
           ) : <div className="text-xs text-slate-400 mt-3">Hot and cold streaks show up once players have 3+ games.</div>}
         </Section>
       )}
-      {window.LinesSummary ? <window.LinesSummary s={s} wk={wk} go={go} trend={trend} H={{ Section, teamName, f1, TL }} /> : null}
+      {window.LinesSummary ? <window.LinesSummary s={s} wk={wk} go={go} trend={trend} H={{ Section: SectionShut, teamName, f1, TL }} /> : null}
       <div className="grid md:grid-cols-2 gap-4">
-        <Section title="Injuries" link={["My Team", () => go("myteam")]}>
+        <Section title={"Injuries" + (outNow.length ? " (" + outNow.length + ")" : "")} link={["My Team", () => go("myteam")]}>
           {outNow.length ? outNow.map((p) => { const b = effBack(p); const soon = b.d && dates.length && b.d <= dates[dates.length - 1]; return (
             <Row key={p.id}><PN p={p} /><span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} />{p.ir ? " · IR" : ""}</span><span className={"ml-auto text-xs " + (soon ? "text-green-700 font-semibold" : "text-slate-500")}>{b.d ? "Back " + mdL(b.d) : "No return date"}</span></Row>
           ); }) : <div className="text-green-700">Everyone healthy.</div>}
         </Section>
-        <Section title="News on your players" link={["All news", () => go("news")]}>
+        <Section title={"News on your players" + (news.length ? " (" + news.length + ")" : "")} link={["All news", () => go("news")]}>
           {news.length ? news.map(({ p, items }) => (
             <div key={p.id} className="py-2.5 border-t border-slate-100">
               <div><PN p={p} /> <span className="text-xs text-slate-400">{p.p} · <TeamLogo t={p.t} /></span></div>
@@ -836,7 +879,7 @@ function AdvicePanel({ s }) {
     if ((p.chg || 0) >= 5) r.push("+" + f1(p.chg) + "% rostered");
     return r.join(" · ");
   };
-  const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
+  const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p) && !goalieOut(p)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
   const form = mine.map((p) => {
     const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
     if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
@@ -877,9 +920,7 @@ function AdvicePanel({ s }) {
           {watch.map((p) => <PlayerLine key={p.id} s={s} p={p} extra={<span>· {why(p)}</span>} />)}
         </Section>
       ) : null}
-      <Section title="Your players" sub="Recent form and ice time compared with their projection.">
-        {form.length ? form.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>· {n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
-      </Section>
+      {/* round 28: player updates moved to My Team */}
       <Section title="Trade advice" sub={`Your ranks: forwards #${g.F || "–"}, defence #${g.D || "–"}, goalies #${g.G || "–"} of ${T.rows.length}.`}>
         <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
         {buyLow.length ? <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Buy low: good players in a slump</div>{buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</div> : null}
@@ -1065,7 +1106,7 @@ function buildPlan(s, wk, d0, M) {
   const val = (p, a) => (wk.games[p.t] || []).filter((d) => d >= a).reduce((t, d) => { const dt = wk.dates[d]; return t + effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt); }, 0);
   const dayTotal = (tl, d) => dayLineup(tl.filter((x) => x.from <= d && x.to >= d).map((x) => x.p), wk, d, K).total;
   let tl = myR.map((p) => ({ p, from: 0, to: nD - 1, orig: true }));
-  const fas = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0))
+  const fas = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && !goalieOut(p))
     .map((p) => ({ p, v: val(p, d0) })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).slice(0, 45).map((x) => x.p);
   let base0 = 0; for (let d = d0; d < nD; d++) base0 += dayTotal(tl, d);
   const steps = [], usedFA = new Set();
@@ -1171,7 +1212,7 @@ function EdgesPanel({ s }) {
   const buyFA = top5(s.players.filter((p) => p.ft === "fa" && unlucky(p)).sort(byLuck));
   const luckInfo = (p) => { const l = lk(p); return <span>· {l.t === "s" ? `${l.g} G on ${l.sh} shots, ${l.pct}% vs ${l.cpct}% career` : `SV% ${l.sv.toFixed(3)} vs ${l.csv.toFixed(3)} career`}</span>; };
   const mv = (p) => { const id = pid(p); const mb = M && id ? (M.base || {})[id] : null; return mb != null && p.proj && p.avg > 0 ? { mb, e: p.avg, d: mb - p.avg, r: mb / p.avg } : null; };
-  const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15; };
+  const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15 && !goalieOut(p); };
   const over = (p) => { const x = mv(p); return x && x.d <= -1 && x.r <= 0.85; };
   const uFA = top5(s.players.filter((p) => p.ft === "fa" && under(p)).sort((a, b) => mv(b).d - mv(a).d));
   const uOther = top5(s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && under(p)).sort((a, b) => mv(b).d - mv(a).d));
@@ -1712,7 +1753,7 @@ function Side({ l, s, id, wk, d }) {
       </tbody></table>
       {l.benchAct && l.benchAct.length ? <div className="text-xs text-slate-500 mt-1">On the ESPN bench (not counted): {l.benchAct.map((x) => x.p.n + " " + f1(x.a)).join(", ")}</div> : null}
       {l.bench.length > 0 && <div className="text-xs text-red-600 mt-1">Would sit (no slot): {l.bench.map((p) => p.n).join(", ")}</div>}
-      {l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
+      {l.empty > 0 && !(wk && id === s.me && noMovesWk(s, wk)) && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}
       {wk && id === s.me ? <FillSlot l={l} s={s} wk={wk} d={d} /> : null}
       <div className="mt-auto pt-3"><div className="border-t border-slate-200 pt-2 space-y-1">
         {locked && l.allDone ? (<>
@@ -1761,6 +1802,7 @@ function Matchup({ s, setS, wk, setWk }) {
   const final = done >= wk.days.length;
   const vsP = (R) => { if (!(R.projSoFar > 0 || R.actSoFar > 0)) return null; const v = R.actSoFar - R.projSoFar; return <><br /><span className={v >= 0 ? "text-green-700" : "text-red-600"}>{(v >= 0 ? "+" : "") + f1(v)} vs projected so far</span></>; };
   let run = (aA - aB) - (A.act - B.act);
+  const openDay = (wk.dates || []).findIndex((x) => x >= todayISO());
   return (
     <div>
       {all.length > 1 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">{all.map(([x, y], i) => <MatchCard key={x + "-" + y} s={s} a={x} b={y} P={P} on={i === sel} mine={i === 0} onSel={() => setSel(i)} />)}</div>}
@@ -1774,18 +1816,13 @@ function Matchup({ s, setS, wk, setWk }) {
         <Card label={final ? "Final margin" : "Projected margin"} value={(margin >= 0 ? "+" : "") + f1(margin)} tone={margin >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"} />
         <Card label={"Win chance · " + teamName(s, a)} value={final ? (margin > 0 ? "WIN" : margin < 0 ? "LOSS" : "TIE") : wpTxt(winProb(A, B, aA, aB))} sub={final ? "Week complete" : `${wk.days.length - done} day(s) left · ${A.wasted} games wasted`} />
       </div>
-      <LiveBar s={s} wk={wk} setWk={setWk} ids={[a, b]} />
+      {/* round 28: actual-score row removed */}
       {wk.days.map((dl, d) => {
         const x = A.days[d], y = B.days[d];
         const dv = x.act + x.total - (y.act + y.total); run += dv;
         const tag = x.locked || y.locked ? (x.allDone && y.allDone ? "FINAL" : "LIVE") : "";
         return (
-          <div key={d} className="bg-white rounded-xl border border-slate-200 mb-3">
-            <div className="flex justify-between items-center px-3 py-2 border-b border-slate-200 text-sm">
-              <span className="font-semibold">{dl}</span>
-              {/* day header: running total removed */}
-              {tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}
-            </div>
+          <DayFold key={(wk.dates || [])[d] || d} id={(wk.dates || [])[d] || "d" + d} open0={d === openDay} head={dl} right={<>{/* day header: running total removed */}{tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}<span className="text-slate-500">{f1(x.act + x.total) + " \u2013 " + f1(y.act + y.total)}</span><span className={"min-w-[56px] text-center px-2 py-0.5 rounded-md font-semibold " + (dv >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{dv >= 0 ? "+" : ""}{f1(dv)}</span></>}>
             <div className="m-only"><H2H x={x} y={y} s={s} a={a} b={b} wk={wk} d={d} /></div>
             <div className="m-hide grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               <Side l={x} s={s} id={a} wk={wk} d={d} /><Side l={y} s={s} id={b} wk={wk} d={d} />
@@ -1801,7 +1838,7 @@ function Matchup({ s, setS, wk, setWk }) {
                 </div>
               ))}
             </div>
-          </div>
+          </DayFold>
         );
       })}
       <div className="text-xs text-slate-500">Games that have started show real ESPN points (LIVE, then FINAL). Everything still to come is projected, with lineups auto-optimized (9 F, 5 D, 1 UTIL, 2 G). W % / xG = betting line for that game. Tap any matchup above to switch.</div>
@@ -2753,6 +2790,7 @@ function MyTeam({ s, setS, wk, go }) {
           </table>
         </div>
       </Section>
+      <MyForm s={s} />
       <MyInjProt s={s} setS={setS} wk={wk} />
     </div>
   );
@@ -3193,7 +3231,7 @@ function H2H({ x, y, s, a, b, wk, d }) {
         <div key={i} className="m-row"><MSide p={p} /><div className="m-slot">{sl === "UTIL" ? "U" : sl}</div><MSide p={q} right /></div>
       )) : <div className="text-sm text-slate-400 px-3 py-3">No games for either team.</div>}
       {sit(x, a)}{sit(y, b)}
-      {x.empty || y.empty ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots: {teamName(s, a)} {x.empty} · {teamName(s, b)} {y.empty}</div> : null}
+      {(x.empty || y.empty) && !(a === s.me && noMovesWk(s, wk)) ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots: {teamName(s, a)} {x.empty} · {teamName(s, b)} {y.empty}</div> : null}
       {x.locked || y.locked ? <div className="text-xs text-slate-500 px-3 pt-2">{teamName(s, a)}: {line(x)} · {teamName(s, b)}: {line(y)}</div> : null}
       {a === s.me ? <div className="px-3"><FillSlot l={x} s={s} wk={wk} d={d} /></div> : null}
       <div className="h-2"></div>
@@ -3234,7 +3272,7 @@ function TradeBuilder({ s, initPartner }) {
   const gl = (p) => [...(SCHED[p.t] || [])].filter((d) => d >= today && avail(p, d) > 0).length;
   const cnt = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
   const tv = useMemo(() => { const o = {}; s.players.forEach((p) => { if (p.ft !== "fa" || p.proj !== false || p.gp > 0) o[p.id] = rosRaw(p, K); }); return o; }, [s.players, K, window.__PMODE]);
-  const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60), [tv]);
+  const fas = useMemo(() => s.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0 && !goalieOut(p)).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60), [tv]);
   const rep = useMemo(() => { const o = {}; ["F", "D", "G"].forEach((k) => { const l = s.players.filter((p) => p.ft === "fa" && p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map(vv).sort((a, b) => b - a).slice(0, 5); o[k] = l.length ? l.reduce((a, b) => a + b, 0) / l.length : 0; }); return o; }, [s.players, K]);
   const pe = (p) => Math.max(0, vv(p) - (rep[p.p] || 0)) * gl(p);
   const Gv = mine.filter((p) => give.includes(p.id)), Rv = theirs.filter((p) => get.includes(p.id));
@@ -3626,6 +3664,34 @@ const planS = (s) => (outOfMoves(s) && nextWkS(s)) || s;
 const planBase = (s, sP) => (sP !== s && !oppOf(sP.weeks[sP.wk] || {}, sP.me) ? null : winChance(sP));
 const planNote = (sP) => { const w = sP.weeks[sP.wk] || {}, d = (w.dates || [])[0]; return "No moves left this week. These are for " + (w.label || "next week") + (d ? ", once your moves reset on " + dayLabel(d) : "") + "."; };
 const PlanNote = ({ sP }) => <div className="w-full text-xs text-amber-600 mt-1 mb-1">{planNote(sP)}</div>;
+
+// ---------- round 28: goalies must be playing, player updates for My Team (news_logos.py) ----------
+// a goalie is "not playing" if he started fewer than 2 of his team's last 5 games, or is out right now
+const goalieOut = (p) => {
+  if (!p || p.p !== "G") return false;
+  const today = todayISO();
+  if (avail(p, today) === 0) return true;
+  const g = sigOf(p).gs;
+  if (g && g.rg >= 3) return g.rs * 5 < g.rg * 2;
+  const played = [...(SCHED[p.t] || [])].filter((d) => d < today).length;
+  return played >= 4 && !(p.gp > 0);
+};
+function MyForm({ s }) {
+  const K = s.blend;
+  const rows = s.players.filter((p) => p.ft === s.me && !p.ir).map((p) => {
+    const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
+    if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
+    if (fr !== null && fr <= 0.7) return { p, n: "Cold: " + f1(rec.ppg) + "/g lately. Check his role before dropping.", c: "text-sky-600" };
+    if (t && (t.d <= -90 || t.pd <= -45)) return { p, n: "Losing minutes (" + (t.d <= -90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + "). Watch closely.", c: "text-red-600" };
+    if (t && (t.d >= 90 || t.pd >= 45)) return { p, n: "Bigger role (" + (t.d >= 90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + ").", c: "text-green-700" };
+    return null;
+  }).filter(Boolean);
+  return (
+    <Section title={"Player updates" + (rows.length ? " (" + rows.length + ")" : "")} sub="Hot and cold streaks and ice-time changes, compared with each player's projection.">
+      {rows.length ? rows.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>{"\u00b7 " + n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
+    </Section>
+  );
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
