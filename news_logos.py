@@ -7480,5 +7480,23 @@ _fix_before_r54 = fix
 def fix(t):
     return round54(_fix_before_r54(t))
 
+
+# ---------- round 55: no warning dots on any tab ----------
+R55_CSS = r'''  /* round 55 no tab dots (news_logos.py) */
+  .gx-wd { display: none !important; }
+'''
+
+
+def round55(t):
+    t = lit(t, "round 55: tab dots removed", "</style>", R55_CSS + "</style>", "round 55 no tab dots")
+    return t
+
+
+_fix_before_r55 = fix
+
+
+def fix(t):
+    return round55(_fix_before_r55(t))
+  
 if __name__ == "__main__":
     main()
