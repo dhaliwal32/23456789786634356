@@ -141,45 +141,11 @@ def chg(now, typ, team, name, text, d="", frm="", to="", g=None):
 
 
 # ----------------------------------------------------------------- 1. lines (Daily Faceoff)
-DFPOS = {}
-
-
-def _df_pos(obj, out):
-    # remember each player's position (lw, c, rw, ld, rd, g) for every line group on a Daily Faceoff page (news_logos.py round 39)
-    if isinstance(obj, dict):
-        nm, pi, gi = obj.get("name"), obj.get("positionIdentifier"), obj.get("groupIdentifier")
-        if isinstance(nm, str) and isinstance(pi, str) and isinstance(gi, str):
-            out.setdefault(gi.lower(), {})[nm] = pi.lower()
-        for v in obj.values():
-            _df_pos(v, out)
-    elif isinstance(obj, list):
-        for v in obj:
-            _df_pos(v, out)
-
-
-def team_pos(t, state, rosters):
-    df = DFPOS.get(t) or (state.get("dfpos") or {}).get(t) or {}
-    a = {}
-    for gi, m in df.items():
-        if gi[:1] in ("f", "d", "g"):
-            for n, p in m.items():
-                a.setdefault(n, p)
-    b = {v["n"]: (v.get("pc") or "") + (v.get("sh") or "") for v in (rosters.get(t) or {}).values() if v.get("pc")}
-    return {"df": a, "nhl": b}
-
-
 def read_team(t):
     from gm_signals import next_data, find_group, SLUGS
     data = next_data(f"https://www.dailyfaceoff.com/teams/{SLUGS[t]}/line-combinations")
     if not data:
         return None
-    try:
-        pm39_ = {}
-        _df_pos(data, pm39_)
-        if pm39_:
-            DFPOS[t] = pm39_
-    except Exception:
-        pass
     out, used = {}, set()
     for slot, rx, lo, hi in GROUPS:
         names = set()
@@ -288,7 +254,7 @@ def read_rosters():
                 for x in js.get(grp) or []:
                     n = f"{(x.get('firstName') or {}).get('default', '')} {(x.get('lastName') or {}).get('default', '')}".strip()
                     if x.get("id") and n:
-                        pl[str(x["id"])] = {"n": n, "p": pos, "pc": x.get("positionCode") or "", "sh": x.get("shootsCatches") or ""}
+                        pl[str(x["id"])] = {"n": n, "p": pos}
             if len(pl) >= 15:
                 out[t] = pl
         except Exception as ex:
@@ -586,14 +552,13 @@ def run(force=False):
         print(f"(lines) WARNING alerts failed: {ex}")
 
     use_this = any(v[1] > 0 for v in fp_this.values())
-    state["dfpos"] = {**(state.get("dfpos") or {}), **DFPOS}
     lines = state.get("lines") or {}
     rosters = state.get("rosters") or {}
     teams = {}
     for t in sorted(set(lines) | set(st) | set(rosters)):
         teams[t] = {"lines": lines.get(t) or {}, "st": st.get(t) or {},
                     "fp": team_fp(lines.get(t), fp_this if use_this else fp_last),
-                    "roster": len(rosters.get(t) or {}), "pos": team_pos(t, state, rosters)}
+                    "roster": len(rosters.get(t) or {})}
     data = {"generated": iso(now), "lines_at": state.get("lines_at"), "rosters_at": state.get("rosters_at"),
             "season": season_label(THIS), "fp_use": "this" if use_this else "last",
             "fp_season": season_label(THIS if use_this else LAST), "st_src": st_src,

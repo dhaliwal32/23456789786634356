@@ -87,6 +87,15 @@
 @media(max-width:640px){.lt-full{display:none}.lt-short{display:inline}.lt-ppd{width:100%}.lt-next{display:none}
 .lt-grid{grid-template-columns:22px repeat(3,minmax(0,1fr));gap:4px}.lt-grid.d{grid-template-columns:22px repeat(2,minmax(0,1fr))}
 .lt-pc{padding:6px}.lt-tr{padding:10px 8px;gap:8px}}
+
+/* lines v39 */
+.lt-rink{border:1px solid var(--line2);border-radius:26px;padding:6px 14px 16px}
+.lt-sec{background:none;text-align:left;padding:0;margin:14px 0 8px;font-size:12px;letter-spacing:.06em;text-transform:none;color:var(--mute);font-weight:400}
+.lt-pc{border-left-width:1px;border-left-color:var(--line)}
+.lt-pc.me{border-color:var(--accent)}
+.lt-ps{font-size:11px;color:var(--faint);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-pp5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media(max-width:640px){.lt-pp5{grid-template-columns:repeat(3,minmax(0,1fr))}.lt-rink{padding:4px 8px 12px;border-radius:18px}}
 `;
   if (!document.getElementById("lt2-css")) {
     const el = document.createElement("style"); el.id = "lt2-css"; el.textContent = CSS; document.head.appendChild(el);
@@ -271,90 +280,110 @@
     );
   }
 
-  // ---------- player card inside a team ----------
-  function PCard({ n, t, g, mode, ctx, s, H, onPick }) {
-    if (!n) return <div className="lt-pc lt-empty"><div className="lt-nm">—</div><small>open spot</small></div>;
-    const k = nk(n), p = ctx.pOf(k, g);
-    const cls = p && p.ft === s.me ? " me" : p && p.ft === "fa" ? " fa" : "";
-    const f = ctx.fpOf(k, g), v = ctx.useThis ? f.cur : f.last;
-    const w = ctx.where[k + "|" + t] || {};
-    const bits = [<span key="v">{v ? H.f1(v[0]) : "no pts yet"}</span>];
-    if (mode === "es" && w.pp === "PP1") bits.push(<span key="pp" className="lt-pp">PP1</span>);
-    const ch = mode === "pp" ? ctx.latestPP[k + "|" + t] : ctx.latestES[k + "|" + t];
-    if (ch) {
-      const up = ch.dir === "up" || ch.dir === "in";
-      const label = ch.type === "lineup" ? (up ? "new in lineup" : "moved") : ch.type === "pp" ? (up ? "new on " + (ch.to || "PP1") : "off " + (ch.from || "PP1")) : "was " + (SHORT[ch.from] || ch.from);
-      bits.push(<span key="c" className={up ? "lt-up" : "lt-dn"}>{up ? "▲ " : "▼ "}{label}</span>);
+  // ---------- player card inside a team (lines v39: real positions, points a game, hot and cold) ----------
+  // older done markers kept: round 31: open one team's lines | lt-legend-wrap
+  const POS_OK = { lw: 1, c: 1, rw: 1, ld: 1, rd: 1, g: 1 };
+  function posMap(T) {
+    const P = (T && T.pos) || {}, df = P.df || {}, nhl = {};
+    Object.entries(P.nhl || {}).forEach(([n, v]) => { nhl[nk(n)] = v; });
+    return (n) => {
+      if (df[n] && POS_OK[df[n]]) return df[n];
+      const v = nhl[nk(n)] || "";
+      return v[0] === "C" ? "c" : v[0] === "L" ? "lw" : v[0] === "R" ? "rw" : v[0] === "D" ? (v[1] === "R" ? "rd" : "ld") : v[0] === "G" ? "g" : "";
+    };
+  }
+  // a forward line in left wing, centre, right wing order; a pair in left, right order
+  function arrange(names, pos, fwd, val) {
+    if (!fwd) {
+      const l = names.filter((n) => pos(n) === "ld"), r = names.filter((n) => pos(n) === "rd"), o = names.filter((n) => pos(n) !== "ld" && pos(n) !== "rd");
+      const out = [l[0] || null, r[0] || null];
+      [...l.slice(1), ...r.slice(1), ...o].forEach((n) => { const i = out.indexOf(null); if (i >= 0) out[i] = n; else out.push(n); });
+      return out;
     }
+    const slots = [null, null, null], rest = [], want = { lw: 0, rw: 2 };
+    names.filter((n) => pos(n) === "c").sort((x, y) => val(y) - val(x)).forEach((n, i) => { if (i === 0) slots[1] = n; else rest.push(n); });
+    names.filter((n) => pos(n) !== "c").forEach((n) => { const i = want[pos(n)]; if (i != null && slots[i] == null) slots[i] = n; else rest.push(n); });
+    rest.forEach((n) => { const i = slots[0] == null ? 0 : slots[2] == null ? 2 : slots[1] == null ? 1 : -1; if (i >= 0) slots[i] = n; else slots.push(n); });
+    return slots;
+  }
+  function PCard({ n, t, g, pl, mode, ctx, s, H, onPick }) {
+    if (!n) return <div className="lt-pc lt-empty"><div className="lt-nm">{"\u2014"}</div><small>open spot</small></div>;
+    const k = nk(n), p = ctx.pOf(k, g), K = s.blend;
+    const f = ctx.fpOf(k, g), v = ctx.useThis ? f.cur : f.last, pg = v && v[1] ? v[0] / v[1] : null;
+    const rec = p ? H.sigOf(p).rec : null, base = p ? H.effAvg(p, K) : 0, fr = rec && rec.gp >= 3 && base > 0 ? rec.ppg / base : null;
+    const tone = fr == null ? "" : fr >= 1.25 ? "lt-up" : fr <= 0.7 ? "lt-dn" : "";
+    const w = ctx.where[k + "|" + t] || {}, ch = mode === "pp" ? null : ctx.latestES[k + "|" + t];
+    const bits = [];
+    if (mode !== "pp" && w.pp) bits.push(w.pp);
+    if (ch && ch.type === "line" && ch.from) bits.push((ch.dir === "up" ? "up from " : "down from ") + (SHORT[ch.from] || ch.from));
+    if (ch && ch.type === "lineup" && ch.dir === "in") bits.push("new in lineup");
     const hurt = p && p.status && p.status !== "ACTIVE";
-    if (hurt) bits.push(<span key="i" className="lt-dn">{INJ[p.status] || pretty(p.status)}</span>);
-    const own = p ? (p.ft === s.me ? "Yours" : p.ft === "fa" ? "Free agent" : "Owned by " + H.teamName(s, p.ft)) : "Not in your league's player list";
-    const parts = n.split(" ");
-    const short = parts.length > 1 ? parts[0][0] + ". " + parts.slice(1).join(" ") : n;
+    if (hurt) bits.push(INJ[p.status] || pretty(p.status));
+    const head = [pl, p && p.ft === s.me ? "yours" : p && p.ft === "fa" ? "free agent" : ""].filter(Boolean).join(" \u00b7 ");
+    const parts = n.split(" "), short = parts.length > 1 ? parts[0][0] + ". " + parts.slice(1).join(" ") : n;
     return (
-      <button className={"lt-pc" + cls} title={`${n} · ${own}`} onClick={() => onPick({ name: n, key: k, t, g: g || (p ? p.p : "F"), p })}>
-        <div className="lt-nm"><span className="lt-full">{n}</span><span className="lt-short">{short}</span>{hurt ? <span className="lt-dn" style={{ marginLeft: 3 }}>✚</span> : null}</div>
-        <small>{bits.map((b, i) => <React.Fragment key={i}>{i ? " · " : ""}{b}</React.Fragment>)}</small>
+      <button className={"lt-pc" + (p && p.ft === s.me ? " me" : "")} title={n} onClick={() => onPick({ name: n, key: k, t, g: g || (p ? p.p : "F"), p })}>
+        {head ? <div className="lt-ps">{head}</div> : null}
+        <div className="lt-nm"><span className="lt-full">{n}</span><span className="lt-short">{short}</span></div>
+        <small><span className={tone}>{pg == null ? "no games yet" : H.f1(pg)}</span>{bits.map((b, i) => <span key={i}>{" \u00b7 " + b}</span>)}</small>
       </button>
     );
   }
 
-  // ---------- one team, opened ----------
-  function TeamBody({ t, T, tab, setTab, chg, ctx, s, H, onPick, onPickChange }) {
+  // ---------- one team, opened: forwards, defence, goalies in a rink, then both power-play units ----------
+  function TeamBody({ t, T, chg, ctx, s, H, onPick, onPickChange }) {
     const ln = T.lines || {};
+    if (!ln.F1) return <div className="lt-msg">Lines not available yet.</div>;
+    const pos = posMap(T);
     const val = (n, g) => { const f = ctx.fpOf(nk(n), g), v = ctx.useThis ? f.cur : f.last; return v ? v[0] : -1; };
-    const sorted = (sl, g) => [...(ln[sl] || [])].sort((a, b) => val(b, g) - val(a, g));
-    const pad = (a, n) => { const o = a.slice(); while (o.length < n) o.push(null); return o; };
-    const card = (n, g, mode, key) => <PCard key={key} n={n} t={t} g={g} mode={mode} ctx={ctx} s={s} H={H} onPick={onPick} />;
+    const card = (n, g, pl, mode, key) => <PCard key={key} n={n} t={t} g={g} pl={pl} mode={mode} ctx={ctx} s={s} H={H} onPick={onPick} />;
     const gOf = (n) => { const w = ctx.where[nk(n) + "|" + t]; const g = w && w.es ? grpOf(w.es) : null; if (g) return g; const p = ctx.pOf(nk(n)); return p ? p.p : "F"; };
-    const st = tab || "lines";
-    const tabs = (
-      <div className="lt-stabs">
-        {[["lines", "Lines"], ["pp", "Power play"], ["chg", `Changes (${chg.length})`]].map(([k, l]) => <button key={k} className={"lt-stab" + (st === k ? " on" : "")} onClick={() => setTab(k)}>{l}</button>)}
-      </div>
-    );
-    if (st === "chg") return <div>{tabs}<div style={{ marginTop: 8 }}>{chg.length ? chg.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={onPickChange} dim />) : <div className="lt-msg">No changes for this team right now.</div>}</div></div>;
-    if (!ln.F1) return <div>{tabs}<div className="lt-msg">Lines not available yet.</div></div>;
-    if (st === "pp") {
-      const unit = (sl) => {
-        const arr = ln[sl] || [];
-        if (!arr.length) return <div className="lt-msg">Not available.</div>;
-        const fw = arr.filter((n) => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F"));
-        const df = arr.filter((n) => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
-        const all = [...fw, ...df], top = all.slice(0, 3), bot = all.slice(3);
-        return (
-          <div>
-            <div className="lt-ppu">{top.map((n) => card(n, gOf(n), "pp", sl + n))}</div>
-            {bot.length > 0 && <div className="lt-ppd">{bot.map((n) => card(n, gOf(n), "pp", sl + n))}</div>}
-          </div>
-        );
-      };
-      return <div>{tabs}<div className="lt-sec">1st power-play unit</div>{unit("PP1")}<div className="lt-sec">2nd power-play unit</div>{unit("PP2")}</div>;
-    }
+    const line = (sl, fwd, labels) => {
+      const names = ln[sl] || [], known = names.some((n) => pos(n));
+      const a = known ? arrange(names, pos, fwd, (n) => val(n, fwd ? "F" : "D")) : names.slice();
+      while (a.length < labels.length) a.push(null);
+      return a.slice(0, labels.length).map((n, i) => card(n, fwd ? "F" : "D", known ? labels[i] : "", "es", sl + i));
+    };
+    const goalies = (ln.G || []).slice().sort((a, b) => { const pa = ctx.pOf(nk(a), "G"), pb = ctx.pOf(nk(b), "G"); return (pb ? pb.prob : 0) - (pa ? pa.prob : 0) || val(b, "G") - val(a, "G"); });
+    const gLab = (n) => { const p = n ? ctx.pOf(nk(n), "G") : null; return p ? Math.round(p.prob * 100) + "% of starts" : "G"; };
+    const unit = (sl) => {
+      const arr = ln[sl] || [];
+      if (!arr.length) return <div className="lt-msg">Not available.</div>;
+      const fw = arr.filter((n) => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F")), df = arr.filter((n) => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
+      return <div className="lt-pp5">{[...fw, ...df].map((n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n))}</div>;
+    };
     return (
       <div>
-        {tabs}
-        <div className="lt-sec">Forwards</div>
-        <div className="lt-grid">
-          {ES_F.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{pad(sorted(sl, "F"), 3).map((n, i) => card(n, "F", "es", sl + i))}</React.Fragment>)}
+        <div className="lt-rink">
+          <div className="lt-sec">Forwards</div>
+          <div className="lt-grid">
+            {ES_F.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{line(sl, true, ["LW", "C", "RW"])}</React.Fragment>)}
+          </div>
+          <div className="lt-sec">Defence</div>
+          <div className="lt-grid d">
+            {ES_D.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{line(sl, false, ["LD", "RD"])}</React.Fragment>)}
+          </div>
+          <div className="lt-sec">Goalies</div>
+          <div className="lt-gg">{[goalies[0] || null, goalies[1] || null].map((n, i) => card(n, "G", gLab(n), "es", "G" + i))}</div>
         </div>
-        <div className="lt-sec">Defence pairs</div>
-        <div className="lt-grid d">
-          {ES_D.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{pad(sorted(sl, "D"), 2).map((n, i) => card(n, "D", "es", sl + i))}</React.Fragment>)}
-        </div>
-        <div className="lt-sec">Goalies</div>
-        <div className="lt-gg">{pad(sorted("G", "G"), 2).map((n, i) => card(n, "G", "es", "G" + i))}</div>
+        <div className="lt-sec">Power play 1</div>
+        {unit("PP1")}
+        <div className="lt-sec">Power play 2</div>
+        {unit("PP2")}
+        {chg.length ? (
+          <details className="lt-how"><summary>{chg.length} recent change{chg.length > 1 ? "s" : ""}</summary>
+            {chg.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={onPickChange} dim />)}
+          </details>
+        ) : null}
       </div>
     );
   }
 
-  // ---------- ranked team list ----------
+  // ---------- team list: your teams first, then by standings ----------
   function Teams({ L, ctx, items, s, H, onPick, onPickChange }) {
-    const [sort, setSort] = useState("standings");
     const [onlyMine, setOnlyMine] = useState(false);
     const [open, setOpen] = useState({});
     useEffect(() => {
-      // round 31: open one team's lines when a player's line is clicked (news_logos.py)
       const show = (t) => {
         if (!t) return;
         window.__LINES_TEAM = null;
@@ -366,68 +395,38 @@
       window.addEventListener("gm-lines-team", h);
       return () => window.removeEventListener("gm-lines-team", h);
     }, []);
-    const [tabs, setTabs] = useState({});
     const st = (T) => T.st || {};
     const rows = Object.entries(L.teams || {}).map(([t, T]) => ({ t, T }));
-    rows.sort((a, b) => (st(b.T).pts || 0) - (st(a.T).pts || 0) || (st(b.T).pct || 0) - (st(a.T).pct || 0)
-      || ((st(b.T).gf || 0) - (st(b.T).ga || 0)) - ((st(a.T).gf || 0) - (st(a.T).ga || 0)));
+    rows.sort((a, b) => (st(b.T).pts || 0) - (st(a.T).pts || 0) || (st(b.T).pct || 0) - (st(a.T).pct || 0));
     const today = H.todayISO();
     rows.forEach((x, i) => {
       x.rank = i + 1;
-      x.mine = s.players.filter((p) => p.ft === s.me && p.t === x.t && !p.ir);
+      x.mine = s.players.filter((p) => p.ft === s.me && p.t === x.t && !p.ir).length;
       x.chg = items.filter((it) => it.c.team === x.t);
-      x.best = x.chg.find((it) => it.s >= TH);
       x.next = ((L.sched || {})[x.t] || []).find((g) => g.d >= today);
     });
-    const S = {
-      standings: (a, b) => a.rank - b.rank,
-      fp: (a, b) => (b.T.fp || 0) - (a.T.fp || 0),
-      chg: (a, b) => b.chg.length - a.chg.length || a.rank - b.rank,
-      mine: (a, b) => b.mine.length - a.mine.length || a.rank - b.rank,
-    };
-    const shown = rows.filter((x) => !onlyMine || x.mine.length).sort(S[sort]);
+    const shown = rows.filter((x) => !onlyMine || x.mine).sort((a, b) => (b.mine ? 1 : 0) - (a.mine ? 1 : 0) || a.rank - b.rank);
+    const anyOpen = Object.keys(open).some((k) => open[k]);
     return (
-      <H.Section title="Teams" sub={`Daily Faceoff lines, checked ${ago(L.lines_at)}. # = NHL standings (${L.st_src}). Tap a team for its lines, power play and changes; tap a player for full details.`}>
-        <div className="flex flex-wrap gap-2 items-center">
-          <H.Pills items={[["standings", "NHL standings"], ["fp", "Fantasy points"], ["chg", "Most changes"], ["mine", "My players"]]} value={sort} onChange={setSort} />
-          <button className="lt-link" style={{ padding: 0 }} onClick={() => setOpen(Object.keys(open).some((k) => open[k]) ? {} : Object.fromEntries(Object.keys(L.teams || {}).map((k) => [k, true])))}>{Object.keys(open).some((k) => open[k]) ? "Close all teams" : "Open all teams"}</button>
-          <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
+      <H.Section title="Teams" sub={`Lines checked ${ago(L.lines_at)}. Numbers are fantasy points a game: green is hot, red is cold.`}>
+        <div className="flex flex-wrap gap-4 items-center text-xs" style={{ marginBottom: 10 }}>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
+          <button className="lt-link" style={{ padding: 0 }} onClick={() => setOpen(anyOpen ? {} : Object.fromEntries(rows.map((x) => [x.t, true])))}>{anyOpen ? "Close all teams" : "Open all teams"}</button>
         </div>
-        <details className="lt-how lt-legend-wrap"><summary>What the colours and marks mean</summary><div className="lt-legend">
-          <span><span className="lt-dot" style={{ background: "var(--accent)" }}></span>Yours</span>
-          <span><span className="lt-dot" style={{ background: "var(--good)" }}></span>Free agent</span>
-          <span><span className="lt-dot" style={{ background: "var(--faint)" }}></span>Rostered</span>
-          <span><span className="lt-up">▲</span>/<span className="lt-dn">▼</span> moved in last 48 h</span>
-          <span><span className="lt-dn">✚</span> injured</span>
-          <span>Numbers = {L.fp_season} fantasy pts</span>
-        </div></details>
         {shown.map((x) => {
           const isOpen = !!open[x.t], sd = st(x.T);
-          let hint = null;
-          if (x.best) { const [ic, cl] = iconOf(x.best.c); hint = <div className="lt-hint"><span className={cl}>{ic}</span> {x.best.c.name} {txt(x.best.c)} <span className="lt-mu">· {why(x.best)}</span></div>; }
+          const meta = [sd.gp ? `${sd.w}-${sd.l}-${sd.otl}` : "", x.next ? `next ${H.dayLabel(x.next.d).split(",")[0]} ${x.next.h ? "vs" : "@"} ${x.next.o}` : "", x.mine ? `${x.mine} of yours` : ""].filter(Boolean).join(" \u00b7 ");
           return (
             <div key={x.t} id={"lt-team-" + x.t} style={{ scrollMarginTop: 120 }} className={"lt-team" + (isOpen ? " open" : "")}>
               <div className="lt-tr" onClick={() => setOpen({ ...open, [x.t]: !isOpen })}>
-                <div className="lt-rk">#{x.rank}</div>
-                {H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}<div className="lt-tmain">
+                {H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}
+                <div className="lt-tmain">
                   <div className="lt-tn">{sd.name || x.t}</div>
-                  <div className="lt-meta">
-                    {sd.gp ? `${sd.w}-${sd.l}-${sd.otl} · ${sd.pts} pts · ` : ""}{Math.round(x.T.fp || 0)} fantasy pts
-                    <span className="lt-next">{x.next ? ` · next ${H.dayLabel(x.next.d)} ${x.next.h ? "vs" : "@"} ${x.next.o}` : ""}</span>
-                  </div>
-                  {hint}
+                  <div className="lt-meta">{meta}</div>
                 </div>
-                <div className="lt-pills">
-                  {x.mine.length ? <span className="lt-pill me">{x.mine.length} yours</span> : null}
-                  {x.chg.length ? <span className="lt-pill">{x.chg.length} change{x.chg.length > 1 ? "s" : ""}</span> : null}
-                </div>
-                <div className="lt-chev">▾</div>
+                <div className="lt-chev">{"\u25be"}</div>
               </div>
-              {isOpen && (
-                <div className="lt-body">
-                  <TeamBody t={x.t} T={x.T} tab={tabs[x.t]} setTab={(k) => setTabs({ ...tabs, [x.t]: k })} chg={x.chg} ctx={ctx} s={s} H={H} onPick={onPick} onPickChange={onPickChange} />
-                </div>
-              )}
+              {isOpen && <div className="lt-body"><TeamBody t={x.t} T={x.T} chg={x.chg} ctx={ctx} s={s} H={H} onPick={onPick} onPickChange={onPickChange} /></div>}
             </div>
           );
         })}
@@ -610,7 +609,7 @@
     );
   }
 
-  // ---------- the tab ----------
+  // ---------- the tab (lines v39: one search box for teams and players) ----------
   function LinesTab({ s, wk, H }) {
     const [, tick] = useState(0);
     const [sel, setSel] = useState(null);
@@ -630,25 +629,33 @@
     const opp = pr ? (pr[0] === s.me ? pr[1] : pr[0]) : s.opp;
     const ctx = useMemo(() => build(s, L), [s.players, L && L.generated]);
     const items = useMemo(() => enrich(L, ctx, s, opp), [ctx, opp, L && L.generated]);
-    if (!L) return <H.Section title="Lines">No line data yet. It appears after the next sync once gm_lines.py is set up.</H.Section>;
+    if (!L) return <H.Section title="Lines">No line data yet. It appears after the next sync.</H.Section>;
     const pick = (it) => { setSel(it); window.scrollTo({ top: 0, behavior: "smooth" }); };
     const pickChange = (x) => pick({ name: x.c.name, key: x.c.key, t: x.c.type === "move" && x.c.dir === "in" && x.c.to ? x.c.to : x.c.team, g: x.c.g || (x.p ? x.p.p : "F"), p: x.p || ctx.pOf(x.c.key, x.c.g) });
     const qq = nk(q);
+    const teamHits = qq.length < 2 ? [] : Object.entries(L.teams || {}).filter(([t, T]) => nk(t) === qq || nk((T.st || {}).name || "").includes(qq)).slice(0, 4);
     const results = qq.length < 2 ? [] : ctx.items.filter((i) => i.key.includes(qq))
       .sort((a, b) => (b.key.startsWith(qq) - a.key.startsWith(qq)) || ((b.p ? b.p.own : 0) - (a.p ? a.p.own : 0))).slice(0, 8);
+    const showTeam = (t) => { setQ(""); setSel(null); window.dispatchEvent(new CustomEvent("gm-lines-team", { detail: t })); };
     return (
       <div className="space-y-4">
-        <H.Section title="Ask about a player" sub="Type any NHL player's name to see his line, power-play unit, season fantasy points, projections, schedule, injury and news in one place.">
-          <input className={H.inp + " w-full"} placeholder="Player name, e.g. MacKinnon" value={q} onChange={(e) => setQ(e.target.value)} />
-          {results.length > 0 && <div className="flex flex-wrap gap-2 mt-2">{results.map((it) => (
-            <button key={it.key + it.t} onClick={() => { setSel(it); setQ(""); }} className="px-2 py-1 rounded-lg border border-slate-300 text-xs">
-              {it.name} <span className="text-slate-400">{it.g} · {it.t}{it.p ? " · " + H.teamName(s, it.p.ft) : ""}</span>
-            </button>))}</div>}
-          {qq.length >= 2 && !results.length && <div className="text-xs text-slate-400 mt-2">No player matches "{q}".</div>}
+        <H.Section title="Find a team or a player">
+          <input className={H.inp + " w-full"} placeholder="Team or player, for example Colorado or MacKinnon" value={q} onChange={(e) => setQ(e.target.value)} />
+          {teamHits.length + results.length > 0 && <div className="flex flex-wrap gap-2 mt-2">
+            {teamHits.map(([t, T]) => (
+              <button key={"t" + t} onClick={() => showTeam(t)} className="px-2 py-1 rounded-lg border border-slate-300 text-xs inline-flex items-center gap-1">
+                {H.TeamLogo ? <H.TeamLogo t={t} size={16} /> : null}{(T.st || {}).name || t}
+              </button>))}
+            {results.map((it) => (
+              <button key={it.key + it.t} onClick={() => { setSel(it); setQ(""); }} className="px-2 py-1 rounded-lg border border-slate-300 text-xs">
+                {it.name} <span className="text-slate-400">{it.g + " \u00b7 " + it.t}</span>
+              </button>))}
+          </div>}
+          {qq.length >= 2 && !results.length && !teamHits.length && <div className="text-xs text-slate-400 mt-2">Nothing matches "{q}".</div>}
           {sel && <PlayerCard it={sel} s={s} wk={wk} H={H} L={L} ctx={ctx} onClose={() => setSel(null)} onPick={pick} />}
         </H.Section>
-        <Feed items={items} s={s} H={H} L={L} onPick={pickChange} />
         <Teams L={L} ctx={ctx} items={items} s={s} H={H} onPick={pick} onPickChange={pickChange} />
+        <Feed items={items} s={s} H={H} L={L} onPick={pickChange} />
       </div>
     );
   }
