@@ -3214,5 +3214,180 @@ _fix_before_r27 = fix
 def fix(t):
     return round27(_fix_before_r27(t))
 
+# ---------- round 28: clean-up. Boxes open and close, simpler Today and Matchup, player updates on My Team, goalies must be playing ----------
+R28_CSS = r'''  /* round 28 clean-up (news_logos.py) */
+  .sec-chev { width: 8px; height: 8px; border-right: 2px solid var(--mute); border-bottom: 2px solid var(--mute); transform: rotate(45deg); transition: transform .15s ease; flex-shrink: 0; display: inline-block; margin: 6px 6px 0 10px; }
+  .sec-chev.shut { transform: rotate(-45deg); }
+  .sec-head { flex: 1; min-width: 0; text-align: left; cursor: pointer; }
+'''
+
+R28_SECTION = r'''// round 28: every box opens and closes; the choice is remembered on this device (news_logos.py)
+const UIKEY = "fantasy-islands-gm-ui";
+let __UI = null;
+const uiGet = () => { if (!__UI) { try { __UI = JSON.parse(localStorage.getItem(UIKEY) || "{}") || {}; } catch (e) { __UI = {}; } } return __UI; };
+const uiSet = (k, v) => { const u = uiGet(); u[k] = v; try { localStorage.setItem(UIKEY, JSON.stringify(u)); } catch (e) {} };
+const secKey = (t) => (typeof t === "string" ? t.toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim().slice(0, 40) : "box");
+// boxes that start closed: "tab:start of the title"
+const SEC_SHUT = ["today:your lineup", "today:injuries", "today:news on your players",
+  "myteam:this week day by day", "myteam:player updates", "myteam:injuries", "myteam:protected players",
+  "moves/advice:free agents to watch", "moves/advice:trade advice", "moves/advice:line promotions", "moves/advice:luck", "moves/advice:model vs espn",
+  "moves/planner:week ", "moves/planner:chronic bench players", "moves/trades:trade ideas",
+  "teams:news", "league/power:how to climb the rankings", "league/standings:all teams this week",
+  "news:your opponent", "news:around your league", "news:free agents", "news:phone notifications", "setup/settings:team names"];
+const Section = ({ title, sub, link, children, closed, id }) => {
+  const [k] = useState(() => "sec:" + (window.__TAB || "") + ":" + (id || secKey(title)));
+  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !(closed || SEC_SHUT.some((x) => k.indexOf("sec:" + x) === 0)) : !!v; });
+  const flip = () => { uiSet(k, !open); setOpen(!open); };
+  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  return (
+    <div className={"bg-white rounded-xl border border-slate-200 p-4 text-sm" + (open ? "" : " self-start")}>
+      <div className={"flex items-start gap-2" + (open ? " mb-2" : "")}>
+        <div role="button" tabIndex={0} aria-expanded={open} className="sec-head" onClick={flip} onKeyDown={onKey}>
+          <div className="font-semibold text-base">{title}</div>{open && sub ? <div className="text-xs text-slate-500">{sub}</div> : null}
+        </div>
+        {open && link ? <button className="text-xs text-blue-600 whitespace-nowrap" onClick={link[1]}>{link[0] + " \u2192"}</button> : null}
+        <button type="button" onClick={flip} aria-label={open ? "Close this box" : "Open this box"} style={{ lineHeight: 0, padding: "2px 0" }}><span className={"sec-chev" + (open ? "" : " shut")}></span></button>
+      </div>
+      {open ? children : null}
+    </div>
+  );
+};
+const SectionShut = (p) => <Section {...p} closed />;
+const DayFold = ({ id, open0, head, right, children }) => {
+  const k = "day:" + id;
+  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !!open0 : !!v; });
+  const flip = () => { uiSet(k, !open); setOpen(!open); };
+  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 mb-3">
+      <div role="button" tabIndex={0} aria-expanded={open} onClick={flip} onKeyDown={onKey} className={"flex items-center gap-3 px-3 py-2 text-sm cursor-pointer" + (open ? " border-b border-slate-200" : "")}>
+        <span className="font-semibold">{head}</span>
+        <span className="ml-auto flex items-center gap-3">{right}</span>
+        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 2px 2px" }}></span>
+      </div>
+      {open ? children : null}
+    </div>
+  );
+};
+
+'''
+
+R28_HELPERS = r'''// ---------- round 28: goalies must be playing, player updates for My Team (news_logos.py) ----------
+// a goalie is "not playing" if he started fewer than 2 of his team's last 5 games, or is out right now
+const goalieOut = (p) => {
+  if (!p || p.p !== "G") return false;
+  const today = todayISO();
+  if (avail(p, today) === 0) return true;
+  const g = sigOf(p).gs;
+  if (g && g.rg >= 3) return g.rs * 5 < g.rg * 2;
+  const played = [...(SCHED[p.t] || [])].filter((d) => d < today).length;
+  return played >= 4 && !(p.gp > 0);
+};
+function MyForm({ s }) {
+  const K = s.blend;
+  const rows = s.players.filter((p) => p.ft === s.me && !p.ir).map((p) => {
+    const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
+    if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
+    if (fr !== null && fr <= 0.7) return { p, n: "Cold: " + f1(rec.ppg) + "/g lately. Check his role before dropping.", c: "text-sky-600" };
+    if (t && (t.d <= -90 || t.pd <= -45)) return { p, n: "Losing minutes (" + (t.d <= -90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + "). Watch closely.", c: "text-red-600" };
+    if (t && (t.d >= 90 || t.pd >= 45)) return { p, n: "Bigger role (" + (t.d >= 90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + ").", c: "text-green-700" };
+    return null;
+  }).filter(Boolean);
+  return (
+    <Section title={"Player updates" + (rows.length ? " (" + rows.length + ")" : "")} sub="Hot and cold streaks and ice-time changes, compared with each player's projection.">
+      {rows.length ? rows.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>{"\u00b7 " + n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
+    </Section>
+  );
+}
+
+'''
+
+R28_DAY_PAT = r"\s*".join(re.escape(x) for x in (
+    '<div key={d} className="bg-white rounded-xl border border-slate-200 mb-3">',
+    '<div className="flex justify-between items-center px-3 py-2 border-b border-slate-200 text-sm">',
+    '<span className="font-semibold">{dl}</span>',
+    '{/* day header: running total removed */}',
+    '{tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}',
+    '</div>',
+))
+R28_DAY_NEW = r'''<DayFold key={(wk.dates || [])[d] || d} id={(wk.dates || [])[d] || "d" + d} open0={d === openDay} head={dl} right={<>{/* day header: running total removed */}{tag ? <LiveTag st={tag === "LIVE" ? "L" : "F"} /> : null}<span className="text-slate-500">{f1(x.act + x.total) + " \u2013 " + f1(y.act + y.total)}</span><span className={"min-w-[56px] text-center px-2 py-0.5 rounded-md font-semibold " + (dv >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")}>{dv >= 0 ? "+" : ""}{f1(dv)}</span></>}>'''
+R28_TAIL_OLD = '<div className="text-xs text-slate-500">Games that have started'
+R28_TAIL_PAT = re.escape("</div>") + r"\s*" + re.escape(");") + r"\s*" + re.escape("})}") + r"\s*" + re.escape(R28_TAIL_OLD)
+R28_TAIL_NEW = "</DayFold>\n        );\n      })}\n      " + R28_TAIL_OLD
+
+R28_EMPTY_OLD = r'''{l.empty > 0 && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}'''
+R28_EMPTY_NEW = r'''{l.empty > 0 && !(wk && id === s.me && noMovesWk(s, wk)) && <div className="text-xs text-slate-500 mt-1">Empty slots: {l.empty}</div>}'''
+
+
+def round28(t):
+    t = lit(t, "clean-up: styles", "</style>", R28_CSS + "</style>", "round 28 clean-up")
+    t = block(t, "clean-up: boxes open and close", "const Section = ({ title, sub, link, children }) => (",
+              "// ---------- App ----------", R28_SECTION, "const SEC_SHUT =")
+    t = lit(t, "clean-up: helpers", ROOT, R28_HELPERS + ROOT, "const goalieOut =")
+    t = lit(t, "clean-up: boxes know their tab", "window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } };",
+            'window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } }; window.__TAB = tab + (subs[tab] ? "/" + subs[tab] : "");',
+            "window.__TAB = tab")
+    # Today
+    t = lit(t, "clean-up: Today score line (you)", '<div className="text-xs text-slate-500">+ {f1(A.total)} still projected',
+            '<div className="hidden">+ {f1(A.total)} still projected', '<div className="hidden">+ {f1(A.total)} still projected')
+    t = lit(t, "clean-up: Today score line (them)", '<div className="text-xs text-slate-500">+ {f1(B.total)} still projected',
+            '<div className="hidden">+ {f1(B.total)} still projected', '<div className="hidden">+ {f1(B.total)} still projected')
+    t = lit(t, "clean-up: Today advice sentence", "{done < dates.length ? <StrategyLine p={winProb(A, B, aA, aB)} /> : null}",
+            "{/* round 28: advice sentence removed (older marker kept: <StrategyLine) */}", "round 28: advice sentence removed")
+    t = lit(t, "clean-up: Today empty slots line", "if (L.empty > 0) checks.push(", "if (L.empty > 0 && !outOfMoves(s)) checks.push(",
+            "L.empty > 0 && !outOfMoves(s)")
+    t = lit(t, "clean-up: Today injuries count", '<Section title="Injuries" link={["My Team", () => go("myteam")]}>',
+            '<Section title={"Injuries" + (outNow.length ? " (" + outNow.length + ")" : "")} link={["My Team", () => go("myteam")]}>',
+            '"Injuries" + (outNow.length')
+    t = lit(t, "clean-up: Today news count", '<Section title="News on your players" link={["All news", () => go("news")]}>',
+            '<Section title={"News on your players" + (news.length ? " (" + news.length + ")" : "")} link={["All news", () => go("news")]}>',
+            '"News on your players" + (news.length')
+    t = lit(t, "clean-up: Today line changes start closed", "H={{ Section, teamName, f1, TL }}",
+            "H={{ Section: SectionShut, teamName, f1, TL }}", "Section: SectionShut")
+    # Matchup
+    t = lit(t, "clean-up: Matchup actual row", "<LiveBar s={s} wk={wk} setWk={setWk} ids={[a, b]} />",
+            "{/* round 28: actual-score row removed */}", "round 28: actual-score row removed")
+    t = lit(t, "clean-up: Matchup day to open", "let run = (aA - aB) - (A.act - B.act);",
+            "let run = (aA - aB) - (A.act - B.act);\n  const openDay = (wk.dates || []).findIndex((x) => x >= todayISO());", "const openDay =")
+    t = sub_once(t, "clean-up: Matchup day bars (top)", R28_DAY_PAT, R28_DAY_NEW, "<DayFold key=")
+    t = sub_once(t, "clean-up: Matchup day bars (bottom)", R28_TAIL_PAT, R28_TAIL_NEW, "</DayFold>")
+    t = lit(t, "clean-up: Matchup empty slots count", R28_EMPTY_OLD, R28_EMPTY_NEW, "l.empty > 0 && !(wk && id === s.me && noMovesWk(s, wk))")
+    t = lit(t, "clean-up: phone Matchup empty slots count", '{x.empty || y.empty ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots:',
+            '{(x.empty || y.empty) && !(a === s.me && noMovesWk(s, wk)) ? <div className="text-xs text-slate-500 px-3 pt-2">Empty slots:',
+            "(x.empty || y.empty) && !(a === s.me")
+    # Advice and My Team
+    t = sub_once(t, "clean-up: player updates leave Advice",
+                 re.escape('<Section title="Your players" sub="Recent form and ice time compared with their projection.">') + r".*?" + re.escape("</Section>"),
+                 "{/* round 28: player updates moved to My Team */}", "round 28: player updates moved to My Team", re.S)
+    t = lit(t, "clean-up: player updates on My Team", "<MyInjProt s={s} setS={setS} wk={wk} />",
+            "<MyForm s={s} />\n      <MyInjProt s={s} setS={setS} wk={wk} />", "<MyForm s={s} />")
+    # goalies must be playing
+    t = lit(t, "clean-up: goalies in pickup lists", ".filter((f) => f.prob > 0 && (f.proj !== false || f.gp > 0) && inTab(f) && f.n.toLowerCase().includes(q))",
+            ".filter((f) => f.prob > 0 && (f.proj !== false || f.gp > 0) && inTab(f) && f.n.toLowerCase().includes(q) && (!!q || !goalieOut(f)))",
+            "(!!q || !goalieOut(f))")
+    t = lit(t, "clean-up: goalies in Model vs ESPN", "const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15; };",
+            "const under = (p) => { const x = mv(p); return x && x.d >= 1 && x.r >= 1.15 && !goalieOut(p); };", "x.r >= 1.15 && !goalieOut(p)")
+    t = lit(t, "clean-up: goalies in free agents to watch", 'const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p))',
+            'const watch = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && why(p) && !goalieOut(p))', "why(p) && !goalieOut(p)")
+    t = lit(t, "clean-up: goalies in trade pickups",
+            's.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60)',
+            's.players.filter((p) => p.ft === "fa" && p.prob > 0 && tv[p.id] > 0 && !goalieOut(p)).sort((a, b) => tv[b.id] - tv[a.id]).slice(0, 60)',
+            "tv[p.id] > 0 && !goalieOut(p)")
+    t = lit(t, "clean-up: goalies in the planner", 'const fas = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0))',
+            'const fas = s.players.filter((p) => p.ft === "fa" && p.prob > 0 && (p.proj !== false || p.gp > 0) && !goalieOut(p))',
+            "(p.proj !== false || p.gp > 0) && !goalieOut(p))")
+    for must in ("const SEC_SHUT =", "const Section = (", "function MyForm(", "const goalieOut =", "<DayFold key=", "</DayFold>", "function Matchup(", "function Today(",
+                 "<StrategyLine", "day header: running total removed", '<LiveTag st={tag === "LIVE" ? "L" : "F"} />', "<MyInjProt s={s}", "<FillSlot", "Projected today"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 28 (" + must + ").")
+    return t
+
+
+_fix_before_r28 = fix
+
+
+def fix(t):
+    return round28(_fix_before_r28(t))
+
 if __name__ == "__main__":
     main()
