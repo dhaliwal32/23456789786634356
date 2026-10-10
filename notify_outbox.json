@@ -4569,6 +4569,42 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-09|2cfc764190d1",
+   "at": "2026-10-10T02:40:34Z",
+   "title": "Pickup: ice time jump",
+   "text": "Andrew Copp (F, DET) is playing 19.9 min per game lately, up +3.4 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|f148571a9857",
+   "at": "2026-10-10T02:40:34Z",
+   "title": "Pickup: ice time jump",
+   "text": "Berkly Catton (F, SEA) is playing 15.5 min per game lately, up +2.6 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|d8ce9cab8828",
+   "at": "2026-10-10T02:40:34Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryker Evans (D, SEA) is playing 21.9 min per game lately, up +4.1 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-09|06baafb2fb91",
+   "at": "2026-10-10T02:40:34Z",
+   "title": "Pickup: ice time jump",
+   "text": "Michael Rasmussen (F, DET) is playing 16.6 min per game lately, up +4.0 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
