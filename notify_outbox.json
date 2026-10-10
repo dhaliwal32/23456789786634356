@@ -5243,6 +5243,17 @@
    "section": "pickup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-10|762b02d52381",
+   "at": "2026-10-10T20:33:41Z",
+   "title": "Possible scratch tonight",
+   "text": "Victor Hedman (TB, 4:30 PM) is not in tonight's lineup on Daily Faceoff - he may be scratched or hurt. Check and swap him out before puck drop.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-10T20:33:41Z"
   }
  ],
  "sent": {
