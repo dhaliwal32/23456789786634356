@@ -256,7 +256,7 @@
       ) : <div className="lt-msg">No changes in this filter.</div>;
     }
     return (
-      <H.Section title="Line & roster changes" sub={`Checked ${ago(L.lines_at)} · ${imp.length} of ${list.length} changes matter to you. Your phone still gets alerts for your players and for free agents who move into a top role.`}>
+      <H.Section closed title="Line & roster changes" sub={`Checked ${ago(L.lines_at)} · ${imp.length} of ${list.length} changes matter to you. Your phone still gets alerts for your players and for free agents who move into a top role.`}>
         <div className="mb-2"><H.Pills items={FILTERS} value={flt} onChange={(v) => { setFlt(v); setMore(false); }} /></div>
         {body}
         <div className="lt-bar">
@@ -352,6 +352,19 @@
     const [sort, setSort] = useState("standings");
     const [onlyMine, setOnlyMine] = useState(false);
     const [open, setOpen] = useState({});
+    useEffect(() => {
+      // round 31: open one team's lines when a player's line is clicked (news_logos.py)
+      const show = (t) => {
+        if (!t) return;
+        window.__LINES_TEAM = null;
+        setOnlyMine(false); setOpen((o) => ({ ...o, [t]: true }));
+        setTimeout(() => { const el = document.getElementById("lt-team-" + t); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+      };
+      show(window.__LINES_TEAM);
+      const h = (e) => show(e.detail);
+      window.addEventListener("gm-lines-team", h);
+      return () => window.removeEventListener("gm-lines-team", h);
+    }, []);
     const [tabs, setTabs] = useState({});
     const st = (T) => T.st || {};
     const rows = Object.entries(L.teams || {}).map(([t, T]) => ({ t, T }));
@@ -376,22 +389,23 @@
       <H.Section title="Teams" sub={`Daily Faceoff lines, checked ${ago(L.lines_at)}. # = NHL standings (${L.st_src}). Tap a team for its lines, power play and changes; tap a player for full details.`}>
         <div className="flex flex-wrap gap-2 items-center">
           <H.Pills items={[["standings", "NHL standings"], ["fp", "Fantasy points"], ["chg", "Most changes"], ["mine", "My players"]]} value={sort} onChange={setSort} />
+          <button className="lt-link" style={{ padding: 0 }} onClick={() => setOpen(Object.keys(open).some((k) => open[k]) ? {} : Object.fromEntries(Object.keys(L.teams || {}).map((k) => [k, true])))}>{Object.keys(open).some((k) => open[k]) ? "Close all teams" : "Open all teams"}</button>
           <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
         </div>
-        <div className="lt-legend">
+        <details className="lt-how lt-legend-wrap"><summary>What the colours and marks mean</summary><div className="lt-legend">
           <span><span className="lt-dot" style={{ background: "#8b7cff" }}></span>Yours</span>
           <span><span className="lt-dot" style={{ background: "#5fd08a" }}></span>Free agent</span>
           <span><span className="lt-dot" style={{ background: "#4d4d4d" }}></span>Rostered</span>
           <span><span className="lt-up">▲</span>/<span className="lt-dn">▼</span> moved in last 48 h</span>
           <span><span className="lt-dn">✚</span> injured</span>
           <span>Numbers = {L.fp_season} fantasy pts</span>
-        </div>
+        </div></details>
         {shown.map((x) => {
           const isOpen = !!open[x.t], sd = st(x.T);
           let hint = null;
           if (x.best) { const [ic, cl] = iconOf(x.best.c); hint = <div className="lt-hint"><span className={cl}>{ic}</span> {x.best.c.name} {txt(x.best.c)} <span className="lt-mu">· {why(x.best)}</span></div>; }
           return (
-            <div key={x.t} className={"lt-team" + (isOpen ? " open" : "")}>
+            <div key={x.t} id={"lt-team-" + x.t} style={{ scrollMarginTop: 120 }} className={"lt-team" + (isOpen ? " open" : "")}>
               <div className="lt-tr" onClick={() => setOpen({ ...open, [x.t]: !isOpen })}>
                 <div className="lt-rk">#{x.rank}</div>
                 {H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}<div className="lt-tmain">
@@ -418,6 +432,80 @@
         })}
         {!shown.length && <div className="lt-msg">No teams match.</div>}
       </H.Section>
+    );
+  }
+
+  // ---------- game log: past games with box scores (news_logos.py round 31) ----------
+  const BOX = (window.__BOX = window.__BOX || { idx: null, at: 0, days: {} });
+  const boxIndex = () => {
+    if (BOX.idx && Date.now() - BOX.at < 10 * 60 * 1000) return Promise.resolve(BOX.idx);
+    return fetch("box/index.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null))
+      .then((j) => { BOX.idx = new Set((j && j.dates) || []); BOX.at = Date.now(); return BOX.idx; })
+      .catch(() => { BOX.idx = BOX.idx || new Set(); return BOX.idx; });
+  };
+  const boxDay = (d) => (BOX.days[d] ? Promise.resolve(BOX.days[d])
+    : fetch("box/" + d + ".json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.p) BOX.days[d] = j.p; return (j && j.p) || {}; }).catch(() => ({})));
+  const fpEst = (x, sc) => (x.sv != null
+    ? (x.dec === "W" ? (sc.W ?? 5) : 0) + (x.dec === "O" ? (sc.OTL ?? 1) : 0) + (x.sv || 0) * (sc.SV ?? 0.6) + (x.ga || 0) * (sc.GA ?? -3) + (x.dec === "W" && !x.ga ? (sc.SO ?? 5) : 0)
+    : (x.g || 0) * (sc.G ?? 6) + (x.a || 0) * (sc.A ?? 4) + (x.pm || 0) * (sc.PM ?? 2) + (x.sog || 0) * (sc.SOG ?? 1) + (x.hit || 0) * (sc.HIT ?? 0.1) + (x.blk || 0) * (sc.BLK ?? 1) + (x.ppg || 0) * (sc.PPP ?? 2));
+  const glLine = (x) => (x.sv != null
+    ? [x.dec === "W" ? "Win" : x.dec === "L" ? "Loss" : x.dec === "O" ? "OT loss" : null, x.sa != null ? x.sv + " of " + x.sa + " saves" : x.sv + " saves", (x.ga || 0) + " GA", x.toi ? x.toi + " TOI" : null]
+    : [(x.g || 0) + " G", (x.a || 0) + " A", (x.pm > 0 ? "+" : "") + (x.pm || 0), (x.sog || 0) + " SOG", (x.hit || 0) + " HIT", (x.blk || 0) + " BLK", x.toi ? x.toi + " TOI" : null]).filter(Boolean).join(", ");
+  const glTiles = (x) => (x.sv != null
+    ? [["Decision", x.dec || "-"], ["Saves", x.sa != null ? x.sv + "/" + x.sa : x.sv], ["SV%", x.svp != null ? Number(x.svp).toFixed(3).replace(/^0/, "") : "-"], ["GA", x.ga || 0], ["TOI", x.toi || "-"]]
+    : [["G", x.g || 0], ["A", x.a || 0], ["PTS", (x.g || 0) + (x.a || 0)], ["+/-", (x.pm > 0 ? "+" : "") + (x.pm || 0)], ["SOG", x.sog || 0], ["PP goals", x.ppg ?? 0], ["PIM", x.pim || 0], ["HIT", x.hit || 0], ["BLK", x.blk || 0],
+      ["FO%", x.fo ? Math.round(x.fo * 100) + "%" : "-"], ["Takeaways", x.tk ?? 0], ["Giveaways", x.gv ?? 0], ["Shifts", x.shf ?? "-"], ["TOI", x.toi || "-"]]);
+  function GameLog({ p, it, s, H }) {
+    const today = H.todayISO(), id = String(p.id).slice(1), sc = s.sc || {};
+    const [rows, setRows] = useState(null);
+    const [all, setAll] = useState(false);
+    const [open, setOpen] = useState(null);
+    const past = useMemo(() => (H.SCHED && H.SCHED[it.t] ? [...H.SCHED[it.t]].filter((d) => d <= today).sort().reverse() : []), [it.t, today]);
+    useEffect(() => {
+      let dead = false;
+      setRows(null); setOpen(null);
+      const want = all ? past : past.slice(0, 14);
+      boxIndex().then((idx) => Promise.all(want.map((d) => {
+        const live = H.pStat ? H.pStat(p, d) : null;
+        return idx.has(d) ? boxDay(d).then((day) => ({ d, x: day[id] || live || null })) : Promise.resolve({ d, x: live });
+      }))).then((list) => { if (!dead) setRows(list.filter((r) => r.x)); });
+      return () => { dead = true; };
+    }, [p.id, it.t, all]);
+    const ptsOf = (r) => { const a = r.x.fp != null ? r.x.fp : realPts(p, r.d); return a != null ? { v: a, est: false } : { v: fpEst(r.x, sc), est: true }; };
+    const shown = (rows || []).slice(0, all ? 999 : 10).map((r) => ({ ...r, pt: ptsOf(r) }));
+    const avg = shown.length ? shown.reduce((a, r) => a + r.pt.v, 0) / shown.length : 0;
+    const anyEst = shown.some((r) => r.pt.est);
+    return (
+      <div className="mt-4">
+        <div className="flex flex-wrap items-baseline gap-2 mb-1">
+          <div className="font-medium text-sm">Recent games</div>
+          {shown.length ? <span className="text-xs text-slate-500">{H.f1(avg)} fantasy pts a game over the last {shown.length}</span> : null}
+        </div>
+        {rows === null ? <div className="text-xs text-slate-400">Loading games...</div>
+          : !shown.length ? <div className="text-xs text-slate-400">No finished games saved yet. Game history fills in after the next sync.</div>
+          : shown.map((r) => {
+            const x = r.x, gm = ((((window.GAMES_DATA || {}).games || {})[r.d]) || {})[it.t] || null, live = H.gScore ? H.gScore(it.t, r.d) : null;
+            const o = x.o || (gm ? gm.o : ""), h = x.o ? x.h : gm ? gm.h : null;
+            const my = x.my != null ? x.my : live ? live.my : null, op = x.op != null ? x.op : live ? live.op : null;
+            const res = my != null && op != null ? (my > op ? "W " : my < op ? "L " : "") + my + "-" + op : "";
+            return (
+              <div key={r.d} className="border-t border-slate-100 py-2 cursor-pointer" onClick={() => setOpen(open === r.d ? null : r.d)}>
+                <div className="flex items-baseline gap-3 text-sm">
+                  <span className="whitespace-nowrap" style={{ minWidth: 84 }}>{H.dayLabel(r.d)}</span>
+                  <span className="text-slate-500 whitespace-nowrap">{o ? (h ? "vs " : "@ ") + o : ""}</span>
+                  <span className={"whitespace-nowrap text-xs " + (my > op ? "text-green-700" : my < op ? "text-red-600" : "text-slate-500")}>{res}</span>
+                  <span className="ml-auto font-semibold whitespace-nowrap">{(r.pt.est ? "~" : "") + H.f1(r.pt.v)}</span>
+                </div>
+                <div className="text-xs text-slate-500 mt-0.5">{glLine(x)}</div>
+                {open === r.d ? <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mt-2">{glTiles(x).map(([l, v]) => (
+                  <div key={l} className="rounded-lg border border-slate-200 px-2 py-1.5 text-center"><div className="text-[10px] uppercase tracking-wide text-slate-500">{l}</div><div className="font-semibold">{v}</div></div>
+                ))}</div> : null}
+              </div>
+            );
+          })}
+        {!all && past.length > 14 ? <button className="lt-link" onClick={() => setAll(true)}>Show all games</button> : null}
+        {shown.length ? <div className="text-xs text-slate-400 mt-1">Tap a game for its full box score.{anyEst ? " ~ means estimated from the box score, without power-play assists or shorthanded points." : ""}</div> : null}
+      </div>
     );
   }
 
@@ -455,7 +543,7 @@
         </div>
         <div className="mt-2 text-sm">
           {w && w.es ? (
-            <span>{isG ? `Goalie for ${it.t}` : `${LBL[w.es]} for ${it.t}`}{mates.length ? " with " : ""}
+            <span><button className="underline" title="Open this team's lines" onClick={() => { if (window.__NAV && window.__NAV.lines) window.__NAV.lines(it.t); }}>{isG ? `Goalie for ${it.t}` : `${LBL[w.es]} for ${it.t}`}</button>{mates.length ? " with " : ""}
               {mates.map((n, i) => <span key={n}>{i ? " & " : ""}<button className="underline" onClick={() => onPick({ name: n, key: nk(n), t: it.t, g: grpOf(w.es), p: ctx.pOf(nk(n), grpOf(w.es)) })}>{n}</button></span>)}
             </span>
           ) : <span className="text-amber-600">Not in {it.t}'s current Daily Faceoff lineup (scratched, injured, in the minors, or not read yet)</span>}
@@ -497,6 +585,7 @@
             </div>
           );
         })()}
+        {hasId ? <GameLog p={p} it={it} s={s} H={H} /> : null}
         {games.length > 0 && (
           <div className="mt-3">
             <div className="font-medium text-sm mb-1">Next games</div>

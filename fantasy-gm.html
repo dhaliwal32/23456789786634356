@@ -686,10 +686,10 @@ function App() {
     setPrevTab(tab === "teams" ? null : tab); setTeamView(id); setTab("teams"); window.scrollTo(0, 0);
   };
   const backFromTeam = () => { setTeamView(null); if (prevTab) setTab(prevTab); window.scrollTo(0, 0); };
-  window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); } }; window.__TAB = tab + (subs[tab] ? "/" + subs[tab] : "");
+  window.__NAV = { team: openTeam, player: (p) => { if (p) setPlayer(p); }, lines: (t) => { window.__LINES_TEAM = t; go("lines"); try { window.dispatchEvent(new CustomEvent("gm-lines-team", { detail: t })); } catch (e) {} } }; window.__TAB = tab + (subs[tab] ? "/" + subs[tab] : "");
   if (!loaded) return <div className="p-8 text-slate-500">Loading your league…</div>;
   const P = { s, setS, wk, setWk, go };
-  const LH = { gState, actDay, LiveTag, pStat, gScore, effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, todayISO, dayLabel, TL, TeamLogo };
+  const LH = { gState, actDay, LiveTag, pStat, gScore, effAvg, sigOf, Tags, avail, effBack, gStart, teamName, f1, Section, Card, Pills, inp, SCHED, todayISO, dayLabel, TL, TeamLogo };
   const genAt = E && toDate(E.generated);
   const ageH = genAt ? (Date.now() - genAt.getTime()) / 36e5 : null;
   const nav = NAV.find((n) => n[0] === tab);
