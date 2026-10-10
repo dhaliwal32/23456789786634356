@@ -257,6 +257,39 @@
   .gx-sr > :last-child { margin-left: auto; }
   .gx-lk { display: flex; align-items: center; width: 100%; text-align: left; padding: 11px 0; border-top: 1px solid var(--line); color: var(--ink); }
   @media (max-width: 640px) { .gx-lt { grid-template-columns: 20px minmax(0,1fr) 44px 88px; } .gx-lm { grid-template-columns: minmax(0,1fr) 36px 50px 36px minmax(0,1fr); } }
+  /* round 45 phone fit (news_logos.py) */
+  button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+  .gx-pl { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
+  .m-seg { display: none; }
+  @media (max-width: 640px) {
+    html, body { overflow-x: hidden; }
+    body { font-size: 14px; padding-bottom: 76px; }
+    div:has(> .grid.grid-cols-6.mt-1) > div:has(select) { display: none !important; }
+    .grid.grid-cols-6.mt-1 { margin-top: 0; }
+    .gx-pn { min-width: 0; }
+    .gx-hero { gap: 8px; padding: 8px 0 4px; }
+    .gx-hero .gx-ring { width: 100px !important; height: 100px !important; }
+    .gx-hero .gx-ring > div > div:first-child { font-size: 24px !important; }
+    .gx-num { font-size: 24px; }
+    .navscroll > button { padding-left: 11px; padding-right: 11px; font-size: 13px; }
+    .gx-roh > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gx-ps .truncate, .gx-pk .text-xs.truncate, .gx-gl .text-xs.truncate { white-space: normal; }
+    .gx-day { padding-left: 1px; padding-right: 1px; }
+    .gx-row button[aria-label] { min-width: 36px; min-height: 40px; }
+    .gx-seg button { min-height: 40px; padding: 5px 9px; }
+    .gx-lk { min-height: 44px; padding: 12px 0; }
+    .gx-sr { gap: 8px; }
+    .gx-sr > :last-child { max-width: 100%; }
+    .gx-st { font-size: 14px; }
+    .gx-stv { font-size: 18px; }
+    .tb-grid { grid-template-columns: minmax(0, 1fr); }
+    .m-seg { display: inline-flex; max-width: 100%; }
+    .m-seg button { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    body .lt-rink { padding: 2px 8px 10px; }
+    body .lt-ps { font-size: 10px; }
+    body .lt-pc { padding: 7px 8px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -3586,6 +3619,7 @@ function TradeBuilder({ s, initPartner }) {
   const [get, setGet] = useState([]);
   const [pick, setPick] = useState({});
   const [edit, setEdit] = useState(-1);
+  const [side, setSide] = useState("me");
   const nR = s.weeks.length - s.wk;
   const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
   const order = { F: 0, D: 1, G: 2 };
@@ -3645,7 +3679,7 @@ function TradeBuilder({ s, initPartner }) {
   const offerRow = (p, i, onX, note) => (
     <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
       <TeamLogo t={p.t} size={22} />
-      <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" />{note ? <span className="text-xs text-slate-500" style={{ marginLeft: 6 }}>{note}</span> : null}</span>
+      <span className="min-w-0" style={{ flex: 1 }}><span className="block truncate"><PN p={p} className="" /></span>{note ? <span className="block text-xs text-slate-500">{note}</span> : null}</span>
       <span className="text-slate-500" style={{ fontVariantNumeric: "tabular-nums" }}>{f1(pg(p))}</span>
       <button type="button" aria-label={"Remove " + p.n} className="text-slate-500" style={{ padding: "0 4px", fontSize: 16 }} onClick={onX}>{"\u00d7"}</button>
     </div>
@@ -3679,7 +3713,7 @@ function TradeBuilder({ s, initPartner }) {
           <div className="gx-tag" style={{ marginBottom: 4 }}>You get</div>
           {Rv.length ? Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id))) : <div className="text-sm text-slate-500">Tap their players below</div>}
           {picks.map((f, k) => (f ? offerRow(f, 1, () => { setPick((x) => ({ ...x, [k]: "none" })); setEdit(-1); },
-            <>free agent <button type="button" className="text-blue-600" style={{ marginLeft: 6 }} onClick={(e) => { e.stopPropagation(); setEdit(edit === k ? -1 : k); }}>change</button></>)
+            <>free agent <button type="button" className="text-blue-600" style={{ marginLeft: 6 }} onClick={(e) => { e.stopPropagation(); setEdit(edit === k ? -1 : k); }}>Change player</button></>)
             : ready ? <button key={"add" + k} type="button" className="text-xs text-blue-600" style={{ marginTop: 8 }} onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>Add a free agent to the open spot</button> : null))}
           {edit >= 0 && edit < extra ? <FaSearch s={s} top={fas} taken={new Set(picks.filter(Boolean).map((x) => x.id))} val={pg} onPick={(id) => { setPick((x) => ({ ...x, [edit]: id })); setEdit(-1); }} /> : null}
         </div>
@@ -3703,11 +3737,11 @@ function TradeBuilder({ s, initPartner }) {
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
           <span className="gx-tag">Rosters</span>
-          <span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span>
+          <span className="text-xs text-slate-500 m-hide" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span><span className="gx-seg m-seg" style={{ marginLeft: "auto" }}><button type="button" className={side === "me" ? "on" : ""} onClick={() => setSide("me")}>{teamName(s, s.me)}</button><button type="button" className={side === "them" ? "on" : ""} onClick={() => setSide("them")}>{teamName(s, partner)}</button></span>
         </div>
         <div className="tb-grid">
-          <div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, s.me)}</div>{rosterRows(mine, give, setGive, true)}</div>
-          <div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>{rosterRows(theirs, get, setGet, false)}</div>
+          <div className={"min-w-0" + (side === "me" ? "" : " m-hide")}><div className="text-xs text-slate-500 truncate m-hide" style={{ paddingBottom: 2 }}>{teamName(s, s.me)}</div>{rosterRows(mine, give, setGive, true)}</div>
+          <div className={"min-w-0" + (side === "them" ? "" : " m-hide")}><div className="text-xs text-slate-500 truncate m-hide" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>{rosterRows(theirs, get, setGet, false)}</div>
         </div>
       </div>
       <TradeAdvice s={s} onPick={(p) => { setPartner(p.ft); setGet(p.ft === partner ? [...get.filter((x) => x !== p.id), p.id] : [p.id]); setPick({}); setEdit(-1); window.scrollTo(0, 0); }} />
@@ -4941,6 +4975,22 @@ function SetupPage({ s, setS, go }) {
     </div>
   );
 }
+
+// ---------- round 45: tappable rows work from the keyboard too (news_logos.py) ----------
+(function gxA11y() {
+  if (window.__gxA11y) return;
+  window.__gxA11y = 1;
+  const fix = () => document.querySelectorAll('[role="button"]:not([tabindex])').forEach((el) => el.setAttribute("tabindex", "0"));
+  let q = 0;
+  try {
+    new MutationObserver(() => { if (q) return; q = requestAnimationFrame(() => { q = 0; fix(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
+  document.addEventListener("keydown", (e) => {
+    const el = document.activeElement;
+    if (e.defaultPrevented || !(e.key === "Enter" || e.key === " ")) return;
+    if (el && el.getAttribute && el.getAttribute("role") === "button" && el.tagName !== "BUTTON") { e.preventDefault(); el.click(); }
+  });
+})();
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
