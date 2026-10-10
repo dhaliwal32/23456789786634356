@@ -202,6 +202,15 @@
   .gx-h2h { display: grid; grid-template-columns: minmax(0,1fr) 48px 28px 48px minmax(0,1fr); align-items: center; gap: 6px; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
   .gx-arw { width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line2); color: var(--mute); font-size: 18px; line-height: 1; flex-shrink: 0; }
   .gx-arw:hover { color: var(--ink); border-color: var(--accent); }
+  /* round 37 team (news_logos.py) */
+  .gx-ro { display: grid; grid-template-columns: 28px minmax(0,1fr) 62px 60px 40px 54px 96px 62px 64px; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-ro .n { text-align: right; }
+  .gx-roh { font-size: 12px; color: var(--mute); border-top: 0; padding: 0 0 6px; }
+  .gx-roh button { color: var(--mute); }
+  .gx-roh button.on { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .gx-sp { display: flex; align-items: flex-end; justify-content: flex-end; gap: 2px; height: 22px; }
+  .gx-sp i { width: 7px; display: block; }
+  @media (max-width: 640px) { .gx-ro { grid-template-columns: 26px minmax(0,1fr) 54px 34px 50px; gap: 6px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 </head>
@@ -768,7 +777,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        {nav && nav[2] && <div className="mb-4"><Pills items={nav[2]} value={sub} onChange={(v) => setSubs((x) => ({ ...x, [tab]: v }))} /></div>}
+        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} />
         {content}
         {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -2832,49 +2841,178 @@ function RosterView({ s, wk, team }) {
 }
 
 function MyTeam({ s, setS, wk, go }) {
-  const K = s.blend, today = todayISO();
-  const T = leagueTable(s);
-  const meRow = T.rows.find((r) => r.t.id === s.me);
-  const rank = meRow ? T.rows.indexOf(meRow) + 1 : null;
-  const g = T.grpRank[s.me] || {};
-  const posName = { F: "forwards", D: "defence", G: "goalies" };
-  const need = { F: 10, D: 5, G: 2 };
-  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0));
-  const weak = by[0], strong = by[2];
-  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  // team roster v37: one roster list with role, form, schedule and rank (news_logos.py)
+  const K = s.blend, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
+  const [sort, setSort] = useState("pg");
+  const [hist, setHist] = useState({});
   const roster = s.players.filter((p) => p.ft === s.me);
-  const chips = roster.filter((p) => !p.ir && p.p === strong).sort((a, b) => pv(b) - pv(a)).slice(need[strong]);
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const T = leagueTable(s), ri = T.rows.findIndex((r) => r.t.id === s.me), meRow = ri >= 0 ? T.rows[ri] : null, g = T.grpRank[s.me] || {};
+  const dates = wk.dates || [], done = wk.done || 0;
+  const nextW = s.weeks[s.wk + 1] ? deriveWeek(s.weeks[s.wk + 1], s.autoDone) : null;
+  const mu = useMemo(() => {
+    const P = pby(), o = {};
+    dates.forEach((dt) => {
+      const AD = actDay(s.me, dt);
+      if (!AD) return;
+      Object.entries(AD).forEach(([pid, v]) => {
+        if (!v || v[0] == null || !ESLOT[v[1]]) return;
+        const p = P["e" + pid];
+        if (!p || !(SCHED[p.t] && SCHED[p.t].has(dt)) || gState(p.t, dt).s === "P" || (p.p === "G" && !v[0])) return;
+        o[p.id] = (o[p.id] || 0) + v[0];
+      });
+    });
+    return o;
+  }, [s.players, wk, gen]);
+  const total = Object.values(mu).reduce((a, v) => a + Math.max(0, v), 0);
+  const rankOf = useMemo(() => {
+    const o = {};
+    ["F", "D", "G"].forEach((k) => {
+      s.players.filter((p) => p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map((p) => [p.id, pv(p)]).sort((a, b) => b[1] - a[1]).forEach((x, i) => (o[x[0]] = i + 1));
+    });
+    return o;
+  }, [s.players, K, window.__PMODE]);
+  const roles = useMemo(() => {
+    const L = window.LINES_DATA, o = {};
+    if (!L || !L.teams) return o;
+    const key = (x) => nrm(x).replace(/[.'\u2019]/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+    roster.forEach((p) => {
+      const ln = (L.teams[p.t] || {}).lines;
+      if (!ln) return;
+      const k = key(p.n), has = (sl) => (ln[sl] || []).some((x) => key(x) === k);
+      o[p.id] = { es: ["F1", "F2", "F3", "F4", "D1", "D2", "D3", "G"].find(has), pp: ["PP1", "PP2"].find(has) };
+    });
+    return o;
+  }, [s.players, (window.LINES_DATA || {}).generated]);
+  useEffect(() => {
+    let dead = false;
+    const E = window.ESPN_DATA || {}, sc = s.sc || {}, out = {}, byId = {};
+    roster.forEach((p) => (byId[String(p.id).slice(1)] = p));
+    Object.entries(E.daily || {}).forEach(([d, Tm]) => Object.values(Tm || {}).forEach((tm) => Object.entries(tm || {}).forEach(([pid, v]) => {
+      const p = byId[pid];
+      if (!p || !v || v[0] == null || !(SCHED[p.t] && SCHED[p.t].has(d)) || gState(p.t, d).s === "P" || (p.p === "G" && !v[0])) return;
+      (out[pid] = out[pid] || {})[d] = v[0];
+    })));
+    const est = (x) => (x.sv != null
+      ? (x.dec === "W" ? (sc.W ?? 5) : 0) + (x.dec === "O" ? (sc.OTL ?? 1) : 0) + (x.sv || 0) * (sc.SV ?? 0.6) + (x.ga || 0) * (sc.GA ?? -3)
+      : (x.g || 0) * (sc.G ?? 6) + (x.a || 0) * (sc.A ?? 4) + (x.pm || 0) * (sc.PM ?? 2) + (x.sog || 0) * (sc.SOG ?? 1) + (x.hit || 0) * (sc.HIT ?? 0.1) + (x.blk || 0) * (sc.BLK ?? 1) + (x.ppg || 0) * (sc.PPP ?? 2));
+    const finish = () => {
+      if (dead) return;
+      const h = {};
+      Object.keys(out).forEach((pid) => { h[pid] = Object.keys(out[pid]).sort().slice(-5).map((d) => ({ d, v: out[pid][d] })); });
+      setHist(h);
+    };
+    finish();
+    gxBoxIdx().then((ds) => Promise.all(ds.slice(-14).map((d) => gxBoxDay(d).then((day) => [d, day])))).then((days) => {
+      days.forEach(([d, day]) => {
+        if (!day) return;
+        Object.keys(byId).forEach((pid) => {
+          const x = day[pid];
+          if (x) { const o2 = (out[pid] = out[pid] || {}); o2[d] = x.fp != null ? x.fp : o2[d] != null ? o2[d] : est(x); }
+          else if (out[pid]) delete out[pid][d];
+        });
+      });
+      finish();
+    }).catch(() => {});
+    return () => { dead = true; };
+  }, [s.players, gen]);
+  const RO = { F1: "L1", F2: "L2", F3: "L3", F4: "L4", D1: "D1", D2: "D2", D3: "D3" };
+  const roleTxt = (p) => {
+    if (p.p === "G") return Math.round(p.prob * 100) + "% of starts";
+    const r = roles[p.id];
+    if (!r) return "";
+    return [r.es ? RO[r.es] : "not in lineup", r.pp].filter(Boolean).join(" \u00b7 ");
+  };
+  const nextGame = (p) => {
+    const S = SCHED[p.t];
+    if (!S || p.ir) return "";
+    for (let i = 0; i < 10; i++) {
+      const dt = addDays(today, i);
+      if (S.has(dt) && (i > 0 || gState(p.t, dt).s === "P")) { const gm = gameOf(p.t, dt); return (i === 0 ? "Today" : dayLabel(dt).split(",")[0]) + (gm ? (gm.h ? " vs " : " @ ") + gm.o : ""); }
+    }
+    return "";
+  };
+  const left = (p) => (wk.games[p.t] || []).filter((d) => dates[d] >= today && gState(p.t, dates[d]).s === "P").length;
+  const nextG = (p) => (nextW ? gms(nextW, p.t) : 0);
+  const keyFn = { mu: (p) => mu[p.id] || 0, left, next: nextG, sea: (p) => (p.gp ? p.tot / p.gp : -99), pg: pv, rk: (p) => -(rankOf[p.id] || 9999) }[sort];
+  const grp = (k) => roster.filter((p) => !p.ir && p.p === k).sort((a, b) => keyFn(b) - keyFn(a));
+  const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter((p) => p.ir)]].filter((x) => x[1].length);
+  const healthy = roster.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const prot = new Set([...healthy.slice(0, s.protectTop ?? 8).map((p) => p.id), ...roster.filter((p) => p.keep).map((p) => p.id)]);
+  const weak = healthy.filter((p) => !prot.has(p.id)).sort((a, b) => pv(a) - pv(b)).slice(0, 3);
+  const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => setSort(sort === k ? "pg" : k)}>{l}</button>;
+  const spark = (p) => {
+    const h = hist[String(p.id).slice(1)] || [];
+    return (
+      <div className="gx-sp m-hide" title="Last five games, oldest to newest">
+        {h.length ? h.map((x, i) => <i key={i} style={{ height: Math.max(2, Math.min(22, (Math.max(0, x.v) / 20) * 22)), background: x.v < 0 ? "var(--bad)" : "var(--ink2)" }}></i>) : <span className="text-xs text-slate-500">{"\u2013"}</span>}
+      </div>
+    );
+  };
+  const row = (p) => {
+    const st = p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "";
+    const m = mu[p.id], sea = p.gp ? p.tot / p.gp : null, gap = sea != null && p.avg > 0 ? sea - p.avg : null, rk = rankOf[p.id];
+    const sub = [roleTxt(p), nextGame(p)].filter(Boolean).join(" \u00b7 ");
+    return (
+      <div key={p.id} className="gx-ro">
+        <TeamLogo t={p.t} size={26} />
+        <div className="min-w-0">
+          <div className="truncate"><PN p={p} className="" />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
+          {sub ? <div className="text-xs text-slate-500 truncate">{sub}</div> : null}
+        </div>
+        {spark(p)}
+        <div className="n">
+          <div className="font-semibold" style={p.p === "G" && m != null ? { color: m > 5 ? "var(--good)" : m < 0 ? "var(--bad)" : "var(--ink)" } : null}>{m == null ? "\u2013" : f1(m)}</div>
+          {m > 0 && total > 0 ? <div style={{ height: 3, background: "var(--track)", marginTop: 3 }}><div style={{ height: 3, width: Math.min(100, (m / total) * 100) + "%", background: "var(--accent)" }}></div></div> : null}
+        </div>
+        <div className="n text-slate-500">{p.ir ? "\u2013" : left(p)}</div>
+        <div className="n text-slate-500 m-hide">{nextW && !p.ir ? nextG(p) : "\u2013"}</div>
+        <div className="n m-hide">{sea == null ? "\u2013" : <>{f1(sea)}{gap != null ? <span className="text-xs" style={{ marginLeft: 6, color: gap >= 0 ? "var(--good)" : "var(--bad)" }}>{(gap >= 0 ? "+" : "") + f1(gap)}</span> : null}</>}</div>
+        <div className="n">{f1(effAvg(p, K))}</div>
+        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>
+      </div>
+    );
+  };
+  const rkc = (v) => (v >= 8 ? { color: "var(--bad)" } : v && v <= 3 ? { color: "var(--good)" } : null);
   const order = { F: 0, D: 1, G: 2 };
   const sorted = [...roster].sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || order[a.p] - order[b.p] || effAvg(b, K) - effAvg(a, K));
-  const done = wk.done || 0;
   const Ls = wk.days.map((_, d) => (d < done ? null : dayLineup(roster, wk, d, K)));
   const cell = (p, d) => { if (p.ir || !(wk.games[p.t] || []).includes(d)) return "none"; const L = Ls[d]; if (!L) return "past"; if (L.start.some((x) => x.id === p.id)) return "start"; if (L.bench.some((x) => x.id === p.id)) return "sit"; return "out"; };
   const CELL = { start: "bg-green-500", sit: "bg-amber-500", out: "bg-red-500", past: "bg-slate-200" };
-  const tot = Ls.reduce((a, L) => a + (L ? L.total : 0), 0);
-  const sits = Ls.reduce((a, L) => a + (L ? L.bench.length : 0), 0);
-  const cnt = { F: 0, D: 0, G: 0 }; roster.forEach((p) => { if (!p.ir) cnt[p.p]++; });
-  const irN = roster.filter((p) => p.ir).length;
-  const outList = roster.filter((p) => { const b = effBack(p).d; return p.ir || (b && b > today) || (!b && avail(p, today) === 0) || (p.status && p.status !== "ACTIVE"); });
-  const upd = (id, patch) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
-  const protectTop = s.protectTop ?? 8;
-  const auto = new Set(roster.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, protectTop).map((p) => p.id));
   return (
-    <div className="space-y-4">
-      <div className="bg-white rounded-xl border border-slate-200 p-4">
-        <div className="text-xs uppercase tracking-wide text-slate-500">{rank ? `Power rank #${rank} of ${T.rows.length}` : "My team"}</div>
-        <div className="text-2xl font-bold mt-1">{teamName(s, s.me)}</div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-          <Card label="Strength" value={meRow ? f1(meRow.strength) : "–"} sub="projected pts per week" />
-          <Card label="Group ranks" value={<RankSpans g={g} />} sub={`Weakest: ${posName[weak]}`} />
-          <Card label="This week" value={f1(tot)} sub={`projected in your lineup · ${sits} game${sits === 1 ? "" : "s"} would sit`} />
-          <Card label="Roster" value={`${roster.length - irN}/22`} sub={`F ${cnt.F} · D ${cnt.D} · G ${cnt.G}${irN ? ` · ${irN} IR` : ""}`} />
-        </div>
-        <div className="text-sm text-slate-600 mt-3">{weak !== strong && chips.length ? <>Trade chips from your {posName[strong]}: {chips.map((p, i) => <span key={p.id}>{i ? ", " : ""}<PN p={p} className="" /></span>)}. Use them to upgrade your {posName[weak]}.</> : `Your weakest group is ${posName[weak]}. Look for upgrades in Moves.`} <button className="text-blue-600 ml-1" onClick={() => go("moves", "trades")}>Open Trades →</button></div>
+    <div className="space-y-3">
+      <div className="text-sm" style={{ display: "flex", flexWrap: "wrap", gap: "6px 18px" }}>
+        <span><span className="text-slate-500">Strength</span> {meRow ? f1(meRow.strength) : "\u2013"} a week</span>
+        <span><span className="text-slate-500">Forwards</span> <span style={rkc(g.F)}>{g.F ? ordN(g.F) : "\u2013"}</span></span>
+        <span><span className="text-slate-500">Defence</span> <span style={rkc(g.D)}>{g.D ? ordN(g.D) : "\u2013"}</span></span>
+        <span><span className="text-slate-500">Goalies</span> <span style={rkc(g.G)}>{g.G ? ordN(g.G) : "\u2013"}</span></span>
       </div>
-      <Section title="Roster" sub="Lineup order: forwards, defence, goalies, then IR. Week pts = projected points in your daily lineup for the rest of this week. Tap a player for details.">
-        <RosterView s={s} wk={wk} team={s.me} />
-      </Section>
-      <Section title="This week, day by day" sub="Bright = in your lineup · amber = plays but would sit (no open slot) · red = out · grey = already played.">
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-ro gx-roh">
+          <span></span><span>Tap a heading to sort</span>
+          <span className="n m-hide">Last 5</span>
+          {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "Season", "m-hide")}{HB("pg", "Per game")}{HB("rk", "Rank", "m-hide")}
+        </div>
+        {groups.map(([title, list]) => (
+          <div key={title} style={{ marginBottom: 10 }}>
+            <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
+            {list.map(row)}
+          </div>
+        ))}
+      </div>
+      <GxPanel title="Weakest spots" right="First to drop or include in a trade">
+        {weak.length ? weak.map((p, i) => (
+          <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+            <TeamLogo t={p.t} size={22} />
+            <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /></span>
+            <span className="text-xs text-slate-500 whitespace-nowrap">{rankOf[p.id] ? p.p + " " + ordN(rankOf[p.id]) : p.p}</span>
+            <span className="font-semibold text-right" style={{ minWidth: 40, fontVariantNumeric: "tabular-nums" }}>{f1(pv(p))}</span>
+          </div>
+        )) : <div className="text-sm text-slate-500">Everyone outside your protected players is pulling his weight.</div>}
+      </GxPanel>
+      <MyForm s={s} />
+      <MyInjProt s={s} setS={setS} wk={wk} />
+      <Section title="This week, day by day" sub="Bright = in your lineup, amber = plays but would sit, red = out, grey = already played.">
         <div className="overflow-x-auto">
           <table className="text-sm w-full">
             <thead><tr><th className="px-2 py-2 text-left">Player</th>{wk.days.map((d, i) => <th key={i} className="px-1 py-2 text-center">{d.split(",")[0]}</th>)}</tr></thead>
@@ -2882,19 +3020,13 @@ function MyTeam({ s, setS, wk, go }) {
               {sorted.filter((p) => !p.ir).map((p) => (
                 <tr key={p.id} className="border-t border-slate-100">
                   <td className="px-2 py-1 whitespace-nowrap"><PN p={p} className="" /> <span className="text-xs text-slate-400">{p.p}</span></td>
-                  {wk.days.map((_, d) => { const c = cell(p, d); return <td key={d} className="px-1 py-1 text-center">{c === "none" ? <span className="text-slate-400">·</span> : <span className={"inline-block w-6 h-3 rounded " + CELL[c]}></span>}</td>; })}
+                  {wk.days.map((_, d) => { const c = cell(p, d); return <td key={d} className="px-1 py-1 text-center">{c === "none" ? <span className="text-slate-400">{"\u00b7"}</span> : <span className={"inline-block w-6 h-3 rounded " + CELL[c]}></span>}</td>; })}
                 </tr>
               ))}
-              <tr className="border-t-2 border-slate-300">
-                <td className="px-2 py-2 text-xs text-slate-500">Lineup filled</td>
-                {Ls.map((L, d) => <td key={d} className={"text-center text-xs py-2 " + (L && L.bench.length ? "text-amber-600 font-semibold" : "text-slate-500")}>{L ? `${L.start.length}/17` : "done"}{L && L.bench.length ? ` · ${L.bench.length} sit` : ""}</td>)}
-              </tr>
             </tbody>
           </table>
         </div>
       </Section>
-      <MyForm s={s} />
-      <MyInjProt s={s} setS={setS} wk={wk} />
     </div>
   );
 }
@@ -3244,8 +3376,8 @@ function movesUsedESPN(s, w) {
 }
 
 // ---------- round 9: phone layout (news_logos.py) ----------
-const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "My Team"], ["moves", "Moves"], ["lines", "Lines"]];
-const M_MORE = [["teams", "Teams"], ["league", "League"], ["news", "News"], ["setup", "Setup"]];
+const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["league", "League"]]; // round 37, older marker kept: ["lines", "Lines"]];
+const M_MORE = [["setup", "Settings"], ["news", "News"], ["teams", "Teams"]]; // round 37, older marker kept: const M_MORE = [["teams", "Teams"], ["league"
 const M_MODES = [["espn", "ESPN"], ["blend", "Blend"], ["model", "GM model"], ["ai", "AI (beta)"]];
 const M_ST = { DAY_TO_DAY: "DTD", OUT: "Out", INJURY_RESERVE: "IR", SUSPENSION: "Susp." };
 const shortN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x[0][0] + ". " + x.slice(1).join(" ") : x[0]; };
@@ -3283,9 +3415,9 @@ function MobileHeader({ s, setS, tab, go, ageH }) {
           </div>
         </div>
       )}
-      <div className="grid grid-cols-6 mt-1">
-        {M_TABS.map(([k, l]) => tabBtn(k, l, tab === k && !menu, () => pick(k)))}
-        {tabBtn("more", more ? more[1] : "More", !!more || menu, () => { setMenu(!menu); setOpts(false); })}
+      <div className="grid grid-cols-6 mt-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
+        {M_TABS.map(([k, l]) => tabBtn(k, l, (tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) && !menu, () => pick(k)))}
+        {tabBtn("more", more ? more[1] : "Setup", !!more || menu, () => { setMenu(!menu); setOpts(false); })}
       </div>
       {menu && (
         <div className="border-t border-slate-800">
@@ -3884,8 +4016,8 @@ const ThemeBtn = ({ cls }) => {
 };
 const ordN = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
 const lastN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x.slice(1).join(" ") : x[0]; };
-const GX_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["moves", "Moves"], ["league", "League"]];
-const GX_MORE = [["teams", "Teams"], ["lines", "Lines"], ["news", "News"], ["setup", "Setup"]];
+const GX_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["league", "League"]];
+const GX_MORE = [["setup", "Settings"], ["news", "News"], ["teams", "Teams"]];
 function TopBar({ s, setS, tab, go, ageH }) {
   const [open, setOpen] = useState(false);
   const [rank, setRank] = useState(null);
@@ -3910,9 +4042,9 @@ function TopBar({ s, setS, tab, go, ageH }) {
         <span className="block font-semibold truncate" style={{ maxWidth: 180 }}>{name}</span>
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
       </span>
-      {GX_TABS.map(([k, l]) => <button key={k} onClick={() => pick(k)} className={"gx-tab" + (tab === k ? " on" : "")}>{l}</button>)}
+      {GX_TABS.map(([k, l]) => <button key={k} onClick={() => pick(k)} className={"gx-tab" + ((tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) ? " on" : "")}>{l}</button>)}
       <div className="relative gx-more">
-        <button onClick={() => setOpen(!open)} className={"gx-tab" + (more || open ? " on" : "")}>{more ? more[1] : "More"}</button>
+        <button onClick={() => setOpen(!open)} className={"gx-tab" + (more || open ? " on" : "")}>{"Setup"}</button>
         {open ? (
           <div className="gx-menu">
             {GX_MORE.map(([k, l]) => <button key={k} className="gx-mi" onClick={() => pick(k)}>{l}</button>)}
@@ -4252,6 +4384,33 @@ function GxGames({ wk, A, B }) {
     </GxPanel>
   );
 }
+
+// ---------- round 37: Team sub-pages and box-score history for the roster (news_logos.py) ----------
+const TEAM_SUBS = [["roster", "Roster"], ["pickups", "Pickups"], ["plan", "Plan"], ["trades", "Trades"], ["lines", "Lines"]];
+const PICK_SUBS = [["advice", "Advice"], ["adddrop", "Add / Drop"], ["players", "Players"], ["goalies", "Goalie streams"], ["playoffs", "Playoffs"]];
+function SubBar({ tab, sub, go, setSubs, nav }) {
+  const team = tab === "myteam" || tab === "moves" || tab === "lines";
+  if (!team) return nav && nav[2] ? <div className="mb-4"><Pills items={nav[2]} value={sub} onChange={(v) => setSubs((x) => ({ ...x, [tab]: v }))} /></div> : null;
+  const inPick = PICK_SUBS.some((x) => x[0] === sub);
+  const cur = tab === "myteam" ? "roster" : tab === "lines" ? "lines" : sub === "planner" ? "plan" : sub === "trades" ? "trades" : "pickups";
+  const to = (k) => (k === "roster" ? go("myteam") : k === "lines" ? go("lines") : k === "plan" ? go("moves", "planner") : k === "trades" ? go("moves", "trades") : go("moves", inPick ? sub : "advice"));
+  return (
+    <div className="mb-4">
+      <Pills items={TEAM_SUBS} value={cur} onChange={to} />
+      {cur === "pickups" ? (
+        <div className="flex gap-4 overflow-x-auto navscroll text-sm" style={{ marginTop: 10 }}>
+          {PICK_SUBS.map(([k, l]) => <button key={k} type="button" onClick={() => go("moves", k)} className={"whitespace-nowrap " + (sub === k || (k === "advice" && !inPick) ? "font-semibold" : "text-slate-500")}>{l}</button>)}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+const gxBoxIdx = () => fetch("box/index.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.dates) || []).catch(() => []);
+const gxBoxDay = (d) => {
+  const B = (window.__BOX = window.__BOX || { idx: null, at: 0, days: {} });
+  if (B.days[d]) return Promise.resolve(B.days[d]);
+  return fetch("box/" + d + ".json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.p) B.days[d] = j.p; return (j && j.p) || null; }).catch(() => null);
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
