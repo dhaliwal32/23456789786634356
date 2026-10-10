@@ -6463,5 +6463,121 @@ _fix_before_r44 = fix
 def fix(t):
     return round44(_fix_before_r44(t))
 
+# ---------- round 45: phone fit for every page; phone header is just the tabs; Trades stacks on a phone; logos on Today's suggestion ----------
+R45_CSS = r'''  /* round 45 phone fit (news_logos.py) */
+  button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+  .gx-pl { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
+  .m-seg { display: none; }
+  @media (max-width: 640px) {
+    html, body { overflow-x: hidden; }
+    body { font-size: 14px; padding-bottom: 76px; }
+    div:has(> .grid.grid-cols-6.mt-1) > div:has(select) { display: none !important; }
+    .grid.grid-cols-6.mt-1 { margin-top: 0; }
+    .gx-pn { min-width: 0; }
+    .gx-hero { gap: 8px; padding: 8px 0 4px; }
+    .gx-hero .gx-ring { width: 100px !important; height: 100px !important; }
+    .gx-hero .gx-ring > div > div:first-child { font-size: 24px !important; }
+    .gx-num { font-size: 24px; }
+    .navscroll > button { padding-left: 11px; padding-right: 11px; font-size: 13px; }
+    .gx-roh > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gx-ps .truncate, .gx-pk .text-xs.truncate, .gx-gl .text-xs.truncate { white-space: normal; }
+    .gx-day { padding-left: 1px; padding-right: 1px; }
+    .gx-row button[aria-label] { min-width: 36px; min-height: 40px; }
+    .gx-seg button { min-height: 40px; padding: 5px 9px; }
+    .gx-lk { min-height: 44px; padding: 12px 0; }
+    .gx-sr { gap: 8px; }
+    .gx-sr > :last-child { max-width: 100%; }
+    .gx-st { font-size: 14px; }
+    .gx-stv { font-size: 18px; }
+    .tb-grid { grid-template-columns: minmax(0, 1fr); }
+    .m-seg { display: inline-flex; max-width: 100%; }
+    .m-seg button { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    body .lt-rink { padding: 2px 8px 10px; }
+    body .lt-ps { font-size: 10px; }
+    body .lt-pc { padding: 7px 8px; }
+  }
+'''
+
+R45_HELPERS = r'''// ---------- round 45: tappable rows work from the keyboard too (news_logos.py) ----------
+(function gxA11y() {
+  if (window.__gxA11y) return;
+  window.__gxA11y = 1;
+  const fix = () => document.querySelectorAll('[role="button"]:not([tabindex])').forEach((el) => el.setAttribute("tabindex", "0"));
+  let q = 0;
+  try {
+    new MutationObserver(() => { if (q) return; q = requestAnimationFrame(() => { q = 0; fix(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
+  document.addEventListener("keydown", (e) => {
+    const el = document.activeElement;
+    if (e.defaultPrevented || !(e.key === "Enter" || e.key === " ")) return;
+    if (el && el.getAttribute && el.getAttribute("role") === "button" && el.tagName !== "BUTTON") { e.preventDefault(); el.click(); }
+  });
+})();
+
+'''
+
+R45_OFFER_OLD = r'''<span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" />{note ? <span className="text-xs text-slate-500" style={{ marginLeft: 6 }}>{note}</span> : null}</span>'''
+R45_OFFER_NEW = r'''<span className="min-w-0" style={{ flex: 1 }}><span className="block truncate"><PN p={p} className="" /></span>{note ? <span className="block text-xs text-slate-500">{note}</span> : null}</span>'''
+R45_TAP_OLD = r'''<span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span>'''
+R45_TAP_NEW = (r'''<span className="text-xs text-slate-500 m-hide" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span>'''
+               r'''<span className="gx-seg m-seg" style={{ marginLeft: "auto" }}><button type="button" className={side === "me" ? "on" : ""} onClick={() => setSide("me")}>{teamName(s, s.me)}</button>'''
+               r'''<button type="button" className={side === "them" ? "on" : ""} onClick={() => setSide("them")}>{teamName(s, partner)}</button></span>''')
+R45_COL1_OLD = r'''<div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, s.me)}</div>'''
+R45_COL1_NEW = r'''<div className={"min-w-0" + (side === "me" ? "" : " m-hide")}><div className="text-xs text-slate-500 truncate m-hide" style={{ paddingBottom: 2 }}>{teamName(s, s.me)}</div>'''
+R45_COL2_OLD = r'''<div className="min-w-0"><div className="text-xs text-slate-500 truncate" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>'''
+R45_COL2_NEW = r'''<div className={"min-w-0" + (side === "them" ? "" : " m-hide")}><div className="text-xs text-slate-500 truncate m-hide" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>'''
+
+
+def r45_today_logos(t):
+    if 'className="gx-pl"' in t:
+        print("(news) phone fit: logos on Today's suggestion: already done")
+        return t
+    m = t.find("today v32")
+    a = t.rfind("function Today(", 0, m) if m >= 0 else -1
+    ends = [x for x in (t.find("\nfunction ", m), t.find("\nconst ", m)) if x > 0] if m >= 0 else []
+    if a < 0 or not ends:
+        print("(news) phone fit: logos on Today's suggestion: skipped (Today page not found). Tell the AI helper.")
+        return t
+    b = min(ends)
+    pat = re.compile(r"<PN p=\{([A-Za-z_$][\w$.]*)\}([^<>]*?)/>")
+    out, n = [], 0
+    for ln in t[a:b].split("\n"):
+        if ln.strip().startswith("//") or "/*" in ln or "TeamLogo" in ln:
+            out.append(ln)
+            continue
+        new, k = pat.subn(lambda mm: '<span className="gx-pl"><TeamLogo t={' + mm.group(1) + '.t} size={18} />' + mm.group(0) + "</span>", ln)
+        n += k
+        out.append(new)
+    if not n:
+        print("(news) phone fit: logos on Today's suggestion: skipped (no player names found there). Tell the AI helper.")
+        return t
+    print("(news) phone fit: logos on Today's suggestion: updated (" + str(n) + " names)")
+    return t[:a] + "\n".join(out) + t[b:]
+
+
+def round45(t):
+    t = lit(t, "phone fit: styles", "</style>", R45_CSS + "</style>", "round 45 phone fit")
+    t = lit(t, "phone fit: keyboard support", ROOT, R45_HELPERS + ROOT, "function gxA11y()")
+    t = lit(t, "phone fit: trades roster switch", "  const [edit, setEdit] = useState(-1);\n",
+            '  const [edit, setEdit] = useState(-1);\n  const [side, setSide] = useState("me");\n', 'const [side, setSide] = useState("me");')
+    t = lit(t, "phone fit: trades offer rows", R45_OFFER_OLD, R45_OFFER_NEW, '<span className="block truncate"><PN p={p} className="" /></span>')
+    t = lit(t, "phone fit: trades Change player link", "setEdit(edit === k ? -1 : k); }}>change</button>", "setEdit(edit === k ? -1 : k); }}>Change player</button>", ">Change player</button>")
+    t = lit(t, "phone fit: trades team buttons", R45_TAP_OLD, R45_TAP_NEW, 'className="gx-seg m-seg"')
+    t = lit(t, "phone fit: trades your roster", R45_COL1_OLD, R45_COL1_NEW, '(side === "me" ? "" : " m-hide")')
+    t = lit(t, "phone fit: trades their roster", R45_COL2_OLD, R45_COL2_NEW, '(side === "them" ? "" : " m-hide")')
+    t = r45_today_logos(t)
+    for must in ("round 45 phone fit", "function gxA11y()", "trades v42", "function TradeBuilder(", "function TopBar(", "function SubBar(", "function GxHome(", "today v32"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 45 (" + must + ").")
+    return t
+
+
+_fix_before_r45 = fix
+
+
+def fix(t):
+    return round45(_fix_before_r45(t))
+
 if __name__ == "__main__":
     main()
