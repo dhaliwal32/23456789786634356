@@ -5049,5 +5049,335 @@ _fix_before_r38 = fix
 def fix(t):
     return round38(_fix_before_r38(t))
 
+# ---------- round 39: Lines page. Real positions (centre in the middle), rink outline, power play shown, team search ----------
+GLINES = "gm_lines.py"
+PY_BAK[GLINES] = "gm_lines.backup-news.py"
+PY_DONE[GLINES] = "DFPOS = {}"
+
+GL39_DEFS = '''DFPOS = {}
+
+
+def _df_pos(obj, out):
+    # remember each player's position (lw, c, rw, ld, rd, g) for every line group on a Daily Faceoff page (news_logos.py round 39)
+    if isinstance(obj, dict):
+        nm, pi, gi = obj.get("name"), obj.get("positionIdentifier"), obj.get("groupIdentifier")
+        if isinstance(nm, str) and isinstance(pi, str) and isinstance(gi, str):
+            out.setdefault(gi.lower(), {})[nm] = pi.lower()
+        for v in obj.values():
+            _df_pos(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _df_pos(v, out)
+
+
+def team_pos(t, state, rosters):
+    df = DFPOS.get(t) or (state.get("dfpos") or {}).get(t) or {}
+    a = {}
+    for gi, m in df.items():
+        if gi[:1] in ("f", "d", "g"):
+            for n, p in m.items():
+                a.setdefault(n, p)
+    b = {v["n"]: (v.get("pc") or "") + (v.get("sh") or "") for v in (rosters.get(t) or {}).values() if v.get("pc")}
+    return {"df": a, "nhl": b}
+
+
+def read_team(t):'''
+
+GL39_GRAB = '''    try:
+        pm39_ = {}
+        _df_pos(data, pm39_)
+        if pm39_:
+            DFPOS[t] = pm39_
+    except Exception:
+        pass
+    out, used = {}, set()
+'''
+
+
+def fix_glines39(t):
+    t = lit(t, "lines data: position helpers", "def read_team(t):", GL39_DEFS, "DFPOS = {}")
+    t = lit(t, "lines data: read positions from Daily Faceoff", "    out, used = {}, set()\n", GL39_GRAB, "pm39_ = {}")
+    t = lit(t, "lines data: NHL position as a backup", 'pl[str(x["id"])] = {"n": n, "p": pos}',
+            'pl[str(x["id"])] = {"n": n, "p": pos, "pc": x.get("positionCode") or "", "sh": x.get("shootsCatches") or ""}',
+            '"pc": x.get("positionCode")')
+    t = lit(t, "lines data: remember positions between reads", '    lines = state.get("lines") or {}\n',
+            '    state["dfpos"] = {**(state.get("dfpos") or {}), **DFPOS}\n    lines = state.get("lines") or {}\n', 'state["dfpos"] =')
+    t = lit(t, "lines data: positions in the file", '"roster": len(rosters.get(t) or {})}',
+            '"roster": len(rosters.get(t) or {}), "pos": team_pos(t, state, rosters)}', '"pos": team_pos(t, state, rosters)')
+    py_ok(GLINES, t)
+    return t
+
+
+PY_FIXES[GLINES] = fix_glines39
+
+LT39_CSS = r'''
+/* lines v39 */
+.lt-rink{border:1px solid var(--line2);border-radius:26px;padding:6px 14px 16px}
+.lt-sec{background:none;text-align:left;padding:0;margin:14px 0 8px;font-size:12px;letter-spacing:.06em;text-transform:none;color:var(--mute);font-weight:400}
+.lt-pc{border-left-width:1px;border-left-color:var(--line)}
+.lt-pc.me{border-color:var(--accent)}
+.lt-ps{font-size:11px;color:var(--faint);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-pp5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media(max-width:640px){.lt-pp5{grid-template-columns:repeat(3,minmax(0,1fr))}.lt-rink{padding:4px 8px 12px;border-radius:18px}}
+'''
+
+LT39_TEAMS = r'''  // ---------- player card inside a team (lines v39: real positions, points a game, hot and cold) ----------
+  // older done markers kept: round 31: open one team's lines | lt-legend-wrap
+  const POS_OK = { lw: 1, c: 1, rw: 1, ld: 1, rd: 1, g: 1 };
+  function posMap(T) {
+    const P = (T && T.pos) || {}, df = P.df || {}, nhl = {};
+    Object.entries(P.nhl || {}).forEach(([n, v]) => { nhl[nk(n)] = v; });
+    return (n) => {
+      if (df[n] && POS_OK[df[n]]) return df[n];
+      const v = nhl[nk(n)] || "";
+      return v[0] === "C" ? "c" : v[0] === "L" ? "lw" : v[0] === "R" ? "rw" : v[0] === "D" ? (v[1] === "R" ? "rd" : "ld") : v[0] === "G" ? "g" : "";
+    };
+  }
+  // a forward line in left wing, centre, right wing order; a pair in left, right order
+  function arrange(names, pos, fwd, val) {
+    if (!fwd) {
+      const l = names.filter((n) => pos(n) === "ld"), r = names.filter((n) => pos(n) === "rd"), o = names.filter((n) => pos(n) !== "ld" && pos(n) !== "rd");
+      const out = [l[0] || null, r[0] || null];
+      [...l.slice(1), ...r.slice(1), ...o].forEach((n) => { const i = out.indexOf(null); if (i >= 0) out[i] = n; else out.push(n); });
+      return out;
+    }
+    const slots = [null, null, null], rest = [], want = { lw: 0, rw: 2 };
+    names.filter((n) => pos(n) === "c").sort((x, y) => val(y) - val(x)).forEach((n, i) => { if (i === 0) slots[1] = n; else rest.push(n); });
+    names.filter((n) => pos(n) !== "c").forEach((n) => { const i = want[pos(n)]; if (i != null && slots[i] == null) slots[i] = n; else rest.push(n); });
+    rest.forEach((n) => { const i = slots[0] == null ? 0 : slots[2] == null ? 2 : slots[1] == null ? 1 : -1; if (i >= 0) slots[i] = n; else slots.push(n); });
+    return slots;
+  }
+  function PCard({ n, t, g, pl, mode, ctx, s, H, onPick }) {
+    if (!n) return <div className="lt-pc lt-empty"><div className="lt-nm">{"\u2014"}</div><small>open spot</small></div>;
+    const k = nk(n), p = ctx.pOf(k, g), K = s.blend;
+    const f = ctx.fpOf(k, g), v = ctx.useThis ? f.cur : f.last, pg = v && v[1] ? v[0] / v[1] : null;
+    const rec = p ? H.sigOf(p).rec : null, base = p ? H.effAvg(p, K) : 0, fr = rec && rec.gp >= 3 && base > 0 ? rec.ppg / base : null;
+    const tone = fr == null ? "" : fr >= 1.25 ? "lt-up" : fr <= 0.7 ? "lt-dn" : "";
+    const w = ctx.where[k + "|" + t] || {}, ch = mode === "pp" ? null : ctx.latestES[k + "|" + t];
+    const bits = [];
+    if (mode !== "pp" && w.pp) bits.push(w.pp);
+    if (ch && ch.type === "line" && ch.from) bits.push((ch.dir === "up" ? "up from " : "down from ") + (SHORT[ch.from] || ch.from));
+    if (ch && ch.type === "lineup" && ch.dir === "in") bits.push("new in lineup");
+    const hurt = p && p.status && p.status !== "ACTIVE";
+    if (hurt) bits.push(INJ[p.status] || pretty(p.status));
+    const head = [pl, p && p.ft === s.me ? "yours" : p && p.ft === "fa" ? "free agent" : ""].filter(Boolean).join(" \u00b7 ");
+    const parts = n.split(" "), short = parts.length > 1 ? parts[0][0] + ". " + parts.slice(1).join(" ") : n;
+    return (
+      <button className={"lt-pc" + (p && p.ft === s.me ? " me" : "")} title={n} onClick={() => onPick({ name: n, key: k, t, g: g || (p ? p.p : "F"), p })}>
+        {head ? <div className="lt-ps">{head}</div> : null}
+        <div className="lt-nm"><span className="lt-full">{n}</span><span className="lt-short">{short}</span></div>
+        <small><span className={tone}>{pg == null ? "no games yet" : H.f1(pg)}</span>{bits.map((b, i) => <span key={i}>{" \u00b7 " + b}</span>)}</small>
+      </button>
+    );
+  }
+
+  // ---------- one team, opened: forwards, defence, goalies in a rink, then both power-play units ----------
+  function TeamBody({ t, T, chg, ctx, s, H, onPick, onPickChange }) {
+    const ln = T.lines || {};
+    if (!ln.F1) return <div className="lt-msg">Lines not available yet.</div>;
+    const pos = posMap(T);
+    const val = (n, g) => { const f = ctx.fpOf(nk(n), g), v = ctx.useThis ? f.cur : f.last; return v ? v[0] : -1; };
+    const card = (n, g, pl, mode, key) => <PCard key={key} n={n} t={t} g={g} pl={pl} mode={mode} ctx={ctx} s={s} H={H} onPick={onPick} />;
+    const gOf = (n) => { const w = ctx.where[nk(n) + "|" + t]; const g = w && w.es ? grpOf(w.es) : null; if (g) return g; const p = ctx.pOf(nk(n)); return p ? p.p : "F"; };
+    const line = (sl, fwd, labels) => {
+      const names = ln[sl] || [], known = names.some((n) => pos(n));
+      const a = known ? arrange(names, pos, fwd, (n) => val(n, fwd ? "F" : "D")) : names.slice();
+      while (a.length < labels.length) a.push(null);
+      return a.slice(0, labels.length).map((n, i) => card(n, fwd ? "F" : "D", known ? labels[i] : "", "es", sl + i));
+    };
+    const goalies = (ln.G || []).slice().sort((a, b) => { const pa = ctx.pOf(nk(a), "G"), pb = ctx.pOf(nk(b), "G"); return (pb ? pb.prob : 0) - (pa ? pa.prob : 0) || val(b, "G") - val(a, "G"); });
+    const gLab = (n) => { const p = n ? ctx.pOf(nk(n), "G") : null; return p ? Math.round(p.prob * 100) + "% of starts" : "G"; };
+    const unit = (sl) => {
+      const arr = ln[sl] || [];
+      if (!arr.length) return <div className="lt-msg">Not available.</div>;
+      const fw = arr.filter((n) => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F")), df = arr.filter((n) => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
+      return <div className="lt-pp5">{[...fw, ...df].map((n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n))}</div>;
+    };
+    return (
+      <div>
+        <div className="lt-rink">
+          <div className="lt-sec">Forwards</div>
+          <div className="lt-grid">
+            {ES_F.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{line(sl, true, ["LW", "C", "RW"])}</React.Fragment>)}
+          </div>
+          <div className="lt-sec">Defence</div>
+          <div className="lt-grid d">
+            {ES_D.map((sl) => <React.Fragment key={sl}><div className="lt-rl">{SHORT[sl]}</div>{line(sl, false, ["LD", "RD"])}</React.Fragment>)}
+          </div>
+          <div className="lt-sec">Goalies</div>
+          <div className="lt-gg">{[goalies[0] || null, goalies[1] || null].map((n, i) => card(n, "G", gLab(n), "es", "G" + i))}</div>
+        </div>
+        <div className="lt-sec">Power play 1</div>
+        {unit("PP1")}
+        <div className="lt-sec">Power play 2</div>
+        {unit("PP2")}
+        {chg.length ? (
+          <details className="lt-how"><summary>{chg.length} recent change{chg.length > 1 ? "s" : ""}</summary>
+            {chg.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={onPickChange} dim />)}
+          </details>
+        ) : null}
+      </div>
+    );
+  }
+
+  // ---------- team list: your teams first, then by standings ----------
+  function Teams({ L, ctx, items, s, H, onPick, onPickChange }) {
+    const [onlyMine, setOnlyMine] = useState(false);
+    const [open, setOpen] = useState({});
+    useEffect(() => {
+      const show = (t) => {
+        if (!t) return;
+        window.__LINES_TEAM = null;
+        setOnlyMine(false); setOpen((o) => ({ ...o, [t]: true }));
+        setTimeout(() => { const el = document.getElementById("lt-team-" + t); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+      };
+      show(window.__LINES_TEAM);
+      const h = (e) => show(e.detail);
+      window.addEventListener("gm-lines-team", h);
+      return () => window.removeEventListener("gm-lines-team", h);
+    }, []);
+    const st = (T) => T.st || {};
+    const rows = Object.entries(L.teams || {}).map(([t, T]) => ({ t, T }));
+    rows.sort((a, b) => (st(b.T).pts || 0) - (st(a.T).pts || 0) || (st(b.T).pct || 0) - (st(a.T).pct || 0));
+    const today = H.todayISO();
+    rows.forEach((x, i) => {
+      x.rank = i + 1;
+      x.mine = s.players.filter((p) => p.ft === s.me && p.t === x.t && !p.ir).length;
+      x.chg = items.filter((it) => it.c.team === x.t);
+      x.next = ((L.sched || {})[x.t] || []).find((g) => g.d >= today);
+    });
+    const shown = rows.filter((x) => !onlyMine || x.mine).sort((a, b) => (b.mine ? 1 : 0) - (a.mine ? 1 : 0) || a.rank - b.rank);
+    const anyOpen = Object.keys(open).some((k) => open[k]);
+    return (
+      <H.Section title="Teams" sub={`Lines checked ${ago(L.lines_at)}. Numbers are fantasy points a game: green is hot, red is cold.`}>
+        <div className="flex flex-wrap gap-4 items-center text-xs" style={{ marginBottom: 10 }}>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} /> Only teams with my players</label>
+          <button className="lt-link" style={{ padding: 0 }} onClick={() => setOpen(anyOpen ? {} : Object.fromEntries(rows.map((x) => [x.t, true])))}>{anyOpen ? "Close all teams" : "Open all teams"}</button>
+        </div>
+        {shown.map((x) => {
+          const isOpen = !!open[x.t], sd = st(x.T);
+          const meta = [sd.gp ? `${sd.w}-${sd.l}-${sd.otl}` : "", x.next ? `next ${H.dayLabel(x.next.d).split(",")[0]} ${x.next.h ? "vs" : "@"} ${x.next.o}` : "", x.mine ? `${x.mine} of yours` : ""].filter(Boolean).join(" \u00b7 ");
+          return (
+            <div key={x.t} id={"lt-team-" + x.t} style={{ scrollMarginTop: 120 }} className={"lt-team" + (isOpen ? " open" : "")}>
+              <div className="lt-tr" onClick={() => setOpen({ ...open, [x.t]: !isOpen })}>
+                {H.TeamLogo ? <div style={{ flexShrink: 0 }}><H.TeamLogo t={x.t} size={32} /></div> : null}
+                <div className="lt-tmain">
+                  <div className="lt-tn">{sd.name || x.t}</div>
+                  <div className="lt-meta">{meta}</div>
+                </div>
+                <div className="lt-chev">{"\u25be"}</div>
+              </div>
+              {isOpen && <div className="lt-body"><TeamBody t={x.t} T={x.T} chg={x.chg} ctx={ctx} s={s} H={H} onPick={onPick} onPickChange={onPickChange} /></div>}
+            </div>
+          );
+        })}
+        {!shown.length && <div className="lt-msg">No teams match.</div>}
+      </H.Section>
+    );
+  }
+
+'''
+
+LT39_TAB = r'''  // ---------- the tab (lines v39: one search box for teams and players) ----------
+  function LinesTab({ s, wk, H }) {
+    const [, tick] = useState(0);
+    const [sel, setSel] = useState(null);
+    const [q, setQ] = useState("");
+    useEffect(() => {
+      const id = setInterval(() => {
+        const sc = document.createElement("script");
+        sc.src = "lines-data.js?t=" + Date.now();
+        sc.onload = () => { sc.remove(); tick((x) => x + 1); };
+        sc.onerror = () => sc.remove();
+        document.head.appendChild(sc);
+      }, 3 * 60 * 1000);
+      return () => clearInterval(id);
+    }, []);
+    const L = window.LINES_DATA;
+    const pr = (wk.pairs || []).find((x) => x[0] && x[1] && (x[0] === s.me || x[1] === s.me));
+    const opp = pr ? (pr[0] === s.me ? pr[1] : pr[0]) : s.opp;
+    const ctx = useMemo(() => build(s, L), [s.players, L && L.generated]);
+    const items = useMemo(() => enrich(L, ctx, s, opp), [ctx, opp, L && L.generated]);
+    if (!L) return <H.Section title="Lines">No line data yet. It appears after the next sync.</H.Section>;
+    const pick = (it) => { setSel(it); window.scrollTo({ top: 0, behavior: "smooth" }); };
+    const pickChange = (x) => pick({ name: x.c.name, key: x.c.key, t: x.c.type === "move" && x.c.dir === "in" && x.c.to ? x.c.to : x.c.team, g: x.c.g || (x.p ? x.p.p : "F"), p: x.p || ctx.pOf(x.c.key, x.c.g) });
+    const qq = nk(q);
+    const teamHits = qq.length < 2 ? [] : Object.entries(L.teams || {}).filter(([t, T]) => nk(t) === qq || nk((T.st || {}).name || "").includes(qq)).slice(0, 4);
+    const results = qq.length < 2 ? [] : ctx.items.filter((i) => i.key.includes(qq))
+      .sort((a, b) => (b.key.startsWith(qq) - a.key.startsWith(qq)) || ((b.p ? b.p.own : 0) - (a.p ? a.p.own : 0))).slice(0, 8);
+    const showTeam = (t) => { setQ(""); setSel(null); window.dispatchEvent(new CustomEvent("gm-lines-team", { detail: t })); };
+    return (
+      <div className="space-y-4">
+        <H.Section title="Find a team or a player">
+          <input className={H.inp + " w-full"} placeholder="Team or player, for example Colorado or MacKinnon" value={q} onChange={(e) => setQ(e.target.value)} />
+          {teamHits.length + results.length > 0 && <div className="flex flex-wrap gap-2 mt-2">
+            {teamHits.map(([t, T]) => (
+              <button key={"t" + t} onClick={() => showTeam(t)} className="px-2 py-1 rounded-lg border border-slate-300 text-xs inline-flex items-center gap-1">
+                {H.TeamLogo ? <H.TeamLogo t={t} size={16} /> : null}{(T.st || {}).name || t}
+              </button>))}
+            {results.map((it) => (
+              <button key={it.key + it.t} onClick={() => { setSel(it); setQ(""); }} className="px-2 py-1 rounded-lg border border-slate-300 text-xs">
+                {it.name} <span className="text-slate-400">{it.g + " \u00b7 " + it.t}</span>
+              </button>))}
+          </div>}
+          {qq.length >= 2 && !results.length && !teamHits.length && <div className="text-xs text-slate-400 mt-2">Nothing matches "{q}".</div>}
+          {sel && <PlayerCard it={sel} s={s} wk={wk} H={H} L={L} ctx={ctx} onClose={() => setSel(null)} onPick={pick} />}
+        </H.Section>
+        <Teams L={L} ctx={ctx} items={items} s={s} H={H} onPick={pick} onPickChange={pickChange} />
+        <Feed items={items} s={s} H={H} L={L} onPick={pickChange} />
+      </div>
+    );
+  }
+
+'''
+
+_fix_lines_before_r39 = JS_FIXES[LINES]
+
+
+def fix_lines39(t):
+    t = _fix_lines_before_r39(t)
+    if "lines v39" in t:
+        print("(news) lines: new Lines page: already done")
+    else:
+        end_css = '`;\n  if (!document.getElementById("lt2-css"))'
+        a = t.find("  // ---------- player card inside a team ----------")
+        b = t.find("  // ---------- game log: past games with box scores", a)
+        if b < 0:
+            b = t.find("  // ---------- player detail card (unchanged from the old Lines tab) ----------", a)
+        if a < 0 or b < 0 or t.count(end_css) != 1:
+            fail("lines: could not find the team section in lines-tab.js. Send this log to the AI helper.")
+        t = t[:a] + LT39_TEAMS + t[b:]
+        c = t.find("  // ---------- the tab ----------")
+        d = t.find("  // ---------- compact summary for the Today screen ----------", c)
+        if c < 0 or d < 0:
+            fail("lines: could not find the Lines tab in lines-tab.js. Send this log to the AI helper.")
+        t = t[:c] + LT39_TAB + t[d:]
+        t = t.replace(end_css, LT39_CSS + end_css, 1)
+        print("(news) lines: new Lines page: updated")
+    for must in ("function Teams(", "function TeamBody(", "function PCard(", "function LinesTab(", "function PlayerCard(", "window.LinesTab = LinesTab;",
+                 "H.TeamLogo t={x.t} size={32}", 'id={"lt-team-" + x.t}', "Open all teams"):
+        if must not in t:
+            fail("lines-tab.js looks damaged after round 39 (" + must + ").")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines39
+
+R39_HEAD_OLD = r'''{HB("sea", "Season", "m-hide")}{HB("pg", "Per game")}'''
+R39_HEAD_NEW = r'''{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}'''
+
+
+def round39(t):
+    t = lit(t, "lines: plainer roster headings", R39_HEAD_OLD, R39_HEAD_NEW, 'HB("pg", "Expected")')
+    return t
+
+
+_fix_before_r39 = fix
+
+
+def fix(t):
+    return round39(_fix_before_r39(t))
+
 if __name__ == "__main__":
     main()
