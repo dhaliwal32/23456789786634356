@@ -5379,5 +5379,156 @@ _fix_before_r39 = fix
 def fix(t):
     return round39(_fix_before_r39(t))
 
+# ---------- round 40: Pickups list (replaces Add / Drop and Players), one panel style everywhere, power play as 3 + 2 ----------
+R40_CSS = r'''  /* round 40 pickups (news_logos.py) */
+  .gx-st { font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+  .gx-pk { display: grid; grid-template-columns: 28px minmax(0,1fr) 52px 46px 66px 58px 56px; gap: 8px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .gx-pk .n { text-align: right; }
+  .gx-pk.row { cursor: pointer; }
+  .gx-pk.row:hover { background: var(--hover); }
+  @media (max-width: 640px) { .gx-pk { grid-template-columns: 26px minmax(0,1fr) 52px 46px; gap: 6px; } }
+'''
+
+R40_SECTION = r'''const Section = ({ title, sub, link, children, closed, id }) => {
+  // section v40: the same corner-bracket panel as the new pages (news_logos.py)
+  const [k] = useState(() => "sec:" + (window.__TAB || "") + ":" + (id || secKey(title)));
+  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !(closed || SEC_SHUT.some((x) => k.indexOf("sec:" + x) === 0)) : !!v; });
+  const flip = () => { uiSet(k, !open); setOpen(!open); };
+  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  return (
+    <div className={"gx-pn text-sm" + (open ? "" : " self-start")} style={{ minWidth: 0 }}><b></b><b></b><b></b><b></b>
+      <div className={"flex items-start gap-2" + (open ? " mb-2" : "")}>
+        <div role="button" tabIndex={0} aria-expanded={open} className="sec-head" onClick={flip} onKeyDown={onKey}>
+          <div className="gx-st">{title}</div>{open && sub ? <div className="text-xs text-slate-500" style={{ marginTop: 2 }}>{sub}</div> : null}
+        </div>
+        {open && link ? <button className="text-xs text-blue-600 whitespace-nowrap" onClick={link[1]}>{link[0] + " \u2192"}</button> : null}
+        <button type="button" onClick={flip} aria-label={open ? "Close this box" : "Open this box"} style={{ lineHeight: 0, padding: "2px 0" }}><span className={"sec-chev" + (open ? "" : " shut")}></span></button>
+      </div>
+      {open ? children : null}
+    </div>
+  );
+};
+'''
+
+R40_HELPERS = r'''// ---------- round 40: Pickups list (news_logos.py) ----------
+const gxEst = (x, sc) => (x.sv != null
+  ? (x.dec === "W" ? (sc.W ?? 5) : 0) + (x.dec === "O" ? (sc.OTL ?? 1) : 0) + (x.sv || 0) * (sc.SV ?? 0.6) + (x.ga || 0) * (sc.GA ?? -3)
+  : (x.g || 0) * (sc.G ?? 6) + (x.a || 0) * (sc.A ?? 4) + (x.pm || 0) * (sc.PM ?? 2) + (x.sog || 0) * (sc.SOG ?? 1) + (x.hit || 0) * (sc.HIT ?? 0.1) + (x.blk || 0) * (sc.BLK ?? 1) + (x.ppg || 0) * (sc.PPP ?? 2));
+const gxLast5 = (ids, sc) => gxBoxIdx().then((ds) => Promise.all(ds.slice(-14).map((d) => gxBoxDay(d)))).then((days) => {
+  const out = {};
+  ids.forEach((pid) => { const a = []; days.forEach((day) => { const x = day && day[pid]; if (x) a.push(x.fp != null ? x.fp : gxEst(x, sc)); }); out[pid] = a.slice(-5); });
+  return out;
+}).catch(() => ({}));
+function Pickups({ s, setS, wk }) {
+  const K = s.blend;
+  const [H, setH] = useState(1);
+  const [pos, setPos] = useState("all");
+  const [q, setQ] = useState("");
+  const [limit, setLimit] = useState(25);
+  const [sim, setSim] = useState(null);
+  const [hist, setHist] = useState({});
+  const sP = useMemo(() => planS(s), [s]);
+  const plan = sP !== s;
+  const wkP = useMemo(() => (plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk), [sP, wk]);
+  const M = useMemo(() => computeMoves(sP, { H, pos, q }), [sP, H, pos, q]);
+  const base = useMemo(() => planBase(s, sP), [sP]);
+  const minGain = s.minGain ?? 3;
+  const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
+  const rows = all.slice(0, limit);
+  const wins = useMemo(() => {
+    const o = {};
+    if (base == null) return o;
+    rows.forEach((r) => { o[r.f.id] = winChance(sP, afterMove(sP, r.f, r.d)); });
+    return o;
+  }, [M, limit, base]);
+  const ids = rows.map((r) => String(r.f.id).slice(1)).join(",");
+  useEffect(() => {
+    let dead = false;
+    if (!ids) return;
+    gxLast5(ids.split(","), s.sc || {}).then((h) => { if (!dead) setHist((x) => Object.assign({}, x, h)); });
+    return () => { dead = true; };
+  }, [ids]);
+  const ml = movesLeft(s, s.me, wk);
+  const pw = plan ? sP.weeks[sP.wk] || {} : null, d0 = pw ? (pw.dates || [])[0] : null;
+  const qq = nrm(q);
+  const others = qq.length >= 2 ? s.players.filter((p) => p.ft !== "fa" && p.ft !== s.me && nrm(p.n).includes(qq)).slice(0, 6) : [];
+  const hLabel = plan ? { 1: "next week", 4: "4 weeks from next week", 0: "rest of season" }[H] : { 1: "rest of this week", 4: "next 4 weeks", 0: "rest of season" }[H];
+  const spark = (p) => {
+    const h = hist[String(p.id).slice(1)] || [];
+    return (
+      <div className="gx-sp m-hide" title="Last five games, oldest to newest">
+        {h.length ? h.map((v, i) => <i key={i} style={{ height: Math.max(2, Math.min(22, (Math.max(0, v) / 20) * 22)), background: v < 0 ? "var(--bad)" : "var(--ink2)" }}></i>) : <span className="text-xs text-slate-500">{"\u2013"}</span>}
+      </div>
+    );
+  };
+  return (
+    <div className="space-y-3">
+      <div className="text-sm">
+        <span className="font-semibold">{ml === 0 ? "No moves left this week." : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left this week."}</span>
+        {plan ? <span className="text-slate-500"> Showing {pw.label || "next week"}.{d0 ? " Moves reset " + dayLabel(d0) + "." : ""}</span> : null}
+      </div>
+      <div className="flex flex-wrap gap-2 items-center">
+        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(25); }} />
+        <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(25); }} />
+      </div>
+      <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-pk text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}>
+          <span></span><span>{base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)}</span>
+          <span className="n m-hide">Last 5</span><span className="n m-hide">Games</span><span className="n m-hide">Expected</span><span className="n">Adds</span><span className="n">Win</span>
+        </div>
+        {rows.length ? rows.map((r) => {
+          const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0, tg = shortTag(r.f, K), w = wins[r.f.id];
+          const st = r.f.status && r.f.status !== "ACTIVE" ? M_ST[r.f.status] || r.f.status.replace(/_/g, " ") : "";
+          return (
+            <div key={r.f.id} className="gx-pk row" role="button" onClick={() => setSim({ add: r.f.id, drop: r.d.id })}>
+              <TeamLogo t={r.f.t} size={26} />
+              <div className="min-w-0">
+                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
+                <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}</div>
+              </div>
+              {spark(r.f)}
+              <div className="n text-slate-500 m-hide">{M.gamesIn(r.f)}</div>
+              <div className="n m-hide">{f1(effAvg(r.f, K))}</div>
+              <div className="n font-semibold" style={{ color: r.gain > 0 ? "var(--good)" : "var(--bad)" }}>{(r.gain >= 0 ? "+" : "") + f1(r.gain)}</div>
+              <div className="n" style={w != null && base != null ? { color: w > base + 0.004 ? "var(--good)" : w < base - 0.004 ? "var(--bad)" : "var(--ink)" } : null}>{w == null ? "\u2013" : wpTxt(w)}</div>
+            </div>
+          );
+        }) : <div className="text-sm text-slate-500" style={{ padding: "10px 0" }}>{q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window."}</div>}
+        {all.length > rows.length ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 10 }} onClick={() => setLimit(limit + 25)}>Show {Math.min(25, all.length - rows.length)} more</button> : null}
+        {rows.length ? <div className="text-xs text-slate-500" style={{ marginTop: 10 }}>Adds is the extra points in your lineup for {hLabel}. Tap a player to try the swap or change who you drop.</div> : null}
+      </div>
+      {others.length ? (
+        <GxPanel title="On other teams">
+          {others.map((p, i) => (
+            <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+              <TeamLogo t={p.t} size={22} />
+              <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /> <span className="text-xs text-slate-500">{p.p}</span></span>
+              <span className="text-xs text-slate-500 truncate"><TL s={s} id={p.ft} /></span>
+              <span className="font-semibold text-right" style={{ minWidth: 40, fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+            </div>
+          ))}
+        </GxPanel>
+      ) : null}
+      {sim ? <MoveSim s={sP} setS={setS} wk={wkP} M={M} H={H} hLabel={hLabel} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
+    </div>
+  );
+}
+
+'''
+
+
+def round40(t):
+    t = lit(t, "pickups: styles", "</style>", R40_CSS + "</style>", "round 40 pickups")
+    t = block(t, "pickups: one panel style for every box", "const Section = ({ title, sub, link, children, closed, id }) => {", "const SectionShut =", R40_SECTION, "section v40")
+    t = lit(t, "pickups: second-row links",
+            'const PICK_SUBS = [["advice", "Advice"], ["adddrop", "Add / Drop"], ["players", "Players"], ["goalies", "Goalie streams"], ["playoffs", "Playoffs"]];',
+            'const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"], ["playoffs", "Playoffs"]];',
+            'const PICK_SUBS = [["adddrop", "Pickups"]')
+    t = lit(t, "pickups: Pickups button opens the list", ': go("moves", inPick ? sub : "advice"));', ': go("moves", "adddrop"));', ': go("moves", "adddrop"));')
+    t = lit(t, "pickups: list is the default page", '(sub === k || (k === "advice" && !inPick) ? "font-semibold" : "text-slate-500")',
+            '(sub === k || (k === "adddrop" && !inPick) ? "font-semibold" : "text-slate-500")', 'k === "adddrop" && !inPick')
+    t = lit(t, "pickups: new
+
 if __name__ == "__main__":
     main()
