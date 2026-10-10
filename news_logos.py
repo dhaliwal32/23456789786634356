@@ -6856,5 +6856,94 @@ _fix_before_r47 = fix
 def fix(t):
     return round47(_fix_before_r47(t))
 
+# ---------- round 48: team logos in "Who's carrying you" and "Goalie board"; matchup dots hidden by editing their own line ----------
+def r48_region(t, name):
+    for head in ("function " + name + "(", "const " + name + " = "):
+        a = t.find(head)
+        if a >= 0:
+            ends = [x for x in (t.find("\nfunction ", a + 10), t.find("\nconst ", a + 10)) if x > 0]
+            return a, (min(ends) if ends else len(t))
+    return -1, -1
+
+
+def r48_logos(t):
+    pats = [re.compile(r"<PN p=\{([A-Za-z_$][\w$.]*)\}([^<>]*?)/>"), re.compile(r"(?<![=\w$])\{([A-Za-z_$][\w$.]*)\.n\}")]
+    wrap = lambda m: '<span className="gx-pl"><TeamLogo t={' + m.group(1) + '.t} size={20} />' + m.group(0) + "</span>"
+    for name in ("GxCarry", "GxGoalies", "Today"):
+        a, b = r48_region(t, name)
+        if a < 0:
+            print("(news) round 48: logos in " + name + ": NOT DONE, that box was not found. Send this log to the AI helper.")
+            continue
+        lines, n = t[a:b].split("\n"), 0
+        had = any('className="gx-pl"' in ln for ln in lines)
+        for pat in pats:
+            out = []
+            for ln in lines:
+                if ln.strip().startswith("//") or "/*" in ln or "TeamLogo" in ln:
+                    out.append(ln)
+                    continue
+                new, k = pat.subn(wrap, ln)
+                n += k
+                out.append(new)
+            if n:
+                t = t[:a] + "\n".join(out) + t[b:]
+                break
+        if n:
+            print("(news) round 48: logos in " + name + ": updated (" + str(n) + " names)")
+        elif had:
+            print("(news) round 48: logos in " + name + ": already done")
+        else:
+            print("(news) round 48: logos in " + name + ": no player names found there. If logos are missing in this box, send these lines to the AI helper:")
+            for ln in [x for x in lines if ".n" in x or "PN" in x][:6]:
+                print("(news)   | " + ln.strip()[:260])
+    return t
+
+
+def r48_dots(t):
+    if "r48 dots" in t:
+        print("(news) round 48: matchup dots hidden: already done")
+        return t
+    a, b = r48_region(t, "Matchup")
+    if a < 0:
+        print("(news) round 48: matchup dots hidden: NOT DONE, the Matchup page was not found. Send this log to the AI helper.")
+        return t
+    lines, n = t[a:b].split("\n"), 0
+    hide = 'display: "none", opacity: 0, pointerEvents: "none", borderRadius'
+    for i, ln in enumerate(lines):
+        if not re.search(r"\bi === sel\b|\bsel === i\b", ln):
+            continue
+        if "borderRadius" in ln:
+            lines[i] = ln.replace("borderRadius", hide, 1)
+            n += 1
+        elif "rounded-full" in ln:
+            lines[i] = ln.replace("rounded-full", "rounded-full hidden", 1)
+            n += 1
+    names = sorted(set(re.findall(r'className=\{?"([\w-]*dot[\w-]*)', t[a:b])))
+    if not n and not names:
+        print("(news) round 48: matchup dots hidden: NOT DONE. Send these lines to the AI helper:")
+        for ln in [x for x in lines if re.search(r"\bsel\b", x) and ".map(" in x][:6]:
+            print("(news)   | " + ln.strip()[:260])
+        return t
+    t = t[:a] + "\n".join(lines) + t[b:]
+    css = "  /* r48 dots (news_logos.py) */\n" + ("  " + ", ".join("." + x for x in names) + " { display: none !important; }\n" if names else "")
+    print("(news) round 48: matchup dots hidden: updated")
+    return t.replace("</style>", css + "</style>", 1)
+
+
+def round48(t):
+    t = r48_logos(t)
+    t = r48_dots(t)
+    for must in ("function Today(", "function Matchup(", "matchup v35", "function GxHome(", "function MatchStrip("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 48 (" + must + ").")
+    return t
+
+
+_fix_before_r48 = fix
+
+
+def fix(t):
+    return round48(_fix_before_r48(t))
+
 if __name__ == "__main__":
     main()
