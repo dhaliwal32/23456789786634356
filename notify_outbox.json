@@ -4638,13 +4638,468 @@
    "section": "lineup",
    "urgent": false,
    "sent": false
+  },
+  {
+   "k": "2026-10-10|07f35d123299",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Your player is losing ice time",
+   "text": "Nathan MacKinnon (COL) is down 3.5 min per game lately (18.7 vs 22.3). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|f90e4f1d48af",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Your player is losing ice time",
+   "text": "Josh Morrissey (WPG) is down 4.7 min per game lately (20.1 vs 24.7). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1ddf3b1f3053",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Your player is losing ice time",
+   "text": "Victor Hedman (TB) is down 4.0 min per game lately (14.8 vs 18.9). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|7bc1fb5355c8",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Brock Boeser (F, VAN) is playing 18.2 min per game lately, up -0.5 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|47444b8862b5",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Charlie Coyle (F, CBJ) is playing 19.3 min per game lately, up +1.2 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|86025c3a352c",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Paul Cotter (F, VAN) is playing 15.9 min per game lately, up +5.1 (PP +0.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|c44e8c58f5f3",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Elias Lindholm (F, BOS) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b42178645635",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tommy Novak (F, PIT) is playing 15.2 min per game lately, up +0.9 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|9c0f0e7c2d91",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Jack Quinn (F, BUF) is playing 19.9 min per game lately, up +4.2 (PP +1.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|375cfe56f394",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "James Hagens (F, BOS) is playing 13.4 min per game lately, up -1.1 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|d9808aed1683",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryan Shea (D, EDM) is playing 23.0 min per game lately, up +3.8 (PP +1.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|aef7b576941d",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tristan Luneau (D, ANA) is playing 22.4 min per game lately, up +10.8 (PP +0.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|e26f4553203d",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kent Johnson (F, CBJ) is playing 16.8 min per game lately, up +3.5 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b5cd22181ed3",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kasperi Kapanen (F, EDM) is playing 17.6 min per game lately, up +2.8 (PP +3.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|5fdf2cf97d10",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "William Karlsson (F, VGK) is playing 19.1 min per game lately, up +3.7 (PP +0.8). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|5d29307465ce",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "John Marino (D, UTA) is playing 20.3 min per game lately, up +0.1 (PP +1.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1a78fddacd22",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Jordan Spence (D, OTT) is playing 22.6 min per game lately, up +3.9 (PP -0.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|0e4af62fcddb",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Denton Mateychuk (D, CBJ) is playing 26.4 min per game lately, up +7.2 (PP +0.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b9e1c0c72fe7",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Connor Murphy (D, EDM) is playing 21.2 min per game lately, up +3.5 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1a205744cc7a",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Liam Ohgren (F, VAN) is playing 16.0 min per game lately, up +2.4 (PP +1.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|3b169d9129ed",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Neal Pionk (D, WPG) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|13ebc4bdcdf9",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Konsta Helenius (F, BUF) is playing 14.1 min per game lately, up +2.2 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|41951db4600f",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Carter Yakemchuk (D, OTT) is playing 16.2 min per game lately, up +1.6 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|46a6c47e47f9",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Maxim Shabanov (F, MIN) is playing 16.0 min per game lately, up +2.4 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|2cfc764190d1",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Andrew Copp (F, DET) is playing 19.9 min per game lately, up +3.4 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|021dca03613b",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Noah Ostlund (F, BUF) is playing 17.9 min per game lately, up +4.0 (PP +1.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|a79b2cdb3886",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Matthew Wood (F, NSH) is playing 16.0 min per game lately, up +3.6 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|a6a43677f52c",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Hendrix Lapierre (F, PIT) is playing 12.1 min per game lately, up +3.2 (PP +1.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|10735d9f5dbd",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Matias Maccelli (F, NYI) is playing 15.4 min per game lately, up +0.9 (PP +2.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|f8e87257f493",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Corey Perry (F, LA) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|f148571a9857",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Berkly Catton (F, SEA) is playing 15.5 min per game lately, up +2.6 (PP +1.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b00070e01e88",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Trevor Connelly (F, VGK) is playing 12.5 min per game lately, up +1.1 (PP +1.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|c9f36fceefff",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tom Willander (D, VAN) is playing 20.7 min per game lately, up +3.4 (PP +0.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|21b34692f0e8",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Michael Kesselring (D, SJ) is playing 19.7 min per game lately, up +6.3 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|981de435b677",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Adam Jiricek (D, STL) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|318272b0f72e",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Owen Michaels (F, EDM) is playing 13.7 min per game lately, up +5.3 (PP +0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|cd5794b738fa",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tyler Kleven (D, OTT) is playing 20.6 min per game lately, up +3.3 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|d8ce9cab8828",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Ryker Evans (D, SEA) is playing 21.9 min per game lately, up +4.1 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|dcae4bc4aee3",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tim Washe (F, ANA) is playing 16.2 min per game lately, up +4.2 (PP +0.7). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|86441f724138",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tye Kartye (F, NYR) is playing 15.2 min per game lately, up +3.1 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1c76bbacb484",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Morgan Barron (F, WPG) is playing 16.2 min per game lately, up +3.4 (PP -0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|402707f4579f",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Trent Frederic (F, EDM) is playing 10.2 min per game lately, up -0.7 (PP +1.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1d64d43992fc",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Frederic Brunet (D, BOS) was just moved onto his team's top power-play unit and is a free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|1d7e307fb4cc",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "David Jiricek (D, PHI) is playing 16.4 min per game lately, up +4.4 (PP +2.3). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|d1cdc38b7b77",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Martin Pospisil (F, CGY) is playing 13.4 min per game lately, up +3.2 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|b762ae7fde8f",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Olli Maatta (D, MIN) is playing 21.4 min per game lately, up +4.2 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|bf7c769ed975",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Alex Turcotte (F, LA) is playing 14.1 min per game lately, up +3.3 (PP +1.3). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|06baafb2fb91",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Michael Rasmussen (F, DET) is playing 16.6 min per game lately, up +4.0 (PP +1.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|dfd6cc17f184",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Samuel Honzek (F, CGY) is playing 15.6 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|4896ecdb8e1a",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Alexander Kerfoot (F, NSH) is playing 15.8 min per game lately, up +3.0 (PP +0.9). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|88ca9e7beca4",
+   "at": "2026-10-10T07:01:18Z",
+   "title": "Pickup: ice time jump",
+   "text": "Travis Mitchell (D, ANA) is playing 16.4 min per game lately, up +4.8 (PP +0.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
-  "2026-10-05": [
-   "morning",
-   "pregame"
-  ],
   "2026-10-06": [
    "morning",
    "pregame"
@@ -4660,7 +5115,8 @@
   "2026-10-09": [
    "morning",
    "pregame"
-  ]
+  ],
+  "2026-10-10": []
  },
  "log": [
   {
