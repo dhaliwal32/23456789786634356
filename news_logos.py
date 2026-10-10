@@ -4692,5 +4692,47 @@ _fix_before_r35 = fix
 def fix(t):
     return round35(_fix_before_r35(t))
 
+# ---------- round 36: ring back in place of the half dial, team logos on the Matchup rows ----------
+R36_RING = r'''const GxRing = ({ v, big }) => {
+  // ring v36: the circle is back (older marker kept: dial v35) (news_logos.py)
+  const size = big ? 104 : 64, m = size / 2, r = big ? 36 : 26, w = big ? 6 : 5, c = 2 * Math.PI * r;
+  const p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
+  const col = v == null ? "var(--faint)" : v >= 0.5 ? "var(--good)" : "var(--bad)";
+  return (
+    <svg viewBox={"0 0 " + size + " " + size} width={size} height={size} className="gx-svg" style={{ flexShrink: 0, display: "block" }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
+      {big ? <circle cx={m} cy={m} r={44} style={{ fill: "none", stroke: "var(--track)", strokeWidth: 1, strokeDasharray: "1 5.9" }} /> : null}
+      <circle cx={m} cy={m} r={r} style={{ fill: "none", stroke: "var(--track)", strokeWidth: w }} />
+      {v == null ? null : <circle cx={m} cy={m} r={r} transform={"rotate(-90 " + m + " " + m + ")"} style={{ fill: "none", stroke: col, strokeWidth: w, strokeDasharray: (p * c).toFixed(1) + " " + c.toFixed(1) }} />}
+      <text x={m} y={big ? m + 3 : m + 5} textAnchor="middle" style={{ fontSize: big ? 21 : 15, fontWeight: 600, fill: big ? col : "var(--ink)" }}>{v == null ? "\u2013" : wpTxt(v)}</text>
+      {big ? <text x={m} y={m + 18} textAnchor="middle" style={{ fontSize: 11, fill: "var(--mute)" }}>to win</text> : null}
+    </svg>
+  );
+};
+'''
+
+R36_CELL_OLD = r'''<div className={"min-w-0" + (right ? " text-right" : "")}>'''
+R36_CELL_NEW = (r'''<div className="min-w-0" style={{ display: "flex", alignItems: "center", gap: 10, flexDirection: right ? "row-reverse" : "row" }}>'''
+                r'''<TeamLogo t={p.t} size={30} /><div className={"min-w-0" + (right ? " text-right" : "")} style={{ flex: 1 }}>''')
+R36_END_OLD = r'''st.toLowerCase() : ""}</>}</div>'''
+R36_END_NEW = r'''st.toLowerCase() : ""}</>}</div></div>'''
+
+
+def round36(t):
+    t = block(t, "matchup 2: ring instead of the dial", "const GxRing = ({ v, big }) => {", "function GxWeek(", R36_RING, "ring v36")
+    t = lit(t, "matchup 2: team logo beside each player", R36_CELL_OLD, R36_CELL_NEW,
+            '<TeamLogo t={p.t} size={30} /><div className={"min-w-0" + (right ? " text-right" : "")} style={{ flex: 1 }}>')
+    t = lit(t, "matchup 2: close the logo row", R36_END_OLD, R36_END_NEW, 'st.toLowerCase() : ""}</>}</div></div>')
+    for must in ("ring v36", "dial v35", "matchup v35", "function Matchup(", "function GxWeek(", "const GxRing ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 36 (" + must + ").")
+    return t
+
+
+_fix_before_r36 = fix
+
+
+def fix(t):
+    return round36(_fix_before_r36(t))
+
 if __name__ == "__main__":
     main()
