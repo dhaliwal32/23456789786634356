@@ -1,39 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|722de2891a5a",
-   "at": "2026-10-03T19:11:14Z",
-   "title": "Your player: lineup change",
-   "text": "Jake DeBrusk (VAN) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-03T19:11:14Z"
-  },
-  {
-   "k": "2026-10-03|3f4fda953095",
-   "at": "2026-10-03T19:11:14Z",
-   "title": "Your player: power-play change",
-   "text": "Jake DeBrusk (VAN) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
-   "k": "2026-10-03|2145b2403b59",
-   "at": "2026-10-03T19:11:14Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Marco Rossi (VAN) promoted: 4th line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "pregame",
-   "sent_at": "2026-10-03T22:02:04Z"
-  },
-  {
    "k": "2026-10-03|641be4242faf",
    "at": "2026-10-03T21:01:40Z",
    "title": "Your player: lineup change",
