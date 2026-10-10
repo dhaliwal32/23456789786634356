@@ -7497,6 +7497,188 @@ _fix_before_r55 = fix
 
 def fix(t):
     return round55(_fix_before_r55(t))
-  
+
+# ---------- round 56: other teams' rosters get the full Roster table; phone rows show Last 5, Matchup, So far, Expected ----------
+R56_CSS = r'''  /* round 56 (news_logos.py) */
+  @media (max-width: 640px) {
+    .gx-ro { grid-template-columns: 22px minmax(0,1fr) 36px 44px 42px 46px; gap: 5px; }
+    .gx-ro > :nth-child(3), .gx-ro > :nth-child(7) { display: block !important; }
+    .gx-ro > .gx-sp:nth-child(3) { display: flex !important; }
+    .gx-ro > :nth-child(5) { display: none !important; }
+    .gx-ro > :nth-child(7) span { display: none; }
+    .gx-ro .gx-sp i { width: 5px; }
+    .gx-roh > :nth-child(2) { visibility: hidden; }
+  }
+'''
+
+R56_HELPERS = r'''// ---------- round 56: the Roster table for any fantasy team (news_logos.py) ----------
+function RosterTable({ s, wk, tid }) {
+  const K = s.blend, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
+  const [sort, setSort] = useState("pg");
+  const [hist, setHist] = useState({});
+  const roster = s.players.filter((p) => p.ft === tid);
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const dates = wk.dates || [];
+  const nextW = s.weeks[s.wk + 1] ? deriveWeek(s.weeks[s.wk + 1], s.autoDone) : null;
+  const mu = useMemo(() => {
+    const P = pby(), o = {};
+    dates.forEach((dt) => {
+      const AD = actDay(tid, dt);
+      if (!AD) return;
+      Object.entries(AD).forEach(([pid, v]) => {
+        if (!v || v[0] == null || !ESLOT[v[1]]) return;
+        const p = P["e" + pid];
+        if (!p || !(SCHED[p.t] && SCHED[p.t].has(dt)) || gState(p.t, dt).s === "P" || (p.p === "G" && !v[0])) return;
+        o[p.id] = (o[p.id] || 0) + v[0];
+      });
+    });
+    return o;
+  }, [s.players, wk, gen, tid]);
+  const total = Object.values(mu).reduce((a, v) => a + Math.max(0, v), 0);
+  const rankOf = useMemo(() => {
+    const o = {};
+    ["F", "D", "G"].forEach((k) => {
+      s.players.filter((p) => p.p === k && p.prob > 0 && (p.proj !== false || p.gp > 0)).map((p) => [p.id, pv(p)]).sort((a, b) => b[1] - a[1]).forEach((x, i) => (o[x[0]] = i + 1));
+    });
+    return o;
+  }, [s.players, K, window.__PMODE]);
+  const roles = useMemo(() => {
+    const L = window.LINES_DATA, o = {};
+    if (!L || !L.teams) return o;
+    const key = (x) => nrm(x).replace(/[.'\u2019]/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+    roster.forEach((p) => {
+      const ln = (L.teams[p.t] || {}).lines;
+      if (!ln) return;
+      const k = key(p.n), has = (sl) => (ln[sl] || []).some((x) => key(x) === k);
+      o[p.id] = { es: ["F1", "F2", "F3", "F4", "D1", "D2", "D3", "G"].find(has), pp: ["PP1", "PP2"].find(has) };
+    });
+    return o;
+  }, [s.players, tid, (window.LINES_DATA || {}).generated]);
+  useEffect(() => {
+    let dead = false;
+    const E = window.ESPN_DATA || {}, out = {}, byId = {};
+    roster.forEach((p) => (byId[String(p.id).slice(1)] = p));
+    Object.entries(E.daily || {}).forEach(([d, Tm]) => Object.values(Tm || {}).forEach((tm) => Object.entries(tm || {}).forEach(([pid, v]) => {
+      const p = byId[pid];
+      if (!p || !v || v[0] == null || !(SCHED[p.t] && SCHED[p.t].has(d)) || gState(p.t, d).s === "P" || (p.p === "G" && !v[0])) return;
+      (out[pid] = out[pid] || {})[d] = v[0];
+    })));
+    const finish = () => {
+      if (dead) return;
+      const h = {};
+      Object.keys(out).forEach((pid) => { h[pid] = Object.keys(out[pid]).sort().slice(-5).map((d) => out[pid][d]); });
+      setHist(h);
+    };
+    finish();
+    gxBoxIdx().then((ds) => Promise.all(ds.slice(-14).map((d) => gxBoxDay(d).then((day) => [d, day])))).then((days) => {
+      days.forEach(([d, day]) => {
+        if (!day) return;
+        Object.keys(byId).forEach((pid) => {
+          const x = day[pid];
+          if (x) { const o2 = (out[pid] = out[pid] || {}); o2[d] = x.fp != null ? x.fp : o2[d] != null ? o2[d] : gxEst(x, s.sc || {}); }
+          else if (out[pid]) delete out[pid][d];
+        });
+      });
+      finish();
+    }).catch(() => {});
+    return () => { dead = true; };
+  }, [s.players, gen, tid]);
+  const RO = { F1: "L1", F2: "L2", F3: "L3", F4: "L4", D1: "D1", D2: "D2", D3: "D3" };
+  const roleTxt = (p) => {
+    if (p.p === "G") return Math.round(p.prob * 100) + "% of starts";
+    const r = roles[p.id];
+    return r ? [r.es ? RO[r.es] : "not in lineup", r.pp].filter(Boolean).join(" \u00b7 ") : "";
+  };
+  const nextGame = (p) => {
+    const S = SCHED[p.t];
+    if (!S || p.ir) return "";
+    for (let i = 0; i < 10; i++) {
+      const dt = addDays(today, i);
+      if (S.has(dt) && (i > 0 || gState(p.t, dt).s === "P")) { const gm = gameOf(p.t, dt); return (i === 0 ? "Today" : dayLabel(dt).split(",")[0]) + (gm ? (gm.h ? " vs " : " @ ") + gm.o : ""); }
+    }
+    return "";
+  };
+  const left = (p) => (wk.games[p.t] || []).filter((d) => dates[d] >= today && gState(p.t, dates[d]).s === "P").length;
+  const nextG = (p) => (nextW ? gms(nextW, p.t) : 0);
+  const keyFn = { mu: (p) => mu[p.id] || 0, left, next: nextG, sea: (p) => (p.gp ? p.tot / p.gp : -99), pg: pv, rk: (p) => -(rankOf[p.id] || 9999) }[sort];
+  const grp = (k) => roster.filter((p) => !p.ir && p.p === k).sort((a, b) => keyFn(b) - keyFn(a));
+  const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter((p) => p.ir)]].filter((x) => x[1].length);
+  const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => setSort(sort === k ? "pg" : k)}>{l}</button>;
+  const row = (p) => {
+    const st = p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "";
+    const m = mu[p.id], sea = p.gp ? p.tot / p.gp : null, gap = sea != null && p.avg > 0 ? sea - p.avg : null, rk = rankOf[p.id];
+    const sub = [roleTxt(p), nextGame(p)].filter(Boolean).join(" \u00b7 "), h = hist[String(p.id).slice(1)] || [];
+    return (
+      <div key={p.id} className="gx-ro">
+        <TeamLogo t={p.t} size={26} />
+        <div className="min-w-0">
+          <div className="truncate"><PN p={p} className="" />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
+          {sub ? <div className="text-xs text-slate-500 truncate">{sub}</div> : null}
+        </div>
+        <div className="gx-sp m-hide" title="Last five games, oldest to newest">
+          {h.length ? h.map((v, i) => <i key={i} style={{ height: Math.max(2, Math.min(22, (Math.max(0, v) / 20) * 22)), background: v < 0 ? "var(--bad)" : "var(--ink2)" }}></i>) : <span className="text-xs text-slate-500">{"\u2013"}</span>}
+        </div>
+        <div className="n">
+          <div className="font-semibold" style={p.p === "G" && m != null ? { color: m > 5 ? "var(--good)" : m < 0 ? "var(--bad)" : "var(--ink)" } : null}>{m == null ? "\u2013" : f1(m)}</div>
+          {m > 0 && total > 0 ? <div style={{ height: 3, background: "var(--track)", marginTop: 3 }}><div style={{ height: 3, width: Math.min(100, (m / total) * 100) + "%", background: "var(--accent)" }}></div></div> : null}
+        </div>
+        <div className="n text-slate-500">{p.ir ? "\u2013" : left(p)}</div>
+        <div className="n text-slate-500 m-hide">{nextW && !p.ir ? nextG(p) : "\u2013"}</div>
+        <div className="n m-hide">{sea == null ? "\u2013" : <>{f1(sea)}{gap != null ? <span className="text-xs" style={{ marginLeft: 6, color: gap >= 0 ? "var(--good)" : "var(--bad)" }}>{(gap >= 0 ? "+" : "") + f1(gap)}</span> : null}</>}</div>
+        <div className="n">{f1(effAvg(p, K))}</div>
+        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>
+      </div>
+    );
+  };
+  return (
+    <div className="gx-pn"><b></b><b></b><b></b><b></b>
+      <div className="gx-ro gx-roh">
+        <span></span><span>Tap a heading to sort</span>
+        <span className="n m-hide">Last 5</span>
+        {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}
+      </div>
+      {groups.map(([title, list]) => (
+        <div key={title} style={{ marginBottom: 10 }}>
+          <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
+          {list.map(row)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+'''
+
+
+def r56_team(t):
+    if "<RosterTable s={s} wk={wk} tid={tid} />" in t:
+        print("(news) round 56: full roster on other teams' pages: already done")
+        return t
+    a = t.find('<span style={{ flex: 1 }}>Roster</span>')
+    start = t.rfind('<div className="gx-pn">', 0, a) if a >= 0 else -1
+    end = t.find('<button type="button" className="text-xs text-slate-500 underline" onClick={() => setOld(true)}>', a) if a >= 0 else -1
+    if "team page v51" not in t or start < 0 or end < 0:
+        print("(news) round 56: full roster on other teams' pages: NOT DONE, the new team page from round 51 was not found. Send this log to the AI helper.")
+        return t
+    print("(news) round 56: full roster on other teams' pages: updated")
+    return t[:start] + "<RosterTable s={s} wk={wk} tid={tid} />\n      " + t[end:]
+
+
+def round56(t):
+    t = lit(t, "round 56: phone roster columns", "</style>", R56_CSS + "</style>", "round 56 (news_logos.py)")
+    t = lit(t, "round 56: roster table for any team", ROOT, R56_HELPERS + ROOT, "function RosterTable(")
+    t = r56_team(t)
+    for must in ("function RosterTable(", "team roster v37", "function MyTeam(", "function TeamPage(", "const gxEst ="):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 56 (" + must + ").")
+    return t
+
+
+_fix_before_r56 = fix
+
+
+def fix(t):
+    return round56(_fix_before_r56(t))
+
 if __name__ == "__main__":
     main()
