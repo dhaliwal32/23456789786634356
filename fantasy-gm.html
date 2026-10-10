@@ -315,6 +315,9 @@
     .gx-bb .gx-wd { position: absolute; top: 6px; left: 58%; margin: 0; }
     body { padding-bottom: 136px; }
   }
+  /* round 52 (news_logos.py) */
+  .gx-pn > b { display: none !important; }
+  @media (max-width: 640px) { html.gx-noask .gx-bb { padding-right: 84px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -5142,7 +5145,7 @@ function gxWarn(s) {
   try {
     const today = todayISO(), wk = deriveWeek(s.weeks[s.wk], s.autoDone), mine = s.players.filter((p) => p.ft === s.me && !p.ir);
     const open = (p) => { const g = gStart(p, today), l = (g.l || "").toLowerCase(); return g.v >= 0.5 && !(l.includes("confirmed") && !l.includes("un")); };
-    o.myteam = mine.some((p) => p.status && /OUT|INJURY_RESERVE|SUSPENSION/.test(p.status))
+    o.myteam = false && mine.some((p) => p.status && /OUT|INJURY_RESERVE|SUSPENSION/.test(p.status))
       || mine.some((p) => p.p === "G" && SCHED[p.t] && SCHED[p.t].has(today) && gState(p.t, today).s === "P" && open(p));
     const opp = oppOf(wk, s.me) || s.opp, a = +((wk.act || {})[s.me]) || 0, b = +((wk.act || {})[opp]) || 0, sign = String(a === b ? 0 : a > b ? 1 : -1);
     const key = "gm-lead-" + s.wk, seen = localStorage.getItem(key);
@@ -5309,6 +5312,37 @@ function GxQA({ s, go }) {
   };
   return null;
 }
+
+// ---------- round 52: keep the floating Ask button clear of the bottom tabs (news_logos.py) ----------
+(function gxAsk() {
+  if (window.__gxAsk) return;
+  window.__gxAsk = 1;
+  let box = null;
+  const lift = (el) => {
+    let n = el;
+    while (n && n !== document.body && n !== document.documentElement) {
+      if (getComputedStyle(n).position === "fixed") { n.style.setProperty("bottom", "calc(72px + env(safe-area-inset-bottom))", "important"); return n; }
+      n = n.parentElement;
+    }
+    return null;
+  };
+  const run = () => {
+    const root = document.documentElement;
+    if (window.innerWidth > 640) { root.classList.remove("gx-noask"); return; }
+    if (box && box.isConnected) { lift(box); root.classList.remove("gx-noask"); return; }
+    box = null;
+    const all = document.querySelectorAll("button, a, div, span");
+    for (let i = 0; i < all.length && !box; i++) {
+      const el = all[i], leaf = el.tagName === "BUTTON" || el.tagName === "A" || !el.childElementCount;
+      if (!leaf || (el.closest && el.closest(".gx-bb, .gx-so"))) continue;
+      if ((el.textContent || "").trim() === "Ask") box = lift(el);
+    }
+    root.classList.toggle("gx-noask", !box);
+  };
+  setTimeout(run, 300);
+  setInterval(run, 1500);
+  window.addEventListener("resize", run);
+})();
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
