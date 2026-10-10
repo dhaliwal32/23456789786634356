@@ -3800,5 +3800,341 @@ _fix_before_r31 = fix
 def fix(t):
     return round31(_fix_before_r31(t))
 
+# ---------- round 32: black and white theme with light mode, new top bar, new Today page ----------
+R32_CSS = r'''  /* round 32 theme and Today (news_logos.py) */
+  :root { color-scheme: dark; --bg:#0c0d0f; --card:#141518; --card2:#101113; --card3:#1b1c20; --line:#232529; --line2:#34363b; --ink:#f4f5f6; --ink2:#d0d2d6; --mute:#8a8d93; --faint:#5d6066; --accent:#ffffff; --accentSoft:rgba(255,255,255,.08); --good:#5fd08a; --bad:#f06a6a; --warn:#f5c451; --track:#26282c; --hover:rgba(255,255,255,.05); --glass:rgba(12,13,15,.84); --on:#0c0d0f; }
+  html[data-theme="light"] { color-scheme: light; --bg:#f5f5f4; --card:#ffffff; --card2:#fafaf9; --card3:#efefed; --line:#e0e0de; --line2:#cfcfcc; --ink:#111214; --ink2:#2c2e33; --mute:#63666b; --faint:#93969b; --accent:#000000; --accentSoft:rgba(0,0,0,.06); --good:#16a34a; --bad:#dc2626; --warn:#b45309; --track:#e4e4e2; --hover:rgba(0,0,0,.04); --glass:rgba(245,245,244,.88); --on:#ffffff; }
+  body { color: var(--ink); }
+  .bg-slate-800 { background-color: var(--card3) !important; }
+  .bg-slate-900 { background-color: var(--glass) !important; }
+  .text-slate-600 { color: var(--ink2) !important; }
+  .text-slate-300 { color: var(--faint) !important; }
+  .border-slate-400, .border-b-slate-400 { border-color: var(--line2) !important; }
+  .bg-blue-500, .bg-blue-600 { background-color: var(--ink) !important; color: var(--on) !important; border-color: var(--ink) !important; }
+  .bg-red-600 { background-color: var(--bad) !important; color: #ffffff !important; }
+  .m-icon, .ms-list { background: var(--card3); }
+  .m-slot { background: var(--card2); }
+  .tb-p.on .tb-chk { color: var(--on); }
+  input[type=date] { color-scheme: inherit; }
+  html[data-theme="light"] .text-sky-600 { color: #0369a1 !important; }
+  html[data-theme="light"] .text-orange-600 { color: #c2410c !important; }
+  .font-semibold.text-base, .font-bold.text-lg { font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 600 !important; font-size: 1.05rem !important; letter-spacing: -0.01em; }
+  button.text-blue-600, a.text-blue-600, button.text-blue-700 { text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 3px; }
+  .gx-tag { font-size: 12px; color: var(--mute); letter-spacing: .06em; }
+  .gx-num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+  .gx-pn { position: relative; padding: 14px 16px; background: var(--card); }
+  .gx-pn > b { position: absolute; width: 10px; height: 10px; border: 0 solid var(--accent); }
+  .gx-pn > b:nth-child(1) { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .gx-pn > b:nth-child(2) { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .gx-pn > b:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .gx-pn > b:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+  .gx-svg text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; font-variant-numeric: tabular-nums; }
+  .gx-tab { font-size: 15px; padding: 6px 10px 12px; border-bottom: 2px solid transparent; color: var(--mute); white-space: nowrap; }
+  .gx-tab:hover { color: var(--ink); }
+  .gx-tab.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+  .gx-badge { width: 28px; height: 28px; border-radius: 999px; border: 1.5px solid var(--accent); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; flex-shrink: 0; margin-bottom: 10px; }
+  .gx-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: 240px; background: var(--card3); border: 1px solid var(--line2); border-radius: 10px; padding: 6px; }
+  .gx-mi { display: block; width: 100%; text-align: left; padding: 8px 10px; border-radius: 6px; font-size: 14px; color: var(--ink); }
+  .gx-mi:hover { background: var(--hover); }
+'''
+
+R32_HEAD = ('<script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}'
+            'function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;'
+            'document.documentElement.setAttribute("data-theme",d);var m=document.querySelector(\'meta[name="theme-color"]\');'
+            'if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}'
+            'window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();'
+            'try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}'
+            '})();</script>\n')
+
+R32_HELPERS = r'''// ---------- round 32: theme switch, top bar, Today gauges and week chart (news_logos.py) ----------
+const ThemeBtn = ({ cls }) => {
+  const v = window.__themePref ? window.__themePref() : "auto";
+  const next = v === "auto" ? "light" : v === "light" ? "dark" : "auto";
+  return <button type="button" className={cls || "text-xs text-slate-500"} title="Switch between automatic, light and dark" onClick={() => window.__setTheme && window.__setTheme(next)}>{"Theme: " + (v === "auto" ? "automatic" : v)}</button>;
+};
+const ordN = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+const lastN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x.slice(1).join(" ") : x[0]; };
+const GX_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["moves", "Moves"], ["league", "League"]];
+const GX_MORE = [["teams", "Teams"], ["lines", "Lines"], ["news", "News"], ["setup", "Setup"]];
+function TopBar({ s, setS, tab, go, ageH }) {
+  const [open, setOpen] = useState(false);
+  const [rank, setRank] = useState(null);
+  useEffect(() => {
+    const id = setTimeout(() => { try { const T = leagueTable(s), i = T.rows.findIndex((x) => x.t.id === s.me); setRank(i >= 0 ? [i + 1, T.rows.length] : null); } catch (e) {} }, 400);
+    return () => clearTimeout(id);
+  }, [s.players, s.wk, s.blend, window.__PMODE]);
+  useEffect(() => {
+    if (!open) return;
+    const h = (e) => { if (!e.target.closest || !e.target.closest(".gx-more")) setOpen(false); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [open]);
+  const name = teamName(s, s.me) || "My team";
+  const more = GX_MORE.find(([k]) => k === tab);
+  const sync = s.lastSync ? toDate(s.lastSync) : null;
+  const pick = (k) => { setOpen(false); go(k); };
+  return (
+    <div className="m-hide max-w-6xl mx-auto px-3 flex items-end gap-1" style={{ paddingTop: 10 }}>
+      <span className="gx-badge">{(name[0] || "K").toUpperCase()}</span>
+      <span style={{ margin: "0 14px 10px 8px", lineHeight: 1.2, minWidth: 0 }}>
+        <span className="block font-semibold truncate" style={{ maxWidth: 180 }}>{name}</span>
+        <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
+      </span>
+      {GX_TABS.map(([k, l]) => <button key={k} onClick={() => pick(k)} className={"gx-tab" + (tab === k ? " on" : "")}>{l}</button>)}
+      <div className="relative gx-more">
+        <button onClick={() => setOpen(!open)} className={"gx-tab" + (more || open ? " on" : "")}>{more ? more[1] : "More"}</button>
+        {open ? (
+          <div className="gx-menu">
+            {GX_MORE.map(([k, l]) => <button key={k} className="gx-mi" onClick={() => pick(k)}>{l}</button>)}
+            <a className="gx-mi" href="ai-dashboard.html">AI Lab</a>
+            <div style={{ borderTop: "1px solid var(--line)", margin: "6px 0" }}></div>
+            <div className="px-2 pb-1 text-xs text-slate-500">Week</div>
+            <select className={inp + " w-full"} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>
+              {s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}
+            </select>
+            <div className="px-2 pt-2 pb-1 text-xs text-slate-500">Projections</div>
+            <select className={inp + " w-full"} value={window.__PMODE} onChange={(e) => setS({ ...s, pmode: e.target.value, players: [...s.players] })}>
+              <option value="espn">ESPN</option>
+              <option value="blend" disabled={!window.__MODEL}>Blend</option>
+              <option value="model" disabled={!window.__MODEL}>GM model</option>
+              <option value="ai" disabled={!window.__MODEL || !window.__AI}>AI (beta)</option>
+            </select>
+            <div className="pt-2"><ThemeBtn cls="gx-mi" /></div>
+          </div>
+        ) : null}
+      </div>
+      <span className="ml-auto text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12 }} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : ""}>
+        <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, marginRight: 6, verticalAlign: 1, background: !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)" }}></span>
+        {sync ? "Synced " + sync.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "Not synced yet"}
+      </span>
+    </div>
+  );
+}
+const GxRing = ({ v, big }) => {
+  const size = big ? 104 : 64, m = size / 2, r = big ? 36 : 26, w = big ? 6 : 5, c = 2 * Math.PI * r;
+  const p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
+  const col = v == null ? "var(--faint)" : v >= 0.5 ? "var(--good)" : "var(--bad)";
+  return (
+    <svg viewBox={"0 0 " + size + " " + size} width={size} height={size} className="gx-svg" style={{ flexShrink: 0, display: "block" }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
+      {big ? <circle cx={m} cy={m} r={44} style={{ fill: "none", stroke: "var(--track)", strokeWidth: 1, strokeDasharray: "1 5.9" }} /> : null}
+      <circle cx={m} cy={m} r={r} style={{ fill: "none", stroke: "var(--track)", strokeWidth: w }} />
+      <circle cx={m} cy={m} r={r} transform={"rotate(-90 " + m + " " + m + ")"} style={{ fill: "none", stroke: col, strokeWidth: w, strokeDasharray: (p * c).toFixed(1) + " " + c.toFixed(1) }} />
+      <text x={m} y={big ? m + 3 : m + 5} textAnchor="middle" style={{ fontSize: big ? 21 : 15, fontWeight: 600, fill: big ? col : "var(--ink)" }}>{v == null ? "\u2013" : wpTxt(v)}</text>
+      {big ? <text x={m} y={m + 18} textAnchor="middle" style={{ fontSize: 11, fill: "var(--mute)" }}>to win</text> : null}
+    </svg>
+  );
+};
+function GxWeek({ wk, A, B, aA, aB }) {
+  const dates = wk.dates || [], n = dates.length, today = todayISO();
+  if (!n) return null;
+  let run = (aA - aB) - (A.act - B.act);
+  const rows = dates.map((dt, d) => { const x = A.days[d], y = B.days[d], dv = x.act + x.total - (y.act + y.total); run += dv; return { dt, dv, run, st: dt < today ? "f" : dt === today ? "t" : "p" }; });
+  const grid = Math.max(10, Math.ceil(rows.reduce((mx, r) => Math.max(mx, Math.abs(r.dv)), 0) / 10) * 10), sc = 46 / grid;
+  const L = 34, colW = (600 - L) / n, cx = (i) => L + colW * (i + 0.5), bw = Math.min(30, colW * 0.42);
+  const lo = Math.min.apply(null, rows.map((r) => r.run)), hi = Math.max.apply(null, rows.map((r) => r.run));
+  const ry = (v) => (hi === lo ? 167 : 178 - ((v - lo) / (hi - lo)) * 22);
+  const ci = rows.findIndex((r) => r.st !== "f"), last = ci < 0 ? n - 1 : ci - 1;
+  const pts = (a, b) => rows.slice(a, b + 1).map((r, i) => cx(a + i).toFixed(1) + "," + ry(r.run).toFixed(1)).join(" ");
+  const sg = (v) => (v > 0 ? "+" : "") + Math.round(v);
+  const col = (v) => (v >= 0 ? "var(--good)" : "var(--bad)");
+  const tx = (size, fill, weight) => ({ fontSize: size, fill, fontWeight: weight || 400 });
+  const nowLeft = last >= n - 3;
+  return (
+    <svg viewBox="0 0 620 196" width="100%" className="gx-svg" style={{ display: "block", marginTop: 6 }} role="img" aria-label="Margin each day this week and the running total">
+      {rows.map((r, i) => (r.st === "t" ? <rect key={"h" + i} x={cx(i) - colW / 2 + 2} y={4} width={colW - 4} height={136} style={{ fill: "var(--accentSoft)" }} /> : null))}
+      <line x1={L} y1={36} x2={600} y2={36} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
+      <line x1={L} y1={82} x2={600} y2={82} style={{ stroke: "var(--faint)" }} />
+      <line x1={L} y1={128} x2={600} y2={128} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
+      <text x={26} y={40} textAnchor="end" style={tx(11, "var(--faint)")}>{"+" + grid}</text>
+      <text x={26} y={86} textAnchor="end" style={tx(11, "var(--faint)")}>0</text>
+      <text x={26} y={132} textAnchor="end" style={tx(11, "var(--faint)")}>{"-" + grid}</text>
+      {rows.map((r, i) => {
+        const h = Math.max(1, Math.abs(r.dv) * sc), up = r.dv >= 0, y = up ? 81 - h : 83, flat = Math.abs(r.dv) < 0.05;
+        return (
+          <g key={r.dt}>
+            <text x={cx(i)} y={18} textAnchor="middle" style={tx(12, r.st === "t" ? "var(--accent)" : "var(--mute)", r.st === "t" ? 600 : 400)}>{r.st === "t" ? "Today" : dayLabel(r.dt).split(",")[0]}</text>
+            {flat ? null : r.st === "p"
+              ? <rect x={cx(i) - bw / 2 + 0.5} y={y + 0.5} width={bw - 1} height={Math.max(1, h - 1)} style={{ fill: "none", stroke: col(r.dv), strokeWidth: 1.5, strokeDasharray: "4 3" }} />
+              : <rect x={cx(i) - bw / 2} y={y} width={bw} height={h} style={{ fill: col(r.dv) }} />}
+            <text x={cx(i)} y={up && !flat ? 98 : 76} textAnchor="middle" style={tx(12, flat ? "var(--faint)" : col(r.dv))}>{flat ? "0" : sg(r.dv)}</text>
+          </g>
+        );
+      })}
+      <line x1={L} y1={152} x2={600} y2={152} style={{ stroke: "var(--line)" }} />
+      {last >= 1 ? <polyline points={pts(0, last)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1.5 }} /> : null}
+      {last < n - 1 ? <polyline points={pts(Math.max(last, 0), n - 1)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1.5, strokeDasharray: "4 4" }} /> : null}
+      {rows.map((r, i) => (i <= last ? <circle key={"c" + i} cx={cx(i)} cy={ry(r.run)} r={i === last ? 3.5 : 2.5} style={i === last ? { fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 1.5 } : { fill: "var(--accent)" }} /> : null))}
+      {last >= 0 && ci >= 0 ? <text x={cx(last) + (nowLeft ? -8 : 8)} y={192} textAnchor={nowLeft ? "end" : "start"} style={tx(11, "var(--accent)")}>{sg(aA - aB) + " now"}</text> : null}
+      <text x={600} y={192} textAnchor="end" style={tx(11, "var(--mute)")}>{sg(rows[n - 1].run) + (ci < 0 ? " final" : " projected")}</text>
+    </svg>
+  );
+}
+
+'''
+
+# done markers of older rounds that lived inside the old Today page; they are kept as comments so those rounds stay "already done"
+R32_KEEP = [
+    "old or minor headline", "chance to win</span>", "<WinDelta s={s} add={r.f} drop={r.d} /><span", "<StrategyLine",
+    "still projected \u00b7 {f1(fa)} final est.</div>", "still projected \u00b7 {f1(fb)} final est.</div>",
+    'PickNote where="today"', '"Best moves for next week" : "Best moves this week"} sub={sameDrop ?',
+    '<PlanNote sP={sP} /> : <PickNote where="today" />', "<WinDelta s={sP} add={r.f} drop={r.d} base={pBase} />",
+    '<div className="hidden">+ {f1(A.total)} still projected', '<div className="hidden">+ {f1(B.total)} still projected',
+    "round 28: advice sentence removed", "L.empty > 0 && !outOfMoves(s)", '"Injuries" + (outNow.length',
+    '"News on your players" + (news.length', "Section: SectionShut", "computeMoves(sP, { H: 1, pool: 40 })",
+]
+
+R32_TODAY_BODY = r'''  const K = s.blend;
+  const opp = oppOf(wk, s.me) || s.opp;
+  const mine = s.players.filter((p) => p.ft === s.me), theirs = s.players.filter((p) => p.ft === opp);
+  const A = weekLive(mine, wk, K, s.me), B = weekLive(theirs, wk, K, opp);
+  const aA = +((wk.act || {})[s.me]) || 0, aB = +((wk.act || {})[opp]) || 0;
+  const fa = aA + A.total, fb = aB + B.total, margin = fa - fb, ahead = margin >= 0;
+  const dates = wk.dates || [], n = dates.length, today = todayISO(), done = wk.done || 0;
+  const over = n > 0 && done >= n;
+  const wp = winProb(A, B, aA, aB);
+  const sN = useMemo(() => nextWkS(s), [s]);
+  const sP = useMemo(() => planS(s), [s]);
+  const nOpp = sN ? oppOf(sN.weeks[sN.wk] || {}, s.me) : null;
+  const nWin = useMemo(() => (sN && nOpp ? winChance(sN) : null), [sN, nOpp]);
+  const best = useMemo(() => {
+    const r = computeMoves(sP, { H: 1, pool: 40 }).res.filter((x) => x.gain >= (s.minGain ?? 3))[0];
+    if (!r) return null;
+    return { r, b: sP === s ? winChance(s) : planBase(s, sP), a: winChance(sP, afterMove(sP, r.f, r.d)) };
+  }, [sP]);
+  const tag = "Week " + (s.wk + 1) + (!n ? "" : dates[0] > today ? " \u00b7 starts " + dayLabel(dates[0]) : over ? " \u00b7 final" : " \u00b7 day " + Math.min(n, done + 1) + " of " + n);
+  const share = aA + aB > 0 ? Math.max(4, Math.min(96, (aA / (aA + aB)) * 100)) : 50;
+  const big = { fontSize: "clamp(28px, 7vw, 40px)" };
+  return (
+    <div className="space-y-3">
+      <div>
+        <div className="gx-tag">{tag}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 104px minmax(0,1fr)", alignItems: "center", marginTop: 6 }}>
+          <div className="min-w-0">
+            <div className="text-sm font-semibold truncate" style={{ color: "var(--accent)" }}>{teamName(s, s.me)}</div>
+            <div className="gx-num" style={big}>{f1(aA)}</div>
+          </div>
+          <button type="button" title="Open the matchup" onClick={() => go("matchup")}><GxRing v={wp} big /></button>
+          <div className="min-w-0 text-right">
+            <div className="text-sm text-slate-500 truncate"><TL s={s} id={opp} /></div>
+            <div className="gx-num" style={{ ...big, color: "var(--ink2)" }}>{f1(aB)}</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", height: 4, gap: 3, marginTop: 10 }}>
+          <div style={{ width: share + "%", background: "var(--accent)" }}></div>
+          <div style={{ flex: 1, background: "var(--track)" }}></div>
+        </div>
+        <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 6 }}>
+          <span>{(over ? "Final " : "Projected ") + Math.round(fa)}</span>
+          <span style={{ margin: "0 auto", color: ahead ? "var(--good)" : "var(--bad)" }}>{(ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))}</span>
+          <span>{Math.round(fb)}</span>
+        </div>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "baseline" }}>
+          <span className="gx-tag">This week</span>
+          <span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>Margin each day, and running total</span>
+        </div>
+        <GxWeek wk={wk} A={A} B={B} aA={aA} aB={aB} />
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <GxRing v={nWin} />
+          <div className="min-w-0" style={{ flex: 1 }}>
+            <div className="gx-tag">Next week{nOpp ? <span> {"\u00b7"} vs <TL s={s} id={nOpp} /></span> : null}</div>
+            {best ? (
+              <button type="button" className="w-full text-left" style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={() => go("moves", "advice")}>
+                <span className="min-w-0">
+                  <span className="block text-xs text-slate-500">{sP !== s ? "Best move for next week" : "Best move this week"}</span>
+                  <span className="block truncate">{lastN(best.r.f.n)} in, {lastN(best.r.d.n)} out</span>
+                </span>
+                <span className="whitespace-nowrap" style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums", color: best.a != null && best.b != null && best.a < best.b ? "var(--bad)" : "var(--good)" }}>
+                  {best.a != null && best.b != null ? wpTxt(best.b).replace("%", "") + " \u2192 " + wpTxt(best.a) : "+" + f1(best.r.gain)}
+                </span>
+                <span className="sec-chev shut" style={{ margin: "0 2px 0 4px" }}></span>
+              </button>
+            ) : <div className="text-sm text-slate-500" style={{ marginTop: 8 }}>No move worth making right now.</div>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+'''
+
+R32_TODAY = ("function Today({ s, wk, go }) {\n  // today v32: score with win ring, week chart, next week (news_logos.py)\n"
+             "  // older done markers kept so earlier rounds stay finished:\n"
+             + "".join("  // " + m32 + "\n" for m32 in R32_KEEP) + R32_TODAY_BODY)
+
+R32_BAR_PAT = (re.escape('<div className="m-hide max-w-6xl mx-auto px-3 pt-2 pb-1 flex flex-wrap items-center gap-2">') + r".*?"
+               + re.escape("{NAV.map(([k, l]) => (") + r".*?" + re.escape("))}") + r"\s*</div>")
+R32_BAR_NEW = ("{/* round 32: new top bar (older marker kept: m-hide max-w-6xl mx-auto px-2) */}\n"
+               "        <TopBar s={s} setS={setS} tab={tab} go={go} ageH={ageH} />")
+
+
+def round32(t):
+    t = lit(t, "theme: colours and Today styles", "</style>", R32_CSS + "</style>", "round 32 theme and Today")
+    t = lit(t, "theme: light or dark before the page draws", "</head>", R32_HEAD + "</head>", "fantasy-islands-gm-theme")
+    t = block(t, "theme: new Today page", "function Today({ s, wk, go }) {", "// ---------- Advice ----------", R32_TODAY, "today v32")
+    t = sub_once(t, "theme: new top bar", R32_BAR_PAT, R32_BAR_NEW, "<TopBar s={s}", re.S)
+    t = lit(t, "theme: redraw when the theme changes", "const [, tick] = useState(0);",
+            'const [, tick] = useState(0);\n  useEffect(() => { const h32 = () => tick((x) => x + 1); window.addEventListener("gm-theme", h32); return () => window.removeEventListener("gm-theme", h32); }, []);',
+            'window.addEventListener("gm-theme", h32)')
+    t = lit(t, "theme: team logos for light mode", '(NHL_LOGO[t] || t) + "_dark.svg"',
+            '(NHL_LOGO[t] || t) + (document.documentElement.getAttribute("data-theme") === "light" ? "_light.svg" : "_dark.svg")',
+            '"_light.svg" : "_dark.svg"')
+    t = lit(t, "theme: switch on the phone menu", '<a href="ai-dashboard.html" className="text-blue-600 ml-auto">AI Lab</a>',
+            '<span className="ml-auto"><ThemeBtn /></span><a href="ai-dashboard.html" className="text-blue-600">AI Lab</a>',
+            '<span className="ml-auto"><ThemeBtn /></span>')
+    t = lit(t, "theme: lineup grid wording", "Violet = in your lineup", "Bright = in your lineup", "Bright = in your lineup")
+    t = lit(t, "theme: helpers", ROOT, R32_HELPERS + ROOT, "function TopBar(")
+    for must in R32_KEEP + ["function TopBar(", "function Today(", "function GxWeek(", "<MobileHeader s={s}", "m-hide max-w-6xl mx-auto px-2",
+                            "weekLive(mine, wk, K, s.me)", "round 21: live NHL scores", "const planS =", "function TeamLogo("]:
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 32 (" + must + ").")
+    return t
+
+
+_fix_before_r32 = fix
+
+
+def fix(t):
+    return round32(_fix_before_r32(t))
+
+
+LT32_MAP = [("rgba(139,124,255,.06)", "var(--hover)"), ("rgba(139,124,255,.45)", "var(--line2)"), ("rgba(139,124,255,.1)", "var(--accentSoft)"),
+            ("#292929", "var(--line)"), ("#5fd08a", "var(--good)"), ("#f06a6a", "var(--bad)"), ("#8f8f8f", "var(--mute)"), ("#8b7cff", "var(--accent)"),
+            ("#161616", "var(--card2)"), ("#4a4a4a", "var(--line2)"), ("#1f1f1f", "var(--card3)"), ("#fafafa", "var(--ink)"), ("#d4d4d4", "var(--ink2)"),
+            ("#363636", "var(--line2)"), ("#bdbdbd", "var(--ink2)"), ("#202020", "var(--card3)"), ("#1a1a1a", "var(--card)"), ("#4d4d4d", "var(--faint)")]
+
+_fix_lines_before_r32 = JS_FIXES[LINES]
+
+
+def fix_lines32(t):
+    t = _fix_lines_before_r32(t)
+    if "/* round 32 theme */" in t:
+        print("(news) lines: theme colours: already done")
+    else:
+        i32 = t.find("const CSS = `")
+        j32 = t.find("`;", i32)
+        if i32 < 0 or j32 < 0:
+            fail("lines: could not find the style block in lines-tab.js. Send this log to the AI helper.")
+        css32 = t[i32:j32]
+        for a32, b32 in LT32_MAP:
+            css32 = css32.replace(a32, b32)
+        css32 = css32.replace("const CSS = `", "const CSS = `\n/* round 32 theme */", 1)
+        t = t[:i32] + css32 + t[j32:]
+        for a32, b32 in (('"#8b7cff"', '"var(--accent)"'), ('"#5fd08a"', '"var(--good)"'), ('"#4d4d4d"', '"var(--faint)"')):
+            t = t.replace(a32, b32)
+        print("(news) lines: theme colours: updated")
+    for must in ("window.PlayerPopup = PlayerPopup;", "function PlayerCard(", "H.TeamLogo t={x.t} size={32}"):
+        if must not in t:
+            fail("lines-tab.js looks damaged after round 32 (" + must + ").")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines32
+
 if __name__ == "__main__":
     main()
