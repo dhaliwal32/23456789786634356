@@ -4651,6 +4651,46 @@ R35_MATCHUP_BODY = r'''  const K = s.blend, done = wk.done || 0;
             <span style={{ marginLeft: 8, color: dayTot >= 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot >= 0 ? "+" : "") + f1(dayTot)}</span>
           </span>
         </div>
+        {rows.length ? rows.map(([sl, p, q], i) => (
+          <div key={i} className="gx-h2h" style={i ? null : { borderTop: 0 }}>
+            {cell(p, false)}{num(p, q, false)}
+            <div className="text-xs text-center" style={{ color: "var(--faint)" }}>{sl === "UTIL" ? "U" : sl}</div>
+            {num(q, p, true)}{cell(q, true)}
+          </div>
+        )) : <div className="text-sm text-slate-500">No games for either team on this day.</div>}
+        {sit(x, a)}{sit(y, b)}
+      </div>
+      <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 10 }}>
+        <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
+      </div>
+    </div>
+  );
+}
+
+'''
+
+R35_MATCHUP = ("function Matchup({ s, setS, wk, setWk }) {\n"
+               "  // matchup v35: one day at a time, head to head, swipe or arrows between matchups (news_logos.py)\n"
+               "  // matchup v16: older marker kept, with these done markers from earlier rounds:\n"
+               + "".join("  // " + m35 + "\n" for m35 in R35_KEEP) + R35_MATCHUP_BODY)
+
+
+def round35(t):
+    t = lit(t, "matchup: styles", "</style>", R35_CSS + "</style>", "round 35 matchup")
+    t = block(t, "matchup: half dial for win chance", "const GxRing = ({ v, big }) => {", "function GxWeek(", R35_DIAL, "dial v35")
+    t = block(t, "matchup: new page with swipe", "function Matchup({ s, setS, wk, setWk }) {", "// ---------- Power rankings ----------", R35_MATCHUP, "matchup v35")
+    for must in R35_KEEP + ["function Matchup(", "// matchup v16:", "gamesMoves(s, a, wk, A)", "gamesMoves(s, b, wk, B)", "function Side(", "function H2H(",
+                            "function GxWeek(", "const GxRing =", "<GxHome s={s}", "<FillSlot", "Projected today"]:
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 35 (" + must + ").")
+    return t
+
+
+_fix_before_r35 = fix
+
+
+def fix(t):
+    return round35(_fix_before_r35(t))
 
 if __name__ == "__main__":
     main()
