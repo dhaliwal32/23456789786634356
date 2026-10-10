@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|44db4525d096",
-   "at": "2026-10-03T23:02:07Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jake McCabe (TOR) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
    "k": "2026-10-03|ef8bfecebac9",
    "at": "2026-10-03T23:51:51Z",
    "title": "Goalie not confirmed yet",
@@ -5232,6 +5221,24 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-10T20:53:43Z"
+  },
+  {
+   "k": "2026-10-10|7f4ca60d5a16",
+   "at": "2026-10-10T23:04:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Paul Cotter (F, VAN) is playing 15.8 min per game lately, up +5.0 (PP +0.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|6bbe5f14e1cb",
+   "at": "2026-10-10T23:04:10Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tom Willander (D, VAN) is playing 20.8 min per game lately, up +3.5 (PP +0.5). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
