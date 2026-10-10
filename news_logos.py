@@ -7446,5 +7446,19 @@ def fix_ailab52(t):
 
 PY_FIXES[AILAB] = fix_ailab52
 
+# ---------- round 53: no warning dot on the Team tab ----------
+def round53(t):
+    t = lit(t, "round 53: Team tab dot switched off", "o.myteam = mine.some(", "o.myteam = false && mine.some(", "o.myteam = false && mine.some(")
+    if "function gxWarn(" not in t:
+        fail("fantasy-gm.html looks damaged after round 53 (function gxWarn().")
+    return t
+
+
+_fix_before_r53 = fix
+
+
+def fix(t):
+    return round53(_fix_before_r53(t))
+
 if __name__ == "__main__":
     main()
