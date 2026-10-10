@@ -921,10 +921,7 @@ function AdvicePanel({ s }) {
         </Section>
       ) : null}
       {/* round 28: player updates moved to My Team */}
-      <Section title="Trade advice" sub={`Your ranks: forwards #${g.F || "–"}, defence #${g.D || "–"}, goalies #${g.G || "–"} of ${T.rows.length}.`}>
-        <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
-        {buyLow.length ? <div className="mt-3"><div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Buy low: good players in a slump</div>{buyLow.map((p) => <PlayerLine key={p.id} s={s} p={p} />)}</div> : null}
-      </Section>
+      {/* round 29: trade advice moved to Trades */}
     </div>
   );
 }
@@ -3278,7 +3275,7 @@ function TradeBuilder({ s, initPartner }) {
   const Gv = mine.filter((p) => give.includes(p.id)), Rv = theirs.filter((p) => get.includes(p.id));
   const extra = Math.max(0, Gv.length - Rv.length), need = Math.max(0, Rv.length - Gv.length);
   const ready = Gv.length > 0 && Rv.length > 0;
-  const picks = [...Array(extra)].map((_, k) => fas.find((f) => f.id === pick[k]) || null);
+  const picks = [...Array(extra)].map((_, k) => (pick[k] ? s.players.find((f) => f.ft === "fa" && f.id === pick[k]) : null) || null);
   const myAfter0 = mine.filter((p) => !give.includes(p.id)).concat(Rv.map((p) => ({ ...p, ft: s.me })));
   const base = useMemo(() => (ready ? { r: horizonTotal(mine, s, nR), w4: horizonTotal(mine, s, 4), th: horizonTotal(theirs, s, nR) } : null), [ready, partner, s.players, s.wk, K]);
   const res = useMemo(() => {
@@ -3385,11 +3382,10 @@ function TradeBuilder({ s, initPartner }) {
         {res && vd ? (
           <div className="mt-4">
             <div className="flex flex-wrap items-center gap-2 mb-3"><span className={"px-3 py-1 rounded-full font-semibold text-sm " + vd[1]}>{vd[0]}</span><span className="text-sm text-slate-500">{vd[2]}</span></div>
-            <div className="tb-tiles">
+            <div className="tb-grid" data-r29="tiles">
               <Card label="Your lineup" value={<Dlt v={res.my} />} sub={<>rest of season{hasPick ? " incl. pickup" : ""} · next 4 wks <Dlt v={res.my4} /></>} />
               <Card label="Their lineup" value={<Dlt v={res.th} />} sub="rest of season" />
-              <Card label="How they see it" value={(theyThink >= 0 ? "+" : "") + Math.round(theyThink * 100) + "%"} sub={theyThink >= -0.05 ? "a win or even for them (ESPN view)" : "looks like a loss to them"} />
-              <Card label="Raw value" value={f1(vGive) + " → " + f1(vGet)} sub={edge > 0.25 ? "lopsided: veto risk (4 votes)" : Math.abs(edge) <= 0.1 ? "fair for a league vote" : edge > 0 ? "slightly in your favour" : "you give more value"} />
+              {/* round 29: two result tiles only */}
             </div>
             {(() => { const a = cnt(res.after), b = cnt(mine); return (
               <div className="text-xs text-slate-500 mt-3">Your roster after: {["F", "D", "G"].map((k) => <span key={k} className={"mr-3 " + (a[k] < mins[k] ? "text-red-600 font-semibold" : "")}>{k} {b[k]}→{a[k]}</span>)}{res.after.filter((p) => !p.ir).length}/22 active</div>
@@ -3408,10 +3404,7 @@ function TradeBuilder({ s, initPartner }) {
                 ) : (
                   <button className="bg-blue-600 rounded-lg px-3 py-1.5 text-sm font-semibold" disabled={!!busy} onClick={() => findPickup(k)}>{busy === "pick" + k ? "Searching…" : "Find best waiver pickup"}</button>
                 )}
-                <select className={inp + " w-full mt-2"} value={pick[k] || ""} onChange={(e) => { const v = e.target.value; setPick((x) => ({ ...x, [k]: v || undefined })); }}>
-                  <option value="">Or choose a free agent…</option>
-                  {fas.map((x) => <option key={x.id} value={x.id}>{x.n} ({x.p}, {x.t}) · {f1(pg(x))}/g</option>)}
-                </select>
+                <FaSearch s={s} top={fas} taken={new Set(picks.filter(Boolean).map((x) => x.id))} val={pg} onPick={(id) => setPick((x) => ({ ...x, [k]: id }))} />
               </div>
             ); })}
             {hasPick && res ? (
@@ -3424,22 +3417,7 @@ function TradeBuilder({ s, initPartner }) {
           </div>
         ) : null}
       </Section>
-      <Section title="Trade ideas" sub="2-for-1 offers: give two players, get one better one, then fill the open spot from waivers. Picked so they look fair by ESPN's numbers, which is how most managers judge trades.">
-        <button className="bg-blue-600 rounded-lg px-4 py-1.5 text-sm font-semibold" disabled={!!busy} onClick={findIdeas}>{busy === "ideas" ? "Searching…" : "Find 2-for-1 trades"}</button>
-        {ideas && (ideas.length ? ideas.map((x, i) => (
-          <div key={i} className="py-3 border-t border-slate-100 mt-2">
-            <div className="tb-grid">
-              <div className="min-w-0"><div className="text-xs text-slate-500">You give</div><div className="truncate">{shortN(x.A.n)}</div><div className="truncate">{shortN(x.B.n)}</div></div>
-              <div className="min-w-0"><div className="text-xs text-slate-500">You get · {x.t.name}</div><div className="truncate font-semibold">{shortN(x.T.n)}</div><div className="truncate text-slate-500 text-sm">+ pick up {shortN(x.fa.n)}</div></div>
-            </div>
-            <div className="flex items-center gap-3 mt-2 text-sm">
-              <span>You <Dlt v={x.myR} /></span>
-              <span className={"text-xs " + (x.perc >= 0.05 ? "text-green-700" : "text-amber-600")}>{x.perc >= 0.05 ? "Likely accepted" : "About even for them"}</span>
-              <button className="text-blue-600 ml-auto" onClick={() => load(x)}>Load</button>
-            </div>
-          </div>
-        )) : <div className="text-sm text-slate-400 mt-2">No 2-for-1 trade helps you right now while still looking fair to the other side.</div>)}
-      </Section>
+      <TradeAdvice s={s} onPick={(p) => { setPartner(p.ft); setGet(p.ft === partner ? [...get.filter((x) => x !== p.id), p.id] : [p.id]); setPick({}); window.scrollTo(0, 0); }} />
       <Section title="Rosters" sub="Tap to add or remove. Amber tags are sell-high signs, green are buy-low signs.">
         <div className="tb-grid">
           <div className="min-w-0"><div className="text-xs uppercase tracking-wide text-slate-500 mb-2 truncate">{teamName(s, s.me)}</div>{rows(mine, give, setGive)}</div>
@@ -3690,6 +3668,79 @@ function MyForm({ s }) {
     <Section title={"Player updates" + (rows.length ? " (" + rows.length + ")" : "")} sub="Hot and cold streaks and ice-time changes, compared with each player's projection.">
       {rows.length ? rows.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>{"\u00b7 " + n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
     </Section>
+  );
+}
+
+// ---------- round 29: trade advice with buy-low list, free-agent search (news_logos.py) ----------
+function TradeAdvice({ s, onPick }) {
+  const K = s.blend;
+  const [team, setTeam] = useState("all");
+  const [more, setMore] = useState(false);
+  const T = leagueTable(s), g = T.grpRank[s.me] || {};
+  const posName = { F: "forwards", D: "defence", G: "goalies" }, need = { F: 10, D: 5, G: 2 };
+  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0)), weak = by[0], strong = by[2];
+  const pg = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+  const spare = mine.filter((p) => p.p === strong).sort((a, b) => pg(b) - pg(a)).slice(need[strong]);
+  const sell = mine.filter((p) => tbFlags(p, K).some((f) => f.sell)).sort((a, b) => pg(b) - pg(a)).slice(0, 6);
+  const all = useMemo(() => {
+    const why = (p) => {
+      const r = [], fr = formRatio(p, K), sg = sigOf(p), rec = sg.rec, l = sg.luck;
+      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+      const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
+      if (fr !== null && fr <= 0.75 && rec) r.push("cold: " + f1(rec.ppg) + "/g last 14 days");
+      if (mb != null && p.proj && p.avg > 0 && mb / p.avg >= 1.15 && mb - p.avg >= 1) r.push("model " + f1(mb) + " vs ESPN " + f1(p.avg));
+      if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) r.push("unlucky");
+      return r;
+    };
+    return s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && !p.ir && pg(p) >= 6 && !goalieOut(p))
+      .map((p) => ({ p, r: why(p) })).filter((x) => x.r.length).sort((a, b) => pg(b.p) - pg(a.p));
+  }, [s.players, K, window.__PMODE]);
+  const list = all.filter((x) => team === "all" || x.p.ft === team);
+  const shown = list.slice(0, more ? 20 : 8);
+  return (
+    <Section title="Trade advice" sub={"Your ranks: forwards #" + (g.F || "-") + ", defence #" + (g.D || "-") + ", goalies #" + (g.G || "-") + " of " + T.rows.length + "."}>
+      <div>{weak !== strong && g[weak] > g[strong] ? <>Trade from your <b>{posName[strong]}</b> to improve your <b>{posName[weak]}</b>.{spare.length ? <span className="text-slate-500"> Spare: {spare.map((p) => p.n).join(", ")}.</span> : null}</> : "Your roster is balanced. Trade only for clear upgrades."}</div>
+      {sell.length ? <div className="mt-1 text-slate-500">Sell high: {sell.map((p) => p.n).join(", ")}.</div> : null}
+      <div className="flex flex-wrap items-center gap-2 mt-4 mb-1">
+        <div className="text-xs uppercase tracking-wide text-slate-500">Buy low ({list.length}): good players who are cold, unlucky or underrated</div>
+        <select className={inp + " ml-auto"} value={team} onChange={(e) => { setTeam(e.target.value); setMore(false); }}>
+          <option value="all">All teams</option>
+          {s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+        </select>
+      </div>
+      {shown.length ? shown.map(({ p, r }) => (
+        <PlayerLine key={p.id} s={s} p={p} extra={<><span className="text-sky-600">{"\u00b7 " + r.join(", ")}</span><button type="button" className="text-blue-600" onClick={() => onPick(p)}>Add to trade</button></>} />
+      )) : <div className="text-slate-400">No buy-low players here right now. Cold streaks need 3 or more recent games to show.</div>}
+      {list.length > shown.length && !more ? <button className="text-sm text-blue-600 mt-2" onClick={() => setMore(true)}>Show all {Math.min(20, list.length)}</button> : null}
+    </Section>
+  );
+}
+function FaSearch({ s, top, taken, val, onPick }) {
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState(false);
+  const qq = nrm(q);
+  const list = !open ? [] : qq
+    ? s.players.filter((p) => p.ft === "fa" && p.prob > 0 && !taken.has(p.id) && nrm(p.n).includes(qq)).sort((a, b) => val(b) - val(a)).slice(0, 8)
+    : top.filter((p) => !taken.has(p.id)).slice(0, 6);
+  return (
+    <div className="relative mt-2">
+      <input className={inp + " w-full"} placeholder="Search any free agent by name" value={q}
+        onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} />
+      {open ? (
+        <div className="ms-list">
+          {!qq ? <div className="text-xs text-slate-500 px-2 pt-1 pb-1">Best available</div> : null}
+          {list.map((p) => (
+            <button key={p.id} type="button" className="ms-opt" onMouseDown={(e) => e.preventDefault()} onClick={() => { onPick(p.id); setQ(""); setOpen(false); }}>
+              <TeamLogo t={p.t} size={22} />
+              <span className="truncate flex-1 text-left">{p.n} <span className="text-xs text-slate-500">{p.p}</span></span>
+              <span className="text-xs text-slate-500 whitespace-nowrap">{f1(val(p))}/g</span>
+            </button>
+          ))}
+          {list.length === 0 ? <div className="text-sm text-slate-400 px-2 py-2">No free agent matches.</div> : null}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
