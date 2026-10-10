@@ -6945,5 +6945,26 @@ _fix_before_r48 = fix
 def fix(t):
     return round48(_fix_before_r48(t))
 
+# ---------- round 49: every-starter list shows confirmed in green and likely in amber ----------
+def r49_word(side):
+    w = "word(gm." + side + ")"
+    return ('<div className="text-xs" style={{ color: ' + w + ' === "confirmed" ? "var(--good)" : ' + w + ' === "likely" ? "var(--warn)" : "var(--mute)" }}>{' + w + "}</div>")
+
+
+def round49(t):
+    t = lit(t, "round 49: away goalie status colour", '<div className="text-xs text-slate-500">{word(gm.away)}</div>', r49_word("away"), 'word(gm.away) === "confirmed" ? "var(--good)"')
+    t = lit(t, "round 49: home goalie status colour", '<div className="text-xs text-slate-500">{word(gm.home)}</div>', r49_word("home"), 'word(gm.home) === "confirmed" ? "var(--good)"')
+    for must in ("goalies v43", "function GoalieStreams("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 49 (" + must + ").")
+    return t
+
+
+_fix_before_r49 = fix
+
+
+def fix(t):
+    return round49(_fix_before_r49(t))
+
 if __name__ == "__main__":
     main()
