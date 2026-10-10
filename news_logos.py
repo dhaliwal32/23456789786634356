@@ -3555,5 +3555,250 @@ _fix_before_r30 = fix
 def fix(t):
     return round30(_fix_before_r30(t))
 
+# ---------- round 31: player pop-up. Past games with box scores, click a line to open that team's lines, calmer Lines page ----------
+SYNC31_BLOCK = r'''    # 3e) box-score history for the player pop-up: one small file per finished day (news_logos.py round 31)
+    try:
+        bdir31_ = os.path.join(HERE, "box")
+        os.makedirs(bdir31_, exist_ok=True)
+        ipath31_ = os.path.join(bdir31_, "index.json")
+        try:
+            with open(ipath31_, encoding="utf-8") as f31_:
+                idx31_ = json.load(f31_)
+        except Exception:
+            idx31_ = {}
+        have31_, none31_ = set(idx31_.get("dates") or []), set(idx31_.get("none") or [])
+        d31_ = min(period_date.values()) if period_date else day1
+        todo31_ = []
+        while d31_ <= today_et:
+            if d31_.isoformat() not in have31_ and d31_.isoformat() not in none31_:
+                todo31_.append(d31_.isoformat())
+            d31_ += timedelta(days=1)
+        new31_ = 0
+        for dd31_ in todo31_[:12]:
+            try:
+                sj31_ = requests.get(f"https://api-web.nhle.com/v1/score/{dd31_}", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+                gms31_ = [g31_ for g31_ in sj31_.get("games", []) if g31_.get("gameType", 2) == 2 and str(g31_.get("gameScheduleState") or "OK") == "OK"]
+                if not gms31_:
+                    if dd31_ < today_et.isoformat():
+                        none31_.add(dd31_)
+                    continue
+                if not all(str(g31_.get("gameState") or "") in ("FINAL", "OFF") for g31_ in gms31_):
+                    continue
+                fp31_ = {}
+                for tm31_ in (daily.get(dd31_) or {}).values():
+                    for pid31_, v31_ in tm31_.items():
+                        if v31_ and v31_[0] is not None:
+                            fp31_[str(pid31_)] = v31_[0]
+                out31_ = {}
+                for g31_ in gms31_:
+                    bx31_ = requests.get(f"https://api-web.nhle.com/v1/gamecenter/{g31_['id']}/boxscore", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+                    pbg31_ = bx31_.get("playerByGameStats") or {}
+                    sc31_ = {s31_: (bx31_.get(s31_) or g31_.get(s31_) or {}) for s31_ in ("homeTeam", "awayTeam")}
+                    ab31_ = {}
+                    for s31_ in ("homeTeam", "awayTeam"):
+                        a31_ = str(sc31_[s31_].get("abbrev") or "").upper()
+                        ab31_[s31_] = ALIAS.get(a31_, a31_)
+                    for s31_, o31_ in (("homeTeam", "awayTeam"), ("awayTeam", "homeTeam")):
+                        grp31_ = pbg31_.get(s31_) or {}
+                        base31_ = {"t": ab31_[s31_], "o": ab31_[o31_], "h": 1 if s31_ == "homeTeam" else 0,
+                                   "my": sc31_[s31_].get("score"), "op": sc31_[o31_].get("score")}
+                        for x31_ in (grp31_.get("forwards") or []) + (grp31_.get("defense") or []) + (grp31_.get("goalies") or []):
+                            nm31_ = (x31_.get("name") or {}).get("default") or ""
+                            pid31_ = _pidx.get((_nk(nm31_), ab31_[s31_])) or _pidx.get((_nk2(nm31_), ab31_[s31_]))
+                            if not pid31_:
+                                continue
+                            if "saves" in x31_ or "goalsAgainst" in x31_ or "saveShotsAgainst" in x31_:
+                                if not x31_.get("toi") or x31_.get("toi") == "00:00":
+                                    continue
+                                ln31_ = {"sv": x31_.get("saves") or 0, "ga": x31_.get("goalsAgainst") or 0, "dec": x31_.get("decision") or "",
+                                         "toi": x31_.get("toi") or "", "sa": x31_.get("shotsAgainst"), "svp": x31_.get("savePctg")}
+                            else:
+                                ln31_ = {"g": x31_.get("goals") or 0, "a": x31_.get("assists") or 0, "pm": x31_.get("plusMinus") or 0,
+                                         "sog": x31_.get("sog") or 0, "pim": x31_.get("pim") or 0, "hit": x31_.get("hits") or 0,
+                                         "blk": x31_.get("blockedShots") or 0, "toi": x31_.get("toi") or "", "ppg": x31_.get("powerPlayGoals") or 0,
+                                         "fo": x31_.get("faceoffWinningPctg"), "shf": x31_.get("shifts"), "gv": x31_.get("giveaways") or 0, "tk": x31_.get("takeaways") or 0}
+                            ln31_.update(base31_)
+                            if str(pid31_) in fp31_:
+                                ln31_["fp"] = fp31_[str(pid31_)]
+                            out31_[str(pid31_)] = ln31_
+                with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:
+                    json.dump({"d": dd31_, "p": out31_}, f31_, separators=(",", ":"))
+                have31_.add(dd31_)
+                new31_ += 1
+            except Exception as ex31_:
+                print(f"(box) history for {dd31_} failed: {ex31_}")
+        with open(ipath31_, "w", encoding="utf-8") as f31_:
+            json.dump({"dates": sorted(have31_), "none": sorted(none31_)}, f31_, separators=(",", ":"))
+        print(f"(box) history: {new31_} new day(s), {len(have31_)} saved in total")
+    except Exception as ex31_:
+        print(f"(box) history failed: {ex31_}")
+'''
+
+_fix_sync_before_r31 = PY_FIXES[SYNC]
+
+
+def fix_sync31(t):
+    t = _fix_sync_before_r31(t)
+    t = lit(t, "sync: box-score history", '    data["pstat"] = pstat\n', '    data["pstat"] = pstat\n' + SYNC31_BLOCK, "# 3e) box-score history")
+    py_ok(SYNC, t)
+    return t
+
+
+PY_FIXES[SYNC] = fix_sync31
+
+LT31_ANCHOR = "  // ---------- player detail card (unchanged from the old Lines tab) ----------"
+LT31_GAMELOG = r'''  // ---------- game log: past games with box scores (news_logos.py round 31) ----------
+  const BOX = (window.__BOX = window.__BOX || { idx: null, at: 0, days: {} });
+  const boxIndex = () => {
+    if (BOX.idx && Date.now() - BOX.at < 10 * 60 * 1000) return Promise.resolve(BOX.idx);
+    return fetch("box/index.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null))
+      .then((j) => { BOX.idx = new Set((j && j.dates) || []); BOX.at = Date.now(); return BOX.idx; })
+      .catch(() => { BOX.idx = BOX.idx || new Set(); return BOX.idx; });
+  };
+  const boxDay = (d) => (BOX.days[d] ? Promise.resolve(BOX.days[d])
+    : fetch("box/" + d + ".json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.p) BOX.days[d] = j.p; return (j && j.p) || {}; }).catch(() => ({})));
+  const fpEst = (x, sc) => (x.sv != null
+    ? (x.dec === "W" ? (sc.W ?? 5) : 0) + (x.dec === "O" ? (sc.OTL ?? 1) : 0) + (x.sv || 0) * (sc.SV ?? 0.6) + (x.ga || 0) * (sc.GA ?? -3) + (x.dec === "W" && !x.ga ? (sc.SO ?? 5) : 0)
+    : (x.g || 0) * (sc.G ?? 6) + (x.a || 0) * (sc.A ?? 4) + (x.pm || 0) * (sc.PM ?? 2) + (x.sog || 0) * (sc.SOG ?? 1) + (x.hit || 0) * (sc.HIT ?? 0.1) + (x.blk || 0) * (sc.BLK ?? 1) + (x.ppg || 0) * (sc.PPP ?? 2));
+  const glLine = (x) => (x.sv != null
+    ? [x.dec === "W" ? "Win" : x.dec === "L" ? "Loss" : x.dec === "O" ? "OT loss" : null, x.sa != null ? x.sv + " of " + x.sa + " saves" : x.sv + " saves", (x.ga || 0) + " GA", x.toi ? x.toi + " TOI" : null]
+    : [(x.g || 0) + " G", (x.a || 0) + " A", (x.pm > 0 ? "+" : "") + (x.pm || 0), (x.sog || 0) + " SOG", (x.hit || 0) + " HIT", (x.blk || 0) + " BLK", x.toi ? x.toi + " TOI" : null]).filter(Boolean).join(", ");
+  const glTiles = (x) => (x.sv != null
+    ? [["Decision", x.dec || "-"], ["Saves", x.sa != null ? x.sv + "/" + x.sa : x.sv], ["SV%", x.svp != null ? Number(x.svp).toFixed(3).replace(/^0/, "") : "-"], ["GA", x.ga || 0], ["TOI", x.toi || "-"]]
+    : [["G", x.g || 0], ["A", x.a || 0], ["PTS", (x.g || 0) + (x.a || 0)], ["+/-", (x.pm > 0 ? "+" : "") + (x.pm || 0)], ["SOG", x.sog || 0], ["PP goals", x.ppg ?? 0], ["PIM", x.pim || 0], ["HIT", x.hit || 0], ["BLK", x.blk || 0],
+      ["FO%", x.fo ? Math.round(x.fo * 100) + "%" : "-"], ["Takeaways", x.tk ?? 0], ["Giveaways", x.gv ?? 0], ["Shifts", x.shf ?? "-"], ["TOI", x.toi || "-"]]);
+  function GameLog({ p, it, s, H }) {
+    const today = H.todayISO(), id = String(p.id).slice(1), sc = s.sc || {};
+    const [rows, setRows] = useState(null);
+    const [all, setAll] = useState(false);
+    const [open, setOpen] = useState(null);
+    const past = useMemo(() => (H.SCHED && H.SCHED[it.t] ? [...H.SCHED[it.t]].filter((d) => d <= today).sort().reverse() : []), [it.t, today]);
+    useEffect(() => {
+      let dead = false;
+      setRows(null); setOpen(null);
+      const want = all ? past : past.slice(0, 14);
+      boxIndex().then((idx) => Promise.all(want.map((d) => {
+        const live = H.pStat ? H.pStat(p, d) : null;
+        return idx.has(d) ? boxDay(d).then((day) => ({ d, x: day[id] || live || null })) : Promise.resolve({ d, x: live });
+      }))).then((list) => { if (!dead) setRows(list.filter((r) => r.x)); });
+      return () => { dead = true; };
+    }, [p.id, it.t, all]);
+    const ptsOf = (r) => { const a = r.x.fp != null ? r.x.fp : realPts(p, r.d); return a != null ? { v: a, est: false } : { v: fpEst(r.x, sc), est: true }; };
+    const shown = (rows || []).slice(0, all ? 999 : 10).map((r) => ({ ...r, pt: ptsOf(r) }));
+    const avg = shown.length ? shown.reduce((a, r) => a + r.pt.v, 0) / shown.length : 0;
+    const anyEst = shown.some((r) => r.pt.est);
+    return (
+      <div className="mt-4">
+        <div className="flex flex-wrap items-baseline gap-2 mb-1">
+          <div className="font-medium text-sm">Recent games</div>
+          {shown.length ? <span className="text-xs text-slate-500">{H.f1(avg)} fantasy pts a game over the last {shown.length}</span> : null}
+        </div>
+        {rows === null ? <div className="text-xs text-slate-400">Loading games...</div>
+          : !shown.length ? <div className="text-xs text-slate-400">No finished games saved yet. Game history fills in after the next sync.</div>
+          : shown.map((r) => {
+            const x = r.x, gm = ((((window.GAMES_DATA || {}).games || {})[r.d]) || {})[it.t] || null, live = H.gScore ? H.gScore(it.t, r.d) : null;
+            const o = x.o || (gm ? gm.o : ""), h = x.o ? x.h : gm ? gm.h : null;
+            const my = x.my != null ? x.my : live ? live.my : null, op = x.op != null ? x.op : live ? live.op : null;
+            const res = my != null && op != null ? (my > op ? "W " : my < op ? "L " : "") + my + "-" + op : "";
+            return (
+              <div key={r.d} className="border-t border-slate-100 py-2 cursor-pointer" onClick={() => setOpen(open === r.d ? null : r.d)}>
+                <div className="flex items-baseline gap-3 text-sm">
+                  <span className="whitespace-nowrap" style={{ minWidth: 84 }}>{H.dayLabel(r.d)}</span>
+                  <span className="text-slate-500 whitespace-nowrap">{o ? (h ? "vs " : "@ ") + o : ""}</span>
+                  <span className={"whitespace-nowrap text-xs " + (my > op ? "text-green-700" : my < op ? "text-red-600" : "text-slate-500")}>{res}</span>
+                  <span className="ml-auto font-semibold whitespace-nowrap">{(r.pt.est ? "~" : "") + H.f1(r.pt.v)}</span>
+                </div>
+                <div className="text-xs text-slate-500 mt-0.5">{glLine(x)}</div>
+                {open === r.d ? <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mt-2">{glTiles(x).map(([l, v]) => (
+                  <div key={l} className="rounded-lg border border-slate-200 px-2 py-1.5 text-center"><div className="text-[10px] uppercase tracking-wide text-slate-500">{l}</div><div className="font-semibold">{v}</div></div>
+                ))}</div> : null}
+              </div>
+            );
+          })}
+        {!all && past.length > 14 ? <button className="lt-link" onClick={() => setAll(true)}>Show all games</button> : null}
+        {shown.length ? <div className="text-xs text-slate-400 mt-1">Tap a game for its full box score.{anyEst ? " ~ means estimated from the box score, without power-play assists or shorthanded points." : ""}</div> : null}
+      </div>
+    );
+  }
+
+'''
+
+LT31_LINE_OLD = r'''{isG ? `Goalie for ${it.t}` : `${LBL[w.es]} for ${it.t}`}'''
+LT31_LINE_NEW = r'''<button className="underline" title="Open this team's lines" onClick={() => { if (window.__NAV && window.__NAV.lines) window.__NAV.lines(it.t); }}>{isG ? `Goalie for ${it.t}` : `${LBL[w.es]} for ${it.t}`}</button>'''
+
+LT31_OPEN_NEW = r'''const [open, setOpen] = useState({});
+    useEffect(() => {
+      // round 31: open one team's lines when a player's line is clicked (news_logos.py)
+      const show = (t) => {
+        if (!t) return;
+        window.__LINES_TEAM = null;
+        setOnlyMine(false); setOpen((o) => ({ ...o, [t]: true }));
+        setTimeout(() => { const el = document.getElementById("lt-team-" + t); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+      };
+      show(window.__LINES_TEAM);
+      const h = (e) => show(e.detail);
+      window.addEventListener("gm-lines-team", h);
+      return () => window.removeEventListener("gm-lines-team", h);
+    }, []);'''
+
+LT31_ALL_OLD = r'''<label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={onlyMine}'''
+LT31_ALL_NEW = r'''<button className="lt-link" style={{ padding: 0 }} onClick={() => setOpen(Object.keys(open).some((k) => open[k]) ? {} : Object.fromEntries(Object.keys(L.teams || {}).map((k) => [k, true])))}>{Object.keys(open).some((k) => open[k]) ? "Close all teams" : "Open all teams"}</button>
+          ''' + LT31_ALL_OLD
+
+_fix_lines_before_r31 = JS_FIXES[LINES]
+
+
+def fix_lines31(t):
+    t = _fix_lines_before_r31(t)
+    t = lit(t, "lines: game log for the pop-up", LT31_ANCHOR, LT31_GAMELOG + LT31_ANCHOR, "function GameLog(")
+    t = lit(t, "lines: recent games in the pop-up", "{games.length > 0 && (",
+            "{hasId ? <GameLog p={p} it={it} s={s} H={H} /> : null}\n        {games.length > 0 && (", "<GameLog p={p}")
+    t = lit(t, "lines: click a line to open the team", LT31_LINE_OLD, LT31_LINE_NEW, "window.__NAV.lines(it.t)")
+    t = lit(t, "lines: open a team when asked", "const [open, setOpen] = useState({});", LT31_OPEN_NEW, "round 31: open one team's lines")
+    t = lit(t, "lines: team rows can be scrolled to", '<div key={x.t} className={"lt-team" + (isOpen ? " open" : "")}>',
+            '<div key={x.t} id={"lt-team-" + x.t} style={{ scrollMarginTop: 120 }} className={"lt-team" + (isOpen ? " open" : "")}>',
+            'id={"lt-team-" + x.t}')
+    t = lit(t, "lines: open all teams link", LT31_ALL_OLD, LT31_ALL_NEW, "Open all teams")
+    t = lit(t, "lines: changes box starts closed", '<H.Section title="Line & roster changes"', '<H.Section closed title="Line & roster changes"',
+            '<H.Section closed title="Line & roster changes"')
+    if "lt-legend-wrap" in t:
+        print("(news) lines: colour key in a drop-down: already done")
+    else:
+        t, n31 = re.subn(r'<div className="lt-legend">.*?</div>',
+                         lambda m: '<details className="lt-how lt-legend-wrap"><summary>What the colours and marks mean</summary>' + m.group(0) + "</details>",
+                         t, flags=re.S)
+        if n31 != 1:
+            fail(f"'lines: colour key in a drop-down' matched {n31} times (expected 1). Send this log to the AI helper.")
+        print("(news) lines: colour key in a drop-down: updated")
+    for must in ("function GameLog(", "function PlayerCard(", "function Teams(", "window.PlayerPopup = PlayerPopup;", "game box score v23", "H.TeamLogo t={x.t} size={32}"):
+        if must not in t:
+            fail("lines-tab.js looks damaged after round 31 (" + must + ").")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines31
+
+R31_NAV_OLD = "player: (p) => { if (p) setPlayer(p); } };"
+R31_NAV_NEW = ('player: (p) => { if (p) setPlayer(p); }, lines: (t) => { window.__LINES_TEAM = t; go("lines"); '
+               'try { window.dispatchEvent(new CustomEvent("gm-lines-team", { detail: t })); } catch (e) {} } };')
+
+
+def round31(t):
+    t = lit(t, "pop-up: schedule for game history", "Card, Pills, inp, todayISO, dayLabel, TL, TeamLogo };",
+            "Card, Pills, inp, SCHED, todayISO, dayLabel, TL, TeamLogo };", "Pills, inp, SCHED, todayISO")
+    t = lit(t, "pop-up: jump to a team's lines", R31_NAV_OLD, R31_NAV_NEW, 'window.__LINES_TEAM = t; go("lines");')
+    for must in ("const LH = { gState, actDay, LiveTag,", "dayLabel, TL, TeamLogo };", "window.__TAB = tab", "LiveTag, pStat, gScore,"):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 31 (" + must + ").")
+    return t
+
+
+_fix_before_r31 = fix
+
+
+def fix(t):
+    return round31(_fix_before_r31(t))
+
 if __name__ == "__main__":
     main()
