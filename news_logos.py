@@ -5011,5 +5011,43 @@ _fix_before_r37 = fix
 def fix(t):
     return round37(_fix_before_r37(t))
 
+# ---------- round 38: Matchup list fits a phone (short names, smaller logos, tighter columns) ----------
+R38_CSS = r'''  /* round 38 matchup on phones (news_logos.py) */
+  .gx-pc { display: flex; align-items: center; gap: 10px; }
+  @media (max-width: 640px) {
+    .gx-pn { padding: 12px 10px; }
+    .gx-pc { gap: 6px; }
+    .gx-h2h { grid-template-columns: minmax(0,1fr) 38px 14px 38px minmax(0,1fr); gap: 4px; padding: 8px 0; }
+    .gx-h2h img { width: 20px !important; height: 20px !important; }
+    .gx-h2h .gx-nm { font-size: 13px; }
+    .gx-h2h .text-xs { font-size: 11px; }
+    .gx-h2h .gm-pill { display: none; }
+  }
+'''
+
+R38_ROW_OLD = r'''<div className="min-w-0" style={{ display: "flex", alignItems: "center", gap: 10, flexDirection: right ? "row-reverse" : "row" }}><TeamLogo t={p.t} size={30} />'''
+R38_ROW_NEW = r'''<div className="min-w-0 gx-pc" style={{ flexDirection: right ? "row-reverse" : "row" }}><TeamLogo t={p.t} size={30} />'''
+R38_NAME_OLD = r'''<div className="truncate"><PN p={p} className="" /></div>'''
+R38_NAME_NEW = (r'''<div className="truncate gx-nm"><button type="button" className="hover:underline text-left" onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.player(p); }}>'''
+                r'''<span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span></button></div>''')
+
+
+def round38(t):
+    t = lit(t, "matchup phone: styles", "</style>", R38_CSS + "</style>", "round 38 matchup on phones")
+    t = lit(t, "matchup phone: tighter logo and name", R38_ROW_OLD, R38_ROW_NEW, 'className="min-w-0 gx-pc"')
+    t = lit(t, "matchup phone: short names", R38_NAME_OLD, R38_NAME_NEW, '<div className="truncate gx-nm">')
+    for must in ("matchup v35", "ring v36", "function Matchup(",
+                 '<TeamLogo t={p.t} size={30} /><div className={"min-w-0" + (right ? " text-right" : "")} style={{ flex: 1 }}>'):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 38 (" + must + ").")
+    return t
+
+
+_fix_before_r38 = fix
+
+
+def fix(t):
+    return round38(_fix_before_r38(t))
+
 if __name__ == "__main__":
     main()
