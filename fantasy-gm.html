@@ -4301,7 +4301,7 @@ function GxCarry({ s, wk }) {
   }, [s.players, wk, K, gen]);
   const row = (x, i, note) => (
     <div key={x.p.id} className="gx-row" style={i === 0 ? { borderTop: 0 } : note ? { borderTop: "1px dashed var(--line2)" } : null}>
-      <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={x.p} className="" /></span>
+      <span className="min-w-0 truncate" style={{ flex: 1 }}><span className="gx-pl"><TeamLogo t={x.p.t} size={20} /><PN p={x.p} className="" /></span></span>
       {note ? <span className="text-xs whitespace-nowrap" style={{ color: "var(--bad)" }}>{note}</span> : <span className="text-xs text-slate-500 whitespace-nowrap">{x.g} game{x.g === 1 ? "" : "s"}</span>}
       <span className="font-semibold text-right" style={{ minWidth: 40, fontVariantNumeric: "tabular-nums" }}>{f1(x.pts)}</span>
     </div>
@@ -4331,7 +4331,7 @@ function GxGoalies({ s, wk }) {
     <GxPanel title="Goalie board" right={"starts \u00b7 left \u00b7 points"}>
       {rows.length ? rows.map((x, i) => (
         <div key={x.p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
-          <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={x.p} className="" /></span>
+          <span className="min-w-0 truncate" style={{ flex: 1 }}><span className="gx-pl"><TeamLogo t={x.p.t} size={20} /><PN p={x.p} className="" /></span></span>
           <span className="text-xs text-slate-500 whitespace-nowrap">{x.st + " \u00b7 " + x.left}</span>
           <span className="font-semibold text-right" style={{ minWidth: 40, fontVariantNumeric: "tabular-nums", color: x.pts > 5 ? "var(--good)" : x.pts < 0 ? "var(--bad)" : "var(--ink)" }}>{f1(x.pts)}</span>
         </div>
