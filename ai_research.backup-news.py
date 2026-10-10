@@ -247,13 +247,6 @@ def daily_main(force=False, root=None, now=None):
     rlog = E.read_json(L.H(root, "research", "log.json"), {})
     register(rlog.get("adopted"))
     reg = E.read_json(L.H(root, "models", "registry.json"), {})
-    try:
-        last46_ = E.parse_utc(reg["last_train"]) if reg.get("last_train") else None
-    except Exception:
-        last46_ = None
-    if last46_ is not None and now - last46_ >= timedelta(days=7):
-        print("(research) models are a week old or more - retraining today")
-        force = True
     due = (force or reg.get("feature_hash") != L.FEATURE_HASH or not reg.get("production")
            or (now.weekday() == 0 and not str(reg.get("last_train", "")).startswith(E.iso(now)[:10])))
     if due:
