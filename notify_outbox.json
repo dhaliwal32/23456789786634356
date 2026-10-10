@@ -5235,6 +5235,17 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-10T15:02:52Z"
+  },
+  {
+   "k": "2026-10-10|73eb16f67517",
+   "at": "2026-10-10T16:12:16Z",
+   "title": "Your player: injury update",
+   "text": "Pierre-Luc Dubois (WSH) injury status: Active -> Day To Day",
+   "section": "mine",
+   "urgent": false,
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-10T16:12:16Z"
   }
  ],
  "sent": {
@@ -5255,7 +5266,8 @@
    "pregame"
   ],
   "2026-10-10": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -5390,6 +5402,12 @@
    "kind": "morning",
    "title": "Morning summary - Sat Oct 10 (92 updates)",
    "body": "LINEUP\n- Sam Bennett (FLA, 3:00 PM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.\n- Patrick Kane (CHI, 4:00 PM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.\n- Trevor Zegras (PHI, 10:00 AM) is on your bench with a game today, while Jared McCann (SEA) is starting with no game. Swap them.\n- Josh Manson (COL, 4:00 PM) is on your bench with a game today, while Josh Morrissey (WPG) is starting with no game. Swap them.\n\nYOUR PLAYERS\n- Nathan MacKinnon (COL) is down 3.5 min per game lately (18.7 vs 22.3). Possible demotion - watch his role.\n- Josh Morrissey (WPG) is down 4.7 min per game lately (20.1 vs 24.7). Possible demotion - watch his role.\n- Victor Hedman (TB) is down 4.0 min per game lately (14.8 vs 18.9). Possible demotion - watch his role.\n- Josh Morrissey (WPG) injury status: Out -> Day To Day\n\nPICKUP IDEAS\n- Brock Boeser (F, VAN) is playing 18.2 min per game lately, up -0.5 (PP +1.5). Likely promoted - free agent.\n- Paul Cotter (F, VAN) is playing 15.9 min per game lately, up +5.1 (PP +0.6). Likely promoted - free agent.\n- Elias Lindholm (F, BOS) was just moved onto his team's top power-play unit and is a free agent.\n- James Hagens (F, BOS) is playing 13.4 min per game lately, up -1.1 (PP +1.6). Likely promoted - free agent.\n- Ryan Shea (D, EDM) is playing 23.0 min per game lately, up +3.8 (PP +1.7). Likely promoted - free agent.\n- Kasperi Kapanen (F, EDM) is playing 17.6 min per game lately, up +2.8 (PP +3.6). Likely promoted - free agent.\n  + 78 more in the app\n\nToday: 18 of your players play, first puck drop 10:00 AM."
+  },
+  {
+   "at": "2026-10-10T16:12:16Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 10:00 AM (1 update)",
+   "body": "YOUR PLAYERS\n- Pierre-Luc Dubois (WSH) injury status: Active -> Day To Day"
   }
  ]
 }
