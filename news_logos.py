@@ -7145,5 +7145,233 @@ _fix_before_r50 = fix
 def fix(t):
     return round50(_fix_before_r50(t))
 
+# ---------- round 51: quick actions in the player pop-up, ESPN links, watchlist, team pages in the new style ----------
+R51_HELPERS = r'''// ---------- round 51: watchlist and quick actions (news_logos.py) ----------
+const gxWatch = {
+  list: () => { try { return JSON.parse(localStorage.getItem("gm-watch") || "[]"); } catch (e) { return []; } },
+  has: (id) => gxWatch.list().indexOf(id) >= 0,
+  toggle: (id) => {
+    const l = gxWatch.list(), i = l.indexOf(id);
+    if (i >= 0) l.splice(i, 1); else l.push(id);
+    try { localStorage.setItem("gm-watch", JSON.stringify(l)); } catch (e) {}
+    window.dispatchEvent(new Event("gm-watch"));
+  },
+};
+function GxWatchPanel({ s }) {
+  const [, tick] = useState(0);
+  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gm-watch", h); return () => window.removeEventListener("gm-watch", h); }, []);
+  const K = s.blend, list = gxWatch.list().map((id) => s.players.find((p) => p.id === id)).filter(Boolean);
+  if (!list.length) return null;
+  const note = (p) => {
+    if (p.ft !== "fa") return "now on " + teamName(s, p.ft);
+    const g = sigOf(p), fr = formRatio(p, K);
+    return g.lines && g.lines.chg === "up" ? "moved up a line" : g.ppChg === "added" ? "new on the top power play" : g.lines && g.lines.chg === "down" ? "moved down a line" : fr !== null && fr >= 1.25 ? "hot" : fr !== null && fr <= 0.7 ? "cold" : "";
+  };
+  return (
+    <GxPanel title="Watchlist">
+      {list.map((p, i) => (
+        <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+          <TeamLogo t={p.t} size={22} />
+          <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /> <span className="text-xs text-slate-500">{p.p}</span>{note(p) ? <span className="text-xs text-slate-500" style={{ marginLeft: 8 }}>{note(p)}</span> : null}</span>
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+          <button type="button" aria-label={"Stop watching " + p.n} className="text-slate-500" style={{ padding: "0 4px", fontSize: 16 }} onClick={() => gxWatch.toggle(p.id)}>{"\u00d7"}</button>
+        </div>
+      ))}
+    </GxPanel>
+  );
+}
+function GxQA({ s, go }) {
+  const lid = (window.ESPN_DATA || {}).leagueId || 1363781006, num = (x) => String(x).replace(/\D/g, "");
+  window.__QA = {
+    mine: (p) => p.ft === s.me, fa: (p) => p.ft === "fa", tradeable: (p) => p.ft !== "fa",
+    swap: (p) => { if (p.ft === "fa") window.__PICK_Q = p.n; else window.__PICK_POS = p.p; go("moves", "adddrop"); setTimeout(() => window.dispatchEvent(new Event("gm-pick")), 50); },
+    trade: (p) => { window.__TRADE_P = { id: p.id, ft: p.ft }; go("moves", "trades"); setTimeout(() => window.dispatchEvent(new Event("gm-trade")), 50); },
+    lines: (p) => { if (window.__NAV && window.__NAV.lines) window.__NAV.lines(p.t); else go("lines"); },
+    espn: (p) => {
+      try { if (navigator.clipboard) navigator.clipboard.writeText(p.n); } catch (e) {}
+      window.open(p.ft === "fa" ? "https://fantasy.espn.com/hockey/players/add?leagueId=" + lid + "&teamId=" + num(s.me)
+        : "https://fantasy.espn.com/hockey/team?leagueId=" + lid + "&teamId=" + num(p.ft), "_blank");
+    },
+    star: (p) => gxWatch.toggle(p.id), starred: (p) => gxWatch.has(p.id),
+  };
+  return null;
+}
+
+'''
+
+R51_TEAM = r'''function TeamPage(props) {
+  // team page v51: new style, with the older detailed view one tap away (news_logos.py)
+  const { s, wk } = props, tid = props.ID, back = props.BACK;
+  const [old, setOld] = useState(false);
+  if (old || !tid || !s || !wk) return <TeamPage0 {...props} />;
+  const K = s.blend, today = todayISO(), dates = wk.dates || [];
+  const T = leagueTable(s), pr = T.rows.findIndex((x) => x.t.id === tid), row = pr >= 0 ? T.rows[pr] : null;
+  const g = T.grpRank[tid] || {}, mg = T.grpRank[s.me] || {};
+  const roster = s.players.filter((p) => p.ft === tid);
+  const opp = oppOf(wk, tid), sc = (id) => +((wk.act || {})[id]) || 0;
+  const left = (p) => (wk.games[p.t] || []).filter((d) => dates[d] >= today && gState(p.t, dates[d]).s === "P").length;
+  const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const grp = (k) => roster.filter((p) => !p.ir && p.p === k).sort((a, b) => pv(b) - pv(a));
+  const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter((p) => p.ir)]].filter((x) => x[1].length);
+  const trade = () => { window.__TRADE_P = { id: null, ft: tid }; if (props.go) props.go("moves", "trades"); setTimeout(() => window.dispatchEvent(new Event("gm-trade")), 50); };
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        {back ? <button type="button" className="text-sm text-blue-600" onClick={back}>{"\u2039 Back"}</button> : null}
+        <span className="font-semibold" style={{ fontSize: 18 }}>{teamName(s, tid)}</span>
+        <span className="text-sm text-slate-500">{[row && row.rec.n ? row.rec.w + "-" + row.rec.l : "", pr >= 0 ? ordN(pr + 1) + " in strength" : "", row ? Math.round(row.strength) + " a week" : ""].filter(Boolean).join(" \u00b7 ")}</span>
+        {tid !== s.me ? <button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" style={{ marginLeft: "auto" }} onClick={trade}>Trade with them</button> : null}
+      </div>
+      <div className="grid md:grid-cols-2 gap-3">
+        <GxPanel title="This week">
+          {opp ? (
+            <div className="flex items-baseline gap-3">
+              <span className="gx-stv">{f1(sc(tid))}</span><span className="text-slate-500">to</span><span className="gx-stv" style={{ color: "var(--ink2)" }}>{f1(sc(opp))}</span>
+              <span className="text-sm text-slate-500 truncate">vs {teamName(s, opp)}</span>
+            </div>
+          ) : <div className="text-sm text-slate-500">No matchup this week.</div>}
+        </GxPanel>
+        <GxPanel title="Against you" right="league rank by position">
+          {[["Forwards", "F"], ["Defence", "D"], ["Goalies", "G"]].map(([lab, k], i) => (
+            <div key={k} className="gx-row" style={i ? null : { borderTop: 0 }}>
+              <span style={{ flex: 1 }}>{lab}</span>
+              <span style={{ color: g[k] && mg[k] && g[k] < mg[k] ? "var(--good)" : "var(--ink)" }}>{g[k] ? ordN(g[k]) : "\u2013"}</span>
+              <span className="text-xs text-slate-500" style={{ minWidth: 76, textAlign: "right" }}>{tid === s.me ? "" : "you " + (mg[k] ? ordN(mg[k]) : "\u2013")}</span>
+            </div>
+          ))}
+        </GxPanel>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-row text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}><span style={{ flex: 1 }}>Roster</span><span style={{ minWidth: 40, textAlign: "right" }}>Left</span><span style={{ minWidth: 64, textAlign: "right" }}>Expected</span></div>
+        {groups.map(([title, list]) => (
+          <div key={title}>
+            <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
+            {list.map((p) => (
+              <div key={p.id} className="gx-row">
+                <TeamLogo t={p.t} size={22} />
+                <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" />{p.status && p.status !== "ACTIVE" ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{M_ST[p.status] || p.status.replace(/_/g, " ")}</span> : null}</span>
+                <span className="text-slate-500" style={{ minWidth: 40, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{p.ir ? "\u2013" : left(p)}</span>
+                <span style={{ minWidth: 64, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <button type="button" className="text-xs text-slate-500 underline" onClick={() => setOld(true)}>Show the older detailed view</button>
+    </div>
+  );
+}
+
+'''
+
+R51_PICK_OLD = '  const [pos, setPos] = useState("all");\n  const [q, setQ] = useState("");\n  const [limit, setLimit] = useState(25);'
+R51_PICK_NEW = '''  const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
+  const [q, setQ] = useState(() => { const v = window.__PICK_Q || ""; window.__PICK_Q = ""; return v; });
+  const [limit, setLimit] = useState(25);
+  useEffect(() => {
+    const h = () => { if (window.__PICK_Q) { setQ(window.__PICK_Q); window.__PICK_Q = ""; } if (window.__PICK_POS) { setPos(window.__PICK_POS); window.__PICK_POS = ""; } };
+    window.addEventListener("gm-pick", h);
+    return () => window.removeEventListener("gm-pick", h);
+  }, []);'''
+R51_TR_OLD = '  const [partner, setPartner] = useState(initPartner || (others[0] || {}).id || "");\n  const [give, setGive] = useState([]);\n  const [get, setGet] = useState([]);'
+R51_TR_NEW = '''  const [tp0] = useState(() => { const v = window.__TRADE_P || null; window.__TRADE_P = null; return v; });
+  const tpThem = tp0 && tp0.ft !== s.me && tp0.ft !== "fa";
+  const [partner, setPartner] = useState((tpThem ? tp0.ft : null) || initPartner || (others[0] || {}).id || "");
+  const [give, setGive] = useState(tp0 && tp0.ft === s.me && tp0.id ? [tp0.id] : []);
+  const [get, setGet] = useState(tpThem && tp0.id ? [tp0.id] : []);
+  useEffect(() => {
+    const h = () => {
+      const v = window.__TRADE_P; window.__TRADE_P = null;
+      if (!v) return;
+      if (v.ft === s.me) { if (v.id) setGive((g) => (g.indexOf(v.id) >= 0 ? g : g.concat([v.id]))); }
+      else if (v.ft !== "fa") { setPartner(v.ft); setGet(v.id ? [v.id] : []); }
+    };
+    window.addEventListener("gm-trade", h);
+    return () => window.removeEventListener("gm-trade", h);
+  }, []);'''
+R51_PK_INPUT = '<input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />'
+R51_PK_SUB_OLD = r'''(tg ? " \u00b7 " + tg.t : "")}</div>'''
+R51_PK_SUB_NEW = r'''(tg ? " \u00b7 " + tg.t : "")}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button></div>'''
+R51_PL_OLD = r'''{st.add.wv ? " \u00b7 on waivers" : ""}</div>'''
+R51_PL_NEW = r'''{st.add.wv ? " \u00b7 on waivers" : ""}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={() => window.__QA && window.__QA.espn(st.add)}>Add on ESPN</button></div>'''
+
+
+def r51_team(t):
+    if "team page v51" in t:
+        print("(news) round 51: team page in the new style: already done")
+        return t
+    m = re.search(r"function TeamPage\(\{([^}]*)\}\)", t)
+    names = [x.strip().split("=")[0].split(":")[0].strip() for x in m.group(1).split(",")] if m else []
+    idn = next((x for x in ("id", "tid", "teamId", "team", "view", "teamView", "t") if x in names), None)
+    bk = next((x for x in ("back", "onBack", "goBack", "onClose", "close") if x in names), None)
+    if not idn or "s" not in names or t.count("function TeamPage(") != 1:
+        print("(news) round 51: team page in the new style: NOT DONE. Send this line to the AI helper: TeamPage takes (" + ", ".join(names) + ")")
+        return t
+    code = R51_TEAM.replace("props.ID", "props." + idn).replace("props.BACK", ("props." + bk) if bk else "null")
+    print("(news) round 51: team page in the new style: updated")
+    return t.replace("function TeamPage(", code + "function TeamPage0(", 1)
+
+
+def round51(t):
+    t = lit(t, "round 51: helpers", ROOT, R51_HELPERS + ROOT, "function GxQA(")
+    t = lit(t, "round 51: quick actions switched on", "<GxExtras s={s} tab={tab} go={go} />", "<GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} />", "<GxQA s={s} go={go} />")
+    t = lit(t, "round 51: Pickups opens on a chosen player", R51_PICK_OLD, R51_PICK_NEW, 'window.addEventListener("gm-pick", h);')
+    t = lit(t, "round 51: watchlist on Pickups", R51_PK_INPUT, "<GxWatchPanel s={s} />\n      " + R51_PK_INPUT, "<GxWatchPanel s={s} />")
+    t = lit(t, "round 51: ESPN link on Pickups rows", R51_PK_SUB_OLD, R51_PK_SUB_NEW, "window.__QA.espn(r.f)")
+    t = lit(t, "round 51: ESPN link on Plan steps", R51_PL_OLD, R51_PL_NEW, "window.__QA.espn(st.add)")
+    t = lit(t, "round 51: Trades opens on a chosen player", R51_TR_OLD, R51_TR_NEW, 'window.addEventListener("gm-trade", h);')
+    t = r51_team(t)
+    for must in ("function GxQA(", "function GxWatchPanel(", "function Pickups(", "function PlanPage(", "trades v42", "function TeamPage(", "function GxExtras("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 51 (" + must + ").")
+    return t
+
+
+_fix_before_r51 = fix
+
+
+def fix(t):
+    return round51(_fix_before_r51(t))
+
+
+LT51_QA = r'''function QuickActions({ p, onClose }) {
+    const [, tick] = useState(0);
+    const Q = window.__QA;
+    if (!p || !Q) return null;
+    const act = (fn) => () => { fn(p); if (onClose) onClose(); };
+    const b = "px-3 py-1 rounded-lg border border-slate-300 text-xs";
+    return (
+      <div className="flex flex-wrap gap-2" style={{ marginTop: 12 }}>
+        <button className={b} onClick={act(Q.swap)}>{Q.mine(p) ? "Find a replacement" : "Find a swap"}</button>
+        {Q.tradeable(p) ? <button className={b} onClick={act(Q.trade)}>Add to a trade</button> : null}
+        <button className={b} onClick={act(Q.lines)}>See his line</button>
+        <button className={b} onClick={() => Q.espn(p)}>{Q.fa(p) ? "Add on ESPN" : "Open on ESPN"}</button>
+        {Q.fa(p) ? <button className={b} onClick={() => { Q.star(p); tick((x) => x + 1); }}>{Q.starred(p) ? "\u2605 Watching" : "\u2606 Watch"}</button> : null}
+      </div>
+    );
+  }
+  function PlayerCard(props) {
+    return <div><PlayerCard0 {...props} /><QuickActions p={(props.it && props.it.p) || props.p} onClose={props.onClose} /></div>;
+  }
+  '''
+
+_fix_lines_before_r51 = JS_FIXES[LINES]
+
+
+def fix_lines51(t):
+    t = _fix_lines_before_r51(t)
+    if "function PlayerCard0(" in t:
+        print("(news) lines: quick actions under the player card: already done")
+    else:
+        if t.count("function PlayerCard(") != 1:
+            fail("lines: could not find the player card in lines-tab.js. Send this log to the AI helper.")
+        t = t.replace("function PlayerCard(", LT51_QA + "function PlayerCard0(", 1)
+        print("(news) lines: quick actions under the player card: updated")
+    babel_ok(t, LINES)
+    return t
+
+
+JS_FIXES[LINES] = fix_lines51
+
 if __name__ == "__main__":
     main()
