@@ -5256,6 +5256,17 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-10T18:23:20Z"
+  },
+  {
+   "k": "2026-10-10|b251444071b6",
+   "at": "2026-10-10T19:03:30Z",
+   "title": "Goalie not starting tonight",
+   "text": "Kevin Lankinen (VAN, 12:30 PM): Daily Faceoff lists Leevi Merilainen (Confirmed). Swap in a goalie who is starting.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-10T19:03:30Z"
   }
  ],
  "sent": {
