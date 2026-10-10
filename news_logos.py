@@ -7700,5 +7700,188 @@ _fix_before_r57 = fix
 def fix(t):
     return round57(_fix_before_r57(t))
 
+# ---------- lock-in: once rounds 1 to 57 are in the live files, skip them on every later run ----------
+LOCK = "locked-in 57"
+LOCK_NEED = ["function GxRosterTable(", "function GxQA(", "function GxExtras(", "Get the latest data and app version", "round 52 (news_logos.py)"]
+_fix_before_lock = fix
+
+
+def fix(t):
+    if LOCK in t:
+        return t
+    t = _fix_before_lock(t)
+    if all(x in t for x in LOCK_NEED) and t.count("</style>") >= 1:
+        t = t.replace("</style>", "  /* " + LOCK + " (news_logos.py): rounds 1 to 57 are part of this file now */\n</style>", 1)
+        print("(news) lock-in: fantasy-gm.html locked at round 57")
+    else:
+        print("(news) lock-in: fantasy-gm.html NOT locked yet, an earlier round is missing from it. Old rounds keep running until it is.")
+    return t
+
+
+def _lock_wrap(name, fn):
+    tail = ("\n<!-- " + LOCK + " (news_logos.py) -->\n" if name.endswith(".html") else "\n// " + LOCK + " (news_logos.py)\n" if name.endswith(".js")
+            else "\n# " + LOCK + " (news_logos.py)\n")
+
+    def g(t):
+        if LOCK in t:
+            return t
+        t = fn(t)
+        print("(news) lock-in: " + name + " locked at round 57")
+        return t.rstrip("\n") + "\n" + tail
+    return g
+
+
+for _f58 in list(PY_FIXES):
+    PY_FIXES[_f58] = _lock_wrap(_f58, PY_FIXES[_f58])
+for _f58 in list(JS_FIXES):
+    JS_FIXES[_f58] = _lock_wrap(_f58, JS_FIXES[_f58])
+
+# ---------- round 58: "Best" projection setting, phone alert switches ----------
+R58_HELPERS = r'''// ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
+function GxBest({ s, setS }) {
+  useEffect(() => {
+    if (!s.pbest) return;
+    let dead = false;
+    const MAP = { espn: "espn", gm: "model", blend: "blend", ai: "ai" };
+    const use = (m) => {
+      let k = MAP[m] || "ai";
+      if ((k === "ai" && !window.__AI) || (k !== "espn" && !window.__MODEL)) k = window.__MODEL ? "model" : "espn";
+      if (!dead) setS((st) => (st.pmode === k ? st : { ...st, pmode: k, players: [...st.players] }));
+    };
+    let c = null;
+    try { c = JSON.parse(localStorage.getItem("gm-best") || "null"); } catch (e) {}
+    if (c && c.d === todayISO() && c.m) { use(c.m); return; }
+    fetch("ai/report.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => {
+      const m = j && j.best && j.best.skater && j.best.skater.model;
+      if (!m) return;
+      try { localStorage.setItem("gm-best", JSON.stringify({ d: todayISO(), m })); } catch (e) {}
+      use(m);
+    }).catch(() => {});
+    return () => { dead = true; };
+  }, [s.pbest]);
+  return null;
+}
+function GxAlertPrefs() {
+  const [p, setP] = useState(undefined);
+  useEffect(() => { fetch("alert_prefs.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => setP(j)).catch(() => setP(null)); }, []);
+  const rows = [["injuries", "Injuries to your players"], ["lines", "Line and power-play changes"], ["goalies", "Goalie starts"], ["pickups", "Pickup ideas"]];
+  return (
+    <div className="gx-pn" style={{ marginBottom: 12 }}><b></b><b></b><b></b><b></b>
+      <div style={{ display: "flex", alignItems: "baseline" }}>
+        <span className="gx-tag">Phone alerts</span>
+        {p ? <a className="text-sm text-blue-600" style={{ marginLeft: "auto" }} target="_blank" rel="noopener" href="https://github.com/dhaliwal32/23456789786634356/edit/main/alert_prefs.json">Change</a> : null}
+      </div>
+      {p ? rows.map(([k, l], i) => (
+        <div key={k} className="gx-sr" style={i ? null : { borderTop: 0 }}><span>{l}</span><span style={{ color: p[k] === false ? "var(--mute)" : "var(--good)" }}>{p[k] === false ? "Off" : "On"}</span></div>
+      )) : <div className="text-sm text-slate-500" style={{ paddingTop: 8 }}>{p === undefined ? "Checking..." : "The settings file appears after the next sync. Until then every alert is on."}</div>}
+      {p ? <div className="text-xs text-slate-500" style={{ paddingTop: 8, borderTop: "1px solid var(--line)" }}>Change opens the settings file on GitHub. Set a line to false to switch that alert off, then commit.</div> : null}
+    </div>
+  );
+}
+
+'''
+
+R58_SEG_OLD = ('{seg([["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], '
+               'window.__PMODE, (k) => setS({ ...s, pmode: k, players: [...s.players] }))}')
+R58_SEG_NEW = ('{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], '
+               '["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], '
+               's.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}')
+R58_NEWS = '{link("News", newsN ? newsN + " on your players" : "", () => go("news"))}'
+
+
+def round58(t):
+    t = lit(t, "round 58: helpers", ROOT, R58_HELPERS + ROOT, "function GxBest(")
+    t = lit(t, "round 58: Best projection follows the AI Lab", "<GxQA s={s} go={go} />", "<GxQA s={s} go={go} /><GxBest s={s} setS={setS} />", "<GxBest s={s} setS={setS} />")
+    t = lit(t, "round 58: Best button in Setup", R58_SEG_OLD, R58_SEG_NEW, '["best", "Best" + (s.pbest')
+    t = lit(t, "round 58: phone alerts box in Setup", R58_NEWS, "<GxAlertPrefs />\n        " + R58_NEWS, "<GxAlertPrefs />")
+    for must in ("function GxBest(", "function GxAlertPrefs(", "function SetupPage(", "function GxQA("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 58 (" + must + ").")
+    return t
+
+
+_fix_before_r58 = fix
+
+
+def fix(t):
+    return round58(_fix_before_r58(t))
+
+
+GALERTS = "gm_alerts.py"
+PY_BAK[GALERTS] = "gm_alerts.backup-news.py"
+PY_DONE[GALERTS] = "_send58"
+GA58 = '''
+
+# --- alert settings (news_logos.py round 58): alert_prefs.json switches kinds of phone alerts on or off
+import json as _json58
+import os as _os58
+
+_PREFS58 = _os58.path.join(_os58.path.dirname(_os58.path.abspath(__file__)), "alert_prefs.json")
+_DEF58 = {"injuries": True, "lines": True, "goalies": True, "pickups": True}
+
+
+def _prefs58():
+    if not _os58.path.exists(_PREFS58):
+        try:
+            with open(_PREFS58, "w", encoding="utf-8") as f58_:
+                _json58.dump(_DEF58, f58_, indent=2)
+        except Exception:
+            pass
+        return dict(_DEF58)
+    try:
+        with open(_PREFS58, encoding="utf-8") as f58_:
+            p58_ = _json58.load(f58_)
+        return p58_ if isinstance(p58_, dict) else dict(_DEF58)
+    except Exception:
+        print("(alerts) alert_prefs.json could not be read - sending every alert")
+        return dict(_DEF58)
+
+
+def _kind58(title):
+    t58_ = str(title or "").lower()
+    if "pickup" in t58_:
+        return "pickups"
+    if "injur" in t58_:
+        return "injuries"
+    if "goalie" in t58_ or "starting" in t58_ or "in net" in t58_:
+        return "goalies"
+    if "line" in t58_ or "power-play" in t58_ or "power play" in t58_ or "roster" in t58_:
+        return "lines"
+    return None
+
+
+_send58 = send
+
+
+def send(title, *args, **kwargs):
+    k58_ = _kind58(title)
+    if k58_ and _prefs58().get(k58_) is False:
+        print("(alerts) not sent, switched off in alert_prefs.json: " + str(title))
+        return None
+    return _send58(title, *args, **kwargs)
+
+
+try:
+    _prefs58()
+except Exception:
+    pass
+'''
+
+
+def fix_galerts58(t):
+    if "_send58" in t:
+        print("(news) round 58: alert switches in the sync: already done")
+        return t
+    if not re.search(r"^def send\(", t, flags=re.M):
+        print("(news) round 58: alert switches in the sync: NOT DONE, gm_alerts.py has no send function. Send this log to the AI helper.")
+        return t
+    t = t.rstrip("\n") + "\n" + GA58
+    py_ok(GALERTS, t)
+    print("(news) round 58: alert switches in the sync: updated")
+    return t
+
+
+PY_FIXES[GALERTS] = fix_galerts58
+
 if __name__ == "__main__":
     main()
