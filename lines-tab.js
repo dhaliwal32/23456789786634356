@@ -744,3 +744,5 @@
   window.LinesSummary = LinesSummary;
   window.LinesTab = LinesTab;
 })();
+
+// locked-in 57 (news_logos.py)

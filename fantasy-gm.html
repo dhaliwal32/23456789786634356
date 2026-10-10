@@ -330,6 +330,7 @@
     .gx-ro .gx-sp i { width: 5px; }
     .gx-roh > :nth-child(2) { visibility: hidden; }
   }
+  /* locked-in 57 (news_logos.py): rounds 1 to 57 are part of this file now */
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -903,7 +904,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} />
+        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} />
         {content}
         {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -5043,7 +5044,7 @@ function SetupPage({ s, setS, go }) {
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <div className="gx-tag">Display</div>
         <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
-        <div className="gx-sr"><span>Projections</span>{seg([["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], window.__PMODE, (k) => setS({ ...s, pmode: k, players: [...s.players] }))}</div>
+        <div className="gx-sr"><span>Projections</span>{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}</div>
         <div className="gx-sr"><span>Week on screen</span><select className={box} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>{s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}</select></div>
       </div>
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
@@ -5080,6 +5081,7 @@ function SetupPage({ s, setS, go }) {
         {msg ? <div className="text-xs" style={{ color: "var(--good)", paddingTop: 6 }}>{msg}</div> : null}
       </div>
       <div>
+        <GxAlertPrefs />
         {link("News", newsN ? newsN + " on your players" : "", () => go("news"))}
         {link("Betting lines", "", () => go("setup", "odds"))}
         {link("Phone alerts", "what was sent to your phone", () => go("setup", "alerts"))}
@@ -5474,6 +5476,48 @@ function GxRosterTable({ s, wk, tid }) {
           {list.map(row)}
         </div>
       ))}
+    </div>
+  );
+}
+
+// ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
+function GxBest({ s, setS }) {
+  useEffect(() => {
+    if (!s.pbest) return;
+    let dead = false;
+    const MAP = { espn: "espn", gm: "model", blend: "blend", ai: "ai" };
+    const use = (m) => {
+      let k = MAP[m] || "ai";
+      if ((k === "ai" && !window.__AI) || (k !== "espn" && !window.__MODEL)) k = window.__MODEL ? "model" : "espn";
+      if (!dead) setS((st) => (st.pmode === k ? st : { ...st, pmode: k, players: [...st.players] }));
+    };
+    let c = null;
+    try { c = JSON.parse(localStorage.getItem("gm-best") || "null"); } catch (e) {}
+    if (c && c.d === todayISO() && c.m) { use(c.m); return; }
+    fetch("ai/report.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => {
+      const m = j && j.best && j.best.skater && j.best.skater.model;
+      if (!m) return;
+      try { localStorage.setItem("gm-best", JSON.stringify({ d: todayISO(), m })); } catch (e) {}
+      use(m);
+    }).catch(() => {});
+    return () => { dead = true; };
+  }, [s.pbest]);
+  return null;
+}
+function GxAlertPrefs() {
+  const [p, setP] = useState(undefined);
+  useEffect(() => { fetch("alert_prefs.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => setP(j)).catch(() => setP(null)); }, []);
+  const rows = [["injuries", "Injuries to your players"], ["lines", "Line and power-play changes"], ["goalies", "Goalie starts"], ["pickups", "Pickup ideas"]];
+  return (
+    <div className="gx-pn" style={{ marginBottom: 12 }}><b></b><b></b><b></b><b></b>
+      <div style={{ display: "flex", alignItems: "baseline" }}>
+        <span className="gx-tag">Phone alerts</span>
+        {p ? <a className="text-sm text-blue-600" style={{ marginLeft: "auto" }} target="_blank" rel="noopener" href="https://github.com/dhaliwal32/23456789786634356/edit/main/alert_prefs.json">Change</a> : null}
+      </div>
+      {p ? rows.map(([k, l], i) => (
+        <div key={k} className="gx-sr" style={i ? null : { borderTop: 0 }}><span>{l}</span><span style={{ color: p[k] === false ? "var(--mute)" : "var(--good)" }}>{p[k] === false ? "Off" : "On"}</span></div>
+      )) : <div className="text-sm text-slate-500" style={{ paddingTop: 8 }}>{p === undefined ? "Checking..." : "The settings file appears after the next sync. Until then every alert is on."}</div>}
+      {p ? <div className="text-xs text-slate-500" style={{ paddingTop: 8, borderTop: "1px solid var(--line)" }}>Change opens the settings file on GitHub. Set a line to false to switch that alert off, then commit.</div> : null}
     </div>
   );
 }

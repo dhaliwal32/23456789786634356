@@ -110,10 +110,19 @@ def run(players, slots, goalies, signals, my_team_id):
         if other:
             alerts.append(("Goalie not starting tonight", f"{p['n']} ({p['t']}, {lbl(p['t'])}): Daily Faceoff lists {other[0]} ({other[1].get('status') or 'starter'}). Swap in a goalie who is starting.", "lineup", True, "warning"))
 
-    if SCRATCH_FROM <= now.hour < SCRATCH_TO:   # 3) possible scratches (morning skate / warmups)
+    for p in active:  # 2b) goalie still not confirmed close to puck drop (news_logos.py)
+        if p["p"] != "G" or not upcoming(p["t"]) or games[p["t"]][1] - now > timedelta(minutes=75):
+            continue
+        gst = next(((v.get("status") or "").lower() for k, v in gday.items() if norm(k) == norm(p["n"])), "")
+        if "confirm" in gst and "un" not in gst:
+            continue
+        if any(v.get("team") == p["t"] and "confirm" in (v.get("status") or "").lower() and "un" not in (v.get("status") or "").lower() for k, v in gday.items() if norm(k) != norm(p["n"])):
+            continue
+        alerts.append(("Goalie not confirmed yet", f"{p['n']} ({p['t']}, {lbl(p['t'])}) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.", "lineup", True, "warning"))
+    if True:  # scratch check runs within 3 hours of each game (news_logos.py)   # 3) possible scratches (morning skate / warmups)
         checked = {}
         for p in active:
-            if p["p"] == "G" or not upcoming(p["t"]) or is_out(p):
+            if p["p"] == "G" or not upcoming(p["t"]) or is_out(p) or games[p["t"]][1] - now > timedelta(hours=3):
                 continue
             if p["t"] not in checked:
                 try:
