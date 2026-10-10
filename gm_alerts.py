@@ -172,3 +172,58 @@ if __name__ == "__main__":
     else:
         send("Fantasy Islands GM", "Test alert - phone alerts are working!", "default")
         print("Test alert sent - check your phone.")
+
+
+# --- alert settings (news_logos.py round 58): alert_prefs.json switches kinds of phone alerts on or off
+import json as _json58
+import os as _os58
+
+_PREFS58 = _os58.path.join(_os58.path.dirname(_os58.path.abspath(__file__)), "alert_prefs.json")
+_DEF58 = {"injuries": True, "lines": True, "goalies": True, "pickups": True}
+
+
+def _prefs58():
+    if not _os58.path.exists(_PREFS58):
+        try:
+            with open(_PREFS58, "w", encoding="utf-8") as f58_:
+                _json58.dump(_DEF58, f58_, indent=2)
+        except Exception:
+            pass
+        return dict(_DEF58)
+    try:
+        with open(_PREFS58, encoding="utf-8") as f58_:
+            p58_ = _json58.load(f58_)
+        return p58_ if isinstance(p58_, dict) else dict(_DEF58)
+    except Exception:
+        print("(alerts) alert_prefs.json could not be read - sending every alert")
+        return dict(_DEF58)
+
+
+def _kind58(title):
+    t58_ = str(title or "").lower()
+    if "pickup" in t58_:
+        return "pickups"
+    if "injur" in t58_:
+        return "injuries"
+    if "goalie" in t58_ or "starting" in t58_ or "in net" in t58_:
+        return "goalies"
+    if "line" in t58_ or "power-play" in t58_ or "power play" in t58_ or "roster" in t58_:
+        return "lines"
+    return None
+
+
+_send58 = send
+
+
+def send(title, *args, **kwargs):
+    k58_ = _kind58(title)
+    if k58_ and _prefs58().get(k58_) is False:
+        print("(alerts) not sent, switched off in alert_prefs.json: " + str(title))
+        return None
+    return _send58(title, *args, **kwargs)
+
+
+try:
+    _prefs58()
+except Exception:
+    pass

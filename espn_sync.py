@@ -463,3 +463,5 @@ print(f"Teams: {len(teams)}  |  players: {len(players)} ({rostered} rostered, {l
 print(f"With ESPN projections: {sum(1 for p in players if p['pavg'])}  |  with season stats: {sum(1 for p in players if p['gp'])}")
 print(f"Your team: {next((t['name'] for t in teams if t['id'] == MY_TEAM_ID), '?')}")
 print(f"Saved {OUT} - now refresh fantasy-gm.html")
+
+# locked-in 57 (news_logos.py)

@@ -657,3 +657,5 @@ if __name__ == "__main__":
     if "--selftest" in sys.argv:
         sys.exit(selftest())
     sys.exit(run(force="--force" in sys.argv))
+
+# locked-in 57 (news_logos.py)
