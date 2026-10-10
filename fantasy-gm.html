@@ -3404,7 +3404,7 @@ function GoalieStreams({ s, wk }) {
   const K = s.blend, today = todayISO(), dates = wk.dates || [];
   const first = dates.findIndex((x) => x >= today);
   const [day, setDay] = useState(null);
-  const [all, setAll] = useState(false);
+  const [all, setAll] = useState(true);
   const d = Math.max(0, Math.min(dates.length - 1, day != null ? day : first >= 0 ? first : dates.length - 1));
   const dt = dates[d];
   const noMv = noMovesWk(s, wk);
