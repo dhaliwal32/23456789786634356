@@ -3472,7 +3472,7 @@ R29_SEARCH_NEW = r'''<FaSearch s={s} top={fas} taken={new Set(picks.filter(Boole
 def round29(t):
     t = lit(t, "trades: helpers", ROOT, R29_HELPERS + ROOT, "function TradeAdvice(")
     t = sub_once(t, "trades: trade advice leaves Advice",
-                 re.escape('<Section title="Trade advice" sub={') + r".*?" + re.escape("</Section>"),
+                 re.escape('<Section title="Trade advice" sub={`') + r".*?" + re.escape("</Section>"),
                  "{/* round 29: trade advice moved to Trades */}", "round 29: trade advice moved to Trades", re.S)
     t = sub_once(t, "trades: buy-low list replaces trade ideas",
                  re.escape('<Section title="Trade ideas" sub="') + r".*?" + re.escape("</Section>"),
