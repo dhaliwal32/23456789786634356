@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|5943d1dd52f8",
-   "at": "2026-10-04T00:02:04Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Artyom Levshunov (D, CHI) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|5b5a0552725e",
-   "at": "2026-10-04T00:02:04Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Jonathan Lekkerimaki (F, VAN) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
    "k": "2026-10-03|9fe248c30ed3",
    "at": "2026-10-04T00:31:58Z",
    "title": "Goalie not starting tonight",
@@ -5297,6 +5275,24 @@
    "at": "2026-10-10T23:14:23Z",
    "title": "Pickup idea: bigger role",
    "text": "Lawson Crouse (UTA) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|3015379b3e1a",
+   "at": "2026-10-11T00:04:22Z",
+   "title": "Pickup: ice time jump",
+   "text": "Logan Stanley (D, NYI) is playing 20.8 min per game lately, up +4.2 (PP -0.4). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|0f2c4cc6b27f",
+   "at": "2026-10-11T00:04:22Z",
+   "title": "Pickup: new PP1 free agent",
+   "text": "Andre Burakovsky (F, OTT) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
    "sent": false
