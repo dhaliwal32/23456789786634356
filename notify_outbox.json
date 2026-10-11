@@ -5664,6 +5664,28 @@
    "sent": true,
    "via": "pregame",
    "sent_at": "2026-10-11T20:08:00Z"
+  },
+  {
+   "k": "2026-10-11|6470dc56baf2",
+   "at": "2026-10-11T20:38:15Z",
+   "title": "Lineup: starter is OUT",
+   "text": "Pierre-Luc Dubois (WSH, 2:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-11T20:38:15Z"
+  },
+  {
+   "k": "2026-10-11|6efc1406c74a",
+   "at": "2026-10-11T20:38:18Z",
+   "title": "Your player: injury update",
+   "text": "Pierre-Luc Dubois (WSH) injury status: Day To Day -> Out",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-11T20:38:18Z"
   }
  ],
  "sent": {
