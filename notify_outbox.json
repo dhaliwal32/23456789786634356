@@ -5697,6 +5697,33 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-11T20:48:13Z"
+  },
+  {
+   "k": "2026-10-11|7aa7c438b195",
+   "at": "2026-10-11T21:08:32Z",
+   "title": "Your player: lineup change",
+   "text": "Pierre-Luc Dubois (WSH) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-11|054be64e038f",
+   "at": "2026-10-11T21:08:32Z",
+   "title": "Your player: power-play change",
+   "text": "Pierre-Luc Dubois (WSH) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-11|fa0f40e34d19",
+   "at": "2026-10-11T21:08:32Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Aliaksei Protas (WSH) promoted: 3rd line -> 1st line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
