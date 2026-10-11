@@ -5686,6 +5686,17 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-11T20:38:18Z"
+  },
+  {
+   "k": "2026-10-11|6902ed007735",
+   "at": "2026-10-11T20:48:13Z",
+   "title": "Goalie not confirmed yet",
+   "text": "Kevin Lankinen (VAN, 3:00 PM) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-11T20:48:13Z"
   }
  ],
  "sent": {
