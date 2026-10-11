@@ -7963,5 +7963,36 @@ if len(sys.argv) > 1 and sys.argv[1] == "test":
     except Exception as ex:
         print("(news) round 59 look: could not finish (%s: %s)" % (type(ex).__name__, ex))
 
+# ---------- round 59: Trades. No sell-high tags, IR players trade like anyone else, drop box when a trade leaves you over 22 active ----------
+try:
+    pathlib.Path("peek-trades.txt").unlink()  # the look-only step above is not needed any more; this removes its file
+except Exception:
+    pass
+
+R59_STATE_OLD = 'const [side, setSide] = useState("me");'
+R59_STATE_NEW = R59_STATE_OLD + '\n  const [dropSel, setDropSel] = useState([]);\n  const [dropAll, setDropAll] = useState(false);'
+
+R59_CNT_OLD = "const extra = Math.max(0, Gv.length - Rv.length), need = Math.max(0, Rv.length - Gv.length);"
+R59_CNT_NEW = "// round 59: roster spots are counted by active players (22) and one IR spot, a few lines down"
+
+R59_AFTER_OLD = "const myAfter0 = mine.filter((p) => !give.includes(p.id)).concat(Rv.map((p) => ({ ...p, ft: s.me })));"
+R59_AFTER_NEW = r'''// round 59: one IR spot each. An injured player who arrives when your IR spot is taken uses an active spot.
+  let irOpen59 = Math.max(0, 1 - mine.filter((p) => p.ir && !give.includes(p.id)).length);
+  const myAfter0 = mine.filter((p) => !give.includes(p.id)).concat(Rv.map((p) => { if (p.ir && irOpen59 > 0) { irOpen59--; return { ...p, ft: s.me }; } return { ...p, ft: s.me, ir: false }; }));
+  const act0 = mine.filter((p) => !p.ir).length, act1 = myAfter0.filter((p) => !p.ir).length;
+  const need = Math.max(0, act1 - 22), extra = Math.max(0, Math.min(act0, 22) - act1);
+  const irIn = Rv.filter((p) => p.ir && myAfter0.some((x) => x.id === p.id && !x.ir));
+  const thIrOpen = Math.max(0, 1 - theirs.filter((p) => p.ir && !get.includes(p.id)).length);
+  const thOver = Math.max(0, theirs.filter((p) => !p.ir && !get.includes(p.id)).length + Gv.filter((p) => !p.ir).length + Math.max(0, Gv.filter((p) => p.ir).length - thIrOpen) - 22);'''
+
+R59_DROPS_OLD = "const drops = need ? myAfter0.filter((p) => !p.ir && !get.includes(p.id)).sort((a, b) => pg(a) - pg(b)).slice(0, need) : [];"
+R59_DROPS_NEW = r'''// round 59: you choose who to drop. The lowest expected players that keep your position minimums are picked to start.
+  const dropPool = myAfter0.filter((p) => !p.ir && !get.includes(p.id)).sort((a, b) => pg(a) - pg(b));
+  const drops = [];
+  if (need) {
+    const c59 = cnt(myAfter0);
+    dropSel.forEach((id) => { const p = dropPool.find((x) => x.id === id); if (p && drops.length < need && drops.indexOf(p) < 0) { drops.push(p); c59[p.p]--; } });
+    dropPool.forEach((p) => { if (drops.length < need &&
+
 if __name__ == "__main__":
     main()
