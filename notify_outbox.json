@@ -1,61 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|ed73920ee341",
-   "at": "2026-10-04T04:02:51Z",
-   "title": "Lineup: starter is OUT",
-   "text": "Jake DeBrusk (VAN, 6:00 PM) is listed OUT but is in your active lineup. Bench him and start someone who plays today.",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-04T04:02:51Z"
-  },
-  {
-   "k": "2026-10-03|72960a54c7c1",
-   "at": "2026-10-04T04:02:51Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Sam Reinhart (FLA, 5:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|fe25f1369499",
-   "at": "2026-10-04T04:02:51Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Lucas Raymond (DET, 10:00 AM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|d6b9fca01f85",
-   "at": "2026-10-04T04:02:51Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Sam Bennett (FLA, 5:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|040065958fcc",
-   "at": "2026-10-04T04:02:51Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Lukas Dostal (ANA, 5:00 PM) is on your bench with a game today, while Scott Wedgewood (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
    "k": "2026-10-03|5f2d8be82840",
    "at": "2026-10-04T04:42:52Z",
    "title": "Pickup: ice time jump",
@@ -5361,6 +5306,33 @@
    "title": "Pickup: ice time jump",
    "text": "Michael Rasmussen (F, DET) is playing 16.9 min per game lately, up +4.3 (PP +1.6). Likely promoted - free agent.",
    "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|854153091c1a",
+   "at": "2026-10-11T04:05:01Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Jared McCann (SEA, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|af0df7aa224f",
+   "at": "2026-10-11T04:05:01Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Bobby McMann (SEA, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|008fb0eb4ac1",
+   "at": "2026-10-11T04:05:01Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Pierre-Luc Dubois (WSH, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
    "urgent": false,
    "sent": false
   }
