@@ -5274,6 +5274,51 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-11T00:53:17Z"
+  },
+  {
+   "k": "2026-10-10|0916bdf5f68b",
+   "at": "2026-10-11T02:24:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Jack Quinn (F, BUF) is playing 20.0 min per game lately, up +4.3 (PP +1.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|82ec24cae60d",
+   "at": "2026-10-11T02:24:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Kent Johnson (F, CBJ) is playing 16.8 min per game lately, up +3.6 (PP +1.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|c3f4e5b5f9a2",
+   "at": "2026-10-11T02:24:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "John Marino (D, UTA) is playing 20.1 min per game lately, up -0.1 (PP +2.0). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|e9757a77ea82",
+   "at": "2026-10-11T02:24:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Denton Mateychuk (D, CBJ) is playing 25.1 min per game lately, up +5.9 (PP +0.6). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|fbd142af37c4",
+   "at": "2026-10-11T02:24:45Z",
+   "title": "Pickup: ice time jump",
+   "text": "Noah Ostlund (F, BUF) is playing 18.2 min per game lately, up +4.2 (PP +1.4). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
