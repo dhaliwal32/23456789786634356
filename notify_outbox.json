@@ -1,61 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-03|471398d7c771",
-   "at": "2026-10-04T02:42:39Z",
-   "title": "Pickup: ice time jump",
-   "text": "Ryan Shea (D, EDM) is playing 22.4 min per game lately, up +3.5 (PP +1.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|5edafbc9fb85",
-   "at": "2026-10-04T02:42:39Z",
-   "title": "Pickup: ice time jump",
-   "text": "Kasperi Kapanen (F, EDM) is playing 18.2 min per game lately, up +3.6 (PP +2.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|3874f2d773e0",
-   "at": "2026-10-04T02:42:39Z",
-   "title": "Pickup: ice time jump",
-   "text": "Connor Murphy (D, EDM) is playing 20.9 min per game lately, up +3.3 (PP -0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|4928bc599969",
-   "at": "2026-10-04T02:42:39Z",
-   "title": "Pickup: ice time jump",
-   "text": "Trent Frederic (F, EDM) is playing 9.5 min per game lately, up -1.5 (PP +1.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
-   "k": "2026-10-03|1dd227b224dd",
-   "at": "2026-10-04T02:42:39Z",
-   "title": "Pickup: ice time jump",
-   "text": "Mathieu Joseph (F, EDM) is playing 15.1 min per game lately, up +3.0 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-04T15:05:00Z"
-  },
-  {
    "k": "2026-10-03|ed73920ee341",
    "at": "2026-10-04T04:02:51Z",
    "title": "Lineup: starter is OUT",
@@ -5379,6 +5324,42 @@
    "at": "2026-10-11T02:34:45Z",
    "title": "Pickup: ice time jump",
    "text": "Adam Edstrom (F, NSH) is playing 12.7 min per game lately, up +3.2 (PP +0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|7c7832926129",
+   "at": "2026-10-11T02:44:46Z",
+   "title": "Your player is losing ice time",
+   "text": "Victor Hedman (TB) is down 4.9 min per game lately (14.0 vs 18.9). Possible demotion - watch his role.",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|c211b82cf828",
+   "at": "2026-10-11T02:44:46Z",
+   "title": "Pickup: ice time jump",
+   "text": "Logan Stanley (D, NYI) is playing 20.5 min per game lately, up +4.0 (PP -0.4). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|597e39339606",
+   "at": "2026-10-11T02:44:46Z",
+   "title": "Pickup: ice time jump",
+   "text": "Andrew Copp (F, DET) is playing 19.8 min per game lately, up +3.2 (PP +1.4). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-10|20376344c0f3",
+   "at": "2026-10-11T02:44:46Z",
+   "title": "Pickup: ice time jump",
+   "text": "Michael Rasmussen (F, DET) is playing 16.9 min per game lately, up +4.3 (PP +1.6). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
    "sent": false
