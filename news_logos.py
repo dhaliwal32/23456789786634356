@@ -7883,5 +7883,85 @@ def fix_galerts58(t):
 
 PY_FIXES[GALERTS] = fix_galerts58
 
+# ---------- round 59, step 1 of 2: LOOK ONLY (changes nothing in the app) ----------
+# Copies the current Trades code into peek-trades.txt so the AI helper can read it.
+def _peek59():
+    src = pathlib.Path(SRC).read_text(encoding="utf-8").replace("\r\n", "\n")
+    L = src.split("\n")
+    n = len(L)
+    top = re.compile(r"^(?:function\s+|const\s+|let\s+|var\s+)([A-Za-z_$][\w$]*)")
+    blocks = []
+    i = 0
+    while i < n:
+        m = top.match(L[i])
+        if not m:
+            i += 1
+            continue
+        j = i + 1
+        while j < n and (L[j] == "" or L[j][0] in " \t})]"):
+            j += 1
+        blocks.append((m.group(1), i + 1, "\n".join(L[i:j]).rstrip()))
+        i = j
+
+    def sec(title, body, cap):
+        if len(body) > cap:
+            body = body[:cap] + "\n...[cut here, %d more characters]" % (len(body) - cap)
+        return "==================== " + title + " ====================\n" + body + "\n"
+
+    def around(rx, w, lim):
+        r = []
+        for x, s in enumerate(L):
+            for m in rx.finditer(s):
+                r.append("%d: %s" % (x + 1, s[max(0, m.start() - w):m.end() + w].strip()))
+        return "\n".join(r[:lim]) or "(none found)"
+
+    sh = re.compile(r"sell[ \-_]?high", re.I)
+    tr = re.compile(r"trade|fasearch|gxqa", re.I)
+    helpers = ("horizonTotal", "rosRaw", "effAvg0", "avail", "cntOf", "dropFor", "tbFlags", "Dlt")
+    out, big, cls = [], [], set()
+
+    me = pathlib.Path(__file__).read_text(encoding="utf-8").replace("\r\n", "\n")
+    k = me.find("# ---------- round 59, step 1 of 2")
+    out.append(sec("END OF news_logos.py JUST BEFORE THIS BLOCK", me[max(0, k - 9000):k] if k > 0 else me[-9000:], 9000))
+
+    for nm, ln, body in blocks:
+        if tr.search(nm):
+            big.append(sec("TRADES CODE: " + nm + " (line %d)" % ln, body, 45000))
+            cls.update(re.findall(r"\b(?:gx|tb|ms)-[a-z0-9-]+", body))
+        elif nm in helpers:
+            out.append(sec("HELPER: " + nm + " (line %d)" % ln, body, 6000))
+        elif sh.search(body):
+            if len(body) > 12000:
+                bl = body.split("\n")
+                keep = sorted({y for x, s in enumerate(bl) if sh.search(s) for y in range(max(0, x - 4), min(len(bl), x + 5))})
+                body = "\n".join("%d: %s" % (ln + y, bl[y][:700]) for y in keep)
+            out.append(sec("SELL HIGH inside: " + nm + " (line %d)" % ln, body, 12000))
+
+    if not big:
+        for x, s in enumerate(L):
+            if re.search(r"function\s+\w*Trade\w*\s*\(", s):
+                big.append(sec("TRADES CODE near line %d (fallback)" % (x + 1), "\n".join(L[x:x + 260]), 45000))
+
+    out.append(sec("EVERY PLACE 'sell high' APPEARS", around(sh, 200, 60), 30000))
+    out.append(sec("WHERE THE TRADES PAGE IS USED", around(re.compile(r"<Trade\w*|<FaSearch|TradesPanel\b"), 140, 40), 14000))
+    css = []
+    for x, s in enumerate(L):
+        st = s.strip()
+        if st.startswith((".", "@media")) and "{" in st and any("." + c in st for c in cls):
+            css.append("%d: %s" % (x + 1, st[:500]))
+    out.append(sec("STYLES USED BY THE TRADES CODE", "\n".join(css[:120]) or "(none found)", 20000))
+
+    head = "peek for round 59, made %s\n%s: %d lines, %d characters\n\n" % (datetime.now(timezone.utc).isoformat(timespec="seconds"), SRC, n, len(src))
+    text = (head + "\n".join(out + big))[:150000]
+    pathlib.Path("peek-trades.txt").write_text(text, encoding="utf-8")
+    print("(news) round 59 look: wrote peek-trades.txt (%d characters, %d trades blocks)" % (len(text), len(big)))
+
+
+if len(sys.argv) > 1 and sys.argv[1] == "test":
+    try:
+        _peek59()
+    except Exception as ex:
+        print("(news) round 59 look: could not finish (%s: %s)" % (type(ex).__name__, ex))
+
 if __name__ == "__main__":
     main()
