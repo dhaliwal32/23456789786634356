@@ -5653,6 +5653,15 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z"
+  },
+  {
+   "k": "2026-10-11|a777cdb9fd3b",
+   "at": "2026-10-11T17:17:52Z",
+   "title": "Your player's line changed",
+   "text": "Brady Tkachuk (FLA) promoted: 2nd line -> 1st line",
+   "section": "mine",
+   "urgent": false,
+   "sent": false
   }
  ],
  "sent": {
