@@ -7979,5 +7979,135 @@ _fix_before_r59 = fix
 def fix(t):
     return round59(_fix_before_r59(t))
 
+# ---------- round 60: Today. This week or next week arrows on "Games this matchup" and "Around the league" ----------
+R60_CSS = r'''  /* round 60 week arrows (news_logos.py) */
+  .gx-wsw { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+  .gx-wsw button { width: 28px; height: 28px; border: 1px solid var(--line2); border-radius: 8px; color: var(--ink); font-size: 18px; line-height: 1; }
+  .gx-wsw button:hover { border-color: var(--accent); }
+  .gx-wsw button:disabled { color: var(--faint); border-color: var(--line); cursor: default; }
+  .gx-wsw span { min-width: 70px; text-align: center; }
+'''
+
+R60_HELPERS = r'''// ---------- round 60: this week or next week on two Today boxes (news_logos.py) ----------
+const gxSpan60 = (ds) => {
+  if (!ds || !ds.length) return "";
+  const a = ds[0], b = ds[ds.length - 1];
+  return mdL(a) + " to " + (fromIso(a).getMonth() === fromIso(b).getMonth() ? fromIso(b).getDate() : mdL(b));
+};
+const gxNextWk60 = (s) => (s.weeks[s.wk + 1] ? deriveWeek(s.weeks[s.wk + 1], s.autoDone) : null);
+const gxWkTouch = (ref, setNx, can) => ({
+  onTouchStart: (e) => { const t = e.touches[0]; ref.current = [t.clientX, t.clientY]; },
+  onTouchEnd: (e) => {
+    const t0 = ref.current, t = e.changedTouches[0];
+    ref.current = null;
+    if (!t0) return;
+    const dx = t.clientX - t0[0], dy = t.clientY - t0[1];
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) setNx(dx < 0 && can);
+  },
+});
+const GxWkSw = ({ nx, setNx, can }) => (
+  <span className="gx-wsw">
+    <button type="button" aria-label="Back to this week" disabled={!nx} onClick={() => setNx(false)}>{"\u2039"}</button>
+    <span>{nx ? "Next week" : "This week"}</span>
+    <button type="button" aria-label="Show next week" disabled={nx || !can} onClick={() => setNx(true)}>{"\u203a"}</button>
+  </span>
+);
+function GxGamesWk({ s, wk, A, B }) {
+  const K = s.blend, today = todayISO();
+  const [nx, setNx] = useState(false);
+  const touch = React.useRef(null);
+  const nw = useMemo(() => gxNextWk60(s), [s.weeks, s.wk, s.autoDone]);
+  const on = nx && !!nw, nOpp = nw ? oppOf(nw, s.me) : null;
+  const N = useMemo(() => {
+    if (!on || !nOpp) return null;
+    const R = (id) => weekLive(s.players.filter((p) => p.ft === id), nw, K, id);
+    return [R(s.me), R(nOpp)];
+  }, [on, nw, nOpp, s.players, K, window.__PMODE]);
+  const show = on ? nw : wk, X = on ? (N ? N[0] : null) : A, Y = on ? (N ? N[1] : null) : B;
+  const opp = on ? nOpp : oppOf(wk, s.me) || s.opp;
+  const dates = show.dates || [];
+  const rows = X && Y ? dates.map((dt, d) => ({ dt, a: ((X.days[d] || {}).start || []).length, b: ((Y.days[d] || {}).start || []).length })) : [];
+  const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
+  const mx = Math.max(1, Math.max.apply(null, rows.map((r) => Math.max(r.a, r.b))));
+  const live = dates.length > 0 && dates[0] <= today && dates[dates.length - 1] >= today;
+  const sub = [opp ? "vs " + teamName(s, opp) : "", gxSpan60(dates), rows.length ? "lineup games: you " + tot("a", "") + ", them " + tot("b", "") : "", live && rows.length ? "from today " + tot("a", today) + " and " + tot("b", today) : ""].filter(Boolean).join(" \u00b7 ");
+  return (
+    <div className="gx-pn" style={{ minWidth: 0, touchAction: "pan-y" }} {...gxWkTouch(touch, setNx, !!nw)}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span className="gx-tag">{on ? "Games next matchup" : "Games this matchup"}</span>
+        <GxWkSw nx={on} setNx={setNx} can={!!nw} />
+      </div>
+      <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{sub}</div>
+      {rows.length ? (
+        <div className="gx-n7 gx-gm" style={{ gridTemplateColumns: "repeat(" + rows.length + ", minmax(0,1fr))" }}>
+          {rows.map((r) => {
+            const now = r.dt === today, past = r.dt < today;
+            return (
+              <div key={r.dt} style={{ padding: "6px 0", borderRadius: 6, background: now ? "var(--accentSoft)" : "transparent" }}>
+                <div className="bars"><i style={{ height: (r.a / mx) * 64, background: "var(--accent)", opacity: past ? 0.45 : 1 }}></i><i style={{ height: (r.b / mx) * 64, background: "var(--faint)", opacity: past ? 0.45 : 1 }}></i></div>
+                <div className="text-sm" style={{ marginTop: 4 }}>{r.a} <span className="text-slate-500">{r.b}</span></div>
+                <div className={"text-xs " + (now ? "font-semibold" : "text-slate-500")}>{now ? "Today" : dayLabel(r.dt).split(",")[0]}</div>
+              </div>
+            );
+          })}
+        </div>
+      ) : <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>{on ? "Next week's matchup is not loaded yet." : "No games loaded for this week."}</div>}
+    </div>
+  );
+}
+function GxLeagueWk({ s, wk }) {
+  const K = s.blend, gen = (window.ESPN_DATA || {}).generated;
+  const [nx, setNx] = useState(false);
+  const touch = React.useRef(null);
+  const nw = useMemo(() => gxNextWk60(s), [s.weeks, s.wk, s.autoDone]);
+  const on = nx && !!nw, show = on ? nw : wk;
+  const rows = useMemo(() => (show.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me).map(([a, b]) => {
+    const R = (id) => weekLive(s.players.filter((p) => p.ft === id), show, K, id), act = (id) => +((show.act || {})[id]) || 0;
+    return { a, b, p: winProb(R(a), R(b), act(a), act(b)) };
+  }), [s.players, show, K, gen, window.__PMODE]);
+  return (
+    <div className="gx-pn" style={{ minWidth: 0, touchAction: "pan-y" }} {...gxWkTouch(touch, setNx, !!nw)}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span className="gx-tag">Around the league</span>
+        <GxWkSw nx={on} setNx={setNx} can={!!nw} />
+      </div>
+      <div className="text-xs text-slate-500" style={{ margin: "4px 0" }}>{on ? "Projected win chance before the week starts" : "Win chance right now"}</div>
+      {rows.length ? rows.map(({ a, b, p }, i) => {
+        const close = Math.abs(p - 0.5) < 0.1, la = p >= 0.5;
+        const bar = (win) => (win ? "var(--good)" : "var(--bad)");
+        return (
+          <div key={a + "-" + b} className="gx-lg" style={i ? null : { borderTop: 0 }}>
+            <span className="truncate"><TL s={s} id={a} /></span>
+            <span className="text-right" style={{ color: la || close ? "var(--ink)" : "var(--mute)" }}>{wpTxt(p)}</span>
+            <span style={{ display: "flex", height: 4, gap: 2 }}><i style={{ display: "block", width: Math.round(p * 100) + "%", background: bar(la) }}></i><i style={{ display: "block", flex: 1, background: bar(!la) }}></i></span>
+            <span style={{ color: !la || close ? "var(--ink)" : "var(--mute)" }}>{wpTxt(1 - p)}</span>
+            <span className="truncate text-right"><TL s={s} id={b} /></span>
+          </div>
+        );
+      }) : <div className="text-sm text-slate-500" style={{ paddingTop: 6 }}>{on ? "No other matchups loaded for next week yet." : "No other matchups loaded for this week."}</div>}
+    </div>
+  );
+}
+
+'''
+
+
+def round60(t):
+    t = lit(t, "round 60: styles", "</style>", R60_CSS + "</style>", "round 60 week arrows")
+    t = lit(t, "round 60: week arrow helpers", ROOT, R60_HELPERS + ROOT, "function GxGamesWk(")
+    t = lit(t, "round 60: Games this matchup gets the arrows", "<GxGames wk={wk} A={A} B={B} />", "<GxGamesWk s={s} wk={wk} A={A} B={B} />", "<GxGamesWk s={s}")
+    t = lit(t, "round 60: Around the league gets the arrows", "<GxLeague s={s} wk={wk} />", "<GxLeagueWk s={s} wk={wk} />", "<GxLeagueWk s={s}")
+    for must in ("function GxGamesWk(", "function GxLeagueWk(", "<GxGamesWk s={s}", "<GxLeagueWk s={s}", "function GxHome(", "function GxGames(", "function GxLeague("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 60 (" + must + ").")
+    return t
+
+
+_fix_before_r60 = fix
+
+
+def fix(t):
+    return round60(_fix_before_r60(t))
+
 if __name__ == "__main__":
     main()
