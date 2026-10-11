@@ -5661,7 +5661,9 @@
    "text": "Brady Tkachuk (FLA) promoted: 2nd line -> 1st line",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "pregame",
+   "sent_at": "2026-10-11T20:08:00Z"
   }
  ],
  "sent": {
@@ -5682,7 +5684,8 @@
    "pregame"
   ],
   "2026-10-11": [
-   "morning"
+   "morning",
+   "pregame"
   ]
  },
  "log": [
@@ -5829,6 +5832,12 @@
    "kind": "morning",
    "title": "Morning summary - Sun Oct 11 (82 updates)",
    "body": "LINEUP\n- Jared McCann (SEA, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Bobby McMann (SEA, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n- Pierre-Luc Dubois (WSH, 2:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.\n\nYOUR PLAYERS\n- Trevor Zegras (PHI) promoted: 2nd line -> 1st line\n- Victor Hedman (TB) is in the lineup on the 3rd pair\n- Victor Hedman (TB) is down 4.9 min per game lately (14.0 vs 18.9). Possible demotion - watch his role.\n- Josh Morrissey (WPG) is down 4.7 min per game lately (20.1 vs 24.7). Possible demotion - watch his role.\n- Victor Hedman (TB) is down 4.9 min per game lately (14.0 vs 18.9). Possible demotion - watch his role.\n\nPICKUP IDEAS\n- Jack Quinn (BUF) promoted: 2nd line -> 1st line\n- Josh Norris (BUF) promoted: 3rd line -> 1st line\n- Josh Doan (BUF) promoted: 4th line -> 2nd line\n- Christian Dvorak (PHI) promoted: 2nd line -> 1st line\n- Tyson Foerster (PHI) promoted: 3rd line -> 1st line\n- David Jiricek (D, PHI) is playing 16.8 min per game lately, up +4.8 (PP +2.0). Likely promoted - free agent.\n  + 68 more in the app\n\nToday: 6 of your players play, first puck drop 2:00 PM."
+  },
+  {
+   "at": "2026-10-11T20:08:00Z",
+   "kind": "pregame",
+   "title": "Before puck drop - first game 2:00 PM (1 update)",
+   "body": "YOUR PLAYERS\n- Brady Tkachuk (FLA) promoted: 2nd line -> 1st line"
   }
  ]
 }
