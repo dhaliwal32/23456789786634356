@@ -7883,86 +7883,6 @@ def fix_galerts58(t):
 
 PY_FIXES[GALERTS] = fix_galerts58
 
-# ---------- round 59, step 1 of 2: LOOK ONLY (changes nothing in the app) ----------
-# Copies the current Trades code into peek-trades.txt so the AI helper can read it.
-def _peek59():
-    src = pathlib.Path(SRC).read_text(encoding="utf-8").replace("\r\n", "\n")
-    L = src.split("\n")
-    n = len(L)
-    top = re.compile(r"^(?:function\s+|const\s+|let\s+|var\s+)([A-Za-z_$][\w$]*)")
-    blocks = []
-    i = 0
-    while i < n:
-        m = top.match(L[i])
-        if not m:
-            i += 1
-            continue
-        j = i + 1
-        while j < n and (L[j] == "" or L[j][0] in " \t})]"):
-            j += 1
-        blocks.append((m.group(1), i + 1, "\n".join(L[i:j]).rstrip()))
-        i = j
-
-    def sec(title, body, cap):
-        if len(body) > cap:
-            body = body[:cap] + "\n...[cut here, %d more characters]" % (len(body) - cap)
-        return "==================== " + title + " ====================\n" + body + "\n"
-
-    def around(rx, w, lim):
-        r = []
-        for x, s in enumerate(L):
-            for m in rx.finditer(s):
-                r.append("%d: %s" % (x + 1, s[max(0, m.start() - w):m.end() + w].strip()))
-        return "\n".join(r[:lim]) or "(none found)"
-
-    sh = re.compile(r"sell[ \-_]?high", re.I)
-    tr = re.compile(r"trade|fasearch|gxqa", re.I)
-    helpers = ("horizonTotal", "rosRaw", "effAvg0", "avail", "cntOf", "dropFor", "tbFlags", "Dlt")
-    out, big, cls = [], [], set()
-
-    me = pathlib.Path(__file__).read_text(encoding="utf-8").replace("\r\n", "\n")
-    k = me.find("# ---------- round 59, step 1 of 2")
-    out.append(sec("END OF news_logos.py JUST BEFORE THIS BLOCK", me[max(0, k - 9000):k] if k > 0 else me[-9000:], 9000))
-
-    for nm, ln, body in blocks:
-        if tr.search(nm):
-            big.append(sec("TRADES CODE: " + nm + " (line %d)" % ln, body, 45000))
-            cls.update(re.findall(r"\b(?:gx|tb|ms)-[a-z0-9-]+", body))
-        elif nm in helpers:
-            out.append(sec("HELPER: " + nm + " (line %d)" % ln, body, 6000))
-        elif sh.search(body):
-            if len(body) > 12000:
-                bl = body.split("\n")
-                keep = sorted({y for x, s in enumerate(bl) if sh.search(s) for y in range(max(0, x - 4), min(len(bl), x + 5))})
-                body = "\n".join("%d: %s" % (ln + y, bl[y][:700]) for y in keep)
-            out.append(sec("SELL HIGH inside: " + nm + " (line %d)" % ln, body, 12000))
-
-    if not big:
-        for x, s in enumerate(L):
-            if re.search(r"function\s+\w*Trade\w*\s*\(", s):
-                big.append(sec("TRADES CODE near line %d (fallback)" % (x + 1), "\n".join(L[x:x + 260]), 45000))
-
-    out.append(sec("EVERY PLACE 'sell high' APPEARS", around(sh, 200, 60), 30000))
-    out.append(sec("WHERE THE TRADES PAGE IS USED", around(re.compile(r"<Trade\w*|<FaSearch|TradesPanel\b"), 140, 40), 14000))
-    css = []
-    for x, s in enumerate(L):
-        st = s.strip()
-        if st.startswith((".", "@media")) and "{" in st and any("." + c in st for c in cls):
-            css.append("%d: %s" % (x + 1, st[:500]))
-    out.append(sec("STYLES USED BY THE TRADES CODE", "\n".join(css[:120]) or "(none found)", 20000))
-
-    head = "peek for round 59, made %s\n%s: %d lines, %d characters\n\n" % (datetime.now(timezone.utc).isoformat(timespec="seconds"), SRC, n, len(src))
-    text = (head + "\n".join(out + big))[:150000]
-    pathlib.Path("peek-trades.txt").write_text(text, encoding="utf-8")
-    print("(news) round 59 look: wrote peek-trades.txt (%d characters, %d trades blocks)" % (len(text), len(big)))
-
-
-if len(sys.argv) > 1 and sys.argv[1] == "test":
-    try:
-        _peek59()
-    except Exception as ex:
-        print("(news) round 59 look: could not finish (%s: %s)" % (type(ex).__name__, ex))
-
 # ---------- round 59: Trades. No sell-high tags, IR players trade like anyone else, drop box when a trade leaves you over 22 active ----------
 try:
     pathlib.Path("peek-trades.txt").unlink()  # the look-only step above is not needed any more; this removes its file
@@ -7992,7 +7912,72 @@ R59_DROPS_NEW = r'''// round 59: you choose who to drop. The lowest expected pla
   if (need) {
     const c59 = cnt(myAfter0);
     dropSel.forEach((id) => { const p = dropPool.find((x) => x.id === id); if (p && drops.length < need && drops.indexOf(p) < 0) { drops.push(p); c59[p.p]--; } });
-    dropPool.forEach((p) => { if (drops.length < need &&
+    dropPool.forEach((p) => { if (drops.length < need && drops.indexOf(p) < 0 && c59[p.p] - 1 >= mins[p.p]) { drops.push(p); c59[p.p]--; } });
+    dropPool.forEach((p) => { if (drops.length < need && drops.indexOf(p) < 0) drops.push(p); });
+  }'''
+
+R59_VAL_OLD = "const my = horizonTotal(after, s, nR) - horizonTotal(mine, s, nR), th = horizonTotal(thAfter, s, nR) - horizonTotal(theirs, s, nR);"
+R59_VAL_NEW = r'''const live59 = (r) => r.map((p) => (p.ir ? { ...p, ir: false } : p)); // round 59: injured players count from their return date, for both teams
+    const my = horizonTotal(live59(after), s, nR) - horizonTotal(live59(mine), s, nR), th = horizonTotal(live59(thAfter), s, nR) - horizonTotal(live59(theirs), s, nR);'''
+
+R59_FLAG_OLD = "const on = sel.includes(p.id), fl = tbFlags(p, K).find((f) => (mySide ? f.sell : !f.sell));"
+R59_FLAG_NEW = "const on = sel.includes(p.id), fl = mySide ? null : tbFlags(p, K).find((f) => !f.sell); // round 59: no sell-high tags"
+
+R59_DIM_OLD = 'background: on ? "var(--card3)" : "transparent", opacity: p.ir ? 0.5 : 1 }}'
+R59_DIM_NEW = 'background: on ? "var(--card3)" : "transparent" }} data-r59="ir"'
+
+R59_NOTE_OLD = r'''{drops.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--warn)" }}>You would be over 22 players, so this counts {drops.map((p) => p.n).join(" and ")} as dropped.</div> : null}'''
+R59_NOTE_NEW = r'''<div className="text-xs text-slate-500" data-r59="after" style={{ marginTop: 10 }}>{"Your roster after: " + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active." + (irIn.length ? " Your IR spot is taken, so " + irIn.map((p) => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")}</div>'''
+
+R59_BOX = r'''{ready && need > 0 ? (
+        <div className="gx-pn" data-r59="drop" style={{ borderLeft: "3px solid var(--bad)" }}><b></b><b></b><b></b><b></b>
+          <div className="font-semibold" style={{ color: "var(--bad)" }}>{"You must drop " + need + " player" + (need === 1 ? "" : "s") + " to make room"}</div>
+          <div className="text-sm text-slate-500" style={{ marginTop: 2 }}>{"This trade leaves you with " + act1 + " active players and the limit is 22." + (Gv.some((p) => p.ir) ? " " + Gv.filter((p) => p.ir).map((p) => p.n).join(" and ") + (Gv.filter((p) => p.ir).length === 1 ? " is on IR, so trading him does not open a spot." : " are on IR, so trading them does not open a spot.") : "")}</div>
+          <div style={{ marginTop: 8 }}>
+            {dropPool.filter((p, i) => dropAll || i < 5 || drops.indexOf(p) >= 0).map((p, i) => {
+              const on = drops.indexOf(p) >= 0;
+              return (
+                <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
+                  <TeamLogo t={p.t} size={22} />
+                  <span className="min-w-0 truncate" style={{ flex: 1 }}><span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span> <span className="text-xs text-slate-500">{p.p}</span></span>
+                  <span className="text-slate-500" style={{ fontVariantNumeric: "tabular-nums" }}>{f1(pg(p))}</span>
+                  <button type="button" className="rounded-lg text-sm" style={{ minWidth: 82, padding: "4px 10px", border: "1px solid var(--bad)", background: on ? "var(--bad)" : "transparent", color: on ? "#ffffff" : "var(--bad)" }} onClick={() => { if (!on) setDropSel(drops.map((x) => x.id).concat([p.id]).slice(-need)); }}>{on ? "Dropping" : "Drop"}</button>
+                </div>
+              );
+            })}
+          </div>
+          {dropPool.length > 5 ? <button type="button" className="text-xs text-blue-600" style={{ marginTop: 8 }} onClick={() => setDropAll(!dropAll)}>{dropAll ? "Show fewer" : "Show all my players"}</button> : null}
+          <div className="text-xs text-slate-500" style={{ marginTop: 8 }}>{"The result below counts " + drops.map((p) => p.n).join(" and ") + " as dropped. Lowest expected points are listed first."}</div>
+        </div>
+      ) : null}
+      '''
+
+R59_RES = "{res && vd ? ("
+R59_RES_PAT = (re.escape(R59_RES) + r"(?=\s*" + re.escape('<div className="gx-pn"><b></b><b></b><b></b><b></b>') + r"\s*"
+               + re.escape('<div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>') + ")")
+
+
+def round59(t):
+    t = lit(t, "round 59: drop choice is remembered", R59_STATE_OLD, R59_STATE_NEW, "const [dropSel, setDropSel] = useState([]);")
+    t = lit(t, "round 59: old player count removed", R59_CNT_OLD, R59_CNT_NEW, "round 59: roster spots are counted")
+    t = lit(t, "round 59: active players and the IR spot", R59_AFTER_OLD, R59_AFTER_NEW, "let irOpen59 =")
+    t = lit(t, "round 59: who gets dropped", R59_DROPS_OLD, R59_DROPS_NEW, "const dropPool =")
+    t = lit(t, "round 59: injured players valued from their return date", R59_VAL_OLD, R59_VAL_NEW, "const live59 =")
+    t = lit(t, "round 59: sell-high tags removed", R59_FLAG_OLD, R59_FLAG_NEW, "fl = mySide ? null : tbFlags(p, K)")
+    t = lit(t, "round 59: IR players not greyed out", R59_DIM_OLD, R59_DIM_NEW, 'data-r59="ir"')
+    t = lit(t, "round 59: roster count under the result", R59_NOTE_OLD, R59_NOTE_NEW, 'data-r59="after"')
+    t = sub_once(t, "round 59: drop box", R59_RES_PAT, R59_BOX + R59_RES, 'data-r59="drop"', re.S)
+    for must in ("trades v42", "function TradeBuilder(", "const dropPool =", "let irOpen59 =", 'data-r59="drop"', "function TradeAdvice("):
+        if must not in t:
+            fail("fantasy-gm.html looks damaged after round 59 (" + must + ").")
+    return t
+
+
+_fix_before_r59 = fix
+
+
+def fix(t):
+    return round59(_fix_before_r59(t))
 
 if __name__ == "__main__":
     main()
