@@ -28,8 +28,9 @@ def change(t):
     for must in ("function Today(", "<GxRace s={s} wk={wk} />", "<GxHome s={s} wk={wk} A={A} B={B} />"):
         if must not in t:
             fail("fantasy-gm.html looks damaged after change 071 (" + must + ").")
+    # whole words only, so PlanWin elsewhere in the app does not count
     for gone in ("nWin", "nOpp"):
-        if gone in t:
+        if re.search(r"\b" + gone + r"\b", t):
             fail("change 071 left " + gone + " behind in fantasy-gm.html.")
     return t
 
