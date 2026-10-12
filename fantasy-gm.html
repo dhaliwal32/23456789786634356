@@ -4279,6 +4279,7 @@ function TopBar({ s, setS, tab, go, ageH }) {
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
       </span>
       {TABS.map(([k, l, grp]) => <button key={k} onClick={() => go(k, k === "setup" ? "settings" : k === "league" ? "power" : undefined)} className={"gx-tab" + (grp.indexOf(tab) >= 0 ? " on" : "")}>{l}{W[k] ? <i className="gx-wd" title="Needs a look"></i> : null}</button>)}
+      <a className="gx-tab" href="ai-dashboard.html" target="_blank" rel="noopener" data-r63="ailab">AI Lab</a>
       <button type="button" className="ml-auto gx-tab" onClick={() => window.dispatchEvent(new Event("gm-search"))}>Search</button>
       <span className="text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12, marginLeft: 12 }} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : ""}>
         <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, marginRight: 6, verticalAlign: 1, background: !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)" }}></span>
