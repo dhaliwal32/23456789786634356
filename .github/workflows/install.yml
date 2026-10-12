@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "test = check waiting changes and make the test page, live = put them in the real app, undo = take back the last live run"
+        description: "live = put waiting changes in the real app, test = make the test page only, undo = take back the last live run"
         required: true
-        default: test
+        default: live
         type: choice
-        options: [test, live, undo]
+        options: [live, test, undo]
 permissions:
   contents: write
 concurrency:
@@ -32,14 +32,14 @@ jobs:
         continue-on-error: true
         run: npm install --prefix /tmp/babel @babel/standalone
       - name: Install changes
-        run: python install.py ${{ github.event.inputs.mode || 'test' }}
+        run: python install.py ${{ github.event.inputs.mode || 'live' }}
       - name: Save results
         run: |
           git config user.name "fantasy-bot"
           git config user.email "fantasy-bot@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "install ${{ github.event.inputs.mode || 'test' }} $(date -u +%Y-%m-%dT%H:%MZ)"
+          git commit -m "install ${{ github.event.inputs.mode || 'live' }} $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3 4 5; do
             git pull --rebase && git push && exit 0
             sleep 10
