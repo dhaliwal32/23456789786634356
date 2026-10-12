@@ -1,72 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-04|0ee4cf1d6038",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "Jamie Oleksiak (D, VAN) is playing 20.2 min per game lately, up +3.2 (PP -0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|711c8c63460f",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "William Karlsson (F, VGK) is playing 18.7 min per game lately, up +3.5 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|594185c9a275",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "Liam Ohgren (F, VAN) is playing 17.1 min per game lately, up +3.9 (PP +0.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|04fa992b0c17",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "Drew O'Connor (F, VAN) is playing 16.4 min per game lately, up +1.8 (PP +1.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|7f29c920442f",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tom Willander (D, VAN) is playing 20.8 min per game lately, up +3.8 (PP +0.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|5aedc1eea29a",
-   "at": "2026-10-05T04:27:10Z",
-   "title": "Pickup: ice time jump",
-   "text": "Max Sasson (F, VAN) is playing 14.7 min per game lately, up +3.0 (PP -0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
    "k": "2026-10-05|11dd3e4df8fd",
    "at": "2026-10-05T07:07:48Z",
    "title": "Lineup: bench player has a game",
@@ -5181,7 +5115,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|1e0eeb8f8500",
@@ -5215,7 +5149,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|0ecc8887df9a",
@@ -5227,7 +5161,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|c3f4e5b5f9a2",
@@ -5250,7 +5184,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|a5b5b4acd5d3",
@@ -5284,7 +5218,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|13ebc4bdcdf9",
@@ -5318,7 +5252,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|fbd142af37c4",
@@ -5363,7 +5297,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|6bbe5f14e1cb",
@@ -5386,7 +5320,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|ddc8ed4a3fdf",
@@ -5398,7 +5332,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|bd6c37068cae",
@@ -5487,7 +5421,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|0f2c4cc6b27f",
@@ -5521,7 +5455,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|dfd6cc17f184",
@@ -5544,7 +5478,7 @@
    "sent": true,
    "via": "morning",
    "sent_at": "2026-10-11T15:07:07Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|a777cdb9fd3b",
@@ -5687,7 +5621,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|68ac122d20d9",
@@ -5699,7 +5633,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|7b0028abce7f",
@@ -5711,7 +5645,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|5d8f10c2719d",
@@ -5723,7 +5657,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|46fa68ede63c",
@@ -5735,7 +5669,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|23af59e87820",
@@ -5747,7 +5681,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|40e868e1858b",
@@ -5759,7 +5693,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|d6d3c8061417",
@@ -5771,7 +5705,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|e6d515762be2",
@@ -5794,7 +5728,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|b8f03e331bac",
@@ -5817,7 +5751,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|b7ab24e34b41",
@@ -5829,7 +5763,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|01a94cd2338b",
@@ -5841,7 +5775,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|0e4df09fd2e5",
@@ -5853,7 +5787,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|633dc8a6389c",
@@ -5865,7 +5799,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|9708d0898047",
@@ -5877,7 +5811,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|eb95ff7ac32b",
@@ -5889,7 +5823,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|86e72b1cfc8a",
@@ -5901,7 +5835,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:28Z"
   },
   {
    "k": "2026-10-11|862852ddd3bf",
@@ -5913,7 +5847,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|95302f64b56d",
@@ -5925,7 +5859,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|7bf37c2fdf2a",
@@ -5937,7 +5871,7 @@
    "sent": true,
    "via": "off",
    "sent_at": "2026-10-12T03:49:28Z",
-   "seen": "2026-10-12T04:19:31Z"
+   "seen": "2026-10-12T04:29:29Z"
   },
   {
    "k": "2026-10-11|b18ae5481244",
