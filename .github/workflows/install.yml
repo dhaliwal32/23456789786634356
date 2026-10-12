@@ -1,0 +1,47 @@
+name: Install changes
+on:
+  push:
+    branches: [main]
+    paths: ["changes/*.py"]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = check waiting changes and make the test page, live = put them in the real app, undo = take back the last live run"
+        required: true
+        default: test
+        type: choice
+        options: [test, live, undo]
+permissions:
+  contents: write
+concurrency:
+  group: install-changes
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Get the syntax checker
+        continue-on-error: true
+        run: npm install --prefix /tmp/babel @babel/standalone
+      - name: Install changes
+        run: python install.py ${{ github.event.inputs.mode || 'test' }}
+      - name: Save results
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "install ${{ github.event.inputs.mode || 'test' }} $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && exit 0
+            sleep 10
+          done
+          exit 1
