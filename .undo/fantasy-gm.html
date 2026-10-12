@@ -964,8 +964,7 @@ function Today({ s, wk, go }) {
   const wp = winProb(A, B, aA, aB);
   const sN = useMemo(() => nextWkS(s), [s]);
   const sP = useMemo(() => planS(s), [s]);
-  const nOpp = sN ? oppOf(sN.weeks[sN.wk] || {}, s.me) : null;
-  const nWin = useMemo(() => (sN && nOpp ? winChance(sN) : null), [sN, nOpp]);
+  // change 071: next week win chance no longer needed on Today
   
   const tag = "Week " + (s.wk + 1) + (!n ? "" : dates[0] > today ? " \u00b7 starts " + dayLabel(dates[0]) : over ? " \u00b7 final" : " \u00b7 day " + Math.min(n, done + 1) + " of " + n);
   const share = aA + aB > 0 ? Math.max(4, Math.min(96, (aA / (aA + aB)) * 100)) : 50;
@@ -996,15 +995,7 @@ function Today({ s, wk, go }) {
         </div>
       </div>
       <GxRace s={s} wk={wk} />
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <GxRing v={nWin} />
-          <div className="min-w-0" style={{ flex: 1 }}>
-            <div className="gx-tag">Next week{nOpp ? <span> {"\u00b7"} vs <TL s={s} id={nOpp} /></span> : null}</div>
-            <button type="button" className="text-sm text-blue-600" style={{ marginTop: 8 }} onClick={() => window.dispatchEvent(new Event("gx-race-next"))}>See next week's forecast</button>
-          </div>
-        </div>
-      </div>
+      {/* change 071: next week card removed */}
       <GxHome s={s} wk={wk} A={A} B={B} />
     </div>
   );
