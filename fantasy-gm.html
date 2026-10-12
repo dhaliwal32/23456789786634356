@@ -361,6 +361,8 @@
     .gx-gm2 { grid-template-columns: minmax(0,1fr) 52px minmax(0,1fr); gap: 6px; }
     .gx-gs { padding: 5px 6px; }
   }
+  /* round 67 setup (news_logos.py) */
+  .gx-chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid; white-space: nowrap; flex-shrink: 0; margin-left: 8px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -922,7 +924,7 @@ function App() {
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> : sub === "adddrop" ? <Pickups {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "playoffs" ? <PlayoffPlanner {...P} /> : <LeaguePage {...P} />;
-  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <PhoneFeed /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} />;
+  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <GxAlertsPage {...P} /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} sub={sub} />;
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800">
@@ -5125,16 +5127,20 @@ function LeaguePage({ s, wk, go }) {
     </div>
   );
 }
-function SetupPage({ s, setS, go }) {
-  const E = window.ESPN_DATA, K = s.blend, Sg = E && E.signals;
+function SetupPage({ s, setS, go, sub }) {
+  // setup v67: a short list with summaries, each row opens its own page (news_logos.py)
+  // older done markers kept: ["best", "Best" + (s.pbest | <GxAlertPrefs /> | href="ai-history.html"
+  const E = window.ESPN_DATA, Sg = E && E.signals;
   const [msg, setMsg] = useState("");
-  const theme = window.__themePref ? window.__themePref() : "auto";
+  const [al, setAl] = useState(null);
+  useEffect(() => { let dead = false; gxAlLoad().then((x) => { if (!dead) setAl(x); }); return () => { dead = true; }; }, []);
+  const K = s.blend, theme = window.__themePref ? window.__themePref() : "auto";
   const seg = (items, value, onPick) => <span className="gx-seg">{items.map(([k, l, off]) => <button key={k} type="button" disabled={!!off} className={value === k ? "on" : ""} onClick={() => onPick(k)}>{l}</button>)}</span>;
-  const num = (k, v, fb) => setS((st) => ({ ...st, [k]: isNaN(parseFloat(v)) ? fb : parseFloat(v) }));
+  const num = (k, v, fb) => setS((x) => ({ ...x, [k]: isNaN(parseFloat(v)) ? fb : parseFloat(v) }));
   const roster = s.players.filter((p) => p.ft === s.me && !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
   const top = s.protectTop ?? 8, autoIds = new Set(roster.slice(0, top).map((p) => p.id));
   const kept = roster.filter((p) => p.keep && !autoIds.has(p.id)), addable = roster.filter((p) => !p.keep && !autoIds.has(p.id));
-  const keep = (id, v) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, keep: v } : p)) }));
+  const keep = (id, v) => setS((x) => ({ ...x, players: x.players.map((p) => (p.id === id ? { ...p, keep: v } : p)) }));
   const src = [["ESPN league", !!E], ["GM model", !!(E && E.model)], ["betting lines", !!(E && E.model && E.model.odds && Object.keys(E.model.odds).length)], ["recent form", !!(Sg && Sg.recent)],
     ["power-play units", !!(Sg && Sg.pp1)], ["news", !!(Sg && Sg.news)], ["injuries", !!(Sg && Sg.injuries)], ["starting goalies", !!(E && E.goalies)]];
   const bad = src.filter((x) => !x[1]).map((x) => x[0]);
@@ -5142,65 +5148,83 @@ function SetupPage({ s, setS, go }) {
   const download = () => { const blob = new Blob([JSON.stringify(s)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "fantasy-gm-backup-" + todayISO() + ".json"; a.click(); setMsg("Backup downloaded."); };
   const upload = (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const v = JSON.parse(r.result); if (v.players && v.weeks) { setS(migrate(v)); setMsg("Backup restored."); } else setMsg("That file isn't a backup."); } catch (ex) { setMsg("Couldn't read that file."); } }; r.readAsText(f); };
   const newsN = s.players.filter((p) => p.ft === s.me && newsOf(p).length).length;
-  const link = (label, note, fn) => (
-    <button type="button" className="gx-lk" onClick={fn}>
-      <span>{label}</span>{note ? <span className="text-sm text-slate-500" style={{ marginLeft: 8 }}>{note}</span> : null}
-      <span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span>
+  const box = inp + " text-sm";
+  const PM = { espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" };
+  const projTxt = s.pbest ? "Best projection (" + (PM[window.__PMODE] || "ESPN") + ")" : (PM[window.__PMODE] || "ESPN") + " projections";
+  const themeTxt = theme === "auto" ? "Automatic theme" : theme === "light" ? "Light theme" : "Dark theme";
+  const ast = al ? gxAlertState(al.p) : null, alog = al ? gxAlertLog(al.b) : [];
+  const lastSent = alog.find((m) => !m.held && !m.wait);
+  const alertTxt = !ast ? "Checking..." : ast.filter((x) => x.on).length + " on \u00b7 " + ast.filter((x) => !x.on).length + " off" + (lastSent ? " \u00b7 last sent " + gxWhen(lastSent.at) : "");
+  const outN = s.players.filter((p) => p.ft === s.me && (p.ir || (p.status && p.status !== "ACTIVE"))).length;
+  const syncTxt = E ? "Synced " + (genAt ? genAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "") : "No data file found";
+  const refresh = () => { window.location.href = window.location.pathname + "?v=" + Date.now(); };
+  const btn = "border border-slate-300 rounded-lg px-3 py-1 text-sm";
+  const row = (k, title, sumTxt, fn, i) => (
+    <button key={k} type="button" className="gx-lk" style={i ? null : { borderTop: 0 }} onClick={fn}>
+      <span className="min-w-0" style={{ flex: 1 }}><span className="block">{title}</span>{sumTxt ? <span className="block text-xs text-slate-500 truncate">{sumTxt}</span> : null}</span>
+      <span className="sec-chev shut" style={{ margin: "0 4px 0 12px" }}></span>
     </button>
   );
-  const box = inp + " text-sm";
+  const page = (title, kids) => <div className="space-y-3"><div className="font-semibold" style={{ fontSize: 17 }}>{title}</div><div className="gx-pn">{kids}</div></div>;
+  if (sub === "display") return page("Display", <>
+    <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
+    <div className="gx-sr"><span>Projections</span>{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}</div>
+    <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>Best switches each day to whichever projection has been most accurate in the AI Lab.</div>
+  </>);
+  if (sub === "rules") return page("Pickup rules", <>
+    <div className="gx-sr" style={{ borderTop: 0 }}><span>A move must add at least</span><span><input type="number" step="0.5" className={box + " w-20"} value={s.minGain ?? 3} onChange={(e) => num("minGain", e.target.value, 3)} /> points</span></div>
+    <div className="gx-sr"><span>Never suggest dropping my top</span><span><select className={box} value={top} onChange={(e) => setS((x) => ({ ...x, protectTop: +e.target.value }))}>{[...Array(13)].map((_, n) => <option key={n} value={n}>{n}</option>)}</select> players</span></div>
+    <div className="gx-sr"><span>Also protect</span>
+      <span className="flex flex-wrap gap-2 items-center justify-end">
+        {kept.map((p) => <span key={p.id} className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-slate-300 text-xs">{p.n}<button type="button" aria-label={"Stop protecting " + p.n} className="text-slate-500" style={{ fontSize: 14, lineHeight: 1 }} onClick={() => keep(p.id, false)}>{"\u00d7"}</button></span>)}
+        {addable.length ? <select className={box} value="" onChange={(e) => { if (e.target.value) keep(e.target.value, true); }}><option value="">+ add a player</option>{addable.map((p) => <option key={p.id} value={p.id}>{p.n + " (" + p.p + ")"}</option>)}</select> : null}
+      </span>
+    </div>
+    <div className="gx-sr"><span>Always keep at least</span>
+      <span className="flex gap-2 items-center">
+        <input type="number" className={box + " w-14"} value={s.minF ?? 10} onChange={(e) => num("minF", e.target.value, 10)} /> F
+        <input type="number" className={box + " w-14"} value={s.minD ?? 5} onChange={(e) => num("minD", e.target.value, 5)} /> D
+        <input type="number" className={box + " w-14"} value={s.minGo ?? 2} onChange={(e) => num("minGo", e.target.value, 2)} /> G
+      </span>
+    </div>
+  </>);
+  if (sub === "players") return page("Players and injuries", <>
+    {row("inj", "Injury return dates", outN ? outN + " of your players hurt or on IR" : "Everyone on your team is healthy", () => go("setup", "inj"), 0)}
+    {row("bulk", "Edit players", "Projections, play %, fantasy team", () => go("setup", "bulk"), 1)}
+  </>);
+  if (sub === "league") return page("League info", <>
+    {row("news", "News", newsN ? newsN + " of your players in the news" : "Nothing new on your players", () => go("news"), 0)}
+    {row("odds", "Betting lines", "Win chances and expected goals for each game", () => go("setup", "odds"), 1)}
+    {row("sched", "Schedule", "Games per NHL team this week", () => go("setup", "sched"), 2)}
+  </>);
+  if (sub === "data") return page("Data and backup", <>
+    <div className="gx-sr" style={{ borderTop: 0 }}><span>{syncTxt}</span><button type="button" className={btn} onClick={refresh}>Refresh</button></div>
+    {bad.length ? bad.map((l) => <div key={l} className="gx-sr"><span>{l.charAt(0).toUpperCase() + l.slice(1)}</span><span className="text-sm" style={{ color: "var(--bad)" }}>Not working</span></div>)
+      : <div className="gx-sr"><span>{"All " + src.length + " data sources"}</span><span className="text-sm" style={{ color: "var(--good)" }}>Working</span></div>}
+    <div className="gx-sr"><span>Your settings on this device</span>
+      <span className="flex gap-2 items-center">
+        <button type="button" className={btn} onClick={download}>Download backup</button>
+        <label className={btn + " cursor-pointer"}>Restore<input type="file" accept=".json,application/json" className="hidden" onChange={upload} /></label>
+      </span>
+    </div>
+    {msg ? <div className="text-xs" style={{ color: "var(--good)", paddingTop: 6 }}>{msg}</div> : null}
+    <div className="gx-sr"><span>Week on screen</span><select className={box} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>{s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}</select></div>
+    {row("adv", "Advanced settings", "Team names, projection weight, reset", () => go("setup", "adv"), 1)}
+  </>);
   return (
     <div className="space-y-3">
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div className="gx-tag">Display</div>
-        <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
-        <div className="gx-sr"><span>Projections</span>{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}</div>
-        <div className="gx-sr"><span>Week on screen</span><select className={box} value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>{s.weeks.map((w, i) => <option key={i} value={i}>{w.label}</option>)}</select></div>
+      <div className="gx-pn" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ width: 8, height: 8, borderRadius: 99, flexShrink: 0, background: !E ? "var(--faint)" : old || bad.length ? "var(--bad)" : "var(--good)" }}></span>
+        <span className="text-sm min-w-0">{syncTxt + " \u00b7 " + (!E ? "check GitHub Actions" : bad.length ? bad.length + " data source" + (bad.length === 1 ? "" : "s") + " not working" : old ? "data is over 2 hours old" : "everything working")}</span>
+        <button type="button" className={btn} style={{ marginLeft: "auto" }} onClick={refresh}>Refresh</button>
       </div>
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div className="gx-tag">Pickup rules</div>
-        <div className="gx-sr" style={{ borderTop: 0 }}><span>A move must add at least</span><span><input type="number" step="0.5" className={box + " w-20"} value={s.minGain ?? 3} onChange={(e) => num("minGain", e.target.value, 3)} /> points</span></div>
-        <div className="gx-sr"><span>Never suggest dropping my top</span><span><select className={box} value={top} onChange={(e) => setS((st) => ({ ...st, protectTop: +e.target.value }))}>{[...Array(13)].map((_, n) => <option key={n} value={n}>{n}</option>)}</select> players</span></div>
-        <div className="gx-sr"><span>Also protect</span>
-          <span className="flex flex-wrap gap-2 items-center justify-end">
-            {kept.map((p) => <span key={p.id} className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-slate-300 text-xs">{p.n}<button type="button" aria-label={"Stop protecting " + p.n} className="text-slate-500" style={{ fontSize: 14, lineHeight: 1 }} onClick={() => keep(p.id, false)}>{"\u00d7"}</button></span>)}
-            {addable.length ? <select className={box} value="" onChange={(e) => { if (e.target.value) keep(e.target.value, true); }}><option value="">+ add a player</option>{addable.map((p) => <option key={p.id} value={p.id}>{p.n + " (" + p.p + ")"}</option>)}</select> : null}
-          </span>
-        </div>
-        <div className="gx-sr"><span>Always keep at least</span>
-          <span className="flex gap-2 items-center">
-            <input type="number" className={box + " w-14"} value={s.minF ?? 10} onChange={(e) => num("minF", e.target.value, 10)} /> F
-            <input type="number" className={box + " w-14"} value={s.minD ?? 5} onChange={(e) => num("minD", e.target.value, 5)} /> D
-            <input type="number" className={box + " w-14"} value={s.minGo ?? 2} onChange={(e) => num("minGo", e.target.value, 2)} /> G
-          </span>
-        </div>
-      </div>
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div className="gx-tag">Data</div>
-        <div className="gx-sr" style={{ borderTop: 0 }}>
-          <span><span style={{ display: "inline-block", width: 7, height: 7, borderRadius: 99, marginRight: 8, background: !E ? "var(--faint)" : old ? "var(--bad)" : "var(--good)" }}></span>{E ? "Synced " + fmtTime(E.generated) : "No data file found"}</span>
-          <span className="text-sm" style={{ color: bad.length ? "var(--bad)" : "var(--mute)" }}>{bad.length ? "Not working: " + bad.join(", ") : "all " + src.length + " sources working"}</span>
-        </div>
-        <div className="gx-sr"><span>Get the latest data and app version</span><button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" onClick={() => { window.location.href = window.location.pathname + "?v=" + Date.now(); }}>Refresh</button></div>
-        <div className="gx-sr"><span>Your settings on this device</span>
-          <span className="flex gap-2 items-center">
-            <button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" onClick={download}>Download backup</button>
-            <label className="border border-slate-300 rounded-lg px-3 py-1 text-sm cursor-pointer">Restore<input type="file" accept=".json,application/json" className="hidden" onChange={upload} /></label>
-          </span>
-        </div>
-        {msg ? <div className="text-xs" style={{ color: "var(--good)", paddingTop: 6 }}>{msg}</div> : null}
-      </div>
-      <div>
-        <GxAlertPrefs />
-        {link("News", newsN ? newsN + " on your players" : "", () => go("news"))}
-        {link("Betting lines", "", () => go("setup", "odds"))}
-        {link("Phone alerts", "what was sent to your phone", () => go("setup", "alerts"))}
-        {link("Schedule", "games per NHL team this week", () => go("setup", "sched"))}
-        {link("Injury return dates", "", () => go("setup", "inj"))}
-        {link("Edit players", "", () => go("setup", "bulk"))}
-        {link("Advanced settings", "team names, projection weight, reset", () => go("setup", "adv"))}
-        <a className="gx-lk" href="ai-dashboard.html"><span>AI Lab</span><span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span></a>
-        <a className="gx-lk" href="ai-history.html"><span>Prediction history</span><span className="text-sm text-slate-500" style={{ marginLeft: 8 }}>every projection and what happened</span><span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span></a>
+      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
+        {row("display", "Display", themeTxt + " \u00b7 " + projTxt, () => go("setup", "display"), 0)}
+        {row("rules", "Pickup rules", "Moves must add " + (s.minGain ?? 3) + "+ points \u00b7 top " + top + " protected" + (kept.length ? " plus " + kept.length + " more" : ""), () => go("setup", "rules"), 1)}
+        {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2)}
+        {row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3)}
+        {row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4)}
+        {row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5)}
       </div>
     </div>
   );
@@ -5851,6 +5875,141 @@ function GxLeagueAny({ s, wk }) {
           </div>
         );
       }) : <div className="text-sm text-slate-500" style={{ paddingTop: 6 }}>{cur ? "No other matchups loaded for this week." : "No other matchups are set for this week yet."}</div>}
+    </div>
+  );
+}
+
+// ---------- round 67: phone alerts page and helpers (news_logos.py) ----------
+const GX_AL = [
+  ["Lineup warnings", "starter_is_out", "Starter is out", "An injured player is in your lineup with a game today", "injuries"],
+  ["Lineup warnings", "possible_scratch", "Possible scratch", "A starter is missing from tonight's lineup, within 3 hours of the game", "injuries"],
+  ["Lineup warnings", "goalie_not_starting", "Goalie not starting", "Your goalie is not tonight's starter", "goalies"],
+  ["Lineup warnings", "goalie_not_confirmed", "Goalie not confirmed", "75 minutes before the game and still not confirmed", "goalies"],
+  ["Lineup warnings", "bench_player_has_a_game", "Bench player has a game", "A bench player plays while a starter does not", ""],
+  ["Your players", "your_player_line_change", "Line change", "Moved up or down a line", "lines"],
+  ["Your players", "your_player_lineup_change", "In or out of the lineup", "Added to or missing from his team's lineup", "lines"],
+  ["Your players", "your_player_power_play_change", "Power-play change", "On or off a power-play unit", "lines"],
+  ["Your players", "your_player_roster_move", "Roster move", "Traded, called up or sent down", "lines"],
+  ["Your players", "your_player_injury_update", "Injury update", "ESPN injury status changed", "injuries"],
+  ["Your players", "your_player_losing_ice_time", "Losing ice time", "Down 3 or more minutes a game lately", "lines"],
+  ["Your players", "more_line_changes", "Extra line changes", "Several changes at once, sent as one message", "lines"],
+  ["Pickup ideas", "pickup_bigger_role", "Bigger role", "A free agent moved to a top-six line or the top pair", "pickups"],
+  ["Pickup ideas", "pickup_new_pp1", "New on the top power play", "A free agent just moved onto PP1", "pickups"],
+  ["Pickup ideas", "pickup_ice_time_jump", "Ice time jump", "A free agent's minutes went up a lot", "pickups"],
+  ["Pickup ideas", "pickup_trending", "Trending free agent", "Other managers are adding him fast", "pickups"],
+  ["Summaries", "morning_summary", "Morning summary", "8 a.m., everything that waited overnight", ""],
+  ["Summaries", "pregame_summary", "Before puck drop", "An hour before your first game, only if something new came in", ""],
+];
+const GX_AL_MASTER = [["injuries", "Injuries"], ["lines", "Line and power-play changes"], ["goalies", "Goalie starts"], ["pickups", "Pickup ideas"]];
+const GX_AL_TITLES = [["Lineup: starter is OUT", "starter_is_out"], ["Possible scratch tonight", "possible_scratch"], ["Your player: injury update", "your_player_injury_update"],
+  ["Lineup: bench player has a game", "bench_player_has_a_game"], ["Goalie not starting tonight", "goalie_not_starting"], ["Goalie not confirmed yet", "goalie_not_confirmed"],
+  ["Your player's line changed", "your_player_line_change"], ["Your player: lineup change", "your_player_lineup_change"], ["Your player: power-play change", "your_player_power_play_change"],
+  ["Your player: roster move", "your_player_roster_move"], ["Your player is losing ice time", "your_player_losing_ice_time"], ["Pickup: new PP1 free agent", "pickup_new_pp1"],
+  ["Pickup: ice time jump", "pickup_ice_time_jump"], ["Pickup: trending free agent", "pickup_trending"], ["Pickup idea: bigger role", "pickup_bigger_role"],
+  ["Morning summary", "morning_summary"], ["Before puck drop", "pregame_summary"]];
+const GX_PREFS_URL = "https://github.com/dhaliwal32/23456789786634356/edit/main/alert_prefs.json";
+const gxAlKind = (title) => {
+  const t = String(title || "");
+  if (t.indexOf("roster/line changes") >= 0) return "more_line_changes";
+  const m = GX_AL_TITLES.find((x) => t.indexOf(x[0]) === 0);
+  return m ? m[1] : null;
+};
+const gxAlertState = (p) => GX_AL.map(([sec, k, label, desc, g]) => {
+  const own = p && p[k] != null ? p[k] : k !== "bench_player_has_a_game";
+  const gOff = !!(g && p && p[g] === false);
+  const gl = (GX_AL_MASTER.find((x) => x[0] === g) || [])[1];
+  return { sec, k, label, desc, on: own !== false && !gOff, why: own === false ? "" : gOff ? "off by the " + gl + " master switch" : "" };
+});
+const gxAlertLog = (b) => {
+  const out = [], LBL = { urgent: "Sent right away", morning: "Morning summary", pregame: "Before puck drop" };
+  ((b && b.log) || []).forEach((m) => out.push({ at: m.at, title: m.title, body: m.body, status: LBL[m.kind] || m.kind || "Sent", held: /^Not sent/.test(m.kind || "") }));
+  ((b && b.items) || []).forEach((i) => {
+    if (i.sent && (i.via === "urgent" || (!i.via && i.urgent))) out.push({ at: i.sent_at || i.at, title: i.title, body: i.text, status: "Sent right away", held: false });
+    else if (!i.sent) out.push({ at: i.at, title: i.title, body: i.text, status: "Waiting for the next summary", held: false, wait: true });
+  });
+  return out.sort((a, c) => (String(a.at || "") < String(c.at || "") ? 1 : -1));
+};
+const gxWhen = (iso) => {
+  const d = toDate(iso);
+  if (!d) return "";
+  const t = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const k = (x) => x.toDateString(), now = new Date(), y = new Date(Date.now() - 864e5);
+  return (k(d) === k(now) ? "Today " : k(d) === k(y) ? "Yesterday " : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }).replace(",", "") + " ") + t;
+};
+const gxAlLoad = () => Promise.all([
+  fetch("alert_prefs.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+  fetch("notify_outbox.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+]).then(([p, b]) => ({ p: p, b: b }));
+function GxAlertsPage() {
+  // alerts page v67 (news_logos.py)
+  const [d, setD] = useState(null);
+  const [f, setF] = useState("all");
+  const [lim, setLim] = useState(30);
+  useEffect(() => {
+    let dead = false;
+    const load = () => gxAlLoad().then((x) => { if (!dead) setD(x); });
+    load();
+    const id = setInterval(load, 2 * 60 * 1000);
+    return () => { dead = true; clearInterval(id); };
+  }, []);
+  if (!d) return <div className="text-sm text-slate-500">Loading your phone alerts...</div>;
+  const st = gxAlertState(d.p), log = gxAlertLog(d.b);
+  const cut = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 19) + "Z";
+  const cnt = {};
+  log.forEach((m) => { if (m.held || m.wait || String(m.at || "") < cut) return; const k = gxAlKind(m.title); if (k) cnt[k] = (cnt[k] || 0) + 1; });
+  const shown = log.filter((m) => (f === "all" ? true : f === "held" ? m.held : f === "wait" ? m.wait : !m.held && !m.wait));
+  const onN = st.filter((x) => x.on).length;
+  const chip = (m) => { const c = m.held ? "var(--mute)" : m.wait ? "var(--warn)" : "var(--good)"; return <span className="gx-chip" style={{ color: c, borderColor: c }}>{m.status}</span>; };
+  return (
+    <div className="space-y-3">
+      <div className="font-semibold" style={{ fontSize: 17 }}>Phone alerts</div>
+      <div className="gx-pn">
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+          <span className="gx-tag">{"Switches \u00b7 " + onN + " on, " + (st.length - onN) + " off"}</span>
+          <a className="text-sm text-blue-600" style={{ marginLeft: "auto" }} href={GX_PREFS_URL} target="_blank" rel="noopener">Change</a>
+        </div>
+        <div className="text-xs text-slate-500" style={{ marginTop: 2 }}>Change opens the settings file on GitHub. Set a line to false to switch it off, then commit. It applies at the next sync, within 30 minutes. Nothing is sent from 11 p.m. to 7 a.m.</div>
+        {["Lineup warnings", "Your players", "Pickup ideas", "Summaries"].map((sec) => (
+          <div key={sec}>
+            <div className="text-xs text-slate-500" style={{ margin: "12px 0 2px", letterSpacing: ".04em" }}>{sec}</div>
+            {st.filter((x) => x.sec === sec).map((x, i) => (
+              <div key={x.k} className="gx-row" style={i ? null : { borderTop: 0 }}>
+                <div className="min-w-0" style={{ flex: 1 }}>
+                  <div>{x.label}</div>
+                  <div className="text-xs text-slate-500">{x.desc + " \u00b7 " + (cnt[x.k] || 0) + " in the last 7 days" + (x.why ? " \u00b7 " + x.why : "")}</div>
+                </div>
+                <span className="text-sm" style={{ color: x.on ? "var(--good)" : "var(--mute)" }}>{x.on ? "On" : "Off"}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+        <div className="text-xs text-slate-500" style={{ margin: "12px 0 2px", letterSpacing: ".04em" }}>Master switches</div>
+        {GX_AL_MASTER.map(([k, l], i) => { const on = !(d.p && d.p[k] === false); return (
+          <div key={k} className="gx-row" style={i ? null : { borderTop: 0 }}>
+            <span className="min-w-0" style={{ flex: 1 }}>{l}<span className="text-xs text-slate-500">{" \u00b7 turns its whole group on or off"}</span></span>
+            <span className="text-sm" style={{ color: on ? "var(--good)" : "var(--mute)" }}>{on ? "On" : "Off"}</span>
+          </div>
+        ); })}
+      </div>
+      <div className="gx-pn">
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <span className="gx-tag">Sent to your phone</span>
+          <span className="gx-seg" style={{ marginLeft: "auto" }}>
+            {[["all", "All"], ["sent", "Sent"], ["held", "Held back"], ["wait", "Waiting"]].map(([k, l]) => <button key={k} type="button" className={f === k ? "on" : ""} onClick={() => { setF(k); setLim(30); }}>{l}</button>)}
+          </span>
+        </div>
+        {shown.length ? shown.slice(0, lim).map((m, i) => { const k = gxAlKind(m.title); return (
+          <div key={i} className="gx-row" style={i ? { alignItems: "flex-start" } : { alignItems: "flex-start", borderTop: 0, marginTop: 6 }}>
+            <div className="min-w-0" style={{ flex: 1 }}>
+              <div>{m.title}</div>
+              {m.body ? <div className="text-xs text-slate-500" style={{ whiteSpace: "pre-wrap", marginTop: 2 }}>{m.body}</div> : null}
+              <div className="text-xs text-slate-500" style={{ marginTop: 3 }}>{gxWhen(m.at)}{k ? <>{" \u00b7 "}<a className="text-blue-600" href={GX_PREFS_URL} target="_blank" rel="noopener">Change this switch</a></> : null}</div>
+            </div>
+            {chip(m)}
+          </div>
+        ); }) : <div className="text-sm text-slate-500" style={{ paddingTop: 8 }}>Nothing here yet.</div>}
+        {shown.length > lim ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 10 }} onClick={() => setLim(lim + 30)}>Show more</button> : null}
+      </div>
     </div>
   );
 }
