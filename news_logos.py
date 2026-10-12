@@ -8264,5 +8264,417 @@ _fix_before_r61 = fix
 def fix(t):
     return round61(_fix_before_r61(t))
 
+# ---------- round 62: AI Lab history page. Every saved projection next to what happened, and matchup projections next to who won ----------
+HIST, HIST_TEST = "ai-history.html", "ai-history-test.html"
+HIST_HTML = r'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fantasy Islands GM - AI Lab history</title>
+<style>
+:root{--bg:#0c0d0f;--card:#141518;--line:#232529;--line2:#34363b;--tx:#f4f5f6;--mu:#8a8d93;--ok:#5fd08a;--bad:#f06a6a;--soft:rgba(255,255,255,.05)}
+html[data-t="light"]{--bg:#f5f5f4;--card:#ffffff;--line:#e4e4e1;--line2:#cfcfcc;--tx:#111111;--mu:#6b6b68;--ok:#16a34a;--bad:#dc2626;--soft:rgba(0,0,0,.04)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header h1{font-size:16px;margin:0;font-weight:600}
+header a{color:var(--tx);border:1px solid var(--line2);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:13px}
+main{max-width:980px;margin:0 auto;padding:14px}
+section{background:var(--card);padding:14px 16px;margin-bottom:12px}
+button,select,input{font:inherit;color:var(--tx);background:transparent;border:1px solid var(--line2);border-radius:8px}
+select option{background:var(--card);color:var(--tx)}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 12px;color:var(--mu);font-size:13px;cursor:pointer}
+.seg button.on{background:var(--tx);color:var(--bg);font-weight:600}
+.lab{font-size:12px;color:var(--mu);letter-spacing:.06em}
+.ctl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:10px 0 6px}
+.ctl select,.ctl input{height:30px;padding:0 6px;font-size:13px}
+.ctl input{flex:1;min-width:120px}
+.arw{width:30px;height:30px;font-size:18px;line-height:1;cursor:pointer;padding:0}
+.arw:disabled{color:var(--mu);border-color:var(--line);cursor:default}
+.sub{font-size:12px;color:var(--mu);margin:2px 0 8px}
+.r{display:grid;grid-template-columns:24px minmax(0,1fr) 46px 46px 46px 46px 56px 54px;gap:6px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.r>.n{text-align:right}
+.r.h{border-top:0;padding:0 0 4px;font-size:12px;color:var(--mu)}
+.r.h button{border:0;padding:0;color:var(--mu);text-align:right;cursor:pointer;font-size:12px}
+.r.h button.on{color:var(--tx);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.r.tap{cursor:pointer}
+.r.tap:hover{background:var(--soft)}
+.r img{width:22px;height:22px;object-fit:contain;display:block}
+.nm{min-width:0}
+.nm b{display:block;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nm small{display:block;font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.bdg{font-size:12px;padding:3px 9px;border-radius:8px;white-space:nowrap;border:1px solid var(--line2);color:var(--mu)}
+.bdg.ok{color:var(--ok);border-color:var(--ok)}
+.bdg.no{color:var(--bad);border-color:var(--bad)}
+.lnk{border:0;padding:0;color:var(--tx);text-decoration:underline;text-decoration-color:var(--line2);text-underline-offset:3px;cursor:pointer;font-size:13px}
+.empty{color:var(--mu);padding:10px 0}
+.up{color:var(--ok)}.dn{color:var(--bad)}.mu{color:var(--mu)}
+@media(max-width:640px){
+  main{padding:10px}
+  section{padding:12px 10px}
+  .r{grid-template-columns:20px minmax(0,1fr) 40px 54px 50px;gap:5px}
+  .r>.x{display:none}
+  .r img{width:20px;height:20px}
+  .ctl select,.ctl input{font-size:16px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI Lab history</h1>
+  <span class="seg" id="tabs"><button data-v="p" class="on">Players</button><button data-v="m">Matchups</button></span>
+  <span style="flex:1"></span>
+  <a href="ai-dashboard.html">AI Lab</a>
+  <a href="fantasy-gm.html">Back to the app</a>
+</header>
+<main id="app"><section><div class="empty">Loading the saved projections...</div></section></main>
+<script>
+(function () {
+  try {
+    var p = localStorage.getItem("fantasy-islands-gm-theme") || "auto";
+    var dark = p === "dark" || (p !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-t", dark ? "dark" : "light");
+  } catch (e) {}
+})();
+const TH = document.documentElement.getAttribute("data-t") === "light" ? "light" : "dark";
+const LOGO = {LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL"};
+const OUTS = {OUT: 1, INJURY_RESERVE: 1, SUSPENSION: 1};
+const S = {view: "p", di: 0, who: "mine", pos: "all", q: "", sort: "fp", asc: false, lim: 150, pid: null, pname: "", plim: 10, wi: 0, season: ""};
+const DAYC = {}, WKC = {};
+let D = null, SEQ = 0;
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"}[c]));
+const f1 = x => (x == null || isNaN(x) ? "\u2013" : (Math.round(x * 10) / 10).toFixed(1));
+const nrm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const dlab = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"}).replace(",", "");
+const todayET = () => new Date().toLocaleDateString("en-CA", {timeZone: "America/New_York"});
+const pred = r => (r.ai != null ? r.ai : r.gm != null ? r.gm : r.blend != null ? r.blend : r.espn);
+function getDay(d) {
+  if (!DAYC[d]) DAYC[d] = fetch("ai/joined/" + d + ".json").then(r => (r.ok ? r.json() : null)).then(j => (j && j.recs) || null).catch(() => null);
+  return DAYC[d];
+}
+function loadScript(src) {
+  return new Promise(res => {
+    const s = document.createElement("script");
+    s.src = src + "?t=" + Date.now();
+    s.onload = () => res(true);
+    s.onerror = () => res(false);
+    document.head.appendChild(s);
+  });
+}
+function logo(t) {
+  return t ? `<img alt="" loading="lazy" src="https://assets.nhle.com/logos/nhl/svg/${esc(LOGO[t] || t)}_${TH}.svg" onerror="this.style.visibility='hidden'">` : "<span></span>";
+}
+function numCells(r) {
+  const d = r.played && r.fp != null && r.ai != null ? r.fp - r.ai : null;
+  return `<span class="n x mu">${f1(r.espn)}</span><span class="n x mu">${f1(r.gm)}</span><span class="n x mu">${f1(r.blend)}</span><span class="n">${f1(r.ai)}</span>`
+    + `<span class="n" style="font-weight:600">${r.played ? f1(r.fp) : "\u2013"}</span>`
+    + `<span class="n ${d == null ? "mu" : d >= 0 ? "up" : "dn"}">${d == null ? "\u2013" : (d >= 0 ? "+" : "") + f1(d)}</span>`;
+}
+function subOf(r) {
+  const b = [esc(r.team), esc(r.pos), (r.home ? "vs " : "@ ") + esc(r.opp)];
+  if (r.pos === "G" && r.start_p != null) b.push(Math.round(r.start_p * 100) + "% to start");
+  if (!r.played) b.push("did not play");
+  if (S.who !== "mine" || S.q) b.push(r.ft ? esc(D.teams[r.ft] || "fantasy team") : "free agent");
+  return b.join(" \u00b7 ");
+}
+function draw() {
+  if (S.view === "m") drawMatch();
+  else if (S.pid) drawPlayer();
+  else drawDay();
+}
+
+// ---------- players: one day ----------
+function drawDay() {
+  const d = D.days;
+  if (!d.length) { $("app").innerHTML = `<section><div class="empty">No finished game days yet.</div></section>`; return; }
+  $("app").innerHTML = `<section>
+    <div class="lab">Players \u00b7 every projection and what happened</div>
+    <div class="ctl">
+      <button class="arw" id="dPrev" aria-label="Earlier day">\u2039</button>
+      <select id="dSel" aria-label="Day">${d.map((x, i) => `<option value="${i}">${dlab(x)}</option>`).join("")}</select>
+      <button class="arw" id="dNext" aria-label="Later day">\u203a</button>
+      <select id="who" aria-label="Whose players">${D.me != null ? `<option value="mine">My team</option>` : ""}<option value="teams">Every fantasy team</option><option value="all">Every player</option></select>
+      <select id="pos" aria-label="Position"><option value="all">All positions</option><option value="F">Forwards</option><option value="D">Defence</option><option value="G">Goalies</option></select>
+      <input id="q" placeholder="Search a player" aria-label="Search a player" value="${esc(S.q)}">
+    </div>
+    <div class="sub" id="dSum"></div>
+    <div id="dHead"></div>
+    <div id="dRows"></div>
+  </section>`;
+  $("who").value = S.who;
+  $("pos").value = S.pos;
+  const go = i => { S.di = Math.max(0, Math.min(d.length - 1, i)); S.lim = 150; fillDay(); };
+  $("dPrev").onclick = () => go(S.di - 1);
+  $("dNext").onclick = () => go(S.di + 1);
+  $("dSel").onchange = e => go(+e.target.value);
+  $("who").onchange = e => { S.who = e.target.value; S.lim = 150; fillDay(); };
+  $("pos").onchange = e => { S.pos = e.target.value; S.lim = 150; fillDay(); };
+  $("q").oninput = e => { S.q = e.target.value; S.lim = 150; fillDay(); };
+  $("dHead").onclick = e => {
+    const b = e.target.closest("[data-s]");
+    if (!b) return;
+    if (S.sort === b.dataset.s) S.asc = !S.asc; else { S.sort = b.dataset.s; S.asc = false; }
+    fillDay();
+  };
+  $("dRows").onclick = e => {
+    if (e.target.closest("#dMore")) { S.lim = 99999; fillDay(); return; }
+    const el = e.target.closest("[data-p]");
+    if (el) { S.pid = el.dataset.p; S.pname = el.dataset.n; S.plim = 10; window.scrollTo(0, 0); draw(); }
+  };
+  fillDay();
+}
+async function fillDay() {
+  const seq = ++SEQ, day = D.days[S.di];
+  $("dSel").value = S.di;
+  $("dPrev").disabled = S.di <= 0;
+  $("dNext").disabled = S.di >= D.days.length - 1;
+  $("dRows").innerHTML = `<div class="empty">Loading ${dlab(day)}...</div>`;
+  const recs = await getDay(day);
+  if (seq !== SEQ || !$("dRows")) return;
+  if (!recs) {
+    $("dSum").textContent = "";
+    $("dHead").innerHTML = "";
+    $("dRows").innerHTML = `<div class="empty">Nothing is saved for this day. Either no games were played or they are not graded yet.</div>`;
+    return;
+  }
+  const q = nrm(S.q).trim();
+  const rows = recs.filter(r => (q ? nrm(r.name).includes(q) : S.who === "mine" ? +r.ft === +D.me : S.who === "teams" ? !!r.ft : true) && (S.pos === "all" || r.pos === S.pos));
+  const key = r => (S.sort === "fp" ? (r.played && r.fp != null ? r.fp : null) : S.sort === "d" ? (r.played && r.fp != null && r.ai != null ? r.fp - r.ai : null) : r[S.sort]);
+  rows.sort((a, b) => {
+    const x = key(a), y = key(b);
+    if (x == null && y == null) return 0;
+    if (x == null) return 1;
+    if (y == null) return -1;
+    return S.asc ? x - y : y - x;
+  });
+  const played = rows.filter(r => r.played && r.fp != null), wa = played.filter(r => r.ai != null);
+  const miss = wa.length ? wa.reduce((a, r) => a + Math.abs(r.ai - r.fp), 0) / wa.length : null;
+  $("dSum").textContent = rows.length + " player" + (rows.length === 1 ? "" : "s") + " with a game \u00b7 " + played.length + " played"
+    + (miss != null ? " \u00b7 AI was off by " + f1(miss) + " points a player on average" : "")
+    + (rows.some(r => r.pos === "G") ? " \u00b7 goalie numbers are points if he starts" : "");
+  const hb = (k, l, x) => `<button class="n${x ? " x" : ""}${S.sort === k ? " on" : ""}" data-s="${k}">${l}</button>`;
+  $("dHead").innerHTML = `<div class="r h"><span></span><span>Tap a player for all his games</span>${hb("espn", "ESPN", 1)}${hb("gm", "GM", 1)}${hb("blend", "Blend", 1)}${hb("ai", "AI")}${hb("fp", "Actual")}${hb("d", "vs AI")}</div>`;
+  const shown = rows.slice(0, S.lim);
+  let html = shown.map(r => `<div class="r tap" data-p="${esc(r.pid)}" data-n="${esc(r.name)}">${logo(r.team)}<span class="nm"><b>${esc(r.name)}</b><small>${subOf(r)}</small></span>${numCells(r)}</div>`).join("");
+  if (!rows.length) html = `<div class="empty">${q ? "No player with a game this day matches that name." : "None of these players had a game this day."}</div>`;
+  if (rows.length > shown.length) html += `<button class="lnk" id="dMore" style="margin-top:10px">Show all ${rows.length}</button>`;
+  $("dRows").innerHTML = html;
+}
+
+// ---------- players: one player, every saved game ----------
+async function drawPlayer() {
+  const seq = ++SEQ, all = D.days.slice().reverse(), use = all.slice(0, S.plim);
+  $("app").innerHTML = `<section><div class="empty">Loading the saved games for ${esc(S.pname)}...</div></section>`;
+  const lists = await Promise.all(use.map(getDay));
+  if (seq !== SEQ) return;
+  const games = [];
+  lists.forEach(recs => (recs || []).forEach(r => { if (String(r.pid) === String(S.pid)) games.push(r); }));
+  const played = games.filter(r => r.played && r.fp != null), wa = played.filter(r => r.ai != null);
+  const avg = (l, f) => (l.length ? l.reduce((a, r) => a + f(r), 0) / l.length : null);
+  const g0 = games[0];
+  const who = g0 ? [esc(g0.team), esc(g0.pos), g0.ft ? esc(D.teams[g0.ft] || "fantasy team") : "free agent"].join(" \u00b7 ") : "";
+  const sum = played.length
+    ? played.length + " game" + (played.length === 1 ? "" : "s") + " played in the last " + use.length + " days \u00b7 scored " + f1(avg(played, r => r.fp)) + " a game"
+      + (wa.length ? " \u00b7 AI said " + f1(avg(wa, r => r.ai)) + " \u00b7 off by " + f1(avg(wa, r => Math.abs(r.ai - r.fp))) + " on average" : "")
+    : "No games played in the last " + use.length + " days.";
+  let rows = games.map(r => `<div class="r"><span></span><span class="nm"><b>${dlab(r.date)}</b><small>${(r.home ? "vs " : "@ ") + esc(r.opp)}${r.pos === "G" && r.start_p != null ? " \u00b7 " + Math.round(r.start_p * 100) + "% to start" : ""}${r.played ? "" : " \u00b7 did not play"}</small></span>${numCells(r)}</div>`).join("");
+  if (!games.length) rows = `<div class="empty">No saved projections for him in these days.</div>`;
+  $("app").innerHTML = `<section>
+    <button class="lnk" id="pBack">\u2039 Back to the day list</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:10px"><span style="width:26px">${g0 ? logo(g0.team) : ""}</span><span style="font-size:16px;font-weight:600">${esc(S.pname)}</span><span class="mu" style="font-size:12px">${who}</span></div>
+    <div class="sub" style="margin-top:6px">${sum}</div>
+    <div class="r h"><span></span><span>Game</span><span class="n x">ESPN</span><span class="n x">GM</span><span class="n x">Blend</span><span class="n">AI</span><span class="n">Actual</span><span class="n">vs AI</span></div>
+    ${rows}
+    ${all.length > use.length ? `<button class="lnk" id="pMore" style="margin-top:10px">Load earlier games</button>` : ""}
+  </section>`;
+  $("pBack").onclick = () => { S.pid = null; draw(); };
+  if ($("pMore")) $("pMore").onclick = () => { S.plim += 15; drawPlayer(); };
+}
+
+// ---------- matchups ----------
+function lineup(recs, tid) {
+  const c = recs.filter(r => +r.ft === +tid && !OUTS[r.status]).map(r => {
+    let v = pred(r);
+    if (v == null) return null;
+    if (r.pos === "G") v *= r.start_p != null ? r.start_p : r.ai_start_p != null ? r.ai_start_p : 0.5;
+    return {p: r.pos, v: v};
+  }).filter(Boolean).sort((a, b) => b.v - a.v);
+  const F = c.filter(x => x.p === "F"), Dm = c.filter(x => x.p === "D"), G = c.filter(x => x.p === "G");
+  const rest = F.slice(9).concat(Dm.slice(5)).sort((a, b) => b.v - a.v);
+  return F.slice(0, 9).concat(Dm.slice(0, 5), rest.slice(0, 1), G.slice(0, 2)).reduce((a, x) => a + x.v, 0);
+}
+function weekCalc(w) {
+  if (WKC[w.id]) return WKC[w.id];
+  const pairs = (D.E.matchups || []).filter(m => m.period === w.id && m.home != null && m.away != null)
+    .sort((a, b) => (+b.home === +D.me || +b.away === +D.me) - (+a.home === +D.me || +a.away === +D.me));
+  const use = w.dates.filter(d => d <= D.today);
+  const done = w.dates[w.dates.length - 1] < D.today;
+  WKC[w.id] = Promise.all(use.map(getDay)).then(lists => {
+    let got = 0;
+    const proj = {};
+    lists.forEach(recs => {
+      if (!recs) return;
+      got++;
+      pairs.forEach(m => [m.home, m.away].forEach(id => { proj[id] = (proj[id] || 0) + lineup(recs, id); }));
+    });
+    return {pairs: pairs, proj: proj, got: got, n: w.dates.length, done: done};
+  });
+  return WKC[w.id];
+}
+function judge(R, m) {
+  const pa = R.proj[m.home] || 0, pb = R.proj[m.away] || 0, sa = +m.hs || 0, sb = +m.as || 0;
+  const pick = !R.got || pa === pb ? 0 : pa > pb ? 1 : -1, won = sa === sb ? 0 : sa > sb ? 1 : -1;
+  return {pa: pa, pb: pb, sa: sa, sb: sb, pick: pick, won: won, counted: R.done && !!pick && !!won, ok: pick === won};
+}
+async function countSeason() {
+  const fin = D.weeks.filter(w => w.dates[w.dates.length - 1] < D.today);
+  let hit = 0, tot = 0;
+  for (let i = 0; i < fin.length; i++) {
+    if ($("mSeason")) $("mSeason").textContent = "Counting week " + (i + 1) + " of " + fin.length + "...";
+    const R = await weekCalc(fin[i]);
+    R.pairs.forEach(m => { const j = judge(R, m); if (j.counted) { tot++; if (j.ok) hit++; } });
+  }
+  S.season = fin.length ? "Whole season so far: projections picked the winner in " + hit + " of " + tot + " matchups over " + fin.length + " finished week" + (fin.length === 1 ? "" : "s") + "." : "No week has finished yet.";
+  if ($("mSeason")) $("mSeason").textContent = S.season;
+}
+async function drawMatch() {
+  const seq = ++SEQ, W = D.weeks;
+  if (!W.length) { $("app").innerHTML = `<section><div class="empty">No week has started yet.</div></section>`; return; }
+  S.wi = Math.max(0, Math.min(W.length - 1, S.wi));
+  const w = W[S.wi];
+  $("app").innerHTML = `<section>
+    <div class="lab">Matchups \u00b7 projected score and who actually won</div>
+    <div class="ctl">
+      <button class="arw" id="wPrev" aria-label="Earlier week">\u2039</button>
+      <select id="wSel" aria-label="Week">${W.map((x, i) => `<option value="${i}">Week ${x.n}</option>`).join("")}</select>
+      <button class="arw" id="wNext" aria-label="Later week">\u203a</button>
+      <span class="mu" style="font-size:12px">${dlab(w.dates[0])} to ${dlab(w.dates[w.dates.length - 1])}</span>
+    </div>
+    <div class="sub" id="mSum">Adding up the saved projections...</div>
+    <div id="mRows"></div>
+    <div class="sub" id="mNote" style="margin-top:10px"></div>
+    <div class="sub" id="mSeason">${S.season ? esc(S.season) : `<button class="lnk" id="mAll">Count every finished week</button>`}</div>
+  </section>`;
+  $("wSel").value = S.wi;
+  $("wPrev").disabled = S.wi <= 0;
+  $("wNext").disabled = S.wi >= W.length - 1;
+  $("wPrev").onclick = () => { S.wi--; drawMatch(); };
+  $("wNext").onclick = () => { S.wi++; drawMatch(); };
+  $("wSel").onchange = e => { S.wi = +e.target.value; drawMatch(); };
+  if ($("mAll")) $("mAll").onclick = countSeason;
+  const R = await weekCalc(w);
+  if (seq !== SEQ || !$("mRows")) return;
+  const nm = id => esc(D.teams[id] || "Team " + id);
+  let hit = 0, tot = 0;
+  const html = R.pairs.map((m, i) => {
+    const j = judge(R, m);
+    let b = `<span class="bdg">In progress</span>`;
+    if (R.done) {
+      if (!j.pick) b = `<span class="bdg">No pick</span>`;
+      else if (!j.won) b = `<span class="bdg">Tied</span>`;
+      else { tot++; if (j.ok) hit++; b = j.ok ? `<span class="bdg ok">Called it</span>` : `<span class="bdg no">Missed</span>`; }
+    }
+    return `<div class="m"${i ? "" : ` style="border-top:0"`}><div style="flex:1;min-width:0">
+      <div><span style="font-weight:${j.pick > 0 ? 600 : 400}">${nm(m.home)} ${R.got ? Math.round(j.pa) : "\u2013"}</span> <span class="mu">projected vs</span> <span style="font-weight:${j.pick < 0 ? 600 : 400}">${R.got ? Math.round(j.pb) : "\u2013"} ${nm(m.away)}</span></div>
+      <div style="font-size:12px;color:var(--mu)">${R.done ? "Final" : "So far"} ${f1(j.sa)} to ${f1(j.sb)}${R.done && j.won ? " \u00b7 " + nm(j.won > 0 ? m.home : m.away) + " won" : ""}</div>
+    </div>${b}</div>`;
+  }).join("");
+  $("mRows").innerHTML = html || `<div class="empty">No matchups are set for this week.</div>`;
+  $("mSum").textContent = !R.pairs.length ? "" : R.done
+    ? "Projections picked the winner in " + hit + " of " + tot + " matchup" + (tot === 1 ? "" : "s") + " this week"
+    : "This week is still being played, so nothing is called yet.";
+  $("mNote").textContent = R.pairs.length ? "Projected is each team's best lineup each day, added up from the numbers saved before the games (AI first, GM model when there was no AI number). Goalies count by their chance to start. Projections were saved for " + R.got + " of " + R.n + " days." : "";
+}
+
+// ---------- start ----------
+(async () => {
+  await loadScript("espn-data.js");
+  const E = window.ESPN_DATA || {}, today = todayET();
+  const weeks = (E.periods || []).filter(p => p.dates && p.dates.length).map((p, i) => ({id: p.id, n: i + 1, dates: p.dates}));
+  if (!weeks.length) { $("app").innerHTML = `<section><div class="empty">Could not load the league data (espn-data.js). Try Refresh in a few minutes.</div></section>`; return; }
+  const days = [].concat.apply([], weeks.map(w => w.dates)).filter(d => d <= today).sort();
+  const teams = {};
+  (E.teams || []).forEach(t => { teams[t.id] = t.name; });
+  D = {E: E, days: days, teams: teams, me: E.myTeamId, weeks: weeks.filter(w => w.dates[0] <= today), today: today};
+  if (D.me == null) S.who = "teams";
+  let di = days.length - 1;
+  for (let k = 0; k < 6 && di > 0; k++) { if (await getDay(days[di])) break; di--; }
+  S.di = Math.max(0, di);
+  const ci = D.weeks.findIndex(w => w.id === E.currentPeriod);
+  S.wi = ci >= 0 ? ci : Math.max(0, D.weeks.length - 1);
+  document.querySelectorAll("#tabs button").forEach(b => {
+    b.onclick = () => {
+      S.view = b.dataset.v;
+      document.querySelectorAll("#tabs button").forEach(x => x.classList.toggle("on", x === b));
+      draw();
+    };
+  });
+  draw();
+})();
+</script>
+</body>
+</html>
+'''
+
+R62_SETUP_OLD = '<a className="gx-lk" href="ai-dashboard.html"><span>AI Lab</span><span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span></a>'
+R62_SETUP_NEW = (R62_SETUP_OLD + '\n        <a className="gx-lk" href="ai-history.html"><span>Prediction history</span>'
+                 '<span className="text-sm text-slate-500" style={{ marginLeft: 8 }}>every projection and what happened</span>'
+                 '<span className="sec-chev shut" style={{ margin: "0 4px 0 auto" }}></span></a>')
+
+
+def round62(t):
+    t = lit(t, "round 62: Prediction history link in Setup", R62_SETUP_OLD, R62_SETUP_NEW, 'href="ai-history.html"')
+    if "function SetupPage(" not in t:
+        fail("fantasy-gm.html looks damaged after round 62 (function SetupPage().")
+    return t
+
+
+_fix_before_r62 = fix
+
+
+def fix(t):
+    return round62(_fix_before_r62(t))
+
+
+_fix_ailab_before_r62 = PY_FIXES[AILAB]
+
+
+def fix_ailab62(t):
+    t = _fix_ailab_before_r62(t)
+    if 'href="ai-history.html"' in t:
+        print("(news) round 62: History link in the AI Lab: already done")
+    elif t.count('<a href="fantasy-gm.html">') == 1:
+        t = t.replace('<a href="fantasy-gm.html">', '<a href="ai-history.html">History</a>\n  <a href="fantasy-gm.html">', 1)
+        print("(news) round 62: History link in the AI Lab: updated")
+    else:
+        print("(news) round 62: History link in the AI Lab: NOT DONE, the Back link was not found. Send this log to the AI helper.")
+    return t
+
+
+PY_FIXES[AILAB] = fix_ailab62
+
+_main_before_r62 = main
+
+
+def main():
+    mode = sys.argv[1] if len(sys.argv) > 1 else "test"
+    if mode in ("test", "live"):
+        m62 = re.search(r"<script>(.*)</script>", HIST_HTML, re.S)
+        if not m62:
+            fail("round 62: the history page has no code in it.")
+        babel_ok(m62.group(1), HIST)
+    _main_before_r62()
+    if mode in ("test", "live"):
+        out62 = pathlib.Path(HIST if mode == "live" else HIST_TEST)
+        if out62.exists() and out62.read_text(encoding="utf-8") == HIST_HTML:
+            print(f"(news) round 62: {out62.name} is already up to date")
+        else:
+            out62.write_text(HIST_HTML, encoding="utf-8")
+            print(f"(news) round 62: {out62.name} written" + (" - open it to check" if mode == "test" else ""))
+
 if __name__ == "__main__":
     main()
