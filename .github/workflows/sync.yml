@@ -12,40 +12,44 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 70
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install requests
-      - name: Run sync
+      - name: Sync (repeats every 6 minutes during game hours)
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           SWID: ${{ secrets.SWID }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: python espn_sync.py
-      - name: AI learning engine (safe to fail)
-        continue-on-error: true
-        timeout-minutes: 5
-        run: python ai_engine.py
-      - name: Lines and roster tracker (safe to fail)
-        continue-on-error: true
-        timeout-minutes: 5
-        env:
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: python gm_lines.py
-      - name: Phone notifications (safe to fail)
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: python gm_notify.py
-      - name: Save results
         run: |
           git config user.name "fantasy-bot"
           git config user.email "fantasy-bot@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet || git commit -m "sync $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          start=$(date +%s)
+          fail=0
+          while true; do
+            t0=$(date +%s)
+            git pull -q --rebase -X theirs || git rebase --abort 2>/dev/null || true
+            if python espn_sync.py; then fail=0; else fail=1; echo "::warning::espn_sync.py failed"; fi
+            timeout 300 python ai_engine.py || echo "::warning::ai_engine.py failed"
+            timeout 300 python gm_lines.py || echo "::warning::gm_lines.py failed"
+            timeout 120 python gm_notify.py || echo "::warning::gm_notify.py failed"
+            git add -A
+            if ! git diff --cached --quiet; then
+              git commit -q -m "sync $(date -u +%Y-%m-%dT%H:%MZ)"
+              for i in 1 2 3 4 5; do
+                if git pull -q --rebase -X theirs && git push -q; then break; fi
+                git rebase --abort 2>/dev/null || true
+                sleep 5
+              done
+            fi
+            h=$((10#$(date -u +%H)))
+            if [ $h -ge 7 ] && [ $h -lt 16 ]; then break; fi
+            if [ $(( $(date +%s) - start )) -gt 3000 ]; then break; fi
+            left=$(( 360 - ($(date +%s) - t0) ))
+            if [ $left -gt 0 ]; then sleep $left; fi
+          done
+          exit $fail
