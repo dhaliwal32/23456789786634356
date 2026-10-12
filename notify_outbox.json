@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-04|11dd3e4df8fd",
-   "at": "2026-10-05T04:07:09Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Trevor Zegras (PHI, 4:00 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
    "k": "2026-10-04|0ee4cf1d6038",
    "at": "2026-10-05T04:27:10Z",
    "title": "Pickup: ice time jump",
@@ -5191,7 +5180,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|1e0eeb8f8500",
@@ -5224,7 +5214,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|0ecc8887df9a",
@@ -5235,7 +5226,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|c3f4e5b5f9a2",
@@ -5257,7 +5249,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|a5b5b4acd5d3",
@@ -5290,7 +5283,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|13ebc4bdcdf9",
@@ -5323,7 +5317,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|fbd142af37c4",
@@ -5367,7 +5362,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|6bbe5f14e1cb",
@@ -5389,7 +5385,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|ddc8ed4a3fdf",
@@ -5400,7 +5397,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|bd6c37068cae",
@@ -5488,7 +5486,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|0f2c4cc6b27f",
@@ -5521,7 +5520,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|dfd6cc17f184",
@@ -5543,7 +5543,8 @@
    "urgent": false,
    "sent": true,
    "via": "morning",
-   "sent_at": "2026-10-11T15:07:07Z"
+   "sent_at": "2026-10-11T15:07:07Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|a777cdb9fd3b",
@@ -5596,7 +5597,9 @@
    "text": "Pierre-Luc Dubois (WSH) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-12T04:09:33Z"
   },
   {
    "k": "2026-10-11|054be64e038f",
@@ -5636,7 +5639,9 @@
    "text": "Trevor Zegras (PHI) moved down: 1st line -> 3rd line",
    "section": "mine",
    "urgent": false,
-   "sent": false
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-12T04:09:33Z"
   },
   {
    "k": "2026-10-11|07c6ec3be06f",
@@ -5645,8 +5650,10 @@
    "text": "Victor Hedman (TB) is down 5.7 min per game lately (13.1 vs 18.8). Possible demotion - watch his role.",
    "section": "mine",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-12T03:59:34Z"
+   "sent": true,
+   "seen": "2026-10-12T03:59:34Z",
+   "via": "off",
+   "sent_at": "2026-10-12T04:09:33Z"
   },
   {
    "k": "2026-10-11|6ded748470cc",
@@ -5679,7 +5686,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|68ac122d20d9",
@@ -5690,7 +5698,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|7b0028abce7f",
@@ -5701,7 +5710,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|5d8f10c2719d",
@@ -5712,7 +5722,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|46fa68ede63c",
@@ -5723,7 +5734,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|23af59e87820",
@@ -5734,7 +5746,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|40e868e1858b",
@@ -5745,7 +5758,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|d6d3c8061417",
@@ -5756,7 +5770,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|e6d515762be2",
@@ -5778,7 +5793,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|b8f03e331bac",
@@ -5800,7 +5816,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|b7ab24e34b41",
@@ -5811,7 +5828,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|01a94cd2338b",
@@ -5822,7 +5840,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|0e4df09fd2e5",
@@ -5833,7 +5852,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|633dc8a6389c",
@@ -5844,7 +5864,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|9708d0898047",
@@ -5855,7 +5876,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:31Z"
   },
   {
    "k": "2026-10-11|eb95ff7ac32b",
@@ -5866,7 +5888,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|86e72b1cfc8a",
@@ -5877,7 +5900,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|862852ddd3bf",
@@ -5888,7 +5912,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|95302f64b56d",
@@ -5899,7 +5924,8 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:30Z"
   },
   {
    "k": "2026-10-11|7bf37c2fdf2a",
@@ -5910,7 +5936,19 @@
    "urgent": false,
    "sent": true,
    "via": "off",
-   "sent_at": "2026-10-12T03:49:28Z"
+   "sent_at": "2026-10-12T03:49:28Z",
+   "seen": "2026-10-12T04:09:31Z"
+  },
+  {
+   "k": "2026-10-11|b18ae5481244",
+   "at": "2026-10-12T04:09:30Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Sam Bennett (FLA, 10:00 AM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-12T04:09:30Z"
   }
  ],
  "sent": {
@@ -6241,6 +6279,30 @@
    "kind": "Not sent (switched off)",
    "title": "Pickup: ice time jump",
    "body": "David Jiricek (D, PHI) is playing 16.2 min per game lately, up +4.2 (PP +2.1). Likely promoted - free agent."
+  },
+  {
+   "at": "2026-10-12T04:09:30Z",
+   "kind": "Not sent (switched off)",
+   "title": "Lineup: bench player has a game",
+   "body": "Sam Bennett (FLA, 10:00 AM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them."
+  },
+  {
+   "at": "2026-10-12T04:09:33Z",
+   "kind": "Not sent (switched off)",
+   "title": "Your player: lineup change",
+   "body": "Pierre-Luc Dubois (WSH) is no longer in the lineup (was 1st line) - scratched, hurt or moved"
+  },
+  {
+   "at": "2026-10-12T04:09:33Z",
+   "kind": "Not sent (switched off)",
+   "title": "Your player's line changed",
+   "body": "Trevor Zegras (PHI) moved down: 1st line -> 3rd line"
+  },
+  {
+   "at": "2026-10-12T04:09:33Z",
+   "kind": "Not sent (switched off)",
+   "title": "Your player is losing ice time",
+   "body": "Victor Hedman (TB) is down 5.7 min per game lately (13.1 vs 18.8). Possible demotion - watch his role."
   }
  ]
 }
