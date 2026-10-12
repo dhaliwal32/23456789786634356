@@ -1,1 +1,7 @@
-gitignore __pycache__/ secrets_local.py .env .env.* *.bak *.pyc
+__pycache__/
+secrets_local.py
+.env
+.env.*
+*.bak
+*.pyc
+*.tmp
