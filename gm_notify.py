@@ -252,6 +252,171 @@ def flush(now=None):
     _save(box)
 
 
+# ---------- alert switches and a full log of what is sent (news_logos.py round 66) ----------
+KEEP_LOG = 300
+PREFS = os.path.join(HERE, "alert_prefs.json")
+GROUP_OF = {
+    "starter_is_out": "injuries", "possible_scratch": "injuries", "your_player_injury_update": "injuries",
+    "your_player_line_change": "lines", "your_player_lineup_change": "lines", "your_player_power_play_change": "lines",
+    "your_player_roster_move": "lines", "more_line_changes": "lines", "your_player_losing_ice_time": "lines",
+    "goalie_not_starting": "goalies", "goalie_not_confirmed": "goalies",
+    "pickup_new_pp1": "pickups", "pickup_ice_time_jump": "pickups", "pickup_trending": "pickups", "pickup_bigger_role": "pickups",
+}
+TITLE_KIND = [
+    ("Lineup: starter is OUT", "starter_is_out"), ("Possible scratch tonight", "possible_scratch"),
+    ("Your player: injury update", "your_player_injury_update"), ("Lineup: bench player has a game", "bench_player_has_a_game"),
+    ("Goalie not starting tonight", "goalie_not_starting"), ("Goalie not confirmed yet", "goalie_not_confirmed"),
+    ("Your player's line changed", "your_player_line_change"), ("Your player: lineup change", "your_player_lineup_change"),
+    ("Your player: power-play change", "your_player_power_play_change"), ("Your player: roster move", "your_player_roster_move"),
+    ("Your player is losing ice time", "your_player_losing_ice_time"), ("Pickup: new PP1 free agent", "pickup_new_pp1"),
+    ("Pickup: ice time jump", "pickup_ice_time_jump"), ("Pickup: trending free agent", "pickup_trending"),
+    ("Pickup idea: bigger role", "pickup_bigger_role"), ("Morning summary", "morning_summary"), ("Before puck drop", "pregame_summary"),
+]
+ORDER = ["injuries", "lines", "goalies", "pickups", "morning_summary", "pregame_summary", "bench_player_has_a_game"] + list(GROUP_OF)
+DEFAULTS = {k: True for k in ORDER}
+DEFAULTS["bench_player_has_a_game"] = False
+OFF_TXT, STALE_TXT = "Not sent (switched off)", "Not sent (no longer true)"
+_PREFS = {}
+_VIA = {"v": None, "blocked": False}
+
+
+def kind_of(title):
+    t = str(title or "")
+    if "roster/line changes" in t:
+        return "more_line_changes"
+    for start, k in TITLE_KIND:
+        if t.startswith(start):
+            return k
+    return None
+
+
+def prefs():
+    if "p" in _PREFS:
+        return _PREFS["p"]
+    p, ok = {}, True
+    if os.path.exists(PREFS):
+        try:
+            with open(PREFS, encoding="utf-8") as f:
+                p = json.load(f)
+            if not isinstance(p, dict):
+                p, ok = {}, False
+        except Exception:
+            p, ok = {}, False
+    if not ok:
+        print("(notify) alert_prefs.json could not be read - using the standard switches until it is fixed")
+    elif any(k not in p for k in ORDER):
+        out = {k: p.get(k, DEFAULTS[k]) for k in ORDER}
+        out.update({k: v for k, v in p.items() if k not in out})
+        try:
+            with open(PREFS, "w", encoding="utf-8") as f:
+                json.dump(out, f, indent=2)
+            print("(notify) alert_prefs.json now lists every alert, each with its own switch")
+        except Exception as ex:
+            print(f"(notify) could not update alert_prefs.json: {ex}")
+        p = out
+    _PREFS["p"] = p
+    return p
+
+
+def allowed(title):
+    k = kind_of(title)
+    if not k:
+        return True
+    p = prefs()
+    if p.get(k, DEFAULTS.get(k, True)) is False:
+        return False
+    g = GROUP_OF.get(k)
+    return not (g and p.get(g, True) is False)
+
+
+def _log(box, now, kind, title, body):
+    box["log"].append({"at": _iso(now), "kind": kind, "title": title, "body": body})
+
+
+_push0, _add0, _flush0 = push, add, flush
+
+
+def push(title, msg, prio="default", tags=""):
+    via = _VIA["v"]
+    if via == "summary" and not allowed(title):
+        _VIA["blocked"] = True
+        print(f"(notify) {title}: switched off, not sent")
+        return True
+    if via:
+        return _push0(title, msg, prio, tags)
+    now = datetime.now(UTC)
+    if not allowed(title):
+        box = _load()
+        _log(box, now, OFF_TXT, title, msg)
+        _save(box)
+        print(f"(notify) switched off, not sent: {title}")
+        return False
+    ok = _push0(title, msg, prio, tags)
+    if ok:
+        box = _load()
+        _log(box, now, "urgent", title, msg)
+        _save(box)
+    return ok
+
+
+def add(key, title, text, section="other", urgent=False, tags=""):
+    now = datetime.now(UTC)
+    k = f"{_day(now)}|{key}"
+    if not allowed(title):
+        box = _load()
+        if not any(i.get("k") == k for i in box["items"]):
+            box["items"].append({"k": k, "at": _iso(now), "title": title, "text": text,
+                                 "section": section if section in dict(SECTIONS) else "other", "urgent": bool(urgent),
+                                 "sent": True, "via": "off", "sent_at": _iso(now)})
+            _log(box, now, OFF_TXT, title, text)
+            _save(box)
+            print(f"(notify) switched off, not sent: {title}")
+        return "switched off"
+    _VIA["v"] = "item"
+    try:
+        res = _add0(key, title, text, section, urgent, tags)
+    finally:
+        _VIA["v"] = None
+    box = _load()
+    for i in box["items"]:
+        if i.get("k") == k:
+            i["seen"] = _iso(now)
+    _save(box)
+    return res
+
+
+def flush(now=None):
+    now = now or datetime.now(UTC)
+    box = _load()
+    cut, n = now - timedelta(minutes=50), 0
+    for i in box["items"]:
+        if i.get("sent"):
+            continue
+        if not allowed(i.get("title")):
+            i.update(sent=True, via="off", sent_at=_iso(now))
+            _log(box, now, OFF_TXT, i.get("title"), i.get("text"))
+            n += 1
+        elif i.get("section") == "lineup":
+            seen = _parse(i.get("seen") or i.get("at") or "")
+            if seen and seen < cut:
+                i.update(sent=True, via="stale", sent_at=_iso(now))
+                _log(box, now, STALE_TXT, i.get("title"), i.get("text"))
+                n += 1
+    if n:
+        _save(box)
+        print(f"(notify) {n} waiting update(s) removed: switched off, or the lineup problem is no longer there")
+    _VIA["v"], _VIA["blocked"] = "summary", False
+    try:
+        _flush0(now)
+    finally:
+        _VIA["v"] = None
+    if _VIA["blocked"]:
+        box = _load()
+        if box["log"]:
+            box["log"][-1]["kind"] = OFF_TXT
+        _save(box)
+
+
 if __name__ == "__main__":
     if "--preview" in sys.argv:
         b = _load()
