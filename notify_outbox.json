@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-04|b87a6ab1f0b0",
-   "at": "2026-10-05T01:06:57Z",
-   "title": "Your player: power-play change",
-   "text": "Bobby McMann (SEA) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
-   "k": "2026-10-04|fcd65d7c0c80",
-   "at": "2026-10-05T01:06:57Z",
-   "title": "Your player: power-play change",
-   "text": "Jared McCann (SEA) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "morning",
-   "sent_at": "2026-10-05T15:08:46Z"
-  },
-  {
    "k": "2026-10-04|a64e5ecc6192",
    "at": "2026-10-05T03:37:06Z",
    "title": "Pickup: ice time jump",
@@ -5862,6 +5840,33 @@
    "at": "2026-10-12T00:15:56Z",
    "title": "Pickup: ice time jump",
    "text": "Ryker Evans (D, SEA) is playing 21.8 min per game lately, up +3.7 (PP -0.2). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-11|86e72b1cfc8a",
+   "at": "2026-10-12T01:08:53Z",
+   "title": "Pickup: ice time jump",
+   "text": "Paul Cotter (F, VAN) is playing 15.8 min per game lately, up +4.5 (PP +0.8). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-11|862852ddd3bf",
+   "at": "2026-10-12T01:08:53Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tom Willander (D, VAN) is playing 21.0 min per game lately, up +3.4 (PP +0.1). Likely promoted - free agent.",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false
+  },
+  {
+   "k": "2026-10-11|95302f64b56d",
+   "at": "2026-10-12T01:08:53Z",
+   "title": "Pickup: ice time jump",
+   "text": "Tye Kartye (F, NYR) is playing 15.3 min per game lately, up +3.0 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
    "sent": false
