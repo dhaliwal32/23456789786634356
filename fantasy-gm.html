@@ -337,6 +337,12 @@
   .gx-wsw button:hover { border-color: var(--accent); }
   .gx-wsw button:disabled { color: var(--faint); border-color: var(--line); cursor: default; }
   .gx-wsw span { min-width: 70px; text-align: center; }
+  /* round 61 week picker (news_logos.py) */
+  .gx-wpk { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+  .gx-wpk button { width: 28px; height: 28px; border: 1px solid var(--line2); border-radius: 8px; color: var(--ink); font-size: 18px; line-height: 1; }
+  .gx-wpk button:hover { border-color: var(--accent); }
+  .gx-wpk button:disabled { color: var(--faint); border-color: var(--line); cursor: default; }
+  .gx-wpk select { height: 28px; padding: 0 4px; border-width: 1px; border-style: solid; font-size: 13px; max-width: 124px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -4557,8 +4563,8 @@ function GxHome({ s, wk, A, B }) {
   // home v34: games this matchup and the league are full width (news_logos.py)
   return (
     <>
-      <GxGamesWk s={s} wk={wk} A={A} B={B} />
-      <GxLeagueWk s={s} wk={wk} />
+      <GxGamesAny s={s} wk={wk} A={A} B={B} />{/* round 61, older marker kept: <GxGamesWk s={s} */}
+      <GxLeagueAny s={s} wk={wk} />{/* round 61, older marker kept: <GxLeagueWk s={s} */}
       <div className="grid md:grid-cols-2 gap-3">
         <GxCarry s={s} wk={wk} />
         <GxGoalies s={s} wk={wk} />
@@ -5664,6 +5670,127 @@ function GxLeagueWk({ s, wk }) {
           </div>
         );
       }) : <div className="text-sm text-slate-500" style={{ paddingTop: 6 }}>{on ? "No other matchups loaded for next week yet." : "No other matchups loaded for this week."}</div>}
+    </div>
+  );
+}
+
+// ---------- round 61: any week on two Today boxes (news_logos.py) ----------
+const gxSpan61 = (ds) => {
+  if (!ds || !ds.length) return "";
+  const a = ds[0], b = ds[ds.length - 1];
+  return mdL(a) + " to " + (fromIso(a).getMonth() === fromIso(b).getMonth() ? fromIso(b).getDate() : mdL(b));
+};
+const gxWkName61 = (s, k) => (k === s.wk ? "This week" : k === s.wk + 1 ? "Next week" : "Week " + (k + 1));
+const gxWkAt61 = (s, pick) => (pick == null ? s.wk : Math.max(0, Math.min(s.weeks.length - 1, pick)));
+const gxSwipe61 = (ref, i, go) => ({
+  onTouchStart: (e) => { const t = e.touches[0]; ref.current = [t.clientX, t.clientY]; },
+  onTouchEnd: (e) => {
+    const t0 = ref.current, t = e.changedTouches[0];
+    ref.current = null;
+    if (!t0 || (e.target.closest && e.target.closest("select, button"))) return;
+    const dx = t.clientX - t0[0], dy = t.clientY - t0[1];
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(i + (dx < 0 ? 1 : -1));
+  },
+});
+const GxWkPick = ({ s, i, go }) => (
+  <span className="gx-wpk">
+    <button type="button" aria-label="Earlier week" disabled={i <= 0} onClick={() => go(i - 1)}>{"\u2039"}</button>
+    <select aria-label="Choose a week" value={i} onChange={(e) => go(+e.target.value)}>
+      {s.weeks.map((w, k) => <option key={k} value={k}>{gxWkName61(s, k)}</option>)}
+    </select>
+    <button type="button" aria-label="Later week" disabled={i >= s.weeks.length - 1} onClick={() => go(i + 1)}>{"\u203a"}</button>
+  </span>
+);
+function GxGamesAny({ s, wk, A, B }) {
+  const K = s.blend, today = todayISO();
+  const [pick, setPick] = useState(null);
+  const touch = React.useRef(null);
+  const i = gxWkAt61(s, pick), cur = i === s.wk;
+  const go = (k) => setPick(Math.max(0, Math.min(s.weeks.length - 1, k)));
+  const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
+  const dates = w.dates || [], opp = oppOf(w, s.me) || (cur ? s.opp : null);
+  const fin = !cur && dates.length > 0 && dates[dates.length - 1] < today;
+  const N = useMemo(() => {
+    if (cur || fin || !opp || !dates.length) return null;
+    const R = (id) => weekLive(s.players.filter((p) => p.ft === id), w, K, id);
+    return [R(s.me), R(opp)];
+  }, [cur, fin, opp, w, s.players, K, window.__PMODE]);
+  const X = cur ? A : N ? N[0] : null, Y = cur ? B : N ? N[1] : null;
+  const rows = X && Y ? dates.map((dt, d) => ({ dt, a: ((X.days[d] || {}).start || []).length, b: ((Y.days[d] || {}).start || []).length })) : [];
+  const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
+  const mx = Math.max(1, Math.max.apply(null, rows.map((r) => Math.max(r.a, r.b))));
+  const live = dates.length > 0 && dates[0] <= today && dates[dates.length - 1] >= today;
+  const sa = +((w.act || {})[s.me]) || 0, sb = opp ? +((w.act || {})[opp]) || 0 : 0;
+  const sub = [opp ? "vs " + teamName(s, opp) : "", gxSpan61(dates), fin ? "final" : rows.length ? "lineup games: you " + tot("a", "") + ", them " + tot("b", "") : "", !fin && live && rows.length ? "from today " + tot("a", today) + " and " + tot("b", today) : ""].filter(Boolean).join(" \u00b7 ");
+  return (
+    <div className="gx-pn" style={{ minWidth: 0, touchAction: "pan-y" }} {...gxSwipe61(touch, i, go)}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <span className="gx-tag">{cur ? "Games this matchup" : "Games in " + (i === s.wk + 1 ? "next week" : "week " + (i + 1))}</span>
+        <GxWkPick s={s} i={i} go={go} />
+      </div>
+      <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{sub}</div>
+      {rows.length ? (
+        <div className="gx-n7 gx-gm" style={{ gridTemplateColumns: "repeat(" + rows.length + ", minmax(0,1fr))" }}>
+          {rows.map((r) => {
+            const now = r.dt === today, past = r.dt < today;
+            return (
+              <div key={r.dt} style={{ padding: "6px 0", borderRadius: 6, background: now ? "var(--accentSoft)" : "transparent" }}>
+                <div className="bars"><i style={{ height: (r.a / mx) * 64, background: "var(--accent)", opacity: past ? 0.45 : 1 }}></i><i style={{ height: (r.b / mx) * 64, background: "var(--faint)", opacity: past ? 0.45 : 1 }}></i></div>
+                <div className="text-sm" style={{ marginTop: 4 }}>{r.a} <span className="text-slate-500">{r.b}</span></div>
+                <div className={"text-xs " + (now ? "font-semibold" : "text-slate-500")}>{now ? "Today" : dayLabel(r.dt).split(",")[0]}</div>
+              </div>
+            );
+          })}
+        </div>
+      ) : fin && opp && (sa || sb) ? (
+        <div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10, paddingTop: 10, fontVariantNumeric: "tabular-nums" }}>
+            <span className="gx-stv">{f1(sa)}</span><span className="text-slate-500">to {f1(sb)}</span>
+            <span style={{ color: sa > sb ? "var(--good)" : sa < sb ? "var(--bad)" : "var(--mute)" }}>{sa > sb ? "Won by " + f1(sa - sb) : sa < sb ? "Lost by " + f1(sb - sa) : "Tied"}</span>
+          </div>
+          <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Day by day games are only kept for the current week.</div>
+        </div>
+      ) : <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>{fin ? "No result saved for this week." : opp ? "No games loaded for this week." : "The matchup for this week is not set yet."}</div>}
+    </div>
+  );
+}
+function GxLeagueAny({ s, wk }) {
+  const K = s.blend, gen = (window.ESPN_DATA || {}).generated, today = todayISO();
+  const [pick, setPick] = useState(null);
+  const touch = React.useRef(null);
+  const i = gxWkAt61(s, pick), cur = i === s.wk;
+  const go = (k) => setPick(Math.max(0, Math.min(s.weeks.length - 1, k)));
+  const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
+  const dates = w.dates || [];
+  const fin = !cur && dates.length > 0 && dates[dates.length - 1] < today;
+  const rows = useMemo(() => (w.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me).map(([a, b]) => {
+    const act = (id) => +((w.act || {})[id]) || 0;
+    if (fin) return { a, b, sa: act(a), sb: act(b) };
+    const R = (id) => weekLive(s.players.filter((p) => p.ft === id), w, K, id);
+    return { a, b, p: winProb(R(a), R(b), act(a), act(b)) };
+  }), [s.players, w, fin, K, gen, window.__PMODE]);
+  const sub = cur ? "Win chance right now" : [gxSpan61(dates), fin ? "final scores" : "projected win chance from today's rosters"].filter(Boolean).join(" \u00b7 ");
+  return (
+    <div className="gx-pn" style={{ minWidth: 0, touchAction: "pan-y" }} {...gxSwipe61(touch, i, go)}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <span className="gx-tag">Around the league</span>
+        <GxWkPick s={s} i={i} go={go} />
+      </div>
+      <div className="text-xs text-slate-500" style={{ margin: "4px 0" }}>{sub}</div>
+      {rows.length ? rows.map((r, k) => {
+        const p = fin ? (r.sa + r.sb > 0 ? r.sa / (r.sa + r.sb) : 0.5) : r.p;
+        const la = fin ? r.sa >= r.sb : p >= 0.5, close = !fin && Math.abs(p - 0.5) < 0.1;
+        const bar = (win) => (win ? "var(--good)" : "var(--bad)");
+        return (
+          <div key={r.a + "-" + r.b} className="gx-lg" style={k ? null : { borderTop: 0 }}>
+            <span className="truncate"><TL s={s} id={r.a} /></span>
+            <span className="text-right" style={{ color: la || close ? "var(--ink)" : "var(--mute)" }}>{fin ? Math.round(r.sa) : wpTxt(p)}</span>
+            <span style={{ display: "flex", height: 4, gap: 2 }}><i style={{ display: "block", width: Math.round(p * 100) + "%", background: bar(la) }}></i><i style={{ display: "block", flex: 1, background: bar(!la) }}></i></span>
+            <span style={{ color: !la || close ? "var(--ink)" : "var(--mute)" }}>{fin ? Math.round(r.sb) : wpTxt(1 - p)}</span>
+            <span className="truncate text-right"><TL s={s} id={r.b} /></span>
+          </div>
+        );
+      }) : <div className="text-sm text-slate-500" style={{ paddingTop: 6 }}>{cur ? "No other matchups loaded for this week." : "No other matchups are set for this week yet."}</div>}
     </div>
   );
 }
