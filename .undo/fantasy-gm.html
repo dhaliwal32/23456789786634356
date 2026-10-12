@@ -5225,6 +5225,9 @@ function SetupPage({ s, setS, go, sub }) {
         {row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3)}
         {row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4)}
         {row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5)}
+        {/* change 068: AI Lab links for the phone */}
+        {row("ailab", "AI Lab", "How each projection is doing", () => window.open("ai-dashboard.html", "_blank"), 6)}
+        {row("history", "Prediction history", "Every projection and what happened", () => window.open("ai-history.html", "_blank"), 7)}
       </div>
     </div>
   );
