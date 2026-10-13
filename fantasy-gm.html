@@ -380,7 +380,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1u316ku.e0egby" data-file="build/app.js">
+<meta name="gx-build" content="8fehvj.enlerx" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3037,7 +3037,7 @@ const PlanNote = ({ sP }) => <div className="w-full text-xs text-amber-600 mt-1 
 
 // ---------- round 28: goalies must be playing, player updates for My Team (news_logos.py) ----------
 // a goalie is "not playing" if he started fewer than 2 of his team's last 5 games, or is out right now
-const goalieOut = (p) => {
+const gxGoalieOut0 = (p) => { /* gx075-g */
   if (!p || p.p !== "G") return false;
   const today = todayISO();
   if (avail(p, today) === 0) return true;
@@ -3465,7 +3465,8 @@ function Pickups({ s, setS, wk }) {
   const sP = useMemo(() => planS(s), [s]);
   const plan = sP !== s;
   const wkP = useMemo(() => (plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk), [sP, wk]);
-  const M = useMemo(() => computeMoves(sP, { H, pos, q }), [sP, H, pos, q]);
+  const gxHideV = gxUseHide(); /* gx075-m */
+  const M = useMemo(() => computeMoves(sP, { H, pos, q }), [sP, H, pos, q, gxHideV]);
   const base = useMemo(() => planBase(s, sP), [sP]);
   const minGain = s.minGain ?? 3;
   const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
@@ -3506,7 +3507,7 @@ function Pickups({ s, setS, wk }) {
         <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(25); }} />
         <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(25); }} />
       </div>
-      <GxWatchPanel s={s} />
+      <GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <div className="gx-pk text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}>
@@ -3521,7 +3522,7 @@ function Pickups({ s, setS, wk }) {
               <TeamLogo t={r.f.t} size={26} />
               <div className="min-w-0">
                 <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
-                <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button></div>
+                <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button>{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); gxHide.toggle(r.f.id); }}>{gxHideSet().has(r.f.id) ? "Show again" : "Hide" /* gx075-row */}</button>{gxScratch(r.f) ? <span style={{ color: "var(--warn)" }}>{" \u00b7 not in lineup"}</span> : null}</div>
               </div>
               {spark(r.f)}
               <div className="n text-slate-500 m-hide">{M.gamesIn(r.f)}</div>
@@ -4852,11 +4853,11 @@ const gxSyncPick = (s) => {
   });
   let watch = [];
   try { watch = JSON.parse(localStorage.getItem("gm-watch") || "[]") || []; } catch (e) {}
-  return { set, keep, back, watch, theme: window.__themePref ? window.__themePref() : "auto" };
+  return { set, keep, back, watch, hide: gxHide.list() /* gx075-s1 */, theme: window.__themePref ? window.__themePref() : "auto" };
 };
 const gxSyncSig = (P) => {
   const srt = (o) => { const x = {}; Object.keys(o || {}).sort().forEach((k) => (x[k] = o[k])); return x; };
-  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), P.theme || "auto"]);
+  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), (P.hide || []).slice().sort() /* gx075-s2 */, P.theme || "auto"]);
 };
 const gxSyncApply = (st, R) => {
   const next = { ...st }, keep = new Set(R.keep || []), back = R.back || {};
@@ -4877,7 +4878,7 @@ function GxSync({ s, setS }) {
   sRef.current = s;
   useEffect(() => {
     const h = () => tick((x) => x + 1);
-    window.addEventListener("gm-watch", h); window.addEventListener("gm-theme", h);
+    window.addEventListener("gm-watch", h); window.addEventListener("gm-theme", h); window.addEventListener("gm-hide", h); /* gx075-s4 */
     return () => { window.removeEventListener("gm-watch", h); window.removeEventListener("gm-theme", h); };
   }, []);
   const hdr = (key) => ({ Authorization: "Bearer " + key, Accept: "application/vnd.github+json" });
@@ -4900,7 +4901,7 @@ function GxSync({ s, setS }) {
       if (R.at <= seen) return false;
       try { localStorage.setItem(GX_SYNC_AT, R.at); } catch (e) {}
       setS((st) => gxSyncApply(st, R));
-      if (Array.isArray(R.watch)) { try { localStorage.setItem("gm-watch", JSON.stringify(R.watch)); } catch (e) {} window.dispatchEvent(new Event("gm-watch")); }
+      if (Array.isArray(R.hide)) gxHide.set(R.hide); /* gx075-s3 */ if (Array.isArray(R.watch)) { try { localStorage.setItem("gm-watch", JSON.stringify(R.watch)); } catch (e) {} window.dispatchEvent(new Event("gm-watch")); }
       if (R.theme && window.__themePref && window.__setTheme && window.__themePref() !== R.theme) window.__setTheme(R.theme);
       return true;
     }).catch((e) => { if (key) gxSyncNote(e && e.message === "key" ? "GitHub refused the key. It needs Contents: Read and write on this repo." : "Could not reach GitHub. Trying again in 2 minutes."); return true; });
@@ -4974,6 +4975,79 @@ function GxSyncRow() {
           <button type="button" className={btn} onClick={() => (has ? off() : setEdit(true))}>{has ? "Turn off" : "Turn on"}</button>
         </span>
       )}
+    </div>
+  );
+}
+
+// ---------- change 075: hide players from pickup suggestions (install.py) ----------
+let __GXH = { raw: null, set: new Set() };
+const gxHideSet = () => {
+  let raw = "[]";
+  try { raw = localStorage.getItem("gm-hide") || "[]"; } catch (e) {}
+  if (raw !== __GXH.raw) { let a = []; try { a = JSON.parse(raw) || []; } catch (e) {} __GXH = { raw, set: new Set(a) }; }
+  return __GXH.set;
+};
+const gxHide = {
+  list: () => [...gxHideSet()],
+  set: (l) => {
+    const raw = JSON.stringify((l || []).slice().sort());
+    let old = "[]";
+    try { old = localStorage.getItem("gm-hide") || "[]"; } catch (e) {}
+    if (raw === old) return;
+    try { localStorage.setItem("gm-hide", raw); } catch (e) {}
+    window.dispatchEvent(new Event("gm-hide"));
+  },
+  toggle: (id) => { const l = gxHide.list(), i = l.indexOf(id); if (i >= 0) l.splice(i, 1); else l.push(id); gxHide.set(l); },
+};
+function gxUseHide() {
+  const [v, setV] = useState(0);
+  useEffect(() => { const h = () => setV((x) => x + 1); window.addEventListener("gm-hide", h); return () => window.removeEventListener("gm-hide", h); }, []);
+  return v;
+}
+// skaters who are healthy but not in their team's current lineup (Daily Faceoff), only when the full lineup is known
+const gxLK = (x) => nrm(x).replace(/[.'\u2019]/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+let __GXL = { L: null, m: null };
+const gxLineupSets = () => {
+  const L = window.LINES_DATA;
+  if (!L || !L.teams) return null;
+  if (__GXL.L === L && __GXL.m) return __GXL.m;
+  const m = {};
+  Object.entries(L.teams).forEach(([t, x]) => {
+    const ln = (x || {}).lines || {}, names = [];
+    ["F1", "F2", "F3", "F4", "D1", "D2", "D3"].forEach((sl) => (ln[sl] || []).forEach((n) => names.push(gxLK(n))));
+    if (names.length >= 15) m[t] = new Set(names);
+  });
+  __GXL = { L, m };
+  return m;
+};
+const gxScratch = (p) => {
+  if (!p || p.p === "G" || p.ir) return false;
+  const m = gxLineupSets(), set = m && m[p.t];
+  if (!set) return false;
+  if (avail(p, todayISO()) === 0) return false;
+  return !set.has(gxLK(p.n));
+};
+const goalieOut = (p) => gxGoalieOut0(p) || (!!p && (gxHideSet().has(p.id) || gxScratch(p)));
+function GxHiddenPanel({ s }) {
+  gxUseHide();
+  const [open, setOpen] = useState(false);
+  const K = s.blend;
+  const list = gxHide.list().map((id) => s.players.find((p) => p.id === id)).filter(Boolean);
+  if (!list.length) return null;
+  return (
+    <div className="gx-pn">
+      <button type="button" className="text-sm text-slate-500" onClick={() => setOpen(!open)}>
+        {list.length + " player" + (list.length === 1 ? "" : "s") + " hidden from suggestions \u00b7 "}<span className="text-blue-600">{open ? "Close" : "Show"}</span>
+      </button>
+      {open ? list.map((p) => (
+        <div key={p.id} className="gx-row">
+          <TeamLogo t={p.t} size={22} />
+          <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /> <span className="text-xs text-slate-500">{p.p + (p.ft !== "fa" ? " \u00b7 " + teamName(s, p.ft) : "")}</span></span>
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{f1(effAvg(p, K))}</span>
+          <button type="button" className="text-sm text-blue-600" style={{ marginLeft: 8 }} onClick={() => gxHide.toggle(p.id)}>Show again</button>
+        </div>
+      )) : null}
+      {open ? <div className="text-xs text-slate-500" style={{ marginTop: 8 }}>Hidden players also stay out of the Plan, Advice and trade ideas. Searching a name still finds them.</div> : null}
     </div>
   );
 }
