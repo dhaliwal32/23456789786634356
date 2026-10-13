@@ -8162,7 +8162,8 @@ var PlanNote = function PlanNote(_ref126) {
 
 // ---------- round 28: goalies must be playing, player updates for My Team (news_logos.py) ----------
 // a goalie is "not playing" if he started fewer than 2 of his team's last 5 games, or is out right now
-var goalieOut = function goalieOut(p) {
+var gxGoalieOut0 = function gxGoalieOut0(p) {
+  /* gx075-g */
   if (!p || p.p !== "G") return false;
   var today = todayISO();
   if (avail(p, today) === 0) return true;
@@ -9432,13 +9433,14 @@ function Pickups(_ref154) {
   var wkP = useMemo(function () {
     return plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk;
   }, [sP, wk]);
+  var gxHideV = gxUseHide(); /* gx075-m */
   var M = useMemo(function () {
     return computeMoves(sP, {
       H: H,
       pos: pos,
       q: q
     });
-  }, [sP, H, pos, q]);
+  }, [sP, H, pos, q, gxHideV]);
   var base = useMemo(function () {
     return planBase(s, sP);
   }, [sP]);
@@ -9529,6 +9531,8 @@ function Pickups(_ref154) {
     }
   })), /*#__PURE__*/React.createElement(GxWatchPanel, {
     s: s
+  }), /*#__PURE__*/React.createElement(GxHiddenPanel, {
+    s: s
   }), /*#__PURE__*/React.createElement("input", {
     className: inp + " w-full",
     placeholder: "Search any player",
@@ -9602,7 +9606,18 @@ function Pickups(_ref154) {
         e.stopPropagation();
         if (window.__QA) window.__QA.espn(r.f);
       }
-    }, "Add on ESPN"))), spark(r.f), /*#__PURE__*/React.createElement("div", {
+    }, "Add on ESPN"), " \xB7 ", /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-blue-600",
+      onClick: function onClick(e) {
+        e.stopPropagation();
+        gxHide.toggle(r.f.id);
+      }
+    }, gxHideSet().has(r.f.id) ? "Show again" : "Hide" /* gx075-row */), gxScratch(r.f) ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "var(--warn)"
+      }
+    }, " \xB7 not in lineup") : null)), spark(r.f), /*#__PURE__*/React.createElement("div", {
       className: "n text-slate-500 m-hide"
     }, M.gamesIn(r.f)), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
@@ -13246,6 +13261,7 @@ var gxSyncPick = function gxSyncPick(s) {
     keep: keep,
     back: back,
     watch: watch,
+    hide: gxHide.list() /* gx075-s1 */,
     theme: window.__themePref ? window.__themePref() : "auto"
   };
 };
@@ -13257,7 +13273,7 @@ var gxSyncSig = function gxSyncSig(P) {
     });
     return x;
   };
-  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), P.theme || "auto"]);
+  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), (P.hide || []).slice().sort() /* gx075-s2 */, P.theme || "auto"]);
 };
 var gxSyncApply = function gxSyncApply(st, R) {
   var next = {
@@ -13306,6 +13322,7 @@ function GxSync(_ref202) {
     };
     window.addEventListener("gm-watch", h);
     window.addEventListener("gm-theme", h);
+    window.addEventListener("gm-hide", h); /* gx075-s4 */
     return function () {
       window.removeEventListener("gm-watch", h);
       window.removeEventListener("gm-theme", h);
@@ -13356,6 +13373,7 @@ function GxSync(_ref202) {
       setS(function (st) {
         return gxSyncApply(st, R);
       });
+      if (Array.isArray(R.hide)) gxHide.set(R.hide); /* gx075-s3 */
       if (Array.isArray(R.watch)) {
         try {
           localStorage.setItem("gm-watch", JSON.stringify(R.watch));
@@ -13543,5 +13561,174 @@ function GxSyncRow() {
       return has ? off() : setEdit(true);
     }
   }, has ? "Turn off" : "Turn on")));
+}
+
+// ---------- change 075: hide players from pickup suggestions (install.py) ----------
+var __GXH = {
+  raw: null,
+  set: new Set()
+};
+var gxHideSet = function gxHideSet() {
+  var raw = "[]";
+  try {
+    raw = localStorage.getItem("gm-hide") || "[]";
+  } catch (e) {}
+  if (raw !== __GXH.raw) {
+    var a = [];
+    try {
+      a = JSON.parse(raw) || [];
+    } catch (e) {}
+    __GXH = {
+      raw: raw,
+      set: new Set(a)
+    };
+  }
+  return __GXH.set;
+};
+var gxHide = {
+  list: function list() {
+    return _toConsumableArray(gxHideSet());
+  },
+  set: function set(l) {
+    var raw = JSON.stringify((l || []).slice().sort());
+    var old = "[]";
+    try {
+      old = localStorage.getItem("gm-hide") || "[]";
+    } catch (e) {}
+    if (raw === old) return;
+    try {
+      localStorage.setItem("gm-hide", raw);
+    } catch (e) {}
+    window.dispatchEvent(new Event("gm-hide"));
+  },
+  toggle: function toggle(id) {
+    var l = gxHide.list(),
+      i = l.indexOf(id);
+    if (i >= 0) l.splice(i, 1);else l.push(id);
+    gxHide.set(l);
+  }
+};
+function gxUseHide() {
+  var _useState203 = useState(0),
+    _useState204 = _slicedToArray(_useState203, 2),
+    v = _useState204[0],
+    setV = _useState204[1];
+  useEffect(function () {
+    var h = function h() {
+      return setV(function (x) {
+        return x + 1;
+      });
+    };
+    window.addEventListener("gm-hide", h);
+    return function () {
+      return window.removeEventListener("gm-hide", h);
+    };
+  }, []);
+  return v;
+}
+// skaters who are healthy but not in their team's current lineup (Daily Faceoff), only when the full lineup is known
+var gxLK = function gxLK(x) {
+  return nrm(x).replace(/[.'\u2019]/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
+};
+var __GXL = {
+  L: null,
+  m: null
+};
+var gxLineupSets = function gxLineupSets() {
+  var L = window.LINES_DATA;
+  if (!L || !L.teams) return null;
+  if (__GXL.L === L && __GXL.m) return __GXL.m;
+  var m = {};
+  Object.entries(L.teams).forEach(function (_ref203) {
+    var _ref204 = _slicedToArray(_ref203, 2),
+      t = _ref204[0],
+      x = _ref204[1];
+    var ln = (x || {}).lines || {},
+      names = [];
+    ["F1", "F2", "F3", "F4", "D1", "D2", "D3"].forEach(function (sl) {
+      return (ln[sl] || []).forEach(function (n) {
+        return names.push(gxLK(n));
+      });
+    });
+    if (names.length >= 15) m[t] = new Set(names);
+  });
+  __GXL = {
+    L: L,
+    m: m
+  };
+  return m;
+};
+var gxScratch = function gxScratch(p) {
+  if (!p || p.p === "G" || p.ir) return false;
+  var m = gxLineupSets(),
+    set = m && m[p.t];
+  if (!set) return false;
+  if (avail(p, todayISO()) === 0) return false;
+  return !set.has(gxLK(p.n));
+};
+var goalieOut = function goalieOut(p) {
+  return gxGoalieOut0(p) || !!p && (gxHideSet().has(p.id) || gxScratch(p));
+};
+function GxHiddenPanel(_ref205) {
+  var s = _ref205.s;
+  gxUseHide();
+  var _useState205 = useState(false),
+    _useState206 = _slicedToArray(_useState205, 2),
+    open = _useState206[0],
+    setOpen = _useState206[1];
+  var K = s.blend;
+  var list = gxHide.list().map(function (id) {
+    return s.players.find(function (p) {
+      return p.id === id;
+    });
+  }).filter(Boolean);
+  if (!list.length) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-slate-500",
+    onClick: function onClick() {
+      return setOpen(!open);
+    }
+  }, list.length + " player" + (list.length === 1 ? "" : "s") + " hidden from suggestions \xB7 ", /*#__PURE__*/React.createElement("span", {
+    className: "text-blue-600"
+  }, open ? "Close" : "Show")), open ? list.map(function (p) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: p.id,
+      className: "gx-row"
+    }, /*#__PURE__*/React.createElement(TeamLogo, {
+      t: p.t,
+      size: 22
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "min-w-0 truncate",
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement(PN, {
+      p: p,
+      className: ""
+    }), " ", /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500"
+    }, p.p + (p.ft !== "fa" ? " \xB7 " + teamName(s, p.ft) : ""))), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontVariantNumeric: "tabular-nums"
+      }
+    }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-sm text-blue-600",
+      style: {
+        marginLeft: 8
+      },
+      onClick: function onClick() {
+        return gxHide.toggle(p.id);
+      }
+    }, "Show again"));
+  }) : null, open ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 8
+    }
+  }, "Hidden players also stay out of the Plan, Advice and trade ideas. Searching a name still finds them.") : null);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
