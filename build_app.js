@@ -10,10 +10,16 @@ const META = /[ \t]*<meta name="gx-build"[^>]*>\n?/g;
 const log = [];
 const say = (x) => { console.log(x); log.push("- " + x.replace(/^\(build\) /, "")); };
 
-const tr = (code, name, presets) => B.transform(code, { filename: name, presets }).code;
+// change 076: classic React output (Babel 8 would otherwise add imports a browser cannot load),
+// and stop before writing anything if the output still needs imports, so the app keeps working.
+const tr = (code, name, presets) => {
+  const out = B.transform(code, { filename: name, presets: presets.map((p) => (p === "react" ? ["react", { runtime: "classic" }] : p)) }).code;
+  if (/^\s*import\s|require\(["']react/m.test(out)) throw new Error(name + ": the build would need imports, so the old build was kept");
+  return out;
+};
 // same settings the browser used, so the app behaves exactly as before
 function trApp(code, name) {
-  try { return tr(code, name, ["react", "es2015"]); }
+  try { return tr(code, name, ["react"]); } // change 076: es2015 removed, it was dropping {...x, [k]: v}
   catch (e) {
     if (!/preset|es2015/i.test(String(e.message))) throw e;
     say("(build) es2015 setting not available, using react only");
