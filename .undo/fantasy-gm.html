@@ -380,7 +380,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="8fehvj.1b0q5hm" data-file="build/app.js">
+<meta name="gx-build" content="1mt5fdz.oc57af" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2714,8 +2714,11 @@ function TradeBuilder({ s, initPartner }) {
     const rb = pos(leagueTable(s)), ra = pos(t2);
     const sN = nextWkS(s), hasOpp = sN && oppOf(sN.weeks[sN.wk] || {}, s.me);
     const wb = hasOpp ? winChance(sN) : null, wa = hasOpp ? winChance(sN, after) : null;
+    // change 077: this week's win chance too, while the week still has days to play
+    const w77 = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone), on77 = oppOf(w77, s.me) && (w77.done || 0) < (w77.dates || []).length;
+    const tb = on77 ? winChance(s) : null, ta = on77 ? winChance(s, after) : null;
     const c = cnt(after);
-    return { my, th, rb, ra, wb, wa, short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
+    return { my, th, rb, ra, wb, wa, tb, ta, short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
   }, [key, s.players, s.wk, K, window.__PMODE]);
   const sum = (l, f) => l.reduce((a, p) => a + f(p), 0);
   const peG = sum(Gv, pe), peR = sum(Rv, pe), theyThink = peR > 0 ? (peG - peR) / peR : 0;
@@ -2798,7 +2801,16 @@ function TradeBuilder({ s, initPartner }) {
           <div className="gx-stg">
             <div className="gx-stc"><div className="text-xs text-slate-500">Your lineup</div><div className="gx-stv" style={{ color: res.my >= 0 ? "var(--good)" : "var(--bad)" }}>{(res.my >= 0 ? "+" : "") + Math.round(res.my)}</div><div className="text-xs text-slate-500">points, rest of season</div></div>
             <div className="gx-stc"><div className="text-xs text-slate-500">Their lineup</div><div className="gx-stv" style={{ color: res.th >= 0 ? "var(--good)" : "var(--bad)" }}>{(res.th >= 0 ? "+" : "") + Math.round(res.th)}</div><div className="text-xs text-slate-500">points, rest of season</div></div>
-            <div className="gx-stc"><div className="text-xs text-slate-500">Your league rank</div><div className="gx-stv">{arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)}</div><div className="text-xs text-slate-500">{grp && grp[1] ? GN[grp[0]] + " " + ordN(res.rb[grp[0]]) + " \u2192 " + ordN(res.ra[grp[0]]) : "position ranks unchanged"}</div></div>
+            <div className="gx-stc"><div className="text-xs text-slate-500">Your league rank</div><div className="gx-stv">{arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)}</div><div className="text-xs text-slate-500">by team strength</div></div>
+            <div className="gx-stc" data-c77="pos"><div className="text-xs text-slate-500">Position ranks</div>
+              {["F", "D", "G"].map((k) => { const b = res.rb[k], a = res.ra[k], f = (v) => (v ? ordN(v) : "\u2013"); return (
+                <div key={k} style={{ display: "flex", alignItems: "baseline", gap: 6, fontSize: 15, fontWeight: 600, fontVariantNumeric: "tabular-nums", marginTop: 2 }}>
+                  <span className="text-xs text-slate-500" style={{ width: 74, flexShrink: 0, fontWeight: 400 }}>{GN[k][0].toUpperCase() + GN[k].slice(1)}</span>
+                  {b === a ? <><span>{f(b)}</span><span className="text-xs text-slate-500" style={{ fontWeight: 400 }}>same</span></> : <span>{arrow(b, a, f, (b || 0) - (a || 0))}</span>}
+                </div>
+              ); })}
+            </div>
+            {res.tb != null && res.ta != null ? <div className="gx-stc" data-c77="week"><div className="text-xs text-slate-500">This week</div><div className="gx-stv">{arrow(res.tb, res.ta, wpTxt, Math.round(res.ta * 100) - Math.round(res.tb * 100))}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
             {res.wb != null && res.wa != null ? <div className="gx-stc"><div className="text-xs text-slate-500">Next week</div><div className="gx-stv">{arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
           </div>
           {res.short.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--bad)" }}>This leaves you short at {res.short.map((k) => GN[k]).join(" and ")}.</div> : null}
