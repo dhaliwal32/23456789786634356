@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-08|c562d39be0b6",
-   "at": "2026-10-08T21:45:17Z",
-   "title": "Goalie not confirmed yet",
-   "text": "Kevin Lankinen (VAN, 4:00 PM) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-08T21:45:17Z"
-  },
-  {
    "k": "2026-10-08|c374a5d7410c",
    "at": "2026-10-08T23:05:40Z",
    "title": "Pickup idea: bigger role",
@@ -6659,7 +6648,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6671,7 +6660,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6683,7 +6672,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6695,7 +6684,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6707,7 +6696,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6719,7 +6708,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6731,7 +6720,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6743,7 +6732,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6755,7 +6744,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6767,7 +6756,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6779,7 +6768,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6791,7 +6780,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6803,7 +6792,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:36Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6815,7 +6804,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6827,7 +6816,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6839,7 +6828,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6851,7 +6840,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6863,7 +6852,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6875,7 +6864,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6887,7 +6876,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6899,7 +6888,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6911,7 +6900,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6923,7 +6912,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6935,7 +6924,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6947,7 +6936,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6959,7 +6948,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6971,7 +6960,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6983,7 +6972,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -6995,7 +6984,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7007,7 +6996,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7019,7 +7008,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7031,7 +7020,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7043,7 +7032,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7055,7 +7044,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7067,7 +7056,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7079,7 +7068,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7091,7 +7080,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7103,7 +7092,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7115,7 +7104,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:36Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7127,7 +7116,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:37Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7139,7 +7128,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:37Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7151,7 +7140,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-15T21:39:37Z",
+   "seen": "2026-10-15T21:45:37Z",
    "via": "morning",
    "sent_at": "2026-10-15T15:05:03Z"
   },
@@ -7247,6 +7236,18 @@
    "urgent": false,
    "sent": false,
    "seen": "2026-10-15T19:19:47Z"
+  },
+  {
+   "k": "2026-10-15|1a96e2986f16",
+   "at": "2026-10-15T21:45:36Z",
+   "title": "Goalie not confirmed yet",
+   "text": "Ukko-Pekka Luukkonen (BUF, 4:00 PM) still isn't confirmed as tonight's starter. Check before puck drop and have a backup ready.",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-15T21:45:36Z",
+   "seen": "2026-10-15T21:45:36Z"
   }
  ],
  "sent": {
