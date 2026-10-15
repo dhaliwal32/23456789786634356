@@ -5554,6 +5554,11 @@ function TradeBuilder({
       hasOpp = sN && oppOf(sN.weeks[sN.wk] || {}, s.me);
     const wb = hasOpp ? winChance(sN) : null,
       wa = hasOpp ? winChance(sN, after) : null;
+    // change 077: this week's win chance too, while the week still has days to play
+    const w77 = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone),
+      on77 = oppOf(w77, s.me) && (w77.done || 0) < (w77.dates || []).length;
+    const tb = on77 ? winChance(s) : null,
+      ta = on77 ? winChance(s, after) : null;
     const c = cnt(after);
     return {
       my,
@@ -5562,6 +5567,8 @@ function TradeBuilder({
       ra,
       wb,
       wa,
+      tb,
+      ta,
       short: ["F", "D", "G"].filter(k => c[k] < mins[k])
     };
   }, [key, s.players, s.wk, K, window.__PMODE]);
@@ -5880,7 +5887,49 @@ function TradeBuilder({
     className: "gx-stv"
   }, arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, grp && grp[1] ? GN[grp[0]] + " " + ordN(res.rb[grp[0]]) + " \u2192 " + ordN(res.ra[grp[0]]) : "position ranks unchanged")), res.wb != null && res.wa != null ? /*#__PURE__*/React.createElement("div", {
+  }, "by team strength")), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc",
+    "data-c77": "pos"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Position ranks"), ["F", "D", "G"].map(k => {
+    const b = res.rb[k],
+      a = res.ra[k],
+      f = v => v ? ordN(v) : "\u2013";
+    return /*#__PURE__*/React.createElement("div", {
+      key: k,
+      style: {
+        display: "flex",
+        alignItems: "baseline",
+        gap: 6,
+        fontSize: 15,
+        fontWeight: 600,
+        fontVariantNumeric: "tabular-nums",
+        marginTop: 2
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500",
+      style: {
+        width: 74,
+        flexShrink: 0,
+        fontWeight: 400
+      }
+    }, GN[k][0].toUpperCase() + GN[k].slice(1)), b === a ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", null, f(b)), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500",
+      style: {
+        fontWeight: 400
+      }
+    }, "same")) : /*#__PURE__*/React.createElement("span", null, arrow(b, a, f, (b || 0) - (a || 0))));
+  })), res.tb != null && res.ta != null ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc",
+    "data-c77": "week"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "This week"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stv"
+  }, arrow(res.tb, res.ta, wpTxt, Math.round(res.ta * 100) - Math.round(res.tb * 100))), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "chance to win")) : null, res.wb != null && res.wa != null ? /*#__PURE__*/React.createElement("div", {
     className: "gx-stc"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
