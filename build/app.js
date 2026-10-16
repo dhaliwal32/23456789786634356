@@ -1896,6 +1896,8 @@ function PlayoffPlanner({
     });
     return v;
   };
+  const [sp79, setSp79] = useState("v"); // change 079: tap a heading to sort
+  const pk79 = x => sp79[0] === "w" ? x.per[+sp79.slice(1)] || 0 : sp79 === "avg" ? effAvg(x.p, K) : x[sp79] || 0;
   const rows = useMemo(() => s.players.filter(p => (who === "all" || (who === "fa" ? p.ft === "fa" : who === "mine" ? p.ft === s.me : p.ft !== "fa" && p.ft !== s.me)) && (pos === "all" || p.p === pos) && p.n.toLowerCase().includes(q.toLowerCase()) && p.prob > 0).map(p => {
     const v = val(p);
     const r = tg[p.t] || {
@@ -1911,7 +1913,7 @@ function PlayoffPlanner({
       per: r.per,
       bonus: (r.tot - avgGames) * effAvg(p, K) * p.prob
     };
-  }).sort((a, b) => b.v - a.v).slice(0, 100), [s.players, who, pos, q, st, nW, K]);
+  }).sort((a, b) => pk79(b) - pk79(a) || b.v - a.v).slice(0, 100), [s.players, who, pos, q, st, nW, K, sp79]);
   const league = useMemo(() => s.teams.map(t => {
     const r = s.players.filter(p => p.ft === t.id);
     return {
@@ -2016,10 +2018,18 @@ function PlayoffPlanner({
     className: "w-full text-sm"
   }, /*#__PURE__*/React.createElement("thead", {
     className: "text-left"
-  }, /*#__PURE__*/React.createElement("tr", null, ["Player", "", "Owner", ...weeks.map((w, i) => `Wk ${st + i + 1}`), "Games", "Light", "Avg", "Playoff pts", "Sched bonus"].map((h, i) => /*#__PURE__*/React.createElement("th", {
-    key: i,
-    className: "px-2 py-2"
-  }, h)))), /*#__PURE__*/React.createElement("tbody", null, rows.map(({
+  }, /*#__PURE__*/React.createElement("tr", null, ["Player", "", "Owner", ...weeks.map((w, i) => `Wk ${st + i + 1}`), "Games", "Light", "Avg", "Playoff pts", "Sched bonus"].map((h, i) => {
+    const k = i < 3 ? null : i < 3 + weeks.length ? "w" + (i - 3) : ["g", "off", "avg", "v", "bonus"][i - 3 - weeks.length];
+    return /*#__PURE__*/React.createElement("th", {
+      key: i,
+      className: "px-2 py-2"
+    }, k ? /*#__PURE__*/React.createElement(GxSH, {
+      k: k,
+      cur: sp79,
+      set: setSp79,
+      def: "v"
+    }, h) : h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(({
     p,
     v,
     g,
@@ -4032,8 +4042,9 @@ function MyTeam({
     next: nextG,
     sea: p => p.gp ? p.tot / p.gp : -99,
     pg: pv,
-    rk: p => -(rankOf[p.id] || 9999)
-  }[sort];
+    rk: p => -(rankOf[p.id] || 9999),
+    l5: p => gxL5v(hist[String(p.id).slice(1)])
+  }[sort]; // change 079: Last 5 sorts too
   const grp = k => roster.filter(p => !p.ir && p.p === k).sort((a, b) => keyFn(b) - keyFn(a));
   const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter(p => p.ir)]].filter(x => x[1].length);
   const healthy = roster.filter(p => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
@@ -4177,9 +4188,7 @@ function MyTeam({
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     className: "gx-ro gx-roh"
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Last 5"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -7645,7 +7654,23 @@ function Pickups({
   const base = useMemo(() => planBase(s, sP), [sP]);
   const minGain = s.minGain ?? 3;
   const all = q ? M.res : M.res.filter(r => r.gain >= minGain);
-  const rows = all.slice(0, limit);
+  // change 079: sort the whole list by any heading before it is cut to the first rows
+  const [srt79, setSrt79] = useState("add");
+  const wAll79 = useMemo(() => {
+    const o = {};
+    if (srt79 !== "win" || base == null) return o;
+    all.slice(0, 150).forEach(r => {
+      o[r.f.id] = winChance(sP, afterMove(sP, r.f, r.d));
+    });
+    return o;
+  }, [M, srt79, base]);
+  const key79 = {
+    l5: r => gxL5v(hist[String(r.f.id).slice(1)]),
+    g: r => M.gamesIn(r.f),
+    x: r => effAvg(r.f, K),
+    win: r => wAll79[r.f.id] != null ? wAll79[r.f.id] : -1
+  }[srt79];
+  const rows = (key79 ? [...all].sort((a, b) => key79(b) - key79(a) || b.gain - a.gain) : all).slice(0, limit);
   const wins = useMemo(() => {
     const o = {};
     if (base == null) return o;
@@ -7653,8 +7678,8 @@ function Pickups({
       o[r.f.id] = winChance(sP, afterMove(sP, r.f, r.d));
     });
     return o;
-  }, [M, limit, base]);
-  const ids = rows.map(r => String(r.f.id).slice(1)).join(",");
+  }, [M, limit, base, srt79, wAll79]);
+  const ids = (srt79 === "l5" ? all.slice(0, 150) : rows).map(r => String(r.f.id).slice(1)).join(",");
   useEffect(() => {
     let dead = false;
     if (!ids) return;
@@ -7735,16 +7760,49 @@ function Pickups({
       borderTop: 0,
       paddingTop: 0
     }
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Last 5"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Games"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Expected"), /*#__PURE__*/React.createElement("span", {
-    className: "n"
-  }, "Adds"), /*#__PURE__*/React.createElement("span", {
-    className: "n"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)), /*#__PURE__*/React.createElement(GxSH, {
+    k: "l5",
+    cur: srt79,
+    set: v => {
+      setSrt79(v);
+      setLimit(25);
+    },
+    def: "add",
+    cls: "m-hide"
+  }, "Last 5"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "g",
+    cur: srt79,
+    set: v => {
+      setSrt79(v);
+      setLimit(25);
+    },
+    def: "add",
+    cls: "m-hide"
+  }, "Games"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "x",
+    cur: srt79,
+    set: v => {
+      setSrt79(v);
+      setLimit(25);
+    },
+    def: "add",
+    cls: "m-hide"
+  }, "Expected"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "add",
+    cur: srt79,
+    set: v => {
+      setSrt79(v);
+      setLimit(25);
+    },
+    def: "add"
+  }, "Adds"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "win",
+    cur: srt79,
+    set: v => {
+      setSrt79(v);
+      setLimit(25);
+    },
+    def: "add"
   }, "Win")), rows.length ? rows.map(r => {
     const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0,
       tg = shortTag(r.f, K),
@@ -8417,7 +8475,8 @@ function LeaguePage({
   }, [s.players, s.weeks, s.wk, s.blend, window.__PMODE]);
   const wins = x => x.rec.w + x.rec.t / 2;
   const stand = [...T.rows].sort((a, b) => wins(b) - wins(a) || b.rec.pf - a.rec.pf || b.strength - a.strength);
-  const list = by === "st" ? stand : T.rows;
+  // change 079: Points and Playoffs headings sort too
+  const list = by === "st" ? stand : by === "pf" ? [...T.rows].sort((a, b) => b.rec.pf - a.rec.pf || b.strength - a.strength) : by === "po" ? [...T.rows].sort((a, b) => (sim && sim.odds[b.t.id] || 0) - (sim && sim.odds[a.t.id] || 0) || b.strength - a.strength) : T.rows;
   const cut = sim ? sim.cut : 6;
   const myOpp = oppOf(wk, s.me);
   const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter(p => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter(p => p[0] && p[1]);
@@ -8464,14 +8523,28 @@ function LeaguePage({
       borderTop: 0,
       paddingTop: 0
     }
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", {
-    className: "n"
-  }, "Record"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Points"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Strength"), /*#__PURE__*/React.createElement("span", {
-    className: "n"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement(GxSH, {
+    k: "st",
+    cur: by,
+    set: setBy,
+    def: "st"
+  }, "Record"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "pf",
+    cur: by,
+    set: setBy,
+    def: "st",
+    cls: "m-hide"
+  }, "Points"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "pw",
+    cur: by,
+    set: setBy,
+    def: "st",
+    cls: "m-hide"
+  }, "Strength"), /*#__PURE__*/React.createElement(GxSH, {
+    k: "po",
+    cur: by,
+    set: setBy,
+    def: "st"
   }, "Playoffs")), list.map((x, i) => {
     const me = x.t.id === s.me,
       od = sim ? sim.odds[x.t.id] : null;
@@ -9569,8 +9642,9 @@ function GxRosterTable({
     next: nextG,
     sea: p => p.gp ? p.tot / p.gp : -99,
     pg: pv,
-    rk: p => -(rankOf[p.id] || 9999)
-  }[sort];
+    rk: p => -(rankOf[p.id] || 9999),
+    l5: p => gxL5v(hist[String(p.id).slice(1)])
+  }[sort]; // change 079: Last 5 sorts too
   const grp = k => roster.filter(p => !p.ir && p.p === k).sort((a, b) => keyFn(b) - keyFn(a));
   const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter(p => p.ir)]].filter(x => x[1].length);
   const HB = (k, l, cls) => /*#__PURE__*/React.createElement("button", {
@@ -9659,9 +9733,7 @@ function GxRosterTable({
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     className: "gx-ro gx-roh"
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "Last 5"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -11224,7 +11296,7 @@ function GxRankings({
     rk: rank[p.id],
     e: pv(p),
     sf: p.gp ? p.tot / p.gp : null
-  })).sort((a, b) => sort === "exp" ? a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0));
+  })).sort((a, b) => sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0));
   const shown = rows.slice(0, n);
   const stTag = p => p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "";
   const owner = p => p.ft === "fa" ? /*#__PURE__*/React.createElement("span", {
@@ -11292,9 +11364,7 @@ function GxRankings({
     className: "gx-rk gx-rkh"
   }, /*#__PURE__*/React.createElement("span", null, "Rank"), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", {
     className: "m-hide"
-  }, "Fantasy team"), /*#__PURE__*/React.createElement("span", {
-    className: "n m-hide"
-  }, "GP"), HB("sf", "So far"), HB("exp", "Expected")), shown.map(({
+  }, "Fantasy team"), HB("gp", "GP", "m-hide"), HB("sf", "So far"), HB("exp", "Expected")), shown.map(({
     p,
     rk,
     e,
@@ -11367,4 +11437,26 @@ function GxRankings({
     }
   }, sort === "tot" ? "Back to rank order" : "Sort by season total"))));
 }
+// ---------- change 079: tap a heading to sort (install.py) ----------
+// first tap: highest first; tap the same heading again: back to the normal order
+const GxSH = ({
+  k,
+  cur,
+  set,
+  def,
+  cls,
+  children
+}) => /*#__PURE__*/React.createElement("button", {
+  type: "button",
+  className: "n gx-sh " + (cls || "") + (cur === k ? " on" : ""),
+  title: "Tap to sort, highest first",
+  onClick: e => {
+    e.stopPropagation();
+    set(cur === k ? def : k);
+  }
+}, children);
+const gxL5v = h => {
+  const a = (h || []).map(x => typeof x === "number" ? x : x && x.v).filter(x => x != null);
+  return a.length ? a.reduce((s, x) => s + x, 0) / a.length : -99;
+};
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
