@@ -312,9 +312,9 @@
     const f = ctx.fpOf(k, g), v = ctx.useThis ? f.cur : f.last, pg = v && v[1] ? v[0] / v[1] : null;
     const rec = p ? H.sigOf(p).rec : null, base = p ? H.effAvg(p, K) : 0, fr = rec && rec.gp >= 3 && base > 0 ? rec.ppg / base : null;
     const tone = fr == null ? "" : fr >= 1.25 ? "lt-up" : fr <= 0.7 ? "lt-dn" : "";
-    const w = ctx.where[k + "|" + t] || {}, ch = mode === "pp" ? null : ctx.latestES[k + "|" + t];
+    const w = ctx.where[k + "|" + t] || {}, ch = mode !== "es" ? null : ctx.latestES[k + "|" + t]; /* change 080 */
     const bits = [];
-    if (mode !== "pp" && w.pp) bits.push(w.pp);
+    if (mode === "es" && w.pp) bits.push(w.pp);
     if (ch && ch.type === "line" && ch.from) bits.push((ch.dir === "up" ? "up from " : "down from ") + (SHORT[ch.from] || ch.from));
     if (ch && ch.type === "lineup" && ch.dir === "in") bits.push("new in lineup");
     const hurt = p && p.status && p.status !== "ACTIVE";
@@ -353,6 +353,15 @@
       const all5 = [...fw, ...df], ppc = (n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pp", sl + n);
       return <div><div className="lt-ppu">{all5.slice(0, 3).map(ppc)}</div>{all5.length > 3 ? <div className="lt-ppd">{all5.slice(3).map(ppc)}</div> : null}</div>;
     };
+    // change 080: a penalty-kill unit, forwards on top and defence below
+    const pkUnit = (sl) => {
+      const arr = ln[sl] || [];
+      if (!arr.length) return <div className="lt-msg">Not available.</div>;
+      const fw = arr.filter((n) => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F")), df = arr.filter((n) => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
+      const pkc = (n) => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pk", sl + n);
+      return <div>{fw.length ? <div className="lt-ppd" style={{ marginTop: 0 }}>{fw.map(pkc)}</div> : null}{df.length ? <div className="lt-ppd">{df.map(pkc)}</div> : null}</div>;
+    };
+    const hasPK = (ln.PK1 || []).length || (ln.PK2 || []).length;
     return (
       <div>
         <div className="lt-rink">
@@ -371,6 +380,7 @@
         {unit("PP1")}
         <div className="lt-sec">Power play 2</div>
         {unit("PP2")}
+        {hasPK ? <React.Fragment><div className="lt-sec">Penalty kill 1</div>{pkUnit("PK1")}<div className="lt-sec">Penalty kill 2</div>{pkUnit("PK2")}</React.Fragment> : null}
         {chg.length ? (
           <details className="lt-how"><summary>{chg.length} recent change{chg.length > 1 ? "s" : ""}</summary>
             {chg.map((x) => <Row key={x.c.id} x={x} s={s} H={H} onPick={onPickChange} dim />)}

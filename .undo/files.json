@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_lines.py": true,
+  "lines-tab.js": true
  },
  "changes": [
-  "79.py"
+  "080-penalty-kill.py"
  ]
 }

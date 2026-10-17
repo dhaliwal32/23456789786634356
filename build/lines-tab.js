@@ -596,9 +596,9 @@
       fr = rec && rec.gp >= 3 && base > 0 ? rec.ppg / base : null;
     const tone = fr == null ? "" : fr >= 1.25 ? "lt-up" : fr <= 0.7 ? "lt-dn" : "";
     const w = ctx.where[k + "|" + t] || {},
-      ch = mode === "pp" ? null : ctx.latestES[k + "|" + t];
+      ch = mode !== "es" ? null : ctx.latestES[k + "|" + t]; /* change 080 */
     const bits = [];
-    if (mode !== "pp" && w.pp) bits.push(w.pp);
+    if (mode === "es" && w.pp) bits.push(w.pp);
     if (ch && ch.type === "line" && ch.from) bits.push((ch.dir === "up" ? "up from " : "down from ") + (SHORT[ch.from] || ch.from));
     if (ch && ch.type === "lineup" && ch.dir === "in") bits.push("new in lineup");
     const hurt = p && p.status && p.status !== "ACTIVE";
@@ -702,6 +702,25 @@
         className: "lt-ppd"
       }, all5.slice(3).map(ppc)) : null);
     };
+    // change 080: a penalty-kill unit, forwards on top and defence below
+    const pkUnit = sl => {
+      const arr = ln[sl] || [];
+      if (!arr.length) return /*#__PURE__*/React.createElement("div", {
+        className: "lt-msg"
+      }, "Not available.");
+      const fw = arr.filter(n => gOf(n) !== "D").sort((a, b) => val(b, "F") - val(a, "F")),
+        df = arr.filter(n => gOf(n) === "D").sort((a, b) => val(b, "D") - val(a, "D"));
+      const pkc = n => card(n, gOf(n), gOf(n) === "D" ? "D" : "F", "pk", sl + n);
+      return /*#__PURE__*/React.createElement("div", null, fw.length ? /*#__PURE__*/React.createElement("div", {
+        className: "lt-ppd",
+        style: {
+          marginTop: 0
+        }
+      }, fw.map(pkc)) : null, df.length ? /*#__PURE__*/React.createElement("div", {
+        className: "lt-ppd"
+      }, df.map(pkc)) : null);
+    };
+    const hasPK = (ln.PK1 || []).length || (ln.PK2 || []).length;
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "lt-rink"
     }, /*#__PURE__*/React.createElement("div", {
@@ -728,7 +747,11 @@
       className: "lt-sec"
     }, "Power play 1"), unit("PP1"), /*#__PURE__*/React.createElement("div", {
       className: "lt-sec"
-    }, "Power play 2"), unit("PP2"), chg.length ? /*#__PURE__*/React.createElement("details", {
+    }, "Power play 2"), unit("PP2"), hasPK ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "lt-sec"
+    }, "Penalty kill 1"), pkUnit("PK1"), /*#__PURE__*/React.createElement("div", {
+      className: "lt-sec"
+    }, "Penalty kill 2"), pkUnit("PK2")) : null, chg.length ? /*#__PURE__*/React.createElement("details", {
       className: "lt-how"
     }, /*#__PURE__*/React.createElement("summary", null, chg.length, " recent change", chg.length > 1 ? "s" : ""), chg.map(x => /*#__PURE__*/React.createElement(Row, {
       key: x.c.id,
