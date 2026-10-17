@@ -58,7 +58,7 @@ QUIET_START, QUIET_END = 23, 7
 
 NHL_TRI = {"LA": "LAK", "NJ": "NJD", "SJ": "SJS", "TB": "TBL"}
 ES = ["F1", "F2", "F3", "F4", "D1", "D2", "D3"]
-SLOTS = ES + ["PP1", "PP2", "G"]
+SLOTS = ES + ["PP1", "PP2", "PK1", "PK2", "G"]  # change 080: penalty kill
 RANK = {"F1": 1, "F2": 2, "F3": 3, "F4": 4, "D1": 1, "D2": 2, "D3": 3}
 LABEL = {"F1": "1st line", "F2": "2nd line", "F3": "3rd line", "F4": "4th line",
          "D1": "top pair", "D2": "2nd pair", "D3": "3rd pair", "PP1": "PP1", "PP2": "PP2", "G": "goalie"}
@@ -197,6 +197,14 @@ def read_team(t):
     g = {n for n in g if norm(n) not in used}
     if 1 <= len(g) <= 3:
         out["G"] = sorted(g)
+    # change 080: penalty-kill units (pk1, pk2) from the same Daily Faceoff page
+    try:
+        for gi in ("pk1", "pk2"):
+            m = (DFPOS.get(t) or {}).get(gi) or {}
+            if 3 <= len(m) <= 6:
+                out[gi.upper()] = sorted(m)
+    except Exception:
+        pass
     return out
 
 
