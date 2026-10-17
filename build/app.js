@@ -5572,8 +5572,11 @@ function TradeBuilder({
       ...p,
       ir: false
     } : p); // round 59: injured players count from their return date, for both teams
-    const my = horizonTotal(live59(after), s, nR) - horizonTotal(live59(mine), s, nR),
-      th = horizonTotal(live59(thAfter), s, nR) - horizonTotal(live59(theirs), s, nR);
+    const tD81 = gxTradeDay(),
+      myT = gxTimed(mine, after, tD81),
+      thT = gxTimed(theirs, thAfter, tD81); // change 081
+    const my = horizonTotal(live59(myT), s, nR) - horizonTotal(live59(mine), s, nR),
+      th = horizonTotal(live59(thT), s, nR) - horizonTotal(live59(theirs), s, nR);
     const G = new Set(give),
       T = new Set(get),
       A = new Set(got.map(f => f.id));
@@ -5602,12 +5605,12 @@ function TradeBuilder({
     const sN = nextWkS(s),
       hasOpp = sN && oppOf(sN.weeks[sN.wk] || {}, s.me);
     const wb = hasOpp ? winChance(sN) : null,
-      wa = hasOpp ? winChance(sN, after) : null;
+      wa = hasOpp ? winChance(sN, myT) : null; /* change 081 */
     // change 077: this week's win chance too, while the week still has days to play
     const w77 = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone),
       on77 = oppOf(w77, s.me) && (w77.done || 0) < (w77.dates || []).length;
     const tb = on77 ? winChance(s) : null,
-      ta = on77 ? winChance(s, after) : null;
+      ta = on77 ? winChance(s, myT) : null; /* change 081 */
     const c = cnt(after);
     return {
       my,
@@ -5998,7 +6001,7 @@ function TradeBuilder({
     style: {
       marginTop: 10
     }
-  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : ""))) : /*#__PURE__*/React.createElement("div", {
+  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : ""))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "Pick at least one player on each side to see the result."), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
@@ -11458,5 +11461,20 @@ const GxSH = ({
 const gxL5v = h => {
   const a = (h || []).map(x => typeof x === "number" ? x : x && x.v).filter(x => x != null);
   return a.length ? a.reduce((s, x) => s + x, 0) / a.length : -99;
+};
+// ---------- change 081: trades take 3 days to go through (install.py) ----------
+const GX_TRADE_DAYS = 3;
+const gxTradeDay = () => addDays(todayISO(), GX_TRADE_DAYS);
+// a roster that keeps its old players until the trade day and has the new ones from that day on
+const gxTimed = (before, after, day) => {
+  const was = new Set(before.map(p => p.id)),
+    now = new Set(after.map(p => p.id));
+  return before.filter(p => !now.has(p.id)).map(p => ({
+    ...p,
+    untilD: day
+  })).concat(after.map(p => was.has(p.id) ? p : {
+    ...p,
+    fromD: day
+  }));
 };
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
