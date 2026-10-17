@@ -5447,6 +5447,7 @@ function TradeBuilder({
   const [side, setSide] = useState("me");
   const [dropSel, setDropSel] = useState([]);
   const [dropAll, setDropAll] = useState(false);
+  const [tm82, setTm82] = useState(null); // change 082: projection for this page only
   const nR = s.weeks.length - s.wk;
   const mins = {
     F: s.minF ?? 10,
@@ -5556,7 +5557,8 @@ function TradeBuilder({
     });
   }
   const key = [partner, give.join(), get.join(), picks.map(f => f ? f.id : "-").join(), drops.map(p => p.id).join()].join("|");
-  const res = useMemo(() => {
+  const res = useMemo(() => gxWithMode82(tm82, () => {
+    // change 082
     if (!ready) return null;
     const dropIds = new Set(drops.map(p => p.id)),
       got = picks.filter(Boolean).map(f => ({
@@ -5611,6 +5613,20 @@ function TradeBuilder({
       on77 = oppOf(w77, s.me) && (w77.done || 0) < (w77.dates || []).length;
     const tb = on77 ? winChance(s) : null,
       ta = on77 ? winChance(s, myT) : null; /* change 081 */
+    // change 082: the same numbers under every projection
+    const q82 = () => {
+      const sN2 = nextWkS(s),
+        ho = sN2 && oppOf(sN2.weeks[sN2.wk] || {}, s.me);
+      return {
+        my: horizonTotal(live59(myT), s, nR) - horizonTotal(live59(mine), s, nR),
+        th: horizonTotal(live59(thT), s, nR) - horizonTotal(live59(theirs), s, nR),
+        tb: on77 ? winChance(s) : null,
+        ta: on77 ? winChance(s, myT) : null,
+        wb: ho ? winChance(sN2) : null,
+        wa: ho ? winChance(sN2, myT) : null
+      };
+    };
+    const mode82 = window.__PMODE;
     const c = cnt(after);
     return {
       my,
@@ -5621,9 +5637,29 @@ function TradeBuilder({
       wa,
       tb,
       ta,
+      q82,
+      mode82,
       short: ["F", "D", "G"].filter(k => c[k] < mins[k])
     };
-  }, [key, s.players, s.wk, K, window.__PMODE]);
+  }), [key, s.players, s.wk, K, window.__PMODE, tm82]);
+  const [cmp82, setCmp82] = useState(null); // change 082: every projection, filled in a moment after the main result
+  useEffect(() => {
+    setCmp82(null);
+    if (!res || !res.q82) return;
+    const id = setTimeout(() => setCmp82(GX_PM82.filter(([k]) => gxCanMode82(k)).map(([k, l]) => ({
+      k,
+      l,
+      ...(k === res.mode82 ? {
+        my: res.my,
+        th: res.th,
+        tb: res.tb,
+        ta: res.ta,
+        wb: res.wb,
+        wa: res.wa
+      } : gxWithMode82(k, res.q82))
+    }))), 60);
+    return () => clearTimeout(id);
+  }, [res]);
   const sum = (l, f) => l.reduce((a, p) => a + f(p), 0);
   const peG = sum(Gv, pe),
     peR = sum(Rv, pe),
@@ -5907,7 +5943,12 @@ function TradeBuilder({
     }
   }, vd[0]), /*#__PURE__*/React.createElement("span", {
     className: "text-sm text-slate-500"
-  }, vd[2])), /*#__PURE__*/React.createElement("div", {
+  }, vd[2])), res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
+    part: "pick",
+    res: res,
+    tm: tm82,
+    setTm: setTm82
+  }) : null, /*#__PURE__*/React.createElement("div", {
     className: "gx-stg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-stc"
@@ -5989,7 +6030,12 @@ function TradeBuilder({
     className: "gx-stv"
   }, arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, "chance to win")) : null), res.short.length ? /*#__PURE__*/React.createElement("div", {
+  }, "chance to win")) : null), res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
+    res: res,
+    cmp: cmp82,
+    tm: tm82,
+    setTm: setTm82
+  }) : null, res.short.length ? /*#__PURE__*/React.createElement("div", {
     className: "text-sm",
     style: {
       marginTop: 10,
@@ -11477,4 +11523,96 @@ const gxTimed = (before, after, day) => {
     fromD: day
   }));
 };
+// ---------- change 082: trade result under each projection (install.py) ----------
+const GX_PM82 = [["espn", "ESPN"], ["model", "GM model"], ["blend", "Blend"], ["ai", "AI"]];
+const gxCanMode82 = k => k === "espn" || !!window.__MODEL && (k !== "ai" || !!window.__AI);
+// run fn with a different projection, then put the app's projection back
+const gxWithMode82 = (m, fn) => {
+  const prev = window.__PMODE;
+  if (!m || m === prev || !gxCanMode82(m)) return fn();
+  window.__PMODE = m;
+  try {
+    return fn();
+  } finally {
+    window.__PMODE = prev;
+  }
+};
+const gxPct82 = (b, a) => {
+  if (b == null || a == null) return "–";
+  const d = Math.round(a * 100) - Math.round(b * 100);
+  return (d > 0 ? "+" : "") + d + "%";
+};
+function GxTradeModes82({
+  res,
+  cmp,
+  tm,
+  setTm,
+  part
+}) {
+  const app = window.__PMODE,
+    cur = res.mode82,
+    lbl = k => (GX_PM82.find(x => x[0] === k) || [k, k])[1];
+  const sg = v => (v >= 0 ? "+" : "") + Math.round(v);
+  if (part === "pick") return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pmh82"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Projection"), /*#__PURE__*/React.createElement("span", {
+    className: "gx-seg"
+  }, GX_PM82.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    type: "button",
+    disabled: !gxCanMode82(k),
+    className: cur === k ? "on" : "",
+    onClick: () => setTm(k === app ? null : k)
+  }, l))), tm && tm !== app ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Trades only. The rest of the app still uses ", lbl(app), ".") : null);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-tag",
+    style: {
+      marginBottom: 4
+    }
+  }, "Every projection"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pm82 h"
+  }, /*#__PURE__*/React.createElement("span", null, "Projection"), /*#__PURE__*/React.createElement("span", null, "You"), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide"
+  }, "Them"), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide"
+  }, "This week"), /*#__PURE__*/React.createElement("span", null, "Next week"), /*#__PURE__*/React.createElement("span", null, "Result")), !cmp ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      padding: "8px 6px"
+    }
+  }, "Working out every projection...") : cmp.map(x => /*#__PURE__*/React.createElement("div", {
+    key: x.k,
+    className: "gx-pm82 r" + (x.k === cur ? " on" : ""),
+    onClick: () => setTm(x.k === app ? null : x.k),
+    title: "Show the trade with this projection"
+  }, /*#__PURE__*/React.createElement("span", null, x.l, x.k === app ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, " (app)") : null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: x.my >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(x.my)), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide",
+    style: {
+      color: x.th >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(x.th)), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide"
+  }, gxPct82(x.tb, x.ta)), /*#__PURE__*/React.createElement("span", null, gxPct82(x.wb, x.wa)), /*#__PURE__*/React.createElement("span", {
+    className: x.my > 0 ? "w" : "l"
+  }, x.my > 0 ? "Win" : "Lose"))), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 6
+    }
+  }, "Points are for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points."));
+}
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
