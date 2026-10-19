@@ -11624,14 +11624,20 @@ function GxTradeModes82({
   }, "Points are for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points."));
 }
 // ---------- change 083: head start on next week when this week is decided (install.py) ----------
-const GX_HS_SURE = 0.85;
+const GX_HS_SURE = 0.80;
 const gxHsKey = s => "hs83:" + (((s.weeks || [])[s.wk] || {}).label || s.wk);
-const gxHsOff = s => !!uiGet()[gxHsKey(s)];
-const gxHsSet = (s, off) => {
-  uiSet(gxHsKey(s), off);
+const gxHsMode = s => {
+  const v = uiGet()[gxHsKey(s)];
+  return v === "on" ? "on" : v === "off" || v === true ? "off" : "";
+}; /* change 084 */
+const gxHsAuto = base => base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
+const gxHsOff = s => gxHsMode(s) === "off";
+const gxHsSet = (s, v) => {
+  uiSet(gxHsKey(s), v);
   window.dispatchEvent(new Event("gx-hs83"));
 };
-const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
+const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null;
+const gxHsOn = (s, base, ml) => gxHsCan(s, base, ml) && (gxHsMode(s) === "on" || gxHsMode(s) === "" && gxHsAuto(base));
 function gxUseHs() {
   const [n, setN] = useState(0);
   useEffect(() => {
@@ -11651,19 +11657,20 @@ function GxHsLine({
   const btn = {
     marginLeft: 6
   };
-  if (gxHsOff(s)) return /*#__PURE__*/React.createElement("span", null, " ", /*#__PURE__*/React.createElement("button", {
+  if (!gxHsOn(s, base, ml)) return /*#__PURE__*/React.createElement("span", null, " ", /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "text-blue-600 text-sm",
     style: btn,
-    onClick: () => gxHsSet(s, false)
+    onClick: () => gxHsSet(s, "on")
   }, "Use them for next week instead"));
+  const why084 = base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week, so they're aimed at next week." : base <= 1 - GX_HS_SURE ? "This week looks lost (" + wpTxt(base) + "), so they're aimed at next week." : "Aimed at next week by you (" + wpTxt(base) + " to win this week).";
   return /*#__PURE__*/React.createElement("span", {
     className: "text-slate-500"
-  }, " " + (base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week" : "This week looks lost (" + wpTxt(base) + ")") + ", so they're aimed at next week.", /*#__PURE__*/React.createElement("button", {
+  }, " " + why084, /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "text-blue-600 text-sm",
     style: btn,
-    onClick: () => gxHsSet(s, true)
+    onClick: () => gxHsSet(s, "off")
   }, "Keep them for this week"));
 }
 function GxHeadStart({
@@ -11674,7 +11681,7 @@ function GxHeadStart({
   const hsV = gxUseHs();
   const gxHideV = gxUseHide();
   const sN = nextWkS(s);
-  const on = gxHsCan(s, base, ml) && !gxHsOff(s);
+  const on = gxHsOn(s, base, ml);
   const baseN = useMemo(() => on ? winChance(sN) : null, [on, s]);
   const rows = useMemo(() => {
     if (!on || baseN == null) return [];
@@ -11690,7 +11697,7 @@ function GxHeadStart({
         now = winChance(s, R),
         nx = winChance(sN, R);
       if (now == null || nx == null || nx <= baseN + 0.004) return;
-      if (base >= GX_HS_SURE && now < Math.min(base, GX_HS_SURE) - 0.03) return;
+      if (base >= 0.5 && now < (gxHsAuto(base) ? Math.min(base, GX_HS_SURE) : base) - 0.03) return;
       out.push({
         ...r,
         now,
