@@ -1397,7 +1397,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(NewsView, {
     s: s,
     wk: wk
-  }), /*#__PURE__*/React.createElement(PhoneFeed, null));else if (tab === "moves") content = sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
+  }), /*#__PURE__*/React.createElement(PhoneFeed, null));else if (tab === "moves") content = sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "injuries" ? /*#__PURE__*/React.createElement(GxInjPage, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
     key: tradePartner || "none"
   }, P, {
     initPartner: tradePartner
@@ -7572,7 +7572,7 @@ function GxHome({
 
 // ---------- round 37: Team sub-pages and box-score history for the roster (news_logos.py) ----------
 const TEAM_SUBS = [["roster", "Roster"], ["pickups", "Pickups"], ["plan", "Plan"], ["trades", "Trades"], ["lines", "Lines"]];
-const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"]];
+const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"], ["injuries", "Injuries"]];
 function SubBar({
   tab,
   sub,
@@ -11778,5 +11778,219 @@ function GxHeadStart({
       padding: "6px 0"
     }
   }, "No free agent raises next week's win chance right now."));
+}
+// ---------- change 085: Injuries page under Team > Pickups (install.py) ----------
+const gxIjDays = d => Math.round((fromIso(d) - fromIso(todayISO())) / 864e5);
+const gxIjWhen = d => {
+  const n = gxIjDays(d);
+  return n < 0 ? "any day now" : n === 0 ? "today" : n === 1 ? "tomorrow" : "in " + n + " days";
+};
+const gxIjAgo = d => {
+  const n = -gxIjDays(d);
+  return n <= 0 ? "today" : n === 1 ? "yesterday" : mdL(d);
+};
+const gxIjLast = e => e.nd && e.nd > e.d ? e.nd : e.d;
+const gxIjNote = n => n && n.length > 15 ? n : "";
+function GxInjPage({
+  s
+}) {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const h = () => tick(x => x + 1);
+    window.addEventListener("gm-watch", h);
+    return () => window.removeEventListener("gm-watch", h);
+  }, []);
+  const [who, setWho] = useState(() => uiGet()["ij85:who"] || "fa");
+  const [pos, setPos] = useState("all");
+  const [allP, setAllP] = useState(false);
+  const [moreU, setMoreU] = useState(false);
+  const [moreL, setMoreL] = useState(false);
+  const [openN, setOpenN] = useState({});
+  const K = s.blend;
+  const pick = v => {
+    setWho(v);
+    uiSet("ij85:who", v);
+  };
+  const D = useMemo(() => {
+    const S = window.__SIG || {},
+      EV = S.injmoves || {};
+    const val = p => effAvg(p, K) * (p.p === "G" ? p.prob || 0.5 : 1);
+    const mine = s.players.filter(p => p.ft === s.me && !p.ir);
+    const bar = {};
+    ["F", "D", "G"].forEach(g => {
+      const v = mine.filter(p => p.p === g).map(val);
+      bar[g] = v.length ? Math.min(...v) : 0;
+    });
+    const list = [],
+      ups = [];
+    s.players.forEach(p => {
+      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+      const inj = autoInj(p),
+        e = id ? EV[id] : null;
+      if (!inj && !(e && e.k === "back")) return;
+      const v = val(p),
+        good = v > 0 && v >= bar[p.p];
+      const r = {
+        p,
+        v,
+        good,
+        inj,
+        e,
+        back: inj ? effBack(p).d : ""
+      };
+      if (inj) list.push(r);
+      if (e) ups.push(r);
+    });
+    return {
+      list,
+      ups
+    };
+  }, [s]);
+  const inWho = r => who === "fa" ? r.p.ft === "fa" : who === "mine" ? r.p.ft === s.me : true;
+  const keep = r => inWho(r) && (pos === "all" || r.p.p === pos) && (allP || who === "mine" || r.good);
+  const ups = D.ups.filter(keep).sort((a, b) => gxIjLast(b.e).localeCompare(gxIjLast(a.e)) || b.v - a.v);
+  const list = D.list.filter(keep).sort((a, b) => (a.back || "9").localeCompare(b.back || "9") || b.v - a.v);
+  const groups = [["Back within a week", list.filter(r => r.back && gxIjDays(r.back) <= 7)], ["Back in 1 to 4 weeks", list.filter(r => r.back && gxIjDays(r.back) > 7 && gxIjDays(r.back) <= 30)], ["Out longer", list.filter(r => r.back && gxIjDays(r.back) > 30)], ["No return date", list.filter(r => !r.back)]];
+  const evTxt = e => {
+    if (e.k === "back") return /*#__PURE__*/React.createElement("span", {
+      className: "up"
+    }, "Off the injury list");
+    if (e.k === "sooner") return /*#__PURE__*/React.createElement("span", {
+      className: "up"
+    }, "Back sooner: was " + mdL(e.was) + ", now " + mdL(e.now));
+    if (e.k === "dtd") return /*#__PURE__*/React.createElement("span", {
+      className: "up"
+    }, "Now day-to-day (was " + (e.was || "out").replace("Injured Reserve", "IR") + ")");
+    if (e.k === "later") return /*#__PURE__*/React.createElement("span", {
+      className: "wn"
+    }, "Pushed back: was " + mdL(e.was) + ", now " + mdL(e.now));
+    if (e.k === "new") return /*#__PURE__*/React.createElement("span", {
+      className: "dn"
+    }, "Newly injured" + (e.now ? ", back about " + mdL(e.now) : ""));
+    return /*#__PURE__*/React.createElement("span", null, "New injury news");
+  };
+  const owner = p => p.ft === "fa" ? "Free agent" : p.ft === s.me ? "Your team" : teamName(s, p.ft);
+  const row = (r, i, upd) => {
+    const st = r.inj ? (r.inj.status || "Out").replace("Injured Reserve", "IR") + (r.inj.type ? " · " + r.inj.type : "") + (r.back ? " · back " + mdL(r.back) + " (" + gxIjWhen(r.back) + ")" : "") : "Healthy now";
+    const note = r.inj ? gxIjNote(r.inj.note) : "",
+      nk = (upd ? "u" : "l") + r.p.id;
+    return /*#__PURE__*/React.createElement("div", {
+      key: nk,
+      className: "gx-ij85" + (i ? "" : " first")
+    }, /*#__PURE__*/React.createElement(TeamLogo, {
+      t: r.p.t,
+      size: 26
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "truncate"
+    }, /*#__PURE__*/React.createElement(PN, {
+      p: r.p,
+      className: ""
+    }), " ", /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500"
+    }, r.p.p), r.good && allP && who !== "mine" ? /*#__PURE__*/React.createElement("span", {
+      className: "good"
+    }, "Good") : null, r.p.wv ? /*#__PURE__*/React.createElement("span", {
+      className: "text-xs",
+      style: {
+        color: "var(--warn)",
+        marginLeft: 6
+      }
+    }, "on waivers") : null), /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500"
+    }, (who === "fa" ? "" : owner(r.p) + " · ") + st), upd && r.e ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs"
+    }, evTxt(r.e), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-500"
+    }, " · " + gxIjAgo(gxIjLast(r.e)))) : !upd && r.e && r.e.k !== "news" ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs"
+    }, evTxt(r.e)) : null, note && (upd || openN[nk]) ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500 nt" + (openN[nk] ? " open" : ""),
+      role: "button",
+      onClick: () => setOpenN(x => ({
+        ...x,
+        [nk]: !x[nk]
+      }))
+    }, note) : null, /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500"
+    }, !upd && note && !openN[nk] ? /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-blue-600",
+      onClick: () => setOpenN(x => ({
+        ...x,
+        [nk]: true
+      }))
+    }, "Latest news"), r.p.ft === "fa" ? " · " : "") : null, r.p.ft === "fa" ? /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-blue-600",
+      onClick: () => gxWatch.toggle(r.p.id)
+    }, gxWatch.has(r.p.id) ? "Watching" : "Watch"), " · ", /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-blue-600",
+      onClick: () => {
+        if (window.__QA) window.__QA.espn(r.p);
+      }
+    }, "Add on ESPN")) : null)), /*#__PURE__*/React.createElement("div", {
+      className: "n"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "font-semibold"
+    }, f1(effAvg(r.p, K))), /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500"
+    }, "pts/g")));
+  };
+  const upsShown = moreU ? ups : ups.slice(0, 5);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-2 items-center"
+  }, /*#__PURE__*/React.createElement(Pills, {
+    items: [["fa", "Free agents"], ["mine", "My team"], ["all", "All teams"]],
+    value: who,
+    onChange: pick
+  }), /*#__PURE__*/React.createElement(Pills, {
+    items: [["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]],
+    value: pos,
+    onChange: setPos
+  })), who !== "mine" ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, allP ? "Showing every injured player. " : "Showing good players only: better than your weakest at their position once healthy. ", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600",
+    onClick: () => setAllP(!allP)
+  }, allP ? "Good players only" : "Show everyone")) : null, /*#__PURE__*/React.createElement(GxPanel, {
+    title: "Updates",
+    right: "last 7 days"
+  }, ups.length ? upsShown.map((r, i) => row(r, i, true)) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500",
+    style: {
+      padding: "4px 0"
+    }
+  }, "No injury updates in the last 7 days", who === "fa" ? " for these free agents" : "", ". New return dates, day-to-day moves and fresh news show up here."), ups.length > 5 ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600",
+    style: {
+      marginTop: 8
+    },
+    onClick: () => setMoreU(!moreU)
+  }, moreU ? "Show fewer" : "Show all " + ups.length + " updates") : null), groups.map(([title, g]) => {
+    if (!g.length) return null;
+    const longer = title === "Out longer" || title === "No return date";
+    const shown = longer && !moreL ? g.slice(0, 3) : g;
+    return /*#__PURE__*/React.createElement(GxPanel, {
+      key: title,
+      title: title,
+      right: g.length + (g.length === 1 ? " player" : " players")
+    }, shown.map((r, i) => row(r, i, false)), shown.length < g.length ? /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-sm text-blue-600",
+      style: {
+        marginTop: 8
+      },
+      onClick: () => setMoreL(true)
+    }, "Show " + (g.length - shown.length) + " more") : null);
+  }), !list.length ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "No injured players match.") : null);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
