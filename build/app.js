@@ -350,7 +350,7 @@ function applyESPN(s, E) {
     teams,
     me,
     opp,
-    players,
+    players: gxSimPlayers(players),
     weeks,
     wk,
     lastSync: E.generated,
@@ -1429,7 +1429,11 @@ function App() {
     className: "bg-red-600 text-white text-sm px-4 py-2 text-center"
   }, "Data is ", Math.round(ageH), " hours old \u2014 the automatic sync may have stopped. Check GitHub \u2192 Actions for a red \u2715."), /*#__PURE__*/React.createElement("div", {
     className: "max-w-6xl mx-auto px-3 py-4"
-  }, /*#__PURE__*/React.createElement(SubBar, {
+  }, /*#__PURE__*/React.createElement(GxSimBar, {
+    s: s,
+    setS: setS,
+    go: go
+  }), /*#__PURE__*/React.createElement(SubBar, {
     tab: tab,
     sub: sub,
     go: go,
@@ -5402,7 +5406,8 @@ const tbFlags = (p, K) => {
 };
 function TradeBuilder({
   s,
-  initPartner
+  initPartner,
+  setS
 }) {
   // trades v42: offer, result and rosters in the new style (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
@@ -6047,7 +6052,36 @@ function TradeBuilder({
     style: {
       marginTop: 10
     }
-  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : ""))) : /*#__PURE__*/React.createElement("div", {
+  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      alignItems: "center",
+      gap: 12,
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "bg-blue-600 rounded-lg px-4 py-1.5 font-semibold",
+    onClick: () => {
+      gxSimAdd({
+        a: s.me,
+        b: partner,
+        give: Gv.map(p => p.id),
+        get: Rv.map(p => p.id),
+        add: picks.filter(Boolean).map(p => p.id),
+        drop: drops.map(p => p.id)
+      }, setS);
+      setGive([]);
+      setGet([]);
+      setPick({});
+      setEdit(-1);
+      setDropSel([]);
+      window.scrollTo(0, 0);
+    }
+  }, "Apply here"), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Shows this trade on every page of the app, through syncs, until you undo it. Nothing changes on ESPN."))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "Pick at least one player on each side to see the result."), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
@@ -11992,5 +12026,149 @@ function GxInjPage({
   }), !list.length ? /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "No injured players match.") : null);
+}
+// ---------- change 086: simulated trades that stay on until you undo them (install.py) ----------
+const GX_SIM_K = "gm-simtrade";
+const gxSimList = () => {
+  try {
+    const v = JSON.parse(localStorage.getItem(GX_SIM_K) || "[]");
+    return Array.isArray(v) ? v : [];
+  } catch (e) {
+    return [];
+  }
+};
+const gxSimSave = l => {
+  try {
+    localStorage.setItem(GX_SIM_K, JSON.stringify(l));
+  } catch (e) {}
+  window.dispatchEvent(new Event("gx-sim86"));
+};
+// apply each saved trade in order; a player only moves if he is still where the trade expects him
+const gxSimPlayers = players => {
+  const L = gxSimList();
+  if (!L.length) return players;
+  let P = players,
+    keep = [];
+  L.forEach(t => {
+    const at = {};
+    P.forEach(p => {
+      at[p.id] = p.ft;
+    });
+    const real = t.give.every(id => at[id] === t.b) && t.get.every(id => at[id] === t.a);
+    if (real) return; // the real trade went through on ESPN, so the what-if is no longer needed
+    const mv = {};
+    t.give.forEach(id => {
+      if (at[id] === t.a) mv[id] = t.b;
+    });
+    t.get.forEach(id => {
+      if (at[id] === t.b) mv[id] = t.a;
+    });
+    (t.add || []).forEach(id => {
+      if (at[id] === "fa") mv[id] = t.a;
+    });
+    (t.drop || []).forEach(id => {
+      if (at[id] === t.a) mv[id] = "fa";
+    });
+    if (!Object.keys(mv).length) return;
+    keep.push(t);
+    P = P.map(p => mv[p.id] ? {
+      ...p,
+      ft: mv[p.id],
+      ir: false
+    } : p);
+  });
+  if (keep.length !== L.length) {
+    try {
+      localStorage.setItem(GX_SIM_K, JSON.stringify(keep));
+    } catch (e) {}
+  }
+  return P;
+};
+const gxSimReload = setS => {
+  const E = window.ESPN_DATA;
+  setS(st => {
+    if (E) {
+      try {
+        return applyESPN(st, E);
+      } catch (e) {}
+    }
+    return {
+      ...st,
+      players: gxSimPlayers(st.players)
+    };
+  });
+};
+const gxSimAdd = (t, setS) => {
+  gxSimSave(gxSimList().concat([t]));
+  gxSimReload(setS);
+};
+const gxSimDrop = (i, setS) => {
+  gxSimSave(gxSimList().filter((_, k) => k !== i));
+  gxSimReload(setS);
+};
+function GxSimBar({
+  s,
+  setS,
+  go
+}) {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const h = () => tick(x => x + 1);
+    window.addEventListener("gx-sim86", h);
+    return () => window.removeEventListener("gx-sim86", h);
+  }, []);
+  const L = gxSimList();
+  if (!L.length || !s || !s.players) return null;
+  const real = window.__TB_REAL || s.me;
+  const nm = ids => ids.map(id => {
+    const p = s.players.find(x => x.id === id);
+    return p ? p.n : null;
+  }).filter(Boolean).join(", ");
+  const who = id => id === real ? "You" : teamName(s, id).trim();
+  const line = t => {
+    const g = t.get.concat(t.add || []);
+    return who(t.a) + (t.a === real ? " get " : " gets ") + nm(g) + "; " + (t.b === real ? "you get " : teamName(s, t.b).trim() + " gets ") + nm(t.give) + ((t.drop || []).length ? "; " + (t.a === real ? "you drop " : who(t.a) + " drops ") + nm(t.drop) : "") + ".";
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn gx-sim86"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "text-sm",
+    style: {
+      display: "flex",
+      alignItems: "baseline",
+      gap: 10,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold",
+    style: {
+      color: "var(--warn)"
+    }
+  }, L.length === 1 ? "What-if trade is on" : L.length + " what-if trades are on"), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Every page shows it. Nothing changed on ESPN."), /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginLeft: "auto"
+    }
+  }, L.length > 1 ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600",
+    onClick: () => {
+      gxSimSave([]);
+      gxSimReload(setS);
+    }
+  }, "Undo all") : null)), L.map((t, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "ln"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "min-w-0",
+    style: {
+      flex: 1
+    }
+  }, line(t)), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600 whitespace-nowrap",
+    onClick: () => gxSimDrop(i, setS)
+  }, "Undo"))));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
