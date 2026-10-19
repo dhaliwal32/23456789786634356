@@ -7774,7 +7774,11 @@ function Pickups({
     className: "text-sm"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-semibold"
-  }, ml === 0 ? "No moves left this week." : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left this week."), plan ? /*#__PURE__*/React.createElement("span", {
+  }, ml === 0 ? "No moves left this week." : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left this week."), !plan ? /*#__PURE__*/React.createElement(GxHsLine, {
+    s: s,
+    base: base,
+    ml: ml
+  }) : null, plan ? /*#__PURE__*/React.createElement("span", {
     className: "text-slate-500"
   }, " Showing ", pw.label || "next week", ".", d0 ? " Moves reset " + dayLabel(d0) + "." : "") : null), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap gap-2 items-center"
@@ -7792,7 +7796,11 @@ function Pickups({
       setH(v);
       setLimit(25);
     }
-  })), /*#__PURE__*/React.createElement(GxWatchPanel, {
+  })), !plan ? /*#__PURE__*/React.createElement(GxHeadStart, {
+    s: s,
+    base: base,
+    ml: ml
+  }) : null, /*#__PURE__*/React.createElement(GxWatchPanel, {
     s: s
   }), /*#__PURE__*/React.createElement(GxHiddenPanel, {
     s: s
@@ -11614,5 +11622,154 @@ function GxTradeModes82({
       marginTop: 6
     }
   }, "Points are for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points."));
+}
+// ---------- change 083: head start on next week when this week is decided (install.py) ----------
+const GX_HS_SURE = 0.85;
+const gxHsKey = s => "hs83:" + (((s.weeks || [])[s.wk] || {}).label || s.wk);
+const gxHsOff = s => !!uiGet()[gxHsKey(s)];
+const gxHsSet = (s, off) => {
+  uiSet(gxHsKey(s), off);
+  window.dispatchEvent(new Event("gx-hs83"));
+};
+const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
+function gxUseHs() {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    const h = () => setN(x => x + 1);
+    window.addEventListener("gx-hs83", h);
+    return () => window.removeEventListener("gx-hs83", h);
+  }, []);
+  return n;
+}
+function GxHsLine({
+  s,
+  base,
+  ml
+}) {
+  gxUseHs();
+  if (!gxHsCan(s, base, ml)) return null;
+  const btn = {
+    marginLeft: 6
+  };
+  if (gxHsOff(s)) return /*#__PURE__*/React.createElement("span", null, " ", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600 text-sm",
+    style: btn,
+    onClick: () => gxHsSet(s, false)
+  }, "Use them for next week instead"));
+  return /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-500"
+  }, " " + (base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week" : "This week looks lost (" + wpTxt(base) + ")") + ", so they're aimed at next week.", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600 text-sm",
+    style: btn,
+    onClick: () => gxHsSet(s, true)
+  }, "Keep them for this week"));
+}
+function GxHeadStart({
+  s,
+  base,
+  ml
+}) {
+  const hsV = gxUseHs();
+  const gxHideV = gxUseHide();
+  const sN = nextWkS(s);
+  const on = gxHsCan(s, base, ml) && !gxHsOff(s);
+  const baseN = useMemo(() => on ? winChance(sN) : null, [on, s]);
+  const rows = useMemo(() => {
+    if (!on || baseN == null) return [];
+    const M = computeMoves(s, {
+      H: 2,
+      pos: "all",
+      pool: 60
+    });
+    const out = [];
+    M.res.slice(0, 30).forEach(r => {
+      if (gxHideSet().has(r.f.id) || gxScratch(r.f)) return;
+      const R = afterMove(s, r.f, r.d),
+        now = winChance(s, R),
+        nx = winChance(sN, R);
+      if (now == null || nx == null || nx <= baseN + 0.004) return;
+      if (base >= GX_HS_SURE && now < Math.min(base, GX_HS_SURE) - 0.03) return;
+      out.push({
+        ...r,
+        now,
+        nx
+      });
+    });
+    return out.sort((a, b) => b.nx - a.nx || b.gain - a.gain).slice(0, 5);
+  }, [on, s, baseN, gxHideV, hsV]);
+  if (!on || baseN == null) return null;
+  const wN = deriveWeek(sN.weeks[sN.wk], sN.autoDone),
+    opp = oppOf(wN, s.me);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-st"
+  }, "Pickups for next week"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 2,
+      marginBottom: 6
+    }
+  }, "Best adds for next week" + (opp ? " against " + teamName(s, opp) : "") + " (" + wpTxt(baseN) + " now). You still get 3 new moves next week."), rows.length ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-hs83 hd"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "This wk"), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "Next wk")), rows.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.f.id,
+    className: "gx-hs83"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: r.f.t,
+    size: 26
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "truncate"
+  }, /*#__PURE__*/React.createElement(PN, {
+    p: r.f,
+    className: ""
+  }), " ", /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, r.f.p), r.f.wv ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs",
+    style: {
+      color: "var(--warn)",
+      marginLeft: 6
+    }
+  }, "on waivers") : null), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Swap for " + r.d.n + " · ", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600",
+    onClick: e => {
+      e.stopPropagation();
+      if (window.__QA) window.__QA.espn(r.f);
+    }
+  }, "Add on ESPN"), " · ", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600",
+    onClick: e => {
+      e.stopPropagation();
+      gxHide.toggle(r.f.id);
+    }
+  }, "Hide"))), /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: r.now < base - 0.004 ? "var(--bad)" : "var(--ink)"
+    }
+  }, wpTxt(r.now)), /*#__PURE__*/React.createElement("div", {
+    className: "n font-semibold",
+    style: {
+      color: "var(--good)"
+    }
+  }, wpTxt(r.nx))))) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500",
+    style: {
+      padding: "6px 0"
+    }
+  }, "No free agent raises next week's win chance right now."));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
