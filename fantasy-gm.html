@@ -413,6 +413,10 @@
   .gx-ij85 .nt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .gx-ij85 .nt.open { -webkit-line-clamp: unset; }
   .gx-ij85 .good { font-size: 11px; color: var(--good); border: 1px solid var(--good); border-radius: 999px; padding: 0 6px; margin-left: 6px; }
+  /* change 086 (install.py) */
+  .gx-sim86 { border-left: 3px solid var(--warn); margin-bottom: 12px; padding: 10px 14px; }
+  .gx-sim86 .ln { display: flex; align-items: baseline; gap: 10px; padding: 4px 0; font-size: 14px; }
+  .gx-sim86 .ln + .ln { border-top: 1px solid var(--line); }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -421,7 +425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1on5lwb.2ya130" data-file="build/app.js">
+<meta name="gx-build" content="j34xcr.17bgzql" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -555,7 +559,7 @@ function applyESPN(s, E) {
   const wk = ci >= 0 ? ci : 0;
   const me = "t" + E.myTeamId;
   const opp = teams.some((t) => t.id === s.opp) && s.opp !== me ? s.opp : (teams.find((t) => t.id !== me) || {}).id;
-  return { ...s, teams, me, opp, players, weeks, wk, lastSync: E.generated, league: E.leagueName || "", goalies: E.goalies || s.goalies || {} };
+  return { ...s, teams, me, opp, players: gxSimPlayers(players), weeks, wk, lastSync: E.generated, league: E.leagueName || "", goalies: E.goalies || s.goalies || {} };
 }
 
 // ---------- projections ----------
@@ -992,7 +996,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
+        <GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<SubBar tab={tab} sub={sub} go={go} setSubs={setSubs} nav={nav} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
         {content}
         {window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -2680,7 +2684,7 @@ const tbFlags = (p, K) => {
   if ((formRatio(p, K) || 0) >= 1.25) f.push({ t: "hot", sell: true });
   return f;
 };
-function TradeBuilder({ s, initPartner }) {
+function TradeBuilder({ s, initPartner, setS }) {
   // trades v42: offer, result and rosters in the new style (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
   // <Section title="Rosters"
@@ -2893,6 +2897,10 @@ function TradeBuilder({ s, initPartner }) {
           {res.mode82 ? <GxTradeModes82 res={res} cmp={cmp82} tm={tm82} setTm={setTm82} /> : null}
           {res.short.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--bad)" }}>{gxYou(s, "This leaves you", "This leaves " + teamName(s, s.me).trim())} short at {res.short.map((k) => GN[k]).join(" and ")}.</div> : null}
           <div className="text-xs text-slate-500" data-r59="after" style={{ marginTop: 10 }}>{gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map((p) => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")}</div>
+          {/* gx086-apply */}<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginTop: 12 }}>
+            <button type="button" className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={() => { gxSimAdd({ a: s.me, b: partner, give: Gv.map((p) => p.id), get: Rv.map((p) => p.id), add: picks.filter(Boolean).map((p) => p.id), drop: drops.map((p) => p.id) }, setS); setGive([]); setGet([]); setPick({}); setEdit(-1); setDropSel([]); window.scrollTo(0, 0); }}>Apply here</button>
+            <span className="text-xs text-slate-500">Shows this trade on every page of the app, through syncs, until you undo it. Nothing changes on ESPN.</span>
+          </div>
         </div>
       ) : <div className="text-sm text-slate-500">Pick at least one player on each side to see the result.</div>}
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
@@ -5446,6 +5454,65 @@ function GxInjPage({ s }) {
         );
       })}
       {!list.length ? <div className="text-sm text-slate-500">No injured players match.</div> : null}
+    </div>
+  );
+}
+// ---------- change 086: simulated trades that stay on until you undo them (install.py) ----------
+const GX_SIM_K = "gm-simtrade";
+const gxSimList = () => { try { const v = JSON.parse(localStorage.getItem(GX_SIM_K) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+const gxSimSave = (l) => { try { localStorage.setItem(GX_SIM_K, JSON.stringify(l)); } catch (e) {} window.dispatchEvent(new Event("gx-sim86")); };
+// apply each saved trade in order; a player only moves if he is still where the trade expects him
+const gxSimPlayers = (players) => {
+  const L = gxSimList();
+  if (!L.length) return players;
+  let P = players, keep = [];
+  L.forEach((t) => {
+    const at = {}; P.forEach((p) => { at[p.id] = p.ft; });
+    const real = t.give.every((id) => at[id] === t.b) && t.get.every((id) => at[id] === t.a);
+    if (real) return; // the real trade went through on ESPN, so the what-if is no longer needed
+    const mv = {};
+    t.give.forEach((id) => { if (at[id] === t.a) mv[id] = t.b; });
+    t.get.forEach((id) => { if (at[id] === t.b) mv[id] = t.a; });
+    (t.add || []).forEach((id) => { if (at[id] === "fa") mv[id] = t.a; });
+    (t.drop || []).forEach((id) => { if (at[id] === t.a) mv[id] = "fa"; });
+    if (!Object.keys(mv).length) return;
+    keep.push(t);
+    P = P.map((p) => (mv[p.id] ? { ...p, ft: mv[p.id], ir: false } : p));
+  });
+  if (keep.length !== L.length) { try { localStorage.setItem(GX_SIM_K, JSON.stringify(keep)); } catch (e) {} }
+  return P;
+};
+const gxSimReload = (setS) => {
+  const E = window.ESPN_DATA;
+  setS((st) => { if (E) { try { return applyESPN(st, E); } catch (e) {} } return { ...st, players: gxSimPlayers(st.players) }; });
+};
+const gxSimAdd = (t, setS) => { gxSimSave(gxSimList().concat([t])); gxSimReload(setS); };
+const gxSimDrop = (i, setS) => { gxSimSave(gxSimList().filter((_, k) => k !== i)); gxSimReload(setS); };
+function GxSimBar({ s, setS, go }) {
+  const [, tick] = useState(0);
+  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gx-sim86", h); return () => window.removeEventListener("gx-sim86", h); }, []);
+  const L = gxSimList();
+  if (!L.length || !s || !s.players) return null;
+  const real = window.__TB_REAL || s.me;
+  const nm = (ids) => ids.map((id) => { const p = s.players.find((x) => x.id === id); return p ? p.n : null; }).filter(Boolean).join(", ");
+  const who = (id) => (id === real ? "You" : teamName(s, id).trim());
+  const line = (t) => {
+    const g = t.get.concat(t.add || []);
+    return who(t.a) + (t.a === real ? " get " : " gets ") + nm(g) + "; " + (t.b === real ? "you get " : teamName(s, t.b).trim() + " gets ") + nm(t.give) + ((t.drop || []).length ? "; " + (t.a === real ? "you drop " : who(t.a) + " drops ") + nm(t.drop) : "") + ".";
+  };
+  return (
+    <div className="gx-pn gx-sim86"><b></b><b></b><b></b><b></b>
+      <div className="text-sm" style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+        <span className="font-semibold" style={{ color: "var(--warn)" }}>{L.length === 1 ? "What-if trade is on" : L.length + " what-if trades are on"}</span>
+        <span className="text-xs text-slate-500">Every page shows it. Nothing changed on ESPN.</span>
+        <span style={{ marginLeft: "auto" }}>{L.length > 1 ? <button type="button" className="text-sm text-blue-600" onClick={() => { gxSimSave([]); gxSimReload(setS); }}>Undo all</button> : null}</span>
+      </div>
+      {L.map((t, i) => (
+        <div key={i} className="ln">
+          <span className="min-w-0" style={{ flex: 1 }}>{line(t)}</span>
+          <button type="button" className="text-sm text-blue-600 whitespace-nowrap" onClick={() => gxSimDrop(i, setS)}>Undo</button>
+        </div>
+      ))}
     </div>
   );
 }
