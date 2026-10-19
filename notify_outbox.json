@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-11|b18ae5481244",
-   "at": "2026-10-12T04:09:30Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Sam Bennett (FLA, 10:00 AM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-12T04:09:30Z"
-  },
-  {
    "k": "2026-10-12|b18ae5481244",
    "at": "2026-10-12T07:09:59Z",
    "title": "Lineup: bench player has a game",
@@ -6661,7 +6650,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:09Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6709,7 +6698,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6733,7 +6722,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6781,7 +6770,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6793,7 +6782,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6805,7 +6794,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6853,7 +6842,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6889,7 +6878,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6913,7 +6902,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6937,7 +6926,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6973,7 +6962,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -6997,7 +6986,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -7021,7 +7010,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -7069,7 +7058,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -7081,7 +7070,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -7105,7 +7094,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T04:05:10Z",
+   "seen": "2026-10-19T04:11:09Z",
    "via": "morning",
    "sent_at": "2026-10-18T15:07:08Z"
   },
@@ -7175,7 +7164,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|76d603a64014",
@@ -7185,7 +7174,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|d33e67944824",
@@ -7195,7 +7184,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|0967f34258d8",
@@ -7205,7 +7194,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|38d5d645b988",
@@ -7215,7 +7204,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|f42c9fd89d36",
@@ -7225,7 +7214,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|9a8949631590",
@@ -7235,7 +7224,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|9ee9dbf0b2a1",
@@ -7255,7 +7244,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|d679e7ed474e",
@@ -7265,7 +7254,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|fe46683e5f48",
@@ -7275,7 +7264,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|7b93b95e6583",
@@ -7285,7 +7274,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|bbcb9ce6a86f",
@@ -7295,7 +7284,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|62f0d1d7babb",
@@ -7305,7 +7294,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|3fb5d1dc589b",
@@ -7315,7 +7304,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|5138e5999fca",
@@ -7325,7 +7314,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|67f34af49a71",
@@ -7335,7 +7324,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|3069b1f946c0",
@@ -7345,7 +7334,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|bc3b809c47ce",
@@ -7355,7 +7344,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|4d107b278bc2",
@@ -7365,7 +7354,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|02373f3b4dd7",
@@ -7375,7 +7364,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|35185eec214f",
@@ -7385,7 +7374,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|3c13e3ab6447",
@@ -7395,7 +7384,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|4421966f6510",
@@ -7425,7 +7414,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|54020f0105ec",
@@ -7435,7 +7424,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|04c5ceece0a9",
@@ -7495,7 +7484,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|f6ec0cf16b75",
@@ -7505,7 +7494,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:10Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|a7effe87f8bc",
@@ -7515,7 +7504,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-19T04:05:09Z"
+   "seen": "2026-10-19T04:11:09Z"
   },
   {
    "k": "2026-10-18|bcba5abe7cc8",
