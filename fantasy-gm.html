@@ -411,7 +411,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1us8qk4.fp9wkv" data-file="build/app.js">
+<meta name="gx-build" content="lp7y47.nt9ild" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -5266,11 +5266,14 @@ function GxTradeModes82({ res, cmp, tm, setTm, part }) {
   );
 }
 // ---------- change 083: head start on next week when this week is decided (install.py) ----------
-const GX_HS_SURE = 0.85;
+const GX_HS_SURE = 0.80;
 const gxHsKey = (s) => "hs83:" + (((s.weeks || [])[s.wk] || {}).label || s.wk);
-const gxHsOff = (s) => !!uiGet()[gxHsKey(s)];
-const gxHsSet = (s, off) => { uiSet(gxHsKey(s), off); window.dispatchEvent(new Event("gx-hs83")); };
-const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
+const gxHsMode = (s) => { const v = uiGet()[gxHsKey(s)]; return v === "on" ? "on" : v === "off" || v === true ? "off" : ""; }; /* change 084 */
+const gxHsAuto = (base) => base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
+const gxHsOff = (s) => gxHsMode(s) === "off";
+const gxHsSet = (s, v) => { uiSet(gxHsKey(s), v); window.dispatchEvent(new Event("gx-hs83")); };
+const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null;
+const gxHsOn = (s, base, ml) => gxHsCan(s, base, ml) && (gxHsMode(s) === "on" || (gxHsMode(s) === "" && gxHsAuto(base)));
 function gxUseHs() {
   const [n, setN] = useState(0);
   useEffect(() => { const h = () => setN((x) => x + 1); window.addEventListener("gx-hs83", h); return () => window.removeEventListener("gx-hs83", h); }, []);
@@ -5280,11 +5283,12 @@ function GxHsLine({ s, base, ml }) {
   gxUseHs();
   if (!gxHsCan(s, base, ml)) return null;
   const btn = { marginLeft: 6 };
-  if (gxHsOff(s)) return <span>{" "}<button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, false)}>Use them for next week instead</button></span>;
+  if (!gxHsOn(s, base, ml)) return <span>{" "}<button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, "on")}>Use them for next week instead</button></span>;
+  const why084 = base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week, so they're aimed at next week." : base <= 1 - GX_HS_SURE ? "This week looks lost (" + wpTxt(base) + "), so they're aimed at next week." : "Aimed at next week by you (" + wpTxt(base) + " to win this week).";
   return (
     <span className="text-slate-500">
-      {" " + (base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week" : "This week looks lost (" + wpTxt(base) + ")") + ", so they're aimed at next week."}
-      <button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, true)}>Keep them for this week</button>
+      {" " + why084}
+      <button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, "off")}>Keep them for this week</button>
     </span>
   );
 }
@@ -5292,7 +5296,7 @@ function GxHeadStart({ s, base, ml }) {
   const hsV = gxUseHs();
   const gxHideV = gxUseHide();
   const sN = nextWkS(s);
-  const on = gxHsCan(s, base, ml) && !gxHsOff(s);
+  const on = gxHsOn(s, base, ml);
   const baseN = useMemo(() => (on ? winChance(sN) : null), [on, s]);
   const rows = useMemo(() => {
     if (!on || baseN == null) return [];
@@ -5302,7 +5306,7 @@ function GxHeadStart({ s, base, ml }) {
       if (gxHideSet().has(r.f.id) || gxScratch(r.f)) return;
       const R = afterMove(s, r.f, r.d), now = winChance(s, R), nx = winChance(sN, R);
       if (now == null || nx == null || nx <= baseN + 0.004) return;
-      if (base >= GX_HS_SURE && now < Math.min(base, GX_HS_SURE) - 0.03) return;
+      if (base >= 0.5 && now < (gxHsAuto(base) ? Math.min(base, GX_HS_SURE) : base) - 0.03) return;
       out.push({ ...r, now, nx });
     });
     return out.sort((a, b) => b.nx - a.nx || b.gain - a.gain).slice(0, 5);
