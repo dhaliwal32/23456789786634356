@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_signals.py": true
  },
  "changes": [
-  "84.py"
+  "85.py"
  ]
 }

@@ -345,6 +345,73 @@ def injuries(players):
     return out
 
 
+# ---------- change 085: injury updates (install.py) ----------
+INJ_HIST = os.path.join(HERE, "inj_hist.json")
+INJ_KEEP_DAYS = 7
+
+def inj_moves(cur):
+    """Remember every injured player's return date, status and news note between syncs.
+    Report, for 7 days: newly injured, return date moved earlier or later, out to day-to-day,
+    off the injury list, and new injury news ("nd" = date of the newest news)."""
+    cur = cur or {}
+    now = datetime.utcnow() - timedelta(hours=8)
+    today = now.strftime("%Y-%m-%d")
+    cutoff = (now - timedelta(days=INJ_KEEP_DAYS)).strftime("%Y-%m-%d")
+    try:
+        with open(INJ_HIST, encoding="utf-8") as f:
+            h = json.load(f)
+    except Exception:
+        h = {}
+    last, ev = h.get("last") or {}, h.get("ev") or {}
+    fresh = lambda e: max(e.get("d", ""), e.get("nd", "")) >= cutoff
+    # a broken or partial injury read must not look like everyone got healthy
+    trusted = len(cur) >= 20 and any(x.get("src") == "espn" for x in cur.values()) and len(cur) >= 0.6 * len(last)
+    if not trusted:
+        print(f"(signals) injury updates: skipped, injury list looks incomplete ({len(cur)} players)")
+        return {k: v for k, v in ev.items() if fresh(v)}
+    first = not last
+    out_words = ("injured reserve", "out", "suspen")
+    for pid, x in cur.items():
+        o = last.get(pid)
+        b, st, note = x.get("back") or "", (x.get("status") or "").lower(), x.get("note") or ""
+        old = ev.get(pid) if ev.get(pid) and fresh(ev[pid]) else None
+        if o is None:
+            if old and old.get("k") == "back":
+                ev.pop(pid, None)          # he came back onto the list; the earlier "back" was a blip
+            elif not first:
+                ev[pid] = {"k": "new", "d": today, "now": b}
+            continue
+        ob, ost = o.get("back") or "", (o.get("status") or "").lower()
+        e = None
+        if b and ob and b != ob:
+            was = old["was"] if old and old.get("k") in ("sooner", "later") and old.get("was") else ob
+            if b != was:
+                e = {"k": "sooner" if b < was else "later", "d": today, "was": was, "now": b}
+            elif old and old.get("k") in ("sooner", "later"):
+                ev.pop(pid, None)
+                old = None
+        elif "day-to-day" in st and any(w in ost for w in out_words):
+            e = {"k": "dtd", "d": today, "was": o.get("status") or "", "now": b}
+        if e:
+            if old and old.get("nd"):
+                e["nd"] = old["nd"]
+            ev[pid] = e
+            old = e
+        if len(note) > 15 and note != (o.get("note") or ""):
+            e = old or {"k": "news", "d": today}
+            e["nd"] = today
+            ev[pid] = e
+    for pid, o in last.items():
+        if pid not in cur:
+            ev[pid] = {"k": "back", "d": today, "was": o.get("back") or ""}
+    ev = {k: v for k, v in ev.items() if fresh(v)}
+    h = {"last": {pid: {"back": x.get("back") or "", "status": x.get("status") or "", "note": x.get("note") or ""} for pid, x in cur.items()}, "ev": ev}
+    with open(INJ_HIST, "w", encoding="utf-8") as f:
+        json.dump(h, f, indent=0, sort_keys=True)
+    print(f"(signals) injury updates: {len(ev)} in the last {INJ_KEEP_DAYS} days")
+    return ev
+
+
 # ---------- ice time trends ----------
 def toi_rows(exp):
     r = requests.get(f"{STATS}/skater/timeonice", params={"limit": -1, "cayenneExp": exp}, headers=HDR, timeout=60)
@@ -490,7 +557,7 @@ def build(players):
         cache = {}
     steps = (("recent", lambda: recent(players)), ("pp1", lambda: pp1(players, cache)), ("lines", lambda: lines(players, cache)),
              ("news", lambda: news(players)), ("teampp", team_pp), ("injuries", lambda: injuries(players)),
-             ("toi", lambda: toi(players)), ("luck", lambda: luck(players)), ("gstart", lambda: gstart(players)))
+             ("injmoves", lambda: inj_moves(out.get("injuries"))), ("toi", lambda: toi(players)), ("luck", lambda: luck(players)), ("gstart", lambda: gstart(players)))
     for name, fn in steps:
         try:
             out[name] = fn()
