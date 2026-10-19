@@ -1,54 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-12|323f7526d0bf",
-   "at": "2026-10-12T15:12:12Z",
-   "title": "Your player: power-play change",
-   "text": "Sam Bennett (FLA) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-12T15:12:12Z",
-   "via": "pregame",
-   "sent_at": "2026-10-12T16:01:58Z"
-  },
-  {
-   "k": "2026-10-12|28d6e1f3c6c8",
-   "at": "2026-10-12T15:12:12Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Josh Doan (BUF) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-12T15:12:12Z",
-   "via": "pregame",
-   "sent_at": "2026-10-12T16:01:58Z"
-  },
-  {
-   "k": "2026-10-12|6b1367661aa0",
-   "at": "2026-10-12T15:12:12Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Roman Kantserov (CHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-12T15:12:12Z",
-   "via": "pregame",
-   "sent_at": "2026-10-12T16:01:58Z"
-  },
-  {
-   "k": "2026-10-12|bf9a6e311571",
-   "at": "2026-10-12T15:12:12Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Teuvo Teravainen (CHI) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-12T15:12:12Z",
-   "via": "pregame",
-   "sent_at": "2026-10-12T16:01:58Z"
-  },
-  {
    "k": "2026-10-12|60d557a93a3d",
    "at": "2026-10-12T16:07:59Z",
    "title": "Your player: injury update",
@@ -7180,7 +7132,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7192,7 +7144,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7204,7 +7156,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7216,7 +7168,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7228,7 +7180,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7240,7 +7192,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7264,7 +7216,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7276,7 +7228,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7288,7 +7240,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7300,7 +7252,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7312,7 +7264,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7324,7 +7276,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7336,7 +7288,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7348,7 +7300,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7360,7 +7312,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7372,7 +7324,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7384,7 +7336,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7396,7 +7348,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7408,7 +7360,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7420,7 +7372,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7432,7 +7384,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:23Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7444,7 +7396,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7456,7 +7408,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7468,7 +7420,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7480,7 +7432,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7492,7 +7444,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:18Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7504,7 +7456,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7516,7 +7468,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7528,7 +7480,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7540,7 +7492,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7552,7 +7504,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7564,7 +7516,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7576,7 +7528,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7588,7 +7540,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7600,7 +7552,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7612,7 +7564,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7624,7 +7576,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7636,7 +7588,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7648,7 +7600,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
   },
@@ -7660,9 +7612,39 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-19T15:11:24Z",
+   "seen": "2026-10-19T15:21:19Z",
    "via": "morning",
    "sent_at": "2026-10-19T15:01:30Z"
+  },
+  {
+   "k": "2026-10-19|fab9a74313fb",
+   "at": "2026-10-19T15:21:38Z",
+   "title": "Your player: power-play change",
+   "text": "Lucas Raymond (DET) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false,
+   "seen": "2026-10-19T15:21:38Z"
+  },
+  {
+   "k": "2026-10-19|1c03118166b3",
+   "at": "2026-10-19T15:21:38Z",
+   "title": "Your player: power-play change",
+   "text": "Viktor Arvidsson (DET) is off PP1",
+   "section": "mine",
+   "urgent": false,
+   "sent": false,
+   "seen": "2026-10-19T15:21:38Z"
+  },
+  {
+   "k": "2026-10-19|c5ef95663b57",
+   "at": "2026-10-19T15:21:38Z",
+   "title": "Pickup idea: bigger role",
+   "text": "Emil Heineman (NYI) promoted: 3rd line -> 2nd line",
+   "section": "pickup",
+   "urgent": false,
+   "sent": false,
+   "seen": "2026-10-19T15:21:38Z"
   }
  ],
  "sent": {
