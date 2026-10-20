@@ -70,6 +70,12 @@
 "now": "2026-10-22",
 "was": "Out"
 },
+"3942043": {
+"d": "2026-10-20",
+"k": "later",
+"now": "2026-10-29",
+"was": "2026-10-26"
+},
 "3942714": {
 "d": "2026-10-20",
 "k": "later",
@@ -86,6 +92,11 @@
 "k": "dtd",
 "now": "2026-10-22",
 "was": "Out"
+},
+"4320625": {
+"d": "2026-10-20",
+"k": "back",
+"was": ""
 },
 "4587580": {
 "d": "2026-10-19",
@@ -119,7 +130,7 @@
 "5080152": {
 "d": "2026-10-20",
 "k": "later",
-"now": "2026-10-24",
+"now": "2026-10-29",
 "was": "2026-10-20"
 },
 "5149191": {
@@ -369,7 +380,7 @@
 "status": "Day-To-Day"
 },
 "3942043": {
-"back": "2026-10-26",
+"back": "2026-10-29",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -457,11 +468,6 @@
 "back": "2026-10-21",
 "note": "Dahlin (upper body) told reporters he \"thinks he'll be ready\" for Wednesday's clash with Philadelphia.",
 "status": "Day-To-Day"
-},
-"4320625": {
-"back": "",
-"note": "Sturm (concussion) will be with the team on its upcoming five-game road trip, per Michael Russo of The Athletic on Sunday.",
-"status": "Injured Reserve"
 },
 "4352803": {
 "back": "2026-12-26",
@@ -614,7 +620,7 @@
 "status": "Injured Reserve"
 },
 "5080152": {
-"back": "2026-10-24",
+"back": "2026-10-29",
 "note": "Kasper (upper body) has been given a week-to-week timetable for return.",
 "status": "Injured Reserve"
 },
