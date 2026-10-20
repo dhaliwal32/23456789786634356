@@ -20,6 +20,12 @@
 "k": "new",
 "now": "2026-10-22"
 },
+"4063401": {
+"d": "2026-10-19",
+"k": "later",
+"now": "2026-10-22",
+"was": "2026-10-19"
+},
 "4587580": {
 "d": "2026-10-19",
 "k": "later",
@@ -314,9 +320,9 @@
 "status": "Injured Reserve"
 },
 "4063401": {
-"back": "2026-10-19",
-"note": "Girard (undisclosed) will be a game-time decision for Monday's matchup with the Mammoth, Josh Getzoff of SportsNet Pittsburgh reports.",
-"status": "Day-To-Day"
+"back": "2026-10-22",
+"note": "out",
+"status": "Out"
 },
 "4063605": {
 "back": "2026-10-22",
