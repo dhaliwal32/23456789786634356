@@ -5,6 +5,11 @@
 "k": "back",
 "was": ""
 },
+"3042017": {
+"d": "2026-10-19",
+"k": "new",
+"now": "2026-10-20"
+},
 "3114736": {
 "d": "2026-10-19",
 "k": "back",
@@ -143,6 +148,11 @@
 "back": "2026-11-01",
 "note": "Morrissey (wrist) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
+},
+"3042017": {
+"back": "2026-10-20",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042037": {
 "back": "2026-10-20",
