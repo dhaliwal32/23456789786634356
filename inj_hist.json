@@ -115,12 +115,23 @@
 "5452": {
 "d": "2026-10-20",
 "k": "new",
+"nd": "2026-10-20",
 "now": "2026-11-04"
 },
 "5474": {
 "d": "2026-10-20",
 "k": "new",
 "now": "2026-10-21"
+},
+"5502": {
+"d": "2026-10-20",
+"k": "back",
+"was": "2026-10-21"
+},
+"5560": {
+"d": "2026-10-20",
+"k": "back",
+"was": ""
 }
 },
 "last": {
@@ -686,23 +697,13 @@
 },
 "5452": {
 "back": "2026-11-04",
-"note": "out",
+"note": "Markstrom (undisclosed) will miss 10-14 days, Jameson Olive of the Panthers' official site reports Tuesday.",
 "status": "Out"
 },
 "5474": {
 "back": "2026-10-21",
 "note": "Carrick is being evaluated for a mid-body injury, according to Heather Engel of NHL.com on Tuesday.",
 "status": "Day-To-Day"
-},
-"5502": {
-"back": "2026-10-21",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
-"5560": {
-"back": "",
-"note": "ir",
-"status": "Injured Reserve"
 },
 "5592": {
 "back": "2026-10-22",
