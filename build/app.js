@@ -564,7 +564,7 @@ function weekProj(roster, wk, K, from = 0) {
     days,
     total: sum(x => x.total),
     sched: sum(x => x.sched),
-    used: sum(x => x.start.length),
+    used: sum(x => x.start.filter(gxGPlays).length),
     wasted: sum(x => x.bench.length),
     empty: sum(x => x.empty)
   };
@@ -6555,7 +6555,7 @@ function weekLive(roster, wk, K, tid, opt) {
     act: sum(x => x.act),
     actSoFar,
     projSoFar,
-    used: sum(x => x.openN + x.liveN),
+    used: gxGmLeft(days) /* gx087 */,
     wasted: sum(x => x.bench.length),
     empty: sum(x => x.empty),
     sched: sum(x => x.sched)
@@ -9959,8 +9959,8 @@ function GxGamesAny({
     Y = cur ? B : N ? N[1] : null;
   const rows = X && Y ? dates.map((dt, d) => ({
     dt,
-    a: ((X.days[d] || {}).start || []).length,
-    b: ((Y.days[d] || {}).start || []).length
+    a: gxGmN(X.days[d]),
+    b: gxGmN(Y.days[d])
   })) : [];
   const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
   const mx = Math.max(1, Math.max.apply(null, rows.map(r => Math.max(r.a, r.b))));
@@ -10664,7 +10664,7 @@ function GxRace({
   const bestTxt = bD != null && me[bD] > th[bD] ? "best " + DN(bD) + " " + sg(me[bD] - th[bD]) : "";
   const vsA = fdays.reduce((t, d) => t + me[d] - exp(X, d), 0),
     vsB = fdays.reduce((t, d) => t + th[d] - exp(Y, d), 0);
-  const gms = (L, d) => ((L.days[d] || {}).start || []).length;
+  const gms = (L, d) => gxGmN(L.days[d]);
   const totG = L => dates.reduce((t, _, d) => t + gms(L, d), 0);
   const topOf = L => {
     const t = ((L || {}).start || []).filter(p => p.x > 0).sort((a, b) => b.x - a.x)[0];
@@ -12171,4 +12171,16 @@ function GxSimBar({
     onClick: () => gxSimDrop(i, setS)
   }, "Undo"))));
 }
+// ---------- change 087: a goalie only counts as a lineup game if he starts (install.py) ----------
+const gxGPlays = p => {
+  if (!p || p.p !== "G") return true;
+  if (p.a != null) return p.a !== 0; // game played: real points tell us he was in net
+  const g = p.dt ? gStart(p, p.dt) : null;
+  return (g ? g.v : p.prob || 0) >= 0.5; // still to come: count him if he is more likely than not to start
+};
+const gxGmN = L => ((L || {}).start || []).filter(gxGPlays).length;
+const gxGmLeft = days => {
+  const today = todayISO();
+  return (days || []).reduce((t, x) => t + (x ? (x.start || []).filter(p => (!p.dt || p.dt >= today) && (!p.st || p.st === "L" && p.vf > 0) && gxGPlays(p)).length : 0), 0);
+};
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

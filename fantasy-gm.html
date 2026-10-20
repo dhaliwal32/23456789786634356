@@ -425,7 +425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="j34xcr.17bgzql" data-file="build/app.js">
+<meta name="gx-build" content="kf4mf9.becbdt" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -648,7 +648,7 @@ function weekProj(roster, wk, K, from = 0) {
   const days = wk.days.map((_, d) => (d < from ? null : dayLineup(roster, wk, d, K)));
   const live = days.filter(Boolean);
   const sum = (f) => live.reduce((s, x) => s + f(x), 0);
-  return { days, total: sum((x) => x.total), sched: sum((x) => x.sched), used: sum((x) => x.start.length), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty) };
+  return { days, total: sum((x) => x.total), sched: sum((x) => x.sched), used: sum((x) => x.start.filter(gxGPlays).length), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty) };
 }
 const oppOf = (wk, me) => { const pr = (wk.pairs || []).find((p) => p[0] && p[1] && (p[0] === me || p[1] === me)); return pr ? (pr[0] === me ? pr[1] : pr[0]) : null; };
 const f1 = (x) => (Math.round((+x || 0) * 10) / 10).toFixed(1);
@@ -3073,7 +3073,7 @@ function weekLive(roster, wk, K, tid, opt) {
     return { start: [...rows, ...L.start].sort((a, b) => ({ F: 0, D: 1, UTIL: 2, G: 3 }[a.slot] ?? 4) - ({ F: 0, D: 1, UTIL: 2, G: 3 }[b.slot] ?? 4)), bench: L.bench, total: rows.reduce((s2, x) => s2 + x.x, 0) + L.total, act, proj: full, locked: rows.length, liveN, openN: L.start.length, allDone: !rows.some((x) => x.st === "L") && !L.start.length, benchAct, empty: dt < today ? 0 : L.empty, sched: L.sched + liveN };
   });
   const sum = (f) => days.reduce((a, x) => a + f(x), 0);
-  return { days, total: sum((x) => x.total), act: sum((x) => x.act), actSoFar, projSoFar, used: sum((x) => x.openN + x.liveN), wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty), sched: sum((x) => x.sched) };
+  return { days, total: sum((x) => x.total), act: sum((x) => x.act), actSoFar, projSoFar, used: gxGmLeft(days) /* gx087 */, wasted: sum((x) => x.bench.length), empty: sum((x) => x.empty), sched: sum((x) => x.sched) };
 }
 
 // ---------- round 22: NHL box-score stat lines (news_logos.py) ----------
@@ -4544,7 +4544,7 @@ function GxGamesAny({ s, wk, A, B }) {
     return [R(s.me), R(opp)];
   }, [cur, fin, opp, w, s.players, K, window.__PMODE]);
   const X = cur ? A : N ? N[0] : null, Y = cur ? B : N ? N[1] : null;
-  const rows = X && Y ? dates.map((dt, d) => ({ dt, a: ((X.days[d] || {}).start || []).length, b: ((Y.days[d] || {}).start || []).length })) : [];
+  const rows = X && Y ? dates.map((dt, d) => ({ dt, a: gxGmN(X.days[d]), b: gxGmN(Y.days[d]) })) : [];
   const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
   const mx = Math.max(1, Math.max.apply(null, rows.map((r) => Math.max(r.a, r.b))));
   const live = dates.length > 0 && dates[0] <= today && dates[dates.length - 1] >= today;
@@ -4857,7 +4857,7 @@ function GxRace({ s, wk }) {
   const bD = rng.reduce((b, d) => (b == null || me[d] - th[d] > me[b] - th[b] ? d : b), null);
   const bestTxt = bD != null && me[bD] > th[bD] ? "best " + DN(bD) + " " + sg(me[bD] - th[bD]) : "";
   const vsA = fdays.reduce((t, d) => t + me[d] - exp(X, d), 0), vsB = fdays.reduce((t, d) => t + th[d] - exp(Y, d), 0);
-  const gms = (L, d) => ((L.days[d] || {}).start || []).length;
+  const gms = (L, d) => gxGmN(L.days[d]);
   const totG = (L) => dates.reduce((t, _, d) => t + gms(L, d), 0);
   const topOf = (L) => { const t = ((L || {}).start || []).filter((p) => p.x > 0).sort((a, b) => b.x - a.x)[0]; return t ? shortN(t.n) + " " + f1(t.x) : "\u2013"; };
   const fact = (key, label, big, sub, col) => (<div key={key}><small>{label}</small><b style={col ? { color: col } : null}>{big}</b>{sub ? <span className="text-sm text-slate-500">{" " + sub}</span> : null}</div>);
@@ -5516,6 +5516,15 @@ function GxSimBar({ s, setS, go }) {
     </div>
   );
 }
+// ---------- change 087: a goalie only counts as a lineup game if he starts (install.py) ----------
+const gxGPlays = (p) => {
+  if (!p || p.p !== "G") return true;
+  if (p.a != null) return p.a !== 0;             // game played: real points tell us he was in net
+  const g = p.dt ? gStart(p, p.dt) : null;
+  return (g ? g.v : p.prob || 0) >= 0.5;          // still to come: count him if he is more likely than not to start
+};
+const gxGmN = (L) => ((L || {}).start || []).filter(gxGPlays).length;
+const gxGmLeft = (days) => { const today = todayISO(); return (days || []).reduce((t, x) => t + (x ? (x.start || []).filter((p) => (!p.dt || p.dt >= today) && (!p.st || (p.st === "L" && p.vf > 0)) && gxGPlays(p)).length : 0), 0); };
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
