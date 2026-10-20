@@ -1,484 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-13|10bdec6c83c0",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Your player is losing ice time",
-   "text": "Josh Morrissey (WPG) is down 6.5 min per game lately (18.3 vs 24.8). Possible demotion - watch his role.",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-13T07:05:46Z"
-  },
-  {
-   "k": "2026-10-13|07c6ec3be06f",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Your player is losing ice time",
-   "text": "Victor Hedman (TB) is down 5.7 min per game lately (13.1 vs 18.8). Possible demotion - watch his role.",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-13T07:05:46Z"
-  },
-  {
-   "k": "2026-10-13|395bfb803324",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Matvei Michkov (F, PHI) is playing 15.3 min per game lately, up +0.5 (PP +1.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|86e72b1cfc8a",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Paul Cotter (F, VAN) is playing 15.8 min per game lately, up +4.5 (PP +0.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|3d88c8f505be",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Martin Fehervary (D, WSH) is playing 22.4 min per game lately, up +3.1 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|c32d61c11ad0",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Jack Quinn (F, BUF) is playing 19.4 min per game lately, up +3.2 (PP +1.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|f1c6d44b0450",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "James Hagens (F, BOS) is playing 13.5 min per game lately, up -0.9 (PP +1.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|c211b82cf828",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Logan Stanley (D, NYI) is playing 20.5 min per game lately, up +4.0 (PP -0.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T18:01:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|d00663f55559",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Jamie Drysdale (D, PHI) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|68ac122d20d9",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Ryan Shea (D, EDM) is playing 23.4 min per game lately, up +3.8 (PP +1.2). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|1879c490dfb7",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Trevor Connelly (F, VGK) is playing 14.4 min per game lately, up +3.5 (PP +3.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T03:51:54Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|7b0028abce7f",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Kasperi Kapanen (F, EDM) is playing 17.2 min per game lately, up +2.0 (PP +2.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|5d8f10c2719d",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Kent Johnson (F, CBJ) is playing 17.5 min per game lately, up +4.1 (PP +1.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|3eb935d34274",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tristan Luneau (D, ANA) is playing 21.6 min per game lately, up +8.6 (PP +0.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T05:11:24Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|46fa68ede63c",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "John Marino (D, UTA) is playing 19.9 min per game lately, up -0.4 (PP +2.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|0a04c6272e59",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Jordan Spence (D, OTT) is playing 22.8 min per game lately, up +4.0 (PP -1.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|b25be5f83c58",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tyler Kleven (D, OTT) is playing 21.2 min per game lately, up +3.9 (PP -0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|3f17bab34200",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Christian Dvorak (F, PHI) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|23af59e87820",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Denton Mateychuk (D, CBJ) is playing 24.3 min per game lately, up +4.3 (PP +0.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|bcdbf1999091",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Carter Yakemchuk (D, OTT) is playing 17.8 min per game lately, up +3.3 (PP +1.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|c3f78b5864af",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Noah Ostlund (F, BUF) is playing 18.4 min per game lately, up +4.2 (PP +1.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|57d019b0c643",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tim Washe (F, ANA) is playing 16.4 min per game lately, up +4.0 (PP +0.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T05:11:24Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|c777e7239341",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Konsta Helenius (F, BUF) is playing 14.0 min per game lately, up +1.8 (PP +1.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|1f4900ee5ee4",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Adam Edstrom (F, NSH) is playing 13.1 min per game lately, up +3.5 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|191f41a4fae6",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Michael Brandsegg-Nygard (F, DET) is playing 15.4 min per game lately, up +3.1 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T01:01:36Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|862852ddd3bf",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tom Willander (D, VAN) is playing 21.0 min per game lately, up +3.4 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|eb95ff7ac32b",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Ryker Evans (D, SEA) is playing 21.8 min per game lately, up +3.7 (PP -0.2). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|09dd58e6c476",
-   "at": "2026-10-13T07:05:46Z",
-   "title": "Pickup: ice time jump",
-   "text": "Michael Kesselring (D, SJ) is playing 19.5 min per game lately, up +5.5 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|d56d84b35d53",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Noah Warren (D, ANA) is playing 19.7 min per game lately, up +10.1 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T05:11:24Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|b7ab24e34b41",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Owen Michaels (F, EDM) is playing 14.0 min per game lately, up +3.1 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|7bf37c2fdf2a",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "David Jiricek (D, PHI) is playing 16.2 min per game lately, up +4.2 (PP +2.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|6327557df7d6",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Olli Maatta (D, MIN) is playing 22.3 min per game lately, up +4.7 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|01a94cd2338b",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Gage Goncalves (F, TB) is playing 16.6 min per game lately, up +3.6 (PP -0.2). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|190107df6ee5",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Morgan Barron (F, WPG) is playing 16.3 min per game lately, up +3.2 (PP -0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T03:21:56Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|633dc8a6389c",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Alexander Kerfoot (F, NSH) is playing 16.2 min per game lately, up +3.4 (PP +0.6). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|af96747b99ad",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Michael Rasmussen (F, DET) is playing 17.4 min per game lately, up +4.5 (PP +1.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T01:01:36Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|9708d0898047",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Samuel Honzek (F, CGY) is playing 15.7 min per game lately, up +3.0 (PP -0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|505496eab508",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Judd Caulfield (F, ANA) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|23c4f8378968",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Amadeus Lombardi (F, NJ) is playing 11.2 min per game lately, up +3.1 (PP +0.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-13T23:59:59Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
-   "k": "2026-10-13|46a6243ca8d3",
-   "at": "2026-10-13T07:05:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "Travis Mitchell (D, ANA) is playing 15.6 min per game lately, up +3.2 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T06:54:36Z",
-   "via": "morning",
-   "sent_at": "2026-10-13T15:06:37Z"
-  },
-  {
    "k": "2026-10-13|f8a597d84fe7",
    "at": "2026-10-13T15:16:59Z",
    "title": "Your player's line changed",
@@ -7708,7 +7230,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|a7162189f6cd",
@@ -7718,7 +7240,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|09050bef14b6",
@@ -7728,7 +7250,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|d33e67944824",
@@ -7738,7 +7260,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|f42c9fd89d36",
@@ -7748,7 +7270,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|f513db968243",
@@ -7758,7 +7280,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|95302c795478",
@@ -7768,7 +7290,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|0967f34258d8",
@@ -7778,7 +7300,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|946fa75699e1",
@@ -7788,7 +7310,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|b42f7b59798a",
@@ -7798,7 +7320,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|da3e870d910e",
@@ -7808,7 +7330,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|4c56caff8446",
@@ -7818,7 +7340,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|0e7e6e63375f",
@@ -7828,7 +7350,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|ad5121626e1e",
@@ -7838,7 +7360,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|8a1e2753af92",
@@ -7848,7 +7370,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|d679e7ed474e",
@@ -7858,7 +7380,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|fe46683e5f48",
@@ -7868,7 +7390,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|bd024ba497a1",
@@ -7878,7 +7400,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|9e83f92f40d0",
@@ -7888,7 +7410,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|bbcb9ce6a86f",
@@ -7898,7 +7420,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|f6ec0cf16b75",
@@ -7908,7 +7430,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|5138e5999fca",
@@ -7918,7 +7440,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:09Z"
   },
   {
    "k": "2026-10-20|d26131db6ba1",
@@ -7928,7 +7450,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|62f0d1d7babb",
@@ -7938,7 +7460,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|3d5c597190d6",
@@ -7948,7 +7470,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|fdc7312c6129",
@@ -7958,7 +7480,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|ddd5201f8d80",
@@ -7968,7 +7490,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|67f34af49a71",
@@ -7978,7 +7500,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|417eaaf9e8c8",
@@ -7988,7 +7510,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|d37804ce40c2",
@@ -7998,7 +7520,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|bc3b809c47ce",
@@ -8008,7 +7530,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|4d107b278bc2",
@@ -8018,7 +7540,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|40c8454c2d06",
@@ -8028,7 +7550,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|3c13e3ab6447",
@@ -8038,7 +7560,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|02373f3b4dd7",
@@ -8048,7 +7570,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|fce5b8326ad9",
@@ -8058,7 +7580,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|35185eec214f",
@@ -8068,7 +7590,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|d026da3e018e",
@@ -8078,7 +7600,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|7b654fee89a2",
@@ -8088,7 +7610,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|f6af01da5e16",
@@ -8098,7 +7620,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|54020f0105ec",
@@ -8108,7 +7630,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   },
   {
    "k": "2026-10-20|3c20e0312d1a",
@@ -8118,7 +7640,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-20T07:04:19Z"
+   "seen": "2026-10-20T07:14:10Z"
   }
  ],
  "sent": {
