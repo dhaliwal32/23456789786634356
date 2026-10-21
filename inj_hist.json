@@ -117,6 +117,11 @@
 "now": "2026-11-17",
 "was": "2026-10-27"
 },
+"4697383": {
+"d": "2026-10-20",
+"k": "new",
+"now": "2026-10-22"
+},
 "4697391": {
 "d": "2026-10-20",
 "k": "later",
@@ -566,6 +571,11 @@
 "back": "2026-10-24",
 "note": "Joshua (abdomen) was sent to AHL Toronto on Friday for a conditioning stint.",
 "status": "Injured Reserve"
+},
+"4697383": {
+"back": "2026-10-22",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697391": {
 "back": "2026-10-22",
