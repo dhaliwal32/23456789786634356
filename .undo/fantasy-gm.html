@@ -425,7 +425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="kf4mf9.becbdt" data-file="build/app.js">
+<meta name="gx-build" content="1f7bni9.1gc6xs9" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -714,7 +714,7 @@ function computeMoves(s, o) {
   const total = (roster) => { const r = roster.map(wt); return horizon.reduce((t, h) => t + weekProj(r, h.wk, K, h.from).total, 0); };
   const gamesIn = (p) => { const a = pickStart(p); let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) g++; })); return g; };
   const rawPts = (p, ref) => { const a = pickStart(ref || p); let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };
-  const ranked = myR.filter((p) => !p.ir).sort((a, b) => effAvg(wt(b), K) - effAvg(wt(a), K));
+  const ranked = myR.filter((p) => !p.ir).sort((a, b) => gxPgAvg(wt(b), K) - gxPgAvg(wt(a), K)); /* gx088 */
   const autoProt = new Set(ranked.slice(0, protectTop).map((p) => p.id));
   const protectedIds = new Set([...autoProt, ...myR.filter((p) => p.keep).map((p) => p.id)]);
   const cnt = { F: 0, D: 0, G: 0 }; myR.forEach((p) => { if (!p.ir) cnt[p.p]++; });
@@ -1165,7 +1165,7 @@ function buildPlan(s, wk, d0, M) {
   const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
   const minGain = s.minGain ?? 3;
   const myR = s.players.filter((p) => p.ft === s.me);
-  const ranked = myR.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const ranked = myR.filter((p) => !p.ir).sort((a, b) => gxPgAvg(b, K) - gxPgAvg(a, K)); /* gx088-a */
   const prot = new Set([...ranked.slice(0, s.protectTop ?? 8).map((p) => p.id), ...myR.filter((p) => p.keep).map((p) => p.id)]);
   const val = (p, a) => (wk.games[p.t] || []).filter((d) => d >= a).reduce((t, d) => { const dt = wk.dates[d]; return t + effAvg(p, K, dt) * (p.p === "G" ? gStart(p, dt).v : p.prob) * avail(p, dt); }, 0);
   const dayTotal = (tl, d) => dayLineup(tl.filter((x) => x.from <= d && x.to >= d).map((x) => x.p), wk, d, K).total;
@@ -1451,6 +1451,7 @@ function Matchup({ s, setS, wk, setWk }) {
 const shortTag = (p, K) => { const t = tags(p, K)[0]; if (!t) return null; const x = t.u ? t.t.split(":")[0] : t.t; return { t: x.length > 20 ? x.slice(0, 19) + "…" : x, c: t.c }; };
 const cntOf = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
 function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
+  const effAvg = gxPgAvg; /* gx088-sim */
   const { total, rawPts, gamesIn, protectedIds, mins, lineupAware, myR, fas, K } = M;
   const left = movesLeft(s, s.me, wk);
   const cap = Math.max(1, left == null ? 3 : left);
@@ -1561,7 +1562,7 @@ function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
                   <div className="text-xs text-slate-500 mb-1">Drop{m.drop && m.drop === m.sug ? " · suggested" : ""}</div>
                   <select className={inp + " w-full"} value={m.drop} onChange={(e) => setDrop(i, e.target.value)}>
                     <option value="">Choose who to drop</option>
-                    {drops.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}) · {f1(effAvg(p, K))}/g{protectedIds.has(p.id) ? " · protected" : ""}</option>)}
+                    {drops.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}) · {f1(effAvg(p, K))}/g{p.p === "G" ? " · starts " + Math.round((p.prob || 0) * 100) + "%" : ""}{protectedIds.has(p.id) ? " · protected" : ""}</option>)}{/* gx088-opt */}
                   </select>
                 </div>
               </div>
@@ -2091,7 +2092,7 @@ function MyTeam({ s, setS, wk, go }) {
   const keyFn = { mu: (p) => mu[p.id] || 0, left, next: nextG, sea: (p) => (p.gp ? p.tot / p.gp : -99), pg: pv, rk: (p) => -(rankOf[p.id] || 9999), l5: (p) => gxL5v(hist[String(p.id).slice(1)]) }[sort]; // change 079: Last 5 sorts too
   const grp = (k) => roster.filter((p) => !p.ir && p.p === k).sort((a, b) => keyFn(b) - keyFn(a));
   const groups = [["Forwards", grp("F")], ["Defence", grp("D")], ["Goalies", grp("G")], ["Injured reserve", roster.filter((p) => p.ir)]].filter((x) => x[1].length);
-  const healthy = roster.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const healthy = roster.filter((p) => !p.ir).sort((a, b) => gxPgAvg(b, K) - gxPgAvg(a, K)); /* gx088-r */
   const prot = new Set([...healthy.slice(0, s.protectTop ?? 8).map((p) => p.id), ...roster.filter((p) => p.keep).map((p) => p.id)]);
   const weak = healthy.filter((p) => !prot.has(p.id)).sort((a, b) => pv(a) - pv(b)).slice(0, 3);
   const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => setSort(sort === k ? "pg" : k)}>{l}</button>;
@@ -2928,7 +2929,7 @@ function MyInjProt({ s, setS, wk }) {
   const out = roster.filter((p) => { const b = effBack(p).d; return p.ir || (b && b > today) || (!b && avail(p, today) === 0) || (p.status && p.status !== "ACTIVE"); })
     .sort((a, b) => ((effBack(a).d || "9999") < (effBack(b).d || "9999") ? -1 : 1));
   const top = s.protectTop ?? 8;
-  const healthy = roster.filter((p) => !p.ir).sort((a, b) => effAvg(b, K) - effAvg(a, K));
+  const healthy = roster.filter((p) => !p.ir).sort((a, b) => gxPgAvg(b, K) - gxPgAvg(a, K)); /* gx088-r */
   const auto = healthy.slice(0, top), autoIds = new Set(auto.map((p) => p.id));
   const mine = healthy.filter((p) => p.keep && !autoIds.has(p.id));
   const addable = healthy.filter((p) => !autoIds.has(p.id) && !p.keep);
@@ -3548,6 +3549,7 @@ const gxLast5 = (ids, sc) => gxBoxIdx().then((ds) => Promise.all(ds.slice(-14).m
   return out;
 }).catch(() => ({}));
 function Pickups({ s, setS, wk }) {
+  const effAvg = gxPgAvg; /* gx088-pk */
   const K = s.blend;
   const [H, setH] = useState(1);
   const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
@@ -4272,6 +4274,7 @@ const gxWatch = {
   },
 };
 function GxWatchPanel({ s }) {
+  const effAvg = gxPgAvg; /* gx088-w */
   const [, tick] = useState(0);
   useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gm-watch", h); return () => window.removeEventListener("gm-watch", h); }, []);
   const K = s.blend, list = gxWatch.list().map((id) => s.players.find((p) => p.id === id)).filter(Boolean);
@@ -5363,6 +5366,7 @@ const gxIjAgo = (d) => { const n = -gxIjDays(d); return n <= 0 ? "today" : n ===
 const gxIjLast = (e) => (e.nd && e.nd > e.d ? e.nd : e.d);
 const gxIjNote = (n) => (n && n.length > 15 ? n : "");
 function GxInjPage({ s }) {
+  const effAvg = gxPgAvg; /* gx088-i */
   const [, tick] = useState(0);
   useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gm-watch", h); return () => window.removeEventListener("gm-watch", h); }, []);
   const [who, setWho] = useState(() => uiGet()["ij85:who"] || "fa");
@@ -5375,7 +5379,7 @@ function GxInjPage({ s }) {
   const pick = (v) => { setWho(v); uiSet("ij85:who", v); };
   const D = useMemo(() => {
     const S = window.__SIG || {}, EV = S.injmoves || {};
-    const val = (p) => effAvg(p, K) * (p.p === "G" ? p.prob || 0.5 : 1);
+    const val = (p) => effAvg(p, K); /* gx088-iv */
     const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
     const bar = {};
     ["F", "D", "G"].forEach((g) => { const v = mine.filter((p) => p.p === g).map(val); bar[g] = v.length ? Math.min(...v) : 0; });
@@ -5525,6 +5529,8 @@ const gxGPlays = (p) => {
 };
 const gxGmN = (L) => ((L || {}).start || []).filter(gxGPlays).length;
 const gxGmLeft = (days) => { const today = todayISO(); return (days || []).reduce((t, x) => t + (x ? (x.start || []).filter((p) => (!p.dt || p.dt >= today) && (!p.st || (p.st === "L" && p.vf > 0)) && gxGPlays(p)).length : 0), 0); };
+// ---------- change 088: goalies per team game, like Trades (install.py) ----------
+const gxPgAvg = (p, K, dt) => effAvg(p, K, dt) * (p && p.p === "G" ? (p.prob != null ? p.prob : 0.5) : 1);
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */

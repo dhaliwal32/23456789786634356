@@ -425,7 +425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1f7bni9.1gc6xs9" data-file="build/app.js">
+<meta name="gx-build" content="4jw09c.hw5y42" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -984,7 +984,7 @@ function App() {
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> : sub === "injuries" ? <GxInjPage {...P} /> : sub === "adddrop" ? <Pickups {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "players" ? <GxRankings {...P} /> : <LeaguePage {...P} />;
-  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <GxAlertsPage {...P} /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} sub={sub} />;
+  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <GxAlertsPage {...P} /> : sub === "autopilot" ? <GxAutoPage {...P} /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} sub={sub} />;
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800">
@@ -1068,7 +1068,7 @@ function Today({ s, wk, go }) {
           <span>{Math.round(fb)}</span>
         </div>
       </div>
-      <GxRace s={s} wk={wk} />
+      <GxAutoToday go={go} />{/* gx089-today */}<GxRace s={s} wk={wk} />
       {/* change 071: next week card removed */}
       <GxHome s={s} wk={wk} A={A} B={B} />
     </div>
@@ -4083,7 +4083,7 @@ function SetupPage({ s, setS, go, sub }) {
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
         {row("display", "Display", themeTxt + " \u00b7 " + projTxt, () => go("setup", "display"), 0)}
         {row("rules", "Pickup rules", "Moves must add " + (s.minGain ?? 3) + "+ points \u00b7 top " + top + " protected" + (kept.length ? " plus " + kept.length + " more" : ""), () => go("setup", "rules"), 1)}
-        {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2)}
+        {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2)}<GxAutoRow row={row} go={go} />{/* gx089-row */}
         {row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3)}
         {row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4)}
         {row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5)}
@@ -5531,6 +5531,91 @@ const gxGmN = (L) => ((L || {}).start || []).filter(gxGPlays).length;
 const gxGmLeft = (days) => { const today = todayISO(); return (days || []).reduce((t, x) => t + (x ? (x.start || []).filter((p) => (!p.dt || p.dt >= today) && (!p.st || (p.st === "L" && p.vf > 0)) && gxGPlays(p)).length : 0), 0); };
 // ---------- change 088: goalies per team game, like Trades (install.py) ----------
 const gxPgAvg = (p, K, dt) => effAvg(p, K, dt) * (p && p.p === "G" ? (p.prob != null ? p.prob : 0.5) : 1);
+// ---------- change 089: lineup autopilot status (install.py) ----------
+const GX_AP_EDIT = "https://github.com/dhaliwal32/23456789786634356/edit/main/autopilot.json";
+let __gxAP = null;
+const gxApLoad = () => {
+  const k = (window.ESPN_DATA || {}).generated || "";
+  if (__gxAP && __gxAP.k === k) return __gxAP.p;
+  const j = (f) => fetch(f + "?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const p = Promise.all([j("autopilot.json"), j("autopilot_log.json")]).then(([c, b]) => ({ c, b: b || { entries: [] } }));
+  __gxAP = { k, p };
+  return p;
+};
+function gxUseAp() {
+  const [v, setV] = useState(null);
+  useEffect(() => { let dead = false; gxApLoad().then((x) => { if (!dead) setV(x); }); return () => { dead = true; }; }, [(window.ESPN_DATA || {}).generated]);
+  return v;
+}
+const GX_AP_MODE = { on: ["On", "var(--good)", "Changes your ESPN lineup by itself and sends you a note each time."], test: ["Test", "var(--warn)", "Works out the best lineup and sends you a note, but changes nothing on ESPN."], off: ["Off", "var(--mute)", "Does nothing."] };
+const gxApMode = (v) => (v && v.c ? String(v.c.mode || "test").toLowerCase() : null);
+const gxApTime = (iso) => { try { return new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch (e) { return ""; } };
+const gxApDay = (iso) => { try { return new Date(iso).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }); } catch (e) { return ""; } };
+function GxAutoToday({ go }) {
+  const v = gxUseAp();
+  if (!v || !v.b) return null;
+  const today = todayISO();
+  const e = [...(v.b.entries || [])].reverse().find((x) => String(x.at || "").slice(0, 10) === today);
+  if (!e) return null;
+  const fail = String(e.result || "").indexOf("failed") === 0, test = e.mode !== "on";
+  return (
+    <div className="gx-pn" style={{ borderLeft: "3px solid " + (fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"), padding: "10px 14px" }}><b></b><b></b><b></b><b></b>
+      <div className="text-sm">
+        <span className="font-semibold" style={{ color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)" }}>{fail ? "Autopilot could not change your lineup" : test ? "Autopilot test" : "Autopilot set your lineup"}</span>
+        <span className="text-slate-500">{" · " + gxApTime(e.at)}</span>
+      </div>
+      <div className="text-sm" style={{ marginTop: 2 }}>{(test && !fail ? "Would: " : "") + e.text + (e.gain ? " +" + e.gain + " points today." : "")}</div>
+      <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{fail ? "Set it by hand on ESPN today. " : test ? "Nothing was changed on ESPN. " : ""}<button type="button" className="text-blue-600" onClick={() => go("setup", "autopilot")}>Autopilot details</button></div>
+    </div>
+  );
+}
+function GxAutoPage({ s, go }) {
+  const v = gxUseAp();
+  const m = gxApMode(v), M = GX_AP_MODE[m] || null;
+  const list = v && v.b ? [...(v.b.entries || [])].reverse().slice(0, 25) : [];
+  return (
+    <div className="space-y-3">
+      <div className="font-semibold" style={{ fontSize: 17 }}>Lineup autopilot</div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-sr" style={{ borderTop: 0 }}>
+          <span>Mode</span>
+          <span className="font-semibold" style={{ color: M ? M[1] : "var(--mute)" }}>{!v ? "Checking…" : M ? M[0] : "Starts after the next sync"}</span>
+        </div>
+        {M ? <div className="text-sm text-slate-500" style={{ padding: "2px 0 8px" }}>{M[2]}</div> : null}
+        <div className="gx-sr"><span>Change the mode</span><a className="text-sm text-blue-600" href={GX_AP_EDIT} target="_blank" rel="noopener">Open on GitHub</a></div>
+        <div className="text-xs text-slate-500" style={{ paddingTop: 6 }}>On GitHub, tap the pencil, change the word after "mode" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync.</div>
+      </div>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+        <div className="gx-tag" style={{ marginBottom: 6 }}>What it does</div>
+        <div className="text-sm" style={{ lineHeight: 1.6 }}>
+          <div>{"• Every sync (every 6 to 30 minutes) it works out today's best lineup from your projections."}</div>
+          <div>{"• Starts players who have a game, benches players who don't, and swaps in the goalie who is actually starting."}</div>
+          <div>{"• Never moves a player once his game has started, never touches IR, and only changes things when it adds at least " + ((v && v.c && v.c.min_gain) || 0.5) + " points."}</div>
+          <div>{"• Sends a phone note every time, and shows it on Today."}</div>
+        </div>
+      </div>
+      <GxPanel title="History" right={list.length ? "newest first" : ""}>
+        {list.length ? list.map((e, i) => {
+          const fail = String(e.result || "").indexOf("failed") === 0, test = e.mode !== "on";
+          return (
+            <div key={i} className="gx-row" style={{ display: "block", ...(i ? {} : { borderTop: 0 }) }}>
+              <div className="text-xs text-slate-500">{gxApDay(e.at) + " · " + gxApTime(e.at) + " · "}<span style={{ color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)" }}>{fail ? "ESPN refused" : test ? "test only" : "done"}</span>{e.gain ? " · +" + e.gain + " pts" : ""}</div>
+              <div className="text-sm">{e.text}</div>
+              {fail ? <div className="text-xs" style={{ color: "var(--bad)" }}>{String(e.result).replace(/^failed: /, "")}</div> : null}
+            </div>
+          );
+        }) : <div className="text-sm text-slate-500">Nothing yet. The first suggestion shows up here when your lineup can be improved.</div>}
+      </GxPanel>
+    </div>
+  );
+}
+function GxAutoRow({ row, go }) {
+  const v = gxUseAp();
+  const m = gxApMode(v), M = GX_AP_MODE[m];
+  const last = v && v.b && (v.b.entries || []).length ? v.b.entries[v.b.entries.length - 1] : null;
+  const txt = !v ? "Checking…" : !M ? "Starts after the next sync" : M[0] + " mode" + (last ? " · last: " + gxApDay(last.at) + " " + gxApTime(last.at) : " · nothing to fix yet");
+  return row("autopilot", "Lineup autopilot", txt, () => go("setup", "autopilot"), 3);
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
