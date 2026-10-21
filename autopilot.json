@@ -1,5 +1,5 @@
 {
-  "mode": "test",
+  "mode": "on",
   "min_gain": 0.5,
   "goalies": true,
   "skaters": true,
