@@ -11,6 +11,11 @@
 "now": "2026-10-22",
 "was": "Out"
 },
+"2593315": {
+"d": "2026-10-21",
+"k": "back",
+"was": ""
+},
 "2976851": {
 "d": "2026-10-21",
 "k": "dtd",
@@ -121,6 +126,11 @@
 "now": "2026-10-23",
 "was": "Out"
 },
+"4024833": {
+"d": "2026-10-21",
+"k": "news",
+"nd": "2026-10-21"
+},
 "4031645": {
 "d": "2026-10-20",
 "k": "news",
@@ -137,6 +147,11 @@
 "k": "new",
 "nd": "2026-10-21",
 "now": "2026-10-24"
+},
+"4294163": {
+"d": "2026-10-21",
+"k": "back",
+"was": ""
 },
 "4320625": {
 "d": "2026-10-20",
@@ -208,6 +223,7 @@
 "4894355": {
 "d": "2026-10-21",
 "k": "later",
+"nd": "2026-10-21",
 "now": "2026-10-24",
 "was": "2026-10-21"
 },
@@ -257,9 +273,11 @@
 "now": "2026-11-04"
 },
 "5474": {
-"d": "2026-10-20",
-"k": "new",
-"now": "2026-10-21"
+"d": "2026-10-21",
+"k": "later",
+"nd": "2026-10-21",
+"now": "2026-10-24",
+"was": "2026-10-21"
 },
 "5502": {
 "d": "2026-10-20",
@@ -297,11 +315,6 @@
 "back": "2026-10-22",
 "note": "day-to-day",
 "status": "Day-To-Day"
-},
-"2593315": {
-"back": "",
-"note": "Zucker (abdomen) practiced on the third line Monday and is on track to make his regular-season debut Wednesday against the Flyers.",
-"status": "Injured Reserve"
 },
 "2952729": {
 "back": "2027-07-01",
@@ -530,7 +543,7 @@
 },
 "4024833": {
 "back": "2026-10-24",
-"note": "ir",
+"note": "Dubois (illness) skated Wednesday in a regular jersey and appears to be on track to return to game action Saturday against the Sabres, Sammi Silber of The Hocke",
 "status": "Injured Reserve"
 },
 "4031645": {
@@ -581,11 +594,6 @@
 "4272888": {
 "back": "2026-10-24",
 "note": "Thompson won't practice Wednesday and is considered day-to-day with a lower-body injury ahead of Saturday's clash with the Sabres, Sammi Silber of The Hockey Ne",
-"status": "Day-To-Day"
-},
-"4294163": {
-"back": "",
-"note": "Dahlin (upper body) told reporters he \"thinks he'll be ready\" for Wednesday's clash with Philadelphia.",
 "status": "Day-To-Day"
 },
 "4352803": {
@@ -720,8 +728,8 @@
 },
 "4894355": {
 "back": "2026-10-24",
-"note": "Danforth (upper body) missed Monday's practice, according to Justin Alpert and Jourdon LaBarber of the Sabres' official site.",
-"status": "Day-To-Day"
+"note": "Danforth (upper body) isn't expected to play Wednesday versus Philadelphia, per Joe Yerdon of Bleacher Report.",
+"status": "Out"
 },
 "4894398": {
 "back": "2026-11-14",
@@ -839,9 +847,9 @@
 "status": "Injured Reserve"
 },
 "5474": {
-"back": "2026-10-21",
-"note": "Carrick is being evaluated for a mid-body injury, according to Heather Engel of NHL.com on Tuesday.",
-"status": "Day-To-Day"
+"back": "2026-10-24",
+"note": "Carrick (upper body) will not be in the lineup versus the Flyers on Wednesday, Joe Yerdon of Bleacher Report reports.",
+"status": "Out"
 },
 "5592": {
 "back": "2026-10-22",
