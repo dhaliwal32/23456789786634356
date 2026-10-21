@@ -1,5 +1,6 @@
 {
   "mode": "on",
+  "days_ahead": 0,
   "min_gain": 0.5,
   "goalies": true,
   "skaters": true,
