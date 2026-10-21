@@ -1,5 +1,158 @@
 {
- "entries": [],
+ "entries": [
+  {
+   "at": "2026-10-21T02:09:12-07:00",
+   "day": "2026-10-21",
+   "mode": "on",
+   "text": "Start Tkachuk, Reinhart, Bennett, Zegras; bench MacKinnon (no game), Raymond (no game), Wedgewood (no game), Gostisbehere (no game), LaCombe (no game), Knies (no game), Hughes (no game), McCann (no game), Kane (no game), McMann (no game), Arvidsson (no game), Slavin (no game), Laferriere (no game), Josi (no game), Zibanejad (no game), Sorokin (no game).",
+   "gain": 31.5,
+   "before": 0.0,
+   "after": 31.5,
+   "moves": [
+    {
+     "id": 3041969,
+     "n": "Nathan MacKinnon",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4319858,
+     "n": "Brady Tkachuk",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 3114722,
+     "n": "Sam Reinhart",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 4697385,
+     "n": "Lucas Raymond",
+     "from": 6,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 5622,
+     "n": "Scott Wedgewood",
+     "from": 5,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3025662,
+     "n": "Shayne Gostisbehere",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4565262,
+     "n": "Jackson LaCombe",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3114732,
+     "n": "Sam Bennett",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 4874919,
+     "n": "Matthew Knies",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4565230,
+     "n": "Trevor Zegras",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 4874719,
+     "n": "Luke Hughes",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3114777,
+     "n": "Jared McCann",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3735,
+     "n": "Patrick Kane",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 5048894,
+     "n": "Bobby McMann",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3120307,
+     "n": "Viktor Arvidsson",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3069836,
+     "n": "Jaccob Slavin",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4697725,
+     "n": "Alex Laferriere",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 5436,
+     "n": "Roman Josi",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 2562637,
+     "n": "Mika Zibanejad",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3151981,
+     "n": "Ilya Sorokin",
+     "from": 5,
+     "to": 7,
+     "why": "no game"
+    }
+   ],
+   "result": "done"
+  }
+ ],
  "state": {
   "day": "2026-10-21",
   "notes": 0,
