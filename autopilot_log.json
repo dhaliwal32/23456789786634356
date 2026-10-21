@@ -156,6 +156,7 @@
  "state": {
   "day": "2026-10-21",
   "notes": 0,
-  "sent": []
+  "sent": [],
+  "planned": {}
  }
 }
