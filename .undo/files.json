@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_autopilot.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "90.py"
+  "091-autopilot-page-back.py"
  ]
 }
