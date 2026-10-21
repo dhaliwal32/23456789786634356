@@ -12,7 +12,9 @@ The switch lives in autopilot.json (edit it on GitHub). It starts in "test".
 Safety rules:
   - only ever touches your own team (MY_TEAM_ID) and only today's scoring day
   - never moves a player whose game has started (ESPN locks him) or anyone in an IR slot
-  - one all-or-nothing request per change; at most one change per run
+  - one all-or-nothing request per day it changes
+  - days after today (autopilot.json "days_ahead") are set once, then only changed again on the day itself
+    or when you tap "Redo upcoming days" in the app (it writes "redo_at")
   - changes only when the new lineup is worth at least min_gain more points today
 """
 import json
@@ -27,8 +29,8 @@ LOG = os.path.join(HERE, "autopilot_log.json")
 ET = ZoneInfo("America/New_York")
 PT = ZoneInfo("America/Vancouver")
 WRITES = "https://lm-api-writes.fantasy.espn.com/apis/v3/games/fhl/seasons/{season}/segments/0/leagues/{league}/transactions/"
-DEFAULT_CONF = {"mode": "test", "min_gain": 0.5, "goalies": True, "skaters": True,
-                "notes": "mode: test = only tell me, on = change my ESPN lineup, off = do nothing"}
+DEFAULT_CONF = {"mode": "test", "days_ahead": 0, "redo_at": "", "min_gain": 0.5, "goalies": True, "skaters": True,
+                "notes": "mode: test = only tell me, on = change my ESPN lineup, off = do nothing. days_ahead: 0 = today only, 1-14 = that many days after today, week = through Sunday"}
 SLOT_F, SLOT_D, SLOT_G, SLOT_U, SLOT_BENCH, SLOT_IR = 3, 4, 5, 6, 7, 8
 CAP = {SLOT_F: 9, SLOT_D: 5, SLOT_U: 1, SLOT_G: 2}
 ACTIVE = (SLOT_F, SLOT_D, SLOT_U, SLOT_G)
@@ -184,15 +186,55 @@ def plan(roster, day, games, E, c):
 def describe(moves):
     ins = [m["r"] for m in moves if m["to"] in ACTIVE and m["from"] not in ACTIVE]
     outs = [m["r"] for m in moves if m["from"] in ACTIVE and m["to"] not in ACTIVE]
-    short = lambda r: r["n"].split(" ")[-1] + (" (" + r["why"] + ")" if r.get("why") else "")
+    def names(rs, why):
+        out = [r["n"].split(" ")[-1] + (" (" + r["why"] + ")" if why and r["p"] == "G" and r.get("why") else "") for r in rs[:4]]
+        return ", ".join(out) + (f" +{len(rs) - 4} more" if len(rs) > 4 else "")
     parts = []
     if ins:
-        parts.append("Start " + ", ".join(short(r) for r in ins))
+        parts.append("start " + names(ins, True))
     if outs:
-        parts.append("bench " + ", ".join(short(r) for r in outs))
+        nog = all(r.get("why") == "no game" for r in outs)
+        parts.append("bench " + names(outs, False) + (" (no game)" if nog else ""))
     if not parts and moves:
-        parts.append("move " + ", ".join(m["r"]["n"].split(" ")[-1] for m in moves) + " between starting spots")
-    return "; ".join(parts) + "."
+        parts.append("move " + names([m["r"] for m in moves], False) + " between starting spots")
+    s = "; ".join(parts)
+    return s[:1].upper() + s[1:] + "."
+
+
+def _when(x):
+    try:
+        return datetime.fromisoformat(str(x).replace("Z", "+00:00"))
+    except Exception:
+        return None
+
+
+def days_ahead(c, today):
+    """How many days after today to set. "week" = through Sunday, the end of the matchup week."""
+    v = c.get("days_ahead", 0)
+    if str(v).lower() == "week":
+        return 6 - today.weekday()
+    try:
+        return max(0, min(14, int(v)))
+    except Exception:
+        return 0
+
+
+def _post(session, url, my_team_id, swid, sp, future, moves):
+    body = {"isLeagueManager": False, "teamId": my_team_id, "type": "FUTURE_ROSTER" if future else "ROSTER", "memberId": swid,
+            "scoringPeriodId": sp, "executionType": "EXECUTE",
+            "items": [{"playerId": m["r"]["id"], "type": "LINEUP", "fromLineupSlotId": m["from"], "toLineupSlotId": m["to"]} for m in moves]}
+    try:
+        w = session.post(url, json=body, headers={"Content-Type": "application/json"}, timeout=30)
+        try:
+            js = w.json()
+        except Exception:
+            js = {}
+        if w.status_code < 300:
+            return True, js.get("status") or "EXECUTED"
+        msg = ", ".join(str(x.get("message") or x.get("type") or x) for x in (js.get("details") or js.get("messages") or [])) or w.text[:200]
+        return False, msg
+    except Exception as ex:
+        return False, f"{type(ex).__name__}: {ex}"
 
 
 def run(session, league_url, my_team_id, swid, season, league_id):
@@ -203,87 +245,101 @@ def run(session, league_url, my_team_id, swid, season, league_id):
     E = _read_js("espn-data.js")
     G = _read_js("games-data.js")
     now_et = datetime.now(ET)
-    day = now_et.date().isoformat()
-    sp = next((p["id"] for p in (E.get("periods") or []) if day in (p.get("dates") or [])), None)
-    games = (G.get("games") or {}).get(day) or {}
-    if not sp or not games:
-        print(f"(autopilot) nothing to do today ({day}): {'no NHL games' if not games else 'no ESPN scoring day'}")
-        return
-    r = session.get(league_url, params=[("view", "mRoster"), ("forTeamId", my_team_id), ("scoringPeriodId", sp)], timeout=30)
-    r.raise_for_status()
-    team = next((t for t in r.json().get("teams", []) if t.get("id") == my_team_id), None)
-    entries = (team or {}).get("roster", {}).get("entries", [])
-    if len(entries) < 15:
-        print(f"(autopilot) your roster came back with {len(entries)} players, so nothing was changed")
-        return
-    byid = {p["id"]: p for p in E.get("players") or []}
-    roster = []
-    for en in entries:
-        pe = en.get("playerPoolEntry") or {}
-        pl = pe.get("player") or {}
-        base = byid.get(en.get("playerId"))
-        if not base:
-            continue
-        roster.append({**base, "slot": en.get("lineupSlotId"), "locked": bool(pe.get("lineupLocked")),
-                       "elig": pl.get("eligibleSlots") or []})
-    moves, before, after = plan(roster, day, games, E, c)
-    gain = round(after - before, 1)
+    today = now_et.date()
+    n_ahead = days_ahead(c, today)
     b = load_log()
-    st = b["state"] if b["state"].get("day") == day else {"day": day, "notes": 0, "sent": []}
-    b["state"] = st
-    if not moves or gain < float(c.get("min_gain", 0.5)):
-        print(f"(autopilot) lineup is already the best for {day} (projected {before})")
+    st = b["state"]
+    if st.get("day") != today.isoformat():
+        st.update({"day": today.isoformat(), "notes": 0, "sent": []})
+        st.pop("failed", None)
+    planned = {d: v for d, v in (st.get("planned") or {}).items() if d > today.isoformat()}
+    st["planned"] = planned
+    redo = _when(c.get("redo_at"))
+    byid = {p["id"]: p for p in E.get("players") or []}
+    url = WRITES.format(season=season, league=league_id)
+    min_gain = float(c.get("min_gain", 0.5))
+    stamp = datetime.now(PT).strftime("%-I:%M %p")
+    found = []
+    for k in range(n_ahead + 1):
+        dd = today + timedelta(days=k)
+        day = dd.isoformat()
+        future = k > 0
+        if future:
+            last = _when(planned.get(day))
+            if last and not (redo and redo > last):
+                continue          # already set: only the day itself or a redo changes it again
+        sp = next((p["id"] for p in (E.get("periods") or []) if day in (p.get("dates") or [])), None)
+        games = (G.get("games") or {}).get(day) or {}
+        if not sp or not games:
+            if future:
+                planned[day] = datetime.now(PT).isoformat(timespec="seconds")
+            continue
+        r = session.get(league_url, params=[("view", "mRoster"), ("forTeamId", my_team_id), ("scoringPeriodId", sp)], timeout=30)
+        r.raise_for_status()
+        team = next((t for t in r.json().get("teams", []) if t.get("id") == my_team_id), None)
+        entries = (team or {}).get("roster", {}).get("entries", [])
+        if len(entries) < 15:
+            print(f"(autopilot) {day}: your roster came back with {len(entries)} players, so nothing was changed")
+            continue
+        roster = []
+        for en in entries:
+            pe = en.get("playerPoolEntry") or {}
+            pl = pe.get("player") or {}
+            base = byid.get(en.get("playerId"))
+            if base:
+                roster.append({**base, "slot": en.get("lineupSlotId"), "locked": (not future) and bool(pe.get("lineupLocked")),
+                               "elig": pl.get("eligibleSlots") or []})
+        moves, before, after = plan(roster, day, games, E, c)
+        gain = round(after - before, 1)
+        if future:
+            planned[day] = datetime.now(PT).isoformat(timespec="seconds")
+        if not moves or gain < min_gain:
+            print(f"(autopilot) {day}: lineup is already the best (projected {before})")
+            continue
+        found.append({"day": day, "sp": sp, "future": future, "moves": moves, "before": before, "after": after, "gain": gain, "text": describe(moves)})
+    if not found:
         save_log(b)
         return
-    text = describe(moves)
-    sig = "|".join(sorted(f"{m['r']['id']}:{m['to']}" for m in moves))
-    stamp = datetime.now(PT).strftime("%-I:%M %p")
-    entry = {"at": datetime.now(PT).isoformat(timespec="seconds"), "day": day, "mode": c["mode"], "text": text,
-             "gain": gain, "before": before, "after": after,
-             "moves": [{"id": m["r"]["id"], "n": m["r"]["n"], "from": m["from"], "to": m["to"], "why": m["r"].get("why", "")} for m in moves]}
     try:
         import gm_notify
         note = gm_notify.push
     except Exception:
         note = lambda *a, **k: False
-    if c["mode"] != "on":
-        if sig in st["sent"]:
-            print(f"(autopilot) test: same suggestion as before for {day}: {text}")
-            save_log(b)
-            return
-        entry["result"] = "test only"
+    dname = lambda d: "today" if d == today.isoformat() else datetime.fromisoformat(d).strftime("%a %b %-d")
+    lines, fails = [], []
+    for f in found:
+        entry = {"at": datetime.now(PT).isoformat(timespec="seconds"), "day": f["day"], "mode": c["mode"], "text": f["text"],
+                 "gain": f["gain"], "before": f["before"], "after": f["after"],
+                 "moves": [{"id": m["r"]["id"], "n": m["r"]["n"], "from": m["from"], "to": m["to"], "why": m["r"].get("why", "")} for m in f["moves"]]}
+        if c["mode"] != "on":
+            sig = f["day"] + "|" + "|".join(sorted(f"{m['r']['id']}:{m['to']}" for m in f["moves"]))
+            if sig in st["sent"]:
+                continue
+            st["sent"].append(sig)
+            entry["result"] = "test only"
+            b["entries"].append(entry)
+            lines.append(f"{dname(f['day'])}: {f['text']} +{f['gain']}")
+            print(f"(autopilot) test {f['day']}: would {f['text']} (+{f['gain']})")
+            continue
+        ok, msg = _post(session, url, my_team_id, swid, f["sp"], f["future"], f["moves"])
+        entry["result"] = "done" if ok else "failed: " + str(msg)[:200]
         b["entries"].append(entry)
-        st["sent"].append(sig)
-        if st["notes"] < MAX_NOTES_TEST:
-            st["notes"] += 1
-            note("Autopilot test", f"Would change your lineup ({stamp}): {text} +{gain} points today. Nothing was changed on ESPN.")
-        print(f"(autopilot) test: would {text} (+{gain})")
-        save_log(b)
-        return
-    body = {"isLeagueManager": False, "teamId": my_team_id, "type": "ROSTER", "memberId": swid,
-            "scoringPeriodId": sp, "executionType": "EXECUTE",
-            "items": [{"playerId": m["r"]["id"], "type": "LINEUP", "fromLineupSlotId": m["from"], "toLineupSlotId": m["to"]} for m in moves]}
-    url = WRITES.format(season=season, league=league_id)
-    try:
-        w = session.post(url, json=body, headers={"Content-Type": "application/json"}, timeout=30)
-        ok = w.status_code < 300
-        try:
-            js = w.json()
-        except Exception:
-            js = {}
-        msg = js.get("status") or ""
-        if not ok:
-            msg = ", ".join(str(x.get("message") or x.get("type") or x) for x in (js.get("details") or js.get("messages") or [])) or w.text[:200]
-    except Exception as ex:
-        ok, msg = False, f"{type(ex).__name__}: {ex}"
-    entry["result"] = "done" if ok else "failed: " + str(msg)[:200]
-    b["entries"].append(entry)
-    if ok:
-        note("Autopilot", f"Changed your lineup ({stamp}): {text} +{gain} points today.")
-        print(f"(autopilot) changed lineup: {text} (+{gain})")
-    else:
-        if "failed" not in st:
-            st["failed"] = 1
-            note("Autopilot could not change your lineup", f"{text} ESPN said: {msg}. Set it by hand on ESPN today.", "high")
-        print(f"(autopilot) ESPN refused the change: {msg}")
+        if ok:
+            lines.append(f"{dname(f['day'])}: {f['text']} +{f['gain']}")
+            print(f"(autopilot) changed {f['day']}: {f['text']} (+{f['gain']})")
+        else:
+            fails.append(f"{dname(f['day'])}: ESPN said {msg}")
+            if f["future"]:
+                planned.pop(f["day"], None)   # try that day again next sync
+            print(f"(autopilot) ESPN refused the change for {f['day']}: {msg}")
+    if lines:
+        if c["mode"] != "on":
+            if st["notes"] < MAX_NOTES_TEST:
+                st["notes"] += 1
+                note("Autopilot test", f"Would change your lineup ({stamp}):\n" + "\n".join(lines) + "\nNothing was changed on ESPN.")
+        else:
+            note("Autopilot", f"Changed your lineup ({stamp}):\n" + "\n".join(lines))
+    if fails and not st.get("failed"):
+        st["failed"] = 1
+        note("Autopilot could not change your lineup", "\n".join(fails) + ". Set it by hand on ESPN.", "high")
     save_log(b)
