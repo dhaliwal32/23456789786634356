@@ -1,0 +1,7 @@
+{
+  "mode": "test",
+  "min_gain": 0.5,
+  "goalies": true,
+  "skaters": true,
+  "notes": "mode: test = only tell me, on = change my ESPN lineup, off = do nothing"
+}
