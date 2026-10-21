@@ -1406,7 +1406,7 @@ function App() {
     setS: setS
   }), /*#__PURE__*/React.createElement(AddOne, P)) : sub === "inj" ? /*#__PURE__*/React.createElement(InjuryPanel, P) : sub === "odds" ? /*#__PURE__*/React.createElement(OddsBoard, {
     s: s
-  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "autopilot" ? /*#__PURE__*/React.createElement(GxAutoPage, P) : sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
+  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "autopilot" ? /*#__PURE__*/React.createElement(GxAutoPage2, P) : sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
     sub: sub
   }));
   return /*#__PURE__*/React.createElement("div", {
@@ -12283,7 +12283,7 @@ function GxAutoToday({
     style: {
       marginTop: 2
     }
-  }, (test && !fail ? "Would: " : "") + e.text + (e.gain ? " +" + e.gain + " points today." : "")), /*#__PURE__*/React.createElement("div", {
+  }, (e.day && e.day !== todayISO() ? "For " + gxApDayName(e.day) + ": " : "") + (test && !fail ? "Would: " : "") + e.text + (e.gain ? " +" + e.gain + " points." : "")), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       marginTop: 4
@@ -12393,5 +12393,227 @@ function GxAutoRow({
   const last = v && v.b && (v.b.entries || []).length ? v.b.entries[v.b.entries.length - 1] : null;
   const txt = !v ? "Checking…" : !M ? "Starts after the next sync" : M[0] + " mode" + (last ? " · last: " + gxApDay(last.at) + " " + gxApTime(last.at) : " · nothing to fix yet");
   return row("autopilot", "Lineup autopilot", txt, () => go("setup", "autopilot"), 3);
+}
+// ---------- change 090: autopilot controls in the app, lineups set days ahead (install.py) ----------
+const GX_AP_API = "https://api.github.com/repos/dhaliwal32/23456789786634356/contents/autopilot.json";
+const GX_AP_RUN = "https://api.github.com/repos/dhaliwal32/23456789786634356/actions/workflows/sync.yml/dispatches";
+const gxApSave = patch => {
+  const key = gxSyncKey();
+  if (!key) return Promise.reject(new Error("nokey"));
+  const hdr = {
+    Authorization: "Bearer " + key,
+    Accept: "application/vnd.github+json"
+  };
+  const once = again => fetch(GX_AP_API + "?ref=main&t=" + Date.now(), {
+    headers: hdr,
+    cache: "no-store"
+  }).then(r => {
+    if (r.status === 401 || r.status === 403) throw new Error("key");
+    if (!r.ok) throw new Error("read " + r.status);
+    return r.json();
+  }).then(j => {
+    let cur = {};
+    try {
+      cur = JSON.parse(decodeURIComponent(escape(atob(String(j.content || "").replace(/\n/g, "")))));
+    } catch (e) {}
+    const next = {
+      ...cur,
+      ...patch
+    };
+    return fetch(GX_AP_API, {
+      method: "PUT",
+      headers: {
+        ...hdr,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: "Autopilot settings from the app",
+        content: gxB64(JSON.stringify(next, null, 2) + "\n"),
+        branch: "main",
+        sha: j.sha
+      })
+    }).then(r => {
+      if ((r.status === 409 || r.status === 422) && again) return once(false);
+      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "key" : "save " + r.status);
+      return next;
+    });
+  });
+  return once(true).then(next => fetch(GX_AP_RUN, {
+    method: "POST",
+    headers: {
+      ...hdr,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      ref: "main"
+    })
+  }).then(r => ({
+    next,
+    ran: r.status === 204
+  })).catch(() => ({
+    next,
+    ran: false
+  })));
+};
+const GX_AP_AHEAD = [["0", "Today only"], ["1", "+1 day"], ["3", "+3 days"], ["week", "Rest of week"], ["7", "+7 days"]];
+const gxApDayName = d => {
+  try {
+    return d === todayISO() ? "today" : fromIso(d).toLocaleDateString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    });
+  } catch (e) {
+    return d || "";
+  }
+};
+function GxAutoPage2({
+  s,
+  go
+}) {
+  const v = gxUseAp();
+  const [cfg, setCfg] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+  const c = cfg || v && v.c || null;
+  const m = c ? String(c.mode || "test").toLowerCase() : null,
+    M = GX_AP_MODE[m] || null;
+  const ahead = c ? String(c.days_ahead == null ? 0 : c.days_ahead) : "0";
+  const has = !!gxSyncKey();
+  const list = v && v.b ? [...(v.b.entries || [])].reverse().slice(0, 25) : [];
+  const save = (patch, done) => {
+    if (busy) return;
+    setBusy(true);
+    setMsg("Saving…");
+    gxApSave(patch).then(({
+      next,
+      ran
+    }) => {
+      setCfg(next);
+      __gxAP = null;
+      setMsg((done || "Saved.") + (ran ? " Running now; give it about 2 minutes." : " It takes effect at the next sync (every 6 to 30 minutes)."));
+    }).catch(e => setMsg(e && e.message === "key" ? "GitHub refused the key. It needs Contents: Read and write on this repo." : e && e.message === "nokey" ? "Turn on Sync between devices first." : "Could not reach GitHub. Try again.")).finally(() => setBusy(false));
+  };
+  const seg = (items, val, pick) => /*#__PURE__*/React.createElement("span", {
+    className: "gx-seg"
+  }, items.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    type: "button",
+    disabled: busy || !has,
+    className: val === k ? "on" : "",
+    onClick: () => pick(k)
+  }, l)));
+  const pickMode = k => {
+    if (k === m) return;
+    if (k === "on" && !window.confirm("Let the app change your real ESPN lineup by itself?")) return;
+    save({
+      mode: k
+    }, "Mode set to " + GX_AP_MODE[k][0] + ".");
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-semibold",
+    style: {
+      fontSize: 17
+    }
+  }, "Lineup autopilot"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr",
+    style: {
+      borderTop: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Mode"), c ? seg([["off", "Off"], ["test", "Test"], ["on", "On"]], m, pickMode) : /*#__PURE__*/React.createElement("span", {
+    className: "text-sm text-slate-500"
+  }, v ? "Starts after the next sync" : "Checking…")), M ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500",
+    style: {
+      padding: "2px 0 8px"
+    }
+  }, M[2]) : null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr"
+  }, /*#__PURE__*/React.createElement("span", null, "Set lineups"), seg(GX_AP_AHEAD, ahead, k => save({
+    days_ahead: k === "week" ? "week" : +k
+  }, "Lineups will be set " + ({
+    "0": "for today only.",
+    "1": "for today and tomorrow.",
+    "3": "for today and the next 3 days.",
+    week: "through Sunday.",
+    "7": "for today and the next 7 days."
+  }[k] || ".")))), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      paddingTop: 6
+    }
+  }, "Days after today are set once. After that they only change on the day itself, when starting goalies are confirmed, or when you tap Redo."), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr"
+  }, /*#__PURE__*/React.createElement("span", null, "Upcoming days"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "border border-slate-300 rounded-lg px-3 py-1 text-sm",
+    disabled: busy || !has || ahead === "0",
+    onClick: () => save({
+      redo_at: new Date().toISOString()
+    }, "Upcoming days will be set again.")
+  }, "Redo upcoming days")), msg ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs",
+    style: {
+      paddingTop: 6,
+      color: /refused|Could not|first/.test(msg) ? "var(--bad)" : "var(--good)"
+    }
+  }, msg) : null, !has ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      paddingTop: 8
+    }
+  }, "To change these here, turn on Sync between devices in Setup, Data and backup. Or ", /*#__PURE__*/React.createElement("a", {
+    className: "text-blue-600",
+    href: GX_AP_EDIT,
+    target: "_blank",
+    rel: "noopener"
+  }, "edit autopilot.json on GitHub"), ".") : null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-tag",
+    style: {
+      marginBottom: 6
+    }
+  }, "What it does"), /*#__PURE__*/React.createElement("div", {
+    className: "text-sm",
+    style: {
+      lineHeight: 1.6
+    }
+  }, /*#__PURE__*/React.createElement("div", null, "• Every sync it works out the best lineup for today and for the days you chose."), /*#__PURE__*/React.createElement("div", null, "• Starts players who have a game, benches players who don't, and swaps in the goalie who is actually starting."), /*#__PURE__*/React.createElement("div", null, "• Never moves a player once his game has started, never touches IR, and only changes things when it adds at least " + (c && c.min_gain || 0.5) + " points."), /*#__PURE__*/React.createElement("div", null, "• Sends a phone note every time, and shows it on Today."))), /*#__PURE__*/React.createElement(GxPanel, {
+    title: "History",
+    right: list.length ? "newest first" : ""
+  }, list.length ? list.map((e, i) => {
+    const fail = String(e.result || "").indexOf("failed") === 0,
+      test = e.mode !== "on";
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "gx-row",
+      style: {
+        display: "block",
+        ...(i ? {} : {
+          borderTop: 0
+        })
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500"
+    }, "For " + gxApDayName(e.day) + " · " + gxApDay(e.at) + " " + gxApTime(e.at) + " · ", /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"
+      }
+    }, fail ? "ESPN refused" : test ? "test only" : "done"), e.gain ? " · +" + e.gain + " pts" : ""), /*#__PURE__*/React.createElement("div", {
+      className: "text-sm"
+    }, e.text), fail ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs",
+      style: {
+        color: "var(--bad)"
+      }
+    }, String(e.result).replace(/^failed: /, "")) : null);
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "Nothing yet. The first suggestion shows up here when a lineup can be improved.")));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

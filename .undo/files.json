@@ -1,10 +1,9 @@
 {
  "files": {
   "fantasy-gm.html": true,
-  "espn_sync.py": true,
-  "gm_autopilot.py": false
+  "gm_autopilot.py": true
  },
  "changes": [
-  "89.py"
+  "90.py"
  ]
 }
