@@ -1,40 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-13|61c791f06510",
-   "at": "2026-10-14T04:04:47Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Scott Wedgewood (COL, 5:30 PM) is on your bench with a game today, while Ukko-Pekka Luukkonen (BUF) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-14T04:04:47Z"
-  },
-  {
-   "k": "2026-10-13|6e181580e8b4",
-   "at": "2026-10-14T04:04:47Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Josh Manson (COL, 5:30 PM) is on your bench with a game today, while Jackson LaCombe (ANA) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-14T04:04:47Z"
-  },
-  {
-   "k": "2026-10-13|3b9da3f65deb",
-   "at": "2026-10-14T04:04:47Z",
-   "title": "Pickup: ice time jump",
-   "text": "John Marino (D, UTA) is playing 20.0 min per game lately, up -0.3 (PP +2.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-14T06:54:36Z",
-   "via": "morning",
-   "sent_at": "2026-10-14T15:00:46Z"
-  },
-  {
    "k": "2026-10-13|58d85f916bd7",
    "at": "2026-10-14T05:17:25Z",
    "title": "Pickup: ice time jump",
@@ -6786,7 +6752,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-21T03:58:50Z",
+   "seen": "2026-10-21T04:04:51Z",
    "via": "morning",
    "sent_at": "2026-10-20T15:05:33Z"
   },
@@ -6822,7 +6788,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-21T03:58:50Z",
+   "seen": "2026-10-21T04:04:51Z",
    "via": "morning",
    "sent_at": "2026-10-20T15:05:33Z"
   },
@@ -7095,7 +7061,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|23c4cb024b8b",
@@ -7105,7 +7071,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|c08ed34834d8",
@@ -7115,7 +7081,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|c27b9fbc6b67",
@@ -7125,7 +7091,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|56175716e8d1",
@@ -7135,7 +7101,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|014fb11432f7",
@@ -7145,7 +7111,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|7aa17fc1e9ad",
@@ -7155,7 +7121,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|6a7f01020145",
@@ -7175,7 +7141,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|bf995bfdaf7d",
@@ -7195,7 +7161,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|5a8259f578a5",
@@ -7205,7 +7171,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|d00663f55559",
@@ -7215,7 +7181,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|3bb45f9e73f3",
@@ -7225,7 +7191,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|1ee4ebfe7166",
@@ -7235,7 +7201,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|a707f5248609",
@@ -7245,7 +7211,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|d7968ae4291c",
@@ -7255,7 +7221,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|72bef02b185b",
@@ -7265,7 +7231,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|e2eddc42b8be",
@@ -7295,7 +7261,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|627f3bd8c6b8",
@@ -7315,7 +7281,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|f9b63a4b61ff",
@@ -7325,7 +7291,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|95b634124cce",
@@ -7345,7 +7311,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|d3c4c22e47c2",
@@ -7355,7 +7321,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|e90c215f618b",
@@ -7365,7 +7331,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|07c60758c44c",
@@ -7375,7 +7341,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|e31bbd7934d9",
@@ -7385,7 +7351,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|d3437a14eb8c",
@@ -7395,7 +7361,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|33ffffd647b5",
@@ -7405,7 +7371,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|0750fbb47252",
@@ -7415,7 +7381,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|a14a54da4ef0",
@@ -7425,7 +7391,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|b44736a5061d",
@@ -7445,7 +7411,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|d012d8873968",
@@ -7455,7 +7421,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|8c597133cfc7",
@@ -7465,7 +7431,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|bcf5616e4fc8",
@@ -7475,7 +7441,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|9b2c812a1422",
@@ -7485,7 +7451,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|a887ea3bdbbb",
@@ -7495,7 +7461,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|633c2faaeecf",
@@ -7505,7 +7471,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:49Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|de9c08f8c757",
@@ -7515,7 +7481,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|83fbc3a26fda",
@@ -7525,7 +7491,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|27f4d0d4ffc5",
@@ -7535,7 +7501,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-21T03:58:50Z"
+   "seen": "2026-10-21T04:04:51Z"
   },
   {
    "k": "2026-10-20|5508562b0f2a",
@@ -7568,6 +7534,39 @@
    "urgent": false,
    "sent": false,
    "seen": "2026-10-21T03:10:34Z"
+  },
+  {
+   "k": "2026-10-20|88da5684370a",
+   "at": "2026-10-21T04:04:51Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Sam Reinhart (FLA, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-21T04:04:51Z"
+  },
+  {
+   "k": "2026-10-20|0d6ef1577eb9",
+   "at": "2026-10-21T04:04:51Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Sam Bennett (FLA, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-21T04:04:51Z"
+  },
+  {
+   "k": "2026-10-20|ab855f0c29c9",
+   "at": "2026-10-21T04:04:51Z",
+   "title": "Lineup: bench player has a game",
+   "text": "Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them.",
+   "section": "lineup",
+   "urgent": false,
+   "sent": true,
+   "via": "off",
+   "sent_at": "2026-10-21T04:04:51Z"
   }
  ],
  "sent": {
@@ -8444,6 +8443,24 @@
    "kind": "Not sent (switched off)",
    "title": "Your player's line changed",
    "body": "Viktor Arvidsson (DET) moved down: 1st line -> 2nd line"
+  },
+  {
+   "at": "2026-10-21T04:04:51Z",
+   "kind": "Not sent (switched off)",
+   "title": "Lineup: bench player has a game",
+   "body": "Sam Reinhart (FLA, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them."
+  },
+  {
+   "at": "2026-10-21T04:04:51Z",
+   "kind": "Not sent (switched off)",
+   "title": "Lineup: bench player has a game",
+   "body": "Sam Bennett (FLA, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them."
+  },
+  {
+   "at": "2026-10-21T04:04:51Z",
+   "kind": "Not sent (switched off)",
+   "title": "Lineup: bench player has a game",
+   "body": "Trevor Zegras (PHI, 4:30 PM) is on your bench with a game today, while Nathan MacKinnon (COL) is starting with no game. Swap them."
   }
  ]
 }
