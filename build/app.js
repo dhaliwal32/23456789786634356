@@ -1406,7 +1406,7 @@ function App() {
     setS: setS
   }), /*#__PURE__*/React.createElement(AddOne, P)) : sub === "inj" ? /*#__PURE__*/React.createElement(InjuryPanel, P) : sub === "odds" ? /*#__PURE__*/React.createElement(OddsBoard, {
     s: s
-  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "autopilot" ? /*#__PURE__*/React.createElement(GxAutoPage2, P) : sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
+  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "autopilot" ? /*#__PURE__*/React.createElement(GxAutoPage, P) : /* gx091 */sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
     sub: sub
   }));
   return /*#__PURE__*/React.createElement("div", {
@@ -12338,7 +12338,7 @@ function GxAutoPage({
     style: {
       paddingTop: 6
     }
-  }, "On GitHub, tap the pencil, change the word after \"mode\" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync.")), /*#__PURE__*/React.createElement("div", {
+  }, "On GitHub, tap the pencil, change the word after \"mode\" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync. To set lineups ahead, change the number after \"days_ahead\": 0 is today only, 3 is the next 3 days too, 7 is a week. Days after today are set once, then only changed again on the day itself.")), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     className: "gx-tag",
