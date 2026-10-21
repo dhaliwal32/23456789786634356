@@ -464,4 +464,12 @@ print(f"With ESPN projections: {sum(1 for p in players if p['pavg'])}  |  with s
 print(f"Your team: {next((t['name'] for t in teams if t['id'] == MY_TEAM_ID), '?')}")
 print(f"Saved {OUT} - now refresh fantasy-gm.html")
 
+# change 089: lineup autopilot (only acts when autopilot.json says "on"; never stops the sync)
+try:
+    import gm_autopilot
+    gm_autopilot.run(session, LEAGUE, MY_TEAM_ID, SWID, SEASON, LEAGUE_ID)
+except Exception as ex_ap:
+    print(f"(autopilot) skipped: {type(ex_ap).__name__}: {ex_ap}")
+
+
 # locked-in 57 (news_logos.py)

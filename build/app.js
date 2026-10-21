@@ -1406,7 +1406,7 @@ function App() {
     setS: setS
   }), /*#__PURE__*/React.createElement(AddOne, P)) : sub === "inj" ? /*#__PURE__*/React.createElement(InjuryPanel, P) : sub === "odds" ? /*#__PURE__*/React.createElement(OddsBoard, {
     s: s
-  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
+  }) : sub === "alerts" ? /*#__PURE__*/React.createElement(GxAlertsPage, P) : sub === "autopilot" ? /*#__PURE__*/React.createElement(GxAutoPage, P) : sub === "adv" ? /*#__PURE__*/React.createElement(Settings, P) : /*#__PURE__*/React.createElement(SetupPage, _extends({}, P, {
     sub: sub
   }));
   return /*#__PURE__*/React.createElement("div", {
@@ -1601,7 +1601,9 @@ function Today({
       margin: "0 auto",
       color: ahead ? "var(--good)" : "var(--bad)"
     }
-  }, (ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxRace, {
+  }, (ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxAutoToday, {
+    go: go
+  }), /*#__PURE__*/React.createElement(GxRace, {
     s: s,
     wk: wk
   }), /*#__PURE__*/React.createElement(GxHome, {
@@ -9114,7 +9116,10 @@ function SetupPage({
       paddingTop: 2,
       paddingBottom: 2
     }
-  }, row("display", "Display", themeTxt + " \u00b7 " + projTxt, () => go("setup", "display"), 0), row("rules", "Pickup rules", "Moves must add " + (s.minGain ?? 3) + "+ points \u00b7 top " + top + " protected" + (kept.length ? " plus " + kept.length + " more" : ""), () => go("setup", "rules"), 1), row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2), row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3), row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4), row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5), row("ailab", "AI Lab", "How each projection is doing", () => window.open("ai-dashboard.html", "_blank"), 6), row("history", "Prediction history", "Every projection and what happened", () => window.open("ai-history.html", "_blank"), 7)));
+  }, row("display", "Display", themeTxt + " \u00b7 " + projTxt, () => go("setup", "display"), 0), row("rules", "Pickup rules", "Moves must add " + (s.minGain ?? 3) + "+ points \u00b7 top " + top + " protected" + (kept.length ? " plus " + kept.length + " more" : ""), () => go("setup", "rules"), 1), row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2), /*#__PURE__*/React.createElement(GxAutoRow, {
+    row: row,
+    go: go
+  }), row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3), row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4), row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5), row("ailab", "AI Lab", "How each projection is doing", () => window.open("ai-dashboard.html", "_blank"), 6), row("history", "Prediction history", "Every projection and what happened", () => window.open("ai-history.html", "_blank"), 7)));
 }
 
 // ---------- round 45: tappable rows work from the keyboard too (news_logos.py) ----------
@@ -12189,4 +12194,204 @@ const gxGmLeft = days => {
 };
 // ---------- change 088: goalies per team game, like Trades (install.py) ----------
 const gxPgAvg = (p, K, dt) => effAvg(p, K, dt) * (p && p.p === "G" ? p.prob != null ? p.prob : 0.5 : 1);
+// ---------- change 089: lineup autopilot status (install.py) ----------
+const GX_AP_EDIT = "https://github.com/dhaliwal32/23456789786634356/edit/main/autopilot.json";
+let __gxAP = null;
+const gxApLoad = () => {
+  const k = (window.ESPN_DATA || {}).generated || "";
+  if (__gxAP && __gxAP.k === k) return __gxAP.p;
+  const j = f => fetch(f + "?t=" + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null);
+  const p = Promise.all([j("autopilot.json"), j("autopilot_log.json")]).then(([c, b]) => ({
+    c,
+    b: b || {
+      entries: []
+    }
+  }));
+  __gxAP = {
+    k,
+    p
+  };
+  return p;
+};
+function gxUseAp() {
+  const [v, setV] = useState(null);
+  useEffect(() => {
+    let dead = false;
+    gxApLoad().then(x => {
+      if (!dead) setV(x);
+    });
+    return () => {
+      dead = true;
+    };
+  }, [(window.ESPN_DATA || {}).generated]);
+  return v;
+}
+const GX_AP_MODE = {
+  on: ["On", "var(--good)", "Changes your ESPN lineup by itself and sends you a note each time."],
+  test: ["Test", "var(--warn)", "Works out the best lineup and sends you a note, but changes nothing on ESPN."],
+  off: ["Off", "var(--mute)", "Does nothing."]
+};
+const gxApMode = v => v && v.c ? String(v.c.mode || "test").toLowerCase() : null;
+const gxApTime = iso => {
+  try {
+    return new Date(iso).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  } catch (e) {
+    return "";
+  }
+};
+const gxApDay = iso => {
+  try {
+    return new Date(iso).toLocaleDateString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    });
+  } catch (e) {
+    return "";
+  }
+};
+function GxAutoToday({
+  go
+}) {
+  const v = gxUseAp();
+  if (!v || !v.b) return null;
+  const today = todayISO();
+  const e = [...(v.b.entries || [])].reverse().find(x => String(x.at || "").slice(0, 10) === today);
+  if (!e) return null;
+  const fail = String(e.result || "").indexOf("failed") === 0,
+    test = e.mode !== "on";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn",
+    style: {
+      borderLeft: "3px solid " + (fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"),
+      padding: "10px 14px"
+    }
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "text-sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold",
+    style: {
+      color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"
+    }
+  }, fail ? "Autopilot could not change your lineup" : test ? "Autopilot test" : "Autopilot set your lineup"), /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-500"
+  }, " · " + gxApTime(e.at))), /*#__PURE__*/React.createElement("div", {
+    className: "text-sm",
+    style: {
+      marginTop: 2
+    }
+  }, (test && !fail ? "Would: " : "") + e.text + (e.gain ? " +" + e.gain + " points today." : "")), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 4
+    }
+  }, fail ? "Set it by hand on ESPN today. " : test ? "Nothing was changed on ESPN. " : "", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-blue-600",
+    onClick: () => go("setup", "autopilot")
+  }, "Autopilot details")));
+}
+function GxAutoPage({
+  s,
+  go
+}) {
+  const v = gxUseAp();
+  const m = gxApMode(v),
+    M = GX_AP_MODE[m] || null;
+  const list = v && v.b ? [...(v.b.entries || [])].reverse().slice(0, 25) : [];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-semibold",
+    style: {
+      fontSize: 17
+    }
+  }, "Lineup autopilot"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr",
+    style: {
+      borderTop: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Mode"), /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold",
+    style: {
+      color: M ? M[1] : "var(--mute)"
+    }
+  }, !v ? "Checking…" : M ? M[0] : "Starts after the next sync")), M ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500",
+    style: {
+      padding: "2px 0 8px"
+    }
+  }, M[2]) : null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr"
+  }, /*#__PURE__*/React.createElement("span", null, "Change the mode"), /*#__PURE__*/React.createElement("a", {
+    className: "text-sm text-blue-600",
+    href: GX_AP_EDIT,
+    target: "_blank",
+    rel: "noopener"
+  }, "Open on GitHub")), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      paddingTop: 6
+    }
+  }, "On GitHub, tap the pencil, change the word after \"mode\" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync.")), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-tag",
+    style: {
+      marginBottom: 6
+    }
+  }, "What it does"), /*#__PURE__*/React.createElement("div", {
+    className: "text-sm",
+    style: {
+      lineHeight: 1.6
+    }
+  }, /*#__PURE__*/React.createElement("div", null, "• Every sync (every 6 to 30 minutes) it works out today's best lineup from your projections."), /*#__PURE__*/React.createElement("div", null, "• Starts players who have a game, benches players who don't, and swaps in the goalie who is actually starting."), /*#__PURE__*/React.createElement("div", null, "• Never moves a player once his game has started, never touches IR, and only changes things when it adds at least " + (v && v.c && v.c.min_gain || 0.5) + " points."), /*#__PURE__*/React.createElement("div", null, "• Sends a phone note every time, and shows it on Today."))), /*#__PURE__*/React.createElement(GxPanel, {
+    title: "History",
+    right: list.length ? "newest first" : ""
+  }, list.length ? list.map((e, i) => {
+    const fail = String(e.result || "").indexOf("failed") === 0,
+      test = e.mode !== "on";
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "gx-row",
+      style: {
+        display: "block",
+        ...(i ? {} : {
+          borderTop: 0
+        })
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-slate-500"
+    }, gxApDay(e.at) + " · " + gxApTime(e.at) + " · ", /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"
+      }
+    }, fail ? "ESPN refused" : test ? "test only" : "done"), e.gain ? " · +" + e.gain + " pts" : ""), /*#__PURE__*/React.createElement("div", {
+      className: "text-sm"
+    }, e.text), fail ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs",
+      style: {
+        color: "var(--bad)"
+      }
+    }, String(e.result).replace(/^failed: /, "")) : null);
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "Nothing yet. The first suggestion shows up here when your lineup can be improved.")));
+}
+function GxAutoRow({
+  row,
+  go
+}) {
+  const v = gxUseAp();
+  const m = gxApMode(v),
+    M = GX_AP_MODE[m];
+  const last = v && v.b && (v.b.entries || []).length ? v.b.entries[v.b.entries.length - 1] : null;
+  const txt = !v ? "Checking…" : !M ? "Starts after the next sync" : M[0] + " mode" + (last ? " · last: " + gxApDay(last.at) + " " + gxApTime(last.at) : " · nothing to fix yet");
+  return row("autopilot", "Lineup autopilot", txt, () => go("setup", "autopilot"), 3);
+}
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
