@@ -232,6 +232,7 @@
 "4419778": {
 "d": "2026-10-22",
 "k": "later",
+"nd": "2026-10-22",
 "now": "2026-10-24",
 "was": "2026-10-22"
 },
@@ -265,11 +266,6 @@
 "now": "2026-10-22",
 "was": "Out"
 },
-"4697404": {
-"d": "2026-10-19",
-"k": "back",
-"was": ""
-},
 "4697406": {
 "d": "2026-10-21",
 "k": "back",
@@ -297,10 +293,11 @@
 "was": "Out"
 },
 "4755684": {
-"d": "2026-10-21",
-"k": "dtd",
-"now": "2026-10-22",
-"was": "Out"
+"d": "2026-10-22",
+"k": "later",
+"nd": "2026-10-22",
+"now": "2026-10-24",
+"was": "2026-10-22"
 },
 "4894355": {
 "d": "2026-10-22",
@@ -692,8 +689,8 @@
 },
 "4419778": {
 "back": "2026-10-24",
-"note": "Rifai (undisclosed) will be a game-time decision for Thursday's home clash against the Rangers, per Luke Fox of Sportsnet.",
-"status": "Day-To-Day"
+"note": "Rifai (undisclosed) is expected to miss Thursday's game against the Rangers, according to Terry Koshan of The Toronto Sun.",
+"status": "Out"
 },
 "4565225": {
 "back": "2026-10-23",
@@ -750,6 +747,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"4697404": {
+"back": "2026-10-24",
+"note": "out",
+"status": "Out"
+},
 "4697449": {
 "back": "2026-11-03",
 "note": "Faber underwent a procedure to repair his fractured skull and is without a timetable to return, per Michael Russo of The Athletic.",
@@ -771,9 +773,9 @@
 "status": "Day-To-Day"
 },
 "4755684": {
-"back": "2026-10-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-24",
+"note": "Caulfield (personal) remains in Southern California and won't play Thursday versus the Devils, Zach Cavanagh of The Sporting Tribune reports. Per the NHL media ",
+"status": "Injured Reserve"
 },
 "4874720": {
 "back": "2026-10-31",
