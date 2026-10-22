@@ -231,8 +231,9 @@
 },
 "4419778": {
 "d": "2026-10-22",
-"k": "new",
-"now": "2026-10-22"
+"k": "later",
+"now": "2026-10-24",
+"was": "2026-10-22"
 },
 "4565226": {
 "d": "2026-10-22",
@@ -690,7 +691,7 @@
 "status": "Injured Reserve"
 },
 "4419778": {
-"back": "2026-10-22",
+"back": "2026-10-24",
 "note": "Rifai (undisclosed) will be a game-time decision for Thursday's home clash against the Rangers, per Luke Fox of Sportsnet.",
 "status": "Day-To-Day"
 },
