@@ -9,7 +9,7 @@
 "d": "2026-10-22",
 "k": "later",
 "nd": "2026-10-22",
-"now": "2026-10-29",
+"now": "2026-12-05",
 "was": "2026-10-22"
 },
 "2593315": {
@@ -155,10 +155,10 @@
 "was": "2026-12-04"
 },
 "4063401": {
-"d": "2026-10-20",
-"k": "dtd",
-"now": "2026-10-22",
-"was": "Out"
+"d": "2026-10-22",
+"k": "later",
+"now": "2026-10-24",
+"was": "2026-10-22"
 },
 "4063605": {
 "d": "2026-10-22",
@@ -168,8 +168,9 @@
 },
 "4233594": {
 "d": "2026-10-22",
-"k": "new",
-"now": "2026-11-05"
+"k": "later",
+"now": "2026-11-18",
+"was": "2026-11-05"
 },
 "4272888": {
 "d": "2026-10-21",
@@ -357,8 +358,8 @@
 "status": "Injured Reserve"
 },
 "2591155": {
-"back": "2026-10-29",
-"note": "Rust (lower body) was designated for injured reserve Thursday.",
+"back": "2026-12-05",
+"note": "Rust (lower body) will be re-evaluated in six weeks, Michelle Crechiolo of the Penguins' official site reports Thursday.",
 "status": "Injured Reserve"
 },
 "2952729": {
@@ -602,9 +603,9 @@
 "status": "Injured Reserve"
 },
 "4063401": {
-"back": "2026-10-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-24",
+"note": "out",
+"status": "Out"
 },
 "4063605": {
 "back": "2026-10-29",
@@ -612,7 +613,7 @@
 "status": "Injured Reserve"
 },
 "4233594": {
-"back": "2026-11-05",
+"back": "2026-11-18",
 "note": "out",
 "status": "Out"
 },
