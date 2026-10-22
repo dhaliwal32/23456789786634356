@@ -1601,7 +1601,7 @@ function Today({
       margin: "0 auto",
       color: ahead ? "var(--good)" : "var(--bad)"
     }
-  }, (ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxAutoToday, {
+  }, (ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxAutoToday2, {
     go: go
   }), /*#__PURE__*/React.createElement(GxRace, {
     s: s,
@@ -2822,7 +2822,11 @@ function MoveSim({
     className: "text-sm font-semibold mt-1"
   }, "F ", R.c.F, " \xB7 D ", R.c.D, " \xB7 G ", R.c.G), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, "was F ", before.F, " \xB7 D ", before.D, " \xB7 G ", before.G))), R.short.length ? /*#__PURE__*/React.createElement("div", {
+  }, "was F ", before.F, " \xB7 D ", before.D, " \xB7 G ", before.G))), /*#__PURE__*/React.createElement(GxPickRes92, {
+    s: s,
+    myR: myR,
+    ok: R.ok
+  }), R.short.length ? /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-red-600 mt-2"
   }, "Below your minimum at ", R.short.join(", "), ". Pick a different drop.") : null, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center gap-3 mt-3"
@@ -12615,5 +12619,255 @@ function GxAutoPage2({
   }) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "Nothing yet. The first suggestion shows up here when a lineup can be improved.")));
+}
+// ---------- change 092: full result for a pickup, like Trades (install.py) ----------
+function GxPickRes92({
+  s,
+  myR,
+  ok
+}) {
+  const key = ok.map(x => x.a.id + ">" + x.d.id).join(",");
+  const calc = () => {
+    const nR = s.weeks.length - s.wk;
+    const timed = timedMove(myR, s.me, ok.map(x => ({
+      add: x.a,
+      drop: x.d
+    })));
+    const my = horizonTotal(timed, s, nR) - horizonTotal(myR, s, nR);
+    const w = deriveWeek(s.weeks[s.wk] || s.weeks[0], s.autoDone),
+      on = oppOf(w, s.me) && (w.done || 0) < (w.dates || []).length;
+    const tb = on ? winChance(s) : null,
+      ta = on ? winChance(s, timed) : null;
+    const sN = nextWkS(s),
+      ho = sN && oppOf(sN.weeks[sN.wk] || {}, s.me);
+    const wb = ho ? winChance(sN) : null,
+      wa = ho ? winChance(sN, timed) : null;
+    return {
+      my,
+      tb,
+      ta,
+      wb,
+      wa
+    };
+  };
+  const res = useMemo(() => {
+    const base = calc();
+    const A = new Set(ok.map(x => x.a.id)),
+      D = new Set(ok.map(x => x.d.id));
+    const players = s.players.map(p => A.has(p.id) ? {
+      ...p,
+      ft: s.me
+    } : D.has(p.id) ? {
+      ...p,
+      ft: "fa",
+      ir: false
+    } : p);
+    const pos = t => ({
+      o: t.rows.findIndex(x => x.t.id === s.me) + 1,
+      ...(t.grpRank[s.me] || {})
+    });
+    const keep = __LT,
+      t2 = leagueTable({
+        ...s,
+        players
+      });
+    __LT = keep;
+    return {
+      ...base,
+      rb: pos(leagueTable(s)),
+      ra: pos(t2),
+      mode: window.__PMODE
+    };
+  }, [key, s.players, s.wk, window.__PMODE]);
+  const [cmp, setCmp] = useState(null);
+  useEffect(() => {
+    setCmp(null);
+    const id = setTimeout(() => setCmp(GX_PM82.filter(([k]) => gxCanMode82(k)).map(([k, l]) => ({
+      k,
+      l,
+      ...(k === res.mode ? res : gxWithMode82(k, calc))
+    }))), 60);
+    return () => clearTimeout(id);
+  }, [res]);
+  const GN = {
+    F: "Forwards",
+    D: "Defence",
+    G: "Goalies"
+  };
+  const sg = v => (v >= 0 ? "+" : "") + Math.round(v);
+  const arrow = (b, a, fmt, up) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", null, fmt(b)), /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-500",
+    style: {
+      fontSize: 14,
+      margin: "0 6px"
+    }
+  }, "→"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: up > 0 ? "var(--good)" : up < 0 ? "var(--bad)" : "var(--ink)"
+    }
+  }, fmt(a)));
+  const wkUp = res.ta != null && res.tb != null ? Math.round(res.ta * 100) - Math.round(res.tb * 100) : 0;
+  const vd = res.my > 0.5 ? ["Good pickup", "var(--good)", "Your lineup gains points for the rest of the season."] : wkUp > 0 ? ["Stream only", "var(--warn)", "Helps this week, but costs you points over the season. Fine if you swap him back later."] : ["Bad for you", "var(--bad)", "Your lineup gets worse."];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "baseline",
+      gap: 10,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold",
+    style: {
+      color: vd[1]
+    }
+  }, vd[0]), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm text-slate-500"
+  }, vd[2])), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stg"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Your lineup"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stv",
+    style: {
+      color: res.my >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(res.my)), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "points, rest of season")), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Your league rank"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stv"
+  }, arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "by team strength")), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Position ranks"), ["F", "D", "G"].map(k => {
+    const b = res.rb[k],
+      a = res.ra[k],
+      f = v => v ? ordN(v) : "–";
+    return /*#__PURE__*/React.createElement("div", {
+      key: k,
+      style: {
+        display: "flex",
+        alignItems: "baseline",
+        gap: 6,
+        fontSize: 15,
+        fontWeight: 600,
+        fontVariantNumeric: "tabular-nums",
+        marginTop: 2
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500",
+      style: {
+        width: 74,
+        flexShrink: 0,
+        fontWeight: 400
+      }
+    }, GN[k]), b === a ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", null, f(b)), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500",
+      style: {
+        fontWeight: 400
+      }
+    }, "same")) : /*#__PURE__*/React.createElement("span", null, arrow(b, a, f, (b || 0) - (a || 0))));
+  })), res.tb != null && res.ta != null ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "This week"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stv"
+  }, arrow(res.tb, res.ta, wpTxt, wkUp)), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "chance to win")) : null, res.wb != null && res.wa != null ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-stc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "Next week"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-stv"
+  }, arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "chance to win")) : null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-tag",
+    style: {
+      marginBottom: 4
+    }
+  }, "Every projection"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pm92 h"
+  }, /*#__PURE__*/React.createElement("span", null, "Projection"), /*#__PURE__*/React.createElement("span", null, "Season"), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide"
+  }, "This week"), /*#__PURE__*/React.createElement("span", null, "Next week"), /*#__PURE__*/React.createElement("span", null, "Result")), !cmp ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      padding: "8px 6px"
+    }
+  }, "Working out every projection...") : cmp.map(x => /*#__PURE__*/React.createElement("div", {
+    key: x.k,
+    className: "gx-pm92" + (x.k === res.mode ? " on" : "")
+  }, /*#__PURE__*/React.createElement("span", null, x.l, x.k === res.mode ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, " (app)") : null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: x.my >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(x.my)), /*#__PURE__*/React.createElement("span", {
+    className: "m-hide"
+  }, gxPct82(x.tb, x.ta)), /*#__PURE__*/React.createElement("span", null, gxPct82(x.wb, x.wa)), /*#__PURE__*/React.createElement("span", {
+    className: x.my > 0 ? "w" : "l"
+  }, x.my > 0 ? "Win" : "Lose"))), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 6
+    }
+  }, "Season is points for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points.")));
+}
+// ---------- change 092: autopilot note on Today is one short line (install.py) ----------
+function GxAutoToday2({
+  go
+}) {
+  const v = gxUseAp();
+  if (!v || !v.b) return null;
+  const today = todayISO();
+  const e = [...(v.b.entries || [])].reverse().find(x => String(x.at || "").slice(0, 10) === today);
+  if (!e) return null;
+  const fail = String(e.result || "").indexOf("failed") === 0,
+    test = e.mode !== "on";
+  const col = fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)";
+  const day = e.day && e.day !== today ? gxApDayName(e.day) + "'s" : "today's";
+  const txt = fail ? "Autopilot could not set your lineup. Set it on ESPN." : (test ? "Autopilot test: would change " : "Autopilot set ") + day + " lineup" + (e.gain ? " (+" + e.gain + ")" : "");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn gx-ap92",
+    role: "button",
+    onClick: () => go("setup", "autopilot"),
+    title: e.text
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: col
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "truncate",
+    style: {
+      flex: 1,
+      minWidth: 0
+    }
+  }, txt), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500",
+    style: {
+      flexShrink: 0
+    }
+  }, gxApTime(e.at)));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

@@ -425,7 +425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1ecgmbb.wy98w0" data-file="build/app.js">
+<meta name="gx-build" content="1fgbdu9.bu3kzl" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -984,7 +984,7 @@ function App() {
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
   else if (tab === "moves") content = sub === "planner" ? <PlannerAll {...P} /> : sub === "goalies" ? <GoalieStreams {...P} /> : sub === "injuries" ? <GxInjPage {...P} /> : sub === "adddrop" ? <Pickups {...P} /> : sub === "players" ? <Players {...P} /> : sub === "trades" ? <TradesPanel key={tradePartner || "none"} {...P} initPartner={tradePartner} /> : sub === "playoffs" ? <PlayoffPlanner {...P} /> : <AdviceAll {...P} />;
   else if (tab === "league") content = sub === "playoffs" ? <PlayoffPlanner {...P} /> : sub === "players" ? <GxRankings {...P} /> : <LeaguePage {...P} />;
-  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <GxAlertsPage {...P} /> : sub === "autopilot" ? <GxAutoPage2 {...P} /> : sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} sub={sub} />;
+  else if (tab === "setup") content = sub === "sched" ? <Schedule {...P} /> : sub === "bulk" ? <div><Bulk s={s} setS={setS} /><AddOne {...P} /></div> : sub === "inj" ? <InjuryPanel {...P} /> : sub === "odds" ? <OddsBoard s={s} /> : sub === "alerts" ? <GxAlertsPage {...P} /> : sub === "autopilot" ? <GxAutoPage {...P} /> : /* gx091 */ sub === "adv" ? <Settings {...P} /> : <SetupPage {...P} sub={sub} />;
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800">
@@ -5583,7 +5583,7 @@ function GxAutoPage({ s, go }) {
         </div>
         {M ? <div className="text-sm text-slate-500" style={{ padding: "2px 0 8px" }}>{M[2]}</div> : null}
         <div className="gx-sr"><span>Change the mode</span><a className="text-sm text-blue-600" href={GX_AP_EDIT} target="_blank" rel="noopener">Open on GitHub</a></div>
-        <div className="text-xs text-slate-500" style={{ paddingTop: 6 }}>On GitHub, tap the pencil, change the word after "mode" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync.</div>
+        <div className="text-xs text-slate-500" style={{ paddingTop: 6 }}>On GitHub, tap the pencil, change the word after "mode" to on, test or off (keep the quote marks), then Commit changes. It takes effect at the next sync. To set lineups ahead, change the number after "days_ahead": 0 is today only, 3 is the next 3 days too, 7 is a week. Days after today are set once, then only changed again on the day itself.</div>{/* gx091-ahead */}
       </div>
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <div className="gx-tag" style={{ marginBottom: 6 }}>What it does</div>
