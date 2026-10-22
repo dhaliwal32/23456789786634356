@@ -99,6 +99,12 @@
 "k": "back",
 "was": "2026-10-20"
 },
+"3149619": {
+"d": "2026-10-22",
+"k": "sooner",
+"now": "2026-10-23",
+"was": "2026-10-25"
+},
 "3654006": {
 "d": "2026-10-20",
 "k": "later",
@@ -392,7 +398,7 @@
 "status": "Out"
 },
 "2976850": {
-"back": "2026-10-27",
+"back": "",
 "note": "Maatta (upper body) will be on the Wild's upcoming five-game road trip, according to Michael Russo of The Athletic on Sunday.",
 "status": "Out"
 },
@@ -507,7 +513,7 @@
 "status": "Injured Reserve"
 },
 "3149619": {
-"back": "2026-10-25",
+"back": "2026-10-23",
 "note": "ir",
 "status": "Injured Reserve"
 },
