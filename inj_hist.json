@@ -165,6 +165,11 @@
 "now": "2026-10-29",
 "was": "2026-10-22"
 },
+"4233594": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-11-05"
+},
 "4272888": {
 "d": "2026-10-21",
 "k": "new",
@@ -599,6 +604,11 @@
 "back": "2026-10-29",
 "note": "Brazeau (lower body) was placed on injured reserve by the Penguins on Sunday.",
 "status": "Injured Reserve"
+},
+"4233594": {
+"back": "2026-11-05",
+"note": "out",
+"status": "Out"
 },
 "4233668": {
 "back": "2026-11-25",
