@@ -46,15 +46,21 @@
 "nd": "2026-10-21"
 },
 "3042017": {
-"d": "2026-10-21",
-"k": "dtd",
-"now": "2026-10-22",
-"was": "Out"
+"d": "2026-10-22",
+"k": "later",
+"now": "2026-10-27",
+"was": "2026-10-22"
 },
 "3042037": {
 "d": "2026-10-20",
 "k": "back",
 "was": "2026-10-20"
+},
+"3042110": {
+"d": "2026-10-22",
+"k": "later",
+"now": "2026-10-26",
+"was": "2026-10-22"
 },
 "3067951": {
 "d": "2026-10-20",
@@ -213,7 +219,7 @@
 "4697383": {
 "d": "2026-10-20",
 "k": "new",
-"nd": "2026-10-21",
+"nd": "2026-10-22",
 "now": "2026-10-22"
 },
 "4697391": {
@@ -393,7 +399,7 @@
 "status": "Injured Reserve"
 },
 "3020803": {
-"back": "2026-10-22",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -428,9 +434,9 @@
 "status": "Injured Reserve"
 },
 "3042017": {
-"back": "2026-10-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-27",
+"note": "out",
+"status": "Out"
 },
 "3042062": {
 "back": "2026-10-28",
@@ -443,7 +449,7 @@
 "status": "Injured Reserve"
 },
 "3042110": {
-"back": "2026-10-22",
+"back": "2026-10-26",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -709,7 +715,7 @@
 },
 "4697383": {
 "back": "2026-10-22",
-"note": "Byfield (upper body) is believed to be day-to-day after exiting Tuesday's game against the Capitals, Zach Dooley of the Kings' official site reports Wednesday.",
+"note": "Byfield (upper body) will be a game-time decision for Thursday's road clash against the Islanders, per Zach Dooley of the Kings' official site.",
 "status": "Day-To-Day"
 },
 "4697391": {
