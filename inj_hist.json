@@ -255,10 +255,11 @@
 "now": "2026-10-24"
 },
 "4697383": {
-"d": "2026-10-20",
-"k": "new",
+"d": "2026-10-22",
+"k": "later",
 "nd": "2026-10-22",
-"now": "2026-10-22"
+"now": "2026-10-24",
+"was": "2026-10-22"
 },
 "4697391": {
 "d": "2026-10-21",
@@ -306,6 +307,11 @@
 "now": "2026-10-24",
 "was": "Out"
 },
+"4895214": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-10-24"
+},
 "4915850": {
 "d": "2026-10-21",
 "k": "new",
@@ -321,6 +327,11 @@
 "k": "later",
 "now": "2026-10-29",
 "was": "2026-10-20"
+},
+"5080154": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-10-27"
 },
 "5103687": {
 "d": "2026-10-21",
@@ -733,9 +744,9 @@
 "status": "Injured Reserve"
 },
 "4697383": {
-"back": "2026-10-22",
-"note": "Byfield (upper body) will be a game-time decision for Thursday's road clash against the Islanders, per Zach Dooley of the Kings' official site.",
-"status": "Day-To-Day"
+"back": "2026-10-24",
+"note": "out",
+"status": "Out"
 },
 "4697391": {
 "back": "2026-10-22",
@@ -812,6 +823,11 @@
 "note": "Melanson's upper-body injury was diagnosed Saturday as an anterior mediastinum hematoma with vascular pseudo aneurysm. He will continue to be evaluated and is o",
 "status": "Injured Reserve"
 },
+"4895214": {
+"back": "2026-10-24",
+"note": "out",
+"status": "Out"
+},
 "4915850": {
 "back": "2026-11-01",
 "note": "Nikishin (contract dispute) is on the Hurricanes' injured, non-roster list, per the NHL media site Wednesday.",
@@ -826,6 +842,11 @@
 "back": "2026-11-24",
 "note": "Savoie (lower body) was shifted to long-term injured reserve Thursday.",
 "status": "Injured Reserve"
+},
+"5080154": {
+"back": "2026-10-27",
+"note": "out",
+"status": "Out"
 },
 "5080177": {
 "back": "2027-02-12",
