@@ -6,10 +6,11 @@
 "was": ""
 },
 "2591155": {
-"d": "2026-10-20",
-"k": "dtd",
-"now": "2026-10-22",
-"was": "Out"
+"d": "2026-10-22",
+"k": "later",
+"nd": "2026-10-22",
+"now": "2026-10-29",
+"was": "2026-10-22"
 },
 "2593315": {
 "d": "2026-10-21",
@@ -284,6 +285,7 @@
 "5291947": {
 "d": "2026-10-20",
 "k": "new",
+"nd": "2026-10-22",
 "now": "2026-10-29"
 },
 "5452": {
@@ -338,9 +340,9 @@
 "status": "Injured Reserve"
 },
 "2591155": {
-"back": "2026-10-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-29",
+"note": "Rust (lower body) was designated for injured reserve Thursday.",
+"status": "Injured Reserve"
 },
 "2952729": {
 "back": "2027-07-01",
@@ -844,8 +846,8 @@
 },
 "5291947": {
 "back": "2026-10-29",
-"note": "out",
-"status": "Out"
+"note": "Kindel (undisclosed) was placed on injured reserve Thursday.",
+"status": "Injured Reserve"
 },
 "5428": {
 "back": "2026-11-07",
