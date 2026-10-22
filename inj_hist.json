@@ -51,9 +51,9 @@
 "was": "2026-10-22"
 },
 "3041995": {
-"d": "2026-10-20",
-"k": "news",
-"nd": "2026-10-21"
+"d": "2026-10-22",
+"k": "back",
+"was": "2026-10-22"
 },
 "3042017": {
 "d": "2026-10-22",
@@ -160,14 +160,14 @@
 "3943996": {
 "d": "2026-10-22",
 "k": "later",
+"nd": "2026-10-22",
 "now": "2026-10-25",
 "was": "2026-10-23"
 },
 "3988782": {
 "d": "2026-10-22",
-"k": "sooner",
-"now": "2026-10-23",
-"was": "2026-10-25"
+"k": "back",
+"was": "2026-10-23"
 },
 "4024833": {
 "d": "2026-10-21",
@@ -245,6 +245,11 @@
 "nd": "2026-10-19",
 "now": "2026-11-17",
 "was": "2026-10-27"
+},
+"4587994": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-10-24"
 },
 "4697383": {
 "d": "2026-10-20",
@@ -428,11 +433,6 @@
 "note": "Barkov (lower body) will be out for approximately 6-8 weeks, Jameson Olive of the Panthers' official site reports Tuesday.",
 "status": "Injured Reserve"
 },
-"3041995": {
-"back": "2026-10-22",
-"note": "Compher (undisclosed) has a \"real good chance\" of playing against Vancouver on Thursday, head coach Todd McLellan told Max Bultman of The Athletic.",
-"status": "Injured Reserve"
-},
 "3041999": {
 "back": "2026-10-24",
 "note": "Ristolainen (upper body) won't travel with the Flyers ahead of Thursday's game against the Red Wings but is closing in on a return, Charlie O'Connor of PHLY Spo",
@@ -605,13 +605,8 @@
 },
 "3943996": {
 "back": "2026-10-25",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
-"3988782": {
-"back": "2026-10-23",
-"note": "O'Connor (lower body) is slated to play in Friday's matchup with Tampa Bay, Conor McGahey of Altitude TV reports.",
-"status": "Injured Reserve"
+"note": "Roy (lower body) is expected to miss Friday's game against Tampa Bay, per Aarif Deen of Colorado Hockey Now.",
+"status": "Out"
 },
 "4024833": {
 "back": "2026-10-24",
@@ -722,6 +717,11 @@
 "back": "2026-11-12",
 "note": "Tucker had arthroscopic knee surgery and will be re-assessed in six weeks, the team announced Wednesday.",
 "status": "Injured Reserve"
+},
+"4587994": {
+"back": "2026-10-24",
+"note": "out",
+"status": "Out"
 },
 "4588638": {
 "back": "2026-10-24",
