@@ -408,8 +408,9 @@
 },
 "4894487": {
 "d": "2026-10-23",
-"k": "new",
-"now": "2026-10-26"
+"k": "later",
+"now": "2026-10-31",
+"was": "2026-10-26"
 },
 "4895214": {
 "d": "2026-10-23",
@@ -975,7 +976,7 @@
 "status": "Injured Reserve"
 },
 "4894487": {
-"back": "2026-10-26",
+"back": "2026-10-31",
 "note": "Levi (undisclosed) isn't expected to be an option for Saturday's home game against Toronto, per Jason Gregor of Sports 1440 Edmonton.",
 "status": "Out"
 },
