@@ -278,8 +278,9 @@
 },
 "4392260": {
 "d": "2026-10-23",
-"k": "new",
-"now": "2026-11-21"
+"k": "later",
+"now": "2026-12-05",
+"was": "2026-11-21"
 },
 "4419767": {
 "d": "2026-10-21",
@@ -823,7 +824,7 @@
 "status": "Injured Reserve"
 },
 "4392260": {
-"back": "2026-11-21",
+"back": "2026-12-05",
 "note": "Desharnais underwent a successful appendectomy surgery Thursday and is expected to miss 4-6 weeks.",
 "status": "Out"
 },
