@@ -10,6 +10,11 @@
 "k": "back",
 "was": ""
 },
+"2590824": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-10-24"
+},
 "2591155": {
 "d": "2026-10-22",
 "k": "later",
@@ -454,6 +459,11 @@
 "back": "2026-10-30",
 "note": "out",
 "status": "Out"
+},
+"2590824": {
+"back": "2026-10-24",
+"note": "Gibson sustained an upper-body injury versus the Canucks on Thursday and is questionable to return to the game.",
+"status": "Day-To-Day"
 },
 "2591155": {
 "back": "2026-12-05",
