@@ -22,6 +22,11 @@
 "k": "back",
 "was": ""
 },
+"2976842": {
+"d": "2026-10-22",
+"k": "new",
+"now": "2026-10-25"
+},
 "2976850": {
 "d": "2026-10-22",
 "k": "back",
@@ -454,6 +459,11 @@
 "back": "2027-07-01",
 "note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
 "status": "Injured Reserve"
+},
+"2976842": {
+"back": "2026-10-25",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976849": {
 "back": "2026-10-27",
