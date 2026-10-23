@@ -61,9 +61,10 @@
 "now": "2026-10-31"
 },
 "3020225": {
-"d": "2026-10-22",
-"k": "later",
-"now": "2026-10-27",
+"d": "2026-10-23",
+"k": "sooner",
+"nd": "2026-10-23",
+"now": "2026-10-24",
 "was": "2026-10-25"
 },
 "3020803": {
@@ -542,9 +543,9 @@
 "status": "Injured Reserve"
 },
 "3020225": {
-"back": "2026-10-27",
-"note": "ir-nr",
-"status": "Injured Reserve"
+"back": "2026-10-24",
+"note": "Hellebuyck was traded to the Devils from the Jets on Friday, Darren Dreger of TSN reports.",
+"status": "Day-To-Day"
 },
 "3025524": {
 "back": "2026-10-29",
