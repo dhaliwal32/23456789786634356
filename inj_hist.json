@@ -49,11 +49,9 @@
 "was": ""
 },
 "2976851": {
-"d": "2026-10-21",
-"k": "dtd",
-"nd": "2026-10-20",
-"now": "2026-10-23",
-"was": "Out"
+"d": "2026-10-23",
+"k": "back",
+"was": ""
 },
 "2992930": {
 "d": "2026-10-21",
@@ -310,6 +308,11 @@
 "now": "2026-10-26",
 "was": "2026-10-22"
 },
+"4565235": {
+"d": "2026-10-23",
+"k": "news",
+"nd": "2026-10-23"
+},
 "4587580": {
 "d": "2026-10-19",
 "k": "later",
@@ -547,11 +550,6 @@
 },
 "2976849": {
 "back": "2026-10-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
-"2976851": {
-"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -872,7 +870,7 @@
 },
 "4565235": {
 "back": "2026-10-24",
-"note": "ir",
+"note": "Head coach Rick Tocchet said Friday that he isn't sure whether York (upper body) will be able to suit up Saturday against the Ducks, Jordan Hall of NBC Sports P",
 "status": "Injured Reserve"
 },
 "4587580": {
@@ -997,8 +995,8 @@
 },
 "5080154": {
 "back": "2026-10-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "out",
+"status": "Out"
 },
 "5080177": {
 "back": "2027-02-12",
