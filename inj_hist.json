@@ -251,6 +251,11 @@
 "k": "back",
 "was": "2026-10-22"
 },
+"4392260": {
+"d": "2026-10-23",
+"k": "new",
+"now": "2026-11-21"
+},
 "4419767": {
 "d": "2026-10-21",
 "k": "back",
@@ -774,6 +779,11 @@
 "back": "2026-10-24",
 "note": "Tippett (upper body) was placed on injured reserve Monday, per the NHL media site.",
 "status": "Injured Reserve"
+},
+"4392260": {
+"back": "2026-11-21",
+"note": "Desharnais underwent a successful appendectomy surgery Thursday and is expected to miss 4-6 weeks.",
+"status": "Out"
 },
 "4392454": {
 "back": "2026-11-14",
