@@ -37,6 +37,12 @@
 "k": "new",
 "now": "2026-10-25"
 },
+"2976849": {
+"d": "2026-10-23",
+"k": "dtd",
+"now": "2026-10-27",
+"was": "Out"
+},
 "2976850": {
 "d": "2026-10-22",
 "k": "back",
@@ -125,6 +131,11 @@
 "d": "2026-10-20",
 "k": "back",
 "was": "2026-10-20"
+},
+"3124": {
+"d": "2026-10-23",
+"k": "new",
+"now": "2026-10-24"
 },
 "3149619": {
 "d": "2026-10-22",
@@ -295,9 +306,10 @@
 "was": "2026-10-27"
 },
 "4587994": {
-"d": "2026-10-22",
-"k": "new",
-"now": "2026-10-24"
+"d": "2026-10-23",
+"k": "dtd",
+"now": "2026-10-24",
+"was": "Out"
 },
 "4697383": {
 "d": "2026-10-23",
@@ -516,8 +528,8 @@
 },
 "2976849": {
 "back": "2026-10-27",
-"note": "Head coach Rod Brind'Amour said Sunday that Jankowski has ben sent back to Raleigh to have his lower-body injury assessed, Walt Ruff of the Hurricanes' official",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976851": {
 "back": "2026-10-23",
@@ -623,6 +635,11 @@
 "back": "2026-10-31",
 "note": "Fiala (lower leg fracture) is at least three weeks away from being ready to play, Zach Dooley of the Kings' official site reports Thursday.",
 "status": "Injured Reserve"
+},
+"3124": {
+"back": "2026-10-24",
+"note": "Malkin didn't participate in Friday's practice session due to an illness.",
+"status": "Day-To-Day"
 },
 "3149619": {
 "back": "2026-10-23",
@@ -851,8 +868,8 @@
 },
 "4587994": {
 "back": "2026-10-24",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4588638": {
 "back": "2026-10-24",
