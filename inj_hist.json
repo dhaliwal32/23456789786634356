@@ -488,8 +488,10 @@
 },
 "5828": {
 "d": "2026-10-23",
-"k": "news",
-"nd": "2026-10-23"
+"k": "later",
+"nd": "2026-10-23",
+"now": "2027-03-11",
+"was": "2027-01-19"
 }
 },
 "last": {
@@ -1094,7 +1096,7 @@
 "status": "Injured Reserve"
 },
 "5828": {
-"back": "2027-01-19",
+"back": "2027-03-11",
 "note": "Bjugstad (pectoral), Dawson Mercer, Nico Daws, Alexander Command and a pair of draft picks were traded to the Jets from the Devils on Friday in exchange for Con",
 "status": "Injured Reserve"
 }
