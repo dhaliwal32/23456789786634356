@@ -490,6 +490,7 @@
 "5080176": {
 "d": "2026-10-24",
 "k": "later",
+"nd": "2026-10-24",
 "now": "2026-10-31",
 "was": "2026-10-24"
 },
@@ -517,9 +518,10 @@
 "was": "2026-11-01"
 },
 "5216907": {
-"d": "2026-10-22",
+"d": "2026-10-24",
 "k": "later",
-"now": "2026-10-27",
+"nd": "2026-10-24",
+"now": "2026-11-14",
 "was": "2026-10-24"
 },
 "5291944": {
@@ -1040,7 +1042,7 @@
 },
 "5080176": {
 "back": "2026-10-31",
-"note": "out",
+"note": "Kulich (face) is back in Buffalo for evaluation and won't play against Washington on Saturday, according to Paul Hamilton of WGR Sports Radio 550.",
 "status": "Out"
 },
 "5080177": {
@@ -1114,8 +1116,8 @@
 "status": "Injured Reserve"
 },
 "5216907": {
-"back": "2026-10-27",
-"note": "out",
+"back": "2026-11-14",
+"note": "Chernyshov (upper body) is week-to-week, per Sheng Peng of San Jose Hockey Now on Saturday.",
 "status": "Out"
 },
 "5291944": {
