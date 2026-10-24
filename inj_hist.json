@@ -247,14 +247,19 @@
 "was": "2026-10-23"
 },
 "4024833": {
-"d": "2026-10-21",
-"k": "news",
-"nd": "2026-10-21"
+"d": "2026-10-24",
+"k": "back",
+"was": ""
 },
 "4031645": {
 "d": "2026-10-20",
 "k": "news",
 "nd": "2026-10-20"
+},
+"4063268": {
+"d": "2026-10-24",
+"k": "back",
+"was": "2026-12-04"
 },
 "4063401": {
 "d": "2026-10-24",
@@ -414,10 +419,9 @@
 "was": "2026-10-31"
 },
 "4697783": {
-"d": "2026-10-21",
-"k": "dtd",
-"now": "2026-10-24",
-"was": "Out"
+"d": "2026-10-24",
+"k": "back",
+"was": "2026-10-24"
 },
 "4755684": {
 "d": "2026-10-22",
@@ -822,19 +826,9 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
-"4024833": {
-"back": "",
-"note": "Dubois (illness) skated Wednesday in a regular jersey and appears to be on track to return to game action Saturday against the Sabres, Sammi Silber of The Hocke",
-"status": "Injured Reserve"
-},
 "4031645": {
 "back": "2026-11-01",
 "note": "Carcone (upper body) was placed on injured reserve by the Mammoth on Tuesday.",
-"status": "Injured Reserve"
-},
-"4063268": {
-"back": "2026-12-04",
-"note": "ir",
 "status": "Injured Reserve"
 },
 "4063401": {
@@ -976,11 +970,6 @@
 "back": "2026-10-31",
 "note": "ir-nr",
 "status": "Injured Reserve"
-},
-"4697783": {
-"back": "2026-10-24",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4755684": {
 "back": "2026-10-24",
