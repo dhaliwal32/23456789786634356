@@ -156,9 +156,10 @@
 },
 "3114777": {
 "d": "2026-10-24",
-"k": "new",
+"k": "later",
 "nd": "2026-10-24",
-"now": "2026-10-28"
+"now": "2026-10-30",
+"was": "2026-10-28"
 },
 "3115032": {
 "d": "2026-10-20",
@@ -735,9 +736,9 @@
 "status": "Injured Reserve"
 },
 "3114777": {
-"back": "2026-10-28",
-"note": "McCann (lower body) won't play against Minnesota on Saturday.",
-"status": "Out"
+"back": "2026-10-30",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "3124": {
 "back": "2026-10-29",
