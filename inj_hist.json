@@ -21,9 +21,9 @@
 "was": ""
 },
 "2590824": {
-"d": "2026-10-22",
-"k": "new",
-"now": "2026-10-24"
+"d": "2026-10-24",
+"k": "back",
+"was": "2026-10-24"
 },
 "2591155": {
 "d": "2026-10-22",
@@ -59,9 +59,9 @@
 "was": ""
 },
 "2992930": {
-"d": "2026-10-21",
-"k": "new",
-"now": "2026-10-31"
+"d": "2026-10-24",
+"k": "back",
+"was": ""
 },
 "3020225": {
 "d": "2026-10-24",
@@ -466,6 +466,11 @@
 "now": "2026-10-24",
 "was": "Out"
 },
+"4894398": {
+"d": "2026-10-24",
+"k": "news",
+"nd": "2026-10-24"
+},
 "4894487": {
 "d": "2026-10-24",
 "k": "later",
@@ -619,11 +624,6 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
-"2590824": {
-"back": "2026-10-24",
-"note": "Gibson sustained an upper-body injury versus the Canucks on Thursday and is questionable to return to the game.",
-"status": "Day-To-Day"
-},
 "2591155": {
 "back": "2026-12-05",
 "note": "Rust (lower body) will be re-evaluated in six weeks, Michelle Crechiolo of the Penguins' official site reports Thursday.",
@@ -643,11 +643,6 @@
 "back": "2026-10-27",
 "note": "day-to-day",
 "status": "Day-To-Day"
-},
-"2992930": {
-"back": "",
-"note": "MacDermid (upper body) was moved to the injured non-roster list Monday.",
-"status": "Injured Reserve"
 },
 "3020225": {
 "back": "2026-10-27",
@@ -716,8 +711,8 @@
 },
 "3069352": {
 "back": "2026-10-27",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "3069448": {
 "back": "2026-10-27",
@@ -1021,7 +1016,7 @@
 },
 "4894398": {
 "back": "2026-11-14",
-"note": "Head coach Glen Gulutzan said Friday that Back broke his finger and will miss 4-6 weeks, Robert Tiffin of NHL.com reports.",
+"note": "Back was placed on long-term injured reserve on Saturday.",
 "status": "Injured Reserve"
 },
 "4894487": {
