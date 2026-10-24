@@ -10,6 +10,11 @@
 "k": "back",
 "was": ""
 },
+"2562606": {
+"d": "2026-10-24",
+"k": "news",
+"nd": "2026-10-24"
+},
 "2562624": {
 "d": "2026-10-22",
 "k": "back",
@@ -183,11 +188,11 @@
 "was": "2026-10-24"
 },
 "3797": {
-"d": "2026-10-23",
-"k": "dtd",
+"d": "2026-10-24",
+"k": "later",
 "nd": "2026-10-22",
-"now": "2026-10-24",
-"was": "Out"
+"now": "2026-10-26",
+"was": "2026-10-24"
 },
 "3899937": {
 "d": "2026-10-24",
@@ -601,7 +606,7 @@
 },
 "2562606": {
 "back": "2026-11-02",
-"note": "Huberdeau (hip) was placed on injured reserve Monday, per Pat Steinberg of QR Calgary 770 AM.",
+"note": "Huberdeau (hip) skated with his teammates Saturday, but he isn't close to returning, Pat Steinberg of QR Calgary 770 AM reports.",
 "status": "Injured Reserve"
 },
 "2562622": {
@@ -770,9 +775,9 @@
 "status": "Injured Reserve"
 },
 "3797": {
-"back": "2026-10-24",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-26",
+"note": "out",
+"status": "Out"
 },
 "3852": {
 "back": "2026-11-21",
