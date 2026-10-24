@@ -149,6 +149,11 @@
 "now": "2026-10-31",
 "was": "2026-10-24"
 },
+"3114777": {
+"d": "2026-10-24",
+"k": "new",
+"now": "2026-10-28"
+},
 "3115032": {
 "d": "2026-10-20",
 "k": "back",
@@ -721,6 +726,11 @@
 "back": "2026-10-31",
 "note": "Fiala (lower leg fracture) is at least three weeks away from being ready to play, Zach Dooley of the Kings' official site reports Thursday.",
 "status": "Injured Reserve"
+},
+"3114777": {
+"back": "2026-10-28",
+"note": "out",
+"status": "Out"
 },
 "3124": {
 "back": "2026-10-29",
