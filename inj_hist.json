@@ -457,10 +457,9 @@
 "was": "2026-10-26"
 },
 "4895214": {
-"d": "2026-10-23",
-"k": "dtd",
-"now": "2026-10-24",
-"was": "Out"
+"d": "2026-10-24",
+"k": "back",
+"was": ""
 },
 "4915850": {
 "d": "2026-10-21",
@@ -1007,11 +1006,6 @@
 "back": "2026-12-01",
 "note": "Melanson's upper-body injury was diagnosed Saturday as an anterior mediastinum hematoma with vascular pseudo aneurysm. He will continue to be evaluated and is o",
 "status": "Injured Reserve"
-},
-"4895214": {
-"back": "",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4915850": {
 "back": "2026-11-01",
