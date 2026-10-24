@@ -466,6 +466,11 @@
 "now": "2026-12-01",
 "was": "2026-10-27"
 },
+"5157": {
+"d": "2026-10-23",
+"k": "new",
+"now": "2026-10-24"
+},
 "5188393": {
 "d": "2026-10-20",
 "k": "back",
@@ -1051,6 +1056,11 @@
 "back": "2026-12-01",
 "note": "Ritchie (lower body) will be out of action for 4-6 weeks, the team announced Monday.",
 "status": "Out"
+},
+"5157": {
+"back": "2026-10-24",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5160": {
 "back": "2026-11-27",
