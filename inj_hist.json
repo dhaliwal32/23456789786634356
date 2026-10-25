@@ -611,9 +611,9 @@
 "was": "2026-10-21"
 },
 "5511": {
-"d": "2026-10-22",
-"k": "new",
-"now": "2026-10-25"
+"d": "2026-10-25",
+"k": "back",
+"was": "2026-10-25"
 },
 "5560": {
 "d": "2026-10-20",
@@ -1184,11 +1184,6 @@
 "back": "2026-10-27",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"5511": {
-"back": "2026-10-25",
-"note": "Niederreiter left Thursday's game versus the Stars after taking a stick up high, and there was no update on his status after the contest, Robert Tiffin of NHL.c",
-"status": "Day-To-Day"
 },
 "5592": {
 "back": "2026-10-31",
