@@ -15,6 +15,12 @@
 "k": "news",
 "nd": "2026-10-24"
 },
+"2562622": {
+"d": "2026-10-25",
+"k": "later",
+"now": "2026-11-03",
+"was": "2026-10-30"
+},
 "2562624": {
 "d": "2026-10-22",
 "k": "back",
@@ -95,6 +101,12 @@
 "d": "2026-10-24",
 "k": "back",
 "was": ""
+},
+"3042016": {
+"d": "2026-10-25",
+"k": "later",
+"now": "2026-11-05",
+"was": "2026-11-01"
 },
 "3042017": {
 "d": "2026-10-22",
@@ -634,7 +646,7 @@
 "status": "Injured Reserve"
 },
 "2562622": {
-"back": "2026-10-30",
+"back": "2026-11-03",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -684,7 +696,7 @@
 "status": "Injured Reserve"
 },
 "3042016": {
-"back": "2026-11-01",
+"back": "2026-11-05",
 "note": "Morrissey (wrist) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
