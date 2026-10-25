@@ -512,10 +512,10 @@
 },
 "4915850": {
 "d": "2026-10-25",
-"k": "dtd",
+"k": "later",
 "nd": "2026-10-25",
-"now": "2026-10-27",
-"was": "Injured Reserve"
+"now": "2026-10-29",
+"was": "2026-10-27"
 },
 "5079": {
 "d": "2026-10-22",
@@ -1070,9 +1070,9 @@
 "status": "Injured Reserve"
 },
 "4915850": {
-"back": "2026-10-27",
-"note": "Nikishin (not injury related) signed a one-year, $3 million contract Sunday, which ends his time as an unsigned restricted free agent.",
-"status": "Day-To-Day"
+"back": "2026-10-29",
+"note": "out",
+"status": "Out"
 },
 "5080152": {
 "back": "2026-10-29",
