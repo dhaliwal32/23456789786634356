@@ -400,7 +400,7 @@
 "4587580": {
 "d": "2026-10-19",
 "k": "later",
-"nd": "2026-10-19",
+"nd": "2026-10-26",
 "now": "2026-11-17",
 "was": "2026-10-27"
 },
@@ -1001,8 +1001,8 @@
 },
 "4587580": {
 "back": "2026-11-17",
-"note": "Maccelli (lower body) will miss the next 2-4 weeks, the team announced Monday.",
-"status": "Out"
+"note": "Maccelli (lower body) was placed on injured reserve Monday.",
+"status": "Injured Reserve"
 },
 "4587854": {
 "back": "2027-04-08",
@@ -1136,8 +1136,8 @@
 },
 "5149210": {
 "back": "2026-12-01",
-"note": "Ritchie (lower body) will be out of action for 4-6 weeks, the team announced Monday.",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "5157": {
 "back": "2026-10-29",
