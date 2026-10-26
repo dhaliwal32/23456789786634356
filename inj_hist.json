@@ -100,11 +100,6 @@
 "k": "back",
 "was": "2026-10-22"
 },
-"3041999": {
-"d": "2026-10-24",
-"k": "back",
-"was": ""
-},
 "3042016": {
 "d": "2026-10-25",
 "k": "later",
@@ -718,6 +713,11 @@
 "back": "2026-11-27",
 "note": "Barkov (lower body) will be out for approximately 6-8 weeks, Jameson Olive of the Panthers' official site reports Tuesday.",
 "status": "Injured Reserve"
+},
+"3041999": {
+"back": "2026-11-11",
+"note": "The Flyers announced Monday that Ristolainen is expected to miss approximately two weeks due to an upper-body injury.",
+"status": "Out"
 },
 "3042014": {
 "back": "2026-11-21",
