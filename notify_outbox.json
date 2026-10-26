@@ -6841,8 +6841,10 @@
    "text": "Tyler Bertuzzi (F, CHI) is playing 18.3 min per game lately, up +0.1 (PP +2.4). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-25T23:55:51Z"
+   "sent": true,
+   "seen": "2026-10-25T23:55:51Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|4e5ea566e151",
@@ -6851,8 +6853,10 @@
    "text": "Roman Kantserov (F, CHI) is playing 19.6 min per game lately, up +1.1 (PP +2.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-25T23:55:51Z"
+   "sent": true,
+   "seen": "2026-10-25T23:55:51Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|3fed886bce1c",
@@ -6861,8 +6865,10 @@
    "text": "Teuvo Teravainen (F, CHI) is playing 17.3 min per game lately, up +1.0 (PP +3.4). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-25T23:55:51Z"
+   "sent": true,
+   "seen": "2026-10-25T23:55:51Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|97d57d0e6bea",
@@ -6871,8 +6877,10 @@
    "text": "Lars Eller (F, FLA) is playing 17.3 min per game lately, up +4.8 (PP +0.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-25T23:55:51Z"
+   "sent": true,
+   "seen": "2026-10-25T23:55:51Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|f397ed098d4e",
@@ -6904,8 +6912,10 @@
    "text": "Charlie Coyle (F, CBJ) is playing 20.9 min per game lately, up +2.8 (PP +2.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|c673318bc6a3",
@@ -6914,8 +6924,10 @@
    "text": "Tyler Bertuzzi (F, CHI) is playing 18.8 min per game lately, up +0.8 (PP +3.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|2856cf21c19f",
@@ -6924,8 +6936,10 @@
    "text": "Matty Beniers (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|7ecb58dfd753",
@@ -6934,8 +6948,10 @@
    "text": "Adam Edstrom (F, NSH) is playing 16.3 min per game lately, up +5.3 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|c48fe8232879",
@@ -6944,8 +6960,10 @@
    "text": "Porter Martone (F, PHI) is playing 15.4 min per game lately, up +0.2 (PP +1.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|d258a064ad3d",
@@ -6954,8 +6972,10 @@
    "text": "Dmitry Orlov (D, SJ) is playing 17.9 min per game lately, up -2.3 (PP +2.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|ba4a1f33f962",
@@ -6964,8 +6984,10 @@
    "text": "Joel Farabee (F, CGY) is playing 19.1 min per game lately, up +1.7 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|1af3d04efe01",
@@ -6974,8 +6996,10 @@
    "text": "Roman Kantserov (F, CHI) is playing 19.9 min per game lately, up +1.4 (PP +3.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|c736fa705ba3",
@@ -6984,8 +7008,10 @@
    "text": "Ryan Shea (D, EDM) is playing 24.8 min per game lately, up +4.3 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|b79e2baf9d85",
@@ -6994,8 +7020,10 @@
    "text": "Danila Yurov (F, MIN) is playing 16.6 min per game lately, up +3.2 (PP +1.4). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T04:56:29Z"
+   "sent": true,
+   "seen": "2026-10-26T04:56:29Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|8b8c0244f9b1",
@@ -7004,8 +7032,10 @@
    "text": "Maxim Shabanov (F, MIN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|bbcd840f55bf",
@@ -7014,8 +7044,10 @@
    "text": "Teuvo Teravainen (F, CHI) is playing 17.1 min per game lately, up +0.7 (PP +3.8). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|cdfd11f44895",
@@ -7024,8 +7056,10 @@
    "text": "Noah Ostlund (F, BUF) is playing 19.3 min per game lately, up +3.2 (PP +2.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|b32c83e3dc7d",
@@ -7034,8 +7068,10 @@
    "text": "Simon Holmstrom (F, NYI) is playing 20.4 min per game lately, up +4.0 (PP +2.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T00:50:52Z"
+   "sent": true,
+   "seen": "2026-10-26T00:50:52Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|96e5e535fa5a",
@@ -7044,8 +7080,10 @@
    "text": "Berkly Catton (F, SEA) is playing 15.0 min per game lately, up +1.2 (PP +1.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|4f7f282a04b1",
@@ -7054,8 +7092,10 @@
    "text": "Martin Pospisil (F, CGY) is playing 14.9 min per game lately, up +3.6 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|700b5bacf794",
@@ -7064,8 +7104,10 @@
    "text": "Oliver Bonk (D, PHI) is playing 20.2 min per game lately, up +3.2 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|91e70051efa9",
@@ -7074,8 +7116,10 @@
    "text": "Stephen Halliday (F, OTT) is playing 12.6 min per game lately, up +2.8 (PP +1.8). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|e3ca7f0368a8",
@@ -7084,8 +7128,10 @@
    "text": "Adam Wilsby (D, NSH) is playing 22.5 min per game lately, up +5.0 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|550f34a69111",
@@ -7094,8 +7140,10 @@
    "text": "Michael Kesselring (D, SJ) is playing 19.1 min per game lately, up +3.2 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|4163a13d529d",
@@ -7104,8 +7152,10 @@
    "text": "Denver Barkey (F, PHI) is playing 14.9 min per game lately, up +1.2 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|0d50089b5603",
@@ -7114,8 +7164,10 @@
    "text": "Troy Stecher (D, TOR) is playing 22.3 min per game lately, up +3.9 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|b719493f6fc3",
@@ -7124,8 +7176,10 @@
    "text": "Lars Eller (F, FLA) is playing 17.4 min per game lately, up +4.6 (PP +0.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|61158b2a946e",
@@ -7134,8 +7188,10 @@
    "text": "Zach Bogosian (D, MIN) is playing 18.4 min per game lately, up +3.1 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T04:56:29Z"
+   "sent": true,
+   "seen": "2026-10-26T04:56:29Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|30818f9affaf",
@@ -7144,8 +7200,10 @@
    "text": "Filip Chytil (F, VAN) is playing 19.9 min per game lately, up +4.6 (PP -0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T04:56:29Z"
+   "sent": true,
+   "seen": "2026-10-26T04:56:29Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|3d29d9e6ed24",
@@ -7154,8 +7212,10 @@
    "text": "Jayden Struble (D, NSH) is playing 17.9 min per game lately, up +3.8 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|a66b700c5fb8",
@@ -7164,8 +7224,10 @@
    "text": "Daemon Hunt (D, NSH) is playing 17.9 min per game lately, up +5.3 (PP +0.4). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|73d3acb31ed8",
@@ -7174,8 +7236,10 @@
    "text": "Alexander Kerfoot (F, NSH) is playing 17.6 min per game lately, up +3.3 (PP -0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:59:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:59:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|fbd8a871094a",
@@ -7184,8 +7248,10 @@
    "text": "Haydn Fleury (D, WPG) is playing 17.4 min per game lately, up +3.3 (PP +0.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T02:29:28Z"
+   "sent": true,
+   "seen": "2026-10-26T02:29:28Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|f44d88d236f8",
@@ -7194,8 +7260,10 @@
    "text": "Jonathan Castagna (F, CGY) is playing 17.2 min per game lately, up +7.1 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|3e14310e6e6b",
@@ -7204,8 +7272,10 @@
    "text": "Simon Holmstrom (F, NYI) is playing 20.0 min per game lately, up +3.6 (PP +2.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|5ccc1e2a9001",
@@ -7214,8 +7284,10 @@
    "text": "Isak Rosen (F, WPG) is playing 14.9 min per game lately, up +3.0 (PP -0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|2fedb56cc9e3",
@@ -7224,8 +7296,10 @@
    "text": "Haydn Fleury (D, WPG) is playing 17.3 min per game lately, up +3.2 (PP +0.6). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|6b9121526c93",
@@ -7234,8 +7308,10 @@
    "text": "Adam Edstrom (F, NSH) is playing 16.2 min per game lately, up +5.2 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|a1f2ad2808bc",
@@ -7244,8 +7320,10 @@
    "text": "Adam Wilsby (D, NSH) is playing 20.7 min per game lately, up +3.2 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|74582980808d",
@@ -7254,8 +7332,10 @@
    "text": "Jayden Struble (D, NSH) is playing 17.2 min per game lately, up +3.1 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|8de5965e32c8",
@@ -7264,8 +7344,10 @@
    "text": "Daemon Hunt (D, NSH) is playing 15.8 min per game lately, up +3.2 (PP +0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|52af6d99a343",
@@ -7274,8 +7356,10 @@
    "text": "Alexander Kerfoot (F, NSH) is playing 17.5 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-25|85fad8f2e698",
@@ -7295,8 +7379,10 @@
    "text": "Filip Chytil (F, VAN) is playing 19.3 min per game lately, up +4.0 (PP -0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T06:58:34Z"
+   "sent": true,
+   "seen": "2026-10-26T06:58:34Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|85fad8f2e698",
@@ -7327,8 +7413,10 @@
    "text": "Tyler Bertuzzi (F, CHI) is playing 18.8 min per game lately, up +0.8 (PP +3.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|2856cf21c19f",
@@ -7337,8 +7425,10 @@
    "text": "Matty Beniers (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|6b9121526c93",
@@ -7347,8 +7437,10 @@
    "text": "Adam Edstrom (F, NSH) is playing 16.2 min per game lately, up +5.2 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|c48fe8232879",
@@ -7357,8 +7449,10 @@
    "text": "Porter Martone (F, PHI) is playing 15.4 min per game lately, up +0.2 (PP +1.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|ba4a1f33f962",
@@ -7367,8 +7461,10 @@
    "text": "Joel Farabee (F, CGY) is playing 19.1 min per game lately, up +1.7 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T07:48:52Z"
+   "sent": true,
+   "seen": "2026-10-26T07:48:52Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|d258a064ad3d",
@@ -7377,8 +7473,10 @@
    "text": "Dmitry Orlov (D, SJ) is playing 17.9 min per game lately, up -2.3 (PP +2.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|1af3d04efe01",
@@ -7387,8 +7485,10 @@
    "text": "Roman Kantserov (F, CHI) is playing 19.9 min per game lately, up +1.4 (PP +3.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|c736fa705ba3",
@@ -7397,8 +7497,10 @@
    "text": "Ryan Shea (D, EDM) is playing 24.8 min per game lately, up +4.3 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|8b8c0244f9b1",
@@ -7407,8 +7509,10 @@
    "text": "Maxim Shabanov (F, MIN) was just moved onto his team's top power-play unit and is a free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|9c6650517339",
@@ -7417,8 +7521,10 @@
    "text": "Kaiden Guhle (D, MTL) is playing 23.2 min per game lately, up +3.4 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|bbcd840f55bf",
@@ -7427,8 +7533,10 @@
    "text": "Teuvo Teravainen (F, CHI) is playing 17.1 min per game lately, up +0.7 (PP +3.8). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|cdfd11f44895",
@@ -7437,8 +7545,10 @@
    "text": "Noah Ostlund (F, BUF) is playing 19.3 min per game lately, up +3.2 (PP +2.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|86c9b9339eba",
@@ -7447,8 +7557,10 @@
    "text": "William Carrier (F, CAR) is playing 14.6 min per game lately, up +3.3 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|3e14310e6e6b",
@@ -7457,8 +7569,10 @@
    "text": "Simon Holmstrom (F, NYI) is playing 20.0 min per game lately, up +3.6 (PP +2.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|356575ff8958",
@@ -7467,8 +7581,10 @@
    "text": "Tristan Luneau (D, ANA) is playing 19.6 min per game lately, up +4.2 (PP +0.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|96e5e535fa5a",
@@ -7477,8 +7593,10 @@
    "text": "Berkly Catton (F, SEA) is playing 15.0 min per game lately, up +1.2 (PP +1.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|4f7f282a04b1",
@@ -7487,8 +7605,10 @@
    "text": "Martin Pospisil (F, CGY) is playing 14.9 min per game lately, up +3.6 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|700b5bacf794",
@@ -7497,8 +7617,10 @@
    "text": "Oliver Bonk (D, PHI) is playing 20.2 min per game lately, up +3.2 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|91e70051efa9",
@@ -7507,8 +7629,10 @@
    "text": "Stephen Halliday (F, OTT) is playing 12.6 min per game lately, up +2.8 (PP +1.8). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|a1f2ad2808bc",
@@ -7517,8 +7641,10 @@
    "text": "Adam Wilsby (D, NSH) is playing 20.7 min per game lately, up +3.2 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|0d50089b5603",
@@ -7527,8 +7653,10 @@
    "text": "Troy Stecher (D, TOR) is playing 22.3 min per game lately, up +3.9 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|550f34a69111",
@@ -7537,8 +7665,10 @@
    "text": "Michael Kesselring (D, SJ) is playing 19.1 min per game lately, up +3.2 (PP +0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|4163a13d529d",
@@ -7547,8 +7677,10 @@
    "text": "Denver Barkey (F, PHI) is playing 14.9 min per game lately, up +1.2 (PP +1.9). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|b719493f6fc3",
@@ -7557,8 +7689,10 @@
    "text": "Lars Eller (F, FLA) is playing 17.4 min per game lately, up +4.6 (PP +0.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|1aee82e74943",
@@ -7567,8 +7701,10 @@
    "text": "Filip Chytil (F, VAN) is playing 19.3 min per game lately, up +4.0 (PP -0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|74582980808d",
@@ -7577,8 +7713,10 @@
    "text": "Jayden Struble (D, NSH) is playing 17.2 min per game lately, up +3.1 (PP -0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|770980a2677a",
@@ -7587,8 +7725,10 @@
    "text": "Nikita Klepov (F, ANA) is playing 14.1 min per game lately, up +4.0 (PP +1.2). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|8de5965e32c8",
@@ -7597,8 +7737,10 @@
    "text": "Daemon Hunt (D, NSH) is playing 15.8 min per game lately, up +3.2 (PP +0.3). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|52af6d99a343",
@@ -7607,8 +7749,10 @@
    "text": "Alexander Kerfoot (F, NSH) is playing 17.5 min per game lately, up +3.3 (PP -0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|dd0196ac9daf",
@@ -7617,8 +7761,10 @@
    "text": "Spencer Stastney (D, PIT) is playing 18.9 min per game lately, up +3.6 (PP -0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|2868f1c8cbb2",
@@ -7627,8 +7773,10 @@
    "text": "Tyson Hinds (D, ANA) is playing 18.7 min per game lately, up +3.8 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|f00bbec82053",
@@ -7637,8 +7785,10 @@
    "text": "Judd Caulfield (F, ANA) is playing 13.0 min per game lately, up +0.7 (PP +1.7). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|fcb128450ad0",
@@ -7647,8 +7797,10 @@
    "text": "Ilya Solovyov (D, PIT) is playing 16.2 min per game lately, up +3.5 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|5ccc1e2a9001",
@@ -7657,8 +7809,10 @@
    "text": "Isak Rosen (F, WPG) is playing 14.9 min per game lately, up +3.0 (PP -0.1). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|f04f295c594b",
@@ -7667,8 +7821,10 @@
    "text": "Jake Christiansen (D, CBJ) is playing 16.2 min per game lately, up +5.7 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|f2e2bfa79681",
@@ -7677,8 +7833,10 @@
    "text": "Andre Lee (F, LA) is playing 13.2 min per game lately, up +3.3 (PP +0.5). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|2fedb56cc9e3",
@@ -7687,8 +7845,10 @@
    "text": "Haydn Fleury (D, WPG) is playing 17.3 min per game lately, up +3.2 (PP +0.6). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:14Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   },
   {
    "k": "2026-10-26|f44d88d236f8",
@@ -7697,8 +7857,10 @@
    "text": "Jonathan Castagna (F, CGY) is playing 17.2 min per game lately, up +7.1 (PP +0.0). Likely promoted - free agent.",
    "section": "pickup",
    "urgent": false,
-   "sent": false,
-   "seen": "2026-10-26T14:50:09Z"
+   "sent": true,
+   "seen": "2026-10-26T15:00:15Z",
+   "via": "morning",
+   "sent_at": "2026-10-26T15:00:18Z"
   }
  ],
  "sent": {
@@ -7718,7 +7880,9 @@
    "morning",
    "pregame"
   ],
-  "2026-10-26": []
+  "2026-10-26": [
+   "morning"
+  ]
  },
  "log": [
   {
@@ -8914,6 +9078,12 @@
    "kind": "Not sent (switched off)",
    "title": "Your player is losing ice time",
    "body": "Victor Hedman (TB) is down 5.2 min per game lately (11.8 vs 17.0). Possible demotion - watch his role."
+  },
+  {
+   "at": "2026-10-26T15:00:18Z",
+   "kind": "morning",
+   "title": "Morning summary - Mon Oct 26 (81 updates)",
+   "body": "PICKUP IDEAS\n- Tyler Bertuzzi (F, CHI) is playing 18.3 min per game lately, up +0.1 (PP +2.4). Likely promoted - free agent.\n- Roman Kantserov (F, CHI) is playing 19.6 min per game lately, up +1.1 (PP +2.7). Likely promoted - free agent.\n- Teuvo Teravainen (F, CHI) is playing 17.3 min per game lately, up +1.0 (PP +3.4). Likely promoted - free agent.\n- Lars Eller (F, FLA) is playing 17.3 min per game lately, up +4.8 (PP +0.2). Likely promoted - free agent.\n- Charlie Coyle (F, CBJ) is playing 20.9 min per game lately, up +2.8 (PP +2.2). Likely promoted - free agent.\n- Tyler Bertuzzi (F, CHI) is playing 18.8 min per game lately, up +0.8 (PP +3.0). Likely promoted - free agent.\n  + 75 more in the app\n\nToday: 5 of your players play, first puck drop 4:00 PM."
   }
  ]
 }
