@@ -12650,7 +12650,8 @@ function GxPickRes92({
       wa
     };
   };
-  const res = useMemo(() => {
+  const [tm93, setTm93] = useState(null); // change 093: projection for this box only
+  const res = useMemo(() => gxWithMode82(tm93, () => {
     const base = calc();
     const A = new Set(ok.map(x => x.a.id)),
       D = new Set(ok.map(x => x.d.id));
@@ -12678,7 +12679,7 @@ function GxPickRes92({
       ra: pos(t2),
       mode: window.__PMODE
     };
-  }, [key, s.players, s.wk, window.__PMODE]);
+  }), [key, s.players, s.wk, window.__PMODE, tm93]);
   const [cmp, setCmp] = useState(null);
   useEffect(() => {
     setCmp(null);
@@ -12727,6 +12728,20 @@ function GxPickRes92({
   }, vd[0]), /*#__PURE__*/React.createElement("span", {
     className: "text-sm text-slate-500"
   }, vd[2])), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pmh82"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Projection"), /*#__PURE__*/React.createElement("span", {
+    className: "gx-seg"
+  }, GX_PM82.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    type: "button",
+    disabled: !gxCanMode82(k),
+    className: res.mode === k ? "on" : "",
+    onClick: () => setTm93(k === window.__PMODE ? null : k)
+  }, l))), tm93 && tm93 !== window.__PMODE ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "This box only. The rest of the app still uses " + (GX_PM82.find(x => x[0] === window.__PMODE) || [0, "Best"])[1] + ".") : null), /*#__PURE__*/React.createElement("div", {
     className: "gx-stg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-stc"
@@ -12815,8 +12830,11 @@ function GxPickRes92({
     }
   }, "Working out every projection...") : cmp.map(x => /*#__PURE__*/React.createElement("div", {
     key: x.k,
-    className: "gx-pm92" + (x.k === res.mode ? " on" : "")
-  }, /*#__PURE__*/React.createElement("span", null, x.l, x.k === res.mode ? /*#__PURE__*/React.createElement("span", {
+    className: "gx-pm92 r" + (x.k === res.mode ? " on" : ""),
+    role: "button",
+    onClick: () => setTm93(x.k === window.__PMODE ? null : x.k),
+    title: "Show the pickup with this projection"
+  }, /*#__PURE__*/React.createElement("span", null, x.l, x.k === window.__PMODE ? /*#__PURE__*/React.createElement("span", {
     className: "text-xs text-slate-500"
   }, " (app)") : null), /*#__PURE__*/React.createElement("span", {
     style: {
@@ -12831,7 +12849,7 @@ function GxPickRes92({
     style: {
       marginTop: 6
     }
-  }, "Season is points for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points.")));
+  }, "Tap a projection to see the result with it. Season is points for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points.")));
 }
 // ---------- change 092: autopilot note on Today is one short line (install.py) ----------
 function GxAutoToday2({
