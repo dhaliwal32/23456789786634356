@@ -208,6 +208,11 @@
 "k": "back",
 "was": ""
 },
+"3870": {
+"d": "2026-10-27",
+"k": "new",
+"now": "2026-11-01"
+},
 "3899937": {
 "d": "2026-10-26",
 "k": "back",
@@ -825,6 +830,11 @@
 "back": "2026-11-21",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"3870": {
+"back": "2026-11-01",
+"note": "Reimer (upper body) was tagged as day-to-day Tuesday, per Vince Z. Mercogliano of The Athletic.",
+"status": "Day-To-Day"
 },
 "3899946": {
 "back": "2026-11-07",
