@@ -427,6 +427,9 @@
   .gx-ap92 { display: flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 13px; min-width: 0; }
   .gx-ap92 .dot { width: 7px; height: 7px; border-radius: 99px; flex-shrink: 0; }
   @media (max-width: 640px) { .gx-pm92 { grid-template-columns: minmax(0,1.2fr) repeat(2, minmax(0,1fr)) 46px; gap: 6px; padding: 9px 4px; } }
+  /* change 093 (install.py) */
+  .gx-pm92.r { cursor: pointer; border-radius: 6px; }
+  .gx-pm92.r:hover { background: var(--line); }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -435,7 +438,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1uc2ipq.163if61" data-file="build/app.js">
+<meta name="gx-build" content="a3ritu.l60ry7" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -5729,7 +5732,8 @@ function GxPickRes92({ s, myR, ok }) {
     const wb = ho ? winChance(sN) : null, wa = ho ? winChance(sN, timed) : null;
     return { my, tb, ta, wb, wa };
   };
-  const res = useMemo(() => {
+  const [tm93, setTm93] = useState(null); // change 093: projection for this box only
+  const res = useMemo(() => gxWithMode82(tm93, () => {
     const base = calc();
     const A = new Set(ok.map((x) => x.a.id)), D = new Set(ok.map((x) => x.d.id));
     const players = s.players.map((p) => (A.has(p.id) ? { ...p, ft: s.me } : D.has(p.id) ? { ...p, ft: "fa", ir: false } : p));
@@ -5737,7 +5741,7 @@ function GxPickRes92({ s, myR, ok }) {
     const keep = __LT, t2 = leagueTable({ ...s, players });
     __LT = keep;
     return { ...base, rb: pos(leagueTable(s)), ra: pos(t2), mode: window.__PMODE };
-  }, [key, s.players, s.wk, window.__PMODE]);
+  }), [key, s.players, s.wk, window.__PMODE, tm93]);
   const [cmp, setCmp] = useState(null);
   useEffect(() => {
     setCmp(null);
@@ -5757,6 +5761,11 @@ function GxPickRes92({ s, myR, ok }) {
         <span className="font-semibold" style={{ color: vd[1] }}>{vd[0]}</span>
         <span className="text-sm text-slate-500">{vd[2]}</span>
       </div>
+      <div className="gx-pmh82">{/* gx093 */}
+        <span className="text-xs text-slate-500">Projection</span>
+        <span className="gx-seg">{GX_PM82.map(([k, l]) => <button key={k} type="button" disabled={!gxCanMode82(k)} className={res.mode === k ? "on" : ""} onClick={() => setTm93(k === window.__PMODE ? null : k)}>{l}</button>)}</span>
+        {tm93 && tm93 !== window.__PMODE ? <span className="text-xs text-slate-500">{"This box only. The rest of the app still uses " + ((GX_PM82.find((x) => x[0] === window.__PMODE) || [0, "Best"])[1]) + "."}</span> : null}
+      </div>
       <div className="gx-stg">
         <div className="gx-stc"><div className="text-xs text-slate-500">Your lineup</div><div className="gx-stv" style={{ color: res.my >= 0 ? "var(--good)" : "var(--bad)" }}>{sg(res.my)}</div><div className="text-xs text-slate-500">points, rest of season</div></div>
         <div className="gx-stc"><div className="text-xs text-slate-500">Your league rank</div><div className="gx-stv">{arrow(res.rb.o, res.ra.o, ordN, res.rb.o - res.ra.o)}</div><div className="text-xs text-slate-500">by team strength</div></div>
@@ -5775,15 +5784,15 @@ function GxPickRes92({ s, myR, ok }) {
         <div className="gx-tag" style={{ marginBottom: 4 }}>Every projection</div>
         <div className="gx-pm92 h"><span>Projection</span><span>Season</span><span className="m-hide">This week</span><span>Next week</span><span>Result</span></div>
         {!cmp ? <div className="text-xs text-slate-500" style={{ padding: "8px 6px" }}>Working out every projection...</div> : cmp.map((x) => (
-          <div key={x.k} className={"gx-pm92" + (x.k === res.mode ? " on" : "")}>
-            <span>{x.l}{x.k === res.mode ? <span className="text-xs text-slate-500"> (app)</span> : null}</span>
+          <div key={x.k} className={"gx-pm92 r" + (x.k === res.mode ? " on" : "")} role="button" onClick={() => setTm93(x.k === window.__PMODE ? null : x.k)} title="Show the pickup with this projection">
+            <span>{x.l}{x.k === window.__PMODE ? <span className="text-xs text-slate-500"> (app)</span> : null}</span>
             <span style={{ color: x.my >= 0 ? "var(--good)" : "var(--bad)" }}>{sg(x.my)}</span>
             <span className="m-hide">{gxPct82(x.tb, x.ta)}</span>
             <span>{gxPct82(x.wb, x.wa)}</span>
             <span className={x.my > 0 ? "w" : "l"}>{x.my > 0 ? "Win" : "Lose"}</span>
           </div>
         ))}
-        <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Season is points for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points.</div>
+        <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Tap a projection to see the result with it. Season is points for the rest of the season. The weeks show the change in your chance to win. Win means your lineup gains points.</div>
       </div>
     </div>
   );
