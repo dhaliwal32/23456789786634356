@@ -95,6 +95,11 @@
 "k": "back",
 "was": "2026-10-22"
 },
+"3041999": {
+"d": "2026-10-27",
+"k": "news",
+"nd": "2026-10-27"
+},
 "3042016": {
 "d": "2026-10-25",
 "k": "later",
@@ -705,8 +710,8 @@
 },
 "3041999": {
 "back": "2026-11-11",
-"note": "The Flyers announced Monday that Ristolainen is expected to miss approximately two weeks due to an upper-body injury.",
-"status": "Out"
+"note": "Ristolainen (hand) was placed on injured reserve, retroactive to Oct. 24, on Tuesday.",
+"status": "Injured Reserve"
 },
 "3042014": {
 "back": "2026-11-21",
