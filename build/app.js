@@ -2278,7 +2278,16 @@ function Matchup({
         color: "var(--good)",
         fontWeight: 600
       } : null
-    }, p.st && p.a == null ? "\u2013" : f1(v));
+    }, p.st && p.a == null ? "\u2013" : f1(v), p.st && p.x0 != null ? /*#__PURE__*/React.createElement("div", {
+      className: "text-xs",
+      style: {
+        color: "var(--faint)",
+        fontWeight: 400
+      },
+      "data-gx": "094p"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "m-hide"
+    }, "proj "), f1(p.x0)) : null);
   };
   const sit = (l, id) => l.bench && l.bench.length ? /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
@@ -2425,7 +2434,16 @@ function Matchup({
       marginLeft: 8,
       color: dayTot >= 0 ? "var(--good)" : "var(--bad)"
     }
-  }, (dayTot >= 0 ? "+" : "") + f1(dayTot)))), rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement("div", {
+  }, (dayTot >= 0 ? "+" : "") + f1(dayTot)))), state !== "projected" && x.proj != null && y.proj != null ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      textAlign: "right",
+      marginTop: -4,
+      marginBottom: 6,
+      fontVariantNumeric: "tabular-nums"
+    },
+    "data-gx": "094"
+  }, "Original projection " + f1(x.proj) + " to " + f1(y.proj) + " (" + (x.proj - y.proj >= 0 ? "+" : "") + f1(x.proj - y.proj) + ")") : null, rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement("div", {
     key: i,
     className: "gx-h2h",
     style: i ? null : {
@@ -10878,6 +10896,8 @@ function GxRace({
     style: mc(m0)
   }, (m0 >= 0 ? "won by " : "lost by ") + f1(Math.abs(m0)))), /*#__PURE__*/React.createElement("span", null, f1(th[d0])), /*#__PURE__*/React.createElement("span", {
     className: "l"
+  }, "Original"), /*#__PURE__*/React.createElement("span", null, f1(exp(X, d0))), /*#__PURE__*/React.createElement("span", null, f1(exp(Y, d0))), /*#__PURE__*/React.createElement("span", {
+    className: "l"
   }, "Vs expected"), /*#__PURE__*/React.createElement("span", {
     style: mc(me[d0] - exp(X, d0))
   }, sg(me[d0] - exp(X, d0))), /*#__PURE__*/React.createElement("span", {
@@ -10886,9 +10906,13 @@ function GxRace({
     className: "l"
   }, "So far"), /*#__PURE__*/React.createElement("span", null, f1(x0.act || 0)), /*#__PURE__*/React.createElement("span", null, f1(y0.act || 0)), /*#__PURE__*/React.createElement("span", {
     className: "l"
-  }, "Projected"), /*#__PURE__*/React.createElement("span", null, f1(me[d0]) + " ", /*#__PURE__*/React.createElement("span", {
+  }, "Projected now"), /*#__PURE__*/React.createElement("span", null, f1(me[d0]) + " ", /*#__PURE__*/React.createElement("span", {
     style: mc(m0)
-  }, (m0 >= 0 ? "ahead by " : "behind by ") + f1(Math.abs(m0)))), /*#__PURE__*/React.createElement("span", null, f1(th[d0]))) : null, k0 === "p" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+  }, (m0 >= 0 ? "ahead by " : "behind by ") + f1(Math.abs(m0)))), /*#__PURE__*/React.createElement("span", null, f1(th[d0])), /*#__PURE__*/React.createElement("span", {
+    className: "l"
+  }, "Original"), /*#__PURE__*/React.createElement("span", null, f1(exp(X, d0)) + " ", /*#__PURE__*/React.createElement("span", {
+    style: mc(exp(X, d0) - exp(Y, d0))
+  }, (exp(X, d0) - exp(Y, d0) >= 0 ? "ahead by " : "behind by ") + f1(Math.abs(exp(X, d0) - exp(Y, d0))))), /*#__PURE__*/React.createElement("span", null, f1(exp(Y, d0)))) : null /* gx094 */, k0 === "p" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
     className: "l"
   }, "Projected"), /*#__PURE__*/React.createElement("span", null, f1(me[d0]) + " ", /*#__PURE__*/React.createElement("span", {
     style: mc(m0)
