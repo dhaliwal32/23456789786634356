@@ -1198,7 +1198,7 @@ function App() {
   }, []);
   useEffect(() => {
     if (!loaded) return;
-    const id = setInterval(() => {
+    const poll129 = () => {
       const sc = document.createElement("script");
       sc.src = "espn-data.js?t=" + Date.now();
       sc.onload = () => {
@@ -1227,9 +1227,41 @@ function App() {
       ls.src = "lines-data.js?t=" + Date.now();
       ls.onload = ls.onerror = () => ls.remove();
       document.head.appendChild(ls);
-    }, 2 * 60 * 1000);
+    };
+    window.__gxPoll129 = poll129; /* gx129 */
+    const id = setInterval(() => {
+      if (!document.hidden) poll129();
+    }, 60 * 1000);
     return () => clearInterval(id);
   }, [loaded]);
+  useEffect(() => {
+    // change 129: coming back to the app - reload fully after 5+ minutes away, otherwise check for new data now
+    let hid = document.hidden ? Date.now() : 0;
+    const fresh = () => {
+      try {
+        window.location.replace(window.location.pathname + "?v=" + Date.now() + window.location.hash);
+      } catch (e) {
+        window.location.reload();
+      }
+    };
+    const vis = () => {
+      if (document.hidden) {
+        hid = Date.now();
+        return;
+      }
+      if (hid && Date.now() - hid >= 5 * 60 * 1000) fresh();else if (window.__gxPoll129) window.__gxPoll129();
+      hid = 0;
+    };
+    const show = e => {
+      if (e.persisted) fresh();
+    };
+    document.addEventListener("visibilitychange", vis);
+    window.addEventListener("pageshow", show);
+    return () => {
+      document.removeEventListener("visibilitychange", vis);
+      window.removeEventListener("pageshow", show);
+    };
+  }, []);
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(() => {
