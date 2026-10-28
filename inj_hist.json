@@ -413,11 +413,9 @@
 "was": "2026-10-28"
 },
 "4588638": {
-"d": "2026-10-24",
-"k": "later",
-"nd": "2026-10-27",
-"now": "2026-11-08",
-"was": "2026-10-24"
+"d": "2026-10-28",
+"k": "back",
+"was": ""
 },
 "4697383": {
 "d": "2026-10-26",
@@ -1004,11 +1002,6 @@
 "back": "2026-11-07",
 "note": "out",
 "status": "Out"
-},
-"4588638": {
-"back": "",
-"note": "Joshua (abdomen) was recalled from his conditioning loan with AHL Toronto on Monday.",
-"status": "Injured Reserve"
 },
 "4697404": {
 "back": "2026-10-29",
