@@ -5297,7 +5297,7 @@ function GoalieStreams({
     style: {
       padding: "10px 0"
     }
-  }, nNHL ? day < today ? "Results for this day are not saved." : "Game times for this day are not loaded yet." : "No NHL games this day."))), sim && M && wkD ? /*#__PURE__*/React.createElement(MoveSim, {
+  }, nNHL ? day < today ? "Results for this day are not saved." : "Game times for this day are not loaded yet." : "No NHL games this day."))), sim && M && wkD ? /*#__PURE__*/React.createElement(GxSim107, {
     s: sW,
     setS: setS,
     wk: wkD,
@@ -8085,7 +8085,7 @@ function Pickups({
   }, "Week plan", /*#__PURE__*/React.createElement("span", null, "\u203a")), /*#__PURE__*/React.createElement("a", {
     className: "gx-lk103",
     href: gxHash("moves", "advice")
-  }, "Advice", /*#__PURE__*/React.createElement("span", null, "\u203a"))), sim ? /*#__PURE__*/React.createElement(MoveSim, {
+  }, "Advice", /*#__PURE__*/React.createElement("span", null, "\u203a"))), sim ? /*#__PURE__*/React.createElement(GxSim107, {
     s: sP,
     setS: setS,
     wk: wkP,
@@ -8525,7 +8525,7 @@ function AdvicePage({
     className: "grid md:grid-cols-2 gap-3"
   }, list("Free agents on the rise", L.rise, true, false, "No free agent is clearly on the way up right now."), list("Better than they look", L.under, true, false, "Nobody stands out as underrated right now."), list("Your players to sell high", L.sell, false, false, "None of your players is at a peak right now."), list("Your players to watch", L.watch, false, true, "None of your players is slipping right now.")), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, "The number is expected points a game. Tap a free agent to try the swap."), sim && M ? /*#__PURE__*/React.createElement(MoveSim, {
+  }, "The number is expected points a game. Tap a free agent to try the swap."), sim && M ? /*#__PURE__*/React.createElement(GxSim107, {
     s: sP,
     setS: setS,
     wk: wkP,
@@ -14345,4 +14345,260 @@ function GxSH106({
   }, gxProjR100(rng) && h === "GP" ? "Gms" : h));
 }
 const gxPkMode106 = pos => pos === "G" ? "full go" : pos === "F" || pos === "D" ? "full sk" : "cm";
+// ---------- change 107: Simulate a pickup, cleaned up (install.py) ----------
+function GxSim107({
+  s,
+  setS,
+  wk,
+  M,
+  H,
+  hLabel,
+  init,
+  wBase,
+  onClose
+}) {
+  const ea = gxPgAvg,
+    K = M.K,
+    myR = M.myR,
+    today = todayISO();
+  const byId = id => id ? s.players.find(p => p.id === id) || null : null;
+  const [addId, setAddId] = useState(init.add || "");
+  const [chg, setChg] = useState(!init.add);
+  const [q, setQ] = useState("");
+  const [dropId, setDropId] = useState(init.drop || "");
+  const [day, setDay] = useState(null);
+  const [allD, setAllD] = useState(false);
+  const [det, setDet] = useState(false);
+  const [out, setOut] = useState(false);
+  const close = () => {
+    if (out) return;
+    setOut(true);
+    setTimeout(onClose, 170);
+  };
+  useEffect(() => {
+    const k = e => {
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", k);
+      document.body.style.overflow = "";
+    };
+  }, []);
+  const a = byId(addId),
+    d = byId(dropId);
+  const left = movesLeft(s, s.me, wk);
+  const dates = wk.dates || [],
+    from = wk.done || 0;
+  const a0 = a ? pickStart(a) : today;
+  const cands = useMemo(() => myR.filter(p => !p.ir).sort((x, y) => ea(x, K) - ea(y, K)), [myR, K]);
+  const weak = cands.filter(p => !M.protectedIds.has(p.id)).slice(0, 6);
+  const sug = useMemo(() => {
+    if (!a) return "";
+    const c = cntOf(myR),
+      ok = x => x.p === a.p || c[x.p] - 1 >= M.mins[x.p],
+      b = M.total(myR);
+    let best = null;
+    (weak.length ? weak : cands).filter(ok).forEach(x => {
+      const g = M.total(timedMove(myR, s.me, [{
+        add: a,
+        drop: x
+      }])) - b;
+      if (!best || g > best.g) best = {
+        x,
+        g
+      };
+    });
+    return best ? best.x.id : "";
+  }, [addId]);
+  useEffect(() => {
+    if (sug && (!dropId || !init.drop)) setDropId(sug);
+  }, [sug]);
+  const rosterOn = dt => myR.map(p => d && p.id === d.id ? {
+    ...p,
+    untilD: dt
+  } : p).concat(a ? [{
+    ...a,
+    ft: s.me,
+    fromD: dt
+  }] : []);
+  const dayG = useMemo(() => {
+    if (!a || !d) return [];
+    const b = weekProj(myR, wk, K, from).total;
+    return dates.map((dt, i) => ({
+      dt,
+      i
+    })).filter(x => x.i >= from && x.dt >= a0).map(x => ({
+      ...x,
+      g: weekProj(rosterOn(x.dt), wk, K, from).total - b
+    }));
+  }, [addId, dropId, wk]);
+  const best = dayG.reduce((b, x) => !b || x.g > b.g + 0.05 ? x : b, null);
+  const pick = day != null && dayG.some(x => x.dt === day) ? day : best ? best.dt : null;
+  const R = useMemo(() => {
+    if (!a || !d || !pick) return null;
+    const r = rosterOn(pick);
+    const dg = dayG.find(x => x.dt === pick);
+    return {
+      gain: H === 1 && dg ? dg.g : M.total(r) - M.total(myR),
+      win: winChance(s, r)
+    };
+  }, [addId, dropId, pick]);
+  const qq = nrm(q);
+  const opts = !chg ? [] : qq ? M.fas.filter(p => p.prob > 0 && nrm(p.n).includes(qq)).sort((x, y) => ea(y, K) - ea(x, K)).slice(0, 8) : M.res.slice(0, 8).map(r => r.f);
+  const apply = () => {
+    if (!a || !d) return;
+    setS(st => ({
+      ...st,
+      players: st.players.map(p => p.id === d.id ? {
+        ...p,
+        ft: "fa",
+        ir: false
+      } : p.id === a.id ? {
+        ...p,
+        ft: st.me
+      } : p)
+    }));
+    close();
+  };
+  const DN = dt => dt === today ? "Today" : dayLabel(dt).split(",")[0];
+  const sg = v => (v >= 0 ? "+" : "") + f1(v);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-so107" + (out ? " out" : ""),
+    onClick: close
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-sim107",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hd"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "t"
+  }, "Simulate a pickup"), left != null ? /*#__PURE__*/React.createElement("span", {
+    className: "m"
+  }, left + " move" + (left === 1 ? "" : "s") + " left") : null, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "x",
+    "aria-label": "Close",
+    onClick: close
+  }, "×")), a && !chg ? /*#__PURE__*/React.createElement("div", {
+    className: "pl"
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: a,
+    size: 44
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0",
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nm truncate"
+  }, a.n), /*#__PURE__*/React.createElement("div", {
+    className: "sb"
+  }, a.p + " · " + a.t + " · " + f1(ea(a, K)) + "/g · " + M.gamesIn(a) + " games")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "lk",
+    onClick: () => {
+      setChg(true);
+      setQ("");
+    }
+  }, "Change")) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+    className: inp + " sr",
+    autoFocus: true,
+    placeholder: "Search a free agent",
+    value: q,
+    onChange: e => setQ(e.target.value)
+  }), opts.map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.id,
+    type: "button",
+    className: "opt",
+    onClick: () => {
+      setAddId(p.id);
+      setDropId("");
+      setDay(null);
+      setChg(false);
+    }
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
+    size: 26
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "truncate"
+  }, p.n, " ", /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, p.p)), /*#__PURE__*/React.createElement("span", {
+    className: "v"
+  }, f1(ea(p, K)))))), a && !chg ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "sec"
+  }, "Drop"), /*#__PURE__*/React.createElement("div", {
+    className: "chips"
+  }, (allD ? cands : weak).map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.id,
+    type: "button",
+    className: "dc" + (p.id === dropId ? " on" : ""),
+    onClick: () => {
+      setDropId(p.id);
+      setDay(null);
+    }
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
+    size: 28
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, shortN(p.n)), /*#__PURE__*/React.createElement("span", {
+    className: "v"
+  }, p.p + " · " + f1(ea(p, K)))), p.id === sug ? /*#__PURE__*/React.createElement("i", null, "BEST") : null))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "lk",
+    style: {
+      marginTop: 8
+    },
+    onClick: () => setAllD(!allD)
+  }, allD ? "Weakest only" : "Whole roster"), dayG.length ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "sec"
+  }, "Best day to add"), /*#__PURE__*/React.createElement("div", {
+    className: "days"
+  }, dayG.map(x => /*#__PURE__*/React.createElement("button", {
+    key: x.dt,
+    type: "button",
+    className: "dy" + (x.dt === pick ? " on" : "") + (best && x.dt === best.dt && dayG.length > 1 ? " best" : ""),
+    onClick: () => setDay(x.dt)
+  }, /*#__PURE__*/React.createElement("span", null, DN(x.dt)), /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: x.g >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(x.g)))))) : null, R ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "res"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "Points, " + hLabel), /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: R.gain >= 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, sg(R.gain))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "Win " + (String(hLabel).indexOf("next week") === 0 ? "next week" : "this week")), /*#__PURE__*/React.createElement("b", null, (wBase != null ? wpTxt(wBase) + " → " : "") + (R.win == null ? "-" : wpTxt(R.win))))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "lk",
+    style: {
+      marginTop: 10
+    },
+    onClick: () => setDet(!det)
+  }, det ? "Hide details" : "More details"), det ? /*#__PURE__*/React.createElement(GxPickRes92, {
+    s: s,
+    myR: myR,
+    ok: [{
+      a,
+      d
+    }]
+  }) : null, /*#__PURE__*/React.createElement("div", {
+    className: "act"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "pr",
+    onClick: () => {
+      if (window.__QA) window.__QA.espn(a);
+    }
+  }, "Add on ESPN"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: apply
+  }, "Try it here"))) : null) : null));
+}
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
