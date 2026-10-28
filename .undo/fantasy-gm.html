@@ -541,6 +541,28 @@
     .gx-h2h .gx-st98 { display: none; }
     .gx-h2h { align-items: start; }
   }
+  /* change 099 (install.py) */
+  .gx-sc99 { overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .gx-sc99 .gx-tag { position: sticky; left: 0; }
+  .gx-sc99 .gx-ro, .gx-sc99 .gx-pk { width: max-content; min-width: 100%; column-gap: 0; }
+  .gx-sc99 .gx-ro > *, .gx-sc99 .gx-pk > * { display: block !important; }
+  .gx-sc99 .gx-ro > .gx-sp, .gx-sc99 .gx-pk > .gx-sp { display: flex !important; }
+  .gx-sc99 .gx-ro > * + *, .gx-sc99 .gx-pk > * + * { padding-left: 10px; }
+  .gx-sc99 .gx-ro > :nth-child(1), .gx-sc99 .gx-ro > :nth-child(2),
+  .gx-sc99 .gx-pk > :nth-child(1), .gx-sc99 .gx-pk > :nth-child(2) { position: sticky; z-index: 2; background: var(--card); align-self: stretch; display: flex !important; flex-direction: column; justify-content: center; }
+  .gx-sc99 .gx-ro > :nth-child(1), .gx-sc99 .gx-pk > :nth-child(1) { left: 0; box-shadow: 14px 0 0 var(--card); }
+  .gx-sc99 .gx-ro > :nth-child(2), .gx-sc99 .gx-pk > :nth-child(2) { left: 44px; box-shadow: 8px 0 8px -8px rgba(0,0,0,.45); padding-right: 6px; }
+  .gx-sc99 .gx-ro > :nth-child(7) span { display: inline; }
+  .gx-fc99 { display: flex; align-items: center; }
+  .gx-sc99 .gx-op99 { line-height: 1.25; white-space: nowrap; }
+  .gx-sc99 .gx-ro { grid-template-columns: 44px 200px 108px 50px 64px 62px 42px 56px 96px 66px 64px repeat(9, 42px); }
+  .gx-sc99 .gx-pk { grid-template-columns: 44px 300px 64px 56px 70px 66px 58px 62px 56px; }
+  @media (max-width: 640px) {
+    .gx-sc99 .gx-ro > :nth-child(2), .gx-sc99 .gx-pk > :nth-child(2) { left: 36px; }
+    .gx-sc99 .gx-ro > * + *, .gx-sc99 .gx-pk > * + * { padding-left: 8px; }
+    .gx-sc99 .gx-ro { grid-template-columns: 36px 142px 88px 46px 60px 58px 40px 54px 84px 60px 56px repeat(9, 38px); }
+    .gx-sc99 .gx-pk { grid-template-columns: 36px 168px 62px 52px 64px 60px 52px 58px 52px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -549,7 +571,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="lgylbu.15i4nbb" data-file="build/app.js">
+<meta name="gx-build" content="1yrkku6.1dds9hu" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2235,11 +2257,11 @@ function MyTeam({ s, setS, wk, go }) {
     const sub = [roleTxt(p), nextGame(p)].filter(Boolean).join(" \u00b7 ");
     return (
       <div key={p.id} className="gx-ro">
-        <GxFace p={p} size={26} />
+        <div className="gx-fc99"><GxFace p={p} size={26} /></div>
         <div className="min-w-0">
           <div className="truncate"><PN p={p} className="" />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
           {sub ? <div className="text-xs text-slate-500 truncate">{sub}</div> : null}
-        </div>
+        </div>{gxToday99(p)}
         {spark(p)}
         <div className="n">
           <div className="font-semibold" style={p.p === "G" && m != null ? { color: m > 5 ? "var(--good)" : m < 0 ? "var(--bad)" : "var(--ink)" } : null}>{m == null ? "\u2013" : f1(m)}</div>
@@ -2249,7 +2271,7 @@ function MyTeam({ s, setS, wk, go }) {
         <div className="n text-slate-500 m-hide">{nextW && !p.ir ? nextG(p) : "\u2013"}</div>
         <div className="n m-hide">{sea == null ? "\u2013" : <>{f1(sea)}{gap != null ? <span className="text-xs" style={{ marginLeft: 6, color: gap >= 0 ? "var(--good)" : "var(--bad)" }}>{(gap >= 0 ? "+" : "") + f1(gap)}</span> : null}</>}</div>
         <div className="n">{f1(effAvg(p, K))}</div>
-        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>
+        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>{gxStats99(p)}
       </div>
     );
   };
@@ -2267,18 +2289,18 @@ function MyTeam({ s, setS, wk, go }) {
         <span><span className="text-slate-500">Defence</span> <span style={rkc(g.D)}>{g.D ? ordN(g.D) : "\u2013"}</span></span>
         <span><span className="text-slate-500">Goalies</span> <span style={rkc(g.G)}>{g.G ? ordN(g.G) : "\u2013"}</span></span>
       </div>
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className="gx-ro gx-roh">
-          <span></span><span>Tap a heading to sort</span>
+          <span></span><span>Player</span><span>Today</span><span className="n">Pts</span>
           {HB("l5", "Last 5", "m-hide")}
-          {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}
+          {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}{GX_ST99.map((h) => <span key={h} className="n">{h}</span>)}
         </div>
         {groups.map(([title, list]) => (
           <div key={title} style={{ marginBottom: 10 }}>
             <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
             {list.map(row)}
           </div>
-        ))}
+        ))}</div>
       </div>
       <GxPanel title="Weakest spots" right="First to drop or include in a trade">
         {weak.length ? weak.map((p, i) => (
@@ -3738,17 +3760,17 @@ function Pickups({ s, setS, wk }) {
       </div>
       {!plan ? <GxHeadStart s={s} base={base} ml={ml} /> : null}{/* gx083 */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+      <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className="gx-pk text-xs text-slate-500" style={{ borderTop: 0, paddingTop: 0 }}>
           <span></span><span>{base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)}</span>
-          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Win</GxSH>
+          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Win</GxSH><span className="n">So far</span><span className="n">Rost</span>
         </div>
         {rows.length ? rows.map((r) => {
           const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0, tg = shortTag(r.f, K), w = wins[r.f.id];
           const st = r.f.status && r.f.status !== "ACTIVE" ? M_ST[r.f.status] || r.f.status.replace(/_/g, " ") : "";
           return (
             <div key={r.f.id} className="gx-pk row" role="button" onClick={() => setSim({ add: r.f.id, drop: r.d.id })}>
-              <GxFace p={r.f} size={26} />
+              <div className="gx-fc99"><GxFace p={r.f} size={26} /></div>
               <div className="min-w-0">
                 <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
                 <div className="text-xs text-slate-500 truncate">{"Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : "")}{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button>{" \u00b7 "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); gxHide.toggle(r.f.id); }}>{gxHideSet().has(r.f.id) ? "Show again" : "Hide" /* gx075-row */}</button>{gxScratch(r.f) ? <span style={{ color: "var(--warn)" }}>{" \u00b7 not in lineup"}</span> : null}</div>
@@ -3758,10 +3780,12 @@ function Pickups({ s, setS, wk }) {
               <div className="n m-hide">{f1(effAvg(r.f, K))}</div>
               <div className="n font-semibold" style={{ color: r.gain > 0 ? "var(--good)" : "var(--bad)" }}>{(r.gain >= 0 ? "+" : "") + f1(r.gain)}</div>
               <div className="n" style={w != null && base != null ? { color: w > base + 0.004 ? "var(--good)" : w < base - 0.004 ? "var(--bad)" : "var(--ink)" } : null}>{w == null ? "\u2013" : wpTxt(w)}</div>
+              <div className="n text-slate-500">{r.f.gp ? f1(r.f.tot / r.f.gp) : "-"}</div>
+              <div className="n text-slate-500">{r.f.own != null ? Math.round(r.f.own) + "%" : "-"}</div>
             </div>
           );
         }) : <div className="text-sm text-slate-500" style={{ padding: "10px 0" }}>{q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window."}</div>}
-        {all.length > rows.length ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 10 }} onClick={() => setLimit(limit + 25)}>Show {Math.min(25, all.length - rows.length)} more</button> : null}
+        </div>{all.length > rows.length ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 10 }} onClick={() => setLimit(limit + 25)}>Show {Math.min(25, all.length - rows.length)} more</button> : null}
         {rows.length ? <div className="text-xs text-slate-500" style={{ marginTop: 10 }}>Adds is the extra points in your lineup for {hLabel}. Tap a player to try the swap or change who you drop.</div> : null}
       </div>
       {others.length ? (
@@ -4569,11 +4593,11 @@ function GxRosterTable({ s, wk, tid }) {
     const sub = [roleTxt(p), nextGame(p)].filter(Boolean).join(" \u00b7 "), h = hist[String(p.id).slice(1)] || [];
     return (
       <div key={p.id} className="gx-ro">
-        <GxFace p={p} size={26} />
+        <div className="gx-fc99"><GxFace p={p} size={26} /></div>
         <div className="min-w-0">
           <div className="truncate"><PN p={p} className="" />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
           {sub ? <div className="text-xs text-slate-500 truncate">{sub}</div> : null}
-        </div>
+        </div>{gxToday99(p)}
         <div className="gx-sp m-hide" title="Last five games, oldest to newest">
           {h.length ? h.map((v, i) => <i key={i} style={{ height: Math.max(2, Math.min(22, (Math.max(0, v) / 20) * 22)), background: v < 0 ? "var(--bad)" : "var(--ink2)" }}></i>) : <span className="text-xs text-slate-500">{"\u2013"}</span>}
         </div>
@@ -4585,23 +4609,23 @@ function GxRosterTable({ s, wk, tid }) {
         <div className="n text-slate-500 m-hide">{nextW && !p.ir ? nextG(p) : "\u2013"}</div>
         <div className="n m-hide">{sea == null ? "\u2013" : <>{f1(sea)}{gap != null ? <span className="text-xs" style={{ marginLeft: 6, color: gap >= 0 ? "var(--good)" : "var(--bad)" }}>{(gap >= 0 ? "+" : "") + f1(gap)}</span> : null}</>}</div>
         <div className="n">{f1(effAvg(p, K))}</div>
-        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>
+        <div className="n text-xs text-slate-500 m-hide">{rk ? p.p + " " + ordN(rk) : "\u2013"}</div>{gxStats99(p)}
       </div>
     );
   };
   return (
-    <div className="gx-pn"><b></b><b></b><b></b><b></b>
+    <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
       <div className="gx-ro gx-roh">
-        <span></span><span>Tap a heading to sort</span>
+        <span></span><span>Player</span><span>Today</span><span className="n">Pts</span>
         {HB("l5", "Last 5", "m-hide")}
-        {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}
+        {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "So far", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}{GX_ST99.map((h) => <span key={h} className="n">{h}</span>)}
       </div>
       {groups.map(([title, list]) => (
         <div key={title} style={{ marginBottom: 10 }}>
           <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>
           {list.map(row)}
         </div>
-      ))}
+      ))}</div>
     </div>
   );
 }
@@ -6220,6 +6244,28 @@ function GxFace({ p, t, size }) {
 function gxOpp98(p) {
   const g = gameOf(p.t, p.dt);
   return g ? <span className="m-inl">{(g.h ? "" : "@") + g.o + " "}</span> : null;
+}
+// ---------- change 099: today's game and stat line columns for rosters (install.py) ----------
+const GX_ST99 = ["G", "A", "+/-", "SOG", "HIT", "BLK", "SV", "GA", "TOI"];
+function gxToday99(p) {
+  const td = todayISO(), g = p.ir ? null : gameOf(p.t, td), st = g ? gState(p.t, td).s : null, sc = g && st !== "P" ? gScore(p.t, td) : null;
+  let opp = "-", res = "";
+  if (g) {
+    opp = (g.h ? "" : "@") + g.o;
+    res = st === "P" ? gameTime(g) : sc && sc.my != null ? sc.my + "-" + sc.op + (st === "F" ? " Final" : sc.per ? " " + sc.per : "") : st === "F" ? "Final" : "Live";
+  }
+  const a = st && st !== "P" ? gxPdReal(p, td) : null;
+  return [
+    <div key="t99a" className="gx-op99"><div>{opp}</div>{res ? <div className="text-xs text-slate-500">{res}</div> : null}</div>,
+    <div key="t99b" className="n font-semibold">{a == null ? "-" : f1(a)}</div>,
+  ];
+}
+function gxStats99(p) {
+  const td = todayISO(), x = gState(p.t, td).s !== "P" ? pStat(p, td) : null, d = "-";
+  const v = !x ? GX_ST99.map(() => d)
+    : p.p === "G" ? [d, d, d, d, d, d, x.sv != null ? x.sv : d, x.ga != null ? x.ga : d, x.toi || d]
+    : [x.g || 0, x.a || 0, gxPdSigned(x.pm), x.sog || 0, x.hit || 0, x.blk || 0, d, d, x.toi || d];
+  return v.map((c, i) => <div key={"s99" + i} className="n text-slate-500">{c}</div>);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
