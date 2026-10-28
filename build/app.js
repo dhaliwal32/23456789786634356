@@ -1470,7 +1470,8 @@ function App() {
       oppOf,
       todayISO
     }
-  })) : null), player && window.PlayerPopup ? /*#__PURE__*/React.createElement(window.PlayerPopup, {
+  })) : null), player ? /*#__PURE__*/React.createElement(GxPdSafe, {
+    key: player.id,
     p: player,
     s: s,
     wk: wk,
@@ -12911,5 +12912,575 @@ function GxAutoToday2({
       flexShrink: 0
     }
   }, gxApTime(e.at)));
+}
+// ---------- change 095: ESPN-style player screen (install.py) ----------
+const GXPD_DOT = " " + String.fromCharCode(183) + " ";
+const gxPdSec = t => {
+  const m = String(t || "").split(":");
+  return m.length === 2 ? +m[0] * 60 + +m[1] : null;
+};
+const gxPdMS = v => v == null ? "-" : Math.floor(v / 60) + ":" + String(Math.round(v % 60)).padStart(2, "0");
+const gxPdReal = (p, d) => {
+  const D = ((window.ESPN_DATA || {}).daily || {})[d] || {},
+    id = String(p.id || "").replace(/^e/, "");
+  for (const tm of Object.values(D)) {
+    const v = (tm || {})[id];
+    if (v && v[0] != null) return v[0];
+  }
+  return null;
+};
+const gxPdTeam = t => ((window.LINES_DATA || {}).teams || {})[t] || {};
+// jersey number from the NHL roster (saved by gm_lines.py from change 095 on)
+const gxPdNo = p => {
+  const m = gxPdTeam(p.t).no;
+  if (!m) return null;
+  const k = nrm(p.n);
+  for (const n in m) if (nrm(n) === k) return m[n];
+  return null;
+};
+// NHL position code and shoots (C, LW, RW, D; L or R)
+const gxPdNhlPos = p => {
+  const m = (gxPdTeam(p.t).pos || {}).nhl || {},
+    k = nrm(p.n);
+  for (const n in m) if (nrm(n) === k) return m[n];
+  return "";
+};
+const gxPdSigned = v => v > 0 ? "+" + v : String(v || 0);
+// one row of totals for a set of games
+const gxPdSum = (rows, isG) => {
+  const n = rows.length,
+    sum = f => rows.reduce((a, r) => a + (f(r) || 0), 0);
+  if (isG) {
+    const sv = sum(r => r.x.sv),
+      sa = sum(r => r.x.sa != null ? r.x.sa : (r.x.sv || 0) + (r.x.ga || 0));
+    return {
+      gp: n,
+      w: rows.filter(r => r.x.dec === "W").length,
+      l: rows.filter(r => r.x.dec === "L" || r.x.dec === "O").length,
+      ga: sum(r => r.x.ga),
+      sv,
+      svp: sa ? sv / sa : null,
+      fp: sum(r => r.fp)
+    };
+  }
+  const ts = rows.map(r => gxPdSec(r.x.toi)).filter(v => v != null);
+  return {
+    gp: n,
+    toi: ts.length ? ts.reduce((a, v) => a + v, 0) / ts.length : null,
+    g: sum(r => r.x.g),
+    a: sum(r => r.x.a),
+    pm: sum(r => r.x.pm),
+    pim: sum(r => r.x.pim),
+    sog: sum(r => r.x.sog),
+    fp: sum(r => r.fp)
+  };
+};
+const GX_PD_SLOT = {
+  F1: "1st line",
+  F2: "2nd line",
+  F3: "3rd line",
+  F4: "4th line",
+  D1: "Top pair",
+  D2: "2nd pair",
+  D3: "3rd pair",
+  PP1: "Power play 1",
+  PP2: "Power play 2",
+  PK1: "Penalty kill 1",
+  PK2: "Penalty kill 2",
+  G: "Goalies"
+};
+function GxPlayerDetail({
+  p: p0,
+  s,
+  wk,
+  onClose
+}) {
+  const K = s.blend,
+    today = todayISO(),
+    sc = s.sc || {};
+  const p = s.players.find(q => q.id === p0.id) || p0;
+  const eid = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  const isG = p.p === "G";
+  const [tab, setTab] = useState("ov");
+  const [log, setLog] = useState(null);
+  const [nLog, setNLog] = useState(10);
+  const [img, setImg] = useState(true);
+  const rank = useMemo(() => {
+    const o = {},
+      pv = q => effAvg(q, K) * (q.p === "G" ? q.prob : 1);
+    ["F", "D", "G"].forEach(k => {
+      s.players.filter(q => q.p === k && q.prob > 0 && (q.proj !== false || q.gp > 0)).map(q => [q.id, pv(q)]).sort((a, b) => b[1] - a[1]).forEach((x, i) => o[x[0]] = i + 1);
+    });
+    return o;
+  }, [s.players, K, window.__PMODE]);
+  useEffect(() => {
+    setTab("ov");
+    setNLog(10);
+    setImg(true);
+  }, [p.id]);
+  useEffect(() => {
+    const k = e => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, []);
+  useEffect(() => {
+    let dead = false;
+    setLog(null);
+    if (!eid) {
+      setLog([]);
+      return;
+    }
+    const past = [...(SCHED && SCHED[p.t] || [])].filter(d => d <= today).sort().reverse();
+    gxBoxIdx().then(idx => {
+      const has = new Set(idx || []);
+      return Promise.all(past.map(d => {
+        const live = pStat(p, d);
+        return has.has(d) ? gxBoxDay(d).then(day => ({
+          d,
+          x: day && day[eid] || live
+        })) : Promise.resolve({
+          d,
+          x: live
+        });
+      }));
+    }).then(list => {
+      if (dead) return;
+      setLog(list.filter(r => r.x).map(r => {
+        const a = r.x.fp != null ? r.x.fp : gxPdReal(p, r.d);
+        return {
+          ...r,
+          fp: a != null ? a : gxEst(r.x, sc),
+          est: a == null,
+          st: gState(p.t, r.d).s
+        };
+      }));
+    }).catch(() => {
+      if (!dead) setLog([]);
+    });
+    return () => {
+      dead = true;
+    };
+  }, [p.id]);
+
+  // header facts
+  const sp = String(p.n || "").indexOf(" "),
+    first = sp > 0 ? p.n.slice(0, sp) : "",
+    last = sp > 0 ? p.n.slice(sp + 1) : p.n;
+  const no = gxPdNo(p),
+    nhlPos = gxPdNhlPos(p);
+  const T = gxPdTeam(p.t),
+    tName = (T.st || {}).name || p.t;
+  const back = eid ? effBack(p) : {
+    d: ""
+  };
+  const hurt = !!(p.ir || p.status && p.status !== "ACTIVE" || back.d && back.d > today);
+  const stTxt = !hurt ? "Healthy" : p.ir ? "Injured reserve" : p.status === "DAY_TO_DAY" ? "Day to day" : p.status === "OUT" ? "Out" : p.status === "SUSPENSION" ? "Suspended" : p.status === "INJURY_RESERVE" ? "Injured reserve" : "Not playing";
+  const stCol = !hurt ? "var(--good)" : p.status === "DAY_TO_DAY" ? "var(--warn)" : "var(--bad)";
+  const posWord = isG ? "G" : p.p === "D" ? "D" : "F";
+  const elig = posWord + (nhlPos && nhlPos[0] !== posWord ? " (" + nhlPos.replace(/[LR]$/, "") + ")" : "");
+  const rk = rank[p.id];
+  const avgSoFar = p.gp ? p.tot / p.gp : null;
+  const proj = eid ? effAvg(p, K) : null;
+  const inj = eid ? ((window.__SIG || {}).injuries || {})[eid] : null;
+  const news = eid ? sigOf(p).news || [] : [];
+
+  // this week and next games
+  const per = d => {
+    if (!eid) return null;
+    const g = isG ? gStart(p, d) : null;
+    return {
+      x: effAvg(p, K, d) * (g ? g.v : p.prob != null ? p.prob : 1) * avail(p, d),
+      g
+    };
+  };
+  const wkIdx = eid && wk && wk.games ? (wk.games[p.t] || []).filter(i => ((wk.dates || [])[i] || "") >= today && gState(p.t, wk.dates[i]).s === "P") : [];
+  const wkPts = wkIdx.reduce((a, i) => a + ((per(wk.dates[i]) || {}).x || 0), 0);
+  const L = window.LINES_DATA || {};
+  const nextG = ((L.sched || {})[p.t] || []).filter(x => x.d >= today).slice(0, 5);
+
+  // stats rows
+  const rows = log || [];
+  const done = rows;
+  const since = n => done.filter(r => r.d >= addDays(today, -(n - 1)));
+  const statRows = [["Season", gxPdSum(done, isG)], ["Last 7 days", gxPdSum(since(7), isG)], ["Last 15 days", gxPdSum(since(15), isG)]];
+  const SH = isG ? ["GP", "W", "L", "GA", "SV", "SV%", "FPTS"] : ["GP", "ATOI", "G", "A", "+/-", "PIM", "SOG", "FPTS"];
+  const svp = v => v == null ? "-" : v.toFixed(3).replace(/^0/, "");
+  const statCells = r => isG ? [r.gp, r.w, r.l, r.ga, r.sv, svp(r.svp), f1(r.fp)] : [r.gp, gxPdMS(r.toi), r.g, r.a, gxPdSigned(r.pm), r.pim, r.sog, f1(r.fp)];
+
+  // lines
+  const ln = T.lines || {},
+    me = nrm(p.n);
+  const slots = Object.keys(ln).filter(k => (ln[k] || []).some(n => nrm(n) === me));
+  const mateP = n => s.players.find(q => nrm(q.n) === nrm(n) && q.t === p.t) || s.players.find(q => nrm(q.n) === nrm(n));
+  const chg = (L.changes || []).filter(c => nrm(c.name) === me && (c.team === p.t || c.from === p.t || c.to === p.t)).slice(0, 6);
+  const Q = window.__QA;
+  const act = fn => () => {
+    onClose();
+    fn(p);
+  };
+  const owner = p.ft === "fa" ? p.wv ? "Waivers" : "Free agent" : /*#__PURE__*/React.createElement(TL, {
+    s: s,
+    id: p.ft
+  });
+  const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["lines", "Lines"]];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-ov",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd",
+    "data-gx": "095",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-pd-x",
+    "aria-label": "Close",
+    onClick: onClose
+  }, String.fromCharCode(215)), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-hd"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-ph"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "lg"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: p.t,
+    size: 44
+  })), eid && img ? /*#__PURE__*/React.createElement("img", {
+    alt: p.n,
+    src: "https://a.espncdn.com/i/headshots/nhl/players/full/" + eid + ".png",
+    onError: () => setImg(false)
+  }) : /*#__PURE__*/React.createElement("span", {
+    className: "ini"
+  }, (first[0] || "") + (last[0] || ""))), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-nm"
+  }, no != null ? /*#__PURE__*/React.createElement("span", {
+    className: "gx-pd-no"
+  }, "#" + no) : null, /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "f truncate"
+  }, first), /*#__PURE__*/React.createElement("div", {
+    className: "l truncate"
+  }, last))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-tm truncate"
+  }, tName), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-kv"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "k"
+  }, "Elig"), /*#__PURE__*/React.createElement("span", null, elig), /*#__PURE__*/React.createElement("span", {
+    className: "k"
+  }, "Manager"), /*#__PURE__*/React.createElement("span", {
+    className: "truncate"
+  }, owner), /*#__PURE__*/React.createElement("span", {
+    className: "k"
+  }, "Status"), /*#__PURE__*/React.createElement("span", null, stTxt, /*#__PURE__*/React.createElement("span", {
+    className: "gx-pd-dot",
+    style: {
+      background: stCol
+    }
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-st"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Position rank"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, rk || "-", /*#__PURE__*/React.createElement("small", null, rk ? posWord : ""))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Average points"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, avgSoFar == null ? "-" : f1(avgSoFar))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Projected"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, proj == null ? "-" : f1(proj))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "% rostered"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, p.own != null ? f1(p.own) : "-", /*#__PURE__*/React.createElement("small", null, p.chg ? "(" + (p.chg > 0 ? "+" : "") + f1(p.chg) + ")" : "(+0)"))))), Q ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-ac"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "pr",
+    onClick: act(Q.swap)
+  }, Q.mine(p) ? "Find a replacement" : "Find a swap"), Q.tradeable(p) ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: act(Q.trade)
+  }, "Add to a trade") : null, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => Q.espn(p)
+  }, Q.fa(p) ? "Add on ESPN" : "Open on ESPN"), Q.fa(p) ? /*#__PURE__*/React.createElement(GxPdWatch, {
+    p: p,
+    Q: Q
+  }) : null) : null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-tb"
+  }, tabs.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    type: "button",
+    className: tab === k ? "on" : "",
+    onClick: () => setTab(k)
+  }, l))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-bd"
+  }, hurt && tab === "ov" ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn",
+    style: {
+      color: "var(--bad)",
+      fontSize: 14
+    }
+  }, stTxt, back.d ? GXPD_DOT + "back around " + dayLabel(back.d) : "", inj && inj.note ? GXPD_DOT + inj.note : "") : null, tab === "ov" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Stats", /*#__PURE__*/React.createElement("span", {
+    className: "r"
+  }, "fantasy points (FPTS) by your league's scoring")), log === null ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "Loading games...") : /*#__PURE__*/React.createElement("table", {
+    className: "gx-pd-t"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null), SH.map(h => /*#__PURE__*/React.createElement("th", {
+    key: h
+  }, h)))), /*#__PURE__*/React.createElement("tbody", null, statRows.map(([l, r]) => /*#__PURE__*/React.createElement("tr", {
+    key: l
+  }, /*#__PURE__*/React.createElement("td", null, l), statCells(r).map((v, i) => /*#__PURE__*/React.createElement("td", {
+    key: i,
+    className: i === SH.length - 1 ? "b" : ""
+  }, r.gp ? v : i ? "-" : 0))))))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "This week"), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-tl"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Per game"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, proj == null ? "-" : f1(proj)), /*#__PURE__*/React.createElement("div", {
+    className: "s"
+  }, isG ? "if he starts" : "ESPN " + f1(p.avg || 0))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Rest of this week"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, eid ? f1(wkPts) : "-"), /*#__PURE__*/React.createElement("div", {
+    className: "s"
+  }, wkIdx.length + " game" + (wkIdx.length === 1 ? "" : "s") + " left")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "k"
+  }, "Season points"), /*#__PURE__*/React.createElement("div", {
+    className: "v"
+  }, f1(p.tot || 0)), /*#__PURE__*/React.createElement("div", {
+    className: "s"
+  }, (p.gp || 0) + " GP"))), nextG.length ? /*#__PURE__*/React.createElement("table", {
+    className: "gx-pd-t",
+    style: {
+      marginTop: 10
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Next games"), /*#__PURE__*/React.createElement("th", null, "Opp"), /*#__PURE__*/React.createElement("th", null, isG ? "Start" : ""), /*#__PURE__*/React.createElement("th", null, "Proj"))), /*#__PURE__*/React.createElement("tbody", null, nextG.map(g => {
+    const r = per(g.d),
+      lv = gState(p.t, g.d).s !== "P",
+      a = lv ? gxPdReal(p, g.d) : null;
+    return /*#__PURE__*/React.createElement("tr", {
+      key: g.d,
+      className: lv ? "lv" : ""
+    }, /*#__PURE__*/React.createElement("td", null, dayLabel(g.d)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      className: "inline-flex items-center gap-1 justify-end"
+    }, g.h ? "vs" : "@", " ", /*#__PURE__*/React.createElement(TeamLogo, {
+      t: g.o,
+      size: 16
+    }), " ", g.o)), /*#__PURE__*/React.createElement("td", {
+      className: "text-slate-500"
+    }, isG && r && r.g ? Math.round(r.g.v * 100) + "%" : ""), /*#__PURE__*/React.createElement("td", {
+      className: "b"
+    }, lv ? /*#__PURE__*/React.createElement(React.Fragment, null, a == null ? "-" : f1(a), " ", /*#__PURE__*/React.createElement(LiveTag, {
+      st: gState(p.t, g.d).s,
+      t: p.t,
+      dt: g.d
+    })) : r ? f1(r.x) : ""));
+  }))) : null, eid ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement(Tags, {
+    p: p,
+    K: K
+  })) : null), news.length ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Latest news", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "r text-blue-600",
+    onClick: () => setTab("news")
+  }, "All news")), /*#__PURE__*/React.createElement(GxPdNews, {
+    items: news.slice(0, 1)
+  })) : null) : null, tab === "log" ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Game log", /*#__PURE__*/React.createElement("span", {
+    className: "r"
+  }, log && log.length ? log.length + " games" : "")), log === null ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "Loading games...") : !log.length ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "No games saved yet.") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("table", {
+    className: "gx-pd-t"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Opp"), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("th", null, "Dec"), /*#__PURE__*/React.createElement("th", null, "SV"), /*#__PURE__*/React.createElement("th", null, "GA"), /*#__PURE__*/React.createElement("th", {
+    className: "m-hide"
+  }, "SV%")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("th", {
+    className: "m-hide"
+  }, "TOI"), /*#__PURE__*/React.createElement("th", null, "G"), /*#__PURE__*/React.createElement("th", null, "A"), /*#__PURE__*/React.createElement("th", null, "+/-"), /*#__PURE__*/React.createElement("th", {
+    className: "m-hide"
+  }, "PIM"), /*#__PURE__*/React.createElement("th", null, "SOG")), /*#__PURE__*/React.createElement("th", null, "FPTS"))), /*#__PURE__*/React.createElement("tbody", null, log.slice(0, nLog).map(r => {
+    const x = r.x,
+      gm = (((window.GAMES_DATA || {}).games || {})[r.d] || {})[p.t] || null,
+      o = x.o || (gm ? gm.o : ""),
+      h = x.o ? x.h : gm ? gm.h : null;
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.d,
+      className: r.st === "L" ? "lv" : ""
+    }, /*#__PURE__*/React.createElement("td", null, r.d.slice(5).replace("-", "/")), /*#__PURE__*/React.createElement("td", null, o ? (h ? "" : "@") + o : ""), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.dec === "O" ? "OTL" : x.dec || "-"), /*#__PURE__*/React.createElement("td", null, x.sv || 0), /*#__PURE__*/React.createElement("td", null, x.ga || 0), /*#__PURE__*/React.createElement("td", {
+      className: "m-hide"
+    }, x.svp != null ? svp(Number(x.svp)) : "-")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", {
+      className: "m-hide"
+    }, x.toi || "-"), /*#__PURE__*/React.createElement("td", null, x.g || 0), /*#__PURE__*/React.createElement("td", null, x.a || 0), /*#__PURE__*/React.createElement("td", null, gxPdSigned(x.pm)), /*#__PURE__*/React.createElement("td", {
+      className: "m-hide"
+    }, x.pim || 0), /*#__PURE__*/React.createElement("td", null, x.sog || 0)), /*#__PURE__*/React.createElement("td", {
+      className: "b"
+    }, f1(r.fp), r.est ? "*" : ""));
+  }))), log.length > nLog ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-pd-more",
+    onClick: () => setNLog(nLog + 20)
+  }, "Show more") : null, log.some(r => r.est) ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 8
+    }
+  }, "* worked out from the box score, without power-play or shorthanded points.") : null)) : null, tab === "news" ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Recent news"), inj && inj.note ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-nw"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d"
+  }, "Injury"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "var(--bad)"
+    }
+  }, inj.note)) : null, news.length ? /*#__PURE__*/React.createElement(GxPdNews, {
+    items: news
+  }) : !(inj && inj.note) ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "No news for him in the last few days.") : null) : null, tab === "lines" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Where he plays for " + p.t, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "r text-blue-600",
+    onClick: act(() => window.__NAV && window.__NAV.lines(p.t))
+  }, "All team lines")), !slots.length ? /*#__PURE__*/React.createElement("div", {
+    className: "text-sm",
+    style: {
+      color: "var(--warn)"
+    }
+  }, "Not in " + p.t + "'s current Daily Faceoff lineup (scratched, injured, in the minors, or not read yet).") : slots.sort().map(k => /*#__PURE__*/React.createElement("div", {
+    key: k,
+    className: "gx-pd-nw"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d"
+  }, GX_PD_SLOT[k] || k), /*#__PURE__*/React.createElement("div", null, (ln[k] || []).filter(n => nrm(n) !== me).map(n => {
+    const q = mateP(n);
+    return q ? /*#__PURE__*/React.createElement("button", {
+      key: n,
+      type: "button",
+      className: "gx-pd-mt",
+      onClick: () => window.__NAV && window.__NAV.player(q)
+    }, n) : /*#__PURE__*/React.createElement("span", {
+      key: n,
+      className: "gx-pd-mt text-slate-500"
+    }, n);
+  })))), !isG && slots.length && !slots.some(k => k[0] === "P") ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginTop: 6
+    }
+  }, "Not on a power-play or penalty-kill unit.") : null), chg.length ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Recent changes"), chg.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    className: "gx-pd-nw"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d"
+  }, dayLabel(String(c.at || "").slice(0, 10))), /*#__PURE__*/React.createElement("div", null, c.text)))) : null) : null)));
+}
+function GxPdNews({
+  items
+}) {
+  return items.map((n, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "gx-pd-nw"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d"
+  }, n.d), /*#__PURE__*/React.createElement("a", {
+    href: n.u,
+    target: "_blank",
+    rel: "noreferrer",
+    style: {
+      color: n.tone === "-" ? "var(--bad)" : "var(--ink)"
+    }
+  }, n.h)));
+}
+function GxPdWatch({
+  p,
+  Q
+}) {
+  const [, tick] = useState(0);
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      Q.star(p);
+      tick(x => x + 1);
+    }
+  }, Q.starred(p) ? "Watching" : "Watch");
+}
+// if the new screen ever breaks, fall back to the old pop-up
+class GxPdSafe extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bad: false
+    };
+  }
+  static getDerivedStateFromError() {
+    return {
+      bad: true
+    };
+  }
+  componentDidCatch(e) {
+    try {
+      console.error("player screen (095)", e);
+    } catch (x) {}
+  }
+  render() {
+    const P = this.props;
+    if (this.state.bad) return window.PlayerPopup ? /*#__PURE__*/React.createElement(window.PlayerPopup, {
+      p: P.p,
+      s: P.s,
+      wk: P.wk,
+      H: P.H,
+      onClose: P.onClose
+    }) : null;
+    return /*#__PURE__*/React.createElement(GxPlayerDetail, {
+      p: P.p,
+      s: P.s,
+      wk: P.wk,
+      onClose: P.onClose
+    });
+  }
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
