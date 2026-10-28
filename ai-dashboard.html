@@ -80,9 +80,9 @@ section::before{display:none}
     document.documentElement.setAttribute("data-t", dark ? "dark" : "light");
   } catch (e) {}
 })();
-const M = ["espn", "gm", "blend", "ai"];
-const NAME = {espn: "ESPN", gm: "GM model", blend: "Blend", ai: "AI"};
-const COL = {espn: "#f87171", gm: "#60a5fa", blend: "#a78bfa", ai: "#34d399"};
+const M = ["espn", "gm", "blend", "ai", "combo"];
+const NAME = {espn: "ESPN", gm: "GM model", blend: "Blend", ai: "AI", combo: "Combined (app)"};
+const COL = {espn: "#f87171", gm: "#60a5fa", blend: "#a78bfa", ai: "#34d399", combo: "#fbbf24"};
 const FAM = {baseline: "Simple baseline (recent form)", ridge_fp: "Linear model → points", poisson_stats: "Statistical model, stat by stat",
   gbm_fp: "Boosted trees → points", gbm_stats: "Boosted trees, stat by stat", logit: "Logistic model", gbm: "Boosted trees"};
 const FCOL = ["#9ca3af", "#60a5fa", "#a78bfa", "#fbbf24", "#34d399"];

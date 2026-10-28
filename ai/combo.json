@@ -1,0 +1,140 @@
+{
+ "version": "combo-v1",
+ "asof": "2026-10-28T09:52:40Z",
+ "data": {
+  "from": "2026-09-29",
+  "to": "2026-10-27",
+  "records": 14686
+ },
+ "groups": {
+  "F": {
+   "pick": "ai",
+   "why": "smallest average miss per game (4.597 pts)",
+   "w": {
+    "espn": 0.0,
+    "gm": 0.0,
+    "ai": 1.0
+   },
+   "bias": 0.0,
+   "games": 4652,
+   "tests": {
+    "half": {
+     "n": 3730,
+     "mae": 4.606,
+     "rmse": 6.058,
+     "bias": -0.073
+    },
+    "ai": {
+     "n": 3730,
+     "mae": 4.597,
+     "rmse": 6.057,
+     "bias": -0.071
+    },
+    "gm": {
+     "n": 3730,
+     "mae": 4.627,
+     "rmse": 6.081,
+     "bias": -0.075
+    },
+    "espn": {
+     "n": 3730,
+     "mae": 4.831,
+     "rmse": 6.3,
+     "bias": 0.125
+    },
+    "mix": {
+     "n": 3730,
+     "mae": 4.602,
+     "rmse": 6.055,
+     "bias": -0.069
+    }
+   }
+  },
+  "D": {
+   "pick": "ai",
+   "why": "smallest average miss per game (3.592 pts)",
+   "w": {
+    "espn": 0.0,
+    "gm": 0.0,
+    "ai": 1.0
+   },
+   "bias": 0.0,
+   "games": 2390,
+   "tests": {
+    "half": {
+     "n": 1925,
+     "mae": 3.616,
+     "rmse": 4.816,
+     "bias": 0.032
+    },
+    "ai": {
+     "n": 1925,
+     "mae": 3.592,
+     "rmse": 4.808,
+     "bias": 0.014
+    },
+    "gm": {
+     "n": 1925,
+     "mae": 3.661,
+     "rmse": 4.854,
+     "bias": 0.05
+    },
+    "espn": {
+     "n": 1925,
+     "mae": 3.918,
+     "rmse": 5.131,
+     "bias": 0.14
+    },
+    "mix": {
+     "n": 1925,
+     "mae": 3.592,
+     "rmse": 4.808,
+     "bias": 0.015
+    }
+   }
+  },
+  "G": {
+   "pick": "half",
+   "why": "only 291 test games so far - using the AI+GM average",
+   "w": {
+    "espn": 0.0,
+    "gm": 0.5,
+    "ai": 0.5
+   },
+   "bias": 0.0,
+   "games": 394,
+   "tests": {
+    "half": {
+     "n": 291,
+     "mae": 6.547,
+     "rmse": 8.231,
+     "bias": 0.278
+    },
+    "ai": {
+     "n": 291,
+     "mae": 6.545,
+     "rmse": 8.238,
+     "bias": 0.402
+    },
+    "gm": {
+     "n": 291,
+     "mae": 6.581,
+     "rmse": 8.252,
+     "bias": 0.154
+    },
+    "espn": {
+     "n": 291,
+     "mae": 6.974,
+     "rmse": 8.682,
+     "bias": 0.312
+    },
+    "mix": {
+     "n": 291,
+     "mae": 6.57,
+     "rmse": 8.242,
+     "bias": 0.171
+    }
+   }
+  }
+ }
+}

@@ -53,7 +53,7 @@ FINAL_STATES = ("OFF",)    # NHL "official final"
 DEAD_SCHED = ("PPD", "CNCL", "SUSP")
 DF_START = [("unconfirmed", 0.60), ("confirmed", 1.00), ("likely", 0.85)]  # order matters
 ALIAS = {"LAK": "LA", "NJD": "NJ", "SJS": "SJ", "TBL": "TB", "ARI": "UTA", "UTAH": "UTA", "WAS": "WSH"}
-MODELS = ("espn", "gm", "blend", "ai")
+MODELS = ("espn", "gm", "blend", "ai", "combo")
 HASH_SKIP = ("v", "ts", "data_ts", "lead_min", "ai_meta")
 
 
@@ -246,6 +246,21 @@ def espn_eff(p):
     return None
 
 
+def combo_of(espn, gm, aiv, pos, C):
+    """change 124: the app's Combined projection (ai/combo.json weights; falls back AI -> GM -> ESPN)"""
+    g = ((C or {}).get("groups") or {}).get("G" if pos == "G" else "D" if pos == "D" else "F") or {}
+    W = g.get("w") or {"espn": 0.0, "gm": 0.5, "ai": 0.5}
+    s = t = 0.0
+    for k, v in (("ai", aiv), ("gm", gm), ("espn", espn)):
+        if v is not None and W.get(k):
+            s += W[k] * v
+            t += W[k]
+    if t <= 1e-9:
+        v = aiv if aiv is not None else gm if gm is not None else espn
+        return None if v is None else round(v, 3)
+    return round(max(0.0, s / t + (g.get("bias") or 0.0)), 3)
+
+
 def blend_of(espn, gm, base):
     """App's Blend: ESPN half scaled by the model's matchup ratio, 50/50 with GM."""
     if espn is None or gm is None:
@@ -350,6 +365,7 @@ def snapshot(root, state, data, now, day_fetch, ai=None):
     sig_all, goalies = data.get("signals") or {}, data.get("goalies") or {}
     ai_proj, ai_gs, ai_rng = ai.get("proj") or {}, ai.get("gstart") or {}, ai.get("range") or {}
     ai_ver = ai.get("versions") or {}
+    combo_w = read_json(P(root, "combo.json"), {})  # change 124
     last = state.setdefault("last", {})
     new_rows = {}
     n_ai = 0
@@ -369,7 +385,8 @@ def snapshot(root, state, data, now, day_fetch, ai=None):
                    "b2b": (p.get("t"), prev_day) in played, "ft": p.get("ft", 0),
                    "status": p.get("status"), "ir": bool(p.get("ir")),
                    "espn_raw": {k: p.get(k) for k in ("pavg", "avg", "tot", "gp", "own", "chg")},
-                   "pred": {"espn": espn, "gm": gm, "blend": blend_of(espn, gm, base.get(pid)), "ai": aiv},
+                   "pred": {"espn": espn, "gm": gm, "blend": blend_of(espn, gm, base.get(pid)), "ai": aiv,
+                            "combo": combo_of(espn, gm if gm is not None else base.get(pid), aiv, p.get("p"), combo_w)},
                    "gm_base": base.get(pid), "odds": (odds.get(day) or {}).get(p.get("t")), "sig": sig}
             if aiv is not None:
                 n_ai += 1
@@ -491,7 +508,7 @@ def join_day(preds, lab):
                     "status": p.get("status"), "ft": p.get("ft", 0), "pp1": sig.get("pp1_on"),
                     "pp1_chg": sig.get("pp1_chg"), "top": sig.get("lines_top"), "line": sig.get("line"),
                     "line_chg": sig.get("line_chg"), "lead": p.get("lead_min"),
-                    "espn": pr.get("espn"), "gm": pr.get("gm"), "blend": pr.get("blend"), "ai": pr.get("ai"),
+                    "espn": pr.get("espn"), "gm": pr.get("gm"), "blend": pr.get("blend"), "ai": pr.get("ai"), "combo": pr.get("combo"),
                     "ai_lo": rng[0], "ai_hi": rng[1],
                     "start_p": gl.get("start_p"), "ai_start_p": gl.get("ai_start_p"),
                     "played": a is not None, "match": how,
@@ -619,7 +636,7 @@ def report(root, state, now):
     for task in ("skater", "goalie_if_start", "goalie_expected"):
         tasks[task] = {m: summarize([e for _, e in task_pairs(recs, task, m)]) for m in MODELS}
         pairs[task] = {f"{a}_vs_{b}": paired(recs, task, a, b)
-                       for a, b in (("gm", "espn"), ("blend", "espn"), ("blend", "gm"),
+                       for a, b in (("combo", "ai"), ("combo", "gm"), ("combo", "espn"), ("gm", "espn"), ("blend", "espn"), ("blend", "gm"),
                                     ("ai", "espn"), ("ai", "gm"), ("ai", "blend"))}
         ranked = sorted([(m, s) for m, s in tasks[task].items() if s and s["n"] >= 200], key=lambda x: x[1]["mae"])
         if not ranked:
@@ -658,7 +675,7 @@ def report(root, state, now):
         if r.get("ft"):
             pl = players.setdefault(r["pid"], {"name": r["name"], "pos": r["pos"], "team": r["team"], "games": []})
             pl["games"].append({k: r.get(k) for k in ("date", "opp", "home", "b2b", "line", "espn", "gm", "blend",
-                                                      "ai", "ai_lo", "ai_hi", "start_p", "ai_start_p", "played", "fp")})
+                                                      "ai", "combo", "ai_lo", "ai_hi", "start_p", "ai_start_p", "played", "fp")})
     for pl in players.values():
         pl["games"] = pl["games"][-30:]
 

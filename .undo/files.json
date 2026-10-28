@@ -1,18 +1,12 @@
 {
  "files": {
   "fantasy-gm.html": true,
-  "espn_sync.py": true,
-  "box/2026-10-10.json": true,
-  "box/2026-10-12.json": true,
-  "box/2026-10-14.json": true,
-  "box/2026-10-15.json": true,
-  "box/2026-10-16.json": true,
-  "box/2026-10-17.json": true,
-  "box/2026-10-20.json": true,
-  "box/2026-10-21.json": true,
-  "box/2026-10-23.json": true
+  "ai_engine.py": true,
+  "ai-dashboard.html": true,
+  "gm_combo.py": false,
+  "ai/combo.json": false
  },
  "changes": [
-  "123-goalie-decisions.py"
+  "124-combined-projection.py"
  ]
 }
