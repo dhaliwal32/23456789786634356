@@ -1081,7 +1081,7 @@ function livePP1(E) {
 }
 function App() {
   const [s, setS] = useState(init);
-  const [tab, setTab] = useState("today");
+  const [tab, setTab] = useState("myteam");
   const [subs, setSubs] = useState({
     moves: "advice",
     league: "power",
@@ -1177,8 +1177,9 @@ function App() {
       sc.onload = () => {
         sc.remove();
         const E = window.ESPN_DATA;
+        if (!E || !E.generated || E.generated === window.__GX102G) return;
+        window.__GX102G = E.generated;
         tick(x => x + 1);
-        if (!E || !E.generated) return;
         setS(st => {
           if (E.generated === st.lastSync) return st;
           try {
@@ -1383,7 +1384,16 @@ function App() {
   const nav = NAV.find(n => n[0] === tab);
   const sub = subs[tab];
   let content = null;
-  if (tab === "today") content = /*#__PURE__*/React.createElement(Today, P);else if (tab === "myteam") content = /*#__PURE__*/React.createElement(MyTeam, P);else if (tab === "matchup") content = /*#__PURE__*/React.createElement(Matchup, P);else if (tab === "teams") content = teamView ? /*#__PURE__*/React.createElement(TeamPage, _extends({}, P, {
+  if (tab === "today" || tab === "myteam") content = /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(Today, _extends({}, P, {
+    top103: true
+  })), /*#__PURE__*/React.createElement(MyTeam, P));else if (tab === "myteam") content = /*#__PURE__*/React.createElement(MyTeam, P);else if (tab === "matchup") content = /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(Matchup, P), /*#__PURE__*/React.createElement(GxMuMore103, {
+    s: s,
+    wk: wk
+  }));else if (tab === "teams") content = teamView ? /*#__PURE__*/React.createElement(TeamPage, _extends({}, P, {
     id: teamView,
     back: backFromTeam
   })) : /*#__PURE__*/React.createElement(TeamsTab, _extends({}, P, {
@@ -1401,7 +1411,11 @@ function App() {
     key: tradePartner || "none"
   }, P, {
     initPartner: tradePartner
-  })) : sub === "playoffs" ? /*#__PURE__*/React.createElement(PlayoffPlanner, P) : /*#__PURE__*/React.createElement(AdviceAll, P);else if (tab === "league") content = sub === "playoffs" ? /*#__PURE__*/React.createElement(PlayoffPlanner, P) : sub === "players" ? /*#__PURE__*/React.createElement(GxRankings, P) : /*#__PURE__*/React.createElement(LeaguePage, P);else if (tab === "setup") content = sub === "sched" ? /*#__PURE__*/React.createElement(Schedule, P) : sub === "bulk" ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Bulk, {
+  })) : sub === "playoffs" ? /*#__PURE__*/React.createElement(PlayoffPlanner, P) : /*#__PURE__*/React.createElement(AdviceAll, P);else if (tab === "league") content = sub === "playoffs" ? /*#__PURE__*/React.createElement(PlayoffPlanner, P) : sub === "players" ? /*#__PURE__*/React.createElement(GxRankings, P) : /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(LeaguePage, P), /*#__PURE__*/React.createElement(GxPlayoff, {
+    s: s
+  }));else if (tab === "setup") content = sub === "sched" ? /*#__PURE__*/React.createElement(Schedule, P) : sub === "bulk" ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Bulk, {
     s: s,
     setS: setS
   }), /*#__PURE__*/React.createElement(AddOne, P)) : sub === "inj" ? /*#__PURE__*/React.createElement(InjuryPanel, P) : sub === "odds" ? /*#__PURE__*/React.createElement(OddsBoard, {
@@ -1413,9 +1427,8 @@ function App() {
     className: "min-h-screen bg-slate-100 text-slate-900"
   }, /*#__PURE__*/React.createElement("div", {
     className: "sticky top-0 z-30 bg-slate-900 border-b border-slate-800"
-  }, /*#__PURE__*/React.createElement(MobileHeader, {
+  }, /*#__PURE__*/React.createElement(GxTopM103, {
     s: s,
-    setS: setS,
     tab: tab,
     go: go,
     ageH: ageH
@@ -1433,12 +1446,10 @@ function App() {
     s: s,
     setS: setS,
     go: go
-  }), /*#__PURE__*/React.createElement(SubBar, {
+  }), /*#__PURE__*/React.createElement(GxSubBar103, {
     tab: tab,
     sub: sub,
     go: go,
-    setSubs: setSubs,
-    nav: nav,
     s: s,
     wk: wk
   }), /*#__PURE__*/React.createElement(GxExtras, {
@@ -1487,7 +1498,8 @@ function App() {
 function Today({
   s,
   wk,
-  go
+  go,
+  top103
 }) {
   // today v32: score with win ring, week chart, next week (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
@@ -1610,7 +1622,7 @@ function Today({
   }), /*#__PURE__*/React.createElement(GxRace, {
     s: s,
     wk: wk
-  }), /*#__PURE__*/React.createElement(GxHome, {
+  }), top103 ? null : /*#__PURE__*/React.createElement(GxHome, {
     s: s,
     wk: wk,
     A: A,
@@ -4184,7 +4196,7 @@ function MyTeam({
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC100, {
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC104, {
       p: p,
       s: s
     }));
@@ -4246,7 +4258,7 @@ function MyTeam({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH100, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -4256,7 +4268,7 @@ function MyTeam({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), list.map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
+  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, list.map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
     title: "Weakest spots",
     right: "First to drop or include in a trade"
   }, weak.length ? weak.map((p, i) => /*#__PURE__*/React.createElement("div", {
@@ -6848,8 +6860,8 @@ function TradeAdvice({
     className: "flex flex-wrap items-center gap-2 mb-1",
     "data-r42": "bl"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "text-xs uppercase tracking-wide text-slate-500"
-  }, "Buy low (", list.length, "): good players who are cold, unlucky or underrated"), /*#__PURE__*/React.createElement("select", {
+    className: "text-xs text-slate-500"
+  }, list.length + " players"), /*#__PURE__*/React.createElement("select", {
     className: inp + " ml-auto",
     value: team,
     onChange: e => {
@@ -6864,17 +6876,12 @@ function TradeAdvice({
   }, t.name)))), shown.length ? shown.map(({
     p,
     r
-  }) => /*#__PURE__*/React.createElement(PlayerLine, {
+  }) => /*#__PURE__*/React.createElement(GxBL104, {
     key: p.id,
     s: s,
     p: p,
-    extra: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "text-sky-600"
-    }, "\u00b7 " + r.join(", ")), /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: () => onPick(p)
-    }, "Add to trade"))
+    r: r,
+    onPick: onPick
   })) : /*#__PURE__*/React.createElement("div", {
     className: "text-slate-400"
   }, "No buy-low players here right now. Cold streaks need 3 or more recent games to show."), list.length > shown.length && !more ? /*#__PURE__*/React.createElement("button", {
@@ -6998,19 +7005,16 @@ function TopBar({
     }
   }, name), /*#__PURE__*/React.createElement("span", {
     className: "block text-xs text-slate-500"
-  }, rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0")), TABS.map(([k, l, grp]) => /*#__PURE__*/React.createElement("a", {
+  }, rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0")), GX_TABS103.map(([k, l, t, sb]) => /*#__PURE__*/React.createElement("a", {
     key: k,
-    href: gxHash(k),
+    href: gxHash(t, sb || undefined),
     onClick: e => {
-      /* gx072-top */if (gxNewTab(e)) return;
+      if (gxNewTab(e)) return;
       e.preventDefault();
-      go(k, k === "setup" ? "settings" : k === "league" ? "power" : undefined);
+      go(t, sb || undefined);
     },
-    className: "gx-tab" + (grp.indexOf(tab) >= 0 ? " on" : "")
-  }, l, W[k] ? /*#__PURE__*/React.createElement("i", {
-    className: "gx-wd",
-    title: "Needs a look"
-  }) : null)), /*#__PURE__*/React.createElement("a", {
+    className: "gx-tab" + (gxTabOn103(k, tab) ? " on" : "")
+  }, l)), /*#__PURE__*/React.createElement("a", {
     className: "gx-tab",
     href: "ai-dashboard.html",
     target: "_blank",
@@ -7786,7 +7790,7 @@ function Pickups({
   const plan = sP !== s;
   const wkP = useMemo(() => plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk, [sP, wk]);
   const gxHideV = gxUseHide(); /* gx075-m */
-  const M = useMemo(() => computeMoves(sP, {
+  const M = useMemo(() => gxMoves102(s, sP, {
     H,
     pos,
     q
@@ -7998,21 +8002,7 @@ function Pickups({
       }
     }, st) : null), /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 truncate"
-    }, "Swap for " + r.d.n + " \u00b7 " + (keep ? "keep" : H === 1 ? "one week only" : "short-term") + (tg ? " \u00b7 " + tg.t : ""), " \u00b7 ", /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: e => {
-        e.stopPropagation();
-        if (window.__QA) window.__QA.espn(r.f);
-      }
-    }, "Add on ESPN"), " \u00b7 ", /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: e => {
-        e.stopPropagation();
-        gxHide.toggle(r.f.id);
-      }
-    }, gxHideSet().has(r.f.id) ? "Show again" : "Hide" /* gx075-row */), gxScratch(r.f) ? /*#__PURE__*/React.createElement("span", {
+    }, "for " + r.d.n + (keep ? "" : H === 1 ? " \u00b7 this week" : " \u00b7 short-term") + (tg ? " \u00b7 " + tg.t : "") /* gx104-row */, gxScratch(r.f) ? /*#__PURE__*/React.createElement("span", {
       style: {
         color: "var(--warn)"
       }
@@ -8084,7 +8074,16 @@ function Pickups({
       minWidth: 40,
       fontVariantNumeric: "tabular-nums"
     }
-  }, f1(effAvg(p, K)))))) : null, sim ? /*#__PURE__*/React.createElement(MoveSim, {
+  }, f1(effAvg(p, K)))))) : null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn",
+    "data-gx": "103more"
+  }, /*#__PURE__*/React.createElement("a", {
+    className: "gx-lk103",
+    href: gxHash("moves", "planner")
+  }, "Week plan", /*#__PURE__*/React.createElement("span", null, "\u203a")), /*#__PURE__*/React.createElement("a", {
+    className: "gx-lk103",
+    href: gxHash("moves", "advice")
+  }, "Advice", /*#__PURE__*/React.createElement("span", null, "\u203a"))), sim ? /*#__PURE__*/React.createElement(MoveSim, {
     s: sP,
     setS: setS,
     wk: wkP,
@@ -9367,8 +9366,7 @@ function GxExtras({
         if ((b.textContent || "").trim() === "Ask" && getComputedStyle(b).position === "fixed") b.style.bottom = "calc(74px + env(safe-area-inset-bottom))";
       });
     };
-    fix();
-    const id = setInterval(fix, 2000);
+    const id = 0; /* gx102: no repeating scan */
     return () => clearInterval(id);
   }, []);
   const TABS = [["today", "Today", ["today"]], ["matchup", "Matchup", ["matchup"]], ["myteam", "Team", ["myteam", "moves", "lines"]], ["league", "League", ["league", "teams"]], ["setup", "Setup", ["setup", "news"]]];
@@ -9604,6 +9602,10 @@ function GxQA({
   s,
   go
 }) {
+  useEffect(() => {
+    const id = setTimeout(() => gxPrewarm102(s), 2500);
+    return () => clearTimeout(id);
+  }, [s]);
   const lid = (window.ESPN_DATA || {}).leagueId || 1363781006,
     num = x => String(x).replace(/\D/g, "");
   window.__QA = {
@@ -9675,9 +9677,7 @@ function GxQA({
     }
     root.classList.toggle("gx-noask", !box);
   };
-  setTimeout(run, 300);
-  setInterval(run, 1500);
-  window.addEventListener("resize", run);
+  /* gx102: the Ask button is placed by CSS now */
 })();
 
 // ---------- round 56: the Roster table for any fantasy team (news_logos.py) ----------
@@ -9893,7 +9893,7 @@ function GxRosterTable({
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC100, {
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC104, {
       p: p,
       s: s
     }));
@@ -9906,7 +9906,7 @@ function GxRosterTable({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH100, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -9916,7 +9916,7 @@ function GxRosterTable({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), list.map(row)))));
+  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, list.map(row)))));
 }
 
 // ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
@@ -13230,10 +13230,16 @@ function GxPlayerDetail({
   }, Q.mine(p) ? "Find a replacement" : "Find a swap"), Q.tradeable(p) ? /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: act(Q.trade)
-  }, "Trade") : /*#__PURE__*/React.createElement("button", {
+  }, "Trade") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => Q.espn(p)
-  }, "Add on ESPN")) : null), eid && img ? /*#__PURE__*/React.createElement("img", {
+  }, "Add on ESPN"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      gxHide.toggle(p.id);
+      close101();
+    }
+  }, gxHideSet().has(p.id) ? "Show" : "Hide"))) : null), eid && img ? /*#__PURE__*/React.createElement("img", {
     className: "ph",
     alt: "",
     src: "https://a.espncdn.com/i/headshots/nhl/players/full/" + eid + ".png",
@@ -13321,7 +13327,13 @@ function GxPlayerDetail({
   }, Q.fa(p) ? "Add on ESPN" : "Open on ESPN"), Q.fa(p) ? /*#__PURE__*/React.createElement(GxPdWatch, {
     p: p,
     Q: Q
-  }) : null) : null, /*#__PURE__*/React.createElement("div", {
+  }) : null, Q.fa(p) ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      gxHide.toggle(p.id);
+      onClose();
+    }
+  }, gxHideSet().has(p.id) ? "Show in pickups" : "Hide from pickups") : null) : null, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-tb"
   }, tabs.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
     key: k,
@@ -13852,4 +13864,266 @@ const GX_TC101 = {
   WPG: "#041E42"
 };
 const gxTC101 = t => GX_TC101[t] || "#555555";
+// ---------- change 102: Pickups list remembered until the next sync (install.py) ----------
+const GX102 = new WeakMap();
+function gxMoves102(s, sP, o) {
+  let m = GX102.get(s);
+  if (!m) {
+    m = new Map();
+    GX102.set(s, m);
+  }
+  const key = [o.H, o.pos, o.q, window.__PMODE, [...gxHideSet()].sort().join(",")].join("|");
+  if (!m.has(key)) m.set(key, computeMoves(sP, o));
+  return m.get(key);
+}
+// work out the default Pickups list quietly after the app has loaded, so the first visit is quick
+function gxPrewarm102(s) {
+  const run = () => {
+    try {
+      gxMoves102(s, planS(s), {
+        H: 1,
+        pos: "all",
+        q: ""
+      });
+    } catch (e) {}
+  };
+  if (window.requestIdleCallback) window.requestIdleCallback(run, {
+    timeout: 4000
+  });else setTimeout(run, 1500);
+}
+// ---------- change 103: new layout, tabs at the top (install.py) ----------
+const GX_TABS103 = [["roster", "Roster", "myteam", null], ["matchup", "Matchup", "matchup", null], ["players", "Players", "moves", "adddrop"], ["lines", "Lines", "lines", null], ["trades", "Trades", "moves", "trades"], ["league", "League", "league", "power"], ["setup", "Setup", "setup", "settings"]];
+const gxTabOn103 = (k, tab) => {
+  const sub = (window.__ROUTE || {}).sub;
+  return k === "roster" ? tab === "myteam" || tab === "today" : k === "matchup" ? tab === "matchup" : k === "players" ? tab === "moves" && sub !== "trades" : k === "trades" ? tab === "moves" && sub === "trades" : k === "lines" ? tab === "lines" : k === "league" ? tab === "league" || tab === "teams" : tab === "setup" || tab === "news";
+};
+function GxTopM103({
+  s,
+  tab,
+  go,
+  ageH
+}) {
+  const ref = React.useRef(null);
+  const sub = (window.__ROUTE || {}).sub;
+  useEffect(() => {
+    const n = ref.current,
+      el = n && n.querySelector(".on");
+    if (el) {
+      try {
+        n.scrollTo({
+          left: el.offsetLeft - n.clientWidth / 2 + el.clientWidth / 2,
+          behavior: "smooth"
+        });
+      } catch (e) {}
+    }
+  }, [tab, sub]);
+  const dot = !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)";
+  const name = teamName(s, s.me) || "Islands GM";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "m-only gx-tm103"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hd"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gx-badge"
+  }, (name[0] || "K").toUpperCase()), /*#__PURE__*/React.createElement("span", {
+    className: "nm"
+  }, name), /*#__PURE__*/React.createElement("span", {
+    className: "dt",
+    style: {
+      background: dot
+    },
+    title: s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "sr",
+    "aria-label": "Search",
+    onClick: () => window.dispatchEvent(new Event("gm-search"))
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "11",
+    cy: "11",
+    r: "7"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M20 20l-3.5-3.5"
+  })))), /*#__PURE__*/React.createElement("nav", {
+    className: "tb",
+    ref: ref,
+    "aria-label": "Main"
+  }, GX_TABS103.map(([k, l, t, sb]) => /*#__PURE__*/React.createElement("a", {
+    key: k,
+    href: gxHash(t, sb || undefined),
+    className: gxTabOn103(k, tab) ? "on" : "",
+    onClick: e => {
+      if (gxNewTab(e)) return;
+      e.preventDefault();
+      go(t, sb || undefined);
+    }
+  }, l))));
+}
+const GX_PL103 = [["adddrop", "Free agents"], ["goalies", "Goalies"], ["injuries", "Injuries"]];
+function GxSubBar103({
+  tab,
+  sub,
+  go,
+  s,
+  wk
+}) {
+  if (tab === "matchup") return s && wk ? /*#__PURE__*/React.createElement(MatchStrip, {
+    s: s,
+    wk: wk
+  }) : null;
+  if (tab === "moves" && sub !== "trades") {
+    if (sub === "planner" || sub === "advice" || sub === "players") return /*#__PURE__*/React.createElement("div", {
+      className: "mb-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "text-sm text-blue-600",
+      onClick: () => go("moves", "adddrop")
+    }, "\u2039 Back to Free agents"));
+    const cur = GX_PL103.some(x => x[0] === sub) ? sub : "adddrop";
+    return /*#__PURE__*/React.createElement("div", {
+      className: "gx-seg103 mb-3"
+    }, GX_PL103.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+      key: k,
+      type: "button",
+      className: cur === k ? "on" : "",
+      onClick: () => go("moves", k)
+    }, l)));
+  }
+  const back = tab === "news" || tab === "setup" && sub && sub !== "settings" ? ["Setup", () => go("setup", "settings")] : tab === "league" && (sub === "playoffs" || sub === "players") ? ["League", () => go("league", "power")] : null;
+  return back ? /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600",
+    onClick: back[1]
+  }, "\u2039 Back to " + back[0])) : null;
+}
+// the boxes that used to sit lower on Today, now under the Matchup
+function GxMuMore103({
+  s,
+  wk
+}) {
+  const K = s.blend,
+    opp = oppOf(wk, s.me) || s.opp;
+  const A = useMemo(() => weekLive(s.players.filter(p => p.ft === s.me), wk, K, s.me), [s.players, wk, K]);
+  const B = useMemo(() => weekLive(s.players.filter(p => p.ft === opp), wk, K, opp), [s.players, wk, K, opp]);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(GxGamesAny, {
+    s: s,
+    wk: wk,
+    A: A,
+    B: B
+  }), /*#__PURE__*/React.createElement(GxLeagueAny, {
+    s: s,
+    wk: wk
+  }), /*#__PURE__*/React.createElement(GxCarry, {
+    s: s,
+    wk: wk
+  }));
+}
+// ---------- change 104: separate skater and goalie stat columns (install.py) ----------
+const GX_SK104 = ["GP", "G", "A", "PTS", "+/-", "PIM", "SOG", "HIT", "BLK", "TOI", "FPTS", "Avg"];
+const GX_GO104 = ["GP", "W", "L", "OTL", "GA", "SV", "SV%", "GAA", "SO", "TOI", "FPTS", "Avg"];
+function gxAgg104(list, isG, sc) {
+  const C = isG ? GX_GO104 : GX_SK104;
+  if (!list || !list.length) return C.map((h, i) => i === 0 ? 0 : "-");
+  const n = list.length,
+    S = f => list.reduce((a, x) => a + (+f(x) || 0), 0);
+  const fp = S(x => x.fp != null ? x.fp : gxEst(x, sc));
+  const ts = list.map(x => gxPdSec(x.toi)).filter(v => v != null),
+    tot = ts.reduce((a, v) => a + v, 0);
+  const toi = ts.length ? gxPdMS(tot / ts.length) : "-";
+  if (isG) {
+    const sv = S(x => x.sv),
+      ga = S(x => x.ga),
+      sa = S(x => x.sa != null ? x.sa : (x.sv || 0) + (x.ga || 0));
+    return [n, list.filter(x => x.dec === "W").length, list.filter(x => x.dec === "L").length, list.filter(x => x.dec === "O").length, ga, sv, sa ? (sv / sa).toFixed(3).replace(/^0/, "") : "-", tot ? (ga * 3600 / tot).toFixed(2) : "-", list.filter(x => x.dec === "W" && !x.ga).length, toi, f1(fp), f1(fp / n)];
+  }
+  const g = S(x => x.g),
+    a = S(x => x.a);
+  return [n, g, a, g + a, gxPdSigned(S(x => x.pm)), S(x => x.pim), S(x => x.sog), Math.round(S(x => x.hit)), S(x => x.blk), toi, f1(fp), f1(fp / n)];
+}
+function GxSC104({
+  p,
+  s
+}) {
+  const rng = gxUse100();
+  useEffect(() => {
+    gxLoad100(rng);
+  });
+  const eid = String(p.id || "").replace(/^e/, ""),
+    isG = p.p === "G";
+  let v;
+  if (gxProjR100(rng)) {
+    const pr = gxProj100(p, s, rng);
+    v = [pr[0], "-", "-", "-", "-", "-", "-", "-", "-", "-", pr[13], pr[14]];
+  } else {
+    const D = GX100.data[rng];
+    v = D ? gxAgg104(D[eid], isG, s.sc || {}) : GX_SK104.map(() => "...");
+  }
+  return v.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: "c104" + i,
+    className: "n " + (i >= 10 ? "font-semibold" : "text-slate-500")
+  }, c));
+}
+function GxSH104({
+  g
+}) {
+  const rng = gxUse100();
+  return (g ? GX_GO104 : GX_SK104).map((h, i) => /*#__PURE__*/React.createElement("span", {
+    key: h + i,
+    className: "n"
+  }, gxProjR100(rng) && i === 0 ? "Gms" : h));
+}
+// heading row for the goalie group (11 blank cells under the roster columns, then the goalie stats)
+function GxGH104() {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-ro gx-roh gx-gh104"
+  }, Array.from({
+    length: 11
+  }, (_, i) => /*#__PURE__*/React.createElement("span", {
+    key: i
+  })), /*#__PURE__*/React.createElement(GxSH104, {
+    g: true
+  }));
+}
+// ---------- change 104: tidy Buy low row ----------
+function GxBL104({
+  s,
+  p,
+  r,
+  onPick
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-bl104"
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
+    size: 26
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "truncate"
+  }, /*#__PURE__*/React.createElement(PN, {
+    p: p,
+    className: "font-medium"
+  }), " ", /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, p.p)), /*#__PURE__*/React.createElement("div", {
+    className: "why"
+  }, /*#__PURE__*/React.createElement(TL, {
+    s: s,
+    id: p.ft
+  }), " · " + r.join(", "))), /*#__PURE__*/React.createElement("div", {
+    className: "pg"
+  }, f1(effAvg(p, s.blend)), /*#__PURE__*/React.createElement("span", null, "pts/g")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "tr",
+    onClick: () => onPick(p)
+  }, "+ Trade"));
+}
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
