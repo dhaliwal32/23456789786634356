@@ -359,11 +359,6 @@
 "k": "back",
 "was": ""
 },
-"4378682": {
-"d": "2026-10-27",
-"k": "back",
-"was": "2026-11-09"
-},
 "4392072": {
 "d": "2026-10-27",
 "k": "later",
@@ -967,6 +962,11 @@
 "4352804": {
 "back": "2027-01-03",
 "note": "Veleno (lower body) was placed on long-term injured reserve Saturday, Vince Z. Mercogliano of The Athletic reports.",
+"status": "Injured Reserve"
+},
+"4378682": {
+"back": "2026-11-09",
+"note": "ir-nr",
 "status": "Injured Reserve"
 },
 "4392072": {
