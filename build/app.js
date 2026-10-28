@@ -2461,16 +2461,7 @@ function Matchup({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "gx-tag"
-  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state)), state !== "projected" && x.proj != null && y.proj != null ? /*#__PURE__*/React.createElement("div", {
-    className: "text-xs text-slate-500",
-    style: {
-      textAlign: "right",
-      marginTop: -4,
-      marginBottom: 6,
-      fontVariantNumeric: "tabular-nums"
-    },
-    "data-gx": "094"
-  }, "Original projection " + f1(x.proj) + " to " + f1(y.proj) + " (" + (x.proj - y.proj >= 0 ? "+" : "") + f1(x.proj - y.proj) + ")") : null, rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement("div", {
+  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state)), rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement("div", {
     key: i,
     className: "gx-h2h",
     style: i ? null : {
@@ -10815,10 +10806,10 @@ function GxRace({
     }));
   }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
     points: P(EB, 0, done - 1),
-    style: ln("var(--mute)", "2 4", 1, 0.6)
+    style: ln("var(--mute)", "0.1 4.5", 2.2, 0.85)
   }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
     points: P(EA, 0, done - 1),
-    style: ln("var(--accent)", "2 4", 1, 0.45)
+    style: ln("var(--accent)", "0.1 4.5", 2.2, 0.8)
   }) : null, done < n ? /*#__PURE__*/React.createElement("polyline", {
     points: P(CB, Math.max(0, done - 1), n - 1),
     style: ln("var(--mute)", "5 4")
@@ -10827,10 +10818,10 @@ function GxRace({
     style: ln("var(--accent)", "5 4")
   }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
     points: P(CB, 0, done - 1),
-    style: ln("var(--mute)")
+    style: ln("var(--mute)", null, 2.6)
   }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
     points: P(CA, 0, done - 1),
-    style: ln("var(--accent)")
+    style: ln("var(--accent)", null, 2.6)
   }) : null, fdays.map(d => /*#__PURE__*/React.createElement("g", {
     key: "f" + d
   }, /*#__PURE__*/React.createElement("circle", {
@@ -11019,6 +11010,49 @@ function GxRace({
       onClick: () => setSel(d)
     }));
   })), /*#__PURE__*/React.createElement("div", {
+    className: "gx-key116",
+    "data-gx": "116k"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "6"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "2",
+    x2: "20",
+    y1: "3",
+    y2: "3",
+    style: {
+      stroke: "var(--ink)",
+      strokeWidth: 2.6,
+      strokeLinecap: "round"
+    }
+  })), "Actual"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "6"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "2",
+    x2: "20",
+    y1: "3",
+    y2: "3",
+    style: {
+      stroke: "var(--ink)",
+      strokeWidth: 2.2,
+      strokeDasharray: "0.1 4.5",
+      strokeLinecap: "round"
+    }
+  })), "Original projection"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "6"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "2",
+    x2: "20",
+    y1: "3",
+    y2: "3",
+    style: {
+      stroke: "var(--ink)",
+      strokeWidth: 2,
+      strokeDasharray: "5 4"
+    }
+  })), "Projected")), /*#__PURE__*/React.createElement("div", {
     className: "gx-rf",
     style: {
       display: "none"
@@ -15434,21 +15468,23 @@ function GxFtPic114({
   size
 }) {
   const T = ((window.ESPN_DATA || {}).teams || []).find(t => String(t.id) === String(id).replace(/^t/, "")) || {};
-  const [bad, setBad] = useState(false);
+  const [bad, setBad] = useState(0);
   const z = size || 24,
-    nm = String(T.name || "?");
+    nm = String(T.name || "?"),
+    srcs = [T.pic, T.logo].filter(Boolean);
   const st = {
     width: z,
     height: z,
     borderRadius: Math.round(z * 0.28)
   };
-  if (T.logo && !bad) return /*#__PURE__*/React.createElement("img", {
+  if (bad < srcs.length) return /*#__PURE__*/React.createElement("img", {
+    key: bad,
     className: "gx-fp114",
-    src: T.logo,
+    src: srcs[bad],
     alt: "",
     loading: "lazy",
     style: st,
-    onError: () => setBad(true)
+    onError: () => setBad(bad + 1)
   });
   return /*#__PURE__*/React.createElement("span", {
     className: "gx-fp114 l",

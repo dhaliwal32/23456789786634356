@@ -75,6 +75,40 @@ lg = get(LEAGUE, params=[("view", "mTeam"), ("view", "mSettings"), ("view", "mMa
 dump("espn-raw-league.json", lg)
 teams = [{"id": t["id"], "name": (t.get("name") or f"{t.get('location', '')} {t.get('nickname', '')}".strip()
                                   or f"Team {t['id']}"), "logo": str(t.get("logo") or "")} for t in lg.get("teams", [])]  # change 114: team pictures
+
+# change 116: keep a copy of each team picture here, so the app can always show it
+try:
+    import hashlib
+    _ld = os.path.join(HERE, "team-logos")
+    os.makedirs(_ld, exist_ok=True)
+    _ext = {"image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg", "image/gif": "gif", "image/webp": "webp", "image/svg+xml": "svg"}
+    for _t in teams:
+        _u = _t.get("logo") or ""
+        if not _u.startswith("http"):
+            continue
+        _h = hashlib.md5(_u.encode()).hexdigest()[:8]
+        _have = [f for f in os.listdir(_ld) if f.startswith(str(_t["id"]) + "-" + _h + ".")]
+        if not _have:
+            try:
+                _r = session.get(_u, timeout=20, headers={"Referer": "https://fantasy.espn.com/", "Accept": "image/avif,image/webp,image/png,image/svg+xml,image/*,*/*;q=0.8"})
+                _ct = (_r.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+                _x = _ext.get(_ct) or ("svg" if _u.lower().endswith(".svg") else "png" if _ct.startswith("image/") else "")
+                if _r.ok and _x and len(_r.content) > 50:
+                    for f in os.listdir(_ld):
+                        if f.startswith(str(_t["id"]) + "-"):
+                            os.remove(os.path.join(_ld, f))
+                    _f = str(_t["id"]) + "-" + _h + "." + _x
+                    with open(os.path.join(_ld, _f), "wb") as fh:
+                        fh.write(_r.content)
+                    _have = [_f]
+                else:
+                    print("team picture not saved for", _t.get("name"), _r.status_code, _ct)
+            except Exception as _e:
+                print("team picture not saved for", _t.get("name"), _e)
+        if _have:
+            _t["pic"] = "team-logos/" + _have[0]
+except Exception as _e:
+    print("team pictures skipped:", _e)
 mp = lg.get("settings", {}).get("scheduleSettings", {}).get("matchupPeriods", {})
 periods = [{"id": int(k), "dates": [pdate(x) for x in mp[k]]} for k in sorted(mp, key=int)]
 matchups = []
