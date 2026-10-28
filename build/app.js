@@ -2475,10 +2475,7 @@ function Matchup({
     style: {
       color: "var(--faint)"
     }
-  }, sl === "UTIL" ? "U" : sl), num(q, p, true), cell(q, true)), [p, q].filter(z => z && bx118 === z.id + "|" + z.dt).map(z => /*#__PURE__*/React.createElement(GxBox118, {
-    key: "bx" + z.id,
-    p: z
-  })))) : /*#__PURE__*/React.createElement("div", {
+  }, sl === "UTIL" ? "U" : sl), num(q, p, true), cell(q, true)))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "No games for either team on this day."), rows.length ? /*#__PURE__*/React.createElement("div", {
     className: "gx-h2h gx-tt114"
@@ -2489,7 +2486,14 @@ function Matchup({
     style: {
       color: Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)"
     }
-  }, (dayTot > 0 ? "+" : "") + f1(dayTot))) : null, sit(x, a), sit(y, b)), /*#__PURE__*/React.createElement("div", {
+  }, (dayTot > 0 ? "+" : "") + f1(dayTot))) : null, sit(x, a), sit(y, b), (() => {
+    /* gx119-popup */const z = bx118 ? rows.map(r => [r[1], r[2]]).flat().find(v => v && v.id + "|" + v.dt === bx118) : null;
+    return z ? /*#__PURE__*/React.createElement(GxBox119, {
+      s: s,
+      p: z,
+      onClose: () => setBx118("")
+    }) : null;
+  })()), /*#__PURE__*/React.createElement("div", {
     className: "gx-wt114"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, over ? "Week final" : "Week projected"), /*#__PURE__*/React.createElement("b", null, Math.round(fa))), /*#__PURE__*/React.createElement("div", {
     className: "r"
@@ -15499,5 +15503,167 @@ function GxBox118({
   }, cells) : /*#__PURE__*/React.createElement("div", {
     className: "e"
   }, p.st ? "No stats yet for this game." : "Has not played yet. Projected " + f1(p.x || 0) + " FPTS."));
+}
+// ---------- change 119: box score pop-up for one player on one day (install.py) ----------
+const GX_NICK119 = {
+  ANA: "Ducks",
+  BOS: "Bruins",
+  BUF: "Sabres",
+  CAR: "Hurricanes",
+  CBJ: "Blue Jackets",
+  CGY: "Flames",
+  CHI: "Blackhawks",
+  COL: "Avalanche",
+  DAL: "Stars",
+  DET: "Red Wings",
+  EDM: "Oilers",
+  FLA: "Panthers",
+  LA: "Kings",
+  LAK: "Kings",
+  MIN: "Wild",
+  MTL: "Canadiens",
+  NJ: "Devils",
+  NJD: "Devils",
+  NSH: "Predators",
+  NYI: "Islanders",
+  NYR: "Rangers",
+  OTT: "Senators",
+  PHI: "Flyers",
+  PIT: "Penguins",
+  SEA: "Kraken",
+  SJ: "Sharks",
+  SJS: "Sharks",
+  STL: "Blues",
+  TB: "Lightning",
+  TBL: "Lightning",
+  TOR: "Maple Leafs",
+  UTA: "Mammoth",
+  VAN: "Canucks",
+  VGK: "Golden Knights",
+  WPG: "Jets",
+  WSH: "Capitals"
+};
+function GxBox119({
+  s,
+  p,
+  onClose
+}) {
+  useEffect(() => {
+    const k = e => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, []);
+  const sc = Object.assign({}, typeof SC0 === "object" ? SC0 : {}, s && s.sc || {});
+  const x = typeof pStat === "function" ? pStat(p, p.dt) : null;
+  const g = gameOf(p.t, p.dt);
+  const sub = dayLabel(p.dt).replace(",", "") + (g ? (g.h ? " vs. " : " @ ") + (GX_NICK119[g.o] || g.o) : "");
+  const rows = [];
+  const add = (l, w, n) => {
+    if (n && w) rows.push([l, w, n, n * w]);
+  };
+  let est = 0;
+  if (x && x.sv != null) {
+    const w = x.dec === "W" ? 1 : 0,
+      o = x.dec === "O" ? 1 : 0,
+      so = w && x.ga === 0 ? 1 : 0;
+    add("Wins", sc.W, w);
+    add("Overtime losses", sc.OTL, o);
+    add("Saves", sc.SV, x.sv || 0);
+    add("Goals against", sc.GA, x.ga || 0);
+    add("Shutouts", sc.SO, so);
+  } else if (x) {
+    add("Goals", sc.G, x.g || 0);
+    add("Assists", sc.A, x.a || 0);
+    add("Plus/minus", sc.PM, x.pm || 0);
+    add("Shots on goal", sc.SOG, x.sog || 0);
+    add("Hits", sc.HIT, x.hit || 0);
+    add("Blocked shots", sc.BLK, x.blk || 0);
+  }
+  rows.forEach(r => {
+    est += r[3];
+  });
+  const real = p.st && p.a != null ? p.a : null;
+  if (x && x.sv == null) {
+    // ESPN counts power play points; the box score only has power play goals, so the rest comes from ESPN's total
+    let left = real != null ? real - est : (x.ppg || 0) * (sc.PPP || 0),
+      ppp = x.ppg || 0;
+    if (real != null && sc.PPP) {
+      const k = Math.round(left / sc.PPP);
+      if (k > 0 && Math.abs(left - k * sc.PPP) < 0.05) {
+        ppp = k;
+      }
+    }
+    if (ppp && sc.PPP) {
+      add("Power Play Points", sc.PPP, ppp);
+      est += ppp * sc.PPP;
+      left = real != null ? real - est : 0;
+    }
+    if (real != null && Math.abs(real - est) >= 0.05) rows.push(["Other", null, null, real - est]);
+  } else if (x && real != null && Math.abs(real - est) >= 0.05) rows.push(["Other", null, null, real - est]);
+  const total = real != null ? real : x ? est : null;
+  const num = v => (Math.round(v * 10) / 10).toString();
+  const box = /*#__PURE__*/React.createElement("div", {
+    className: "gx-bm119",
+    onClick: onClose,
+    role: "dialog",
+    "aria-label": p.n + " box score"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cd",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fc"
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
+    size: 100
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "xx",
+    "aria-label": "Close",
+    onClick: onClose
+  }, "×"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "nm hover:underline",
+    onClick: () => {
+      onClose();
+      if (window.__NAV) window.__NAV.player(p);
+    }
+  }, p.n), /*#__PURE__*/React.createElement("div", {
+    className: "sb"
+  }, sub), p.st && x ? /*#__PURE__*/React.createElement("div", {
+    className: "tb"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h"
+  }, "Scoring category"), /*#__PURE__*/React.createElement("div", {
+    className: "h"
+  }, "Pts per"), /*#__PURE__*/React.createElement("div", {
+    className: "h"
+  }, "#"), /*#__PURE__*/React.createElement("div", {
+    className: "h"
+  }, "Score"), rows.map((r, i) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: i
+  }, /*#__PURE__*/React.createElement("div", null, r[0]), /*#__PURE__*/React.createElement("div", null, r[1] == null ? "" : num(r[1])), /*#__PURE__*/React.createElement("div", null, r[2] == null ? "" : r[2]), /*#__PURE__*/React.createElement("div", null, f1(r[3])))), !rows.length ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "var(--mute)"
+    }
+  }, "No points this game"), /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("div", null)) : null, /*#__PURE__*/React.createElement("div", {
+    className: "t"
+  }, p.st === "F" ? "Total" : "Total so far"), /*#__PURE__*/React.createElement("div", {
+    className: "t"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "t"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "t"
+  }, f1(total || 0))) : /*#__PURE__*/React.createElement("div", {
+    className: "em"
+  }, p.st ? "No stats yet for this game." : "Has not played yet.", /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 6,
+      color: "var(--ink)",
+      fontWeight: 600
+    }
+  }, "Projected " + f1(p.x || 0) + " FPTS"))));
+  return ReactDOM.createPortal(box, document.body);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
