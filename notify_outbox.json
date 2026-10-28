@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-21|2df66ca90ca4",
-   "at": "2026-10-21T21:05:13Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jason Zucker added to BUF's NHL roster (call-up, signing or claim)",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-21T21:05:13Z",
-   "via": "pregame",
-   "sent_at": "2026-10-21T22:30:38Z"
-  },
-  {
    "k": "2026-10-21|6a1f1ea20263",
    "at": "2026-10-22T00:01:36Z",
    "title": "Pickup: ice time jump",
@@ -7021,7 +7009,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-28T17:29:04Z",
-   "seen": "2026-10-28T21:03:46Z"
+   "seen": "2026-10-28T21:09:47Z"
   },
   {
    "k": "2026-10-28|94301cd938f7",
