@@ -873,8 +873,8 @@ const PlayerLine = ({
   const tg = shortTag(p, s.blend);
   return /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3 py-2.5 border-t border-slate-100 text-sm"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 26
   }), /*#__PURE__*/React.createElement("div", {
     className: "min-w-0 flex-1"
@@ -1653,8 +1653,8 @@ function NewsView({
       className: "flex gap-3 py-2.5 border-t border-slate-100"
     }, /*#__PURE__*/React.createElement("div", {
       className: "pt-0.5"
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 36
     })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0 flex-1"
@@ -1991,8 +1991,8 @@ function PlayoffPlanner({
     className: "font-medium"
   }, p.n), /*#__PURE__*/React.createElement("span", {
     className: "text-xs text-slate-400"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("span", {
     className: "ml-auto text-red-600 text-xs"
   }, g, " games (", (g - avgGames).toFixed(1), " vs avg)"))) : /*#__PURE__*/React.createElement("div", {
@@ -2052,8 +2052,8 @@ function PlayoffPlanner({
     className: "text-red-600 text-xs ml-1"
   }, "IR") : ""), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-2 text-xs text-slate-500 whitespace-nowrap"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-2 text-xs text-slate-500"
   }, teamName(s, p.ft)), per.map((n, i) => /*#__PURE__*/React.createElement("td", {
@@ -2237,8 +2237,8 @@ function Matchup({
       style: {
         flexDirection: right ? "row-reverse" : "row"
       }
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 30
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0" + (right ? " text-right" : ""),
@@ -2719,8 +2719,8 @@ function MoveSim({
       className: "text-xs text-slate-500 mb-1"
     }, "Add"), a && openI !== i ? /*#__PURE__*/React.createElement("div", {
       className: "ms-pick"
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: a.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: a,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0 flex-1"
@@ -2757,8 +2757,8 @@ function MoveSim({
       className: "ms-opt",
       onMouseDown: e => e.preventDefault(),
       onClick: () => setAdd(i, p.id)
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 22
     }), /*#__PURE__*/React.createElement("span", {
       className: "truncate flex-1 text-left"
@@ -2798,8 +2798,8 @@ function MoveSim({
   }, "Other ", posName[addF.p], " to consider"), alts.map(r => /*#__PURE__*/React.createElement("div", {
     key: r.f.id,
     className: "flex items-center gap-2.5 py-2 border-t border-slate-100"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: r.f.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: r.f,
     size: 22
   }), /*#__PURE__*/React.createElement("div", {
     className: "min-w-0 flex-1"
@@ -2941,8 +2941,8 @@ function Players({
     className: "text-red-600 text-xs ml-1"
   }, stTag(p)) : null), /*#__PURE__*/React.createElement("td", {
     className: "px-3 py-2 text-xs text-slate-500 whitespace-nowrap"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("td", {
     className: "px-3 py-2 text-xs text-slate-500"
   }, /*#__PURE__*/React.createElement(TL, {
@@ -2971,8 +2971,8 @@ function Players({
       className: "m-rrow",
       role: "button",
       onClick: () => window.__NAV && window.__NAV.player(p)
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -3176,8 +3176,8 @@ function InjuryPanel({
       className: "font-medium"
     }, p.n), /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-400"
-    }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t
+    }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+      p: p
     }))), /*#__PURE__*/React.createElement("td", {
       className: "px-2 py-2 text-xs text-slate-500"
     }, teamName(s, p.ft)), /*#__PURE__*/React.createElement("td", {
@@ -3272,8 +3272,8 @@ function RosterTable({
     className: "text-red-600 text-xs ml-1"
   }, p.status.replace(/_/g, " ")) : ""), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-1.5 text-xs text-slate-500 whitespace-nowrap"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-1.5"
   }, /*#__PURE__*/React.createElement("input", {
@@ -3892,8 +3892,8 @@ function RosterView({
     className: "text-red-600 text-xs ml-1"
   }, p.status.replace(/_/g, " ")) : null), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-2 text-xs text-slate-500 whitespace-nowrap"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("td", {
     className: "px-2 py-2"
   }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("td", {
@@ -3914,8 +3914,8 @@ function RosterView({
       className: "m-rrow",
       role: "button",
       onClick: () => window.__NAV && window.__NAV.player(p)
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -4110,8 +4110,8 @@ function MyTeam({
     return /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: "gx-ro"
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -4237,8 +4237,8 @@ function MyTeam({
     style: i ? null : {
       borderTop: 0
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0 truncate",
@@ -4556,8 +4556,8 @@ function TeamPage0({
     p: p
   }), /*#__PURE__*/React.createElement("span", {
     className: "text-xs text-slate-400"
-  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t
+  }, p.p, " \xB7 ", /*#__PURE__*/React.createElement(GxFace, {
+    p: p
   })), /*#__PURE__*/React.createElement("span", {
     className: "ml-auto text-xs text-slate-500"
   }, f1(pv(p)), "/game"))) : /*#__PURE__*/React.createElement("div", {
@@ -5136,7 +5136,8 @@ function GoalieStreams({
       style: {
         marginRight: 6
       }
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: x.p,
       t: x.t,
       size: 18
     })), nm, " ", /*#__PURE__*/React.createElement("span", {
@@ -5145,7 +5146,8 @@ function GoalieStreams({
       style: {
         marginLeft: 6
       }
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: x.p,
       t: x.t,
       size: 18
     })) : null), /*#__PURE__*/React.createElement("div", {
@@ -5724,8 +5726,8 @@ function TradeBuilder({
     style: i ? null : {
       borderTop: 0
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0",
@@ -5768,8 +5770,8 @@ function TradeBuilder({
       },
       "data-r59": "ir",
       onClick: () => toggle(sel, set, p.id)
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 22
     }), /*#__PURE__*/React.createElement("span", {
       className: "min-w-0 truncate",
@@ -5913,8 +5915,8 @@ function TradeBuilder({
       style: i ? null : {
         borderTop: 0
       }
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 22
     }), /*#__PURE__*/React.createElement("span", {
       className: "min-w-0 truncate",
@@ -6226,8 +6228,8 @@ function MyInjProt({
     return /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: "flex items-center gap-3 py-3 border-t border-slate-100"
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 30
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0 flex-1"
@@ -6284,8 +6286,8 @@ function MyInjProt({
   }, auto.map(p => /*#__PURE__*/React.createElement("span", {
     key: p.id,
     className: chip + "border-slate-200 text-slate-600"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 18
   }), p.n))) : null, /*#__PURE__*/React.createElement("div", {
     className: "text-xs uppercase tracking-wide text-slate-500 mt-4 mb-2"
@@ -6294,8 +6296,8 @@ function MyInjProt({
   }, mine.map(p => /*#__PURE__*/React.createElement("span", {
     key: p.id,
     className: chip + "border-green-300 bg-green-50"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 18
   }), p.n, /*#__PURE__*/React.createElement("button", {
     className: "text-slate-500 ml-1 text-base leading-none",
@@ -6889,8 +6891,8 @@ function FaSearch({
       setQ("");
       setOpen(false);
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "truncate flex-1 text-left"
@@ -7385,8 +7387,8 @@ function GxCarry({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "gx-pl"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: x.p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: x.p,
     size: 20
   }), /*#__PURE__*/React.createElement(PN, {
     p: x.p,
@@ -7456,8 +7458,8 @@ function GxGoalies({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "gx-pl"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: x.p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: x.p,
     size: 20
   }), /*#__PURE__*/React.createElement(PN, {
     p: x.p,
@@ -7934,8 +7936,8 @@ function Pickups({
         add: r.f.id,
         drop: r.d.id
       })
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: r.f.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: r.f,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -8018,8 +8020,8 @@ function Pickups({
     style: i ? null : {
       borderTop: 0
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0 truncate",
@@ -8449,8 +8451,8 @@ function AdvicePage({
       cursor: fa ? "pointer" : "default"
     },
     onClick: fa ? () => open(x.p) : undefined
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: x.p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: x.p,
     size: 22
   }), /*#__PURE__*/React.createElement("div", {
     className: "min-w-0",
@@ -9400,8 +9402,8 @@ function GxExtras({
       setOpen(false);
       if (window.__NAV) window.__NAV.player(p);
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0 truncate",
@@ -9525,8 +9527,8 @@ function GxWatchPanel({
     style: i ? null : {
       borderTop: 0
     }
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0 truncate",
@@ -9785,8 +9787,8 @@ function GxRosterTable({
     return /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: "gx-ro"
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -11367,8 +11369,8 @@ function GxHiddenPanel({
   }, open ? "Close" : "Show")), open ? list.map(p => /*#__PURE__*/React.createElement("div", {
     key: p.id,
     className: "gx-row"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: p.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: p,
     size: 22
   }), /*#__PURE__*/React.createElement("span", {
     className: "min-w-0 truncate",
@@ -11508,8 +11510,8 @@ function GxRankings({
       style: {
         paddingLeft: 4
       }
-    }, rk), /*#__PURE__*/React.createElement(TeamLogo, {
-      t: p.t,
+    }, rk), /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
       size: 22
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -11799,8 +11801,8 @@ function GxHeadStart({
   }, "Next wk")), rows.map(r => /*#__PURE__*/React.createElement("div", {
     key: r.f.id,
     className: "gx-hs83"
-  }, /*#__PURE__*/React.createElement(TeamLogo, {
-    t: r.f.t,
+  }, /*#__PURE__*/React.createElement(GxFace, {
+    p: r.f,
     size: 26
   }), /*#__PURE__*/React.createElement("div", {
     className: "min-w-0"
@@ -11949,8 +11951,8 @@ function GxInjPage({
     return /*#__PURE__*/React.createElement("div", {
       key: nk,
       className: "gx-ij85" + (i ? "" : " first")
-    }, /*#__PURE__*/React.createElement(TeamLogo, {
-      t: r.p.t,
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: r.p,
       size: 26
     }), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
@@ -12919,7 +12921,11 @@ const gxPdSec = t => {
   const m = String(t || "").split(":");
   return m.length === 2 ? +m[0] * 60 + +m[1] : null;
 };
-const gxPdMS = v => v == null ? "-" : Math.floor(v / 60) + ":" + String(Math.round(v % 60)).padStart(2, "0");
+const gxPdMS = v => {
+  if (v == null) return "-";
+  const r = Math.round(v);
+  return Math.floor(r / 60) + ":" + String(r % 60).padStart(2, "0");
+};
 const gxPdReal = (p, d) => {
   const D = ((window.ESPN_DATA || {}).daily || {})[d] || {},
     id = String(p.id || "").replace(/^e/, "");
@@ -13482,5 +13488,46 @@ class GxPdSafe extends React.Component {
       onClose: P.onClose
     });
   }
+}
+// ---------- change 096: player faces beside names (install.py) ----------
+// a round ESPN headshot with a small team logo badge; the plain team logo if there is no photo
+function GxFace({
+  p,
+  t,
+  size
+}) {
+  const [bad, setBad] = useState(false);
+  const tm = p && p.t || t,
+    z = size || 28;
+  const eid = p && typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  if (!eid || bad) return /*#__PURE__*/React.createElement(TeamLogo, {
+    t: tm,
+    size: size
+  });
+  const b = Math.max(11, Math.round(z * 0.5));
+  return /*#__PURE__*/React.createElement("span", {
+    className: "gx-face",
+    style: {
+      width: z,
+      height: z
+    },
+    title: (p.n || "") + " (" + tm + ")"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "c"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "https://a.espncdn.com/i/headshots/nhl/players/full/" + eid + ".png",
+    alt: "",
+    loading: "lazy",
+    onError: () => setBad(true)
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "bd",
+    style: {
+      width: b,
+      height: b
+    }
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: tm,
+    size: b - 2
+  })));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
