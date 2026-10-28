@@ -3,6 +3,7 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "109-injuries-sort-fix.py"
+  "110-trades-clean.py",
+  "111-lines-rink.py"
  ]
 }
