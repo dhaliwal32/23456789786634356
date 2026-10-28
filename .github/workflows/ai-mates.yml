@@ -1,0 +1,38 @@
+name: AI linemates research
+on:
+  workflow_dispatch:
+    inputs:
+      args:
+        description: steps to run
+        type: string
+        default: "--download --test"
+permissions:
+  contents: write
+concurrency:
+  group: ai-mates
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests numpy scikit-learn
+      - name: Expected goals
+        run: python ai_mates.py ${{ inputs.args }}
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "fantasy-bot"
+          git config user.email "fantasy-bot@users.noreply.github.com"
+          git add ai/mates ai/research
+          git diff --cached --quiet && exit 0
+          git commit -m "ai linemates research $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5 6 7 8; do
+            if git pull --rebase -X theirs; then git push && exit 0; else git rebase --abort || true; fi
+            sleep 20
+          done
+          exit 1
