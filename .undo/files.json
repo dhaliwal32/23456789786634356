@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_combo.py": true
+  "ai_learn.py": true
  },
  "changes": [
-  "125-goalie-start-tuning.py"
+  "126-ai-older-seasons.py"
  ]
 }
