@@ -1141,11 +1141,21 @@ function App() {
           };
         });
       });
+      window.__LP120 = Date.now();
+      window.__LIVEANY120 = js.games.some(g => g.gameState === "LIVE" || g.gameState === "CRIT" || (g.gameState === "FUT" || g.gameState === "PRE") && g.startTimeUTC && Date.parse(g.startTimeUTC) - Date.now() < 15 * 60e3);
+      const sg120 = JSON.stringify(out);
       window.__LIVESC = out;
-      tick(x => x + 1);
+      if (sg120 !== window.__LSG120) {
+        window.__LSG120 = sg120;
+        tick(x => x + 1);
+      }
+      if (window.gxLive120) window.gxLive120(js, () => tick(x => x + 1));
     }).catch(() => {});
     pull();
-    const id = setInterval(pull, 60 * 1000);
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull();
+    }, 15 * 1000); /* gx120 */
     return () => {
       dead = true;
       clearInterval(id);
@@ -1348,6 +1358,7 @@ function App() {
   if (!loaded) return /*#__PURE__*/React.createElement("div", {
     className: "p-8 text-slate-500"
   }, "Loading your league\u2026");
+  window.__SC120 = s.sc;
   const P = {
     s,
     setS,
@@ -1470,7 +1481,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("div", {
     key: tab + "/" + (sub || ""),
     className: "gx-pg101"
-  }, content), window.AskPanel ? /*#__PURE__*/React.createElement(window.AskPanel, _extends({}, P, {
+  }, content), false && window.AskPanel ? /*#__PURE__*/React.createElement(window.AskPanel, _extends({}, P, {
     tab: tab,
     H: {
       effAvg,
@@ -1529,8 +1540,8 @@ function Today({
     theirs = s.players.filter(p => p.ft === opp);
   const A = weekLive(mine, wk, K, s.me),
     B = weekLive(theirs, wk, K, opp);
-  const aA = +(wk.act || {})[s.me] || 0,
-    aB = +(wk.act || {})[opp] || 0;
+  const aA = +gxAct120(wk)[s.me] || 0,
+    aB = +gxAct120(wk)[opp] || 0;
   const fa = aA + A.total,
     fb = aB + B.total,
     margin = fa - fb,
@@ -2185,11 +2196,11 @@ function Matchup({
         r: weekLive(s.players.filter(p => p.ft === id), wk, K, id, {
           detail: true
         }),
-        act: +(wk.act || {})[id] || 0
+        act: +gxAct120(wk)[id] || 0
       };
     });
     return o;
-  }, [s.players, wk, K, done, a, b, gen]);
+  }, [s.players, wk, K, done, a, b, gen, window.__LIVEV120]);
   const A = P[a].r,
     B = P[b].r,
     aA = P[a].act,
@@ -3839,8 +3850,8 @@ function leagueTable(s) {
     if (!len || effDone(w, s.autoDone) < len) return;
     (w.pairs || []).forEach(([a, b]) => {
       if (!rec[a] || !rec[b]) return;
-      const x = +(w.act || {})[a] || 0,
-        y = +(w.act || {})[b] || 0;
+      const x = +gxAct120(w)[a] || 0,
+        y = +gxAct120(w)[b] || 0;
       if (!x && !y) return;
       rec[a].pf += x;
       rec[b].pf += y;
@@ -4345,7 +4356,7 @@ function TeamPage(props) {
     mg = T.grpRank[s.me] || {};
   const roster = s.players.filter(p => p.ft === tid);
   const opp = oppOf(wk, tid),
-    sc = id => +(wk.act || {})[id] || 0;
+    sc = id => +gxAct120(wk)[id] || 0;
   const left = p => (wk.games[p.t] || []).filter(d => dates[d] >= today && gState(p.t, dates[d]).s === "P").length;
   const pv = p => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
   const grp = k => roster.filter(p => !p.ir && p.p === k).sort((a, b) => pv(b) - pv(a));
@@ -4454,7 +4465,7 @@ function TeamPage0({
   const roster = s.players.filter(p => p.ft === id);
   const done = wk.done || 0,
     o = oppOf(wk, id);
-  const act = t => +(wk.act || {})[t] || 0;
+  const act = t => +gxAct120(wk)[t] || 0;
   const mine = weekLive(roster, wk, K, id),
     theirs = o ? weekLive(s.players.filter(p => p.ft === o), wk, K, o) : null;
   const posName = {
@@ -4861,7 +4872,7 @@ function winChance(s, roster) {
     done = w.done || 0;
   const A = weekLive(roster || s.players.filter(p => p.ft === s.me), w, K, s.me);
   const B = weekLive(s.players.filter(p => p.ft === opp), w, K, opp);
-  return winProb(A, B, +(w.act || {})[s.me] || 0, +(w.act || {})[opp] || 0);
+  return winProb(A, B, +gxAct120(w)[s.me] || 0, +gxAct120(w)[opp] || 0);
 }
 const afterMove = (s, add, drop) => timedMove(s.players.filter(p => p.ft === s.me), s.me, [{
   add,
@@ -6517,6 +6528,7 @@ function weekLive(roster, wk, K, tid, opt) {
       done = new Set();
     let act = 0;
     const take = (p, pp, slot, a, assume) => {
+      a = gxLiveA120(p, dt, a); /* gx120 */
       const g = gState(p.t, dt),
         gs = p.p === "G" ? gStart(p, dt) : null;
       const base = q => effAvg(q, K, dt) * (a != null ? 1 : (gs ? gs.v : p.prob) * avail(p, dt));
@@ -6610,7 +6622,9 @@ function weekLive(roster, wk, K, tid, opt) {
 // ---------- round 22: NHL box-score stat lines (news_logos.py) ----------
 const pStat = (p, dt) => {
   const id = String(p && p.id || "").replace(/^e/, "");
-  return (((window.ESPN_DATA || {}).pstat || {})[dt] || {})[id] || null;
+  const E0 = (((window.ESPN_DATA || {}).pstat || {})[dt] || {})[id] || null;
+  const L = p && dt && typeof gxUseLive120 === "function" ? gxUseLive120(p, dt, gxPdReal(p, dt)) : null;
+  return L || E0; /* gx120 */
 };
 const statLine = x => {
   if (!x) return "";
@@ -7508,8 +7522,8 @@ function playoffSim(s) {
     if (!len || !pairs.length) return;
     if (effDone(w, s.autoDone) >= len) {
       pairs.forEach(([a, b]) => {
-        const x = +(w.act || {})[a] || 0,
-          y = +(w.act || {})[b] || 0;
+        const x = +gxAct120(w)[a] || 0,
+          y = +gxAct120(w)[b] || 0;
         if (!x && !y) return;
         pf[a] += x;
         pf[b] += y;
@@ -7525,7 +7539,7 @@ function playoffSim(s) {
       let p;
       if (live) {
         const R = id => weekLive(s.players.filter(q => q.ft === id), live, K, id),
-          act = id => +(live.act || {})[id] || 0;
+          act = id => +gxAct120(live)[id] || 0;
         p = winProb(R(a), R(b), act(a), act(b));
       } else p = normCdf(((str[a] || 0) - (str[b] || 0)) * (len / 7) / (80 * Math.sqrt(len / 7)));
       pf[a] += (str[a] || 0) * (len / 7);
@@ -8539,8 +8553,8 @@ function leagueSim(s) {
     if (!len || !pairs.length) return;
     if (effDone(w, s.autoDone) >= len) {
       pairs.forEach(([a, b]) => {
-        const x = +(w.act || {})[a] || 0,
-          y = +(w.act || {})[b] || 0;
+        const x = +gxAct120(w)[a] || 0,
+          y = +gxAct120(w)[b] || 0;
         if (!x && !y) return;
         pf[a] += x;
         pf[b] += y;
@@ -8556,7 +8570,7 @@ function leagueSim(s) {
       let p;
       if (live) {
         const R = id => weekLive(s.players.filter(q => q.ft === id), live, K, id),
-          act = id => +(live.act || {})[id] || 0;
+          act = id => +gxAct120(live)[id] || 0;
         p = winProb(R(a), R(b), act(a), act(b));
       } else p = normCdf(((str[a] || 0) - (str[b] || 0)) * (len / 7) / (80 * Math.sqrt(len / 7)));
       pf[a] += (str[a] || 0) * (len / 7);
@@ -8620,7 +8634,7 @@ function LeaguePage({
   const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter(p => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter(p => p[0] && p[1]);
   const games = useMemo(() => all.map(([a, b]) => {
     const R = id => weekLive(s.players.filter(p => p.ft === id), wk, K, id),
-      act = id => +(wk.act || {})[id] || 0;
+      act = id => +gxAct120(wk)[id] || 0;
     return {
       a,
       b,
@@ -8628,7 +8642,7 @@ function LeaguePage({
       sb: act(b),
       p: winProb(R(a), R(b), act(a), act(b))
     };
-  }), [s.players, wk, K, gen, s.opp]);
+  }), [s.players, wk, K, gen, s.opp, window.__LIVEV120]);
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
   }, /*#__PURE__*/React.createElement("div", {
@@ -9194,7 +9208,7 @@ function MatchStrip({
   const myOpp = oppOf(wk, s.me);
   const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter(p => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter(p => p[0] && p[1]);
   if (all.length < 2) return null;
-  const sc = id => +(wk.act || {})[id] || 0;
+  const sc = id => +gxAct120(wk)[id] || 0;
   const nm = id => {
     const w = (teamName(s, id) || "").split(" ")[0];
     return w.length > 10 ? w.slice(0, 9) + "\u2026" : w;
@@ -9251,8 +9265,8 @@ function gxWarn(s) {
     };
     o.myteam = false && mine.some(p => p.status && /OUT|INJURY_RESERVE|SUSPENSION/.test(p.status)) || mine.some(p => p.p === "G" && SCHED[p.t] && SCHED[p.t].has(today) && gState(p.t, today).s === "P" && open(p));
     const opp = oppOf(wk, s.me) || s.opp,
-      a = +(wk.act || {})[s.me] || 0,
-      b = +(wk.act || {})[opp] || 0,
+      a = +gxAct120(wk)[s.me] || 0,
+      b = +gxAct120(wk)[opp] || 0,
       sign = String(a === b ? 0 : a > b ? 1 : -1);
     const key = "gm-lead-" + s.wk,
       seen = localStorage.getItem(key);
@@ -10015,7 +10029,7 @@ function GxGamesAny({
     if (cur || fin || !opp || !dates.length) return null;
     const R = id => weekLive(s.players.filter(p => p.ft === id), w, K, id);
     return [R(s.me), R(opp)];
-  }, [cur, fin, opp, w, s.players, K, window.__PMODE]);
+  }, [cur, fin, opp, w, s.players, K, window.__PMODE, window.__LIVEV120]);
   const X = cur ? A : N ? N[0] : null,
     Y = cur ? B : N ? N[1] : null;
   const rows = X && Y ? dates.map((dt, d) => ({
@@ -10026,8 +10040,8 @@ function GxGamesAny({
   const tot = (k, from) => rows.reduce((x, r) => x + (r.dt >= from ? r[k] : 0), 0);
   const mx = Math.max(1, Math.max.apply(null, rows.map(r => Math.max(r.a, r.b))));
   const live = dates.length > 0 && dates[0] <= today && dates[dates.length - 1] >= today;
-  const sa = +(w.act || {})[s.me] || 0,
-    sb = opp ? +(w.act || {})[opp] || 0 : 0;
+  const sa = +gxAct120(w)[s.me] || 0,
+    sb = opp ? +gxAct120(w)[opp] || 0 : 0;
   const sub = [opp ? "vs " + teamName(s, opp) : "", gxSpan61(dates), fin ? "final" : rows.length ? "lineup games: you " + tot("a", "") + ", them " + tot("b", "") : "", !fin && live && rows.length ? "from today " + tot("a", today) + " and " + tot("b", today) : ""].filter(Boolean).join(" \u00b7 ");
   return /*#__PURE__*/React.createElement("div", _extends({
     className: "gx-pn",
@@ -10136,7 +10150,7 @@ function GxLeagueAny({
   const dates = w.dates || [];
   const fin = !cur && dates.length > 0 && dates[dates.length - 1] < today;
   const rows = useMemo(() => (w.pairs || []).filter(p => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me).map(([a, b]) => {
-    const act = id => +(w.act || {})[id] || 0;
+    const act = id => +gxAct120(w)[id] || 0;
     if (fin) return {
       a,
       b,
@@ -10149,7 +10163,7 @@ function GxLeagueAny({
       b,
       p: winProb(R(a), R(b), act(a), act(b))
     };
-  }), [s.players, w, fin, K, gen, window.__PMODE]);
+  }), [s.players, w, fin, K, gen, window.__PMODE, window.__LIVEV120]);
   const sub = cur ? "Win chance right now" : [gxSpan61(dates), fin ? "final scores" : "projected win chance from today's rosters"].filter(Boolean).join(" \u00b7 ");
   return /*#__PURE__*/React.createElement("div", _extends({
     className: "gx-pn",
@@ -10562,7 +10576,7 @@ function GxRace({
       detail: true
     });
     return [run(s.me), run(opp)];
-  }, [w, opp, fin, s.players, K, gen, window.__PMODE]);
+  }, [w, opp, fin, s.players, K, gen, window.__PMODE, window.__LIVEV120]);
   const mv = useMemo(() => {
     if (!up || !opp || !R) return null;
     try {
@@ -10588,7 +10602,7 @@ function GxRace({
   }, [up, i, opp, R]);
   const sl105 = useSlide105(i);
   const [dr106, dh106] = useDrag106(i > 0 ? () => go(i - 1) : null, i < s.weeks.length - 1 ? () => go(i + 1) : null);
-  const act = id => +(w.act || {})[id] || 0;
+  const act = id => +gxAct120(w)[id] || 0;
   const sa = up ? 0 : act(s.me),
     sb = up || !opp ? 0 : act(opp);
   const nm0 = opp ? (teamName(s, opp) || "").split(" ")[0] : "",
@@ -14104,8 +14118,8 @@ function GxMuMore103({
 }) {
   const K = s.blend,
     opp = oppOf(wk, s.me) || s.opp;
-  const A = useMemo(() => weekLive(s.players.filter(p => p.ft === s.me), wk, K, s.me), [s.players, wk, K]);
-  const B = useMemo(() => weekLive(s.players.filter(p => p.ft === opp), wk, K, opp), [s.players, wk, K, opp]);
+  const A = useMemo(() => weekLive(s.players.filter(p => p.ft === s.me), wk, K, s.me), [s.players, wk, K, window.__LIVEV120]);
+  const B = useMemo(() => weekLive(s.players.filter(p => p.ft === opp), wk, K, opp), [s.players, wk, K, opp, window.__LIVEV120]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(GxGamesAny, {
     s: s,
     wk: wk,
@@ -15665,5 +15679,220 @@ function GxBox119({
     }
   }, "Projected " + f1(p.x || 0) + " FPTS"))));
   return ReactDOM.createPortal(box, document.body);
+}
+// ---------- change 120: live fantasy points from the NHL's box scores (install.py) ----------
+const G120 = {
+  box: {},
+  pp: {},
+  goals: {},
+  fin: {},
+  busy: false
+};
+const GX_AL120 = {
+  LAK: "LA",
+  NJD: "NJ",
+  SJS: "SJ",
+  TBL: "TB",
+  UTAH: "UTA",
+  ARI: "UTA"
+};
+const gxSc120 = () => Object.assign({}, typeof SC0 === "object" ? SC0 : {}, window.__SC120 || {});
+function gxPP120(pb) {
+  const hid = (pb.homeTeam || {}).id,
+    out = {};
+  (pb.plays || []).forEach(e => {
+    if (e.typeDescKey !== "goal") return;
+    const d = e.details || {},
+      c = String(e.situationCode || "");
+    if (c.length !== 4) return;
+    const ag = +c[0],
+      as = +c[1],
+      hs = +c[2],
+      hg = +c[3],
+      home = d.eventOwnerTeamId === hid;
+    const my = home ? hs : as,
+      op = home ? as : hs,
+      myG = home ? hg : ag,
+      opG = home ? ag : hg;
+    const pp = my > op && (myG === 1 || my - op >= 2),
+      sh = my < op && (opG === 1 || op - my >= 2);
+    if (!pp && !sh) return;
+    [d.scoringPlayerId, d.assist1PlayerId, d.assist2PlayerId].forEach(id => {
+      if (!id) return;
+      const o = out[id] = out[id] || {
+        ppp: 0,
+        shp: 0
+      };
+      if (pp) o.ppp++;else o.shp++;
+    });
+  });
+  return out;
+}
+function gxFp120(x) {
+  const sc = gxSc120(),
+    w = k => +sc[k] || 0;
+  if (x.sv != null) return (x.dec === "W" ? w("W") : 0) + (x.dec === "O" ? w("OTL") : 0) + x.sv * w("SV") + x.ga * w("GA") + (x.dec === "W" && x.ga === 0 ? w("SO") : 0);
+  return x.g * w("G") + x.a * w("A") + x.pm * w("PM") + x.sog * w("SOG") + x.hit * w("HIT") + x.blk * w("BLK") + x.ppp * w("PPP") + x.shp * w("SHP") + x.pim * w("PIM");
+}
+function gxRebuild120() {
+  const out = {};
+  Object.entries(G120.box).forEach(([gid, B]) => {
+    const bx = B.bx || {},
+      pbg = bx.playerByGameStats || {},
+      pp = G120.pp[gid] || {},
+      D = out[B.d] = out[B.d] || {};
+    ["awayTeam", "homeTeam"].forEach(k => {
+      const T = bx[k] || {},
+        ab = GX_AL120[T.abbrev] || T.abbrev,
+        P = pbg[k] || {};
+      const put = (pl, x) => {
+        x.fp = Math.round(gxFp120(x) * 100) / 100;
+        x.fin = B.fin || 0;
+        x.gs = B.start || "";
+        if (pl.sweaterNumber != null) D[ab + "#" + pl.sweaterNumber] = x;
+        const nm = String((pl.name || {}).default || ""),
+          i = nm.indexOf(". "),
+          ln = nrm(i > 0 ? nm.slice(i + 2) : nm.split(" ").slice(1).join(" "));
+        if (ln) D[ab + ":" + nrm(nm).charAt(0) + ":" + ln] = x;
+      };
+      [...(P.forwards || []), ...(P.defense || [])].forEach(pl => {
+        const q = pp[pl.playerId] || {};
+        put(pl, {
+          g: pl.goals || 0,
+          a: pl.assists || 0,
+          pm: pl.plusMinus || 0,
+          sog: (pl.sog != null ? pl.sog : pl.shots) || 0,
+          pim: pl.pim || 0,
+          hit: pl.hits || 0,
+          blk: (pl.blockedShots != null ? pl.blockedShots : pl.blocked) || 0,
+          ppg: pl.powerPlayGoals || 0,
+          ppp: q.ppp || 0,
+          shp: q.shp || 0,
+          toi: pl.toi || "",
+          fo: pl.faceoffWinningPctg || 0,
+          shf: pl.shifts || 0,
+          gv: pl.giveaways || 0,
+          tk: pl.takeaways || 0
+        });
+      });
+      (P.goalies || []).forEach(pl => {
+        if (!pl.toi || pl.toi === "00:00") return;
+        let sv = pl.saves,
+          sa = pl.shotsAgainst;
+        if (sv == null && pl.saveShotsAgainst) {
+          const m = String(pl.saveShotsAgainst).split("/");
+          sv = +m[0];
+          sa = +m[1];
+        }
+        put(pl, {
+          sv: sv || 0,
+          ga: pl.goalsAgainst || 0,
+          sa: sa || 0,
+          dec: pl.decision || "",
+          toi: pl.toi
+        });
+      });
+    });
+  });
+  const sg = JSON.stringify(out);
+  if (sg === window.__LPSG120) return false;
+  window.__LPSG120 = sg;
+  window.__LIVEPTS = out;
+  window.__LIVEV120 = (window.__LIVEV120 || 0) + 1;
+  return true;
+}
+window.gxLive120 = (js, done) => {
+  if (G120.busy || !js || !js.games) return;
+  const isF = g => g.gameState === "FINAL" || g.gameState === "OFF";
+  const games = js.games.filter(g => g.id && (g.gameState === "LIVE" || g.gameState === "CRIT" || isF(g) && !G120.fin[g.id]));
+  if (!games.length) return;
+  G120.busy = true;
+  const U = "https://api-web.nhle.com/v1/gamecenter/";
+  Promise.all(games.map(g => fetch(U + g.id + "/boxscore").then(r => r.ok ? r.json() : null).catch(() => null).then(bx => {
+    if (!bx) return null;
+    const goals = ((g.homeTeam || {}).score || 0) + ((g.awayTeam || {}).score || 0),
+      needP = goals > 0 && G120.goals[g.id] !== goals;
+    return (needP ? fetch(U + g.id + "/play-by-play").then(r => r.ok ? r.json() : null).catch(() => null) : Promise.resolve(null)).then(pb => {
+      if (pb) {
+        G120.pp[g.id] = gxPP120(pb);
+        G120.goals[g.id] = goals;
+      }
+      const old = G120.box[g.id];
+      G120.box[g.id] = {
+        bx,
+        d: g.gameDate,
+        start: g.startTimeUTC || "",
+        fin: isF(g) ? old && old.fin || (old ? Date.now() : (Date.parse(g.startTimeUTC || "") || 0) + 3 * 36e5) : 0
+      };
+      if (isF(g) && (!needP || pb)) G120.fin[g.id] = 1;
+      return null;
+    });
+  }))).then(() => {
+    G120.busy = false;
+    if (gxRebuild120() && done) done();
+  }, () => {
+    G120.busy = false;
+  });
+};
+// the live box score line for one player on one day (from the NHL), or null
+function gxLiveStat120(p, dt) {
+  const D = (window.__LIVEPTS || {})[dt];
+  if (!D || !p) return null;
+  const no = typeof gxPdNo === "function" ? gxPdNo(p) : null;
+  let x = no != null ? D[p.t + "#" + no] : null;
+  if (!x) {
+    const ln = nrm(String(p.n || "").split(" ").slice(1).join(" "));
+    x = ln ? D[p.t + ":" + nrm(p.n).charAt(0) + ":" + ln] : null;
+  }
+  return x || null;
+}
+// live numbers count while the game is on, and after it ends until an ESPN sync from after the final confirms them
+function gxUseLive120(p, dt, a) {
+  const L = gxLiveStat120(p, dt);
+  if (!L) return null;
+  const g = gState(p.t, dt);
+  if (g.s === "L") return L;
+  if (g.s !== "F") return null;
+  if (a == null) return L;
+  const gen = Date.parse(String((window.ESPN_DATA || {}).generated || "") + "Z"),
+    fin = L.fin || (L.gs ? Date.parse(L.gs) + 3 * 36e5 : 0);
+  return !isNaN(gen) && fin && gen > fin + 5 * 60e3 ? null : L;
+}
+const gxLiveA120 = (p, dt, a) => {
+  const L = p && dt ? gxUseLive120(p, dt, a) : null;
+  return L ? L.fp : a;
+};
+// team scores with today's live points in place of the last sync's
+const W120 = new WeakMap();
+function gxAct120(w) {
+  const A = w && w.act || {},
+    today = todayISO();
+  if (!w || !window.__LIVEPTS || !(w.dates || []).includes(today)) return A;
+  const c = W120.get(w),
+    k = (window.__LIVEV120 || 0) + "|" + ((window.ESPN_DATA || {}).generated || "");
+  if (c && c.k === k && c.A === A) return c.v;
+  const v = {
+      ...A
+    },
+    P = pby();
+  Object.keys(A).forEach(tid => {
+    const AD = actDay(tid, today);
+    if (!AD) return;
+    let d = 0;
+    Object.entries(AD).forEach(([pid, x]) => {
+      if (!x || !ESLOT[x[1]]) return;
+      const p = P["e" + pid];
+      if (!p) return;
+      const a2 = gxLiveA120(p, today, x[0]);
+      if (a2 != null) d += a2 - (x[0] || 0);
+    });
+    v[tid] = (+A[tid] || 0) + d;
+  });
+  W120.set(w, {
+    k,
+    A,
+    v
+  });
+  return v;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
