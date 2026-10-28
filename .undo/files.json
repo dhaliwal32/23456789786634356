@@ -1,8 +1,18 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "espn_sync.py": true,
+  "box/2026-10-10.json": true,
+  "box/2026-10-12.json": true,
+  "box/2026-10-14.json": true,
+  "box/2026-10-15.json": true,
+  "box/2026-10-16.json": true,
+  "box/2026-10-17.json": true,
+  "box/2026-10-20.json": true,
+  "box/2026-10-21.json": true,
+  "box/2026-10-23.json": true
  },
  "changes": [
-  "122-pickups-scroll-load.py"
+  "123-goalie-decisions.py"
  ]
 }

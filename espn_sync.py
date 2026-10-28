@@ -312,6 +312,28 @@ try:
     data["daily"] = daily
     data["gstate"] = gstate
     data["pstat"] = pstat
+    # change 123: when the NHL leaves a goalie's decision blank, the goalie who played most of the game gets it
+    def _mins123(s):
+        try:
+            a, b = str(s or "0:0").split(":")[:2]
+            return int(a) + int(b) / 60
+        except Exception:
+            return 0
+
+    def _fill_dec123(P):
+        by = {}
+        for x in P.values():
+            if "sv" in x:
+                by.setdefault((x.get("t"), x.get("o")), []).append(x)
+        for gl in by.values():
+            if any(x.get("dec") for x in gl):
+                continue
+            x = max(gl, key=lambda y: _mins123(y.get("toi")))
+            my, op = x.get("my"), x.get("op")
+            if my is None or op is None or my == op or _mins123(x.get("toi")) < 30:
+                continue
+            x["dec"] = "W" if my > op else ("O" if sum(_mins123(y.get("toi")) for y in gl) > 60.02 else "L")
+
     # 3e) box-score history for the player pop-up: one small file per finished day (news_logos.py round 31)
     try:
         bdir31_ = os.path.join(HERE, "box")
@@ -387,6 +409,7 @@ try:
                             v41_["fp"] = old41_[k41_]["fp"]
                 except Exception:
                     pass
+                _fill_dec123(out31_)
                 with open(os.path.join(bdir31_, dd31_ + ".json"), "w", encoding="utf-8") as f31_:
                     json.dump({"d": dd31_, "p": out31_}, f31_, separators=(",", ":"))
                 have31_.add(dd31_)

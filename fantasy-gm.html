@@ -922,7 +922,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="o19s4j.zy9ecc" data-file="build/app.js">
+<meta name="gx-build" content="xgb1kh.quefo5" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3550,7 +3550,7 @@ function weekLive(roster, wk, K, tid, opt) {
 }
 
 // ---------- round 22: NHL box-score stat lines (news_logos.py) ----------
-const pStat = (p, dt) => { const id = String((p && p.id) || "").replace(/^e/, ""); const E0 = ((((window.ESPN_DATA || {}).pstat || {})[dt]) || {})[id] || null; const L = p && dt && typeof gxUseLive120 === "function" ? gxUseLive120(p, dt, gxPdReal(p, dt)) : null; return L || E0; /* gx120 */ };
+const pStat = (p, dt) => { const id = String((p && p.id) || "").replace(/^e/, ""); const E0 = ((((window.ESPN_DATA || {}).pstat || {})[dt]) || {})[id] || null; const L = p && dt && typeof gxUseLive120 === "function" ? gxUseLive120(p, dt, gxPdReal(p, dt)) : null; return L || gxDecP123(p, dt, E0); /* gx120 */ };
 const statLine = (x) => {
   if (!x) return "";
   if (x.sv != null) return [x.dec || null, x.sv + " SV", x.ga + " GA", x.toi ? x.toi + " TOI" : null].filter(Boolean).join(", ");
@@ -4008,7 +4008,7 @@ const gxBoxIdx = () => fetch("box/index.json?t=" + Date.now()).then((r) => (r.ok
 const gxBoxDay = (d) => {
   const B = (window.__BOX = window.__BOX || { idx: null, at: 0, days: {} });
   if (B.days[d]) return Promise.resolve(B.days[d]);
-  return fetch("box/" + d + ".json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.p) B.days[d] = j.p; return (j && j.p) || null; }).catch(() => null);
+  return fetch("box/" + d + ".json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.p) B.days[d] = gxFillDec123(j.p); return (j && j.p) || null; }).catch(() => null);
 };
 
 // ---------- round 40: Pickups list (news_logos.py) ----------
@@ -7583,6 +7583,28 @@ function GxMore122({ onMore }) {
     return () => io.disconnect();
   });
   return <div ref={ref} style={{ height: 1 }} aria-hidden="true"></div>;
+}
+// ---------- change 123: fill a blank goalie decision (most minutes gets it) (install.py) ----------
+const gxMins123 = (s) => { const m = String(s || "0:0").split(":"); return (+m[0] || 0) + (+m[1] || 0) / 60; };
+function gxFillDec123(P) {
+  if (!P) return P;
+  const by = {};
+  Object.values(P).forEach((x) => { if (x && x.sv != null) (by[x.t + "|" + x.o] = by[x.t + "|" + x.o] || []).push(x); });
+  Object.values(by).forEach((gl) => {
+    if (gl.some((x) => x.dec)) return;
+    const x = gl.reduce((a, b) => (gxMins123(b.toi) > gxMins123(a.toi) ? b : a));
+    if (x.my == null || x.op == null || x.my === x.op || gxMins123(x.toi) < 30) return;
+    x.dec = x.my > x.op ? "W" : gl.reduce((s, y) => s + gxMins123(y.toi), 0) > 60.02 ? "O" : "L";
+  });
+  return P;
+}
+// a single day's line from the sync (no score saved with it): use the final score of his team's game
+function gxDecP123(p, dt, x) {
+  if (!x || x.sv == null || x.dec || !p || !dt || gxMins123(x.toi) < 50) return x;
+  if (gState(p.t, dt).s !== "F") return x;
+  const g = gScore(p.t, dt);
+  if (!g || g.my == null || g.op == null || g.my === g.op) return x;
+  return { ...x, dec: g.my > g.op ? "W" : gxMins123(x.toi) > 60.02 ? "O" : "L" };
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
