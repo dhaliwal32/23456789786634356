@@ -2345,7 +2345,7 @@ function Matchup({
     }
   }, all.length > 1 ? /*#__PURE__*/React.createElement("button", {
     type: "button",
-    className: "m-hide gx-arw",
+    className: "gx-arw",
     "aria-label": "Previous matchup",
     onClick: () => move(-1)
   }, "\u2039") : null, /*#__PURE__*/React.createElement("div", {
@@ -2354,11 +2354,14 @@ function Matchup({
       flex: 1
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "text-sm font-semibold truncate",
+    className: "text-sm font-semibold gx-nm114",
     style: mine ? {
       color: "var(--accent)"
     } : null
-  }, /*#__PURE__*/React.createElement(TL, {
+  }, /*#__PURE__*/React.createElement(GxFtPic114, {
+    id: a,
+    size: 22
+  }), /*#__PURE__*/React.createElement(TL, {
     s: s,
     id: a
   })), /*#__PURE__*/React.createElement("div", {
@@ -2374,10 +2377,13 @@ function Matchup({
       flex: 1
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "text-sm text-slate-500 truncate"
+    className: "text-sm text-slate-500 gx-nm114 r"
   }, /*#__PURE__*/React.createElement(TL, {
     s: s,
     id: b
+  }), /*#__PURE__*/React.createElement(GxFtPic114, {
+    id: b,
+    size: 22
   })), /*#__PURE__*/React.createElement("div", {
     className: "gx-num",
     style: {
@@ -2386,7 +2392,7 @@ function Matchup({
     }
   }, f1(aB))), all.length > 1 ? /*#__PURE__*/React.createElement("button", {
     type: "button",
-    className: "m-hide gx-arw",
+    className: "gx-arw",
     "aria-label": "Next matchup",
     onClick: () => move(1)
   }, "\u203a") : null), all.length > 1 ? /*#__PURE__*/React.createElement("div", {
@@ -2413,12 +2419,13 @@ function Matchup({
       display: "flex",
       marginTop: 8
     }
-  }, /*#__PURE__*/React.createElement("span", null, (over ? "Final " : "Projected ") + Math.round(fa)), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
+    "data-gx": "114w",
     style: {
       margin: "0 auto",
       color: margin >= 0 ? "var(--good)" : "var(--bad)"
     }
-  }, mine ? (margin >= 0 ? "Ahead by " : "Behind by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " ahead by " + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement("div", {
+  }, mine ? (margin >= 0 ? "Ahead by " : "Behind by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " ahead by " + f1(Math.abs(margin))))), /*#__PURE__*/React.createElement("div", {
     className: "gx-dn108"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -2454,21 +2461,7 @@ function Matchup({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "gx-tag"
-  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state), /*#__PURE__*/React.createElement("span", {
-    style: {
-      marginLeft: "auto",
-      fontVariantNumeric: "tabular-nums"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "font-semibold"
-  }, f1(x.act + x.total)), " ", /*#__PURE__*/React.createElement("span", {
-    className: "text-slate-500"
-  }, "to ", f1(y.act + y.total)), /*#__PURE__*/React.createElement("span", {
-    style: {
-      marginLeft: 8,
-      color: dayTot >= 0 ? "var(--good)" : "var(--bad)"
-    }
-  }, (dayTot >= 0 ? "+" : "") + f1(dayTot)))), state !== "projected" && x.proj != null && y.proj != null ? /*#__PURE__*/React.createElement("div", {
+  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state)), state !== "projected" && x.proj != null && y.proj != null ? /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       textAlign: "right",
@@ -2490,11 +2483,24 @@ function Matchup({
     }
   }, sl === "UTIL" ? "U" : sl), num(q, p, true), cell(q, true))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
-  }, "No games for either team on this day."), sit(x, a), sit(y, b)), /*#__PURE__*/React.createElement("div", {
+  }, "No games for either team on this day."), rows.length ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-h2h gx-tt114"
+  }, /*#__PURE__*/React.createElement("div", null, state === "final" ? "Final" : state === "live" ? "Live" : "Projected"), /*#__PURE__*/React.createElement("div", {
+    className: "text-right"
+  }, f1(x.act + x.total)), /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("div", null, f1(y.act + y.total)), /*#__PURE__*/React.createElement("div", {
+    className: "text-right",
+    style: {
+      color: Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)"
+    }
+  }, (dayTot > 0 ? "+" : "") + f1(dayTot))) : null, sit(x, a), sit(y, b)), /*#__PURE__*/React.createElement("div", {
+    className: "gx-wt114"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, over ? "Week final" : "Week projected"), /*#__PURE__*/React.createElement("b", null, Math.round(fa))), /*#__PURE__*/React.createElement("div", {
+    className: "r"
+  }, /*#__PURE__*/React.createElement("small", null, over ? "Week final" : "Week projected"), /*#__PURE__*/React.createElement("b", null, Math.round(fb)))), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       display: "flex",
-      marginTop: 10
+      marginTop: 6
     }
   }, /*#__PURE__*/React.createElement("span", null, gamesMoves(s, a, wk, A)), /*#__PURE__*/React.createElement("span", {
     style: {
@@ -5790,10 +5796,12 @@ function TradeBuilder({
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "gx-tw113"
+    className: "gx-tw113 gx-tg114"
   }, others.map(t => /*#__PURE__*/React.createElement("button", {
     key: t.id,
     type: "button",
+    title: t.name,
+    "aria-label": t.name,
     className: partner === t.id ? "on" : "",
     onClick: () => {
       setPartner(t.id);
@@ -5801,9 +5809,12 @@ function TradeBuilder({
       setPick({});
       setEdit(-1);
     }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "b"
-  }, (String(t.name || "?").replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase()), t.name))), give.length || get.length ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(GxFtPic114, {
+    id: t.id,
+    size: 44
+  })))), partner ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-tn114"
+  }, "Trading with ", /*#__PURE__*/React.createElement("b", null, teamName(s, partner))) : null, give.length || get.length ? /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: "right"
     }
@@ -9208,11 +9219,17 @@ function MatchStrip({
           block: "nearest"
         });
       }
-    }, nm(a), " ", x >= y ? /*#__PURE__*/React.createElement("b", null, f1(x)) : f1(x), " ", /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React.createElement(GxFtPic114, {
+      id: a,
+      size: 18
+    }), nm(a), " ", x >= y ? /*#__PURE__*/React.createElement("b", null, f1(x)) : f1(x), " ", /*#__PURE__*/React.createElement("span", {
       style: {
         opacity: 0.6
       }
-    }, "vs"), " ", y > x ? /*#__PURE__*/React.createElement("b", null, f1(y)) : f1(y), " ", nm(b));
+    }, "vs"), " ", y > x ? /*#__PURE__*/React.createElement("b", null, f1(y)) : f1(y), " ", nm(b), /*#__PURE__*/React.createElement(GxFtPic114, {
+      id: b,
+      size: 18
+    }));
   }));
 }
 
@@ -15337,5 +15354,35 @@ function GxTradeLab113({
   }, "Player comparison"), /*#__PURE__*/React.createElement("table", {
     className: "gx-pd-t"
   }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Player"), /*#__PURE__*/React.createElement("th", null, "Side"), /*#__PURE__*/React.createElement("th", null, "Pos"), /*#__PURE__*/React.createElement("th", null, "Team"), /*#__PURE__*/React.createElement("th", null, "GP"), /*#__PURE__*/React.createElement("th", null, "FPTS"), /*#__PURE__*/React.createElement("th", null, "Avg"), /*#__PURE__*/React.createElement("th", null, "Last 15"), /*#__PURE__*/React.createElement("th", null, "Proj/g"), /*#__PURE__*/React.createElement("th", null, "Games left"))), /*#__PURE__*/React.createElement("tbody", null, Gv.map(p => row(p, "g")), Rv.map(p => row(p, "r"))))));
+}
+// ---------- change 114: fantasy team pictures from ESPN (install.py) ----------
+function GxFtPic114({
+  id,
+  size
+}) {
+  const T = ((window.ESPN_DATA || {}).teams || []).find(t => String(t.id) === String(id).replace(/^t/, "")) || {};
+  const [bad, setBad] = useState(false);
+  const z = size || 24,
+    nm = String(T.name || "?");
+  const st = {
+    width: z,
+    height: z,
+    borderRadius: Math.round(z * 0.28)
+  };
+  if (T.logo && !bad) return /*#__PURE__*/React.createElement("img", {
+    className: "gx-fp114",
+    src: T.logo,
+    alt: "",
+    loading: "lazy",
+    style: st,
+    onError: () => setBad(true)
+  });
+  return /*#__PURE__*/React.createElement("span", {
+    className: "gx-fp114 l",
+    style: {
+      ...st,
+      fontSize: Math.round(z * 0.45)
+    }
+  }, (nm.replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase());
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

@@ -1,9 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "espn_sync.py": true
  },
  "changes": [
-  "112-roster-lines-clean.py",
-  "113-trades-rebuild.py"
+  "114-team-pictures-matchup-totals.py"
  ]
 }

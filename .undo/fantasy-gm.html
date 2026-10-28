@@ -817,6 +817,38 @@
   .gx-ln111 .chg:first-of-type { border-top: 0; }
   .gx-ln111 .chg small { display: block; color: var(--mute); font-size: 11px; }
   @media (max-width: 640px) { .gx-rk111 { border-radius: 36px; padding: 22px 6px 18px; } .gx-pc111 .n { font-size: 12px; } .gx-rk111 .row { gap: 5px; } }
+  /* change 112 (install.py) */
+  .gx-sc99 .gx-ro > :nth-child(11) { display: none !important; }
+  .gx-sc99 .gx-ro { grid-template-columns: 44px 200px 62px 72px 70px 40px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  @media (max-width: 640px) { .gx-sc99 .gx-ro { grid-template-columns: 36px 142px 56px 62px 60px 34px 34px 34px 36px 40px 40px 42px 44px 40px 52px; } }
+  /* lines: cleaner boxes, narrower rows of two centred */
+  .gx-rk111 .row.c112 { grid-template-columns: 22px repeat(var(--n), minmax(0, 118px)); justify-content: center; }
+  .gx-pc111 { border: 0 !important; box-shadow: 0 1px 2px rgba(0,0,0,.08); background: var(--card) !important; border-radius: 12px; }
+  .gx-pc111.me { box-shadow: 0 0 0 2px var(--accent) !important; }
+  .gx-pc111.fa { box-shadow: 0 1px 2px rgba(0,0,0,.08) !important; }
+  .gx-pc111 .o { font-size: 9px; }
+  .gx-fav112 { margin-top: 14px; }
+  .gx-fav112 .g { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; margin-top: 10px; }
+  .gx-fav112 .g button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 2px; border: 1px solid var(--line); border-radius: 12px; font-size: 12px; }
+  .gx-ln111 .fv { margin-left: auto; font-size: 12px; color: var(--mute); }
+  /* change 113 (install.py) */
+  .gx-tw113 { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 4px; }
+  .gx-tw113::-webkit-scrollbar { display: none; }
+  .gx-tw113 button { flex: none; display: flex; align-items: center; gap: 8px; padding: 7px 12px 7px 7px; border: 1px solid var(--line2); border-radius: 999px; font-size: 13px; color: var(--ink); white-space: nowrap; }
+  .gx-tw113 button .b { width: 24px; height: 24px; border-radius: 99px; background: var(--card3, var(--line)); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .gx-tw113 button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .gx-tw113 button.on .b { background: var(--bg); color: var(--ink); }
+  .gx-th113 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--mute); }
+  .gx-th113 button { color: var(--accent); }
+  .gx-add113 { display: block; width: 100%; margin-top: 8px; padding: 9px; border: 1px dashed var(--line2); border-radius: 10px; font-size: 14px; color: var(--ink); }
+  .gx-pk113 .lst { max-height: 60vh; overflow-y: auto; margin-top: 8px; }
+  .gx-pk113 .it { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 4px; border-top: 1px solid var(--line); text-align: left; }
+  .gx-pk113 .it .ck { width: 22px; height: 22px; border-radius: 99px; border: 1.5px solid var(--line2); margin-left: auto; display: flex; align-items: center; justify-content: center; font-size: 13px; flex: none; }
+  .gx-pk113 .it.on .ck { background: var(--accent); border-color: var(--accent); color: var(--on, #fff); }
+  .gx-pk113 .it .v { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .gx-lab113 .gx-pd-t th, .gx-lab113 .gx-pd-t td { padding: 6px 6px; }
+  .gx-lab113 .lg { display: flex; gap: 14px; font-size: 12px; color: var(--mute); margin-top: 6px; }
+  .gx-lab113 .lg i { display: inline-block; width: 12px; height: 3px; vertical-align: middle; margin-right: 6px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -825,7 +857,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1ti9b1p.1nnckr6" data-file="build/app.js">
+<meta name="gx-build" content="aijv22.1b88f1c" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2554,33 +2586,7 @@ function MyTeam({ s, setS, wk, go }) {
           </div>
         ))}</div>
       </div>
-      <GxPanel title="Weakest spots">
-        {weak.length ? weak.map((p, i) => (
-          <div key={p.id} className="gx-row" style={i ? null : { borderTop: 0 }}>
-            <GxFace p={p} size={22} />
-            <span className="min-w-0 truncate" style={{ flex: 1 }}><PN p={p} className="" /></span>
-            <span className="text-xs text-slate-500 whitespace-nowrap">{rankOf[p.id] ? p.p + " " + ordN(rankOf[p.id]) : p.p}</span>
-            <span className="font-semibold text-right" style={{ minWidth: 40, fontVariantNumeric: "tabular-nums" }}>{f1(pv(p))}</span>
-          </div>
-        )) : <div className="text-sm text-slate-500">Everyone outside your protected players is pulling his weight.</div>}
-      </GxPanel>
-      <MyForm s={s} />
-      <MyInjProt s={s} setS={setS} wk={wk} />
-      <Section title="This week, day by day" sub="Bright = in your lineup, amber = plays but would sit, red = out, grey = already played.">
-        <div className="overflow-x-auto">
-          <table className="text-sm w-full">
-            <thead><tr><th className="px-2 py-2 text-left">Player</th>{wk.days.map((d, i) => <th key={i} className="px-1 py-2 text-center">{d.split(",")[0]}</th>)}</tr></thead>
-            <tbody>
-              {sorted.filter((p) => !p.ir).map((p) => (
-                <tr key={p.id} className="border-t border-slate-100">
-                  <td className="px-2 py-1 whitespace-nowrap"><PN p={p} className="" /> <span className="text-xs text-slate-400">{p.p}</span></td>
-                  {wk.days.map((_, d) => { const c = cell(p, d); return <td key={d} className="px-1 py-1 text-center">{c === "none" ? <span className="text-slate-400">{"\u00b7"}</span> : <span className={"inline-block w-6 h-3 rounded " + CELL[c]}></span>}</td>; })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
+      {/* gx112: weakest spots, updates, injuries, protected, day by day removed */}
     </div>
   );
 }
@@ -2719,17 +2725,15 @@ function TradesPanel(props) {
   // change 078: build a trade from any team's side, not only yours
   const s = props.s;
   const [side, setSide] = useState(s.me);
+  const [from113, setFrom113] = useState(false);
   window.__TB_REAL = s.me;
   const a = s.teams.some((t) => t.id === side) ? side : s.me;
   const s2 = a === s.me ? s : { ...s, me: a, opp: null };
   const ip = props.initPartner && props.initPartner !== a ? props.initPartner : null;
   return (
     <div>
-      <div className="flex items-center gap-2" style={{ marginBottom: 12 }} data-c78="side">
-        <span className="text-sm text-slate-500 whitespace-nowrap">Trade from</span>
-        <select className={inp + " flex-1"} value={a} onChange={(e) => setSide(e.target.value)}>{s.teams.map((t) => <option key={t.id} value={t.id}>{t.name}{t.id === s.me ? " (you)" : ""}</option>)}</select>
-        {a !== s.me ? <button type="button" className="text-xs text-slate-500 underline whitespace-nowrap" onClick={() => setSide(s.me)}>Back to mine</button> : null}
-      </div>
+      <div className="gx-th113" data-c78="side">{a === s.me ? "Trading as you" : "Trading as " + teamName(s, a)}<button type="button" onClick={() => setFrom113(!from113)}>{from113 ? "Done" : "Change"}</button>{a !== s.me ? <button type="button" onClick={() => setSide(s.me)}>Back to mine</button> : null}</div>
+      {from113 ? <select className={inp + " w-full"} style={{ marginBottom: 12 }} value={a} onChange={(e) => { setSide(e.target.value); setFrom113(false); }}>{s.teams.map((t) => <option key={t.id} value={t.id}>{t.name}{t.id === s.me ? " (you)" : ""}</option>)}</select> : null}
       {a !== s.me ? <div className="text-xs text-slate-500" style={{ margin: "-4px 0 12px" }}>{"Showing the trade from " + teamName(s, a).trim() + "'s side. Pick who they trade with below."}</div> : null}
       <TradeBuilder key={a} {...props} s={s2} initPartner={ip} />
     </div>
@@ -3085,7 +3089,8 @@ const tbFlags = (p, K) => {
   return f;
 };
 function TradeBuilder({ s, initPartner, setS }) {
-  const [det110, setDet110] = useState(false);
+  const [det110, setDet110] = useState(() => window.innerWidth > 640);
+  const [pk113, setPk113] = useState(null);
   // trades v42: offer, result and rosters in the new style (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
   // <Section title="Rosters"
@@ -3192,7 +3197,7 @@ function TradeBuilder({ s, initPartner, setS }) {
     };
     const mode82 = window.__PMODE;
     const c = cnt(after);
-    return { my, th, rb, ra, wb, wa, tb, ta, q82, mode82, short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
+    return { myL: live59(myT), meL: live59(mine), my, th, rb, ra, wb, wa, tb, ta, q82, mode82, short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
   }), [key, s.players, s.wk, K, window.__PMODE, tm82]);
   const [cmp82, setCmp82] = useState(null); // change 082: every projection, filled in a moment after the main result
   useEffect(() => {
@@ -3233,19 +3238,18 @@ function TradeBuilder({ s, initPartner, setS }) {
   });
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-slate-500 whitespace-nowrap">Trade with</span>
-        <select className={inp + " flex-1"} value={partner} onChange={(e) => { setPartner(e.target.value); setGet([]); setPick({}); setEdit(-1); }}>{others.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select>
-        {give.length || get.length ? <button className="text-xs text-slate-500 underline whitespace-nowrap" onClick={() => { setGive([]); setGet([]); setPick({}); setEdit(-1); }}>Clear</button> : null}
+      <div className="gx-tw113">
+        {others.map((t) => <button key={t.id} type="button" className={partner === t.id ? "on" : ""} onClick={() => { setPartner(t.id); setGet([]); setPick({}); setEdit(-1); }}><span className="b">{(String(t.name || "?").replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase()}</span>{t.name}</button>)}
       </div>
+      {give.length || get.length ? <div style={{ textAlign: "right" }}><button className="text-xs text-slate-500 underline" onClick={() => { setGive([]); setGet([]); setPick({}); setEdit(-1); }}>Clear</button></div> : null}
       <div className="tb-grid">
         <div className="gx-pn" style={{ minWidth: 0 }}><b></b><b></b><b></b><b></b>
           <div className="gx-tag" style={{ marginBottom: 4 }}>{gxYou(s, "You give", teamName(s, s.me) + " gives")}</div>
-          {Gv.length ? Gv.map((p, i) => offerRow(p, i, () => toggle(give, setGive, p.id))) : <div className="text-sm text-slate-500">Tap your players below</div>}
+          {Gv.map((p, i) => offerRow(p, i, () => toggle(give, setGive, p.id)))}<button type="button" className="gx-add113" onClick={() => setPk113("give")}>+ Add players</button>
         </div>
         <div className="gx-pn" style={{ minWidth: 0 }}><b></b><b></b><b></b><b></b>
           <div className="gx-tag" style={{ marginBottom: 4 }}>{gxYou(s, "You get", teamName(s, s.me) + " gets")}</div>
-          {Rv.length ? Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id))) : <div className="text-sm text-slate-500">Tap their players below</div>}
+          {Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id)))}<button type="button" className="gx-add113" onClick={() => setPk113("get")}>+ Add players</button>
           {picks.map((f, k) => (f ? offerRow(f, 1, () => { setPick((x) => ({ ...x, [k]: "none" })); setEdit(-1); },
             <>free agent <button type="button" className="text-blue-600" style={{ marginLeft: 6 }} onClick={(e) => { e.stopPropagation(); setEdit(edit === k ? -1 : k); }}>Change player</button></>)
             : ready ? <button key={"add" + k} type="button" className="text-xs text-blue-600" style={{ marginTop: 8 }} onClick={() => setPick((x) => ({ ...x, [k]: undefined }))}>Add a free agent to the open spot</button> : null))}
@@ -3303,7 +3307,9 @@ function TradeBuilder({ s, initPartner, setS }) {
           </div>
         </div>
       ) : <div className="text-sm text-slate-500">Pick at least one player on each side to see the result.</div>}
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
+      {res && vd ? <GxTradeLab113 s={s} res={res} Gv={Gv} Rv={Rv} pg={pg} gl={gl} /> : null}
+      {pk113 ? <GxPick113 title={pk113 === "give" ? gxYou(s, "You give", teamName(s, s.me) + " gives") : teamName(s, partner)} list={pk113 === "give" ? mine : theirs} sel={pk113 === "give" ? give : get} pg={pg} onToggle={(id) => (pk113 === "give" ? toggle(give, setGive, id) : toggle(get, setGet, id))} onClose={() => setPk113(null)} /> : null}
+      <div className="gx-pn" style={{ display: "none" }}><b></b><b></b><b></b><b></b>
         <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
           <span className="gx-tag">Rosters</span>
           <span className="text-xs text-slate-500 m-hide" style={{ marginLeft: "auto" }}>Tap a player to add or remove him</span><span className="gx-seg m-seg" style={{ marginLeft: "auto" }}><button type="button" className={side === "me" ? "on" : ""} onClick={() => setSide("me")}>{teamName(s, s.me)}</button><button type="button" className={side === "them" ? "on" : ""} onClick={() => setSide("them")}>{teamName(s, partner)}</button></span>
@@ -3313,7 +3319,6 @@ function TradeBuilder({ s, initPartner, setS }) {
           <div className={"min-w-0" + (side === "them" ? "" : " m-hide")}><div className="text-xs text-slate-500 truncate m-hide" style={{ paddingBottom: 2 }}>{teamName(s, partner)}</div>{rosterRows(theirs, get, setGet, false)}</div>
         </div>
       </div>
-      <TradeAdvice s={s} onPick={(p) => { setPartner(p.ft); setGet(p.ft === partner ? [...get.filter((x) => x !== p.id), p.id] : [p.id]); setPick({}); setEdit(-1); window.scrollTo(0, 0); }} />
     </div>
   );
 }
@@ -4431,6 +4436,7 @@ function SetupPage({ s, setS, go, sub }) {
   if (sub === "display") return page("Display", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
     <div className="gx-sr"><span>Projections</span>{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}</div>
+    <div className="gx-sr"><span>Favourite team (Lines)</span><GxFavSel112 /></div>
     <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>Best switches each day to whichever projection has been most accurate in the AI Lab.</div>
   </>);
   if (sub === "rules") return page("Pickup rules", <>
@@ -7102,7 +7108,8 @@ function GxRinkLines111({ teamCode }) {
 function GxLines111({ s }) {
   const L = window.LINES_DATA || { teams: {}, changes: [] };
   const teams = Object.keys(L.teams || {}).filter((t) => ((L.teams[t] || {}).lines || {}).F1).sort();
-  const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111 || "");
+  const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111fav || uiGet().ln111 || "");
+  const [fav112, setFav112] = useState(() => uiGet().ln111fav || "");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("es");
@@ -7142,10 +7149,12 @@ function GxLines111({ s }) {
     while (a.length < n) a.push("");
     return <div key={lb} className="row" style={{ "--n": n }}><span className="lb">{lb}</span>{a.slice(0, n).map(chip)}</div>;
   };
-  const rows = mode === "pp" ? [row("PP1", ln.PP1, 5), <div key="s1" className="sp"></div>, row("PP2", ln.PP2, 5)]
-    : mode === "pk" ? [row("PK1", ln.PK1, 4), <div key="s1" className="sp"></div>, row("PK2", ln.PK2, 4)]
+  const unit112 = (lb, arr, a, b) => { const o = ord(arr), r = (k, l, xs, n, c) => { const z = [...xs]; while (z.length < n) z.push(""); return <div key={k} className={"row" + (c ? " c112" : "")} style={{ "--n": n }}><span className="lb">{l}</span>{z.slice(0, n).map(chip)}</div>; }; return [r(lb + "a", lb, o.slice(0, a), a, a < 3), r(lb + "b", "", o.slice(a), b, true)]; };
+  const pair112 = (lb, arr) => { const o = ord(arr); while (o.length < 2) o.push(""); return <div key={lb} className="row c112" style={{ "--n": 2 }}><span className="lb">{lb}</span>{o.slice(0, 2).map(chip)}</div>; };
+  const rows = mode === "pp" ? [...unit112("PP1", ln.PP1, 3, 2), <div key="s1" className="sp"></div>, ...unit112("PP2", ln.PP2, 3, 2)]
+    : mode === "pk" ? [...unit112("PK1", ln.PK1, 2, 2), <div key="s1" className="sp"></div>, ...unit112("PK2", ln.PK2, 2, 2)]
     : [row("L1", ln.F1, 3), row("L2", ln.F2, 3), row("L3", ln.F3, 3), row("L4", ln.F4, 3), <div key="s1" className="sp"></div>,
-       row("D1", ln.D1, 2), row("D2", ln.D2, 2), row("D3", ln.D3, 2), <div key="s2" className="sp"></div>, row("G", ln.G, 2)];
+       pair112("D1", ln.D1), pair112("D2", ln.D2), pair112("D3", ln.D3), <div key="s2" className="sp"></div>, pair112("G", ln.G)];
   const chg = t ? (L.changes || []).filter((c) => c.team === t || c.from === t || c.to === t).slice(0, 6) : [];
   const st = (T && T.st) || {};
   return (
@@ -7176,7 +7185,114 @@ function GxLines111({ s }) {
             </div>
           ) : null}
         </>
-      ) : <div className="text-sm text-slate-500" style={{ marginTop: 14 }}>Search a team to see its lines.</div>}
+      ) : null}
+      {!fav112 ? <GxFavPick112 onPick={(c) => { uiSet("ln111fav", c); setFav112(c); pick(c); }} /> : null}
+    </div>
+  );
+}
+// ---------- change 112: favourite team for Lines (install.py) ----------
+function GxFavPick112({ onPick }) {
+  const L = window.LINES_DATA || { teams: {} };
+  const teams = Object.keys(L.teams || {}).filter((t) => ((L.teams[t] || {}).lines || {}).F1).sort();
+  return (
+    <div className="gx-pn gx-fav112">
+      <div className="font-semibold">Pick your favourite team</div>
+      <div className="text-xs text-slate-500">It opens here every time. Change it in Setup, Display.</div>
+      <div className="g">{teams.map((c) => <button key={c} type="button" onClick={() => onPick(c)}><TeamLogo t={c} size={30} />{c}</button>)}</div>
+    </div>
+  );
+}
+function GxFavSel112() {
+  const L = window.LINES_DATA || { teams: {} };
+  const teams = Object.keys(L.teams || {}).filter((t) => ((L.teams[t] || {}).lines || {}).F1).sort();
+  const [v, setV] = useState(uiGet().ln111fav || "");
+  return (
+    <select className={inp} value={v} onChange={(e) => { setV(e.target.value); uiSet("ln111fav", e.target.value); uiSet("ln111", e.target.value); }}>
+      <option value="">None</option>
+      {teams.map((c) => <option key={c} value={c}>{((L.teams[c] || {}).st || {}).name || c}</option>)}
+    </select>
+  );
+}
+// ---------- change 113: Trades rebuilt (install.py) ----------
+function GxPick113({ title, list, sel, onToggle, onClose, pg }) {
+  const [q, setQ] = useState("");
+  const [out, setOut] = useState(false);
+  const close = () => { if (out) return; setOut(true); setTimeout(onClose, 160); };
+  const qq = nrm(q), ord = { F: 0, D: 1, G: 2 };
+  const rows = list.filter((p) => !qq || nrm(p.n).includes(qq)).sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || ord[a.p] - ord[b.p] || pg(b) - pg(a));
+  return (
+    <div className={"gx-so107" + (out ? " out" : "")} onClick={close}>
+      <div className="gx-sim107 gx-pk113" onClick={(e) => e.stopPropagation()}>
+        <div className="hd"><span className="t">{title}</span><span className="m">{sel.length ? sel.length + " picked" : ""}</span><button type="button" className="x" aria-label="Close" onClick={close}>{"×"}</button></div>
+        <input className={inp + " sr"} placeholder="Search" value={q} onChange={(e) => setQ(e.target.value)} />
+        <div className="lst">
+          {rows.map((p) => {
+            const on = sel.includes(p.id);
+            return (
+              <button key={p.id} type="button" className={"it" + (on ? " on" : "")} onClick={() => onToggle(p.id)}>
+                <GxFace p={p} size={26} />
+                <span className="min-w-0"><span className="block truncate">{p.n}</span><span className="text-xs text-slate-500">{p.p + " · " + p.t + (p.ir ? " · IR" : "")}</span></span>
+                <span className="v" style={{ marginLeft: "auto" }}>{f1(pg(p))}</span>
+                <span className="ck" style={{ marginLeft: 10 }}>{on ? "✓" : ""}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="act"><button type="button" className="pr" onClick={close}>Done</button></div>
+      </div>
+    </div>
+  );
+}
+// laptop only: week-by-week chart and player comparison
+function GxTradeLab113({ s, res, Gv, Rv, pg, gl }) {
+  const K = s.blend;
+  const rng = gxUse100();
+  useEffect(() => { gxLoad100("sea"); gxLoad100("l15"); }, []);
+  const W = useMemo(() => {
+    if (!res || !res.myL || !res.meL) return [];
+    const out = [];
+    for (let i = s.wk; i < s.weeks.length; i++) {
+      const dw = deriveWeek(s.weeks[i], s.autoDone), from = i === s.wk ? dw.done || 0 : 0;
+      out.push({ i, b: weekProj(res.meL, dw, K, from).total, a: weekProj(res.myL, dw, K, from).total });
+    }
+    return out;
+  }, [res]);
+  const n = W.length, w = 640, h = 180, pad = 30;
+  const mx = Math.max(1, ...W.map((x) => Math.max(x.a, x.b))) * 1.08;
+  const X = (k) => pad + (n <= 1 ? 0 : (k * (w - pad - 10)) / (n - 1)), Y = (v) => h - 22 - (v / mx) * (h - 34);
+  const line = (key) => W.map((x, k) => X(k).toFixed(1) + "," + Y(x[key]).toFixed(1)).join(" ");
+  const tot = W.reduce((t, x) => t + x.a - x.b, 0);
+  const st = (p, r) => { const v = gxVals106(p, s, r); const gp = gxNum108(v[1]); return gp > 0 ? f1(gxNum108(v[0]) / gp) : "-"; };
+  const row = (p, side) => {
+    const v = gxVals106(p, s, "sea");
+    return (
+      <tr key={side + p.id}>
+        <td><span className="inline-flex items-center gap-2"><GxFace p={p} size={20} />{p.n}</span></td>
+        <td>{side === "g" ? "Give" : "Get"}</td><td>{p.p}</td><td>{p.t}</td><td>{v[1]}</td><td>{v[0]}</td><td>{st(p, "sea")}</td><td>{st(p, "l15")}</td><td className="b">{f1(pg(p))}</td><td>{gl(p)}</td>
+      </tr>
+    );
+  };
+  return (
+    <div className="gx-lab113 m-hide space-y-3">
+      <div className="gx-pn">
+        <div className="gx-pd-h">Week by week<span className="r">{"Your projected points, rest of season · " + (tot >= 0 ? "+" : "") + Math.round(tot)}</span></div>
+        {n > 1 ? (
+          <svg viewBox={"0 0 " + w + " " + h} width="100%" style={{ display: "block" }}>
+            <line x1={pad} x2={w - 10} y1={h - 22} y2={h - 22} style={{ stroke: "var(--line)" }} />
+            <polyline points={line("b")} style={{ fill: "none", stroke: "var(--mute)", strokeWidth: 2, strokeDasharray: "4 4" }} />
+            <polyline points={line("a")} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 2.5 }} />
+            {W.map((x, k) => (k % Math.max(1, Math.ceil(n / 12)) === 0 ? <text key={k} x={X(k)} y={h - 6} textAnchor="middle" style={{ fontSize: 11, fill: "var(--mute)" }}>{"W" + (x.i + 1)}</text> : null))}
+          </svg>
+        ) : <div className="text-sm text-slate-500">Not enough weeks left.</div>}
+        <div className="lg"><span><i style={{ background: "var(--accent)" }}></i>After the trade</span><span><i style={{ background: "var(--mute)" }}></i>Now</span></div>
+      </div>
+      <div className="gx-pn">
+        <div className="gx-pd-h">Player comparison</div>
+        <table className="gx-pd-t">
+          <thead><tr><th>Player</th><th>Side</th><th>Pos</th><th>Team</th><th>GP</th><th>FPTS</th><th>Avg</th><th>Last 15</th><th>Proj/g</th><th>Games left</th></tr></thead>
+          <tbody>{Gv.map((p) => row(p, "g"))}{Rv.map((p) => row(p, "r"))}</tbody>
+        </table>
+      </div>
     </div>
   );
 }
