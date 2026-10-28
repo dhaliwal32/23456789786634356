@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_notify.py": true,
+  "gm_weekly.py": false
  },
  "changes": [
-  "129-auto-refresh.py"
+  "130-weekly-note.py"
  ]
 }
