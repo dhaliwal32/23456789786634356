@@ -1395,7 +1395,7 @@ function App() {
     back: backFromTeam
   })) : /*#__PURE__*/React.createElement(TeamsTab, _extends({}, P, {
     openTeam: openTeam
-  }));else if (tab === "lines") content = window.LinesTab ? /*#__PURE__*/React.createElement(window.LinesTab, _extends({}, P, {
+  }));else if (tab === "lines") content = true ? /*#__PURE__*/React.createElement(GxLines111, P) : window.LinesTab ? /*#__PURE__*/React.createElement(window.LinesTab, _extends({}, P, {
     H: LH
   })) : /*#__PURE__*/React.createElement("div", {
     className: "text-slate-400 p-4"
@@ -5487,6 +5487,7 @@ function TradeBuilder({
   initPartner,
   setS
 }) {
+  const [det110, setDet110] = useState(false);
   // trades v42: offer, result and rosters in the new style (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
   // <Section title="Rosters"
@@ -6011,7 +6012,7 @@ function TradeBuilder({
       marginTop: 8
     }
   }, "The result below counts " + drops.map(p => p.n).join(" and ") + " as dropped. Lowest expected points are listed first.")) : null, res && vd ? /*#__PURE__*/React.createElement("div", {
-    className: "gx-pn"
+    className: "gx-pn gx-tp110" + (det110 ? " open" : "")
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -6020,19 +6021,17 @@ function TradeBuilder({
       flexWrap: "wrap"
     }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "font-semibold",
+    className: "gx-vd110",
     style: {
-      color: vd[1]
+      background: vd[1]
     }
-  }, vd[0]), /*#__PURE__*/React.createElement("span", {
-    className: "text-sm text-slate-500"
-  }, vd[2])), res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
+  }, vd[0])), det110 && res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
     part: "pick",
     res: res,
     tm: tm82,
     setTm: setTm82
   }) : null, /*#__PURE__*/React.createElement("div", {
-    className: "gx-stg"
+    className: "gx-stg" + (det110 ? "" : " gx-tr110")
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-stc"
   }, /*#__PURE__*/React.createElement("div", {
@@ -6113,7 +6112,7 @@ function TradeBuilder({
     className: "gx-stv"
   }, arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, "chance to win")) : null), res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
+  }, "chance to win")) : null), det110 && res.mode82 ? /*#__PURE__*/React.createElement(GxTradeModes82, {
     res: res,
     cmp: cmp82,
     tm: tm82,
@@ -6130,7 +6129,11 @@ function TradeBuilder({
     style: {
       marginTop: 10
     }
-  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")), /*#__PURE__*/React.createElement("div", {
+  }, gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map(p => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-mr110",
+    onClick: () => setDet110(!det110)
+  }, det110 ? "Hide details" : "More details"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       flexWrap: "wrap",
@@ -6157,9 +6160,7 @@ function TradeBuilder({
       setDropSel([]);
       window.scrollTo(0, 0);
     }
-  }, "Apply here"), /*#__PURE__*/React.createElement("span", {
-    className: "text-xs text-slate-500"
-  }, "Shows this trade on every page of the app, through syncs, until you undo it. Nothing changes on ESPN."))) : /*#__PURE__*/React.createElement("div", {
+  }, "Apply here"))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "Pick at least one player on each side to see the result."), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
@@ -14810,5 +14811,293 @@ function GxInj109({
     },
     onClick: () => setNL(nL + 20)
   }, "Show more") : null));
+}
+// ---------- change 111: Lines on an ice rink (install.py) ----------
+const GX_ORD111 = {
+  lw: 0,
+  l: 0,
+  c: 1,
+  rw: 2,
+  r: 2,
+  ld: 3,
+  rd: 4,
+  d: 3,
+  g: 5
+};
+function GxRinkLines111({
+  teamCode
+}) {
+  const t = teamCode;
+  return /*#__PURE__*/React.createElement("svg", {
+    className: "ice",
+    viewBox: "0 0 100 200",
+    preserveAspectRatio: "none",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "12",
+    x2: "100",
+    y2: "12",
+    style: {
+      stroke: "rgba(220,38,38,.35)",
+      strokeWidth: 0.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "66",
+    x2: "100",
+    y2: "66",
+    style: {
+      stroke: "rgba(37,99,235,.45)",
+      strokeWidth: 1.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "100",
+    x2: "100",
+    y2: "100",
+    style: {
+      stroke: "rgba(220,38,38,.45)",
+      strokeWidth: 1.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "134",
+    x2: "100",
+    y2: "134",
+    style: {
+      stroke: "rgba(37,99,235,.45)",
+      strokeWidth: 1.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "188",
+    x2: "100",
+    y2: "188",
+    style: {
+      stroke: "rgba(220,38,38,.35)",
+      strokeWidth: 0.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("ellipse", {
+    cx: "50",
+    cy: "100",
+    rx: "16",
+    ry: "8",
+    style: {
+      fill: "none",
+      stroke: "rgba(37,99,235,.3)",
+      strokeWidth: 0.8
+    },
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M42 188 A8 4 0 0 1 58 188",
+    style: {
+      fill: "rgba(37,99,235,.10)",
+      stroke: "rgba(220,38,38,.35)",
+      strokeWidth: 0.6
+    },
+    vectorEffect: "non-scaling-stroke"
+  }));
+}
+function GxLines111({
+  s
+}) {
+  const L = window.LINES_DATA || {
+    teams: {},
+    changes: []
+  };
+  const teams = Object.keys(L.teams || {}).filter(t => ((L.teams[t] || {}).lines || {}).F1).sort();
+  const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111 || "");
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState("es");
+  const [recent, setRecent] = useState(() => uiGet().ln111r || []);
+  useEffect(() => {
+    const h = e => {
+      if (e && e.detail) pick(e.detail);
+    };
+    window.addEventListener("gm-lines-team", h);
+    return () => window.removeEventListener("gm-lines-team", h);
+  }, []);
+  const pick = code => {
+    setT(code);
+    setQ("");
+    setOpen(false);
+    uiSet("ln111", code);
+    window.__LINES_TEAM = "";
+    setRecent(r => {
+      const n = [code, ...r.filter(x => x !== code)].slice(0, 6);
+      uiSet("ln111r", n);
+      return n;
+    });
+  };
+  const nameOf = c => ((L.teams[c] || {}).st || {}).name || c;
+  const qq = nrm(q);
+  const hits = qq.length < 1 ? [] : teams.filter(c => nrm(c).startsWith(qq) || nrm(nameOf(c)).split(" ").some(w => w.startsWith(qq)) || nrm(nameOf(c)).includes(qq)).slice(0, 6);
+  const T = L.teams[t] || null,
+    ln = T && T.lines || {},
+    df = (T && T.pos || {}).df || {};
+  const byName = useMemo(() => {
+    const o = {};
+    s.players.forEach(p => {
+      const k = nrm(p.n);
+      if (!o[k] || p.t === t) o[k] = p;
+    });
+    return o;
+  }, [s.players, t]);
+  const ord = arr => [...(arr || [])].sort((a, b) => (GX_ORD111[df[a]] ?? 9) - (GX_ORD111[df[b]] ?? 9));
+  const chip = (n, i) => {
+    if (!n) return /*#__PURE__*/React.createElement("div", {
+      key: "e" + i,
+      className: "gx-pc111 empty"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "n"
+    }, "-"));
+    const p = byName[nrm(n)],
+      mine = p && p.ft === s.me,
+      fa = p && p.ft === "fa";
+    const last = n.split(" ").slice(1).join(" ") || n;
+    const tn = (teamName(s, p ? p.ft : "") || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "";
+    const own = !p ? "" : mine ? "YOURS" : fa ? p.wv ? "WAIVERS" : "FA" : tn;
+    return /*#__PURE__*/React.createElement("button", {
+      key: n + i,
+      type: "button",
+      className: "gx-pc111" + (mine ? " me" : fa ? " fa" : ""),
+      onClick: () => {
+        if (p && window.__NAV) window.__NAV.player(p);
+      }
+    }, p ? /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
+      size: 22
+    }) : /*#__PURE__*/React.createElement("span", {
+      style: {
+        height: 29
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "n"
+    }, last), /*#__PURE__*/React.createElement("span", {
+      className: "o"
+    }, own), p ? /*#__PURE__*/React.createElement("span", {
+      className: "v"
+    }, f1(gxPgAvg(p, s.blend))) : null);
+  };
+  const row = (lb, arr, n) => {
+    const a = ord(arr);
+    while (a.length < n) a.push("");
+    return /*#__PURE__*/React.createElement("div", {
+      key: lb,
+      className: "row",
+      style: {
+        "--n": n
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "lb"
+    }, lb), a.slice(0, n).map(chip));
+  };
+  const rows = mode === "pp" ? [row("PP1", ln.PP1, 5), /*#__PURE__*/React.createElement("div", {
+    key: "s1",
+    className: "sp"
+  }), row("PP2", ln.PP2, 5)] : mode === "pk" ? [row("PK1", ln.PK1, 4), /*#__PURE__*/React.createElement("div", {
+    key: "s1",
+    className: "sp"
+  }), row("PK2", ln.PK2, 4)] : [row("L1", ln.F1, 3), row("L2", ln.F2, 3), row("L3", ln.F3, 3), row("L4", ln.F4, 3), /*#__PURE__*/React.createElement("div", {
+    key: "s1",
+    className: "sp"
+  }), row("D1", ln.D1, 2), row("D2", ln.D2, 2), row("D3", ln.D3, 2), /*#__PURE__*/React.createElement("div", {
+    key: "s2",
+    className: "sp"
+  }), row("G", ln.G, 2)];
+  const chg = t ? (L.changes || []).filter(c => c.team === t || c.from === t || c.to === t).slice(0, 6) : [];
+  const st = T && T.st || {};
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-ln111"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "srch"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: inp + " w-full",
+    placeholder: "Search a team",
+    value: q,
+    onFocus: () => setOpen(true),
+    onBlur: () => setTimeout(() => setOpen(false), 150),
+    onChange: e => {
+      setQ(e.target.value);
+      setOpen(true);
+    }
+  }), open && hits.length ? /*#__PURE__*/React.createElement("div", {
+    className: "sug"
+  }, hits.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    type: "button",
+    onMouseDown: e => e.preventDefault(),
+    onClick: () => pick(c)
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: c,
+    size: 24
+  }), /*#__PURE__*/React.createElement("span", null, nameOf(c)), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500",
+    style: {
+      marginLeft: "auto"
+    }
+  }, c)))) : null), recent.length ? /*#__PURE__*/React.createElement("div", {
+    className: "rec"
+  }, recent.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    type: "button",
+    onClick: () => pick(c)
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: c,
+    size: 18
+  }), c))) : null, T ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "hd"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: t,
+    size: 40
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nm truncate"
+  }, nameOf(t)), st.w != null ? /*#__PURE__*/React.createElement("div", {
+    className: "rc"
+  }, st.w + "-" + st.l + "-" + st.otl + (st.streak ? " · " + st.streak : "")) : null)), /*#__PURE__*/React.createElement("div", {
+    className: "gx-seg103"
+  }, [["es", "Even strength"], ["pp", "Power play"], ["pk", "Penalty kill"]].map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    type: "button",
+    className: mode === k ? "on" : "",
+    onClick: () => setMode(k)
+  }, l))), /*#__PURE__*/React.createElement("div", {
+    key: t + mode,
+    className: "gx-rk111"
+  }, /*#__PURE__*/React.createElement(GxRinkLines111, {
+    teamCode: t
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "logo"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: t,
+    size: 220
+  })), rows), chg.length ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn",
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-tag",
+    style: {
+      marginBottom: 4
+    }
+  }, "Recent changes"), chg.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    className: "chg"
+  }, c.text, /*#__PURE__*/React.createElement("small", null, dayLabel(String(c.at || "").slice(0, 10)))))) : null) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500",
+    style: {
+      marginTop: 14
+    }
+  }, "Search a team to see its lines."));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
