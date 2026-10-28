@@ -28,7 +28,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OLDER = [("20232024", "2023-10-01", "2024-04-25"), ("20222023", "2022-10-01", "2023-04-20"),
          ("20212022", "2021-10-01", "2022-05-05"), ("20202021", "2021-01-10", "2021-05-25"),
          ("20192020", "2019-09-28", "2020-03-15"), ("20182019", "2018-09-28", "2019-04-10"),
-         ("20172018", "2017-09-28", "2018-04-10")]
+         ("20172018", "2017-09-28", "2018-04-10"), ("20162017", "2016-10-10", "2017-04-12"),
+         ("20152016", "2015-10-05", "2016-04-12"), ("20142015", "2014-10-06", "2015-04-13")]
 OUT = os.path.join(HERE, "ai", "research", "history_exp.json")
 
 
@@ -55,6 +56,9 @@ def main():
     log("seasons on hand:", seasons, "rows:", len(rows_all))
     current_start = "20242025"
     starts = [s for s in sorted(seasons, reverse=True) if s <= current_start]
+    if "--from" in sys.argv:
+        lo = sys.argv[sys.argv.index("--from") + 1]
+        starts = [current_start] + [s for s in starts if s <= lo]
     prod = (E.read_json(os.path.join(HERE, "ai", "models", "registry.json"), {}).get("production") or {})
     fam = {g: (prod.get(g) or {}).get("family") or ("gbm_stats" if g == "F" else "poisson_stats" if g == "D" else "gbm" if g == "G_start" else "baseline") for g in L.FAMILIES}
     log("live model types:", fam)

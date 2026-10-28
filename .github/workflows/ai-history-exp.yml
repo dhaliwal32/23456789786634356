@@ -1,6 +1,11 @@
 name: AI history test
 on:
   workflow_dispatch:
+    inputs:
+      args:
+        description: extra arguments
+        type: string
+        default: ""
 permissions:
   contents: write
 concurrency:
@@ -17,7 +22,7 @@ jobs:
           python-version: "3.12"
       - run: pip install requests numpy scikit-learn
       - name: Download older seasons and test
-        run: python ai_history_exp.py
+        run: python ai_history_exp.py ${{ inputs.args }}
       - name: Save results
         if: always()
         run: |
