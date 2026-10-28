@@ -7763,7 +7763,7 @@ function Pickups({
     window.__PICK_Q = "";
     return v;
   });
-  const [limit, setLimit] = useState(100000); /* gx118: show all */
+  const [limit, setLimit] = useState(40); /* gx122: 40 then more on scroll */
   useEffect(() => {
     const h = () => {
       if (window.__PICK_Q) {
@@ -7892,14 +7892,14 @@ function Pickups({
     value: pos,
     onChange: v => {
       setPos(v);
-      setLimit(100000);
+      setLimit(40);
     }
   }), /*#__PURE__*/React.createElement(Pills, {
     items: [[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]],
     value: H,
     onChange: v => {
       setH(v);
-      setLimit(100000);
+      setLimit(40);
     }
   })), /*#__PURE__*/React.createElement(GxRngSel100, null)), !plan ? /*#__PURE__*/React.createElement(GxHeadStart, {
     s: s,
@@ -7929,7 +7929,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(100000);
+      setLimit(40);
     },
     def: "add",
     cls: "m-hide"
@@ -7938,7 +7938,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(100000);
+      setLimit(40);
     },
     def: "add",
     cls: "m-hide"
@@ -7947,7 +7947,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(100000);
+      setLimit(40);
     },
     def: "add",
     cls: "m-hide"
@@ -7956,7 +7956,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(100000);
+      setLimit(40);
     },
     def: "add"
   }, "Adds"), /*#__PURE__*/React.createElement(GxSH, {
@@ -7964,7 +7964,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(100000);
+      setLimit(40);
     },
     def: "add"
   }, "Win"), /*#__PURE__*/React.createElement("span", {
@@ -8040,14 +8040,9 @@ function Pickups({
     style: {
       padding: "10px 0"
     }
-  }, q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window.")), all.length > rows.length ? /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "text-sm text-blue-600",
-    style: {
-      marginTop: 10
-    },
-    onClick: () => setLimit(limit + 25)
-  }, "Show ", Math.min(25, all.length - rows.length), " more") : null), others.length ? /*#__PURE__*/React.createElement(GxPanel, {
+  }, q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window.")), all.length > rows.length ? /*#__PURE__*/React.createElement(GxMore122, {
+    onMore: () => setLimit(v => v < all.length ? v + 40 : v)
+  }) : null), others.length ? /*#__PURE__*/React.createElement(GxPanel, {
     title: "On other teams"
   }, others.map((p, i) => /*#__PURE__*/React.createElement("div", {
     key: p.id,
@@ -15907,5 +15902,32 @@ function gxAct120(w) {
     v
   });
   return v;
+}
+// ---------- change 122: load more of a list when you scroll near its end (install.py) ----------
+function GxMore122({
+  onMore
+}) {
+  const ref = React.useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      onMore();
+      return;
+    }
+    const io = new IntersectionObserver(es => {
+      if (es.some(e => e.isIntersecting)) onMore();
+    }, {
+      rootMargin: "800px 0px"
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    style: {
+      height: 1
+    },
+    "aria-hidden": "true"
+  });
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
