@@ -1,12 +1,9 @@
 {
  "files": {
   "fantasy-gm.html": true,
-  "ai_engine.py": true,
-  "ai-dashboard.html": true,
-  "gm_combo.py": false,
-  "ai/combo.json": false
+  "gm_combo.py": true
  },
  "changes": [
-  "124-combined-projection.py"
+  "125-goalie-start-tuning.py"
  ]
 }

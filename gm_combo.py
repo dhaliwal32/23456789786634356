@@ -9,6 +9,9 @@ miss per game (the same measure the AI Lab uses), separately for forwards, defen
   - "mix":  learned weights for ESPN, GM and AI (weights add up to 1, no correction, so it stays fair)
 The mix has to beat the best of the others by more than 1 standard error, so it can't win by luck.
 When a player has no number from the chosen model, the app falls back AI -> GM -> ESPN.
+It also learns how often a goalie Daily Faceoff lists as unconfirmed (and his backup) really starts,
+and re-tunes the AI's goalie start chances (they come out too low for likely starters) and only
+switches that on when the walk-forward test shows it clearly helps.
 Writes ai/combo.json, which the app and ai_engine.py read.
 
 Run: python gm_combo.py          (needs numpy)
@@ -131,6 +134,118 @@ def learn(recs):
     return out, (days[0] if days else None), (days[-1] if days else None)
 
 
+def learn_gstart(recs):
+    """re-tune the AI's goalie start chances (they come out too low for likely starters); test walk-forward"""
+    G = [r for r in recs if r.get("pos") == "G" and r.get("ai_start_p") is not None]
+    for r in G:
+        r["_y"] = 1.0 if (r.get("gs") or 0) >= 1 else 0.0
+    days = sorted({r["date"] for r in G})
+    lg = lambda p: math.log(min(1 - 1e-4, max(1e-4, p)) / (1 - min(1 - 1e-4, max(1e-4, p))))
+
+    def fit(rows):
+        x = np.array([lg(r["ai_start_p"]) for r in rows]); y = np.array([r["_y"] for r in rows]); a, b = 1.0, 0.0
+        for _ in range(300):
+            p = 1 / (1 + np.exp(-(a * x + b)))
+            a -= 0.5 * float(np.mean((p - y) * x)); b -= 0.5 * float(np.mean(p - y))
+        return a, b
+
+    def apply(rows, a, b):
+        out, grp = {}, {}
+        for r in rows:
+            grp.setdefault((r.get("gid"), r.get("team")), []).append(r)
+        for g in grp.values():
+            q = [1 / (1 + math.exp(-(a * lg(r["ai_start_p"]) + b))) for r in g]
+            s = sum(q)
+            for r, v in zip(g, q):
+                out[id(r)] = v / s if len(g) > 1 and s > 0 else v
+        return out
+
+    raw, new, ys = [], [], []
+    for i, d in enumerate(days):
+        if i < MIN_TRAIN_DAYS:
+            continue
+        tr = [r for r in G if r["date"] < d]; te = [r for r in G if r["date"] == d]
+        if len(tr) < 200 or not te:
+            continue
+        a, b = fit(tr)
+        q = apply(te, a, b)
+        for r in te:
+            raw.append(r["ai_start_p"]); new.append(q[id(r)]); ys.append(r["_y"])
+    res = {"use": False, "a": 1.0, "b": 0.0, "n": len(ys)}
+    if len(ys) >= 300:
+        R, N, Y = np.array(raw), np.array(new), np.array(ys)
+        d = (N - Y) ** 2 - (R - Y) ** 2
+        se = float(np.std(d, ddof=1) / math.sqrt(len(d)))
+        a, b = fit(G)
+        res.update({"a": round(a, 4), "b": round(b, 4), "brier_ai": round(float(np.mean((R - Y) ** 2)), 4),
+                    "brier_new": round(float(np.mean((N - Y) ** 2)), 4), "se": round(se, 4),
+                    "use": bool(float(np.mean(d)) < -2 * se)})
+    return res
+
+
+def learn_gs_df(root, recs):
+    """goalie start chance when Daily Faceoff has a goalie listed but not confirmed:
+    learned from every saved pre-game snapshot (ai/predictions) and who actually started"""
+    Y = {}
+    for r in recs:
+        if r.get("pos") == "G":
+            Y[(r.get("gid"), r.get("pid"))] = 1.0 if (r.get("gs") or 0) >= 1 else 0.0
+    lg = lambda p: math.log(min(1 - 1e-4, max(1e-4, p)) / (1 - min(1 - 1e-4, max(1e-4, p))))
+    rows = []
+    for f in sorted(glob.glob(os.path.join(root, "ai", "predictions", "*.jsonl"))):
+        try:
+            with open(f, encoding="utf-8") as fh:
+                for ln in fh:
+                    if '"pos":"G"' not in ln and '"pos": "G"' not in ln:
+                        continue
+                    x = json.loads(ln)
+                    g, k = x.get("goalie") or {}, (x.get("gid"), x.get("pid"))
+                    s = str(g.get("source") or "").lower()
+                    c = "unc" if "unconfirmed" in s else "other" if "other goalie" in s else "likely" if "likely" in s else "conf" if "confirmed" in s else None
+                    if k in Y and g.get("ai_start_p") is not None and c:
+                        rows.append((c, lg(g["ai_start_p"]), 1.0 if (x.get("lead_min") or 0) < 720 else 0.0, Y[k], x.get("date")))
+        except Exception as ex:
+            print(f"(combo) could not read {f}: {ex}")
+    days = sorted({r[4] for r in rows})
+
+    def X(rs):
+        return np.array([[1.0, r[1], r[2], r[1] * r[2]] for r in rs])
+
+    def fit(rs):
+        A, y, w = X(rs), np.array([r[3] for r in rs]), np.zeros(4)
+        for _ in range(400):
+            p = 1 / (1 + np.exp(-A @ w))
+            w -= 0.3 * (A.T @ (p - y)) / len(y)
+        return w
+
+    old = {"conf": 1.0, "likely": 0.85, "unc": 0.5, "other": 0.5}
+    e_new, e_old = [], []
+    for i, d in enumerate(days):
+        if i < MIN_TRAIN_DAYS:
+            continue
+        tr = [r for r in rows if r[4] < d]
+        te = [r for r in rows if r[4] == d]
+        W = {c: fit([r for r in tr if r[0] == c]) for c in ("unc", "other") if sum(1 for r in tr if r[0] == c) > 100}
+        for r in te:
+            if r[0] in ("conf", "likely"):
+                p = 0.99
+            elif r[0] in W:
+                p = float(1 / (1 + math.exp(-X([r])[0] @ W[r[0]])))
+            else:
+                p = old[r[0]]
+            e_new.append((p - r[3]) ** 2)
+            e_old.append((old[r[0]] - r[3]) ** 2)
+    res = {"use": False, "rows": len(rows), "n": len(e_new)}
+    if len(e_new) >= 1000:
+        d = np.array(e_new) - np.array(e_old)
+        se = float(np.std(d, ddof=1) / math.sqrt(len(d)))
+        res.update({"brier_old": round(float(np.mean(e_old)), 4), "brier_new": round(float(np.mean(e_new)), 4), "se": round(se, 4),
+                    "use": bool(float(np.mean(d)) < -2 * se), "likely": 0.99,
+                    "unc": [round(float(v), 4) for v in fit([r for r in rows if r[0] == "unc"])],
+                    "other": [round(float(v), 4) for v in fit([r for r in rows if r[0] == "other"])]})
+    return res
+
+
 def load(root):
     recs = []
     for f in sorted(glob.glob(os.path.join(root, "ai", "joined", "*.json"))):
@@ -146,13 +261,15 @@ def main(root=HERE):
     recs = load(root)
     groups, d0, d1 = learn(recs)
     js = {"version": VERSION, "asof": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-          "data": {"from": d0, "to": d1, "records": len(recs)}, "groups": groups}
+          "data": {"from": d0, "to": d1, "records": len(recs)}, "groups": groups, "gstart": learn_gstart(recs), "gs_df": learn_gs_df(root, recs)}
     with open(os.path.join(root, "ai", "combo.json"), "w", encoding="utf-8") as fh:
         json.dump(js, fh, indent=1)
     for G, x in groups.items():
         t = x["tests"]
         line = ", ".join(f"{k} {v['mae']}" for k, v in t.items())
         print(f"(combo) {G}: using {x['pick']} {x['w']} bias {x['bias']} - {x['why']} | test MAE: {line}")
+    print(f"(combo) goalie start chances: {js['gstart']}")
+    print(f"(combo) Daily Faceoff listed goalies: {js['gs_df']}")
 
 
 def selftest():

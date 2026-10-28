@@ -471,7 +471,7 @@ const b2bAdj = (p, dt) => {
   return null;
 };
 const gStart = (p, dt) => {
-  const aiG = (window.__PMODE === "ai" || window.__PMODE === "combo") && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null;
+  const aiG = (window.__PMODE === "ai" || window.__PMODE === "combo") && dt && typeof p.id === "string" && p.id[0] === "e" ? gxGs125(p, dt) : null;
   const fallback = aiG != null ? {
     v: aiG,
     l: `AI start chance (${Math.round(aiG * 100)}%)`
@@ -488,10 +488,18 @@ const gStart = (p, dt) => {
       v: 1,
       l: "✓ confirmed"
     };
+    const D125 = gxDf125(p, dt);
     if (/likely|expected|project/.test(st)) return {
-      v: 0.85,
+      v: D125 ? D125.likely : 0.85,
       l: "likely"
     };
+    if (D125) {
+      const v = D125.f("unc");
+      return {
+        v,
+        l: "unconfirmed (" + Math.round(v * 100) + "%)"
+      };
+    }
     return {
       v: 0.5,
       l: "unconfirmed"
@@ -502,6 +510,14 @@ const gStart = (p, dt) => {
     const st = (mate[1].status || "").toLowerCase();
     const mv = st.includes("confirm") && !st.includes("un") ? 1 : /likely|expected|project/.test(st) ? 0.85 : 0.5;
     const who = mate[0].replace(/\b\w/g, c => c.toUpperCase());
+    const D125b = mv < 1 ? gxDf125(p, dt) : null;
+    if (D125b) {
+      const v = mv === 0.85 ? 1 - D125b.likely : D125b.f("other");
+      return {
+        v,
+        l: `backup · ${who} ${mv === 0.5 ? "unconfirmed" : "likely"} (${Math.round(v * 100)}%)`
+      };
+    }
     return {
       v: 1 - mv,
       l: mv === 1 ? "not starting" : `backup · ${who} ${mv === 0.5 ? "unconfirmed" : "likely"} (${Math.round((1 - mv) * 100)}%)`
@@ -16007,5 +16023,55 @@ function gxCombo124(p, K, dt) {
   }
   const v = t > 1e-9 ? s / t + (C.bias || 0) : a != null ? a : g != null ? g : e;
   return Math.max(0, v) * (p.gwMul || 1);
+}
+// ---------- change 125: re-tuned AI goalie start chances (ai/combo.json "gstart") (install.py) ----------
+const __GS125 = new Map();
+function gxGs125(p, dt) {
+  const A = window.__AI || {},
+    GS = A.gstart || {},
+    raw = (GS[String(p.id).slice(1)] || {})[dt];
+  const C = (window.__COMBO || {}).gstart;
+  if (raw == null || !C || !C.use) return raw;
+  const f = v => {
+    const q = Math.min(0.9999, Math.max(0.0001, v));
+    return 1 / (1 + Math.exp(-(C.a * Math.log(q / (1 - q)) + C.b)));
+  };
+  const key = (A.asof || "") + "|" + C.a + "|" + p.t + "|" + dt;
+  let T = __GS125.get(key);
+  if (!T) {
+    T = {};
+    (window.__PLAYERS || []).forEach(q => {
+      if (q.p === "G" && q.t === p.t && typeof q.id === "string" && q.id[0] === "e") {
+        const r = (GS[q.id.slice(1)] || {})[dt];
+        if (r != null) T[q.id] = f(r);
+      }
+    });
+    __GS125.set(key, T);
+  }
+  const me = T[p.id] != null ? T[p.id] : f(raw),
+    ids = Object.keys(T),
+    s = ids.reduce((a, k) => a + T[k], 0);
+  return ids.length > 1 && s > 0 ? me / s : me;
+}
+
+// when Daily Faceoff lists a goalie but has not confirmed him: learned from saved snapshots (ai/combo.json "gs_df")
+function gxDf125(p, dt) {
+  const C = (window.__COMBO || {}).gs_df;
+  if (!C || !C.use) return null;
+  const raw = (((window.__AI || {}).gstart || {})[String(p.id).slice(1)] || {})[dt];
+  const g = typeof gameOf === "function" ? gameOf(p.t, dt) : null,
+    st = g && g.st ? Date.parse(g.st) : NaN;
+  const near = !isNaN(st) && st - Date.now() < 12 * 36e5 ? 1 : 0;
+  const q = raw == null ? null : Math.min(0.9999, Math.max(0.0001, raw)),
+    lg = q == null ? null : Math.log(q / (1 - q));
+  const f = c => {
+    const w = C[c];
+    if (!w || lg == null) return c === "unc" ? 0.6 : 0.15;
+    return 1 / (1 + Math.exp(-(w[0] + w[1] * lg + w[2] * near + w[3] * lg * near)));
+  };
+  return {
+    likely: C.likely || 0.99,
+    f
+  };
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
