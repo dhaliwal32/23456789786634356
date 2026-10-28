@@ -1454,7 +1454,10 @@ function App() {
   }), /*#__PURE__*/React.createElement(GxSync, {
     s: s,
     setS: setS
-  }), content, window.AskPanel ? /*#__PURE__*/React.createElement(window.AskPanel, _extends({}, P, {
+  }), /*#__PURE__*/React.createElement("div", {
+    key: tab + "/" + (sub || ""),
+    className: "gx-pg101"
+  }, content), window.AskPanel ? /*#__PURE__*/React.createElement(window.AskPanel, _extends({}, P, {
     tab: tab,
     H: {
       effAvg,
@@ -13057,6 +13060,12 @@ function GxPlayerDetail({
   const [log, setLog] = useState(null);
   const [nLog, setNLog] = useState(10);
   const [img, setImg] = useState(true);
+  const [out101, setOut101] = useState(false);
+  const close101 = () => {
+    if (out101) return;
+    setOut101(true);
+    setTimeout(onClose, 190);
+  };
   const rank = useMemo(() => {
     const o = {},
       pv = q => effAvg(q, K) * (q.p === "G" ? q.prob : 1);
@@ -13178,8 +13187,8 @@ function GxPlayerDetail({
   });
   const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["lines", "Lines"]];
   return /*#__PURE__*/React.createElement("div", {
-    className: "gx-pd-ov",
-    onClick: onClose
+    className: "gx-pd-ov" + (out101 ? " out" : ""),
+    onClick: close101
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd",
     "data-gx": "095",
@@ -13188,8 +13197,54 @@ function GxPlayerDetail({
     type: "button",
     className: "gx-pd-x",
     "aria-label": "Close",
-    onClick: onClose
+    onClick: close101
   }, String.fromCharCode(215)), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pdm",
+    style: {
+      "--tc": gxTC101(p.t)
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "wm"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: p.t,
+    size: 260
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "top"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nm"
+  }, p.n), /*#__PURE__*/React.createElement("div", {
+    className: "ln"
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: p.t,
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, p.t + " · " + posWord + (no != null ? " · #" + no : ""))), /*#__PURE__*/React.createElement("div", {
+    className: "ln"
+  }, owner), Q ? /*#__PURE__*/React.createElement("div", {
+    className: "bt"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "pr",
+    onClick: act(Q.swap)
+  }, Q.mine(p) ? "Find a replacement" : "Find a swap"), Q.tradeable(p) ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: act(Q.trade)
+  }, "Trade") : /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => Q.espn(p)
+  }, "Add on ESPN")) : null), eid && img ? /*#__PURE__*/React.createElement("img", {
+    className: "ph",
+    alt: "",
+    src: "https://a.espncdn.com/i/headshots/nhl/players/full/" + eid + ".png",
+    onError: () => setImg(false)
+  }) : null), /*#__PURE__*/React.createElement("div", {
+    className: "strip"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, rk || "-"), /*#__PURE__*/React.createElement("span", null, "POS RANK")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, avgSoFar == null ? "-" : f1(avgSoFar)), /*#__PURE__*/React.createElement("span", null, "AVG FPTS")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, f1(p.tot || 0)), /*#__PURE__*/React.createElement("span", null, "SEASON FPTS")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, p.own != null ? p.own >= 99.5 ? Math.round(p.own) : f1(p.own) : "-"), /*#__PURE__*/React.createElement("span", null, "%ROST (" + (p.chg ? (p.chg > 0 ? "+" : "") + f1(p.chg) : "+0") + ")")))), hurt ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pdm-inj"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pill"
+  }, stTxt.toUpperCase()), back.d ? /*#__PURE__*/React.createElement("span", null, "Est. return " + dayLabel(back.d)) : null) : null, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-hd"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-ph"
@@ -13274,9 +13329,10 @@ function GxPlayerDetail({
     className: tab === k ? "on" : "",
     onClick: () => setTab(k)
   }, l))), /*#__PURE__*/React.createElement("div", {
-    className: "gx-pd-bd"
+    className: "gx-pd-bd",
+    key: tab
   }, hurt && tab === "ov" ? /*#__PURE__*/React.createElement("div", {
-    className: "gx-pd-pn",
+    className: "gx-pd-pn m-hide",
     style: {
       color: "var(--bad)",
       fontSize: 14
@@ -13355,17 +13411,28 @@ function GxPlayerDetail({
   }, /*#__PURE__*/React.createElement(Tags, {
     p: p,
     K: K
-  })) : null), news.length ? /*#__PURE__*/React.createElement("div", {
-    className: "gx-pd-pn"
+  })) : null), log && log.length ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-pn",
+    "data-gx": "101log"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-h"
-  }, "Latest news", /*#__PURE__*/React.createElement("button", {
+  }, "Game log"), /*#__PURE__*/React.createElement("table", {
+    className: "gx-pd-t"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Opp"), /*#__PURE__*/React.createElement("th", null, "FPTS"), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("th", null, "Dec"), /*#__PURE__*/React.createElement("th", null, "SV"), /*#__PURE__*/React.createElement("th", null, "GA")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("th", null, "TOI"), /*#__PURE__*/React.createElement("th", null, "G"), /*#__PURE__*/React.createElement("th", null, "A"), /*#__PURE__*/React.createElement("th", null, "+/-")))), /*#__PURE__*/React.createElement("tbody", null, log.slice(0, 6).map(r => {
+    const x = r.x,
+      gm = (((window.GAMES_DATA || {}).games || {})[r.d] || {})[p.t] || null,
+      o = x.o || (gm ? gm.o : ""),
+      h = x.o ? x.h : gm ? gm.h : null;
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.d
+    }, /*#__PURE__*/React.createElement("td", null, r.d.slice(5).replace("-", "/")), /*#__PURE__*/React.createElement("td", null, o ? (h ? "" : "@") + o : ""), /*#__PURE__*/React.createElement("td", {
+      className: "b"
+    }, f1(r.fp)), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.dec === "O" ? "OTL" : x.dec || "-"), /*#__PURE__*/React.createElement("td", null, x.sv || 0), /*#__PURE__*/React.createElement("td", null, x.ga || 0)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.toi || "-"), /*#__PURE__*/React.createElement("td", null, x.g || 0), /*#__PURE__*/React.createElement("td", null, x.a || 0), /*#__PURE__*/React.createElement("td", null, gxPdSigned(x.pm))));
+  }))), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    className: "r text-blue-600",
-    onClick: () => setTab("news")
-  }, "All news")), /*#__PURE__*/React.createElement(GxPdNews, {
-    items: news.slice(0, 1)
-  })) : null) : null, tab === "log" ? /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-more",
+    onClick: () => setTab("log")
+  }, "See full game log")) : null) : null, tab === "log" ? /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-pn"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-h"
@@ -13749,4 +13816,40 @@ function GxRngSel100() {
     value: k
   }, l))));
 }
+// ---------- change 101: team colours for the phone player header (install.py) ----------
+const GX_TC101 = {
+  ANA: "#F47A38",
+  BOS: "#FFB81C",
+  BUF: "#003087",
+  CGY: "#C8102E",
+  CAR: "#CE1126",
+  CHI: "#CF0A2C",
+  COL: "#6F263D",
+  CBJ: "#002654",
+  DAL: "#006847",
+  DET: "#CE1126",
+  EDM: "#FF4C00",
+  FLA: "#C8102E",
+  LA: "#A2AAAD",
+  MIN: "#154734",
+  MTL: "#AF1E2D",
+  NSH: "#FFB81C",
+  NJ: "#CE1126",
+  NYI: "#00539B",
+  NYR: "#0038A8",
+  OTT: "#C52032",
+  PHI: "#F74902",
+  PIT: "#FCB514",
+  SJ: "#006D75",
+  SEA: "#355464",
+  STL: "#002F87",
+  TB: "#002868",
+  TOR: "#00205B",
+  UTA: "#6CACE4",
+  VAN: "#00205B",
+  VGK: "#B4975A",
+  WSH: "#C8102E",
+  WPG: "#041E42"
+};
+const gxTC101 = t => GX_TC101[t] || "#555555";
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
