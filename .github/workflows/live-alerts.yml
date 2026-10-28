@@ -1,0 +1,28 @@
+name: Live lead alerts
+on:
+  schedule:
+    - cron: "40 16-23 * * *"
+    - cron: "40 0-4 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: live-alerts
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Watch the matchup and buzz on lead changes
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          SWID: ${{ secrets.SWID }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          if [ -f gm_live.py ]; then python gm_live.py; else echo "gm_live.py not installed yet"; fi
