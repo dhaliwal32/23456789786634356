@@ -362,6 +362,7 @@ function applyESPN(s, E) {
 // ---------- projections ----------
 const effAvg0 = (p, K) => p.gp > 0 ? (p.avg * K + p.tot) / (K + p.gp) : p.avg;
 const effAvg = (p, K, dt) => {
+  if ((window.__PMODE || "combo") === "combo") return gxCombo124(p, K, dt); /* gx124 */
   const base = effAvg0(p, K);
   const M = window.__MODEL,
     mode = window.__PMODE || "espn";
@@ -470,7 +471,7 @@ const b2bAdj = (p, dt) => {
   return null;
 };
 const gStart = (p, dt) => {
-  const aiG = window.__PMODE === "ai" && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null;
+  const aiG = (window.__PMODE === "ai" || window.__PMODE === "combo") && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null;
   const fallback = aiG != null ? {
     v: aiG,
     l: `AI start chance (${Math.round(aiG * 100)}%)`
@@ -1231,6 +1232,17 @@ function App() {
   livePP1(E);
   window.__PLAYERS = s.players;
   useEffect(() => {
+    fetch("ai/combo.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(C => {
+      if (C && C.groups) {
+        window.__COMBO = C;
+        setS(st => ({
+          ...st,
+          players: [...st.players]
+        }));
+      }
+    }).catch(() => {});
+  }, []); /* gx124 */
+  useEffect(() => {
     fetch("ai/models/ai_proj.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(A => {
       if (!A || !A.proj || !((Date.now() - Date.parse(A.asof)) / 36e5 < 36)) return;
       const avg = {};
@@ -1288,7 +1300,7 @@ function App() {
       if (!window.location.hash) window.history.replaceState(null, "", h);else window.history.pushState(null, "", h);
     } catch (e) {}
   }, [loaded, tab, subs[tab], teamView, player ? player.id : null]);
-  window.__PMODE = window.__MODEL ? s.pmode || "blend" : "espn";
+  window.__PMODE = "combo"; /* gx124 */
   window.__GOALIES = useMemo(() => {
     const o = {};
     Object.entries(s.goalies || {}).forEach(([d, m]) => {
@@ -5364,9 +5376,9 @@ function MobileHeader({
     className: "px-3 pt-2 pb-1"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500 mb-1"
-  }, "Projections"), /*#__PURE__*/React.createElement("div", {
+  }, "Projections: Combined"), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 overflow-x-auto navscroll"
-  }, M_MODES.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+  }, [].map(([k, l]) => /*#__PURE__*/React.createElement("button", {
     key: k,
     disabled: !can(k),
     onClick: () => setS({
@@ -8909,7 +8921,7 @@ function SetupPage({
     model: "GM model",
     ai: "AI"
   };
-  const projTxt = s.pbest ? "Best projection (" + (PM[window.__PMODE] || "ESPN") + ")" : (PM[window.__PMODE] || "ESPN") + " projections";
+  const projTxt = "Combined projection";
   const themeTxt = theme === "auto" ? "Automatic theme" : theme === "light" ? "Light theme" : "Dark theme";
   const ast = al ? gxAlertState(al.p) : null,
     alog = al ? gxAlertLog(al.b) : [];
@@ -8975,27 +8987,16 @@ function SetupPage({
     }
   }, /*#__PURE__*/React.createElement("span", null, "Theme"), seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, k => window.__setTheme && window.__setTheme(k))), /*#__PURE__*/React.createElement("div", {
     className: "gx-sr"
-  }, /*#__PURE__*/React.createElement("span", null, "Projections"), seg([["best", "Best" + (s.pbest ? " (" + ({
-    espn: "ESPN",
-    blend: "Blend",
-    model: "GM model",
-    ai: "AI"
-  }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, k => k === "best" ? setS({
-    ...s,
-    pbest: true
-  }) : setS({
-    ...s,
-    pbest: false,
-    pmode: k,
-    players: [...s.players]
-  }))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, "Projections"), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm"
+  }, "Combined")), /*#__PURE__*/React.createElement("div", {
     className: "gx-sr"
   }, /*#__PURE__*/React.createElement("span", null, "Favourite team (Lines)"), /*#__PURE__*/React.createElement(GxFavSel112, null)), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       paddingTop: 8
     }
-  }, "Best switches each day to whichever projection has been most accurate in the AI Lab.")));
+  }, "One projection built from ESPN, the GM model and the AI, re-tested every night on every game played. The AI Lab shows how each one is doing.")));
   if (sub === "rules") return page("Pickup rules", /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "gx-sr",
     style: {
@@ -9916,7 +9917,7 @@ function GxBest({
   setS
 }) {
   useEffect(() => {
-    if (!s.pbest) return;
+    if (true) return; /* gx124: Combined replaces Best */
     let dead = false;
     const MAP = {
       espn: "espn",
@@ -11770,7 +11771,7 @@ const gxTimed = (before, after, day) => {
 };
 // ---------- change 082: trade result under each projection (install.py) ----------
 const GX_PM82 = [["espn", "ESPN"], ["model", "GM model"], ["blend", "Blend"], ["ai", "AI"]];
-const gxCanMode82 = k => k === "espn" || !!window.__MODEL && (k !== "ai" || !!window.__AI);
+const gxCanMode82 = k => false; /* gx124: one Combined projection */
 // run fn with a different projection, then put the app's projection back
 const gxWithMode82 = (m, fn) => {
   const prev = window.__PMODE;
@@ -11816,7 +11817,8 @@ function GxTradeModes82({
   return /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 12
-    }
+    },
+    className: "gx-ep124"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-tag",
     style: {
@@ -12980,7 +12982,8 @@ function GxPickRes92({
   }, "chance to win")) : null), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 12
-    }
+    },
+    className: "gx-ep124"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-tag",
     style: {
@@ -15959,5 +15962,50 @@ function gxDecP123(p, dt, x) {
     ...x,
     dec: g.my > g.op ? "W" : gxMins123(x.toi) > 60.02 ? "O" : "L"
   };
+}
+// ---------- change 124: the Combined projection (install.py) ----------
+// weights come from ai/combo.json (re-learned every night by gm_combo.py); missing numbers fall back AI -> GM -> ESPN
+function gxCombo124(p, K, dt) {
+  const e = effAvg0(p, K),
+    id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  let g = null,
+    a = null;
+  if (id) {
+    const M = window.__MODEL;
+    if (M) {
+      const pr = (M.proj || {})[id],
+        mv = dt && pr && pr[dt] != null ? pr[dt] : (M.base || {})[id];
+      if (mv != null) g = mv;
+    }
+    const A = window.__AI;
+    if (A) {
+      const ap = (A.proj || {})[id],
+        av = ap ? dt && ap[dt] != null ? ap[dt] : (window.__AIAVG || {})[id] : null;
+      if (av != null) a = av;
+    }
+  }
+  const grp = p.p === "G" ? "G" : p.p === "D" ? "D" : "F",
+    C = ((window.__COMBO || {}).groups || {})[grp] || {};
+  const W = C.w || {
+    espn: 0,
+    gm: 0.5,
+    ai: 0.5
+  };
+  let s = 0,
+    t = 0;
+  if (a != null && W.ai) {
+    s += W.ai * a;
+    t += W.ai;
+  }
+  if (g != null && W.gm) {
+    s += W.gm * g;
+    t += W.gm;
+  }
+  if (W.espn) {
+    s += W.espn * e;
+    t += W.espn;
+  }
+  const v = t > 1e-9 ? s / t + (C.bias || 0) : a != null ? a : g != null ? g : e;
+  return Math.max(0, v) * (p.gwMul || 1);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
