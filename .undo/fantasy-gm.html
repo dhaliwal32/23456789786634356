@@ -869,6 +869,13 @@
   .gx-tg114 button:not(.on) { opacity: .5; }
   .gx-tn114 { font-size: 13px; color: var(--mute); margin-top: 2px; }
   .gx-tn114 b { color: var(--ink); font-weight: 600; }
+  /* change 116 (install.py) */
+  .gx-tw113.gx-tg114 { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 380px; margin: 0 auto; }
+  .gx-tw113.gx-tg114 button { width: calc((100% - 40px) / 5); display: flex; justify-content: center; }
+  .gx-tn114 { text-align: center; }
+  .gx-key116 { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--mute); margin-top: 6px; }
+  .gx-key116 span { display: inline-flex; align-items: center; gap: 5px; }
+  .gx-key116 svg { flex: none; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -877,7 +884,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1pikyjt.sfchf9" data-file="build/app.js">
+<meta name="gx-build" content="1myblw0.19dxhx2" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1874,7 +1881,6 @@ function Matchup({ s, setS, wk, setWk }) {
         <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
           <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
         </div>
-        {state !== "projected" && x.proj != null && y.proj != null ? <div className="text-xs text-slate-500" style={{ textAlign: "right", marginTop: -4, marginBottom: 6, fontVariantNumeric: "tabular-nums" }} data-gx="094">{"Original projection " + f1(x.proj) + " to " + f1(y.proj) + " (" + (x.proj - y.proj >= 0 ? "+" : "") + f1(x.proj - y.proj) + ")"}</div> : null}
         {rows.length ? rows.map(([sl, p, q], i) => (
           <div key={i} className="gx-h2h" style={i ? null : { borderTop: 0 }}>
             {cell(p, false)}{num(p, q, false)}
@@ -5310,12 +5316,12 @@ function GxRace({ s, wk }) {
         <line x1={L0} x2={R0} y1={base} y2={base} style={{ stroke: "var(--line)" }} />
         {segs}
         {gxGopt105() === "bars" ? dates.map((_, d) => { const ga = gms(X, d), gb = gms(Y, d); return <g key={"gb" + d}><rect x={cx(d) - 9} y={base - ga * 4} width={7} height={ga * 4} rx={1.5} style={{ fill: "var(--accent)", opacity: 0.3 }} /><rect x={cx(d) + 2} y={base - gb * 4} width={7} height={gb * 4} rx={1.5} style={{ fill: "var(--mute)", opacity: 0.3 }} /></g>; }) : null}
-        {done >= 2 ? <polyline points={P(EB, 0, done - 1)} style={ln("var(--mute)", "2 4", 1, 0.6)} /> : null}
-        {done >= 2 ? <polyline points={P(EA, 0, done - 1)} style={ln("var(--accent)", "2 4", 1, 0.45)} /> : null}
+        {done >= 2 ? <polyline points={P(EB, 0, done - 1)} style={ln("var(--mute)", "0.1 4.5", 2.2, 0.85)} /> : null}
+        {done >= 2 ? <polyline points={P(EA, 0, done - 1)} style={ln("var(--accent)", "0.1 4.5", 2.2, 0.8)} /> : null}
         {done < n ? <polyline points={P(CB, Math.max(0, done - 1), n - 1)} style={ln("var(--mute)", "5 4")} /> : null}
         {done < n ? <polyline points={P(CA, Math.max(0, done - 1), n - 1)} style={ln("var(--accent)", "5 4")} /> : null}
-        {done >= 2 ? <polyline points={P(CB, 0, done - 1)} style={ln("var(--mute)")} /> : null}
-        {done >= 2 ? <polyline points={P(CA, 0, done - 1)} style={ln("var(--accent)")} /> : null}
+        {done >= 2 ? <polyline points={P(CB, 0, done - 1)} style={ln("var(--mute)", null, 2.6)} /> : null}
+        {done >= 2 ? <polyline points={P(CA, 0, done - 1)} style={ln("var(--accent)", null, 2.6)} /> : null}
         {fdays.map((d) => <g key={"f" + d}><circle cx={cx(d)} cy={yy(CB[d])} r={2.5} style={{ fill: "var(--mute)" }} /><circle cx={cx(d)} cy={yy(CA[d])} r={2.5} style={{ fill: "var(--accent)" }} /></g>)}
         <circle cx={cx(d0)} cy={yy(CB[d0])} r={4.5} style={k0 === "f" ? { fill: "var(--mute)", stroke: "var(--card)", strokeWidth: 2 } : { fill: "var(--card)", stroke: "var(--mute)", strokeWidth: 2 }} />
         <circle cx={cx(d0)} cy={yy(CA[d0])} r={4.5} style={k0 === "f" ? { fill: "var(--accent)", stroke: "var(--card)", strokeWidth: 2 } : { fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 2 }} />
@@ -5346,6 +5352,11 @@ function GxRace({ s, wk }) {
           );
         })}
       </svg>
+      <div className="gx-key116" data-gx="116k">
+        <span><svg width="22" height="6"><line x1="2" x2="20" y1="3" y2="3" style={{ stroke: "var(--ink)", strokeWidth: 2.6, strokeLinecap: "round" }} /></svg>Actual</span>
+        <span><svg width="22" height="6"><line x1="2" x2="20" y1="3" y2="3" style={{ stroke: "var(--ink)", strokeWidth: 2.2, strokeDasharray: "0.1 4.5", strokeLinecap: "round" }} /></svg>Original projection</span>
+        <span><svg width="22" height="6"><line x1="2" x2="20" y1="3" y2="3" style={{ stroke: "var(--ink)", strokeWidth: 2, strokeDasharray: "5 4" }} /></svg>Projected</span>
+      </div>
       <div className="gx-rf" style={{ display: "none" }}>{facts}</div>
       <div className="gx-rt" style={{ display: "none" }}>
         <span className="l">{dayLabel(dates[d0])}</span><span style={{ color: "var(--accent)", fontWeight: 600 }}>You</span><span className="text-slate-500 truncate">{teamName(s, opp)}</span>
@@ -7328,10 +7339,10 @@ function GxTradeLab113({ s, res, Gv, Rv, pg, gl }) {
 // ---------- change 114: fantasy team pictures from ESPN (install.py) ----------
 function GxFtPic114({ id, size }) {
   const T = ((window.ESPN_DATA || {}).teams || []).find((t) => String(t.id) === String(id).replace(/^t/, "")) || {};
-  const [bad, setBad] = useState(false);
-  const z = size || 24, nm = String(T.name || "?");
+  const [bad, setBad] = useState(0);
+  const z = size || 24, nm = String(T.name || "?"), srcs = [T.pic, T.logo].filter(Boolean);
   const st = { width: z, height: z, borderRadius: Math.round(z * 0.28) };
-  if (T.logo && !bad) return <img className="gx-fp114" src={T.logo} alt="" loading="lazy" style={st} onError={() => setBad(true)} />;
+  if (bad < srcs.length) return <img key={bad} className="gx-fp114" src={srcs[bad]} alt="" loading="lazy" style={st} onError={() => setBad(bad + 1)} />;
   return <span className="gx-fp114 l" style={{ ...st, fontSize: Math.round(z * 0.45) }}>{(nm.replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase()}</span>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);

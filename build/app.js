@@ -11010,49 +11010,6 @@ function GxRace({
       onClick: () => setSel(d)
     }));
   })), /*#__PURE__*/React.createElement("div", {
-    className: "gx-key116",
-    "data-gx": "116k"
-  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
-    width: "22",
-    height: "6"
-  }, /*#__PURE__*/React.createElement("line", {
-    x1: "2",
-    x2: "20",
-    y1: "3",
-    y2: "3",
-    style: {
-      stroke: "var(--ink)",
-      strokeWidth: 2.6,
-      strokeLinecap: "round"
-    }
-  })), "Actual"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
-    width: "22",
-    height: "6"
-  }, /*#__PURE__*/React.createElement("line", {
-    x1: "2",
-    x2: "20",
-    y1: "3",
-    y2: "3",
-    style: {
-      stroke: "var(--ink)",
-      strokeWidth: 2.2,
-      strokeDasharray: "0.1 4.5",
-      strokeLinecap: "round"
-    }
-  })), "Original projection"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("svg", {
-    width: "22",
-    height: "6"
-  }, /*#__PURE__*/React.createElement("line", {
-    x1: "2",
-    x2: "20",
-    y1: "3",
-    y2: "3",
-    style: {
-      stroke: "var(--ink)",
-      strokeWidth: 2,
-      strokeDasharray: "5 4"
-    }
-  })), "Projected")), /*#__PURE__*/React.createElement("div", {
     className: "gx-rf",
     style: {
       display: "none"

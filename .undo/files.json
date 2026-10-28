@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "espn_sync.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "116-trade-grid-chart-lines.py"
+  "117-no-chart-key.py"
  ]
 }
