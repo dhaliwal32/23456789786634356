@@ -1,8 +1,8 @@
 {
  "files": {
-  "gm_lines.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "128-star-line-alert.py"
+  "129-auto-refresh.py"
  ]
 }
