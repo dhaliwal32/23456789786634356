@@ -1390,10 +1390,7 @@ function App() {
     top103: true
   })), /*#__PURE__*/React.createElement(MyTeam, P));else if (tab === "myteam") content = /*#__PURE__*/React.createElement(MyTeam, P);else if (tab === "matchup") content = /*#__PURE__*/React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement(Matchup, P), /*#__PURE__*/React.createElement(GxMuMore103, {
-    s: s,
-    wk: wk
-  }));else if (tab === "teams") content = teamView ? /*#__PURE__*/React.createElement(TeamPage, _extends({}, P, {
+  }, /*#__PURE__*/React.createElement(Matchup, P));else if (tab === "teams") content = teamView ? /*#__PURE__*/React.createElement(TeamPage, _extends({}, P, {
     id: teamView,
     back: backFromTeam
   })) : /*#__PURE__*/React.createElement(TeamsTab, _extends({}, P, {
@@ -1407,7 +1404,12 @@ function App() {
   }, /*#__PURE__*/React.createElement(NewsView, {
     s: s,
     wk: wk
-  }), /*#__PURE__*/React.createElement(PhoneFeed, null));else if (tab === "moves") content = sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "injuries" ? /*#__PURE__*/React.createElement(GxInjPage, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
+  }), /*#__PURE__*/React.createElement(PhoneFeed, null));else if (tab === "moves") content = sub === "allp" ? /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(GxFaToggle105, {
+    cur: "allp",
+    go: go
+  }), /*#__PURE__*/React.createElement(GxRankings, P)) : sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "injuries" ? /*#__PURE__*/React.createElement(GxInjPage, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
     key: tradePartner || "none"
   }, P, {
     initPartner: tradePartner
@@ -2201,6 +2203,8 @@ function Matchup({
     today = todayISO();
   const first = dates.findIndex(x => x >= today);
   const d = Math.max(0, Math.min(n - 1, day != null ? day : first >= 0 ? first : n - 1));
+  const sl105a = useSlide105(sel),
+    sl105b = useSlide105(sel * 100 + d);
   const over = n > 0 && done >= n;
   const move = k => setSel((Math.min(sel, all.length - 1) + k + all.length) % all.length);
   const onStart = e => {
@@ -2336,6 +2340,8 @@ function Matchup({
       touchAction: "pan-y"
     }
   }, /*#__PURE__*/React.createElement("div", {
+    key: "m105-" + sel,
+    className: "gx-sl105 " + sl105a,
     style: {
       display: "flex",
       alignItems: "center",
@@ -2440,7 +2446,8 @@ function Matchup({
       }
     }, flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)));
   })), /*#__PURE__*/React.createElement("div", {
-    className: "gx-pn",
+    key: "d105-" + sel + "-" + d,
+    className: "gx-pn gx-sl105 " + sl105b,
     style: {
       marginTop: 12
     }
@@ -4186,13 +4193,7 @@ function MyTeam({
       className: "n text-slate-500 m-hide"
     }, nextW && !p.ir ? nextG(p) : "\u2013"), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
-    }, sea == null ? "\u2013" : /*#__PURE__*/React.createElement(React.Fragment, null, f1(sea), gap != null ? /*#__PURE__*/React.createElement("span", {
-      className: "text-xs",
-      style: {
-        marginLeft: 6,
-        color: gap >= 0 ? "var(--good)" : "var(--bad)"
-      }
-    }, (gap >= 0 ? "+" : "") + f1(gap)) : null)), /*#__PURE__*/React.createElement("div", {
+    }, sea == null ? "\u2013" : f1(sea)), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
@@ -4258,7 +4259,7 @@ function MyTeam({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -4269,8 +4270,7 @@ function MyTeam({
       padding: "8px 0 4px"
     }
   }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, list.map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
-    title: "Weakest spots",
-    right: "First to drop or include in a trade"
+    title: "Weakest spots"
   }, weak.length ? weak.map((p, i) => /*#__PURE__*/React.createElement("div", {
     key: p.id,
     className: "gx-row",
@@ -5268,7 +5268,9 @@ function GoalieStreams({
     "aria-label": "Later day",
     disabled: day >= maxD,
     onClick: () => go(1)
-  }, "\u203a")), /*#__PURE__*/React.createElement("div", {
+  }, "\u203a")), /*#__PURE__*/React.createElement(GxGoSl105, {
+    day: day
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pn",
     "data-r65": "goalies"
   }, /*#__PURE__*/React.createElement("div", {
@@ -5294,7 +5296,7 @@ function GoalieStreams({
     style: {
       padding: "10px 0"
     }
-  }, nNHL ? day < today ? "Results for this day are not saved." : "Game times for this day are not loaded yet." : "No NHL games this day.")), sim && M && wkD ? /*#__PURE__*/React.createElement(MoveSim, {
+  }, nNHL ? day < today ? "Results for this day are not saved." : "Game times for this day are not loaded yet." : "No NHL games this day."))), sim && M && wkD ? /*#__PURE__*/React.createElement(MoveSim, {
     s: sW,
     setS: setS,
     wk: wkD,
@@ -6854,8 +6856,7 @@ function TradeAdvice({
   const list = all.filter(x => team === "all" || x.p.ft === team);
   const shown = list.slice(0, more ? 20 : 8);
   return /*#__PURE__*/React.createElement(Section, {
-    title: "Buy low",
-    sub: "Good players on other teams who are cold, unlucky or underrated."
+    title: "Buy low"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center gap-2 mb-1",
     "data-r42": "bl"
@@ -7865,7 +7866,12 @@ function Pickups({
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(GxFaToggle105, {
+    cur: "adddrop",
+    go: (t, k) => {
+      window.location.hash = gxHash(t, k);
+    }
+  }), /*#__PURE__*/React.createElement("div", {
     className: "text-sm"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-semibold"
@@ -8037,12 +8043,7 @@ function Pickups({
       marginTop: 10
     },
     onClick: () => setLimit(limit + 25)
-  }, "Show ", Math.min(25, all.length - rows.length), " more") : null, rows.length ? /*#__PURE__*/React.createElement("div", {
-    className: "text-xs text-slate-500",
-    style: {
-      marginTop: 10
-    }
-  }, "Adds is the extra points in your lineup for ", hLabel, ". Tap a player to try the swap or change who you drop.") : null), others.length ? /*#__PURE__*/React.createElement(GxPanel, {
+  }, "Show ", Math.min(25, all.length - rows.length), " more") : null), others.length ? /*#__PURE__*/React.createElement(GxPanel, {
     title: "On other teams"
   }, others.map((p, i) => /*#__PURE__*/React.createElement("div", {
     key: p.id,
@@ -9883,13 +9884,7 @@ function GxRosterTable({
       className: "n text-slate-500 m-hide"
     }, nextW && !p.ir ? nextG(p) : "\u2013"), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
-    }, sea == null ? "\u2013" : /*#__PURE__*/React.createElement(React.Fragment, null, f1(sea), gap != null ? /*#__PURE__*/React.createElement("span", {
-      className: "text-xs",
-      style: {
-        marginLeft: 6,
-        color: gap >= 0 ? "var(--good)" : "var(--bad)"
-      }
-    }, (gap >= 0 ? "+" : "") + f1(gap)) : null)), /*#__PURE__*/React.createElement("div", {
+    }, sea == null ? "\u2013" : f1(sea)), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
@@ -9906,7 +9901,7 @@ function GxRosterTable({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -10607,6 +10602,7 @@ function GxRace({
       return null;
     }
   }, [up, i, opp, R]);
+  const sl105 = useSlide105(i);
   const act = id => +(w.act || {})[id] || 0;
   const sa = up ? 0 : act(s.me),
     sb = up || !opp ? 0 : act(opp);
@@ -10703,7 +10699,7 @@ function GxRace({
   const topV = Math.max(CA[n - 1], CB[n - 1], done ? Math.max(EA[done - 1], EB[done - 1]) : 0, 1) * 1.06;
   const base = 172,
     yy = v => base - v / topV * 158,
-    Hh = narrow ? 230 : 214;
+    Hh = (narrow ? 230 : 214) + (gxGopt105() === "text" ? 18 : 0);
   const P = (a, from, to) => a.slice(from, to + 1).map((v, k) => cx(from + k).toFixed(1) + "," + yy(v).toFixed(1)).join(" ");
   const ln = (col, dash, wdt, op) => ({
     fill: "none",
@@ -10779,9 +10775,10 @@ function GxRace({
       color: wp >= 0.5 ? "var(--good)" : "var(--bad)"
     }
   }, wpTxt(wp) + " to win")), /*#__PURE__*/React.createElement("svg", {
+    key: "w105-" + i,
     viewBox: "0 0 " + W + " " + Hh,
     width: "100%",
-    className: "gx-svg",
+    className: "gx-svg gx-sl105 " + sl105,
     style: {
       display: "block",
       marginTop: 8
@@ -10805,7 +10802,33 @@ function GxRace({
     style: {
       stroke: "var(--line)"
     }
-  }), segs, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
+  }), segs, gxGopt105() === "bars" ? dates.map((_, d) => {
+    const ga = gms(X, d),
+      gb = gms(Y, d);
+    return /*#__PURE__*/React.createElement("g", {
+      key: "gb" + d
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: cx(d) - 9,
+      y: base - ga * 4,
+      width: 7,
+      height: ga * 4,
+      rx: 1.5,
+      style: {
+        fill: "var(--accent)",
+        opacity: 0.3
+      }
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: cx(d) + 2,
+      y: base - gb * 4,
+      width: 7,
+      height: gb * 4,
+      rx: 1.5,
+      style: {
+        fill: "var(--mute)",
+        opacity: 0.3
+      }
+    }));
+  }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
     points: P(EB, 0, done - 1),
     style: ln("var(--mute)", "2 4", 1, 0.6)
   }) : null, done >= 2 ? /*#__PURE__*/React.createElement("polyline", {
@@ -10918,7 +10941,15 @@ function GxRace({
         fontSize: fs,
         fill: "var(--mute)"
       }
-    }, Math.round(th[d])) : null, /*#__PURE__*/React.createElement("rect", {
+    }, Math.round(th[d])) : null, gxGopt105() === "text" ? /*#__PURE__*/React.createElement("text", {
+      x: cx(d),
+      y: Hh - 4,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs - 1,
+        fill: "var(--mute)"
+      }
+    }, gms(X, d) + "\u2013" + gms(Y, d)) : null, /*#__PURE__*/React.createElement("rect", {
       x: cx(d) - cw / 2,
       y: 0,
       width: cw,
@@ -11603,9 +11634,7 @@ function GxRankings({
   }, "Show 50 more (" + (rows.length - shown.length) + " left)") : null, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
-      paddingTop: 10,
-      marginTop: 10,
-      borderTop: "1px solid var(--line)"
+      display: "none"
     }
   }, "Rank is each player's place among all ", PN78[pos], " by expected points a game", pos === "G" ? ", weighted by how often he starts" : "", ", the same rank shown on team pages. So far is his average this season. ", /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -12028,33 +12057,9 @@ function GxInjPage({
       className: "text-slate-500"
     }, " · " + gxIjAgo(gxIjLast(r.e)))) : !upd && r.e && r.e.k !== "news" ? /*#__PURE__*/React.createElement("div", {
       className: "text-xs"
-    }, evTxt(r.e)) : null, note && (upd || openN[nk]) ? /*#__PURE__*/React.createElement("div", {
-      className: "text-xs text-slate-500 nt" + (openN[nk] ? " open" : ""),
-      role: "button",
-      onClick: () => setOpenN(x => ({
-        ...x,
-        [nk]: !x[nk]
-      }))
-    }, note) : null, /*#__PURE__*/React.createElement("div", {
+    }, evTxt(r.e)) : null, /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500"
-    }, !upd && note && !openN[nk] ? /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: () => setOpenN(x => ({
-        ...x,
-        [nk]: true
-      }))
-    }, "Latest news"), r.p.ft === "fa" ? " · " : "") : null, r.p.ft === "fa" ? /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: () => gxWatch.toggle(r.p.id)
-    }, gxWatch.has(r.p.id) ? "Watching" : "Watch"), " · ", /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      className: "text-blue-600",
-      onClick: () => {
-        if (window.__QA) window.__QA.espn(r.p);
-      }
-    }, "Add on ESPN")) : null)), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, /*#__PURE__*/React.createElement("div", {
       className: "font-semibold"
@@ -12077,7 +12082,7 @@ function GxInjPage({
     onChange: setPos
   })), who !== "mine" ? /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, allP ? "Showing every injured player. " : "Showing good players only: better than your weakest at their position once healthy. ", /*#__PURE__*/React.createElement("button", {
+  }, allP ? "Every injured player \u00b7 " : "Good players only \u00b7 ", /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "text-blue-600",
     onClick: () => setAllP(!allP)
@@ -13100,7 +13105,8 @@ function GxPlayerDetail({
         const live = pStat(p, d);
         return has.has(d) ? gxBoxDay(d).then(day => ({
           d,
-          x: day && day[eid] || live
+          x: day && day[eid] || live,
+          day
         })) : Promise.resolve({
           d,
           x: live
@@ -13108,7 +13114,22 @@ function GxPlayerDetail({
       }));
     }).then(list => {
       if (dead) return;
-      setLog(list.filter(r => r.x).map(r => {
+      setLog(list.filter(r => r.x || !(r.d === today && gState(p.t, r.d).s === "P")).map(r => {
+        if (!r.x) {
+          const tm = r.day ? Object.values(r.day).find(v => v && v.t === p.t) : null;
+          return {
+            ...r,
+            x: tm ? {
+              ...GX_DNP105,
+              o: tm.o,
+              h: tm.h
+            } : GX_DNP105,
+            dnp: true,
+            fp: null,
+            est: false,
+            st: "F"
+          };
+        }
         const a = r.x.fp != null ? r.x.fp : gxPdReal(p, r.d);
         return {
           ...r,
@@ -13163,7 +13184,7 @@ function GxPlayerDetail({
 
   // stats rows
   const rows = log || [];
-  const done = rows;
+  const done = rows.filter(r => !r.dnp);
   const since = n => done.filter(r => r.d >= addDays(today, -(n - 1)));
   const statRows = [["Season", gxPdSum(done, isG)], ["Last 7 days", gxPdSum(since(7), isG)], ["Last 15 days", gxPdSum(since(15), isG)]];
   const SH = isG ? ["GP", "W", "L", "GA", "SV", "SV%", "FPTS"] : ["GP", "ATOI", "G", "A", "+/-", "PIM", "SOG", "FPTS"];
@@ -13439,7 +13460,7 @@ function GxPlayerDetail({
       key: r.d
     }, /*#__PURE__*/React.createElement("td", null, r.d.slice(5).replace("-", "/")), /*#__PURE__*/React.createElement("td", null, o ? (h ? "" : "@") + o : ""), /*#__PURE__*/React.createElement("td", {
       className: "b"
-    }, f1(r.fp)), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.dec === "O" ? "OTL" : x.dec || "-"), /*#__PURE__*/React.createElement("td", null, x.sv || 0), /*#__PURE__*/React.createElement("td", null, x.ga || 0)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.toi || "-"), /*#__PURE__*/React.createElement("td", null, x.g || 0), /*#__PURE__*/React.createElement("td", null, x.a || 0), /*#__PURE__*/React.createElement("td", null, gxPdSigned(x.pm))));
+    }, r.dnp ? "-" : f1(r.fp)), isG ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.dec === "O" ? "OTL" : x.dec || "-"), /*#__PURE__*/React.createElement("td", null, x.sv || 0), /*#__PURE__*/React.createElement("td", null, x.ga || 0)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("td", null, x.toi || "-"), /*#__PURE__*/React.createElement("td", null, x.g || 0), /*#__PURE__*/React.createElement("td", null, x.a || 0), /*#__PURE__*/React.createElement("td", null, gxPdSigned(x.pm))));
   }))), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "gx-pd-more",
@@ -13478,7 +13499,7 @@ function GxPlayerDetail({
       className: "m-hide"
     }, x.pim || 0), /*#__PURE__*/React.createElement("td", null, x.sog || 0)), /*#__PURE__*/React.createElement("td", {
       className: "b"
-    }, f1(r.fp), r.est ? "*" : ""));
+    }, r.dnp ? "-" : f1(r.fp), r.est ? "*" : ""));
   }))), log.length > nLog ? /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "gx-pd-more",
@@ -14028,7 +14049,7 @@ function GxMuMore103({
 }
 // ---------- change 104: separate skater and goalie stat columns (install.py) ----------
 const GX_SK104 = ["GP", "G", "A", "PTS", "+/-", "PIM", "SOG", "HIT", "BLK", "TOI", "FPTS", "Avg"];
-const GX_GO104 = ["GP", "W", "L", "OTL", "GA", "SV", "SV%", "GAA", "SO", "TOI", "FPTS", "Avg"];
+const GX_GO104 = ["GP", "W", "L", "OTL", "GA", "SV", "SV%", "GAA", "SO", "TOI", "FPTS", "GS%"];
 function gxAgg104(list, isG, sc) {
   const C = isG ? GX_GO104 : GX_SK104;
   if (!list || !list.length) return C.map((h, i) => i === 0 ? 0 : "-");
@@ -14066,6 +14087,7 @@ function GxSC104({
     const D = GX100.data[rng];
     v = D ? gxAgg104(D[eid], isG, s.sc || {}) : GX_SK104.map(() => "...");
   }
+  if (isG) v = [...v.slice(0, 11), p.prob != null ? Math.round(p.prob * 100) + "%" : "-"];
   return v.map((c, i) => /*#__PURE__*/React.createElement("div", {
     key: "c104" + i,
     className: "n " + (i >= 10 ? "font-semibold" : "text-slate-500")
@@ -14125,5 +14147,62 @@ function GxBL104({
     className: "tr",
     onClick: () => onPick(p)
   }, "+ Trade"));
+}
+// ---------- change 105: slide on swipe, all players, chart games (install.py) ----------
+// returns "r" or "l" when the key moves forward or back, so the new content slides in from that side
+function useSlide105(k) {
+  const r = React.useRef({
+    k,
+    c: ""
+  });
+  if (r.current.k !== k) r.current = {
+    k,
+    c: k > r.current.k ? "r" : "l"
+  };
+  return r.current.c;
+}
+// lineup games in the week chart: "text" (under each day) or "bars" (behind each day)
+const gxGopt105 = () => {
+  const v = uiGet().gxGopt105;
+  return v === "bars" ? "bars" : "text";
+};
+const GX_DNP105 = {
+  dec: "-",
+  sv: "-",
+  ga: "-",
+  svp: null,
+  toi: "-",
+  g: "-",
+  a: "-",
+  pm: "-",
+  pim: "-",
+  sog: "-"
+};
+function GxFaToggle105({
+  cur,
+  go
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-seg gx-fa105"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: cur !== "allp" ? "on" : "",
+    onClick: () => go("moves", "adddrop")
+  }, "Free agents"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: cur === "allp" ? "on" : "",
+    onClick: () => go("moves", "allp")
+  }, "All players"));
+}
+// ---------- change 105: goalie days slide ----------
+function GxGoSl105({
+  day,
+  children
+}) {
+  const c = useSlide105(day);
+  return /*#__PURE__*/React.createElement("div", {
+    key: "g105-" + day,
+    className: "gx-sl105 " + c
+  }, children);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

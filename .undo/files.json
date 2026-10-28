@@ -3,8 +3,6 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "102-speed.py",
-  "103-new-layout.py",
-  "104-cleanup.py"
+  "105-cleanup-slide.py"
  ]
 }
