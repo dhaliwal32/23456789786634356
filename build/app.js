@@ -6981,8 +6981,11 @@ function TopBar({
       paddingTop: 10
     }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "gx-badge"
-  }, (name[0] || "K").toUpperCase()), /*#__PURE__*/React.createElement("span", {
+    className: "gx-badge gx-bp121"
+  }, /*#__PURE__*/React.createElement(GxFtPic114, {
+    id: s.me,
+    size: 30
+  })), /*#__PURE__*/React.createElement("span", {
     style: {
       margin: "0 14px 10px 8px",
       lineHeight: 1.2,
@@ -14031,8 +14034,11 @@ function GxTopM103({
   }, /*#__PURE__*/React.createElement("div", {
     className: "hd"
   }, /*#__PURE__*/React.createElement("span", {
-    className: "gx-badge"
-  }, (name[0] || "K").toUpperCase()), /*#__PURE__*/React.createElement("span", {
+    className: "gx-badge gx-bp121"
+  }, /*#__PURE__*/React.createElement(GxFtPic114, {
+    id: s.me,
+    size: 30
+  })), /*#__PURE__*/React.createElement("span", {
     className: "nm"
   }, name), /*#__PURE__*/React.createElement("span", {
     className: "dt",
@@ -15628,9 +15634,16 @@ function GxBox119({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     className: "fc"
-  }, /*#__PURE__*/React.createElement(GxFace, {
-    p: p,
-    size: 100
+  }, String(p.id || "")[0] === "e" ? /*#__PURE__*/React.createElement("img", {
+    className: "hs",
+    src: "https://a.espncdn.com/i/headshots/nhl/players/full/" + String(p.id).slice(1) + ".png",
+    alt: "",
+    onError: e => {
+      e.currentTarget.style.display = "none";
+    }
+  }) : /*#__PURE__*/React.createElement(TeamLogo, {
+    t: p.t,
+    size: 60
   })), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "xx",

@@ -467,9 +467,26 @@ def team_fp(ln, fp):
 
 
 # ----------------------------------------------------------------- 5. alerts
+# change 121: players to watch for a return from injury (alert_prefs.json "return_watch")
+def _watch121():
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "alert_prefs.json"), encoding="utf-8") as f:
+            w = json.load(f).get("return_watch")
+        if isinstance(w, list):
+            return {norm(x) for x in w}
+    except Exception:
+        pass
+    return {norm("Troy Terry")}
+
+
+WATCH121 = _watch121()
+
+
 def relevance(ch, p):
     if not p:
         return None
+    if norm(p.get("n") or ch.get("name") or "") in WATCH121 and ch["type"] in ("status", "lineup", "move"):
+        return "watch"
     ft = p.get("ft") or 0
     if ft == MY_TEAM_ID:
         return "mine"
@@ -479,12 +496,30 @@ def relevance(ch, p):
         return None
     if ch["type"] in ("line", "lineup") and ch["dir"] in ("up", "in") and ch["to"] in ("F1", "F2", "D1"):
         return "fa"
+    if ch["type"] == "pp" and ch["dir"] == "up":
+        return "fa"
     if ch["type"] == "move" and ch["dir"] == "in":
         return "fa"
     return None
 
 
 def alert_for(c):
+    # change 121: a few words only, and only power play joins and watched players coming back
+    last = str(c.get("name") or "").split()[-1] if c.get("name") else ""
+    if c["type"] == "pp" and c["dir"] == "up" and c.get("who") in ("mine", "fa"):
+        return "Fantasy GM", f"{last} joined {c['team']} PP1"
+    if c.get("who") == "watch":
+        to, frm = str(c.get("to") or "").upper(), str(c.get("from") or "").upper()
+        if c["type"] == "status" and to != frm and ("DAY" in to or to == "ACTIVE"):
+            return "Fantasy GM", (f"{last} back to active" if to == "ACTIVE" else f"{last} close to returning ({pretty(to)})")
+        if c["type"] == "lineup" and c["dir"] == "in":
+            return "Fantasy GM", f"{last} back in the {c['team']} lineup"
+        if c["type"] == "move" and c["dir"] == "in":
+            return "Fantasy GM", f"{last} activated"
+    return None
+
+
+def _alert_for_old(c):
     bad = c["dir"] in ("down", "out")
     if c["who"] == "mine":
         title = {"line": "Your player's line changed", "lineup": "Your player: lineup change",
@@ -520,12 +555,10 @@ def send_alerts(state, now):
 
     urgent_n = 0
     for c in sorted(pending, key=lambda c: (c["who"] != "mine", c["at"])):
-        title, text, prio, tags = alert_for(c)
-        bad = c["dir"] in ("down", "out")
-        gone = c["type"] in ("lineup", "move") or (c["type"] == "status" and any(
-            w in str(c.get("to") or "").upper() for w in ("OUT", "RESERVE", "SUSPEN")))
-        urgent = c["who"] == "mine" and bad and gone and plays_soon(c["team"])
-        gm_notify.add(c["id"], title, text, "mine" if c["who"] == "mine" else "pickup", urgent=urgent, tags=tags if urgent else "")
+        a121 = alert_for(c)
+        urgent = bool(a121)
+        if a121:
+            gm_notify.add(c["id"], a121[0], a121[1], "mine", urgent=True, tags="")
         c["alerted"] = True
         urgent_n += 1 if urgent else 0
     print(f"(lines) {len(pending)} change(s) handed to notifications ({urgent_n} urgent)")
