@@ -1,5 +1,10 @@
 {
 "ev": {
+"2273": {
+"d": "2026-10-27",
+"k": "new",
+"now": "2026-10-29"
+},
 "2558631": {
 "d": "2026-10-22",
 "k": "new",
@@ -316,8 +321,9 @@
 },
 "4064582": {
 "d": "2026-10-27",
-"k": "new",
-"now": "2026-10-27"
+"k": "later",
+"now": "2026-10-30",
+"was": "2026-10-27"
 },
 "4233594": {
 "d": "2026-10-22",
@@ -658,6 +664,11 @@
 }
 },
 "last": {
+"2273": {
+"back": "2026-10-29",
+"note": "out",
+"status": "Out"
+},
 "2517899": {
 "back": "2026-12-30",
 "note": "Andersen (knee) isn't expected back until \"maybe\" December, head coach Mike Babcock told NHL.com on Tuesday.",
@@ -909,9 +920,9 @@
 "status": "Injured Reserve"
 },
 "4064582": {
-"back": "2026-10-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-10-30",
+"note": "out",
+"status": "Out"
 },
 "4233594": {
 "back": "2026-11-18",
