@@ -25,6 +25,8 @@ jobs:
       - run: pip install requests numpy scikit-learn
       - name: Learn and project
         run: python ai_research.py --daily ${{ inputs.retrain && '--train' || '' }}
+      - name: Re-test the Combined projection
+        run: if [ -f gm_combo.py ]; then python gm_combo.py || echo "::warning::gm_combo.py failed"; fi
       - name: Save results
         if: always()
         run: |
