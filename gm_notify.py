@@ -454,3 +454,8 @@ if __name__ == "__main__":
             flush()
         except Exception as ex:
             print(f"(notify) WARNING: {ex}")
+        try:  # change 130: Monday note
+            import gm_weekly
+            gm_weekly.run()
+        except Exception as ex:
+            print(f"(weekly) WARNING: {ex}")
