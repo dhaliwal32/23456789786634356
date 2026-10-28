@@ -1,9 +1,12 @@
 {
  "files": {
   "fantasy-gm.html": true,
-  "gm_live.py": false
+  "gm_notify.py": true,
+  "gm_alerts.py": true,
+  "gm_lines.py": true,
+  "gm_live.py": true
  },
  "changes": [
-  "120-live-points.py"
+  "121-short-alerts-pics.py"
  ]
 }

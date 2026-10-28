@@ -158,6 +158,22 @@ def run(players, slots, goalies, signals, my_team_id):
         elif (p.get("chg") or 0) >= TRENDING_PCT:
             alerts.append(("Pickup: trending free agent", f"{p['n']} ({p['p']}, {p['t']}) ownership is up {p['chg']}% - other managers are grabbing him.", "pickup", False, ""))
 
+    # change 121: only short goalie alerts for your goalies with a game today
+    alerts = []
+    for p in mine:
+        if p["p"] != "G" or slots.get(p["id"]) == IR or not upcoming(p["t"]) or is_out(p):
+            continue
+        last = p["n"].split()[-1]
+        ok = lambda v: "confirm" in (v.get("status") or "").lower() and "un" not in (v.get("status") or "").lower()
+        conf = any(ok(v) for k, v in gday.items() if norm(k) == norm(p["n"]))
+        other = any(v.get("team") == p["t"] and ok(v) for k, v in gday.items() if norm(k) != norm(p["n"]))
+        if conf:
+            alerts.append(("Fantasy GM", f"{last} confirmed", "lineup", True, ""))
+        elif other:
+            alerts.append(("Fantasy GM", f"{last} not starting", "lineup", True, ""))
+        elif games[p["t"]][1] - now <= timedelta(minutes=75):
+            alerts.append(("Fantasy GM", f"{last} not confirmed", "lineup", True, ""))
+
     new = 0
     for title, msg, section, urgent, tags in alerts:
         key = hashlib.md5((msg + ("!" if urgent else "")).encode("utf-8")).hexdigest()[:12]

@@ -417,6 +417,30 @@ def flush(now=None):
         _save(box)
 
 
+
+# ---------- change 121: only the alerts Kuvar asked for, all titled "Fantasy GM"; no summaries ----------
+ONLY_TITLE = "Fantasy GM"
+_push121, _add121 = push, add
+
+
+def push(title, msg, prio="default", tags=""):
+    if title != ONLY_TITLE and not str(msg).startswith("Test"):
+        print(f"(notify) not sent (only short Fantasy GM alerts are on): {title}")
+        return False
+    return _push121(title, msg, prio, tags)
+
+
+def add(key, title, text, section="other", urgent=False, tags=""):
+    if title != ONLY_TITLE:
+        print(f"(notify) not sent (only short Fantasy GM alerts are on): {title}")
+        return "switched off"
+    return _add121(key, title, text, section, True, "")
+
+
+def flush(now=None):
+    print("(notify) summaries are off")
+
+
 if __name__ == "__main__":
     if "--preview" in sys.argv:
         b = _load()

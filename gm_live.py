@@ -40,7 +40,7 @@ def push(title, msg):
         return
     try:
         requests.post(f"https://ntfy.sh/{NTFY_TOPIC}", data=msg.encode("utf-8"),
-                      headers={"Title": title, "Priority": "high", "Tags": "ice_hockey", "Click": APP_URL}, timeout=20)
+                      headers={"Title": title, "Priority": "default", "Click": APP_URL}, timeout=20)
     except Exception as e:
         log("ntfy failed", e)
 
@@ -127,9 +127,9 @@ def main():
                 last = side
             elif side != 0 and side != last:
                 if side > 0:
-                    push("You took the lead", f"{a:.1f} to {b:.1f} vs {them}")
+                    push("Fantasy GM", f"You lead {a:.1f} to {b:.1f}")
                 else:
-                    push(f"{them} took the lead", f"{b:.1f} to {a:.1f}. You trail by {abs(d):.1f}")
+                    push("Fantasy GM", f"{them} lead {b:.1f} to {a:.1f}")
                 log("lead change", a, b)
                 last = side
             elif side != 0:

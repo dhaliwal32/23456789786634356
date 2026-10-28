@@ -909,6 +909,11 @@
   .gx-bm119 .tb .t:nth-child(4n+1) { border-bottom-left-radius: 16px; }
   .gx-bm119 .tb .t:nth-child(4n) { border-bottom-right-radius: 16px; }
   .gx-bm119 .em { padding: 14px 18px 18px; text-align: center; color: var(--mute); font-size: 14px; border-top: 1px solid var(--line); }
+  /* change 121 (install.py) */
+  .gx-bm119 .fc { background: #e8e8ea; }
+  .gx-bm119 .fc .hs { position: absolute; bottom: 0; left: 50%; height: 100%; width: auto; max-width: none; transform: translateX(-50%); }
+  .gx-bp121 { border: 0 !important; overflow: hidden; }
+  .gx-bp121 .gx-fp114 { width: 100% !important; height: 100% !important; border-radius: 999px !important; object-fit: cover; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -917,7 +922,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1hhsq9u.ppxt1" data-file="build/app.js">
+<meta name="gx-build" content="12qnkej.igxmon" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3726,7 +3731,7 @@ function TopBar({ s, setS, tab, go, ageH }) {
   const W = gxWarn(s);
   return (
     <div className="m-hide max-w-6xl mx-auto px-3 flex items-end gap-1" style={{ paddingTop: 10 }}>
-      <span className="gx-badge">{(name[0] || "K").toUpperCase()}</span>
+      <span className="gx-badge gx-bp121"><GxFtPic114 id={s.me} size={30} /></span>
       <span style={{ margin: "0 14px 10px 8px", lineHeight: 1.2, minWidth: 0 }}>
         <span className="block font-semibold truncate" style={{ maxWidth: 180 }}>{name}</span>
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
@@ -6759,7 +6764,7 @@ function GxTopM103({ s, tab, go, ageH }) {
   return (
     <div className="m-only gx-tm103">
       <div className="hd">
-        <span className="gx-badge">{(name[0] || "K").toUpperCase()}</span>
+        <span className="gx-badge gx-bp121"><GxFtPic114 id={s.me} size={30} /></span>
         <span className="nm">{name}</span>
         <span className="dt" style={{ background: dot }} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"}></span>
         <button type="button" className="sr" aria-label="Search" onClick={() => window.dispatchEvent(new Event("gm-search"))}>
@@ -7440,7 +7445,7 @@ function GxBox119({ s, p, onClose }) {
   const box = (
     <div className="gx-bm119" onClick={onClose} role="dialog" aria-label={p.n + " box score"}>
       <div className="cd" onClick={(e) => e.stopPropagation()}>
-        <div className="fc"><GxFace p={p} size={100} /></div>
+        <div className="fc">{String(p.id || "")[0] === "e" ? <img className="hs" src={"https://a.espncdn.com/i/headshots/nhl/players/full/" + String(p.id).slice(1) + ".png"} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : <TeamLogo t={p.t} size={60} />}</div>
         <button type="button" className="xx" aria-label="Close" onClick={onClose}>{"×"}</button>
         <button type="button" className="nm hover:underline" onClick={() => { onClose(); if (window.__NAV) window.__NAV.player(p); }}>{p.n}</button>
         <div className="sb">{sub}</div>
