@@ -742,6 +742,35 @@
     .gx-sim107 { margin: 0; border: 0; border-radius: 0; min-height: 100%; padding: 16px 14px 40px; animation: gx101-up .3s cubic-bezier(.2,.8,.2,1); }
     .gx-sim107 .chips { grid-template-columns: 1fr 1fr; }
   }
+  /* change 108 (install.py) */
+  /* rosters: face, name, FPTS, Avg, Expected, Rank, then stats */
+  .gx-sc99 .gx-ro > :nth-child(3), .gx-sc99 .gx-ro > :nth-child(4), .gx-sc99 .gx-ro > :nth-child(6), .gx-sc99 .gx-ro > :nth-child(7), .gx-sc99 .gx-ro > :nth-child(8) { display: none !important; }
+  .gx-sc99 .gx-ro { grid-template-columns: 44px 200px 62px 72px 70px 64px 40px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  /* pickups: no Last 5, every stat */
+  .gx-sc99 .gx-pk > :nth-child(3) { display: none !important; }
+  .gx-sc99 .gx-pk.full, .gx-sc99 .gx-pk.cm { grid-template-columns: 44px 220px 62px 56px 70px 66px 58px 62px 56px 40px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  /* nothing behind the player while sliding */
+  .gx-sc99.gx-rk106 > .gx-rk > :nth-child(2) { box-shadow: 12px 0 0 var(--card); }
+  .gx-sc99.gx-rk106 > .gx-rk.me > :nth-child(2) { box-shadow: 12px 0 0 var(--card3, var(--card)); }
+  /* sortable stat headings */
+  .gx-sh108 { color: inherit; font: inherit; white-space: nowrap; }
+  .gx-sh108.on { color: var(--ink); font-weight: 700; }
+  .gx-sh108 i { font-style: normal; font-size: 9px; margin-left: 2px; }
+  /* matchup: one date with arrows */
+  .gx-dn108 { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 14px; }
+  .gx-dn108 .dt { min-width: 150px; text-align: center; font-weight: 600; font-size: 16px; }
+  .gx-dn108 .dt small { display: block; font-weight: 400; font-size: 12px; }
+  /* pickups filter button */
+  .gx-ft108 > button.tg { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 12px; border: 1px solid var(--line2); border-radius: 12px; font-size: 14px; color: var(--ink); text-align: left; }
+  .gx-ft108 > button.tg span { color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gx-ft108 > button.tg b { margin-left: auto; font-weight: 400; color: var(--mute); transition: transform .2s; }
+  .gx-ft108.open > button.tg b { transform: rotate(180deg); }
+  .gx-ft108 .pnl { margin-top: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; gap: 10px; animation: gx101-in .2s ease-out; }
+  .gx-ft108 .pnl .gx-rs100 { justify-content: flex-start; margin: 0; }
+  @media (max-width: 640px) {
+    .gx-sc99 .gx-ro { grid-template-columns: 36px 142px 56px 62px 60px 54px 34px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+    .gx-sc99 .gx-pk.full, .gx-sc99 .gx-pk.cm { grid-template-columns: 36px 150px 56px 52px 64px 60px 52px 58px 52px 34px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -750,7 +779,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="11ae9e0.wqah7s" data-file="build/app.js">
+<meta name="gx-build" content="1m3ntyk.1rslvgx" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1708,7 +1737,7 @@ function Matchup({ s, setS, wk, setWk }) {
     const v = val(p), o = val(q);
     if (v == null) return <div className={"text-slate-500" + (right ? "" : " text-right")}>{"\u2013"}</div>;
     const win = o == null || v - o >= 0.05;
-    return <div className={right ? "" : "text-right"} style={win ? { color: "var(--good)", fontWeight: 600 } : null}>{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
+    return <div className={right ? "" : "text-right"} style={win ? { color: "var(--good)", fontWeight: 600 } : p.st && p.x0 != null && v < p.x0 - 0.05 ? { color: "var(--bad)" } : null}>{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
   };
   const sit = (l, id) => (l.bench && l.bench.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
   const dayTot = x.act + x.total - (y.act + y.total);
@@ -1740,16 +1769,10 @@ function Matchup({ s, setS, wk, setWk }) {
           <span>{Math.round(fb)}</span>
         </div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(" + Math.max(1, n) + ", minmax(0,1fr))", gap: 6, marginTop: 14 }}>
-        {dates.map((dt, i) => {
-          const dv = dvOf(i), flat = Math.abs(dv) < 0.05;
-          return (
-            <button key={dt} type="button" onClick={() => setDay(i)} className={"gx-day" + (i === d ? " on" : "")}>
-              <span className={"block text-xs " + (i === d ? "font-semibold" : "text-slate-500")}>{dt === today ? "Today" : dayLabel(dt).split(",")[0]}</span>
-              <span className="block text-sm" style={{ color: flat ? "var(--faint)" : dv > 0 ? "var(--good)" : "var(--bad)" }}>{flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)}</span>
-            </button>
-          );
-        })}
+      <div className="gx-dn108">
+        <button type="button" className="gx-arw" aria-label="Earlier day" disabled={d <= 0} onClick={() => setDay(d - 1)}>{"\u2039"}</button>
+        <div className="dt">{dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : ""}<small style={{ color: Math.abs(dvOf(d)) < 0.05 ? "var(--mute)" : dvOf(d) > 0 ? "var(--good)" : "var(--bad)" }}>{(dvOf(d) > 0 ? "+" : "") + f1(dvOf(d))}</small></div>
+        <button type="button" className="gx-arw" aria-label="Later day" disabled={d >= n - 1} onClick={() => setDay(d + 1)}>{"\u203a"}</button>
       </div>
       <div key={"d105-" + sel + "-" + d} ref={dr106} {...dh106} className={"gx-pn gx-dr106 gx-sl105 " + sl105b} style={{ marginTop: 12 }}><b></b><b></b><b></b><b></b>
         <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
@@ -2475,12 +2498,12 @@ function MyTeam({ s, setS, wk, go }) {
         <div className="gx-ro gx-roh">
           <span></span><span>Player</span><span>Today</span><span className="n">Pts</span>
           {HB("l5", "Last 5", "m-hide")}
-          {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "Avg", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}<GxSH106 mode="sk" />
+          {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}<GxHB108 k="Avg" /><GxHB108 k="Exp" l="Expected" /><GxHB108 k="Rank" /><GxSH106 mode="sk" />
         </div>
         {groups.map(([title, list]) => (
           <div key={title} style={{ marginBottom: 10 }}>
             <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>{title === "Goalies" ? <GxGH104 /> : null}
-            {list.map(row)}
+            {gxSort108(list, s).map(row)}
           </div>
         ))}</div>
       </div>
@@ -3937,18 +3960,18 @@ function Pickups({ s, setS, wk }) {
         <span className="font-semibold">{ml === 0 ? "No moves left" : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left"}</span>{!plan ? <GxHsLine s={s} base={base} ml={ml} /> : null}{/* gx083-h */}
         {plan ? <span className="text-slate-500">{" \u00b7 showing next week"}</span> : null}
       </div>
-      <div className="flex flex-wrap gap-2 items-center">
+      <GxFlt108 label={({ all: "All", F: "Forwards", D: "Defence", G: "Goalies" })[pos] + " \u00b7 " + ({ 1: plan ? "Next week" : "This week", 4: "Next 4 weeks", 0: "Rest of season" })[H] + " \u00b7 " + gxRngLbl108()}><div className="flex flex-wrap gap-2 items-center">
         <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(25); }} />
         <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(25); }} />
-      </div>
+      </div><GxRngSel100 /></GxFlt108>
       {!plan ? <GxHeadStart s={s} base={base} ml={ml} /> : null}{/* gx083 */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
-      <div className="gx-pn"><b></b><b></b><b></b><b></b><GxRngSel100 /><div className="gx-sc99">
+      <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className={"gx-pk text-xs text-slate-500 " + gxPkMode106(pos)} style={{ borderTop: 0, paddingTop: 0 }}>
           <span></span><span>{base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)}</span>
           <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(25); }} def="add">Win</GxSH><span className="n">Avg</span><span className="n">Rost</span><GxSH106 mode={pos === "G" ? "go" : pos === "all" ? "cm" : "sk"} />
         </div>
-        {rows.length ? rows.map((r) => {
+        {rows.length ? gxSort108(rows, s, (r) => r.f).map((r) => {
           const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0, tg = shortTag(r.f, K), w = wins[r.f.id];
           const st = r.f.status && r.f.status !== "ACTIVE" ? M_ST[r.f.status] || r.f.status.replace(/_/g, " ") : "";
           return (
@@ -3965,7 +3988,7 @@ function Pickups({ s, setS, wk }) {
               <div className="n" style={w != null && base != null ? { color: w > base + 0.004 ? "var(--good)" : w < base - 0.004 ? "var(--bad)" : "var(--ink)" } : null}>{w == null ? "\u2013" : wpTxt(w)}</div>
               <div className="n text-slate-500">{r.f.gp ? f1(r.f.tot / r.f.gp) : "-"}</div>
               <div className="n text-slate-500">{r.f.own != null ? Math.round(r.f.own) + "%" : "-"}</div>
-              <GxSC106 p={r.f} s={s} mode={pos === "all" ? "cm" : "full"} />
+              <GxSC106 p={r.f} s={s} mode={pos === "G" ? "full" : "mx"} />
             </div>
           );
         }) : <div className="text-sm text-slate-500" style={{ padding: "10px 0" }}>{q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window."}</div>}
@@ -4804,12 +4827,12 @@ function GxRosterTable({ s, wk, tid }) {
       <div className="gx-ro gx-roh">
         <span></span><span>Player</span><span>Today</span><span className="n">Pts</span>
         {HB("l5", "Last 5", "m-hide")}
-        {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}{HB("sea", "Avg", "m-hide")}{HB("pg", "Expected")}{HB("rk", "Rank", "m-hide")}<GxSH106 mode="sk" />
+        {HB("mu", "Matchup")}{HB("left", "Left")}{HB("next", "Next wk", "m-hide")}<GxHB108 k="Avg" /><GxHB108 k="Exp" l="Expected" /><GxHB108 k="Rank" /><GxSH106 mode="sk" />
       </div>
       {groups.map(([title, list]) => (
         <div key={title} style={{ marginBottom: 10 }}>
           <div className="gx-tag" style={{ padding: "8px 0 4px" }}>{title}</div>{title === "Goalies" ? <GxGH104 /> : null}
-          {list.map(row)}
+          {gxSort108(list, s).map(row)}
         </div>
       ))}</div>
     </div>
@@ -5525,7 +5548,7 @@ function GxRankings({ s }) {
     .filter((p) => p.p === pos && rank[p.id] && (own === "all" || (own === "rost" ? p.ft !== "fa" : own === "fa" ? p.ft === "fa" : p.ft === own)) && (!qq || nrm(p.n).includes(qq)))
     .map((p) => ({ p, rk: rank[p.id], e: pv(p), sf: p.gp ? p.tot / p.gp : null }))
     .sort((a, b) => (sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0)));
-  const shown = rows.slice(0, n);
+  const shown = gxSort108(rows, s, (x) => x.p).slice(0, n);
   const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
   const owner = (p) => (p.ft === "fa" ? <span className="text-slate-500">{p.wv ? "Waivers" : "Free agent"}</span> : <TL s={s} id={p.ft} className={p.ft === s.me ? "font-semibold" : ""} />);
   const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => { setSort(k); setN(50); }}>{l}</button>;
@@ -6774,15 +6797,16 @@ function gxVals106(p, s, rng) {
 function GxSC106({ p, s, mode }) {
   const rng = gxUse100();
   useEffect(() => { gxLoad100(rng); });
-  const v = gxVals106(p, s, rng), out = mode === "cm" ? v.slice(0, 1) : v;
+  const v0 = gxVals106(p, s, rng), v = mode === "mx" && p.p === "G" ? [v0[0], v0[1], "-", "-", "-", "-", "-", "-", "-", "-", v0[10]] : v0, out = mode === "cm" ? v.slice(0, 1) : v;
   return out.map((c, i) => <div key={"c106" + i} className={"n " + (i === 0 ? "font-semibold" : "text-slate-500")}>{c}</div>);
 }
 function GxSH106({ mode }) {
   const rng = gxUse100();
   const H = mode === "go" ? GX_GO106 : mode === "cm" ? GX_CM106 : GX_SK106;
-  return H.map((h, i) => <span key={h + i} className="n">{gxProjR100(rng) && h === "GP" ? "Gms" : h}</span>);
+  const S = gxUseSort108();
+  return H.map((h, i) => <button type="button" key={h + i} className={"n gx-sh108" + (S.k === h ? " on" : "")} onClick={() => gxSet108(h)}>{gxProjR100(rng) && h === "GP" ? "Gms" : h}{S.k === h ? <i>{S.dir > 0 ? "\u25bc" : "\u25b2"}</i> : null}</button>);
 }
-const gxPkMode106 = (pos) => (pos === "G" ? "full go" : pos === "F" || pos === "D" ? "full sk" : "cm");
+const gxPkMode106 = (pos) => (pos === "G" ? "full go" : "full sk");
 // ---------- change 107: Simulate a pickup, cleaned up (install.py) ----------
 function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
   const ea = gxPgAvg, K = M.K, myR = M.myR, today = todayISO();
@@ -6910,6 +6934,50 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
     </div>
   );
 }
+// ---------- change 108: tap a stat heading to sort, pickup filters (install.py) ----------
+// one sort for every stat table: key = heading, dir 1 = best first, -1 = worst first
+const GX108 = (window.__GX108 = window.__GX108 || { k: null, dir: 1 });
+const GX_LOW108 = { GA: 1, GAA: 1, L: 1, OTL: 1 };
+function gxSet108(k) {
+  if (GX108.k === k) GX108.dir = -GX108.dir; else { GX108.k = k; GX108.dir = 1; }
+  window.dispatchEvent(new Event("gx-sort108"));
+}
+const gxUseSort108 = () => { const [, t] = useState(0); useEffect(() => { const f = () => t((x) => x + 1); window.addEventListener("gx-sort108", f); return () => window.removeEventListener("gx-sort108", f); }, []); return GX108; };
+const gxNum108 = (v) => {
+  if (v == null) return -Infinity;
+  const x = String(v);
+  if (/^\d+:\d\d$/.test(x)) return gxPdSec(x);
+  const n = parseFloat(x.replace("%", "").replace("+", ""));
+  return isNaN(n) ? -Infinity : x.indexOf("%") > 0 && n > 1 ? n / 100 : n;
+};
+function gxSort108(list, s, get) {
+  const k = GX108.k;
+  if (!k) return list;
+  const rng = gxRng100(), g = get || ((x) => x), K = s.blend;
+  const val = (p) => {
+    if (k === "Avg") return p.gp ? p.tot / p.gp : -Infinity;
+    if (k === "Exp" || k === "Rank") return gxPgAvg(p, K);
+    const H = p.p === "G" ? GX_GO106 : GX_SK106, i = H.indexOf(k);
+    if (i < 0) return -Infinity;
+    const v = gxNum108(gxVals106(p, s, rng)[i]);
+    return GX_LOW108[k] && v !== -Infinity ? -v : v;
+  };
+  return [...list].map((x) => [x, val(g(x))]).sort((a, b) => (b[1] - a[1]) * GX108.dir).map((x) => x[0]);
+}
+function GxHB108({ k, l }) {
+  const S = gxUseSort108();
+  return <button type="button" className={"n gx-sh108" + (S.k === k ? " on" : "")} onClick={() => gxSet108(k)}>{l || k}{S.k === k ? <i>{S.dir > 0 ? "\u25bc" : "\u25b2"}</i> : null}</button>;
+}
+function GxFlt108({ label, children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={"gx-ft108" + (open ? " open" : "")}>
+      <button type="button" className="tg" onClick={() => setOpen(!open)}>Filters <span>{label}</span><b>{"\u25be"}</b></button>
+      {open ? <div className="pnl">{children}</div> : null}
+    </div>
+  );
+}
+const gxRngLbl108 = () => ((GX_RNG100.find((r) => r[0] === gxRng100()) || [0, "Season"])[1]).replace(" (projected)", " proj.");
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */

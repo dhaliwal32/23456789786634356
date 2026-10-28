@@ -2313,6 +2313,8 @@ function Matchup({
       style: win ? {
         color: "var(--good)",
         fontWeight: 600
+      } : p.st && p.x0 != null && v < p.x0 - 0.05 ? {
+        color: "var(--bad)"
       } : null
     }, p.st && p.a == null ? "\u2013" : f1(v), p.st && p.x0 != null ? /*#__PURE__*/React.createElement("div", {
       className: "text-xs",
@@ -2417,29 +2419,26 @@ function Matchup({
       color: margin >= 0 ? "var(--good)" : "var(--bad)"
     }
   }, mine ? (margin >= 0 ? "Ahead by " : "Behind by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " ahead by " + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-dn108"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-arw",
+    "aria-label": "Earlier day",
+    disabled: d <= 0,
+    onClick: () => setDay(d - 1)
+  }, "\u2039"), /*#__PURE__*/React.createElement("div", {
+    className: "dt"
+  }, dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "", /*#__PURE__*/React.createElement("small", {
     style: {
-      display: "grid",
-      gridTemplateColumns: "repeat(" + Math.max(1, n) + ", minmax(0,1fr))",
-      gap: 6,
-      marginTop: 14
+      color: Math.abs(dvOf(d)) < 0.05 ? "var(--mute)" : dvOf(d) > 0 ? "var(--good)" : "var(--bad)"
     }
-  }, dates.map((dt, i) => {
-    const dv = dvOf(i),
-      flat = Math.abs(dv) < 0.05;
-    return /*#__PURE__*/React.createElement("button", {
-      key: dt,
-      type: "button",
-      onClick: () => setDay(i),
-      className: "gx-day" + (i === d ? " on" : "")
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "block text-xs " + (i === d ? "font-semibold" : "text-slate-500")
-    }, dt === today ? "Today" : dayLabel(dt).split(",")[0]), /*#__PURE__*/React.createElement("span", {
-      className: "block text-sm",
-      style: {
-        color: flat ? "var(--faint)" : dv > 0 ? "var(--good)" : "var(--bad)"
-      }
-    }, flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)));
-  })), /*#__PURE__*/React.createElement("div", _extends({
+  }, (dvOf(d) > 0 ? "+" : "") + f1(dvOf(d)))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-arw",
+    "aria-label": "Later day",
+    disabled: d >= n - 1,
+    onClick: () => setDay(d + 1)
+  }, "\u203a")), /*#__PURE__*/React.createElement("div", _extends({
     key: "d105-" + sel + "-" + d,
     ref: dr106
   }, dh106, {
@@ -4258,7 +4257,14 @@ function MyTeam({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH106, {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Avg"
+  }), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Exp",
+    l: "Expected"
+  }), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Rank"
+  }), /*#__PURE__*/React.createElement(GxSH106, {
     mode: "sk"
   })), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
@@ -4270,7 +4276,7 @@ function MyTeam({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, list.map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
+  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, gxSort108(list, s).map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
     title: "Weakest spots"
   }, weak.length ? weak.map((p, i) => /*#__PURE__*/React.createElement("div", {
     key: p.id,
@@ -7882,7 +7888,18 @@ function Pickups({
     ml: ml
   }) : null, plan ? /*#__PURE__*/React.createElement("span", {
     className: "text-slate-500"
-  }, " \u00b7 showing next week") : null), /*#__PURE__*/React.createElement("div", {
+  }, " \u00b7 showing next week") : null), /*#__PURE__*/React.createElement(GxFlt108, {
+    label: {
+      all: "All",
+      F: "Forwards",
+      D: "Defence",
+      G: "Goalies"
+    }[pos] + " \u00b7 " + {
+      1: plan ? "Next week" : "This week",
+      4: "Next 4 weeks",
+      0: "Rest of season"
+    }[H] + " \u00b7 " + gxRngLbl108()
+  }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap gap-2 items-center"
   }, /*#__PURE__*/React.createElement(Pills, {
     items: [["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]],
@@ -7898,7 +7915,7 @@ function Pickups({
       setH(v);
       setLimit(25);
     }
-  })), !plan ? /*#__PURE__*/React.createElement(GxHeadStart, {
+  })), /*#__PURE__*/React.createElement(GxRngSel100, null)), !plan ? /*#__PURE__*/React.createElement(GxHeadStart, {
     s: s,
     base: base,
     ml: ml
@@ -7913,7 +7930,7 @@ function Pickups({
     onChange: e => setQ(e.target.value)
   }), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
-  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement(GxRngSel100, null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     className: "gx-sc99"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pk text-xs text-slate-500 " + gxPkMode106(pos),
@@ -7970,7 +7987,7 @@ function Pickups({
     className: "n"
   }, "Rost"), /*#__PURE__*/React.createElement(GxSH106, {
     mode: pos === "G" ? "go" : pos === "all" ? "cm" : "sk"
-  })), rows.length ? rows.map(r => {
+  })), rows.length ? gxSort108(rows, s, r => r.f).map(r => {
     const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0,
       tg = shortTag(r.f, K),
       w = wins[r.f.id];
@@ -8030,7 +8047,7 @@ function Pickups({
     }, r.f.own != null ? Math.round(r.f.own) + "%" : "-"), /*#__PURE__*/React.createElement(GxSC106, {
       p: r.f,
       s: s,
-      mode: pos === "all" ? "cm" : "full"
+      mode: pos === "G" ? "full" : "mx"
     }));
   }) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500",
@@ -9905,7 +9922,14 @@ function GxRosterTable({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH106, {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Avg"
+  }), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Exp",
+    l: "Expected"
+  }), /*#__PURE__*/React.createElement(GxHB108, {
+    k: "Rank"
+  }), /*#__PURE__*/React.createElement(GxSH106, {
     mode: "sk"
   })), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
@@ -9917,7 +9941,7 @@ function GxRosterTable({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, list.map(row)))));
+  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, gxSort108(list, s).map(row)))));
 }
 
 // ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
@@ -11521,7 +11545,7 @@ function GxRankings({
     e: pv(p),
     sf: p.gp ? p.tot / p.gp : null
   })).sort((a, b) => sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0));
-  const shown = rows.slice(0, n);
+  const shown = gxSort108(rows, s, x => x.p).slice(0, n);
   const stTag = p => p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "";
   const owner = p => p.ft === "fa" ? /*#__PURE__*/React.createElement("span", {
     className: "text-slate-500"
@@ -14327,7 +14351,8 @@ function GxSC106({
   useEffect(() => {
     gxLoad100(rng);
   });
-  const v = gxVals106(p, s, rng),
+  const v0 = gxVals106(p, s, rng),
+    v = mode === "mx" && p.p === "G" ? [v0[0], v0[1], "-", "-", "-", "-", "-", "-", "-", "-", v0[10]] : v0,
     out = mode === "cm" ? v.slice(0, 1) : v;
   return out.map((c, i) => /*#__PURE__*/React.createElement("div", {
     key: "c106" + i,
@@ -14339,12 +14364,15 @@ function GxSH106({
 }) {
   const rng = gxUse100();
   const H = mode === "go" ? GX_GO106 : mode === "cm" ? GX_CM106 : GX_SK106;
-  return H.map((h, i) => /*#__PURE__*/React.createElement("span", {
+  const S = gxUseSort108();
+  return H.map((h, i) => /*#__PURE__*/React.createElement("button", {
+    type: "button",
     key: h + i,
-    className: "n"
-  }, gxProjR100(rng) && h === "GP" ? "Gms" : h));
+    className: "n gx-sh108" + (S.k === h ? " on" : ""),
+    onClick: () => gxSet108(h)
+  }, gxProjR100(rng) && h === "GP" ? "Gms" : h, S.k === h ? /*#__PURE__*/React.createElement("i", null, S.dir > 0 ? "\u25bc" : "\u25b2") : null));
 }
-const gxPkMode106 = pos => pos === "G" ? "full go" : pos === "F" || pos === "D" ? "full sk" : "cm";
+const gxPkMode106 = pos => pos === "G" ? "full go" : "full sk";
 // ---------- change 107: Simulate a pickup, cleaned up (install.py) ----------
 function GxSim107({
   s,
@@ -14601,4 +14629,83 @@ function GxSim107({
     onClick: apply
   }, "Try it here"))) : null) : null));
 }
+// ---------- change 108: tap a stat heading to sort, pickup filters (install.py) ----------
+// one sort for every stat table: key = heading, dir 1 = best first, -1 = worst first
+const GX108 = window.__GX108 = window.__GX108 || {
+  k: null,
+  dir: 1
+};
+const GX_LOW108 = {
+  GA: 1,
+  GAA: 1,
+  L: 1,
+  OTL: 1
+};
+function gxSet108(k) {
+  if (GX108.k === k) GX108.dir = -GX108.dir;else {
+    GX108.k = k;
+    GX108.dir = 1;
+  }
+  window.dispatchEvent(new Event("gx-sort108"));
+}
+const gxUseSort108 = () => {
+  const [, t] = useState(0);
+  useEffect(() => {
+    const f = () => t(x => x + 1);
+    window.addEventListener("gx-sort108", f);
+    return () => window.removeEventListener("gx-sort108", f);
+  }, []);
+  return GX108;
+};
+const gxNum108 = v => {
+  if (v == null) return -Infinity;
+  const x = String(v);
+  if (/^\d+:\d\d$/.test(x)) return gxPdSec(x);
+  const n = parseFloat(x.replace("%", "").replace("+", ""));
+  return isNaN(n) ? -Infinity : x.indexOf("%") > 0 && n > 1 ? n / 100 : n;
+};
+function gxSort108(list, s, get) {
+  const k = GX108.k;
+  if (!k) return list;
+  const rng = gxRng100(),
+    g = get || (x => x),
+    K = s.blend;
+  const val = p => {
+    if (k === "Avg") return p.gp ? p.tot / p.gp : -Infinity;
+    if (k === "Exp" || k === "Rank") return gxPgAvg(p, K);
+    const H = p.p === "G" ? GX_GO106 : GX_SK106,
+      i = H.indexOf(k);
+    if (i < 0) return -Infinity;
+    const v = gxNum108(gxVals106(p, s, rng)[i]);
+    return GX_LOW108[k] && v !== -Infinity ? -v : v;
+  };
+  return [...list].map(x => [x, val(g(x))]).sort((a, b) => (b[1] - a[1]) * GX108.dir).map(x => x[0]);
+}
+function GxHB108({
+  k,
+  l
+}) {
+  const S = gxUseSort108();
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "n gx-sh108" + (S.k === k ? " on" : ""),
+    onClick: () => gxSet108(k)
+  }, l || k, S.k === k ? /*#__PURE__*/React.createElement("i", null, S.dir > 0 ? "\u25bc" : "\u25b2") : null);
+}
+function GxFlt108({
+  label,
+  children
+}) {
+  const [open, setOpen] = useState(false);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-ft108" + (open ? " open" : "")
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "tg",
+    onClick: () => setOpen(!open)
+  }, "Filters ", /*#__PURE__*/React.createElement("span", null, label), /*#__PURE__*/React.createElement("b", null, "\u25be")), open ? /*#__PURE__*/React.createElement("div", {
+    className: "pnl"
+  }, children) : null);
+}
+const gxRngLbl108 = () => (GX_RNG100.find(r => r[0] === gxRng100()) || [0, "Season"])[1].replace(" (projected)", " proj.");
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
