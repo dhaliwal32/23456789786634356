@@ -7021,7 +7021,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-28T17:29:04Z",
-   "seen": "2026-10-28T20:57:45Z"
+   "seen": "2026-10-28T21:03:46Z"
+  },
+  {
+   "k": "2026-10-28|94301cd938f7",
+   "at": "2026-10-28T21:04:11Z",
+   "title": "Fantasy GM",
+   "text": "Bolduc joined MTL PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-28T21:04:11Z",
+   "seen": "2026-10-28T21:04:11Z"
   }
  ],
  "sent": {
