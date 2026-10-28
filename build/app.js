@@ -2233,14 +2233,19 @@ function Matchup({
     const st = p.p === "G" && !p.st ? mStart(p.gs) : "",
       line = p.st ? statLine(pStat(p, p.dt)) : "";
     return /*#__PURE__*/React.createElement("div", {
-      className: "min-w-0 gx-pc",
+      className: "min-w-0 gx-pc" + (p.st === "F" ? " gx-fin" : ""),
       style: {
         flexDirection: right ? "row-reverse" : "row"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "gx-fw",
+      style: {
+        display: "inline-flex"
       }
     }, /*#__PURE__*/React.createElement(GxFace, {
       p: p,
       size: 30
-    }), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0" + (right ? " text-right" : ""),
       style: {
         flex: 1
@@ -2258,13 +2263,24 @@ function Matchup({
       className: "m-hide"
     }, p.n), /*#__PURE__*/React.createElement("span", {
       className: "m-inl"
-    }, shortN(p.n)))), /*#__PURE__*/React.createElement("div", {
+    }, shortN(p.n))), /*#__PURE__*/React.createElement("span", {
+      className: "gx-tl98"
+    }, /*#__PURE__*/React.createElement(TeamLogo, {
+      t: p.t,
+      size: 15
+    }))), /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 truncate"
-    }, p.st ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(LiveTag, {
+    }, p.st ? /*#__PURE__*/React.createElement(React.Fragment, null, gxOpp98(p), /*#__PURE__*/React.createElement(LiveTag, {
       st: p.st,
       t: p.t,
       dt: p.dt
-    }), line ? " " + line : "") : /*#__PURE__*/React.createElement(React.Fragment, null, mGame(p), st ? " \u00b7 " + st.toLowerCase() : ""))));
+    }), p.st === "F" ? /*#__PURE__*/React.createElement("span", {
+      className: "m-inl"
+    }, " Final") : null, /*#__PURE__*/React.createElement("span", {
+      className: "gx-st98"
+    }, line ? " " + line : "")) : /*#__PURE__*/React.createElement(React.Fragment, null, mGame(p), st ? " \u00b7 " + st.toLowerCase() : "")), p.st && line ? /*#__PURE__*/React.createElement("div", {
+      className: "gx-sl98"
+    }, line) : null));
   };
   const num = (p, q, right) => {
     const v = val(p),
@@ -13529,5 +13545,13 @@ function GxFace({
     t: tm,
     size: b - 2
   })));
+}
+// ---------- change 098: phone Matchup in ESPN's layout (install.py) ----------
+// opponent before the score on the phone, e.g. "@WPG"
+function gxOpp98(p) {
+  const g = gameOf(p.t, p.dt);
+  return g ? /*#__PURE__*/React.createElement("span", {
+    className: "m-inl"
+  }, (g.h ? "" : "@") + g.o + " ") : null;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

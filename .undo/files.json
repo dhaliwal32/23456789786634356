@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_lines.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "097-espn-faces.py"
+  "098-phone-matchup-espn.py"
  ]
 }
