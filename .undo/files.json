@@ -3,6 +3,8 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "101-phone-player-espn-motion.py"
+  "102-speed.py",
+  "103-new-layout.py",
+  "104-cleanup.py"
  ]
 }
