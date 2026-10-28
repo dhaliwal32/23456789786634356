@@ -4126,10 +4126,12 @@ function MyTeam({
     return /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: "gx-ro"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gx-fc99"
     }, /*#__PURE__*/React.createElement(GxFace, {
       p: p,
       size: 26
-    }), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
     }, /*#__PURE__*/React.createElement("div", {
       className: "truncate"
@@ -4144,7 +4146,7 @@ function MyTeam({
       }
     }, st) : null), sub ? /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 truncate"
-    }, sub) : null), spark(p), /*#__PURE__*/React.createElement("div", {
+    }, sub) : null), gxToday99(p), spark(p), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, /*#__PURE__*/React.createElement("div", {
       className: "font-semibold",
@@ -4179,7 +4181,7 @@ function MyTeam({
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"));
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), gxStats99(p));
   };
   const rkc = v => v >= 8 ? {
     color: "var(--bad)"
@@ -4233,8 +4235,15 @@ function MyTeam({
   }, g.G ? ordN(g.G) : "\u2013"))), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sc99"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-ro gx-roh"
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), GX_ST99.map(h => /*#__PURE__*/React.createElement("span", {
+    key: h,
+    className: "n"
+  }, h))), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -4244,7 +4253,7 @@ function MyTeam({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), list.map(row)))), /*#__PURE__*/React.createElement(GxPanel, {
+  }, title), list.map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
     title: "Weakest spots",
     right: "First to drop or include in a trade"
   }, weak.length ? weak.map((p, i) => /*#__PURE__*/React.createElement("div", {
@@ -7891,6 +7900,8 @@ function Pickups({
   }), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sc99"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pk text-xs text-slate-500",
     style: {
       borderTop: 0,
@@ -7939,7 +7950,11 @@ function Pickups({
       setLimit(25);
     },
     def: "add"
-  }, "Win")), rows.length ? rows.map(r => {
+  }, "Win"), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "So far"), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "Rost")), rows.length ? rows.map(r => {
     const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0,
       tg = shortTag(r.f, K),
       w = wins[r.f.id];
@@ -7952,10 +7967,12 @@ function Pickups({
         add: r.f.id,
         drop: r.d.id
       })
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gx-fc99"
     }, /*#__PURE__*/React.createElement(GxFace, {
       p: r.f,
       size: 26
-    }), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
     }, /*#__PURE__*/React.createElement("div", {
       className: "truncate"
@@ -8010,13 +8027,17 @@ function Pickups({
       style: w != null && base != null ? {
         color: w > base + 0.004 ? "var(--good)" : w < base - 0.004 ? "var(--bad)" : "var(--ink)"
       } : null
-    }, w == null ? "\u2013" : wpTxt(w)));
+    }, w == null ? "\u2013" : wpTxt(w)), /*#__PURE__*/React.createElement("div", {
+      className: "n text-slate-500"
+    }, r.f.gp ? f1(r.f.tot / r.f.gp) : "-"), /*#__PURE__*/React.createElement("div", {
+      className: "n text-slate-500"
+    }, r.f.own != null ? Math.round(r.f.own) + "%" : "-"));
   }) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500",
     style: {
       padding: "10px 0"
     }
-  }, q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window."), all.length > rows.length ? /*#__PURE__*/React.createElement("button", {
+  }, q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window.")), all.length > rows.length ? /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "text-sm text-blue-600",
     style: {
@@ -9803,10 +9824,12 @@ function GxRosterTable({
     return /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: "gx-ro"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gx-fc99"
     }, /*#__PURE__*/React.createElement(GxFace, {
       p: p,
       size: 26
-    }), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
     }, /*#__PURE__*/React.createElement("div", {
       className: "truncate"
@@ -9821,7 +9844,7 @@ function GxRosterTable({
       }
     }, st) : null), sub ? /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 truncate"
-    }, sub) : null), /*#__PURE__*/React.createElement("div", {
+    }, sub) : null), gxToday99(p), /*#__PURE__*/React.createElement("div", {
       className: "gx-sp m-hide",
       title: "Last five games, oldest to newest"
     }, h.length ? h.map((v, i) => /*#__PURE__*/React.createElement("i", {
@@ -9867,13 +9890,20 @@ function GxRosterTable({
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"));
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), gxStats99(p));
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sc99"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-ro gx-roh"
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Tap a heading to sort"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide")), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "So far", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), GX_ST99.map(h => /*#__PURE__*/React.createElement("span", {
+    key: h,
+    className: "n"
+  }, h))), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -9883,7 +9913,7 @@ function GxRosterTable({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), list.map(row))));
+  }, title), list.map(row)))));
 }
 
 // ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
@@ -13553,5 +13583,39 @@ function gxOpp98(p) {
   return g ? /*#__PURE__*/React.createElement("span", {
     className: "m-inl"
   }, (g.h ? "" : "@") + g.o + " ") : null;
+}
+// ---------- change 099: today's game and stat line columns for rosters (install.py) ----------
+const GX_ST99 = ["G", "A", "+/-", "SOG", "HIT", "BLK", "SV", "GA", "TOI"];
+function gxToday99(p) {
+  const td = todayISO(),
+    g = p.ir ? null : gameOf(p.t, td),
+    st = g ? gState(p.t, td).s : null,
+    sc = g && st !== "P" ? gScore(p.t, td) : null;
+  let opp = "-",
+    res = "";
+  if (g) {
+    opp = (g.h ? "" : "@") + g.o;
+    res = st === "P" ? gameTime(g) : sc && sc.my != null ? sc.my + "-" + sc.op + (st === "F" ? " Final" : sc.per ? " " + sc.per : "") : st === "F" ? "Final" : "Live";
+  }
+  const a = st && st !== "P" ? gxPdReal(p, td) : null;
+  return [/*#__PURE__*/React.createElement("div", {
+    key: "t99a",
+    className: "gx-op99"
+  }, /*#__PURE__*/React.createElement("div", null, opp), res ? /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, res) : null), /*#__PURE__*/React.createElement("div", {
+    key: "t99b",
+    className: "n font-semibold"
+  }, a == null ? "-" : f1(a))];
+}
+function gxStats99(p) {
+  const td = todayISO(),
+    x = gState(p.t, td).s !== "P" ? pStat(p, td) : null,
+    d = "-";
+  const v = !x ? GX_ST99.map(() => d) : p.p === "G" ? [d, d, d, d, d, d, x.sv != null ? x.sv : d, x.ga != null ? x.ga : d, x.toi || d] : [x.g || 0, x.a || 0, gxPdSigned(x.pm), x.sog || 0, x.hit || 0, x.blk || 0, d, d, x.toi || d];
+  return v.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: "s99" + i,
+    className: "n text-slate-500"
+  }, c));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
