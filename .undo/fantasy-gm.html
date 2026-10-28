@@ -922,7 +922,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="12qnkej.igxmon" data-file="build/app.js">
+<meta name="gx-build" content="o19s4j.zy9ecc" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4027,7 +4027,7 @@ function Pickups({ s, setS, wk }) {
   const [H, setH] = useState(1);
   const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
   const [q, setQ] = useState(() => { const v = window.__PICK_Q || ""; window.__PICK_Q = ""; return v; });
-  const [limit, setLimit] = useState(100000); /* gx118: show all */
+  const [limit, setLimit] = useState(40); /* gx122: 40 then more on scroll */
   useEffect(() => {
     const h = () => { if (window.__PICK_Q) { setQ(window.__PICK_Q); window.__PICK_Q = ""; } if (window.__PICK_POS) { setPos(window.__PICK_POS); window.__PICK_POS = ""; } };
     window.addEventListener("gm-pick", h);
@@ -4082,15 +4082,15 @@ function Pickups({ s, setS, wk }) {
         {plan ? <span className="text-slate-500">{" \u00b7 showing next week"}</span> : null}
       </div>
       <GxFlt108 label={({ all: "All", F: "Forwards", D: "Defence", G: "Goalies" })[pos] + " \u00b7 " + ({ 1: plan ? "Next week" : "This week", 4: "Next 4 weeks", 0: "Rest of season" })[H] + " \u00b7 " + gxRngLbl108()}><div className="flex flex-wrap gap-2 items-center">
-        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(100000); }} />
-        <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(100000); }} />
+        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(40); }} />
+        <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(40); }} />
       </div><GxRngSel100 /></GxFlt108>
       {!plan ? <GxHeadStart s={s} base={base} ml={ml} /> : null}{/* gx083 */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className={"gx-pk text-xs text-slate-500 " + gxPkMode106(pos)} style={{ borderTop: 0, paddingTop: 0 }}>
           <span></span><span>{"Player"}</span>
-          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(100000); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(100000); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(100000); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(100000); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(100000); }} def="add">Win</GxSH><span className="n">Avg</span><span className="n">Rost</span><GxSH106 mode={pos === "G" ? "go" : "sk"} />{/* gx109h */}
+          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">Win</GxSH><span className="n">Avg</span><span className="n">Rost</span><GxSH106 mode={pos === "G" ? "go" : "sk"} />{/* gx109h */}
         </div>
         {rows.length ? gxSort108(rows, s, (r) => r.f).map((r) => {
           const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0, tg = shortTag(r.f, K), w = wins[r.f.id];
@@ -4113,7 +4113,7 @@ function Pickups({ s, setS, wk }) {
             </div>
           );
         }) : <div className="text-sm text-slate-500" style={{ padding: "10px 0" }}>{q ? "No free agent matches that name." : "No pickup adds " + minGain + " or more points for this window."}</div>}
-        </div>{all.length > rows.length ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 10 }} onClick={() => setLimit(limit + 25)}>Show {Math.min(25, all.length - rows.length)} more</button> : null}
+        </div>{all.length > rows.length ? <GxMore122 onMore={() => setLimit((v) => (v < all.length ? v + 40 : v))} /> : null}
         {/* gx105: footnote removed */}
       </div>
       {others.length ? (
@@ -7571,6 +7571,18 @@ function gxAct120(w) {
   });
   W120.set(w, { k, A, v });
   return v;
+}
+// ---------- change 122: load more of a list when you scroll near its end (install.py) ----------
+function GxMore122({ onMore }) {
+  const ref = React.useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") { onMore(); return; }
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) onMore(); }, { rootMargin: "800px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  });
+  return <div ref={ref} style={{ height: 1 }} aria-hidden="true"></div>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

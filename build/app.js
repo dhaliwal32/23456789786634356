@@ -6624,7 +6624,7 @@ const pStat = (p, dt) => {
   const id = String(p && p.id || "").replace(/^e/, "");
   const E0 = (((window.ESPN_DATA || {}).pstat || {})[dt] || {})[id] || null;
   const L = p && dt && typeof gxUseLive120 === "function" ? gxUseLive120(p, dt, gxPdReal(p, dt)) : null;
-  return L || E0; /* gx120 */
+  return L || gxDecP123(p, dt, E0); /* gx120 */
 };
 const statLine = x => {
   if (!x) return "";
@@ -7725,7 +7725,7 @@ const gxBoxDay = d => {
   };
   if (B.days[d]) return Promise.resolve(B.days[d]);
   return fetch("box/" + d + ".json").then(r => r.ok ? r.json() : null).then(j => {
-    if (j && j.p) B.days[d] = j.p;
+    if (j && j.p) B.days[d] = gxFillDec123(j.p);
     return j && j.p || null;
   }).catch(() => null);
 };
@@ -15929,5 +15929,35 @@ function GxMore122({
     },
     "aria-hidden": "true"
   });
+}
+// ---------- change 123: fill a blank goalie decision (most minutes gets it) (install.py) ----------
+const gxMins123 = s => {
+  const m = String(s || "0:0").split(":");
+  return (+m[0] || 0) + (+m[1] || 0) / 60;
+};
+function gxFillDec123(P) {
+  if (!P) return P;
+  const by = {};
+  Object.values(P).forEach(x => {
+    if (x && x.sv != null) (by[x.t + "|" + x.o] = by[x.t + "|" + x.o] || []).push(x);
+  });
+  Object.values(by).forEach(gl => {
+    if (gl.some(x => x.dec)) return;
+    const x = gl.reduce((a, b) => gxMins123(b.toi) > gxMins123(a.toi) ? b : a);
+    if (x.my == null || x.op == null || x.my === x.op || gxMins123(x.toi) < 30) return;
+    x.dec = x.my > x.op ? "W" : gl.reduce((s, y) => s + gxMins123(y.toi), 0) > 60.02 ? "O" : "L";
+  });
+  return P;
+}
+// a single day's line from the sync (no score saved with it): use the final score of his team's game
+function gxDecP123(p, dt, x) {
+  if (!x || x.sv == null || x.dec || !p || !dt || gxMins123(x.toi) < 50) return x;
+  if (gState(p.t, dt).s !== "F") return x;
+  const g = gScore(p.t, dt);
+  if (!g || g.my == null || g.op == null || g.my === g.op) return x;
+  return {
+    ...x,
+    dec: g.my > g.op ? "W" : gxMins123(x.toi) > 60.02 ? "O" : "L"
+  };
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
