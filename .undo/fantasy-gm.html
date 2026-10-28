@@ -914,6 +914,8 @@
   .gx-bm119 .fc .hs { position: absolute; bottom: 0; left: 50%; height: 100%; width: auto; max-width: none; transform: translateX(-50%); }
   .gx-bp121 { border: 0 !important; overflow: hidden; }
   .gx-bp121 .gx-fp114 { width: 100% !important; height: 100% !important; border-radius: 999px !important; object-fit: cover; }
+  /* change 124 (install.py) */
+  .gx-pmh82, .gx-ep124 { display: none !important; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -922,7 +924,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="xgb1kh.quefo5" data-file="build/app.js">
+<meta name="gx-build" content="1ruvgcc.19t2fxy" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1062,6 +1064,7 @@ function applyESPN(s, E) {
 // ---------- projections ----------
 const effAvg0 = (p, K) => (p.gp > 0 ? (p.avg * K + p.tot) / (K + p.gp) : p.avg);
 const effAvg = (p, K, dt) => {
+  if ((window.__PMODE || "combo") === "combo") return gxCombo124(p, K, dt); /* gx124 */
   const base = effAvg0(p, K);
   const M = window.__MODEL, mode = window.__PMODE || "espn"; { const A = window.__AI, aid = mode === "ai" && typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null, ap = aid && A ? (A.proj || {})[aid] : null, av = ap ? (dt && ap[dt] != null ? ap[dt] : (window.__AIAVG || {})[aid]) : null; if (av != null) return av * (p.gwMul || 1); }
   let v = base;
@@ -1109,7 +1112,7 @@ const b2bAdj = (p, dt) => {
   return null;
 };
 const gStart = (p, dt) => {
-  const aiG = window.__PMODE === "ai" && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null; const fallback = aiG != null ? { v: aiG, l: `AI start chance (${Math.round(aiG * 100)}%)` } : b2bAdj(p, dt) || { v: p.prob, l: "" };
+  const aiG = (window.__PMODE === "ai" || window.__PMODE === "combo") && dt && typeof p.id === "string" && p.id[0] === "e" ? (((window.__AI || {}).gstart || {})[p.id.slice(1)] || {})[dt] : null; const fallback = aiG != null ? { v: aiG, l: `AI start chance (${Math.round(aiG * 100)}%)` } : b2bAdj(p, dt) || { v: p.prob, l: "" };
   const day = dt && (window.__GOALIES || {})[dt];
   if (!day) return fallback;
   const me = day[nrm(p.n)];
@@ -1419,6 +1422,7 @@ function App() {
   const E = window.ESPN_DATA;
   window.__MODEL = (E && E.model) || null;
   window.__SIG = (E && E.signals) || null; livePP1(E); window.__PLAYERS = s.players;
+  useEffect(() => { fetch("ai/combo.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((C) => { if (C && C.groups) { window.__COMBO = C; setS((st) => ({ ...st, players: [...st.players] })); } }).catch(() => {}); }, []); /* gx124 */
   useEffect(() => { fetch("ai/models/ai_proj.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((A) => { if (!A || !A.proj || !((Date.now() - Date.parse(A.asof)) / 36e5 < 36)) return; const avg = {}; Object.entries(A.proj).forEach(([id, m]) => { const v = Object.values(m).filter((x) => x != null); if (v.length) avg[id] = v.reduce((a, b) => a + b, 0) / v.length; }); window.__AI = A; window.__AIAVG = avg; setS((st) => ({ ...st, players: [...st.players] })); }).catch(() => {}); }, []);
   // change 072 (gx072-app): keep the address bar in step with the page, and follow Back and Forward
   window.__ROUTE = { tab, sub: subs[tab], team: tab === "teams" ? teamView : null };
@@ -1448,7 +1452,7 @@ function App() {
     if (window.location.hash === h) return;
     try { if (!window.location.hash) window.history.replaceState(null, "", h); else window.history.pushState(null, "", h); } catch (e) {}
   }, [loaded, tab, subs[tab], teamView, player ? player.id : null]);
-  window.__PMODE = window.__MODEL ? s.pmode || "blend" : "espn";
+  window.__PMODE = "combo"; /* gx124 */
   window.__GOALIES = useMemo(() => { const o = {}; Object.entries(s.goalies || {}).forEach(([d, m]) => { o[d] = {}; Object.entries(m || {}).forEach(([n, v]) => { o[d][nrm(n)] = v; }); }); return o; }, [s.goalies]);
   const w0 = s.weeks[s.wk] || s.weeks[0];
   const wk = useMemo(() => deriveWeek(w0, s.autoDone), [w0, s.autoDone]);
@@ -3118,9 +3122,9 @@ function MobileHeader({ s, setS, tab, go, ageH }) {
       </div>
       {opts && (
         <div className="px-3 pt-2 pb-1">
-          <div className="text-xs text-slate-500 mb-1">Projections</div>
+          <div className="text-xs text-slate-500 mb-1">Projections: Combined</div>
           <div className="flex gap-2 overflow-x-auto navscroll">
-            {M_MODES.map(([k, l]) => <button key={k} disabled={!can(k)} onClick={() => setS({ ...s, pmode: k, players: [...s.players] })} className={"px-3 py-1 rounded-full text-sm border whitespace-nowrap " + (window.__PMODE === k ? "bg-blue-600 border-blue-600" : "border-slate-300 text-slate-600") + (can(k) ? "" : " opacity-40")}>{l}</button>)}
+            {[].map(([k, l]) => <button key={k} disabled={!can(k)} onClick={() => setS({ ...s, pmode: k, players: [...s.players] })} className={"px-3 py-1 rounded-full text-sm border whitespace-nowrap " + (window.__PMODE === k ? "bg-blue-600 border-blue-600" : "border-slate-300 text-slate-600") + (can(k) ? "" : " opacity-40")}>{l}</button>)}
           </div>
           <div className="flex items-center gap-3 text-xs text-slate-500 mt-2">
             <span>{s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"}</span>
@@ -4481,7 +4485,7 @@ function SetupPage({ s, setS, go, sub }) {
   const newsN = s.players.filter((p) => p.ft === s.me && newsOf(p).length).length;
   const box = inp + " text-sm";
   const PM = { espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" };
-  const projTxt = s.pbest ? "Best projection (" + (PM[window.__PMODE] || "ESPN") + ")" : (PM[window.__PMODE] || "ESPN") + " projections";
+  const projTxt = "Combined projection";
   const themeTxt = theme === "auto" ? "Automatic theme" : theme === "light" ? "Light theme" : "Dark theme";
   const ast = al ? gxAlertState(al.p) : null, alog = al ? gxAlertLog(al.b) : [];
   const lastSent = alog.find((m) => !m.held && !m.wait);
@@ -4503,9 +4507,9 @@ function SetupPage({ s, setS, go, sub }) {
   const page = (title, kids) => <div className="space-y-3"><div className="font-semibold" style={{ fontSize: 17 }}>{title}</div><div className="gx-pn">{kids}</div></div>;
   if (sub === "display") return page("Display", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
-    <div className="gx-sr"><span>Projections</span>{seg([["best", "Best" + (s.pbest ? " (" + ({ espn: "ESPN", blend: "Blend", model: "GM model", ai: "AI" }[window.__PMODE] || "") + ")" : ""), !window.__MODEL], ["espn", "ESPN"], ["blend", "Blend", !window.__MODEL], ["model", "GM model", !window.__MODEL], ["ai", "AI", !window.__MODEL || !window.__AI]], s.pbest ? "best" : window.__PMODE, (k) => (k === "best" ? setS({ ...s, pbest: true }) : setS({ ...s, pbest: false, pmode: k, players: [...s.players] })))}</div>
+    <div className="gx-sr"><span>Projections</span><span className="text-sm">Combined</span></div>
     <div className="gx-sr"><span>Favourite team (Lines)</span><GxFavSel112 /></div>
-    <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>Best switches each day to whichever projection has been most accurate in the AI Lab.</div>
+    <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>One projection built from ESPN, the GM model and the AI, re-tested every night on every game played. The AI Lab shows how each one is doing.</div>
   </>);
   if (sub === "rules") return page("Pickup rules", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>A move must add at least</span><span><input type="number" step="0.5" className={box + " w-20"} value={s.minGain ?? 3} onChange={(e) => num("minGain", e.target.value, 3)} /> points</span></div>
@@ -4957,7 +4961,7 @@ function GxRosterTable({ s, wk, tid }) {
 // ---------- round 58: Best projection and phone alert switches (news_logos.py) ----------
 function GxBest({ s, setS }) {
   useEffect(() => {
-    if (!s.pbest) return;
+    if (true) return; /* gx124: Combined replaces Best */
     let dead = false;
     const MAP = { espn: "espn", gm: "model", blend: "blend", ai: "ai" };
     const use = (m) => {
@@ -5743,7 +5747,7 @@ const gxTimed = (before, after, day) => {
 };
 // ---------- change 082: trade result under each projection (install.py) ----------
 const GX_PM82 = [["espn", "ESPN"], ["model", "GM model"], ["blend", "Blend"], ["ai", "AI"]];
-const gxCanMode82 = (k) => k === "espn" || (!!window.__MODEL && (k !== "ai" || !!window.__AI));
+const gxCanMode82 = (k) => false; /* gx124: one Combined projection */
 // run fn with a different projection, then put the app's projection back
 const gxWithMode82 = (m, fn) => {
   const prev = window.__PMODE;
@@ -5763,7 +5767,7 @@ function GxTradeModes82({ res, cmp, tm, setTm, part }) {
       </div>
   );
   return (
-      <div style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 12 }} className="gx-ep124">
         <div className="gx-tag" style={{ marginBottom: 4 }}>Every projection</div>
         <div className="gx-pm82 h"><span>Projection</span><span>You</span><span className="m-hide">Them</span><span className="m-hide">This week</span><span>Next week</span><span>Result</span></div>
         {!cmp ? <div className="text-xs text-slate-500" style={{ padding: "8px 6px" }}>Working out every projection...</div> : cmp.map((x) => (
@@ -6261,7 +6265,7 @@ function GxPickRes92({ s, myR, ok }) {
         {res.tb != null && res.ta != null ? <div className="gx-stc"><div className="text-xs text-slate-500">This week</div><div className="gx-stv">{arrow(res.tb, res.ta, wpTxt, wkUp)}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
         {res.wb != null && res.wa != null ? <div className="gx-stc"><div className="text-xs text-slate-500">Next week</div><div className="gx-stv">{arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
       </div>
-      <div style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 12 }} className="gx-ep124">
         <div className="gx-tag" style={{ marginBottom: 4 }}>Every projection</div>
         <div className="gx-pm92 h"><span>Projection</span><span>Season</span><span className="m-hide">This week</span><span>Next week</span><span>Result</span></div>
         {!cmp ? <div className="text-xs text-slate-500" style={{ padding: "8px 6px" }}>Working out every projection...</div> : cmp.map((x) => (
@@ -7605,6 +7609,26 @@ function gxDecP123(p, dt, x) {
   const g = gScore(p.t, dt);
   if (!g || g.my == null || g.op == null || g.my === g.op) return x;
   return { ...x, dec: g.my > g.op ? "W" : gxMins123(x.toi) > 60.02 ? "O" : "L" };
+}
+// ---------- change 124: the Combined projection (install.py) ----------
+// weights come from ai/combo.json (re-learned every night by gm_combo.py); missing numbers fall back AI -> GM -> ESPN
+function gxCombo124(p, K, dt) {
+  const e = effAvg0(p, K), id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+  let g = null, a = null;
+  if (id) {
+    const M = window.__MODEL;
+    if (M) { const pr = (M.proj || {})[id], mv = dt && pr && pr[dt] != null ? pr[dt] : (M.base || {})[id]; if (mv != null) g = mv; }
+    const A = window.__AI;
+    if (A) { const ap = (A.proj || {})[id], av = ap ? (dt && ap[dt] != null ? ap[dt] : (window.__AIAVG || {})[id]) : null; if (av != null) a = av; }
+  }
+  const grp = p.p === "G" ? "G" : p.p === "D" ? "D" : "F", C = (((window.__COMBO || {}).groups) || {})[grp] || {};
+  const W = C.w || { espn: 0, gm: 0.5, ai: 0.5 };
+  let s = 0, t = 0;
+  if (a != null && W.ai) { s += W.ai * a; t += W.ai; }
+  if (g != null && W.gm) { s += W.gm * g; t += W.gm; }
+  if (W.espn) { s += W.espn * e; t += W.espn; }
+  const v = t > 1e-9 ? s / t + (C.bias || 0) : a != null ? a : g != null ? g : e;
+  return Math.max(0, v) * (p.gwMul || 1);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
