@@ -545,6 +545,9 @@ def run(force=False):
     every = READ_EVERY_H_PREGAME if 14 <= now.astimezone(PT).hour < 19 else READ_EVERY_H
     last = parse(state.get("read_at") or "")
     due = force or not last or now - last >= timedelta(hours=every)
+    if not due and not any("no" in v for pl in (state.get("rosters") or {}).values() for v in pl.values()):
+        print("(lines) no jersey numbers saved yet - reading rosters now")
+        due = True
     new = []
     if due:
         for name, fn in (("lines", step_lines), ("rosters", step_rosters)):
