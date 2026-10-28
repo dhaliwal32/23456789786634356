@@ -506,6 +506,8 @@ def relevance(ch, p):
 def alert_for(c):
     # change 121: a few words only, and only power play joins and watched players coming back
     last = str(c.get("name") or "").split()[-1] if c.get("name") else ""
+    if c.get("who") == "star" and c.get("star"):
+        return "Fantasy GM", f"{last} joined {str(c['star']).split()[-1]}'s line ({c['team']})"
     if c["type"] == "pp" and c["dir"] == "up" and c.get("who") in ("mine", "fa"):
         return "Fantasy GM", f"{last} joined {c['team']} PP1"
     if c.get("who") == "watch":
@@ -600,6 +602,23 @@ def run(force=False):
         p = by_id.get(c.get("e") or "") or by_ng.get((c["key"], c.get("g"))) or by_n.get(c["key"])
         c["e"] = str(p["id"]) if p else None
         c["who"] = relevance(c, p)
+    # change 128: a free agent who moves onto a superstar's line
+    try:
+        fw = [p for p in players if p.get("p") == "F"]
+        stars = {norm(p["n"]): p["n"] for p in sorted(fw, key=lambda p: -(p.get("pavg") or 0))[:30]}
+        lines_now = state.get("lines") or {}
+        for c in new:
+            if c["type"] not in ("line", "lineup") or c["dir"] not in ("up", "in", "") or not str(c.get("to") or "").startswith("F"):
+                continue
+            p = by_id.get(c.get("e") or "")
+            if not p or p.get("ft"):
+                continue
+            mates = (lines_now.get(c["team"]) or {}).get(c["to"]) or []
+            star = [stars[norm(m)] for m in mates if norm(m) != c["key"] and norm(m) in stars]
+            if star:
+                c["who"], c["star"] = "star", star[0]
+    except Exception:
+        print(f"(lines) WARNING star line check failed:\n{traceback.format_exc()}")
     old = state.get("changes") or []
     ids = {c["id"] for c in old}
     fresh = [c for c in new if c["id"] not in ids]
