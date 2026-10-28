@@ -10888,7 +10888,80 @@ function GxRace({
       fontSize: fs,
       fill: "var(--mute)"
     }
-  }, nm + " " + Math.round(CB[n - 1])), dates.map((dt, d) => {
+  }, nm + " " + Math.round(CB[n - 1])), (() => {
+    const sy = Math.max(ya, yb) + 26,
+      gx = lx + (W - lx) / 2 - 4,
+      lab = {
+        fontSize: fs - 1,
+        fill: "var(--mute)"
+      },
+      val = {
+        fontSize: fs,
+        fill: "var(--ink)",
+        fontWeight: 600
+      };
+    return /*#__PURE__*/React.createElement("g", null, sy + 50 < base ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("text", {
+      x: lx,
+      y: sy,
+      style: lab
+    }, up ? "Games" : "Games left"), /*#__PURE__*/React.createElement("text", {
+      x: lx,
+      y: sy + 15,
+      style: val
+    }, (up ? totG(X) : X.used) + "–" + (up ? totG(Y) : Y.used)), /*#__PURE__*/React.createElement("text", {
+      x: lx,
+      y: sy + 36,
+      style: lab
+    }, done ? "Days won" : "Days ahead"), /*#__PURE__*/React.createElement("text", {
+      x: lx,
+      y: sy + 51,
+      style: val
+    }, won + " of " + (done || n))) : null, /*#__PURE__*/React.createElement("text", {
+      x: gx,
+      y: 192,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs,
+        fill: "var(--ink)",
+        fontWeight: 600
+      }
+    }, "Week"), narrow ? /*#__PURE__*/React.createElement("text", {
+      x: gx,
+      y: 208,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs,
+        fill: CA[n - 1] > CB[n - 1] ? "var(--good)" : "var(--ink2)",
+        fontWeight: 600
+      }
+    }, Math.round(CA[n - 1])) : /*#__PURE__*/React.createElement("text", {
+      x: gx,
+      y: 209,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs,
+        fill: CA[n - 1] > CB[n - 1] ? "var(--good)" : "var(--ink2)",
+        fontWeight: 600
+      }
+    }, Math.round(CA[n - 1]) + "–" + Math.round(CB[n - 1])), narrow ? /*#__PURE__*/React.createElement("text", {
+      x: gx,
+      y: 223,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs,
+        fill: "var(--mute)",
+        fontWeight: 600
+      }
+    }, Math.round(CB[n - 1])) : null, gxGopt105() === "text" ? /*#__PURE__*/React.createElement("text", {
+      x: gx,
+      y: Hh - 4,
+      textAnchor: "middle",
+      style: {
+        fontSize: fs - 1,
+        fill: "var(--mute)"
+      }
+    }, totG(X) + "–" + totG(Y)) : null);
+  })(), dates.map((dt, d) => {
     const on = d === d0,
       win = me[d] > th[d] + 0.05;
     return /*#__PURE__*/React.createElement("g", {

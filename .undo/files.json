@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "espn_sync.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "114-team-pictures-matchup-totals.py"
+  "115-home-week-side.py"
  ]
 }
