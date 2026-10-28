@@ -2204,6 +2204,7 @@ function Matchup({
   const d = Math.max(0, Math.min(n - 1, day != null ? day : first >= 0 ? first : n - 1));
   const sl105a = useSlide105(sel),
     sl105b = useSlide105(sel * 100 + d);
+  const [bx118, setBx118] = useState("");
   const [dr106, dh106] = useDrag106(d > 0 ? () => setDay(d - 1) : null, d < n - 1 ? () => setDay(d + 1) : null);
   const over = n > 0 && done >= n;
   const move = k => setSel((Math.min(sel, all.length - 1) + k + all.length) % all.length);
@@ -2255,7 +2256,8 @@ function Matchup({
       className: "min-w-0 gx-pc" + (p.st === "F" ? " gx-fin" : ""),
       style: {
         flexDirection: right ? "row-reverse" : "row"
-      }
+      },
+      onClick: () => setBx118(bx118 === p.id + "|" + p.dt ? "" : p.id + "|" + p.dt)
     }, /*#__PURE__*/React.createElement("span", {
       className: "gx-fw",
       style: {
@@ -2461,8 +2463,9 @@ function Matchup({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "gx-tag"
-  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state)), rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
+  }, (dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state)), rows.length ? rows.map(([sl, p, q], i) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-h2h",
     style: i ? null : {
       borderTop: 0
@@ -2472,7 +2475,10 @@ function Matchup({
     style: {
       color: "var(--faint)"
     }
-  }, sl === "UTIL" ? "U" : sl), num(q, p, true), cell(q, true))) : /*#__PURE__*/React.createElement("div", {
+  }, sl === "UTIL" ? "U" : sl), num(q, p, true), cell(q, true)), [p, q].filter(z => z && bx118 === z.id + "|" + z.dt).map(z => /*#__PURE__*/React.createElement(GxBox118, {
+    key: "bx" + z.id,
+    p: z
+  })))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
   }, "No games for either team on this day."), rows.length ? /*#__PURE__*/React.createElement("div", {
     className: "gx-h2h gx-tt114"
@@ -7736,7 +7742,7 @@ function Pickups({
     window.__PICK_Q = "";
     return v;
   });
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(100000); /* gx118: show all */
   useEffect(() => {
     const h = () => {
       if (window.__PICK_Q) {
@@ -7865,14 +7871,14 @@ function Pickups({
     value: pos,
     onChange: v => {
       setPos(v);
-      setLimit(25);
+      setLimit(100000);
     }
   }), /*#__PURE__*/React.createElement(Pills, {
     items: [[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]],
     value: H,
     onChange: v => {
       setH(v);
-      setLimit(25);
+      setLimit(100000);
     }
   })), /*#__PURE__*/React.createElement(GxRngSel100, null)), !plan ? /*#__PURE__*/React.createElement(GxHeadStart, {
     s: s,
@@ -7902,7 +7908,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(25);
+      setLimit(100000);
     },
     def: "add",
     cls: "m-hide"
@@ -7911,7 +7917,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(25);
+      setLimit(100000);
     },
     def: "add",
     cls: "m-hide"
@@ -7920,7 +7926,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(25);
+      setLimit(100000);
     },
     def: "add",
     cls: "m-hide"
@@ -7929,7 +7935,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(25);
+      setLimit(100000);
     },
     def: "add"
   }, "Adds"), /*#__PURE__*/React.createElement(GxSH, {
@@ -7937,7 +7943,7 @@ function Pickups({
     cur: srt79,
     set: v => {
       setSrt79(v);
-      setLimit(25);
+      setLimit(100000);
     },
     def: "add"
   }, "Win"), /*#__PURE__*/React.createElement("span", {
@@ -13127,7 +13133,7 @@ function GxPlayerDetail({
   const isG = p.p === "G";
   const [tab, setTab] = useState("ov");
   const [log, setLog] = useState(null);
-  const [nLog, setNLog] = useState(10);
+  const [nLog, setNLog] = useState(100000); /* gx118: full log */
   const [img, setImg] = useState(true);
   const [out101, setOut101] = useState(false);
   const close101 = () => {
@@ -13145,7 +13151,7 @@ function GxPlayerDetail({
   }, [s.players, K, window.__PMODE]);
   useEffect(() => {
     setTab("ov");
-    setNLog(10);
+    setNLog(100000);
     setImg(true);
   }, [p.id]);
   useEffect(() => {
@@ -15450,5 +15456,48 @@ function GxFtPic114({
       fontSize: Math.round(z * 0.45)
     }
   }, (nm.replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase());
+}
+// ---------- change 118: one player's box score for one day, opened from Matchup (install.py) ----------
+function GxBox118({
+  p
+}) {
+  const x = typeof pStat === "function" ? pStat(p, p.dt) : null;
+  const pts = p.st ? p.a == null ? 0 : p.a : p.x;
+  const opp = p.st && typeof gxOpp98 === "function" ? gxOpp98(p) : mGame(p);
+  const t = (k, l, v, f) => /*#__PURE__*/React.createElement("div", {
+    key: k,
+    className: f ? "f" : ""
+  }, /*#__PURE__*/React.createElement("small", null, l), /*#__PURE__*/React.createElement("b", null, v));
+  let cells = [];
+  if (x && x.sv != null) {
+    cells = [t("f", "FPTS", f1(pts || 0), 1), t("dec", "Result", {
+      W: "Win",
+      L: "Loss",
+      O: "OT loss"
+    }[x.dec] || "–"), t("sv", "Saves", x.sv), t("ga", "Goals against", x.ga), t("sa", "Shots", x.sa != null ? x.sa : x.sv + x.ga), t("svp", "Save %", x.sv + x.ga ? (x.sv / (x.sv + x.ga)).toFixed(3).replace(/^0/, "") : "–"), t("so", "Shutout", x.ga === 0 && x.dec === "W" ? "Yes" : "No"), t("toi", "TOI", x.toi || "–")];
+  } else if (x) {
+    const pm = x.pm || 0;
+    cells = [t("f", "FPTS", f1(pts || 0), 1), t("g", "G", x.g || 0), t("a", "A", x.a || 0), t("pts", "PTS", (x.g || 0) + (x.a || 0)), t("pm", "+/-", (pm > 0 ? "+" : "") + pm), t("sog", "SOG", x.sog || 0), t("ppg", "PPG", x.ppg || 0), t("pim", "PIM", x.pim || 0), t("hit", "HIT", x.hit || 0), t("blk", "BLK", x.blk || 0), t("tk", "TK", x.tk || 0), t("gv", "GV", x.gv || 0), x.fo ? t("fo", "FO%", Math.round(x.fo * 100) + "%") : null, t("shf", "Shifts", x.shf || 0), t("toi", "TOI", x.toi || "–")].filter(Boolean);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-bx118"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hd"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "n"
+  }, p.n), /*#__PURE__*/React.createElement("span", {
+    className: "o"
+  }, opp), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "x",
+    onClick: e => {
+      e.stopPropagation();
+      if (window.__NAV) window.__NAV.player(p);
+    }
+  }, "Profile")), cells.length ? /*#__PURE__*/React.createElement("div", {
+    className: "g"
+  }, cells) : /*#__PURE__*/React.createElement("div", {
+    className: "e"
+  }, p.st ? "No stats yet for this game." : "Has not played yet. Projected " + f1(p.x || 0) + " FPTS."));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
