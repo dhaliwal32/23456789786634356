@@ -1409,7 +1409,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(GxFaToggle105, {
     cur: "allp",
     go: go
-  }), /*#__PURE__*/React.createElement(GxRankings, P)) : sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "injuries" ? /*#__PURE__*/React.createElement(GxInjPage, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
+  }), /*#__PURE__*/React.createElement(GxRankings, P)) : sub === "planner" ? /*#__PURE__*/React.createElement(PlannerAll, P) : sub === "goalies" ? /*#__PURE__*/React.createElement(GoalieStreams, P) : sub === "injuries" ? /*#__PURE__*/React.createElement(GxInj109, P) : sub === "adddrop" ? /*#__PURE__*/React.createElement(Pickups, P) : sub === "players" ? /*#__PURE__*/React.createElement(Players, P) : sub === "trades" ? /*#__PURE__*/React.createElement(TradesPanel, _extends({
     key: tradePartner || "none"
   }, P, {
     initPartner: tradePartner
@@ -3973,6 +3973,7 @@ function MyTeam({
   wk,
   go
 }) {
+  gxUseSort108(); /* gx109 */
   // team roster v37: one roster list with role, form, schedule and rank (news_logos.py)
   const K = s.blend,
     today = todayISO(),
@@ -7764,6 +7765,7 @@ function Pickups({
   setS,
   wk
 }) {
+  gxUseSort108(); /* gx109 */
   const effAvg = gxPgAvg; /* gx088-pk */
   const K = s.blend;
   const [H, setH] = useState(1);
@@ -7938,7 +7940,7 @@ function Pickups({
       borderTop: 0,
       paddingTop: 0
     }
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, base == null ? "Free agents, best first" : "Win chance now " + wpTxt(base)), /*#__PURE__*/React.createElement(GxSH, {
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement(GxSH, {
     k: "l5",
     cur: srt79,
     set: v => {
@@ -7986,7 +7988,7 @@ function Pickups({
   }, "Avg"), /*#__PURE__*/React.createElement("span", {
     className: "n"
   }, "Rost"), /*#__PURE__*/React.createElement(GxSH106, {
-    mode: pos === "G" ? "go" : pos === "all" ? "cm" : "sk"
+    mode: pos === "G" ? "go" : "sk"
   })), rows.length ? gxSort108(rows, s, r => r.f).map(r => {
     const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0,
       tg = shortTag(r.f, K),
@@ -8093,16 +8095,7 @@ function Pickups({
       minWidth: 40,
       fontVariantNumeric: "tabular-nums"
     }
-  }, f1(effAvg(p, K)))))) : null, /*#__PURE__*/React.createElement("div", {
-    className: "gx-pn",
-    "data-gx": "103more"
-  }, /*#__PURE__*/React.createElement("a", {
-    className: "gx-lk103",
-    href: gxHash("moves", "planner")
-  }, "Week plan", /*#__PURE__*/React.createElement("span", null, "\u203a")), /*#__PURE__*/React.createElement("a", {
-    className: "gx-lk103",
-    href: gxHash("moves", "advice")
-  }, "Advice", /*#__PURE__*/React.createElement("span", null, "\u203a"))), sim ? /*#__PURE__*/React.createElement(GxSim107, {
+  }, f1(effAvg(p, K)))))) : null, sim ? /*#__PURE__*/React.createElement(GxSim107, {
     s: sP,
     setS: setS,
     wk: wkP,
@@ -8835,21 +8828,6 @@ function LeaguePage({
       borderTop: "1px solid var(--line)"
     }
   }, "Tap a matchup to open it on the Matchup page.") : null), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "gx-lk",
-    "data-c78": "link",
-    onClick: () => go("league", "players")
-  }, /*#__PURE__*/React.createElement("span", null, "Player rankings"), /*#__PURE__*/React.createElement("span", {
-    className: "text-sm text-slate-500",
-    style: {
-      marginLeft: 8
-    }
-  }, "every player by position, and who owns him"), /*#__PURE__*/React.createElement("span", {
-    className: "sec-chev shut",
-    style: {
-      margin: "0 4px 0 auto"
-    }
-  })), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "gx-lk",
     onClick: () => go("league", "playoffs")
@@ -9705,6 +9683,7 @@ function GxRosterTable({
   wk,
   tid
 }) {
+  gxUseSort108(); /* gx109 */
   const K = s.blend,
     today = todayISO(),
     gen = (window.ESPN_DATA || {}).generated;
@@ -11524,6 +11503,7 @@ const gxYou = (s, you, other) => !window.__TB_REAL || s.me === window.__TB_REAL 
 function GxRankings({
   s
 }) {
+  gxUseSort108(); /* gx109 */
   const K = s.blend;
   const [pos, setPos] = useState("F");
   const [own, setOwn] = useState("all");
@@ -14708,4 +14688,127 @@ function GxFlt108({
   }, children) : null);
 }
 const gxRngLbl108 = () => (GX_RNG100.find(r => r[0] === gxRng100()) || [0, "Season"])[1].replace(" (projected)", " proj.");
+// ---------- change 109: clean Injuries page (install.py) ----------
+function GxInj109({
+  s
+}) {
+  const ea = gxPgAvg,
+    K = s.blend;
+  const [who, setWho] = useState(() => uiGet()["ij85:who"] || "fa");
+  const [pos, setPos] = useState("all");
+  const [by, setBy] = useState(() => uiGet().ij109by || "best");
+  const [nU, setNU] = useState(5);
+  const [nL, setNL] = useState(15);
+  const D = useMemo(() => {
+    const EV = (window.__SIG || {}).injmoves || {},
+      list = [],
+      ups = [];
+    s.players.forEach(p => {
+      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
+      const inj = autoInj(p),
+        e = id ? EV[id] : null;
+      if (!inj && !(e && e.k === "back")) return;
+      const r = {
+        p,
+        v: ea(p, K),
+        inj,
+        e,
+        back: inj ? effBack(p).d : ""
+      };
+      if (inj) list.push(r);
+      if (e) ups.push(r);
+    });
+    return {
+      list,
+      ups
+    };
+  }, [s]);
+  const keep = r => (who === "fa" ? r.p.ft === "fa" : who === "mine" ? r.p.ft === s.me : true) && (pos === "all" || r.p.p === pos);
+  const best = (a, b) => b.v - a.v;
+  const ups = D.ups.filter(keep).sort(by === "best" ? best : (a, b) => gxIjLast(b.e).localeCompare(gxIjLast(a.e)) || best(a, b));
+  const list = D.list.filter(keep).sort(by === "best" ? best : (a, b) => (a.back || "9").localeCompare(b.back || "9") || best(a, b));
+  const ev = e => e.k === "back" ? ["up", "Off the injury list"] : e.k === "sooner" ? ["up", "Back sooner, now " + mdL(e.now)] : e.k === "dtd" ? ["up", "Now day-to-day"] : e.k === "later" ? ["wn", "Pushed back to " + mdL(e.now)] : e.k === "new" ? ["dn", "New injury" + (e.now ? ", back " + mdL(e.now) : "")] : ["", "New news"];
+  const own = p => p.ft === "fa" ? "" : p.ft === s.me ? "Yours · " : teamName(s, p.ft) + " · ";
+  const row = (r, upd) => {
+    const st = r.inj ? (r.inj.status || "Out").replace("Injured Reserve", "IR") + (r.back ? " · back " + mdL(r.back) : "") : "Healthy";
+    const x = upd && r.e ? ev(r.e) : null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: (upd ? "u" : "l") + r.p.id,
+      className: "gx-ij109"
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: r.p,
+      size: 28
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "truncate"
+    }, /*#__PURE__*/React.createElement(PN, {
+      p: r.p,
+      className: ""
+    }), " ", /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500"
+    }, r.p.p)), /*#__PURE__*/React.createElement("div", {
+      className: "l2"
+    }, (who === "fa" ? "" : own(r.p)) + st), x ? /*#__PURE__*/React.createElement("div", {
+      className: "ev " + x[0]
+    }, x[1]) : null), /*#__PURE__*/React.createElement("div", {
+      className: "v"
+    }, f1(r.v), /*#__PURE__*/React.createElement("small", null, "pts/g")));
+  };
+  const lbl = {
+    fa: "Free agents",
+    mine: "My team",
+    all: "All teams"
+  }[who] + " · " + {
+    all: "All",
+    F: "Forwards",
+    D: "Defence",
+    G: "Goalies"
+  }[pos] + " · " + (by === "best" ? "Best first" : "By date");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(GxFlt108, {
+    label: lbl
+  }, /*#__PURE__*/React.createElement(Pills, {
+    items: [["fa", "Free agents"], ["mine", "My team"], ["all", "All teams"]],
+    value: who,
+    onChange: v => {
+      setWho(v);
+      uiSet("ij85:who", v);
+    }
+  }), /*#__PURE__*/React.createElement(Pills, {
+    items: [["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]],
+    value: pos,
+    onChange: setPos
+  }), /*#__PURE__*/React.createElement(Pills, {
+    items: [["best", "Best first"], ["date", "By date"]],
+    value: by,
+    onChange: v => {
+      setBy(v);
+      uiSet("ij109by", v);
+    }
+  })), ups.length ? /*#__PURE__*/React.createElement(GxPanel, {
+    title: "Updates",
+    right: "last 7 days"
+  }, ups.slice(0, nU).map(r => row(r, true)), ups.length > nU ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600",
+    style: {
+      marginTop: 8
+    },
+    onClick: () => setNU(nU + 10)
+  }, "Show more") : null) : null, /*#__PURE__*/React.createElement(GxPanel, {
+    title: "Injured",
+    right: list.length + ""
+  }, list.length ? list.slice(0, nL).map(r => row(r, false)) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "None"), list.length > nL ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "text-sm text-blue-600",
+    style: {
+      marginTop: 8
+    },
+    onClick: () => setNL(nL + 20)
+  }, "Show more") : null));
+}
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
