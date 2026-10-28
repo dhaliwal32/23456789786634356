@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-20|c1bd463d3876",
-   "at": "2026-10-21T05:23:31Z",
-   "title": "Pickup: ice time jump",
-   "text": "Paul Cotter (F, VAN) is playing 15.7 min per game lately, up +3.3 (PP +0.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-21T06:55:14Z",
-   "via": "morning",
-   "sent_at": "2026-10-21T15:00:04Z"
-  },
-  {
-   "k": "2026-10-20|f0b1ecb3c1d7",
-   "at": "2026-10-21T05:23:32Z",
-   "title": "Pickup: ice time jump",
-   "text": "Filip Chytil (F, VAN) is playing 19.2 min per game lately, up +4.2 (PP -0.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-21T06:55:14Z",
-   "via": "morning",
-   "sent_at": "2026-10-21T15:00:04Z"
-  },
-  {
    "k": "2026-10-20|939fb628eafe",
    "at": "2026-10-21T05:54:25Z",
    "title": "Pickup: ice time jump",
@@ -6554,7 +6530,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -6638,7 +6614,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -6662,7 +6638,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -6842,7 +6818,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -6854,7 +6830,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -6902,7 +6878,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": true,
-   "seen": "2026-10-28T05:21:24Z",
+   "seen": "2026-10-28T05:27:26Z",
    "via": "morning",
    "sent_at": "2026-10-27T15:04:37Z"
   },
@@ -7051,7 +7027,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|2a8b2294da87",
@@ -7061,7 +7037,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|6d34d56e7437",
@@ -7091,7 +7067,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|774986d37c47",
@@ -7111,7 +7087,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|45e9b779702e",
@@ -7121,7 +7097,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|a6ad9451293a",
@@ -7161,7 +7137,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|002bb865e028",
@@ -7171,7 +7147,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|460a34aafab3",
@@ -7191,7 +7167,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|3ad11d129172",
@@ -7201,7 +7177,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|0de00e7fcf35",
@@ -7211,7 +7187,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|c743951060ea",
@@ -7221,7 +7197,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|d2af5c2f46db",
@@ -7231,7 +7207,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|f2005792d029",
@@ -7241,7 +7217,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|ec99469998bd",
@@ -7251,7 +7227,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|332d4127f586",
@@ -7261,7 +7237,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|3246ed072648",
@@ -7301,7 +7277,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|72ea997b73e5",
@@ -7311,7 +7287,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|209c52ee914b",
@@ -7321,7 +7297,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|ace6619e5dc0",
@@ -7331,7 +7307,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|fc76f0aac739",
@@ -7341,7 +7317,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|afc3d4bcb1f4",
@@ -7351,7 +7327,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   },
   {
    "k": "2026-10-27|a8266f214700",
@@ -7383,7 +7359,7 @@
    "section": "pickup",
    "urgent": false,
    "sent": false,
-   "seen": "2026-10-28T05:21:24Z"
+   "seen": "2026-10-28T05:27:26Z"
   }
  ],
  "sent": {
