@@ -1,12 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_notify.py": true,
-  "gm_alerts.py": true,
-  "gm_lines.py": true,
-  "gm_live.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "121-short-alerts-pics.py"
+  "122-pickups-scroll-load.py"
  ]
 }
