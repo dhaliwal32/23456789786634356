@@ -45,9 +45,11 @@ import ai_engine as E
 
 VERSION = "ai-stage2-v1"
 HERE = E.HERE
-SEASONS = [("20242025", "2024-10-01", "2025-04-20"),
+SEASONS = [("20142015", "2014-10-06", "2015-04-13"), ("20152016", "2015-10-05", "2016-04-12"), ("20162017", "2016-10-10", "2017-04-12"), ("20172018", "2017-09-28", "2018-04-10"), ("20182019", "2018-09-28", "2019-04-10"), ("20192020", "2019-09-28", "2020-03-15"), ("20202021", "2021-01-10", "2021-05-25"), ("20212022", "2021-10-01", "2022-05-05"), ("20222023", "2022-10-01", "2023-04-20"), ("20232024", "2023-10-01", "2024-04-25"), ("20242025", "2024-10-01", "2025-04-20"),
            ("20252026", "2025-10-01", "2026-04-20"),
            ("20262027", "2026-09-25", "2027-04-25")]
+# change 126: how far back each kind of player learns from (tested in ai/research/history_exp.json)
+TRAIN_FROM = {'F': '2014-10-01', 'D': '2014-10-01', 'G_start': '2021-10-01', 'G_cond': '2024-10-01'}
 SK_STATS = ["G", "A", "PM", "PPP", "SHP", "SOG", "HIT", "BLK"]
 USAGE = ["toi", "pptoi"]
 G_STATS = ["W", "OTL", "GA", "SV", "SO"]
@@ -835,6 +837,12 @@ def train(root, reg, data, now, cfg, log=print):
     val.setdefault("groups", {})
     for grp in FAMILIES:
         X, Y, dates, keys = data[grp]
+        cut = TRAIN_FROM.get(grp)  # change 126
+        if cut and len(dates):
+            m = dates >= cut
+            if 0 < int(m.sum()) < len(dates) and int(m.sum()) >= cfg["min_train"]:
+                X, Y, dates = X[m], Y[m], dates[m]
+                keys = [k for k, ok in zip(keys, m.tolist()) if ok] if keys is not None else None
         gcfg = dict(cfg, **{k: min(cfg[k], v) for k, v in GROUP_CFG.get(grp, {}).items()})
         if len(dates) < gcfg["min_train"]:
             log(f"(learn) {grp}: only {len(dates)} examples - not enough to train yet")
