@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_lines.py": true
  },
  "changes": [
-  "096-player-photo-fix.py"
+  "097-espn-faces.py"
  ]
 }

@@ -13508,8 +13508,8 @@ function GxFace({
   return /*#__PURE__*/React.createElement("span", {
     className: "gx-face",
     style: {
-      width: z,
-      height: z
+      width: "calc(" + z + "px * var(--gx-fs, 1))",
+      height: "calc(" + z + "px * var(--gx-fs, 1))"
     },
     title: (p.n || "") + " (" + tm + ")"
   }, /*#__PURE__*/React.createElement("span", {
