@@ -196,6 +196,11 @@
 "k": "back",
 "was": "2026-10-23"
 },
+"3151036": {
+"d": "2026-10-27",
+"k": "new",
+"now": "2026-10-29"
+},
 "3151784": {
 "d": "2026-10-25",
 "k": "back",
@@ -358,6 +363,11 @@
 "d": "2026-10-20",
 "k": "back",
 "was": ""
+},
+"4378682": {
+"d": "2026-10-27",
+"k": "back",
+"was": "2026-11-09"
 },
 "4392072": {
 "d": "2026-10-27",
@@ -806,6 +816,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"3151036": {
+"back": "2026-10-29",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "3151038": {
 "back": "2027-03-30",
 "note": "Merzlikins is expected to miss 4-6 months to begin the 2026-27 regular season while recovering from a shoulder injury, per Luke Fox of Sportsnet.",
@@ -969,11 +984,6 @@
 "4352804": {
 "back": "2027-01-03",
 "note": "Veleno (lower body) was placed on long-term injured reserve Saturday, Vince Z. Mercogliano of The Athletic reports.",
-"status": "Injured Reserve"
-},
-"4378682": {
-"back": "2026-11-09",
-"note": "ir-nr",
 "status": "Injured Reserve"
 },
 "4392072": {
