@@ -1616,10 +1616,9 @@ function Today({
     }
   }, /*#__PURE__*/React.createElement("span", null, (over ? "Final " : "Projected ") + Math.round(fa)), /*#__PURE__*/React.createElement("span", {
     style: {
-      margin: "0 auto",
-      color: ahead ? "var(--good)" : "var(--bad)"
+      margin: "0 auto"
     }
-  }, (ahead ? "Ahead by " : "Behind by ") + f1(Math.abs(margin))), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxAutoToday2, {
+  }), /*#__PURE__*/React.createElement("span", null, Math.round(fb)))), /*#__PURE__*/React.createElement(GxAutoToday2, {
     go: go
   }), /*#__PURE__*/React.createElement(GxRace, {
     s: s,
@@ -2205,6 +2204,7 @@ function Matchup({
   const d = Math.max(0, Math.min(n - 1, day != null ? day : first >= 0 ? first : n - 1));
   const sl105a = useSlide105(sel),
     sl105b = useSlide105(sel * 100 + d);
+  const [dr106, dh106] = useDrag106(d > 0 ? () => setDay(d - 1) : null, d < n - 1 ? () => setDay(d + 1) : null);
   const over = n > 0 && done >= n;
   const move = k => setSel((Math.min(sel, all.length - 1) + k + all.length) % all.length);
   const onStart = e => {
@@ -2333,13 +2333,7 @@ function Matchup({
   }, teamName(s, id), " would sit: ", l.bench.map(p => shortN(p.n)).join(", ")) : null;
   const dayTot = x.act + x.total - (y.act + y.total);
   const mine = a === s.me;
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    onTouchStart: onStart,
-    onTouchEnd: onEnd,
-    style: {
-      touchAction: "pan-y"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     key: "m105-" + sel,
     className: "gx-sl105 " + sl105a,
     style: {
@@ -2445,13 +2439,15 @@ function Matchup({
         color: flat ? "var(--faint)" : dv > 0 ? "var(--good)" : "var(--bad)"
       }
     }, flat ? "0" : (dv > 0 ? "+" : "") + Math.round(dv)));
-  })), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", _extends({
     key: "d105-" + sel + "-" + d,
-    className: "gx-pn gx-sl105 " + sl105b,
+    ref: dr106
+  }, dh106, {
+    className: "gx-pn gx-dr106 gx-sl105 " + sl105b,
     style: {
       marginTop: 12
     }
-  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       alignItems: "baseline",
@@ -4085,7 +4081,7 @@ function MyTeam({
     D3: "D3"
   };
   const roleTxt = p => {
-    if (p.p === "G") return Math.round(p.prob * 100) + "% of starts";
+    if (p.p === "G") return gxGsTxt106(p);
     const r = roles[p.id];
     if (!r) return "";
     return [r.es ? RO[r.es] : "not in lineup", r.pp].filter(Boolean).join(" \u00b7 ");
@@ -4193,13 +4189,16 @@ function MyTeam({
       className: "n text-slate-500 m-hide"
     }, nextW && !p.ir ? nextG(p) : "\u2013"), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
-    }, sea == null ? "\u2013" : f1(sea)), /*#__PURE__*/React.createElement("div", {
+    }, sea == null ? "\u2013" : f1(sea), p.p === "G" && gxGS106(p) ? /*#__PURE__*/React.createElement("span", {
+      className: "gx-gs106"
+    }, gxGS106(p).pct) : null), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC104, {
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC106, {
       p: p,
-      s: s
+      s: s,
+      mode: "full"
     }));
   };
   const rkc = v => v >= 8 ? {
@@ -4259,7 +4258,9 @@ function MyTeam({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH106, {
+    mode: "sk"
+  })), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -7875,13 +7876,13 @@ function Pickups({
     className: "text-sm"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-semibold"
-  }, ml === 0 ? "No moves left this week." : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left this week."), !plan ? /*#__PURE__*/React.createElement(GxHsLine, {
+  }, ml === 0 ? "No moves left" : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left"), !plan ? /*#__PURE__*/React.createElement(GxHsLine, {
     s: s,
     base: base,
     ml: ml
   }) : null, plan ? /*#__PURE__*/React.createElement("span", {
     className: "text-slate-500"
-  }, " Showing ", pw.label || "next week", ".", d0 ? " Moves reset " + dayLabel(d0) + "." : "") : null), /*#__PURE__*/React.createElement("div", {
+  }, " \u00b7 showing next week") : null), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap gap-2 items-center"
   }, /*#__PURE__*/React.createElement(Pills, {
     items: [["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]],
@@ -7912,10 +7913,10 @@ function Pickups({
     onChange: e => setQ(e.target.value)
   }), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
-  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement(GxRngSel100, null), /*#__PURE__*/React.createElement("div", {
     className: "gx-sc99"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "gx-pk text-xs text-slate-500",
+    className: "gx-pk text-xs text-slate-500 " + gxPkMode106(pos),
     style: {
       borderTop: 0,
       paddingTop: 0
@@ -7965,16 +7966,18 @@ function Pickups({
     def: "add"
   }, "Win"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "So far"), /*#__PURE__*/React.createElement("span", {
+  }, "Avg"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Rost")), rows.length ? rows.map(r => {
+  }, "Rost"), /*#__PURE__*/React.createElement(GxSH106, {
+    mode: pos === "G" ? "go" : pos === "all" ? "cm" : "sk"
+  })), rows.length ? rows.map(r => {
     const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0,
       tg = shortTag(r.f, K),
       w = wins[r.f.id];
     const st = r.f.status && r.f.status !== "ACTIVE" ? M_ST[r.f.status] || r.f.status.replace(/_/g, " ") : "";
     return /*#__PURE__*/React.createElement("div", {
       key: r.f.id,
-      className: "gx-pk row",
+      className: "gx-pk row " + gxPkMode106(pos),
       role: "button",
       onClick: () => setSim({
         add: r.f.id,
@@ -8006,13 +8009,7 @@ function Pickups({
         color: "var(--bad)",
         marginLeft: 6
       }
-    }, st) : null), /*#__PURE__*/React.createElement("div", {
-      className: "text-xs text-slate-500 truncate"
-    }, "for " + r.d.n + (keep ? "" : H === 1 ? " \u00b7 this week" : " \u00b7 short-term") + (tg ? " \u00b7 " + tg.t : "") /* gx104-row */, gxScratch(r.f) ? /*#__PURE__*/React.createElement("span", {
-      style: {
-        color: "var(--warn)"
-      }
-    }, " \u00b7 not in lineup") : null)), spark(r.f), /*#__PURE__*/React.createElement("div", {
+    }, st) : null)), spark(r.f), /*#__PURE__*/React.createElement("div", {
       className: "n text-slate-500 m-hide"
     }, M.gamesIn(r.f)), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
@@ -8030,7 +8027,11 @@ function Pickups({
       className: "n text-slate-500"
     }, r.f.gp ? f1(r.f.tot / r.f.gp) : "-"), /*#__PURE__*/React.createElement("div", {
       className: "n text-slate-500"
-    }, r.f.own != null ? Math.round(r.f.own) + "%" : "-"));
+    }, r.f.own != null ? Math.round(r.f.own) + "%" : "-"), /*#__PURE__*/React.createElement(GxSC106, {
+      p: r.f,
+      s: s,
+      mode: pos === "all" ? "cm" : "full"
+    }));
   }) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500",
     style: {
@@ -9477,7 +9478,7 @@ function GxExtras({
     const t = e.touches[0];
     x0 = t.clientX;
     y0 = t.clientY;
-    ok = !(e.target.closest && e.target.closest(".gx-ms, .navscroll, .overflow-x-auto, .gx-so, .gx-bb, input, select"));
+    ok = false; /* gx106: swipes are handled where they happen */
   }, {
     capture: true,
     passive: true
@@ -9783,7 +9784,7 @@ function GxRosterTable({
     D3: "D3"
   };
   const roleTxt = p => {
-    if (p.p === "G") return Math.round(p.prob * 100) + "% of starts";
+    if (p.p === "G") return gxGsTxt106(p);
     const r = roles[p.id];
     return r ? [r.es ? RO[r.es] : "not in lineup", r.pp].filter(Boolean).join(" \u00b7 ") : "";
   };
@@ -9884,13 +9885,16 @@ function GxRosterTable({
       className: "n text-slate-500 m-hide"
     }, nextW && !p.ir ? nextG(p) : "\u2013"), /*#__PURE__*/React.createElement("div", {
       className: "n m-hide"
-    }, sea == null ? "\u2013" : f1(sea)), /*#__PURE__*/React.createElement("div", {
+    }, sea == null ? "\u2013" : f1(sea), p.p === "G" && gxGS106(p) ? /*#__PURE__*/React.createElement("span", {
+      className: "gx-gs106"
+    }, gxGS106(p).pct) : null), /*#__PURE__*/React.createElement("div", {
       className: "n"
     }, f1(effAvg(p, K))), /*#__PURE__*/React.createElement("div", {
       className: "n text-xs text-slate-500 m-hide"
-    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC104, {
+    }, rk ? p.p + " " + ordN(rk) : "\u2013"), /*#__PURE__*/React.createElement(GxSC106, {
       p: p,
-      s: s
+      s: s,
+      mode: "full"
     }));
   };
   return /*#__PURE__*/React.createElement("div", {
@@ -9901,7 +9905,9 @@ function GxRosterTable({
     className: "gx-ro gx-roh"
   }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", null, "Today"), /*#__PURE__*/React.createElement("span", {
     className: "n"
-  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH104, null)), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
+  }, "Pts"), HB("l5", "Last 5", "m-hide"), HB("mu", "Matchup"), HB("left", "Left"), HB("next", "Next wk", "m-hide"), HB("sea", "Avg", "m-hide"), HB("pg", "Expected"), HB("rk", "Rank", "m-hide"), /*#__PURE__*/React.createElement(GxSH106, {
+    mode: "sk"
+  })), groups.map(([title, list]) => /*#__PURE__*/React.createElement("div", {
     key: title,
     style: {
       marginBottom: 10
@@ -10603,6 +10609,7 @@ function GxRace({
     }
   }, [up, i, opp, R]);
   const sl105 = useSlide105(i);
+  const [dr106, dh106] = useDrag106(i > 0 ? () => go(i - 1) : null, i < s.weeks.length - 1 ? () => go(i + 1) : null);
   const act = id => +(w.act || {})[id] || 0;
   const sa = up ? 0 : act(s.me),
     sb = up || !opp ? 0 : act(opp);
@@ -10629,8 +10636,7 @@ function GxRace({
     style: {
       minWidth: 0,
       touchAction: "pan-y"
-    },
-    ...gxSwipe61(touch, i, go)
+    }
   };
   if (fin || !R) {
     return /*#__PURE__*/React.createElement("div", wrapP, head, fin && opp && (sa || sb) ? /*#__PURE__*/React.createElement("div", {
@@ -10768,24 +10774,26 @@ function GxRace({
   return /*#__PURE__*/React.createElement("div", wrapP, head, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
-      marginTop: 4
+      display: "none"
     }
   }, (done >= n ? "Final " : "Projected ") + Math.round(fa) + " \u2013 " + Math.round(fb) + " \u00b7 ", /*#__PURE__*/React.createElement("span", {
     style: {
       color: wp >= 0.5 ? "var(--good)" : "var(--bad)"
     }
-  }, wpTxt(wp) + " to win")), /*#__PURE__*/React.createElement("svg", {
+  }, wpTxt(wp) + " to win")), /*#__PURE__*/React.createElement("svg", _extends({
     key: "w105-" + i,
+    ref: dr106
+  }, dh106, {
     viewBox: "0 0 " + W + " " + Hh,
     width: "100%",
-    className: "gx-svg gx-sl105 " + sl105,
+    className: "gx-svg gx-dr106 gx-sl105 " + sl105,
     style: {
       display: "block",
       marginTop: 8
     },
     role: "img",
     "aria-label": "Running total for both teams through the week"
-  }, /*#__PURE__*/React.createElement("rect", {
+  }), /*#__PURE__*/React.createElement("rect", {
     x: cx(d0) - cw / 2 + 2,
     y: 4,
     width: cw - 4,
@@ -10961,9 +10969,15 @@ function GxRace({
       onClick: () => setSel(d)
     }));
   })), /*#__PURE__*/React.createElement("div", {
-    className: "gx-rf"
+    className: "gx-rf",
+    style: {
+      display: "none"
+    }
   }, facts), /*#__PURE__*/React.createElement("div", {
-    className: "gx-rt"
+    className: "gx-rt",
+    style: {
+      display: "none"
+    }
   }, /*#__PURE__*/React.createElement("span", {
     className: "l"
   }, dayLabel(dates[d0])), /*#__PURE__*/React.createElement("span", {
@@ -11570,11 +11584,15 @@ function GxRankings({
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn"
-  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement(GxRngSel100, null), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sc99 gx-rk106"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "gx-rk gx-rkh"
-  }, /*#__PURE__*/React.createElement("span", null, "Rank"), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, "#"), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "Player"), /*#__PURE__*/React.createElement("span", {
     className: "m-hide"
-  }, "Fantasy team"), HB("gp", "GP", "m-hide"), HB("sf", "So far"), HB("exp", "Expected")), shown.map(({
+  }, "Fantasy team"), HB("gp", "GP", "m-hide"), HB("sf", "Avg"), HB("exp", "Expected"), /*#__PURE__*/React.createElement(GxSH106, {
+    mode: pos === "G" ? "go" : "sk"
+  })), shown.map(({
     p,
     rk,
     e,
@@ -11618,13 +11636,17 @@ function GxRankings({
       className: "n"
     }, sf == null ? "–" : f1(sf)), /*#__PURE__*/React.createElement("span", {
       className: "n font-semibold"
-    }, f1(e)));
+    }, f1(e)), /*#__PURE__*/React.createElement(GxSC106, {
+      p: p,
+      s: s,
+      mode: "full"
+    }));
   }), !shown.length ? /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500",
     style: {
       padding: "10px 0"
     }
-  }, "No ", PN78[pos], " match.") : null, rows.length > shown.length ? /*#__PURE__*/React.createElement("button", {
+  }, "No ", PN78[pos], " match.") : null), rows.length > shown.length ? /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "text-sm text-blue-600",
     style: {
@@ -13240,7 +13262,7 @@ function GxPlayerDetail({
   }, /*#__PURE__*/React.createElement(TeamLogo, {
     t: p.t,
     size: 20
-  }), /*#__PURE__*/React.createElement("span", null, p.t + " · " + posWord + (no != null ? " · #" + no : ""))), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", null, p.t + " · " + posWord + (no != null ? " · #" + no : "") + (gxGS106(p) ? " · starts " + gxGS106(p).pct : ""))), /*#__PURE__*/React.createElement("div", {
     className: "ln"
   }, owner), Q ? /*#__PURE__*/React.createElement("div", {
     className: "bt"
@@ -13300,7 +13322,7 @@ function GxPlayerDetail({
     className: "l truncate"
   }, last))), /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-tm truncate"
-  }, tName), /*#__PURE__*/React.createElement("div", {
+  }, tName, gxGS106(p) ? " \u00b7 " + gxGsTxt106(p) + " (" + gxGS106(p).pct + ")" : ""), /*#__PURE__*/React.createElement("div", {
     className: "gx-pd-kv"
   }, /*#__PURE__*/React.createElement("span", {
     className: "k"
@@ -13399,7 +13421,7 @@ function GxPlayerDetail({
     className: "v"
   }, proj == null ? "-" : f1(proj)), /*#__PURE__*/React.createElement("div", {
     className: "s"
-  }, isG ? "if he starts" : "ESPN " + f1(p.avg || 0))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, isG ? gxGS106(p) ? "starts " + gxGS106(p).pct : "" : "ESPN " + f1(p.avg || 0))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "k"
   }, "Rest of this week"), /*#__PURE__*/React.createElement("div", {
     className: "v"
@@ -13416,7 +13438,7 @@ function GxPlayerDetail({
     style: {
       marginTop: 10
     }
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Next games"), /*#__PURE__*/React.createElement("th", null, "Opp"), /*#__PURE__*/React.createElement("th", null, isG ? "Start" : ""), /*#__PURE__*/React.createElement("th", null, "Proj"))), /*#__PURE__*/React.createElement("tbody", null, nextG.map(g => {
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Next games"), /*#__PURE__*/React.createElement("th", null, "Opp"), /*#__PURE__*/React.createElement("th", null, "Proj"))), /*#__PURE__*/React.createElement("tbody", null, nextG.map(g => {
     const r = per(g.d),
       lv = gState(p.t, g.d).s !== "P",
       a = lv ? gxPdReal(p, g.d) : null;
@@ -13429,8 +13451,6 @@ function GxPlayerDetail({
       t: g.o,
       size: 16
     }), " ", g.o)), /*#__PURE__*/React.createElement("td", {
-      className: "text-slate-500"
-    }, isG && r && r.g ? Math.round(r.g.v * 100) + "%" : ""), /*#__PURE__*/React.createElement("td", {
       className: "b"
     }, lv ? /*#__PURE__*/React.createElement(React.Fragment, null, a == null ? "-" : f1(a), " ", /*#__PURE__*/React.createElement(LiveTag, {
       st: gState(p.t, g.d).s,
@@ -14110,8 +14130,8 @@ function GxGH104() {
     length: 11
   }, (_, i) => /*#__PURE__*/React.createElement("span", {
     key: i
-  })), /*#__PURE__*/React.createElement(GxSH104, {
-    g: true
+  })), /*#__PURE__*/React.createElement(GxSH106, {
+    mode: "go"
   }));
 }
 // ---------- change 104: tidy Buy low row ----------
@@ -14205,4 +14225,124 @@ function GxGoSl105({
     className: "gx-sl105 " + c
   }, children);
 }
+// ---------- change 106: drag to swipe, stats everywhere, goalie start share (install.py) ----------
+// follow the finger; past about a quarter of the width it moves on, otherwise it springs back
+function useDrag106(prev, next) {
+  const ref = React.useRef(null),
+    st = React.useRef(null);
+  const set = (el, tr, x, op) => {
+    el.style.transition = tr;
+    el.style.transform = x;
+    el.style.opacity = op;
+  };
+  const h = {
+    onTouchStart: e => {
+      const t = e.touches[0];
+      st.current = {
+        x: t.clientX,
+        y: t.clientY,
+        dx: 0,
+        lock: null
+      };
+    },
+    onTouchMove: e => {
+      const s = st.current,
+        el = ref.current;
+      if (!s || !el) return;
+      const t = e.touches[0],
+        dx = t.clientX - s.x,
+        dy = t.clientY - s.y;
+      if (s.lock == null) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        s.lock = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      }
+      if (s.lock !== "x") return;
+      const can = dx < 0 ? !!next : !!prev;
+      s.dx = can ? dx : dx / 4;
+      set(el, "none", "translateX(" + s.dx + "px)", String(1 - Math.min(0.5, Math.abs(s.dx) / 700)));
+    },
+    onTouchEnd: () => {
+      const s = st.current,
+        el = ref.current;
+      st.current = null;
+      if (!s || !el || s.lock !== "x") return;
+      const w = el.offsetWidth || 320,
+        fn = Math.abs(s.dx) > w * 0.22 ? s.dx < 0 ? next : prev : null;
+      if (fn) {
+        set(el, "transform .15s ease-in, opacity .15s", "translateX(" + (s.dx < 0 ? -w : w) * 0.6 + "px)", "0");
+        setTimeout(() => {
+          set(el, "none", "", "");
+          fn();
+        }, 140);
+      } else set(el, "transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s", "", "");
+    }
+  };
+  h.onTouchCancel = h.onTouchEnd;
+  return [ref, h];
+}
+// how often a goalie has started: games played out of his team's games so far
+function gxGS106(p) {
+  const S = SCHED[p.t],
+    td = todayISO();
+  if (!S || p.p !== "G") return null;
+  let tg = 0;
+  S.forEach(d => {
+    if (d < td || d === td && gState(p.t, d).s === "F") tg += 1;
+  });
+  if (!tg) return null;
+  const n = Math.min(p.gp || 0, tg);
+  return {
+    n,
+    tg,
+    pct: Math.round(n / tg * 100) + "%"
+  };
+}
+const gxGsTxt106 = p => {
+  const g = gxGS106(p);
+  return g ? "started " + g.n + " of " + g.tg : "";
+};
+// stat values in display order: FPTS first, no average at the end
+const GX_SK106 = ["FPTS", "GP", "G", "A", "PTS", "+/-", "PIM", "SOG", "HIT", "BLK", "TOI"];
+const GX_GO106 = ["FPTS", "GP", "W", "L", "OTL", "GA", "SV", "SV%", "GAA", "SO", "TOI"];
+const GX_CM106 = ["FPTS"];
+function gxVals106(p, s, rng) {
+  const eid = String(p.id || "").replace(/^e/, ""),
+    isG = p.p === "G";
+  let v;
+  if (gxProjR100(rng)) {
+    const pr = gxProj100(p, s, rng);
+    v = [pr[0], "-", "-", "-", "-", "-", "-", "-", "-", "-", pr[13], pr[14]];
+  } else {
+    const D = GX100.data[rng];
+    v = D ? gxAgg104(D[eid], isG, s.sc || {}) : GX_SK104.map(() => "...");
+  }
+  return [v[10], ...v.slice(0, 10)];
+}
+function GxSC106({
+  p,
+  s,
+  mode
+}) {
+  const rng = gxUse100();
+  useEffect(() => {
+    gxLoad100(rng);
+  });
+  const v = gxVals106(p, s, rng),
+    out = mode === "cm" ? v.slice(0, 1) : v;
+  return out.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: "c106" + i,
+    className: "n " + (i === 0 ? "font-semibold" : "text-slate-500")
+  }, c));
+}
+function GxSH106({
+  mode
+}) {
+  const rng = gxUse100();
+  const H = mode === "go" ? GX_GO106 : mode === "cm" ? GX_CM106 : GX_SK106;
+  return H.map((h, i) => /*#__PURE__*/React.createElement("span", {
+    key: h + i,
+    className: "n"
+  }, gxProjR100(rng) && h === "GP" ? "Gms" : h));
+}
+const gxPkMode106 = pos => pos === "G" ? "full go" : pos === "F" || pos === "D" ? "full sk" : "cm";
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
