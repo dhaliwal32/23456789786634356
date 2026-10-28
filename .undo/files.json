@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_live.py": false
  },
  "changes": [
-  "119-box-score-popup.py"
+  "120-live-points.py"
  ]
 }
