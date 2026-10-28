@@ -296,7 +296,7 @@ def read_rosters():
                 for x in js.get(grp) or []:
                     n = f"{(x.get('firstName') or {}).get('default', '')} {(x.get('lastName') or {}).get('default', '')}".strip()
                     if x.get("id") and n:
-                        pl[str(x["id"])] = {"n": n, "p": pos, "pc": x.get("positionCode") or "", "sh": x.get("shootsCatches") or ""}
+                        pl[str(x["id"])] = {"n": n, "p": pos, "pc": x.get("positionCode") or "", "sh": x.get("shootsCatches") or "", "no": x.get("sweaterNumber")}
             if len(pl) >= 15:
                 out[t] = pl
         except Exception as ex:
@@ -601,7 +601,8 @@ def run(force=False):
     for t in sorted(set(lines) | set(st) | set(rosters)):
         teams[t] = {"lines": lines.get(t) or {}, "st": st.get(t) or {},
                     "fp": team_fp(lines.get(t), fp_this if use_this else fp_last),
-                    "roster": len(rosters.get(t) or {}), "pos": team_pos(t, state, rosters)}
+                    "roster": len(rosters.get(t) or {}), "pos": team_pos(t, state, rosters),
+                    "no": {v["n"]: v["no"] for v in (rosters.get(t) or {}).values() if v.get("no") is not None}}
     data = {"generated": iso(now), "lines_at": state.get("lines_at"), "rosters_at": state.get("rosters_at"),
             "season": season_label(THIS), "fp_use": "this" if use_this else "last",
             "fp_season": season_label(THIS if use_this else LAST), "st_src": st_src,

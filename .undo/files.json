@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_lines.py": true
  },
  "changes": [
-  "094-original-day-projection.py"
+  "095-player-screen.py"
  ]
 }
