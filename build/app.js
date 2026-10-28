@@ -4277,74 +4277,7 @@ function MyTeam({
     style: {
       padding: "8px 0 4px"
     }
-  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, gxSort108(list, s).map(row))))), /*#__PURE__*/React.createElement(GxPanel, {
-    title: "Weakest spots"
-  }, weak.length ? weak.map((p, i) => /*#__PURE__*/React.createElement("div", {
-    key: p.id,
-    className: "gx-row",
-    style: i ? null : {
-      borderTop: 0
-    }
-  }, /*#__PURE__*/React.createElement(GxFace, {
-    p: p,
-    size: 22
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "min-w-0 truncate",
-    style: {
-      flex: 1
-    }
-  }, /*#__PURE__*/React.createElement(PN, {
-    p: p,
-    className: ""
-  })), /*#__PURE__*/React.createElement("span", {
-    className: "text-xs text-slate-500 whitespace-nowrap"
-  }, rankOf[p.id] ? p.p + " " + ordN(rankOf[p.id]) : p.p), /*#__PURE__*/React.createElement("span", {
-    className: "font-semibold text-right",
-    style: {
-      minWidth: 40,
-      fontVariantNumeric: "tabular-nums"
-    }
-  }, f1(pv(p))))) : /*#__PURE__*/React.createElement("div", {
-    className: "text-sm text-slate-500"
-  }, "Everyone outside your protected players is pulling his weight.")), /*#__PURE__*/React.createElement(MyForm, {
-    s: s
-  }), /*#__PURE__*/React.createElement(MyInjProt, {
-    s: s,
-    setS: setS,
-    wk: wk
-  }), /*#__PURE__*/React.createElement(Section, {
-    title: "This week, day by day",
-    sub: "Bright = in your lineup, amber = plays but would sit, red = out, grey = already played."
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "overflow-x-auto"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "text-sm w-full"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
-    className: "px-2 py-2 text-left"
-  }, "Player"), wk.days.map((d, i) => /*#__PURE__*/React.createElement("th", {
-    key: i,
-    className: "px-1 py-2 text-center"
-  }, d.split(",")[0])))), /*#__PURE__*/React.createElement("tbody", null, sorted.filter(p => !p.ir).map(p => /*#__PURE__*/React.createElement("tr", {
-    key: p.id,
-    className: "border-t border-slate-100"
-  }, /*#__PURE__*/React.createElement("td", {
-    className: "px-2 py-1 whitespace-nowrap"
-  }, /*#__PURE__*/React.createElement(PN, {
-    p: p,
-    className: ""
-  }), " ", /*#__PURE__*/React.createElement("span", {
-    className: "text-xs text-slate-400"
-  }, p.p)), wk.days.map((_, d) => {
-    const c = cell(p, d);
-    return /*#__PURE__*/React.createElement("td", {
-      key: d,
-      className: "px-1 py-1 text-center"
-    }, c === "none" ? /*#__PURE__*/React.createElement("span", {
-      className: "text-slate-400"
-    }, "\u00b7") : /*#__PURE__*/React.createElement("span", {
-      className: "inline-block w-6 h-3 rounded " + CELL[c]
-    }));
-  }))))))));
+  }, title), title === "Goalies" ? /*#__PURE__*/React.createElement(GxGH104, null) : null, gxSort108(list, s).map(row))))));
 }
 function TeamsTab({
   s,
@@ -4641,6 +4574,7 @@ function TradesPanel(props) {
   // change 078: build a trade from any team's side, not only yours
   const s = props.s;
   const [side, setSide] = useState(s.me);
+  const [from113, setFrom113] = useState(false);
   window.__TB_REAL = s.me;
   const a = s.teams.some(t => t.id === side) ? side : s.me;
   const s2 = a === s.me ? s : {
@@ -4650,25 +4584,28 @@ function TradesPanel(props) {
   };
   const ip = props.initPartner && props.initPartner !== a ? props.initPartner : null;
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2",
+    className: "gx-th113",
+    "data-c78": "side"
+  }, a === s.me ? "Trading as you" : "Trading as " + teamName(s, a), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setFrom113(!from113)
+  }, from113 ? "Done" : "Change"), a !== s.me ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setSide(s.me)
+  }, "Back to mine") : null), from113 ? /*#__PURE__*/React.createElement("select", {
+    className: inp + " w-full",
     style: {
       marginBottom: 12
     },
-    "data-c78": "side"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "text-sm text-slate-500 whitespace-nowrap"
-  }, "Trade from"), /*#__PURE__*/React.createElement("select", {
-    className: inp + " flex-1",
     value: a,
-    onChange: e => setSide(e.target.value)
+    onChange: e => {
+      setSide(e.target.value);
+      setFrom113(false);
+    }
   }, s.teams.map(t => /*#__PURE__*/React.createElement("option", {
     key: t.id,
     value: t.id
-  }, t.name, t.id === s.me ? " (you)" : ""))), a !== s.me ? /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "text-xs text-slate-500 underline whitespace-nowrap",
-    onClick: () => setSide(s.me)
-  }, "Back to mine") : null), a !== s.me ? /*#__PURE__*/React.createElement("div", {
+  }, t.name, t.id === s.me ? " (you)" : ""))) : null, a !== s.me ? /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       margin: "-4px 0 12px"
@@ -5487,7 +5424,8 @@ function TradeBuilder({
   initPartner,
   setS
 }) {
-  const [det110, setDet110] = useState(false);
+  const [det110, setDet110] = useState(() => window.innerWidth > 640);
+  const [pk113, setPk113] = useState(null);
   // trades v42: offer, result and rosters in the new style (news_logos.py)
   // older done markers kept so earlier rounds stay finished:
   // <Section title="Rosters"
@@ -5713,6 +5651,8 @@ function TradeBuilder({
     const mode82 = window.__PMODE;
     const c = cnt(after);
     return {
+      myL: live59(myT),
+      meL: live59(mine),
       my,
       th,
       rb,
@@ -5850,30 +5790,32 @@ function TradeBuilder({
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "text-sm text-slate-500 whitespace-nowrap"
-  }, "Trade with"), /*#__PURE__*/React.createElement("select", {
-    className: inp + " flex-1",
-    value: partner,
-    onChange: e => {
-      setPartner(e.target.value);
+    className: "gx-tw113"
+  }, others.map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    type: "button",
+    className: partner === t.id ? "on" : "",
+    onClick: () => {
+      setPartner(t.id);
       setGet([]);
       setPick({});
       setEdit(-1);
     }
-  }, others.map(t => /*#__PURE__*/React.createElement("option", {
-    key: t.id,
-    value: t.id
-  }, t.name))), give.length || get.length ? /*#__PURE__*/React.createElement("button", {
-    className: "text-xs text-slate-500 underline whitespace-nowrap",
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "b"
+  }, (String(t.name || "?").replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase()), t.name))), give.length || get.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "right"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "text-xs text-slate-500 underline",
     onClick: () => {
       setGive([]);
       setGet([]);
       setPick({});
       setEdit(-1);
     }
-  }, "Clear") : null), /*#__PURE__*/React.createElement("div", {
+  }, "Clear")) : null, /*#__PURE__*/React.createElement("div", {
     className: "tb-grid"
   }, /*#__PURE__*/React.createElement("div", {
     className: "gx-pn",
@@ -5885,9 +5827,11 @@ function TradeBuilder({
     style: {
       marginBottom: 4
     }
-  }, gxYou(s, "You give", teamName(s, s.me) + " gives")), Gv.length ? Gv.map((p, i) => offerRow(p, i, () => toggle(give, setGive, p.id))) : /*#__PURE__*/React.createElement("div", {
-    className: "text-sm text-slate-500"
-  }, "Tap your players below")), /*#__PURE__*/React.createElement("div", {
+  }, gxYou(s, "You give", teamName(s, s.me) + " gives")), Gv.map((p, i) => offerRow(p, i, () => toggle(give, setGive, p.id))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-add113",
+    onClick: () => setPk113("give")
+  }, "+ Add players")), /*#__PURE__*/React.createElement("div", {
     className: "gx-pn",
     style: {
       minWidth: 0
@@ -5897,9 +5841,11 @@ function TradeBuilder({
     style: {
       marginBottom: 4
     }
-  }, gxYou(s, "You get", teamName(s, s.me) + " gets")), Rv.length ? Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id))) : /*#__PURE__*/React.createElement("div", {
-    className: "text-sm text-slate-500"
-  }, "Tap their players below"), picks.map((f, k) => f ? offerRow(f, 1, () => {
+  }, gxYou(s, "You get", teamName(s, s.me) + " gets")), Rv.map((p, i) => offerRow(p, i, () => toggle(get, setGet, p.id))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "gx-add113",
+    onClick: () => setPk113("get")
+  }, "+ Add players"), picks.map((f, k) => f ? offerRow(f, 1, () => {
     setPick(x => ({
       ...x,
       [k]: "none"
@@ -6162,8 +6108,25 @@ function TradeBuilder({
     }
   }, "Apply here"))) : /*#__PURE__*/React.createElement("div", {
     className: "text-sm text-slate-500"
-  }, "Pick at least one player on each side to see the result."), /*#__PURE__*/React.createElement("div", {
-    className: "gx-pn"
+  }, "Pick at least one player on each side to see the result."), res && vd ? /*#__PURE__*/React.createElement(GxTradeLab113, {
+    s: s,
+    res: res,
+    Gv: Gv,
+    Rv: Rv,
+    pg: pg,
+    gl: gl
+  }) : null, pk113 ? /*#__PURE__*/React.createElement(GxPick113, {
+    title: pk113 === "give" ? gxYou(s, "You give", teamName(s, s.me) + " gives") : teamName(s, partner),
+    list: pk113 === "give" ? mine : theirs,
+    sel: pk113 === "give" ? give : get,
+    pg: pg,
+    onToggle: id => pk113 === "give" ? toggle(give, setGive, id) : toggle(get, setGet, id),
+    onClose: () => setPk113(null)
+  }) : null, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn",
+    style: {
+      display: "none"
+    }
   }, /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("b", null), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -6206,16 +6169,7 @@ function TradeBuilder({
     style: {
       paddingBottom: 2
     }
-  }, teamName(s, partner)), rosterRows(theirs, get, setGet, false)))), /*#__PURE__*/React.createElement(TradeAdvice, {
-    s: s,
-    onPick: p => {
-      setPartner(p.ft);
-      setGet(p.ft === partner ? [...get.filter(x => x !== p.id), p.id] : [p.id]);
-      setPick({});
-      setEdit(-1);
-      window.scrollTo(0, 0);
-    }
-  }));
+  }, teamName(s, partner)), rosterRows(theirs, get, setGet, false)))));
 }
 
 // ---------- round 14: My Team injuries + protected players (news_logos.py) ----------
@@ -9011,6 +8965,8 @@ function SetupPage({
     pmode: k,
     players: [...s.players]
   }))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-sr"
+  }, /*#__PURE__*/React.createElement("span", null, "Favourite team (Lines)"), /*#__PURE__*/React.createElement(GxFavSel112, null)), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-slate-500",
     style: {
       paddingTop: 8
@@ -14912,7 +14868,8 @@ function GxLines111({
     changes: []
   };
   const teams = Object.keys(L.teams || {}).filter(t => ((L.teams[t] || {}).lines || {}).F1).sort();
-  const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111 || "");
+  const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111fav || uiGet().ln111 || "");
+  const [fav112, setFav112] = useState(() => uiGet().ln111fav || "");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("es");
@@ -14999,19 +14956,49 @@ function GxLines111({
       className: "lb"
     }, lb), a.slice(0, n).map(chip));
   };
-  const rows = mode === "pp" ? [row("PP1", ln.PP1, 5), /*#__PURE__*/React.createElement("div", {
+  const unit112 = (lb, arr, a, b) => {
+    const o = ord(arr),
+      r = (k, l, xs, n, c) => {
+        const z = [...xs];
+        while (z.length < n) z.push("");
+        return /*#__PURE__*/React.createElement("div", {
+          key: k,
+          className: "row" + (c ? " c112" : ""),
+          style: {
+            "--n": n
+          }
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "lb"
+        }, l), z.slice(0, n).map(chip));
+      };
+    return [r(lb + "a", lb, o.slice(0, a), a, a < 3), r(lb + "b", "", o.slice(a), b, true)];
+  };
+  const pair112 = (lb, arr) => {
+    const o = ord(arr);
+    while (o.length < 2) o.push("");
+    return /*#__PURE__*/React.createElement("div", {
+      key: lb,
+      className: "row c112",
+      style: {
+        "--n": 2
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "lb"
+    }, lb), o.slice(0, 2).map(chip));
+  };
+  const rows = mode === "pp" ? [...unit112("PP1", ln.PP1, 3, 2), /*#__PURE__*/React.createElement("div", {
     key: "s1",
     className: "sp"
-  }), row("PP2", ln.PP2, 5)] : mode === "pk" ? [row("PK1", ln.PK1, 4), /*#__PURE__*/React.createElement("div", {
+  }), ...unit112("PP2", ln.PP2, 3, 2)] : mode === "pk" ? [...unit112("PK1", ln.PK1, 2, 2), /*#__PURE__*/React.createElement("div", {
     key: "s1",
     className: "sp"
-  }), row("PK2", ln.PK2, 4)] : [row("L1", ln.F1, 3), row("L2", ln.F2, 3), row("L3", ln.F3, 3), row("L4", ln.F4, 3), /*#__PURE__*/React.createElement("div", {
+  }), ...unit112("PK2", ln.PK2, 2, 2)] : [row("L1", ln.F1, 3), row("L2", ln.F2, 3), row("L3", ln.F3, 3), row("L4", ln.F4, 3), /*#__PURE__*/React.createElement("div", {
     key: "s1",
     className: "sp"
-  }), row("D1", ln.D1, 2), row("D2", ln.D2, 2), row("D3", ln.D3, 2), /*#__PURE__*/React.createElement("div", {
+  }), pair112("D1", ln.D1), pair112("D2", ln.D2), pair112("D3", ln.D3), /*#__PURE__*/React.createElement("div", {
     key: "s2",
     className: "sp"
-  }), row("G", ln.G, 2)];
+  }), pair112("G", ln.G)];
   const chg = t ? (L.changes || []).filter(c => c.team === t || c.from === t || c.to === t).slice(0, 6) : [];
   const st = T && T.st || {};
   return /*#__PURE__*/React.createElement("div", {
@@ -15093,11 +15080,262 @@ function GxLines111({
   }, "Recent changes"), chg.map(c => /*#__PURE__*/React.createElement("div", {
     key: c.id,
     className: "chg"
-  }, c.text, /*#__PURE__*/React.createElement("small", null, dayLabel(String(c.at || "").slice(0, 10)))))) : null) : /*#__PURE__*/React.createElement("div", {
-    className: "text-sm text-slate-500",
-    style: {
-      marginTop: 14
+  }, c.text, /*#__PURE__*/React.createElement("small", null, dayLabel(String(c.at || "").slice(0, 10)))))) : null) : null, !fav112 ? /*#__PURE__*/React.createElement(GxFavPick112, {
+    onPick: c => {
+      uiSet("ln111fav", c);
+      setFav112(c);
+      pick(c);
     }
-  }, "Search a team to see its lines."));
+  }) : null);
+}
+// ---------- change 112: favourite team for Lines (install.py) ----------
+function GxFavPick112({
+  onPick
+}) {
+  const L = window.LINES_DATA || {
+    teams: {}
+  };
+  const teams = Object.keys(L.teams || {}).filter(t => ((L.teams[t] || {}).lines || {}).F1).sort();
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn gx-fav112"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-semibold"
+  }, "Pick your favourite team"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-slate-500"
+  }, "It opens here every time. Change it in Setup, Display."), /*#__PURE__*/React.createElement("div", {
+    className: "g"
+  }, teams.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    type: "button",
+    onClick: () => onPick(c)
+  }, /*#__PURE__*/React.createElement(TeamLogo, {
+    t: c,
+    size: 30
+  }), c))));
+}
+function GxFavSel112() {
+  const L = window.LINES_DATA || {
+    teams: {}
+  };
+  const teams = Object.keys(L.teams || {}).filter(t => ((L.teams[t] || {}).lines || {}).F1).sort();
+  const [v, setV] = useState(uiGet().ln111fav || "");
+  return /*#__PURE__*/React.createElement("select", {
+    className: inp,
+    value: v,
+    onChange: e => {
+      setV(e.target.value);
+      uiSet("ln111fav", e.target.value);
+      uiSet("ln111", e.target.value);
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "None"), teams.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c,
+    value: c
+  }, ((L.teams[c] || {}).st || {}).name || c)));
+}
+// ---------- change 113: Trades rebuilt (install.py) ----------
+function GxPick113({
+  title,
+  list,
+  sel,
+  onToggle,
+  onClose,
+  pg
+}) {
+  const [q, setQ] = useState("");
+  const [out, setOut] = useState(false);
+  const close = () => {
+    if (out) return;
+    setOut(true);
+    setTimeout(onClose, 160);
+  };
+  const qq = nrm(q),
+    ord = {
+      F: 0,
+      D: 1,
+      G: 2
+    };
+  const rows = list.filter(p => !qq || nrm(p.n).includes(qq)).sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || ord[a.p] - ord[b.p] || pg(b) - pg(a));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-so107" + (out ? " out" : ""),
+    onClick: close
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-sim107 gx-pk113",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hd"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "t"
+  }, title), /*#__PURE__*/React.createElement("span", {
+    className: "m"
+  }, sel.length ? sel.length + " picked" : ""), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "x",
+    "aria-label": "Close",
+    onClick: close
+  }, "×")), /*#__PURE__*/React.createElement("input", {
+    className: inp + " sr",
+    placeholder: "Search",
+    value: q,
+    onChange: e => setQ(e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "lst"
+  }, rows.map(p => {
+    const on = sel.includes(p.id);
+    return /*#__PURE__*/React.createElement("button", {
+      key: p.id,
+      type: "button",
+      className: "it" + (on ? " on" : ""),
+      onClick: () => onToggle(p.id)
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
+      size: 26
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "min-w-0"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "block truncate"
+    }, p.n), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500"
+    }, p.p + " · " + p.t + (p.ir ? " · IR" : ""))), /*#__PURE__*/React.createElement("span", {
+      className: "v",
+      style: {
+        marginLeft: "auto"
+      }
+    }, f1(pg(p))), /*#__PURE__*/React.createElement("span", {
+      className: "ck",
+      style: {
+        marginLeft: 10
+      }
+    }, on ? "✓" : ""));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "act"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "pr",
+    onClick: close
+  }, "Done"))));
+}
+// laptop only: week-by-week chart and player comparison
+function GxTradeLab113({
+  s,
+  res,
+  Gv,
+  Rv,
+  pg,
+  gl
+}) {
+  const K = s.blend;
+  const rng = gxUse100();
+  useEffect(() => {
+    gxLoad100("sea");
+    gxLoad100("l15");
+  }, []);
+  const W = useMemo(() => {
+    if (!res || !res.myL || !res.meL) return [];
+    const out = [];
+    for (let i = s.wk; i < s.weeks.length; i++) {
+      const dw = deriveWeek(s.weeks[i], s.autoDone),
+        from = i === s.wk ? dw.done || 0 : 0;
+      out.push({
+        i,
+        b: weekProj(res.meL, dw, K, from).total,
+        a: weekProj(res.myL, dw, K, from).total
+      });
+    }
+    return out;
+  }, [res]);
+  const n = W.length,
+    w = 640,
+    h = 180,
+    pad = 30;
+  const mx = Math.max(1, ...W.map(x => Math.max(x.a, x.b))) * 1.08;
+  const X = k => pad + (n <= 1 ? 0 : k * (w - pad - 10) / (n - 1)),
+    Y = v => h - 22 - v / mx * (h - 34);
+  const line = key => W.map((x, k) => X(k).toFixed(1) + "," + Y(x[key]).toFixed(1)).join(" ");
+  const tot = W.reduce((t, x) => t + x.a - x.b, 0);
+  const st = (p, r) => {
+    const v = gxVals106(p, s, r);
+    const gp = gxNum108(v[1]);
+    return gp > 0 ? f1(gxNum108(v[0]) / gp) : "-";
+  };
+  const row = (p, side) => {
+    const v = gxVals106(p, s, "sea");
+    return /*#__PURE__*/React.createElement("tr", {
+      key: side + p.id
+    }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      className: "inline-flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement(GxFace, {
+      p: p,
+      size: 20
+    }), p.n)), /*#__PURE__*/React.createElement("td", null, side === "g" ? "Give" : "Get"), /*#__PURE__*/React.createElement("td", null, p.p), /*#__PURE__*/React.createElement("td", null, p.t), /*#__PURE__*/React.createElement("td", null, v[1]), /*#__PURE__*/React.createElement("td", null, v[0]), /*#__PURE__*/React.createElement("td", null, st(p, "sea")), /*#__PURE__*/React.createElement("td", null, st(p, "l15")), /*#__PURE__*/React.createElement("td", {
+      className: "b"
+    }, f1(pg(p))), /*#__PURE__*/React.createElement("td", null, gl(p)));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "gx-lab113 m-hide space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Week by week", /*#__PURE__*/React.createElement("span", {
+    className: "r"
+  }, "Your projected points, rest of season · " + (tot >= 0 ? "+" : "") + Math.round(tot))), n > 1 ? /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 " + w + " " + h,
+    width: "100%",
+    style: {
+      display: "block"
+    }
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: pad,
+    x2: w - 10,
+    y1: h - 22,
+    y2: h - 22,
+    style: {
+      stroke: "var(--line)"
+    }
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: line("b"),
+    style: {
+      fill: "none",
+      stroke: "var(--mute)",
+      strokeWidth: 2,
+      strokeDasharray: "4 4"
+    }
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: line("a"),
+    style: {
+      fill: "none",
+      stroke: "var(--accent)",
+      strokeWidth: 2.5
+    }
+  }), W.map((x, k) => k % Math.max(1, Math.ceil(n / 12)) === 0 ? /*#__PURE__*/React.createElement("text", {
+    key: k,
+    x: X(k),
+    y: h - 6,
+    textAnchor: "middle",
+    style: {
+      fontSize: 11,
+      fill: "var(--mute)"
+    }
+  }, "W" + (x.i + 1)) : null)) : /*#__PURE__*/React.createElement("div", {
+    className: "text-sm text-slate-500"
+  }, "Not enough weeks left."), /*#__PURE__*/React.createElement("div", {
+    className: "lg"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("i", {
+    style: {
+      background: "var(--accent)"
+    }
+  }), "After the trade"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("i", {
+    style: {
+      background: "var(--mute)"
+    }
+  }), "Now"))), /*#__PURE__*/React.createElement("div", {
+    className: "gx-pn"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gx-pd-h"
+  }, "Player comparison"), /*#__PURE__*/React.createElement("table", {
+    className: "gx-pd-t"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Player"), /*#__PURE__*/React.createElement("th", null, "Side"), /*#__PURE__*/React.createElement("th", null, "Pos"), /*#__PURE__*/React.createElement("th", null, "Team"), /*#__PURE__*/React.createElement("th", null, "GP"), /*#__PURE__*/React.createElement("th", null, "FPTS"), /*#__PURE__*/React.createElement("th", null, "Avg"), /*#__PURE__*/React.createElement("th", null, "Last 15"), /*#__PURE__*/React.createElement("th", null, "Proj/g"), /*#__PURE__*/React.createElement("th", null, "Games left"))), /*#__PURE__*/React.createElement("tbody", null, Gv.map(p => row(p, "g")), Rv.map(p => row(p, "r"))))));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

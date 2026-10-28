@@ -3,7 +3,7 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "110-trades-clean.py",
-  "111-lines-rink.py"
+  "112-roster-lines-clean.py",
+  "113-trades-rebuild.py"
  ]
 }
