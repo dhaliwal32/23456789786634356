@@ -1,0 +1,25 @@
+== https://api-web.nhle.com/v1/score/now
+HTTP/2 307 
+== https://api-web.nhle.com/v1/gamecenter/2026020180/boxscore
+HTTP/2 200 
+content-type: application/json
+== https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard
+HTTP/2 200 
+content-type: application/json;charset=UTF-8
+access-control-allow-origin: *
+access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS,HEAD
+access-control-expose-headers: content-length,location
+== https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard
+HTTP/2 200 
+content-type: application/json;charset=UTF-8
+access-control-allow-origin: *
+access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS,HEAD
+access-control-expose-headers: content-length,location
+== https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=401802400
+HTTP/2 200 
+content-type: application/json;charset=UTF-8
+access-control-allow-origin: *
+access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS,HEAD
+access-control-expose-headers: content-length,location
+401892596 Philadelphia Flyers at Washington Capitals STATUS_END_PERIOD
+['id', 'uid', 'date', 'name', 'shortName', 'season', 'competitions', 'links', 'status']
