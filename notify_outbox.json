@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-22|9898cd0f31cf",
-   "at": "2026-10-22T17:29:46Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Morgan Frost (CGY) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T17:29:46Z",
-   "via": "pregame",
-   "sent_at": "2026-10-22T22:04:39Z"
-  },
-  {
-   "k": "2026-10-22|870ca8375f9d",
-   "at": "2026-10-22T17:29:46Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Yegor Sharangovich (CGY) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T17:29:46Z",
-   "via": "pregame",
-   "sent_at": "2026-10-22T22:04:39Z"
-  },
-  {
    "k": "2026-10-22|512fa826afe6",
    "at": "2026-10-22T19:31:38Z",
    "title": "Your player: power-play change",
@@ -6295,7 +6271,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-29T17:10:38Z",
-   "seen": "2026-10-29T17:28:38Z"
+   "seen": "2026-10-29T17:34:38Z"
   },
   {
    "k": "2026-10-29|963b56a55e20",
