@@ -962,7 +962,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="h4i5a2.1nuxl6z" data-file="build/app.js">
+<meta name="gx-build" content="1pv2esc.148xco7" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -7925,7 +7925,7 @@ function gxBox132(sm) {
       const L = grp.labels || [], ix = (l) => L.indexOf(l), nm = grp.name;
       if (nm !== "forwards" && nm !== "defenses" && nm !== "goalies") return;
       (grp.athletes || []).forEach((a) => {
-        const s = a.stats || [], v = (l) => { const i = ix(l); return i < 0 ? null : s[i]; }, n = (l) => +(v(l) || 0) || 0, at = a.athlete || {};
+        const s = a.stats || [], KY = grp.keys || [], KM = { "S": "shotsTotal", "SOG": "shotsTotal", "BS": "blockedShots", "HT": "hits", "TK": "takeaways", "+/-": "plusMinus", "TOI": "timeOnIce", "SHFT": "shifts", "G": "goals", "A": "assists", "GV": "giveaways", "PIM": "penaltyMinutes", "FO%": "faceoffPercent", "SV": "saves", "SA": "shotsAgainst", "GA": "goalsAgainst" }, v = (l) => { const k = KY.indexOf(KM[l]); const i = k >= 0 && !(l === "SV" || l === "SA" || l === "GA") ? k : ix(l === "SOG" ? "S" : l); return i < 0 ? null : s[i]; }, n = (l) => +(v(l) || 0) || 0, at = a.athlete || {};
         const base = { playerId: +at.id || at.id, sweaterNumber: at.jersey != null && at.jersey !== "" ? +at.jersey : null, name: { default: at.shortName || at.displayName || "" }, headshot: (at.headshot || {}).href || "", toi: v("TOI") || "" };
         if (nm === "goalies") {
           if (!base.toi || base.toi === "0:00" || base.toi === "00:00") return;
