@@ -954,6 +954,30 @@
   .gx-ns131 .gl .as { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); font-size: 13px; display: grid; grid-template-columns: 64px 1fr; color: var(--mute); }
   .gx-ns131 .gl .as span:last-child { color: var(--ink); }
   .gx-ns131 .em { padding: 6px 14px 14px; font-size: 13px; color: var(--mute); }
+  /* change 138 (install.py) */
+  .gx-ns131.gx138 { margin-top: 18px; }
+  .gx-ns131 .gx-sb138 { margin: 0 12px 10px; }
+  .gx-ns131 .gx-sb138 .r { display: grid; grid-template-columns: minmax(0, 1fr) 26px minmax(86px, auto) 26px minmax(0, 1fr); align-items: center; gap: 6px; width: 100%; padding: 9px 2px; border-top: 1px solid var(--line); font-size: 14px; }
+  .gx-ns131 .gx-sb138 .r:first-child { border-top: 0; }
+  .gx-ns131 .gx-sb138 .t { display: flex; align-items: center; gap: 6px; min-width: 0; font-weight: 600; }
+  .gx-ns131 .gx-sb138 .t.h { justify-content: flex-end; }
+  .gx-ns131 .gx-sb138 b { font-size: 16px; font-variant-numeric: tabular-nums; text-align: center; color: var(--mute); font-weight: 600; }
+  .gx-ns131 .gx-sb138 b.w { color: var(--ink); font-weight: 700; }
+  .gx-ns131 .gx-sb138 .st { text-align: center; font-size: 12px; color: var(--mute); white-space: nowrap; }
+  .gx-ns131 .gx-sb138 .st.lv { color: var(--bad); font-weight: 600; }
+  .gx-ns131 .gx-gc138 { display: flex; gap: 8px; margin: 0 12px 10px; }
+  .gx-ns131 .gx-gc138 button { flex: 1; padding: 8px 0 7px; border-radius: 12px; background: var(--card2, var(--bg)); text-align: center; box-shadow: inset 0 0 0 1px transparent; }
+  .gx-ns131 .gx-gc138 button.on { box-shadow: inset 0 0 0 1.5px var(--accent); }
+  .gx-ns131 .gx-gc138 b { display: block; font-size: 20px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .gx-ns131 .gx-gc138 small { font-size: 11px; color: var(--mute); }
+  .gx-ns131 .gx-gr138 { margin: 0 12px 10px; }
+  .gx-ns131 .gx-gr138 .r { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid var(--line); }
+  .gx-ns131 .gx-gr138 .r:first-child { border-top: 0; }
+  .gx-ns131 .gx-gr138 .r.me { box-shadow: inset 3px 0 0 var(--accent); padding-left: 8px; }
+  .gx-ns131 .gx-gr138 .who { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ns131 .gx-gr138 .as { font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ns131 .gx-gr138 .tc { text-align: right; font-size: 12px; color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .gx-ns131 .gx-gr138 .tc .sc { color: var(--ink); font-weight: 600; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -962,7 +986,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="13x3huu.5tkel1" data-file="build/app.js">
+<meta name="gx-build" content="iate6p.65uaoc" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1946,7 +1970,7 @@ function Matchup({ s, setS, wk, setWk }) {
     if (v == null) return <div className={"text-slate-500" + (right ? "" : " text-right")}>{"\u2013"}</div>;
     if (state === "live" && !p.st) return <div className={right ? "" : "text-right"} data-gx="135n"><span style={{ color: "var(--faint)" }}>{"\u2013"}</span><div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }}><span className="m-hide">proj </span>{f1(v)}</div></div>;
     const win = state === "live" ? !!(q && q.st) && v - o >= 0.05 : o == null || v - o >= 0.05;
-    return <div className={right ? "" : "text-right"} style={win ? { color: "var(--good)", fontWeight: 600 } : null}>{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
+    return <div className={right ? "" : "text-right"} style={null} data-gx="138pts">{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
   };
   const sit = (l, id) => (l.bench && l.bench.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
   const lv135 = (l) => (l.start || []).reduce((t, p) => t + (p.st ? +(p.a || 0) : 0), 0);
@@ -1966,7 +1990,7 @@ function Matchup({ s, setS, wk, setWk }) {
           <GxRing v={winProb(A, B, aA, aB)} />
           <div className="min-w-0 text-right" style={{ flex: 1 }}>
             <div className="text-sm text-slate-500 gx-nm114 r"><TL s={s} id={b} /><GxFtPic114 id={b} size={22} /></div>
-            <div className="gx-num" style={{ fontSize: 28, color: "var(--ink2)" }}><GxAnimNum131 v={aB} /></div>
+            <div className="gx-num" style={{ fontSize: 28 }} data-gx="138sc"><GxAnimNum131 v={aB} /></div>
           </div>
           {all.length > 1 ? <button type="button" className="gx-arw" aria-label="Next matchup" onClick={() => move(1)}>{"\u203a"}</button> : null}
         </div>
@@ -1979,8 +2003,7 @@ function Matchup({ s, setS, wk, setWk }) {
           <span data-gx="114w" style={{ margin: "0 auto", color: margin >= 0 ? "var(--good)" : "var(--bad)" }}>{mine ? (margin >= 0 ? "Projected to win by " : "Projected to lose by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " projected to win by " + f1(Math.abs(margin))}</span>
         </div>
       </div>
-      <GxNhl131 s={s} />
-      <div className="gx-dn108">
+      <div className="gx-dn108" data-gx="138top">
         <button type="button" className="gx-arw" aria-label="Earlier day" disabled={d <= 0} onClick={() => setDay(d - 1)}>{"\u2039"}</button>
         <div className="dt">{dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : ""}<small style={{ color: Math.abs(dvD135) < 0.05 ? "var(--mute)" : dvD135 > 0 ? "var(--good)" : "var(--bad)" }}>{(dvD135 > 0 ? "+" : "") + f1(dvD135)}</small></div>
         <button type="button" className="gx-arw" aria-label="Later day" disabled={d >= n - 1} onClick={() => setDay(d + 1)}>{"\u203a"}</button>
@@ -2006,6 +2029,7 @@ function Matchup({ s, setS, wk, setWk }) {
       <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 6 }}>
         <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
       </div>
+      <GxNhl131 s={s} />
     </div>
   );
 }
@@ -7726,21 +7750,23 @@ function gxDf125(p, dt) {
 function GxAnimNum131({ v, d }) {
   const dd = d == null ? 1 : d;
   const [shown, setShown] = useState(v);
-  const [fl, setFl] = useState("");
-  const prev = React.useRef(v), raf = React.useRef(0);
+  const cur = React.useRef(v), raf = React.useRef(0); /* gx138 smooth */
   useEffect(() => {
-    const a = prev.current, b = v;
-    prev.current = v;
-    if (a == null || b == null || Math.abs(b - a) < 0.05) { setShown(b); return undefined; }
-    setFl(b > a ? "up" : "dn");
-    const t0 = performance.now(), dur = 900;
-    cancelAnimationFrame(raf.current);
-    const step = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); setShown(a + (b - a) * e); if (k < 1) raf.current = requestAnimationFrame(step); };
-    raf.current = requestAnimationFrame(step);
-    const to = setTimeout(() => setFl(""), 1800);
+    const b = v;
+    if (b == null || cur.current == null) { cur.current = b; setShown(b); return undefined; }
+    const a = cur.current;
+    if (Math.abs(b - a) < 0.05) return undefined;
+    const go = () => {
+      const t0 = performance.now(), dur = 600;
+      cancelAnimationFrame(raf.current);
+      const step = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3), x = k < 1 ? a + (b - a) * e : b; cur.current = x; setShown(x); if (k < 1) raf.current = requestAnimationFrame(step); };
+      raf.current = requestAnimationFrame(step);
+    };
+    let to = 0;
+    if (b < a) to = setTimeout(go, 20000); else go();
     return () => { cancelAnimationFrame(raf.current); clearTimeout(to); };
   }, [v]);
-  return <span className={"gx-an131 " + fl}>{shown == null ? "" : Number(shown).toFixed(dd)}</span>;
+  return <span className="gx-an131">{shown == null ? "" : Number(shown).toFixed(dd)}</span>;
 }
 const GX_AL131 = { LAK: "LA", NJD: "NJ", SJS: "SJ", TBL: "TB", UTAH: "UTA", ARI: "UTA" };
 const gxAb131 = (x) => GX_AL131[x] || x;
@@ -7795,6 +7821,7 @@ function GxNhl131({ s }) {
   const [tab, setTab] = useState("sb");
   const [gid, setGid] = useState(null);
   const [side, setSide] = useState("fan");
+  const [gf138, setGf138] = useState("all");
   const [, bump] = useState(0);
   const J = window.__NHLNOW || {}, games = (J.games || []).slice();
   const live = (g) => g.gameState === "LIVE" || g.gameState === "CRIT", fin = (g) => g.gameState === "FINAL" || g.gameState === "OFF";
@@ -7857,32 +7884,57 @@ function GxNhl131({ s }) {
       </>
     );
   } else if (tab === "sb") {
-    body = games.length ? games.map((g) => (
-      <button key={g.id} type="button" className="gm" onClick={() => { setGid(g.id); setSide("fan"); }}>
-        {teamRow(g.awayTeam || {})}<div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div>{teamRow(g.homeTeam || {})}
-      </button>
-    )) : <div className="em">No NHL games today.</div>;
+    /* gx138: one-line scoreboard */
+    body = games.length ? <div className="gx-sb138">{games.map((g) => {
+      const A = g.awayTeam || {}, H = g.homeTeam || {}, pre = !(live(g) || fin(g)), aw = !pre && +A.score >= +H.score, hw = !pre && +H.score >= +A.score;
+      return (
+        <button key={g.id} type="button" className="r" onClick={() => { setGid(g.id); setSide("fan"); }}>
+          <span className="t"><TeamLogo t={gxAb131(A.abbrev)} size={20} /><span className="truncate">{gxAb131(A.abbrev)}</span></span>
+          <b className={aw ? "w" : ""}>{pre || A.score == null ? "" : A.score}</b>
+          <span className={"st" + (live(g) ? " lv" : "")}>{status(g)}</span>
+          <b className={hw ? "w" : ""}>{pre || H.score == null ? "" : H.score}</b>
+          <span className="t h"><span className="truncate">{gxAb131(H.abbrev)}</span><TeamLogo t={gxAb131(H.abbrev)} size={20} /></span>
+        </button>
+      );
+    })}</div> : <div className="em">No NHL games today.</div>;
   } else {
     const all = [];
     games.forEach((g) => (g.goals || (L[g.id] || {}).goals || []).forEach((x) => all.push({ g, x })));
     const gw134 = ({ g, x }) => { const w = Date.parse(x.wc || ""); if (!isNaN(w)) return w; const m = String(x.timeInPeriod || "0:0").split(":"), n = ((x.periodDescriptor || {}).number || 1) - 1; return (Date.parse(g.startTimeUTC || "") || 0) + (n * 1200 + (+m[0] || 0) * 60 + (+m[1] || 0)) * 1600 + n * 1080e3; };
     all.sort((a, b) => gw134(b) - gw134(a)); /* change 134 */
-    body = all.length ? all.map(({ g, x }, i) => {
-      const tm = gxAb131(x.teamAbbrev && x.teamAbbrev.default ? x.teamAbbrev.default : x.teamAbbrev), who = (x.name && x.name.default) || [((x.firstName || {}).default || ""), ((x.lastName || {}).default || "")].join(" ").trim();
-      const p = gxFind131(tm, null, who), tag = gxTag131(s, p);
-      const sc = gxAb131((g.awayTeam || {}).abbrev) + " " + (x.awayScore != null ? x.awayScore : "") + ", " + gxAb131((g.homeTeam || {}).abbrev) + " " + (x.homeScore != null ? x.homeScore : "");
-      return (
-        <div key={g.id + "-" + i} className="gl">
-          <div className="top">{x.headshot || x.mugshot ? <img src={x.headshot || x.mugshot} alt="" /> : <TeamLogo t={tm} size={46} />}
-            <div className="min-w-0"><div className="who">{p ? <button type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { if (window.__NAV) window.__NAV.player(p); }}>{who}</button> : who}{", " + tm}{tag ? <span className="own">{"(" + tag + ")"}</span> : null}</div><div className="when">{x.timeInPeriod + " " + gxPer131(x.periodDescriptor) + " Period · " + sc}</div></div></div>
-          {(x.assists || []).length ? <div className="as"><span>Assists:</span><span>{(x.assists || []).map((a, k) => { const an = (a.name && a.name.default) || [((a.firstName || {}).default || ""), ((a.lastName || {}).default || "")].join(" ").trim(), ap = gxFind131(tm, null, an), at = gxTag131(s, ap); return <React.Fragment key={k}>{k ? ", " : ""}{ap ? <button type="button" className="hover:underline text-left" onClick={() => { if (window.__NAV) window.__NAV.player(ap); }}>{an}</button> : an}{at ? " (" + at + ")" : ""}</React.Fragment>; })}</span></div> : <div className="as"><span>Assists:</span><span>Unassisted</span></div>}
-        </div>
-      );
-    }) : <div className="em">No goals yet today.</div>;
+    /* gx138: goal counters and short goal rows */
+    const nmOf = (q) => (q.name && q.name.default) || [((q.firstName || {}).default || ""), ((q.lastName || {}).default || "")].join(" ").trim();
+    const G138 = all.map(({ g, x }, i) => {
+      const tm = gxAb131(x.teamAbbrev && x.teamAbbrev.default ? x.teamAbbrev.default : x.teamAbbrev), who = nmOf(x), p = gxFind131(tm, null, who), tag = gxTag131(s, p);
+      const as = (x.assists || []).map((a) => { const an = nmOf(a), ap = gxFind131(tm, null, an); return { an, ap, at: gxTag131(s, ap) }; });
+      const ros = !!tag || as.some((a) => a.at), me = (p && p.ft === s.me) || as.some((a) => a.ap && a.ap.ft === s.me);
+      return { g, x, i, tm, who, p, tag, as, ros, me };
+    });
+    const nR = G138.filter((r) => r.ros).length, nM = G138.filter((r) => r.me).length;
+    const list = G138.filter((r) => (gf138 === "me" ? r.me : gf138 === "ros" ? r.ros : true));
+    const pBtn = (pl, label, k) => (pl ? <button key={k} type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { if (window.__NAV) window.__NAV.player(pl); }}>{label}</button> : <React.Fragment key={k}>{label}</React.Fragment>);
+    body = (
+      <>
+        <div className="gx-gc138">{[["all", "Goals today", G138.length], ["ros", "Rostered", nR], ["me", "Yours", nM]].map(([k, l, c]) => <button key={k} type="button" className={gf138 === k ? "on" : ""} onClick={() => setGf138(k)}><b>{c}</b><small>{l}</small></button>)}</div>
+        {list.length ? <div className="gx-gr138">{list.map((r) => {
+          const ab = gxAb131((r.g.awayTeam || {}).abbrev), hb = gxAb131((r.g.homeTeam || {}).abbrev);
+          return (
+            <div key={r.g.id + "-" + r.i} className={"r" + (r.me ? " me" : "")}>
+              <TeamLogo t={r.tm} size={22} />
+              <div className="min-w-0">
+                <div className="who">{pBtn(r.p, r.who, "s")}{r.tag ? <span className="own">{r.tag}</span> : null}</div>
+                <div className="as">{r.as.length ? r.as.map((a, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(a.ap, a.an, "a")}{a.at ? " (" + a.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>
+              </div>
+              <div className="tc"><div className="sc">{ab + " " + (r.x.awayScore != null ? r.x.awayScore : "") + "-" + (r.x.homeScore != null ? r.x.homeScore : "") + " " + hb}</div><div>{gxPer131(r.x.periodDescriptor) + " " + (r.x.timeInPeriod || "")}</div></div>
+            </div>
+          );
+        })}</div> : <div className="em">{G138.length ? (gf138 === "me" ? "No goals or assists by your players yet." : "No goals by rostered players yet.") : "No goals yet today."}</div>}
+      </>
+    );
   }
   return (
-    <div className="gx-ns131">
-      <button type="button" className="bar" onClick={toggle}><span>NHL scores</span><span className="n">{nLive ? <span className="lv">{nLive + " live"}</span> : games.length ? games.length + " games" : ""}</span><span className={"sec-chev" + (open ? "" : " shut")} style={{ marginLeft: 8 }}></span></button>
+    <div className="gx-ns131 gx138">
+      <button type="button" className="bar" onClick={toggle}><span>NHL scores</span><span className="n">{(() => { const gl138 = games.filter((g) => live(g) || fin(g)).reduce((a, g) => a + (+((g.awayTeam || {}).score) || 0) + (+((g.homeTeam || {}).score) || 0), 0); return <>{nLive ? <span className="lv">{nLive + " live"}</span> : games.length ? games.length + " games" : ""}{gl138 ? " \u00b7 " + gl138 + " goals" : ""}</>; })()}</span><span className={"sec-chev" + (open ? "" : " shut")} style={{ marginLeft: 8 }}></span></button>
       {open ? <>{!gid ? <div className="seg"><button type="button" className={tab === "sb" ? "on" : ""} onClick={() => setTab("sb")}>Scoreboard</button><button type="button" className={tab === "gt" ? "on" : ""} onClick={() => setTab("gt")}>Goal tracker</button></div> : null}{body}</> : null}
     </div>
   );
