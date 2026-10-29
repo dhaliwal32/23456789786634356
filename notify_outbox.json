@@ -6295,7 +6295,43 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-29T17:10:38Z",
-   "seen": "2026-10-29T17:22:38Z"
+   "seen": "2026-10-29T17:28:38Z"
+  },
+  {
+   "k": "2026-10-29|963b56a55e20",
+   "at": "2026-10-29T17:28:59Z",
+   "title": "Fantasy GM",
+   "text": "Steel joined Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T17:28:59Z",
+   "seen": "2026-10-29T17:28:59Z"
+  },
+  {
+   "k": "2026-10-29|b63fc4d577d3",
+   "at": "2026-10-29T17:28:59Z",
+   "title": "Fantasy GM",
+   "text": "Finnie joined DET PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T17:28:59Z",
+   "seen": "2026-10-29T17:28:59Z"
+  },
+  {
+   "k": "2026-10-29|6ec6521e4844",
+   "at": "2026-10-29T17:28:59Z",
+   "title": "Fantasy GM",
+   "text": "Pinchuk joined Forsberg's line (NSH)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T17:28:59Z",
+   "seen": "2026-10-29T17:28:59Z"
   }
  ],
  "sent": {
