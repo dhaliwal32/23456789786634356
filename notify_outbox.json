@@ -1,66 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-21|6a1f1ea20263",
-   "at": "2026-10-22T00:01:36Z",
-   "title": "Pickup: ice time jump",
-   "text": "Travis Sanheim (D, PHI) is playing 27.7 min per game lately, up +3.4 (PP -0.6). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T02:40:26Z",
-   "via": "morning",
-   "sent_at": "2026-10-22T15:04:26Z"
-  },
-  {
-   "k": "2026-10-21|21e61907a45b",
-   "at": "2026-10-22T00:01:36Z",
-   "title": "Pickup: ice time jump",
-   "text": "Nick Seeler (D, PHI) is playing 21.9 min per game lately, up +3.8 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T02:40:26Z",
-   "via": "morning",
-   "sent_at": "2026-10-22T15:04:26Z"
-  },
-  {
-   "k": "2026-10-21|9c3701dbb2a0",
-   "at": "2026-10-22T00:01:36Z",
-   "title": "Pickup: ice time jump",
-   "text": "Ryker Evans (D, SEA) is playing 24.1 min per game lately, up +4.9 (PP +1.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T06:56:48Z",
-   "via": "morning",
-   "sent_at": "2026-10-22T15:04:26Z"
-  },
-  {
-   "k": "2026-10-21|01155494f501",
-   "at": "2026-10-22T00:01:36Z",
-   "title": "Pickup: ice time jump",
-   "text": "Jonathan Lekkerimaki (F, VAN) is playing 15.8 min per game lately, up +3.5 (PP +1.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T06:56:48Z",
-   "via": "morning",
-   "sent_at": "2026-10-22T15:04:26Z"
-  },
-  {
-   "k": "2026-10-21|0642df6b4e63",
-   "at": "2026-10-22T00:01:36Z",
-   "title": "Pickup: ice time jump",
-   "text": "Oliver Bonk (D, PHI) is playing 20.9 min per game lately, up +4.4 (PP +1.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T02:40:26Z",
-   "via": "morning",
-   "sent_at": "2026-10-22T15:04:26Z"
-  },
-  {
    "k": "2026-10-21|fcc3558d84bf",
    "at": "2026-10-22T02:46:25Z",
    "title": "Pickup: ice time jump",
@@ -7009,7 +6949,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-28T17:29:04Z",
-   "seen": "2026-10-29T00:01:28Z"
+   "seen": "2026-10-29T00:07:26Z"
   },
   {
    "k": "2026-10-28|94301cd938f7",
