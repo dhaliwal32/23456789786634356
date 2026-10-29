@@ -487,6 +487,11 @@
 "now": "2026-11-12",
 "was": "2026-10-24"
 },
+"4874733": {
+"d": "2026-10-28",
+"k": "new",
+"now": "2026-10-30"
+},
 "4874744": {
 "d": "2026-10-23",
 "k": "later",
@@ -1038,6 +1043,11 @@
 "back": "2027-01-05",
 "note": "Eklund had surgery to repair a torn ankle tendon and will be out 10-12 weeks, Bruce Garrioch of Postmedia reports Thursday.",
 "status": "Injured Reserve"
+},
+"4874733": {
+"back": "2026-10-30",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-07",
