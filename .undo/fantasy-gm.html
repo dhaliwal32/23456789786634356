@@ -1156,6 +1156,26 @@
   .gx-sh141 .pn { will-change: transform; backface-visibility: hidden; }
   .gx-sh141.dg.out { animation: gx139-out .22s ease forwards !important; }
   .gx-sh141.dg.out .pn { animation: gx139-down .22s ease-in forwards !important; }
+  /* change 146 (install.py) */
+  .gm-dot { display: none !important; animation: none !important; }
+  .gx-sd141 .gm .st.pg { font-weight: 400; line-height: 1.35; }
+  .gx-sd141 .gm .st.pg b { display: block; font-weight: 700; font-size: 13px; }
+  .gx-sd141 .gm .st.pg small { display: block; color: var(--mute); font-size: 12px; }
+  .gx-sd141 .od { margin: 0 12px 12px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line); background: var(--card2, var(--bg)); font-size: 13px; }
+  .gx-sd141 .od > button { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 12px; position: relative; }
+  .gx-sd141 .od > button .c { position: absolute; right: 12px; transition: transform .25s ease; }
+  .gx-sd141 .od > button .c.up { transform: rotate(180deg); }
+  .gx-sd141 .od .k { color: var(--mute); }
+  .gx-sd141 .od .x { overflow: hidden; max-height: 0; transition: max-height .28s ease; }
+  .gx-sd141 .od .x.on { max-height: 60px; }
+  .gx-sd141 .od .x > div { padding: 0 12px 10px; text-align: center; color: var(--mute); }
+  .gx-sd141 .gm .fp > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-sd141 .gm .st { white-space: nowrap; width: 80px; }
+  @media (max-width: 640px) {
+    .gx-h2h .gx-sl98 { white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+    .gx-h2h > .gx-pc { min-height: 52px; }
+    .gx-h2h > .gx-pc .gx-nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1164,7 +1184,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="xg679z.199avyo" data-file="build/app.js">
+<meta name="gx-build" content="17drlao.15y3ew" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8181,6 +8201,12 @@ function gxNow132(js) {
     const n = st.period || 0, intm = ty.name === "STATUS_END_PERIOD" || ty.name === "STATUS_INTERMISSION" || /intermission|end of/i.test(ty.detail || "");
     const g = { id: String(e.id), gameDate: gxEtDay132(e.date), startTimeUTC: e.date, gameState: state, periodDescriptor: gxPd132(n), homeTeam: T("home"), awayTeam: T("away"),
       clock: { secondsRemaining: state === "LIVE" ? +st.clock || 0 : 1200, timeRemaining: st.displayClock || "", inIntermission: state === "LIVE" && intm } };
+    try { /* gx146: betting line and TV */
+      const od = (c.odds || [])[0] || {}, ml = (q) => { if (!q) return null; const v = q.moneyLine != null ? q.moneyLine : ((((q.current || {}).moneyLine) || {}).american); return v == null || v === "" ? null : +v; };
+      g.ml = { a: ml(od.awayTeamOdds), h: ml(od.homeTeamOdds) }; g.ou = od.overUnder != null ? od.overUnder : null; g.sp = od.details || "";
+      const b0 = (c.broadcasts || [])[0], gb = (c.geoBroadcasts || [])[0];
+      g.tv = b0 && b0.names && b0.names.length ? b0.names.join("/") : gb && gb.media ? gb.media.shortName || "" : "";
+    } catch (e) {}
     G132.ev[g.id] = g;
     games.push(g);
   });
@@ -8303,6 +8329,9 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   const [gid, setGid] = useState(null);
   const [gt, setGt] = useState("game");
   const [gi, setGi] = useState(null);
+  const [ox146, setOx146] = useState({});
+  const nOf146 = (day, x, y) => ((day && day.start) || []).filter((p) => p.t === x || p.t === y).length;
+  const ml146 = (v) => (v == null ? "-" : v > 0 ? "+" + v : String(v));
   const [, bump] = useState(0);
   const dragY = React.useRef(null);
   const [dm144, setDm144] = useState("");
@@ -8441,11 +8470,21 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
           {games.length ? games.map((g) => {
             const ta = gxAb131((g.awayTeam || {}).abbrev), th = gxAb131((g.homeTeam || {}).abbrev);
             return (
-              <button key={g.id} type="button" className="gm" onClick={() => openGame(g.id)}>
+              <React.Fragment key={g.id}>
+              <button type="button" className="gm" onClick={() => openGame(g.id)}>
                 <div className="tms">{rows2(g)}</div>
-                <div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div>
-                <div className="fp"><div><b>{abA}:</b> {f1(fpOf(tA, ta) + fpOf(tA, th))} FPTS</div><div><b>{abB}:</b> {f1(fpOf(tB, ta) + fpOf(tB, th))} FPTS</div></div>
+                {pre(g) ? (() => { const d = g.startTimeUTC ? new Date(g.startTimeUTC) : null; return <div className="st pg">{d ? (d.getMonth() + 1) + "/" + d.getDate() : ""}<b>{status(g)}</b><small>{g.tv || "\u00a0"}</small></div>; })() : <div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div>}
+                {pre(g)
+                  ? <div className="fp"><div><b>{abA}:</b> {nOf146(tA, ta, th)} Players</div><div><b>{abB}:</b> {nOf146(tB, ta, th)} Players</div></div>
+                  : <div className="fp"><div><b>{abA}:</b> {f1(fpOf(tA, ta) + fpOf(tA, th))} FPTS</div><div><b>{abB}:</b> {f1(fpOf(tB, ta) + fpOf(tB, th))} FPTS</div></div>}
               </button>
+              {pre(g) && g.ml && (g.ml.a != null || g.ou != null) ? (
+                <div className="od">
+                  <button type="button" onClick={() => setOx146((o) => ({ ...o, [g.id]: !o[g.id] }))}><span className="k">ML:</span> <b>{ta + " " + ml146(g.ml.a)}</b> <span className="k">@</span> <b>{th + " " + ml146(g.ml.h)}</b>{g.ou != null ? <><span className="k">{" \u00b7 Total:"}</span> <b>{g.ou}</b></> : null}<span className={"c" + (ox146[g.id] ? " up" : "")}>{"\u2304"}</span></button>
+                  <div className={"x" + (ox146[g.id] ? " on" : "")}><div>{g.sp ? "Line: " + g.sp : "No puck line yet."}</div></div>
+                </div>
+              ) : null}
+              </React.Fragment>
             );
           }) : <div style={{ padding: 14, color: "var(--mute)", fontSize: 13 }}>No NHL games today.</div>}
         </div>
