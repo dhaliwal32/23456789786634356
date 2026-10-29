@@ -1,0 +1,28 @@
+{
+ "asof": "2026-10-29T00:00:31Z",
+ "families": {
+  "F": "gbm_stats",
+  "D": "poisson_stats"
+ },
+ "games_with_mates": 19350,
+ "groups": {
+  "F": {
+   "n": 26218,
+   "current": 4.525,
+   "with_mates": 4.5181,
+   "diff": -0.0068,
+   "se": 0.0015,
+   "pct": 0.15,
+   "recent_diff": -0.0096
+  },
+  "D": {
+   "n": 15101,
+   "current": 3.7029,
+   "with_mates": 3.6994,
+   "diff": -0.0034,
+   "se": 0.0015,
+   "pct": 0.09,
+   "recent_diff": -0.0026
+  }
+ }
+}
