@@ -1191,6 +1191,19 @@
   .gx-nc148 i.op { background: var(--mute) !important; }
   /* change 149 (install.py) */
   .gx-so, .gx-pd-ov, .gx-so107, .gx-bm119, .gx-sh139, .gx-sh141, .fixed.inset-0, .gx-pd, .gx-pd-bd, .gx-sh141 .bd { overscroll-behavior: contain; }
+  /* change 150 (install.py) */
+  .gx-so107 { overflow-x: hidden; }
+  .gx-sim107 { box-sizing: border-box; min-width: 0; overflow-x: hidden; }
+  .gx-sim107 * { box-sizing: border-box; }
+  .gx-sim107 .days { overflow-x: visible; gap: 6px; }
+  .gx-sim107 .dy { flex: 1 1 0; min-width: 0; padding: 8px 2px; }
+  .gx-sim107 .dy b { font-size: 14px; white-space: nowrap; }
+  .gx-sim107 .dy.best::after { font-size: 9px; padding: 1px 5px; }
+  .gx-sim107 .gx-stg { grid-template-columns: 1fr 1fr; border-radius: 12px; overflow: hidden; }
+  .gx-sim107 .gx-stg > .gx-stc:nth-child(3) { grid-column: 1 / -1; }
+  .gx-sim107 .gx-stc { overflow: hidden; }
+  .gx-sim107 .bt150 { display: block; width: 100%; margin-top: 12px !important; padding: 13px 0; border-radius: 12px; border: 1px solid var(--line2); background: var(--card2, var(--bg)); color: var(--ink); font-size: 15px; font-weight: 600; text-align: center; }
+  @media (max-width: 640px) { .gx-sim107 .res b { font-size: 20px; } .gx-sim107 .dy span { font-size: 11px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1199,7 +1212,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="157xowl.13gbdl7" data-file="build/app.js">
+<meta name="gx-build" content="7dbktz.zg3czm" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4376,9 +4389,11 @@ function Pickups({ s, setS, wk }) {
   useEffect(() => {
     const h = () => { if (window.__PICK_Q) { setQ(window.__PICK_Q); window.__PICK_Q = ""; } if (window.__PICK_POS) { setPos(window.__PICK_POS); window.__PICK_POS = ""; } };
     window.addEventListener("gm-pick", h);
-    return () => window.removeEventListener("gm-pick", h);
+    const h150 = () => { if (window.__PICK_SIM) { const v = window.__PICK_SIM; window.__PICK_SIM = null; setSim(v); } };
+    window.addEventListener("gm-pick", h150);
+    return () => { window.removeEventListener("gm-pick", h); window.removeEventListener("gm-pick", h150); };
   }, []);
-  const [sim, setSim] = useState(null);
+  const [sim, setSim] = useState(() => { const v = window.__PICK_SIM || null; window.__PICK_SIM = null; return v; });
   const [hist, setHist] = useState({});
   const sP = useMemo(() => planS(s), [s]);
   const plan = sP !== s;
@@ -5121,6 +5136,7 @@ function GxQA({ s, go }) {
   window.__QA = {
     mine: (p) => p.ft === s.me, fa: (p) => p.ft === "fa", tradeable: (p) => p.ft !== "fa",
     swap: (p) => { if (p.ft === "fa") window.__PICK_Q = p.n; else window.__PICK_POS = p.p; go("moves", "adddrop"); setTimeout(() => window.dispatchEvent(new Event("gm-pick")), 50); },
+    sim: (p) => { if (p.ft !== "fa" && p.ft !== s.me) { window.__QA.trade(p); return; } window.__PICK_SIM = p.ft === "fa" ? { add: p.id } : { drop: p.id }; go("moves", "adddrop"); setTimeout(() => window.dispatchEvent(new Event("gm-pick")), 50); }, /* gx150 */
     trade: (p) => { window.__TRADE_P = { id: p.id, ft: p.ft }; go("moves", "trades"); setTimeout(() => window.dispatchEvent(new Event("gm-trade")), 50); },
     lines: (p) => { if (window.__NAV && window.__NAV.lines) window.__NAV.lines(p.t); else go("lines"); },
     espn: (p) => {
@@ -6767,7 +6783,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
               <div className="ln">{owner}</div>
               {Q ? (
                 <div className="bt">
-                  <button type="button" className="pr" onClick={act(Q.swap)}>{Q.mine(p) ? "Find a replacement" : "Find a swap"}</button>
+                  <button type="button" className="pr" onClick={act(Q.sim)}>Simulate</button>
                   {Q.tradeable(p) ? <button type="button" onClick={act(Q.trade)}>Trade</button> : <><button type="button" onClick={() => Q.espn(p)}>Add on ESPN</button><button type="button" onClick={() => { gxHide.toggle(p.id); close101(); }}>{gxHideSet().has(p.id) ? "Show" : "Hide"}</button></>}
                 </div>
               ) : null}
@@ -6809,7 +6825,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
         </div>
         {Q ? (
           <div className="gx-pd-ac">
-            <button type="button" className="pr" onClick={act(Q.swap)}>{Q.mine(p) ? "Find a replacement" : "Find a swap"}</button>
+            <button type="button" className="pr" onClick={act(Q.sim)}>Simulate</button>
             {Q.tradeable(p) ? <button type="button" onClick={act(Q.trade)}>Add to a trade</button> : null}
             <button type="button" onClick={() => Q.espn(p)}>{Q.fa(p) ? "Add on ESPN" : "Open on ESPN"}</button>
             {Q.fa(p) ? <GxPdWatch p={p} Q={Q} /> : null}{Q.fa(p) ? <button type="button" onClick={() => { gxHide.toggle(p.id); onClose(); }}>{gxHideSet().has(p.id) ? "Show in pickups" : "Hide from pickups"}</button> : null}
@@ -7375,7 +7391,7 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
                 </button>
               ))}
             </div>
-            <button type="button" className="lk" style={{ marginTop: 8 }} onClick={() => setAllD(!allD)}>{allD ? "Weakest only" : "Whole roster"}</button>
+            <button type="button" className="lk bt150" onClick={() => setAllD(!allD)}>{allD ? "Weakest only" : "Whole roster"}</button>
             {dayG.length ? (
               <>
                 <div className="sec">Best day to add</div>
@@ -7394,7 +7410,7 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
                   <div><small>{"Points, " + hLabel}</small><b style={{ color: R.gain >= 0 ? "var(--good)" : "var(--bad)" }}>{sg(R.gain)}</b></div>
                   <div><small>{"Win " + (String(hLabel).indexOf("next week") === 0 ? "next week" : "this week")}</small><b>{(wBase != null ? wpTxt(wBase) + " → " : "") + (R.win == null ? "-" : wpTxt(R.win))}</b></div>
                 </div>
-                <button type="button" className="lk" style={{ marginTop: 10 }} onClick={() => setDet(!det)}>{det ? "Hide details" : "More details"}</button>
+                <button type="button" className="lk bt150" onClick={() => setDet(!det)}>{det ? "Hide details" : "More details"}</button>
                 {det ? <GxPickRes92 s={s} myR={myR} ok={[{ a, d }]} /> : null}
                 <div className="act">
                   <button type="button" className="pr" onClick={() => { if (window.__QA) window.__QA.espn(a); }}>Add on ESPN</button>
