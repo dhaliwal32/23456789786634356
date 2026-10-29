@@ -311,11 +311,9 @@
 "was": "2026-10-29"
 },
 "4063401": {
-"d": "2026-10-24",
-"k": "later",
-"nd": "2026-10-29",
-"now": "2026-10-29",
-"was": "2026-10-24"
+"d": "2026-10-29",
+"k": "back",
+"was": "2026-10-29"
 },
 "4063605": {
 "d": "2026-10-27",
@@ -870,7 +868,7 @@
 "status": "Injured Reserve"
 },
 "3942461": {
-"back": "2026-11-07",
+"back": "",
 "note": "ir-nr",
 "status": "Injured Reserve"
 },
@@ -902,11 +900,6 @@
 "4063268": {
 "back": "2026-12-04",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"4063401": {
-"back": "2026-10-29",
-"note": "Girard (undisclosed) is considered a game-time decision for Thursday's home game against the Mammoth, per Seth Rorabaugh of Tribune-Review Sports.",
 "status": "Injured Reserve"
 },
 "4063605": {
