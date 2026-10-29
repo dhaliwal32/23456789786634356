@@ -1152,6 +1152,10 @@
     .gx-tk140 small { font-size: 12px; margin-left: 8px; }
     .gx-dn108 .gx-arw { display: none !important; }
   }
+  /* change 144 (install.py) */
+  .gx-sh141 .pn { will-change: transform; backface-visibility: hidden; }
+  .gx-sh141.dg.out { animation: gx139-out .22s ease forwards !important; }
+  .gx-sh141.dg.out .pn { animation: gx139-down .22s ease-in forwards !important; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1160,7 +1164,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="pewczb.2odca8" data-file="build/app.js">
+<meta name="gx-build" content="1g7nf9n.hr36ht" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8293,45 +8297,58 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   const [gi, setGi] = useState(null);
   const [, bump] = useState(0);
   const dragY = React.useRef(null);
-  const [drag143, setDrag143] = useState(false);
-  const pn143 = React.useRef(null), dz143 = React.useRef(null), sh143 = React.useRef(null);
-  const ease143 = "transform .26s cubic-bezier(.2, .8, .2, 1)";
-  const setY143 = (y, anim) => { const p = pn143.current; if (!p) return; p.style.transition = anim ? ease143 : "none"; p.style.transform = "translateY(" + Math.max(0, y) + "px)"; const o = sh143.current; if (o) { const H = p.offsetHeight || 1; o.style.transition = anim ? "background .26s ease" : "none"; o.style.background = "rgba(0,0,0," + (0.55 * Math.max(0, Math.min(1, 1 - y / H))).toFixed(3) + ")"; } };
-  const end143 = () => { setDrag143(false); setOpen(false); setGid(null); };
+  const [dm144, setDm144] = useState("");
+  const drag143 = dm144 !== "", dragNow144 = dm144 === "drag";
+  const pn143 = React.useRef(null), dz143 = React.useRef(null), sh143 = React.useRef(null), raf144 = React.useRef(0);
+  const ease144 = "transform .3s cubic-bezier(.2, .8, .2, 1)";
+  const bg144 = (on) => { const o = sh143.current; if (!o) return; o.style.transition = "background .3s ease"; o.style.background = on ? "rgba(0,0,0,.55)" : "rgba(0,0,0,0)"; };
+  const setY143 = (y, anim) => {
+    const p = pn143.current; if (!p) return;
+    cancelAnimationFrame(raf144.current);
+    const v = "translate3d(0," + Math.max(0, Math.round(y)) + "px,0)";
+    if (anim) { p.style.transition = ease144; p.style.transform = v; return; }
+    raf144.current = requestAnimationFrame(() => { p.style.transition = "none"; p.style.transform = v; });
+  };
+  const end143 = () => { setDm144(""); setOpen(false); setGid(null); };
   // drag the bar up: the sheet comes up under the finger
-  const barDown143 = (e) => { dz143.current = { y: e.touches[0].clientY, dy: 0, on: false, up: true }; };
+  const barDown143 = (e) => { dz143.current = { y: e.touches[0].clientY, dy: 0, on: false, up: true, H: 0 }; };
   const barMove143 = (e) => {
     const z = dz143.current; if (!z || !z.up) return;
     z.dy = z.y - e.touches[0].clientY;
-    if (!z.on && z.dy > 6) { z.on = true; setGid(null); setDrag143(true); setOpen(true); }
-    if (z.on) { const p = pn143.current; if (p) setY143((p.offsetHeight || 600) - z.dy, false); }
+    if (!z.on && z.dy > 6) { z.on = true; setGid(null); setDm144("drag"); setOpen(true); }
+    if (z.on) { const p = pn143.current; if (p) { if (!z.H) z.H = p.offsetHeight || 600; setY143(z.H - z.dy, false); } }
   };
   const barUp143 = () => {
     const z = dz143.current; dz143.current = null;
     if (!z || !z.on) return;
-    const p = pn143.current, H = (p && p.offsetHeight) || 600;
-    if (z.dy > H * 0.18) { setY143(0, true); setTimeout(() => setDrag143(false), 270); }
-    else { setY143(H, true); setTimeout(end143, 260); }
+    const p = pn143.current, H = z.H || (p && p.offsetHeight) || 600;
+    if (z.dy > H * 0.18) { setY143(0, true); bg144(true); setTimeout(() => setDm144("held"), 310); }
+    else { setY143(H, true); setTimeout(end143, 310); }
   };
   // drag the top of the sheet down: it follows, and goes away past a short distance
-  const shDown143 = (e) => { if (e.target.closest && e.target.closest(".bd")) return; dz143.current = { y: e.touches[0].clientY, dy: 0, on: true, up: false }; };
+  const shDown143 = (e) => { if (e.target.closest && e.target.closest(".bd")) return; const p = pn143.current; dz143.current = { y: e.touches[0].clientY, dy: 0, on: true, up: false, H: (p && p.offsetHeight) || 600 }; };
   const shMove143 = (e) => { const z = dz143.current; if (!z || z.up) return; z.dy = e.touches[0].clientY - z.y; setY143(z.dy, false); };
   const shUp143 = () => {
     const z = dz143.current; dz143.current = null;
     if (!z || z.up) return;
-    const p = pn143.current, H = (p && p.offsetHeight) || 600;
-    if (z.dy > 90) { setY143(H, true); setTimeout(end143, 260); } else setY143(0, true);
+    if (z.dy > 90) { setY143(z.H, true); bg144(false); setTimeout(end143, 310); } else setY143(0, true);
   };
   const pos142 = gid ? 10 + ({ game: 0, fan: 1, awayTeam: 2, homeTeam: 3 }[gt] || 0) : tab === "sb" ? 0 : 1, sl142 = useSlide105(pos142);
+  // slide only when the page changes while the sheet is open (not again when it opens)
+  const pp144 = React.useRef({ open: false, pos: pos142, c: "" });
+  if (!open) pp144.current = { open: false, pos: pos142, c: "" };
+  else if (!pp144.current.open) pp144.current = { open: true, pos: pos142, c: "" };
+  else if (pp144.current.pos !== pos142) pp144.current = { open: true, pos: pos142, c: pos142 > pp144.current.pos ? "r" : "l" };
+  const slc144 = pp144.current.c;
   useEffect(() => { const id = setInterval(() => bump((x) => x + 1), 15000); return () => clearInterval(id); }, []);
-  const close = () => { setOut(true); setTimeout(() => { setOut(false); setOpen(false); setGid(null); }, 220); };
+  const close = () => { setOut(true); setTimeout(() => { setOut(false); setOpen(false); setGid(null); setDm144(""); }, 220); };
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open || dragNow144) return undefined;
     const k = (e) => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", k);
     gxLock141(true);
     return () => { window.removeEventListener("keydown", k); gxLock141(false); };
-  }, [open]);
+  }, [open, dragNow144]);
   const J = window.__NHLNOW || {}, games = (J.games || []).slice();
   const live = (g) => g.gameState === "LIVE" || g.gameState === "CRIT", fin = (g) => g.gameState === "FINAL" || g.gameState === "OFF", pre = (g) => !(live(g) || fin(g));
   const BX = (window.__BX131 = window.__BX131 || {}), L = (window.__LD131 = window.__LD131 || {});
@@ -8490,11 +8507,11 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
       }
     }
     return ReactDOM.createPortal(
-      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "")} style={drag143 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
-        <div className="pn" ref={pn143} style={drag143 ? { transform: "translateY(100%)" } : null} onClick={(e) => e.stopPropagation()} onTouchStart={shDown143} onTouchMove={shMove143} onTouchEnd={shUp143} onTouchCancel={shUp143}>
+      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "")} style={dragNow144 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
+        <div className="pn" ref={pn143} style={dragNow144 ? { transform: "translate3d(0,100%,0)" } : null} onClick={(e) => e.stopPropagation()} onTouchStart={shDown143} onTouchMove={shMove143} onTouchEnd={shUp143} onTouchCancel={shUp143}>
           <div className="grab"></div>
           {head}{extra}
-          <div className="bd"><div key={"p" + pos142} className={"gx-sl105 " + sl142}>{body}</div></div>
+          <div className="bd"><div key={"p" + pos142} className={"gx-sl105 " + slc144}>{body}</div></div>
         </div>
       </div>, document.body);
   }
@@ -8508,7 +8525,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   );
   return (
     <>
-      {!open || drag143 ? ReactDOM.createPortal(fb, document.body) : null}
+      {!open || dragNow144 ? ReactDOM.createPortal(fb, document.body) : null}
       <div className="gx-sp140"></div>
       <div className="gx-ns131 gx-ib141" style={{ marginTop: 18 }}>
         <button type="button" className="bar" onClick={() => { setGid(null); setOpen(true); }}><span>NHL Scores</span><span className="n">{games.length ? games.length + " games" : ""}</span><span className="sec-chev shut" style={{ marginLeft: 8 }}></span></button>

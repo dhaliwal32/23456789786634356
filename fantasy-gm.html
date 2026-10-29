@@ -1164,7 +1164,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1g7nf9n.hr36ht" data-file="build/app.js">
+<meta name="gx-build" content="xg679z.199avyo" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1604,6 +1604,14 @@ function App() {
   const [tradePartner, setTradePartner] = useState(null);
   const [, tick] = useState(0);
   useEffect(() => { const h32 = () => tick((x) => x + 1); window.addEventListener("gm-theme", h32); return () => window.removeEventListener("gm-theme", h32); }, []);
+  useEffect(() => { /* gx145: new day at midnight */
+    let id = 0, day = todayISO();
+    const arm = () => { const n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 2); id = setTimeout(fire, Math.max(1000, m - n)); };
+    const fire = () => { if (todayISO() !== day) { day = todayISO(); window.__LP120 = 0; window.__NHLNOW = { games: [] }; tick((x) => x + 1); } arm(); };
+    const vis = () => { if (!document.hidden && todayISO() !== day) { clearTimeout(id); fire(); } };
+    arm(); document.addEventListener("visibilitychange", vis);
+    return () => { clearTimeout(id); document.removeEventListener("visibilitychange", vis); };
+  }, []);
   useEffect(() => {
     // round 21: live NHL scores straight from the NHL every minute (falls back to the sync's copy if blocked)
     let dead = false;
@@ -8258,7 +8266,7 @@ function gxLanding132(sm) {
     const s = typeof u === "string" ? u : (u && u.url) || "";
     if (s.indexOf("https://api-web.nhle.com/v1/") !== 0) return nf(u, o);
     const path = s.slice(28).split("?")[0];
-    if (path === "score/now") return nf(GX_E132 + "scoreboard?_=" + Math.floor(Date.now() / 5000)).then((r) => (r.ok ? r.json() : null)).then((js) => ok(js ? gxNow132(js) : null)).catch(() => ok(null));
+    if (path === "score/now") return nf(GX_E132 + "scoreboard?dates=" + todayISO().replace(/-/g, "") + "&_=" + Math.floor(Date.now() / 5000)).then((r) => (r.ok ? r.json() : null)).then((js) => ok(js ? gxNow132(js) : null)).catch(() => ok(null));
     const m = path.match(/^gamecenter\/([^/]+)\/(boxscore|play-by-play|landing)$/);
     if (!m) return nf(u, o);
     return gxSum132(m[1]).then((sm) => ok(sm ? (m[2] === "boxscore" ? gxBox132(sm) : m[2] === "play-by-play" ? gxPbp132(sm) : gxLanding132(sm)) : null));
