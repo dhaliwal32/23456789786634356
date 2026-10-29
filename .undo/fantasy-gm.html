@@ -978,6 +978,28 @@
   .gx-ns131 .gx-gr138 .as { font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gx-ns131 .gx-gr138 .tc { text-align: right; font-size: 12px; color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .gx-ns131 .gx-gr138 .tc .sc { color: var(--ink); font-weight: 600; }
+  /* change 139 (install.py) */
+  .gx-sh139 { position: fixed; inset: 0; z-index: 75; background: rgba(0,0,0,.55); display: flex; align-items: flex-end; justify-content: center; animation: gx139-in .22s ease; }
+  .gx-sh139 .gx-ns131.sh { width: min(760px, 100%); max-height: 88vh; margin: 0; display: flex; flex-direction: column; border-radius: 18px 18px 0 0; padding-bottom: env(safe-area-inset-bottom); animation: gx139-up .28s cubic-bezier(.2, .8, .2, 1); }
+  .gx-sh139 .grab { width: 40px; height: 5px; border-radius: 9px; background: var(--line2, var(--line)); margin: 8px auto 0; flex: none; }
+  .gx-sh139 .hd139 { display: flex; align-items: center; gap: 8px; padding: 10px 14px 12px; font-weight: 600; flex: none; }
+  .gx-sh139 .hd139 .n { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--mute); }
+  .gx-sh139 .hd139 .n .lv { color: var(--bad); }
+  .gx-sh139 .hd139 .xx { font-size: 24px; line-height: 1; color: var(--mute); padding: 0 2px 0 8px; }
+  .gx-sh139 .seg { flex: none; }
+  .gx-sh139 .bd139 { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding-bottom: 14px; }
+  .gx-sh139.out { animation: gx139-out .22s ease forwards; }
+  .gx-sh139.out .gx-ns131.sh { animation: gx139-down .22s ease-in forwards; }
+  @keyframes gx139-in { from { opacity: 0; } }
+  @keyframes gx139-out { to { opacity: 0; } }
+  @keyframes gx139-up { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes gx139-down { from { transform: none; } to { transform: translateY(100%); } }
+  @media (prefers-reduced-motion: reduce) { .gx-sh139, .gx-sh139 .gx-ns131.sh { animation: none !important; } }
+  .gx-ns131 .gx-sb138 b, .gx-ns131 .gx-sb138 b.w { color: var(--ink); font-weight: 600; }
+  .gx-ns131 .gl .top { min-height: 46px; }
+  .gx-ns131 .gl .top .ph139 { width: 46px; height: 46px; border-radius: 999px; overflow: hidden; background: var(--line); flex: none; display: flex; align-items: center; justify-content: center; }
+  .gx-ns131 .gl .top .ph139 img { width: 100%; height: 100%; object-fit: cover; }
+  .gx-ns131 .gl .who { font-size: 15px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -986,7 +1008,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="iate6p.65uaoc" data-file="build/app.js">
+<meta name="gx-build" content="et4baq.at8at" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2029,7 +2051,7 @@ function Matchup({ s, setS, wk, setWk }) {
       <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 6 }}>
         <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
       </div>
-      <GxNhl131 s={s} />
+      <GxNhl131 s={s} opp={pairOpp || s.opp} />
     </div>
   );
 }
@@ -3569,7 +3591,7 @@ const LiveTag = ({ st, t, dt }) => {
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
       {st === "L" ? <span className="gm-pill inline-flex items-center gap-1 bg-red-100 text-red-600"><span className="gm-dot"></span>LIVE</span> : <span className="gm-pill bg-slate-200 text-slate-500">FINAL</span>}
-      {has ? <span className={"text-xs font-semibold " + (res === "W" ? "text-green-700" : res === "L" ? "text-red-600" : "text-slate-700")}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
+      {has ? <span className={"text-xs font-semibold " + ("text-slate-700" /* gx139 */)}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
     </span>
   );
 };
@@ -7816,12 +7838,21 @@ function gxBoxRows131(bx, gid) {
   });
   return out;
 }
-function GxNhl131({ s }) {
-  const [open, setOpen] = useState(() => !!uiGet().ns131);
+function GxNhl131({ s, opp }) {
+  const [open, setOpen] = useState(false) /* gx139 */;
   const [tab, setTab] = useState("sb");
   const [gid, setGid] = useState(null);
   const [side, setSide] = useState("fan");
   const [gf138, setGf138] = useState("all");
+  const [cl139, setCl139] = useState(false);
+  const close139 = () => { setCl139(true); setTimeout(() => { setCl139(false); setOpen(false); setGid(null); }, 220); };
+  useEffect(() => {
+    if (!open) return undefined;
+    const k = (e) => { if (e.key === "Escape") close139(); };
+    window.addEventListener("keydown", k);
+    const ov = document.body.style.overflow; document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ov; };
+  }, [open]);
   const [, bump] = useState(0);
   const J = window.__NHLNOW || {}, games = (J.games || []).slice();
   const live = (g) => g.gameState === "LIVE" || g.gameState === "CRIT", fin = (g) => g.gameState === "FINAL" || g.gameState === "OFF";
@@ -7854,7 +7885,7 @@ function GxNhl131({ s }) {
   }, [open, tab, J]);
   const nick = (ab) => (typeof GX_NICK119 !== "undefined" && GX_NICK119[gxAb131(ab)]) || ab;
   const nLive = games.filter(live).length;
-  const toggle = () => { const v = !open; setOpen(v); uiSet("ns131", v ? 1 : 0); };
+  const toggle = () => { setGid(null); setOpen(true); }; /* gx139 */
   const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxPer131(g.periodDescriptor) + " int." : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
   const order = (g) => (live(g) ? 0 : g.gameState === "FUT" || g.gameState === "PRE" ? 1 : 2);
   games.sort((a, b) => order(a) - order(b) || String(a.startTimeUTC).localeCompare(String(b.startTimeUTC)));
@@ -7902,43 +7933,57 @@ function GxNhl131({ s }) {
     games.forEach((g) => (g.goals || (L[g.id] || {}).goals || []).forEach((x) => all.push({ g, x })));
     const gw134 = ({ g, x }) => { const w = Date.parse(x.wc || ""); if (!isNaN(w)) return w; const m = String(x.timeInPeriod || "0:0").split(":"), n = ((x.periodDescriptor || {}).number || 1) - 1; return (Date.parse(g.startTimeUTC || "") || 0) + (n * 1200 + (+m[0] || 0) * 60 + (+m[1] || 0)) * 1600 + n * 1080e3; };
     all.sort((a, b) => gw134(b) - gw134(a)); /* change 134 */
-    /* gx138: goal counters and short goal rows */
+    /* gx139: goal counters and goal cards with faces */
     const nmOf = (q) => (q.name && q.name.default) || [((q.firstName || {}).default || ""), ((q.lastName || {}).default || "")].join(" ").trim();
     const G138 = all.map(({ g, x }, i) => {
       const tm = gxAb131(x.teamAbbrev && x.teamAbbrev.default ? x.teamAbbrev.default : x.teamAbbrev), who = nmOf(x), p = gxFind131(tm, null, who), tag = gxTag131(s, p);
       const as = (x.assists || []).map((a) => { const an = nmOf(a), ap = gxFind131(tm, null, an); return { an, ap, at: gxTag131(s, ap) }; });
-      const ros = !!tag || as.some((a) => a.at), me = (p && p.ft === s.me) || as.some((a) => a.ap && a.ap.ft === s.me);
-      return { g, x, i, tm, who, p, tag, as, ros, me };
+      const by = (ft) => !!ft && ((p && p.ft === ft) || as.some((a) => a.ap && a.ap.ft === ft));
+      return { g, x, i, tm, who, p, tag, as, me: by(s.me), op: by(opp) };
     });
-    const nR = G138.filter((r) => r.ros).length, nM = G138.filter((r) => r.me).length;
-    const list = G138.filter((r) => (gf138 === "me" ? r.me : gf138 === "ros" ? r.ros : true));
-    const pBtn = (pl, label, k) => (pl ? <button key={k} type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { if (window.__NAV) window.__NAV.player(pl); }}>{label}</button> : <React.Fragment key={k}>{label}</React.Fragment>);
+    const nM = G138.filter((r) => r.me).length, nO = G138.filter((r) => r.op).length;
+    const list = G138.filter((r) => (gf138 === "me" ? r.me : gf138 === "op" ? r.op : true));
+    const pBtn = (pl, label, k) => (pl ? <button key={k} type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { close139(); if (window.__NAV) window.__NAV.player(pl); }}>{label}</button> : <React.Fragment key={k}>{label}</React.Fragment>);
+    const face = (r) => {
+      const src = r.x.headshot || r.x.mugshot || (r.p && String(r.p.id || "")[0] === "e" ? "https://a.espncdn.com/i/headshots/nhl/players/full/" + String(r.p.id).slice(1) + ".png" : "");
+      return <span className="ph139">{src ? <img src={src} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : <TeamLogo t={r.tm} size={30} />}</span>;
+    };
     body = (
       <>
-        <div className="gx-gc138">{[["all", "Goals today", G138.length], ["ros", "Rostered", nR], ["me", "Yours", nM]].map(([k, l, c]) => <button key={k} type="button" className={gf138 === k ? "on" : ""} onClick={() => setGf138(k)}><b>{c}</b><small>{l}</small></button>)}</div>
-        {list.length ? <div className="gx-gr138">{list.map((r) => {
-          const ab = gxAb131((r.g.awayTeam || {}).abbrev), hb = gxAb131((r.g.homeTeam || {}).abbrev);
+        <div className="gx-gc138">{[["all", "Goals today", G138.length], ["me", "Mine", nM], ["op", "Opponent's", nO]].map(([k, l, c]) => <button key={k} type="button" className={gf138 === k ? "on" : ""} onClick={() => setGf138(k)}><b>{c}</b><small>{l}</small></button>)}</div>
+        {list.length ? list.map((r) => {
+          const sc = gxAb131((r.g.awayTeam || {}).abbrev) + " " + (r.x.awayScore != null ? r.x.awayScore : "") + ", " + gxAb131((r.g.homeTeam || {}).abbrev) + " " + (r.x.homeScore != null ? r.x.homeScore : "");
           return (
-            <div key={r.g.id + "-" + r.i} className={"r" + (r.me ? " me" : "")}>
-              <TeamLogo t={r.tm} size={22} />
-              <div className="min-w-0">
-                <div className="who">{pBtn(r.p, r.who, "s")}{r.tag ? <span className="own">{r.tag}</span> : null}</div>
-                <div className="as">{r.as.length ? r.as.map((a, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(a.ap, a.an, "a")}{a.at ? " (" + a.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>
-              </div>
-              <div className="tc"><div className="sc">{ab + " " + (r.x.awayScore != null ? r.x.awayScore : "") + "-" + (r.x.homeScore != null ? r.x.homeScore : "") + " " + hb}</div><div>{gxPer131(r.x.periodDescriptor) + " " + (r.x.timeInPeriod || "")}</div></div>
+            <div key={r.g.id + "-" + r.i} className="gl">
+              <div className="top">{face(r)}
+                <div className="min-w-0"><div className="who">{pBtn(r.p, r.who, "s")}{", " + r.tm}{r.tag ? <span className="own">{"(" + r.tag + ")"}</span> : null}</div><div className="when">{(r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor) + " Period \u00b7 " + sc}</div></div></div>
+              <div className="as"><span>Assists:</span><span>{r.as.length ? r.as.map((a, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(a.ap, a.an, "a")}{a.at ? " (" + a.at + ")" : ""}</React.Fragment>) : "Unassisted"}</span></div>
             </div>
           );
-        })}</div> : <div className="em">{G138.length ? (gf138 === "me" ? "No goals or assists by your players yet." : "No goals by rostered players yet.") : "No goals yet today."}</div>}
+        }) : <div className="em">{G138.length ? (gf138 === "me" ? "No goals or assists by your players yet." : "No goals or assists by your opponent's players yet.") : "No goals yet today."}</div>}
       </>
     );
   }
+  /* gx139: sheet */
+  const gl139 = games.filter((g) => live(g) || fin(g)).reduce((a, g) => a + (+((g.awayTeam || {}).score) || 0) + (+((g.homeTeam || {}).score) || 0), 0);
+  const cnt139 = <>{nLive ? <span className="lv">{nLive + " live"}</span> : games.length ? games.length + " games" : ""}{gl139 ? " \u00b7 " + gl139 + " goals" : ""}</>;
+  const seg139 = <div className="seg"><button type="button" className={tab === "sb" ? "on" : ""} onClick={() => setTab("sb")}>Scoreboard</button><button type="button" className={tab === "gt" ? "on" : ""} onClick={() => setTab("gt")}>Goal tracker</button></div>;
   return (
     <div className="gx-ns131 gx138">
-      <button type="button" className="bar" onClick={toggle}><span>NHL scores</span><span className="n">{(() => { const gl138 = games.filter((g) => live(g) || fin(g)).reduce((a, g) => a + (+((g.awayTeam || {}).score) || 0) + (+((g.homeTeam || {}).score) || 0), 0); return <>{nLive ? <span className="lv">{nLive + " live"}</span> : games.length ? games.length + " games" : ""}{gl138 ? " \u00b7 " + gl138 + " goals" : ""}</>; })()}</span><span className={"sec-chev" + (open ? "" : " shut")} style={{ marginLeft: 8 }}></span></button>
-      {open ? <>{!gid ? <div className="seg"><button type="button" className={tab === "sb" ? "on" : ""} onClick={() => setTab("sb")}>Scoreboard</button><button type="button" className={tab === "gt" ? "on" : ""} onClick={() => setTab("gt")}>Goal tracker</button></div> : null}{body}</> : null}
+      <button type="button" className="bar" onClick={toggle}><span>NHL scores</span><span className="n">{cnt139}</span><span className="sec-chev shut" style={{ marginLeft: 8 }}></span></button>
+      {open ? ReactDOM.createPortal(
+        <div className={"gx-sh139" + (cl139 ? " out" : "")} onClick={close139} role="dialog" aria-label="NHL scores">
+          <div className="gx-ns131 sh" onClick={(e) => e.stopPropagation()}>
+            <div className="grab"></div>
+            <div className="hd139"><span>NHL scores</span><span className="n">{cnt139}</span><button type="button" className="xx" aria-label="Close" onClick={close139}>{"\u00d7"}</button></div>
+            {!gid ? seg139 : null}
+            <div className="bd139">{body}</div>
+          </div>
+        </div>, document.body) : null}
     </div>
   );
 }
+
 // ---------- change 132: live NHL data from ESPN (install.py) ----------
 // The NHL site does not let browsers read its feed, so the app's old NHL calls are answered from ESPN here, in the same shape as before.
 const GX_AL132 = { LAK: "LA", NJD: "NJ", SJS: "SJ", TBL: "TB", WAS: "WSH", UTAH: "UTA", ARI: "UTA", PHX: "UTA", CLB: "CBJ", CLS: "CBJ", MON: "MTL", NAS: "NSH", WIN: "WPG", VEG: "VGK" };
