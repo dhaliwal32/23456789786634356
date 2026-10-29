@@ -11,12 +11,8 @@ jobs:
       - name: Who allows the app to read live data
         run: |
           mkdir -p ai/research
-          {
-          for u in "https://api-web.nhle.com/v1/score/now" "https://api-web.nhle.com/v1/gamecenter/2026020180/boxscore" "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=401802400"; do
-            echo "== $u"
-            curl -s -o /dev/null -D - -H "Origin: https://dhaliwal32.github.io" "$u" | grep -i "^HTTP\|access-control\|content-type" || true
-          done
-          curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" | python3 -c "import json,sys; j=json.load(sys.stdin); e=j['events'][0]; print(e['id'], e['name'], e['status']['type']['name']); print(list(e.keys()))"
-          } > ai/research/diag.txt 2>&1
+          curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" > ai/research/espn_scoreboard.json
+          ev=$(python3 -c "import json; j=json.load(open('ai/research/espn_scoreboard.json')); ev=[e for e in j['events'] if e['status']['type']['state']=='in'] or j['events']; print(ev[0]['id'])")
+          curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=$ev" > ai/research/espn_summary.json
           git config user.name "fantasy-bot"; git config user.email "fantasy-bot@users.noreply.github.com"
-          git add ai/research/diag.txt; git commit -qm "diag" && (git pull -q --rebase && git push -q || true)
+          git add ai/research/espn_scoreboard.json ai/research/espn_summary.json; git commit -qm "diag" && (git pull -q --rebase && git push -q || true)
