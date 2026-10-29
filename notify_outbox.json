@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-22|512fa826afe6",
-   "at": "2026-10-22T19:31:38Z",
-   "title": "Your player: power-play change",
-   "text": "Alex Laferriere (LA) moved onto PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T19:31:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-22T22:04:39Z"
-  },
-  {
-   "k": "2026-10-22|ece1dd6fc464",
-   "at": "2026-10-22T19:31:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Erik Haula (LA) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T19:31:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-22T22:04:39Z"
-  },
-  {
-   "k": "2026-10-22|6b7a26e057cd",
-   "at": "2026-10-22T19:31:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jared Spurgeon (MIN) is in the lineup on the top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-22T19:31:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-22T22:04:39Z"
-  },
-  {
    "k": "2026-10-22|8f252c6342de",
    "at": "2026-10-23T00:00:12Z",
    "title": "Pickup: ice time jump",
@@ -6271,7 +6235,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-29T17:10:38Z",
-   "seen": "2026-10-29T19:30:47Z"
+   "seen": "2026-10-29T19:37:00Z"
   },
   {
    "k": "2026-10-29|963b56a55e20",
