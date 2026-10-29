@@ -1,0 +1,14 @@
+name: Diagnose
+on:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Who allows the app to read live data
+        run: |
+          for u in "https://api-web.nhle.com/v1/score/now" "https://api-web.nhle.com/v1/gamecenter/2026020180/boxscore" "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=401802400"; do
+            echo "== $u"
+            curl -s -o /dev/null -D - -H "Origin: https://dhaliwal32.github.io" "$u" | grep -i "^HTTP\|access-control\|content-type" || true
+          done
+          curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" | python3 -c "import json,sys; j=json.load(sys.stdin); e=j['events'][0]; print(e['id'], e['name'], e['status']['type']['name']); print(list(e.keys()))"
