@@ -213,6 +213,11 @@
 "k": "back",
 "was": ""
 },
+"3852": {
+"d": "2026-10-29",
+"k": "news",
+"nd": "2026-10-29"
+},
 "3870": {
 "d": "2026-10-27",
 "k": "new",
@@ -376,15 +381,15 @@
 "was": "2026-10-22"
 },
 "4565225": {
-"d": "2026-10-28",
-"k": "dtd",
-"now": "2026-10-29",
-"was": "Out"
+"d": "2026-10-29",
+"k": "later",
+"now": "2026-10-31",
+"was": "2026-10-29"
 },
 "4565226": {
-"d": "2026-10-26",
+"d": "2026-10-29",
 "k": "later",
-"now": "2026-10-29",
+"now": "2026-10-31",
 "was": "2026-10-22"
 },
 "4565235": {
@@ -589,7 +594,7 @@
 "5428": {
 "d": "2026-10-29",
 "k": "later",
-"nd": "2026-10-27",
+"nd": "2026-10-29",
 "now": "2026-11-03",
 "was": "2026-10-29"
 },
@@ -811,7 +816,7 @@
 },
 "3852": {
 "back": "2026-11-21",
-"note": "ir",
+"note": "Marchand (leg) has started skating and is tentatively three weeks away from returning, per George Richards.",
 "status": "Injured Reserve"
 },
 "3870": {
@@ -970,12 +975,12 @@
 "status": "Injured Reserve"
 },
 "4565225": {
-"back": "2026-10-29",
+"back": "2026-10-31",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
 "4565226": {
-"back": "2026-10-29",
+"back": "2026-10-31",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1166,7 +1171,7 @@
 },
 "5428": {
 "back": "2026-11-03",
-"note": "Hall (undisclosed) tweaked something different from his previous upper-body injury and will miss time, Cory Lavalette of the North State Journal reports Tuesday",
+"note": "Head coach Rod Brind'Amour said Thursday that Hall (undisclosed) will miss a few more games, Chip Alexander of The Raleigh News &amp; Observer reports.",
 "status": "Out"
 },
 "5452": {
