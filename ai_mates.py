@@ -155,7 +155,8 @@ def q_of(st, pid, pos):
 
 
 def patch():
-    L.SK_FEATS = list(L.SK_FEATS) + ["mate_now", "mate_n", "mate_prev"]
+    PREV = "--prev-only" in sys.argv  # fair version: only linemates from his earlier games
+    L.SK_FEATS = list(L.SK_FEATS) + (["mate_prev"] if PREV else ["mate_now", "mate_n", "mate_prev"])
     L.IDX = {n: i for i, n in enumerate(L.SK_FEATS)}
     old_x, old_sk = L.State.skater_x, L.State._update_skater
     POS = {}
@@ -169,7 +170,7 @@ def patch():
         now = sum(qs) / len(qs) if qs else 4.0
         p = self.pl.get(pid)
         prev = p.get("mq", 4.0) if p else 4.0
-        return x + [now, float(len(qs)), prev]
+        return x + ([prev] if PREV else [now, float(len(qs)), prev])
 
     def upd_sk(self, r, day):
         POS[r["p"]] = r["pos"]
@@ -250,7 +251,8 @@ def test():
                                       "pct": round(float(-d.mean() / b.mean() * 100), 2), "recent_diff": round(float(d[wf["recent"]].mean()), 4)}
         del data, SX, st
     os.makedirs(os.path.join(HERE, "ai", "research"), exist_ok=True)
-    with open(os.path.join(HERE, "ai", "research", "mates_exp.json"), "w", encoding="utf-8") as f:
+    out["arms"] = "mate_prev only" if "--prev-only" in sys.argv else "mate_now + mate_n + mate_prev"
+    with open(os.path.join(HERE, "ai", "research", "mates_exp_prev.json" if "--prev-only" in sys.argv else "mates_exp.json"), "w", encoding="utf-8") as f:
         json.dump(out, f, indent=1)
     log(json.dumps(out))
 
