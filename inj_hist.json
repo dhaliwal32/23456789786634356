@@ -207,6 +207,7 @@
 "3151036": {
 "d": "2026-10-29",
 "k": "later",
+"nd": "2026-10-29",
 "now": "2026-11-07",
 "was": "2026-10-29"
 },
@@ -650,7 +651,7 @@
 },
 "last": {
 "2273": {
-"back": "2026-10-29",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -796,7 +797,7 @@
 },
 "3151036": {
 "back": "2026-11-07",
-"note": "out",
+"note": "Foegele (knee) is expected to miss an extended period of time, Jackson Starr of the Senators' official site reports Thursday.",
 "status": "Out"
 },
 "3151038": {
