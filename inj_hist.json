@@ -184,9 +184,10 @@
 },
 "3114755": {
 "d": "2026-10-29",
-"k": "new",
+"k": "later",
 "nd": "2026-10-29",
-"now": "2026-10-31"
+"now": "2026-11-14",
+"was": "2026-10-31"
 },
 "3114777": {
 "d": "2026-10-25",
@@ -785,7 +786,7 @@
 "status": "Injured Reserve"
 },
 "3114755": {
-"back": "2026-10-31",
+"back": "2026-11-14",
 "note": "Larkin (not injury related) will not play until he is traded away from the Red Wings, per Elliotte Friedman of Sportsnet.",
 "status": "Out"
 },
