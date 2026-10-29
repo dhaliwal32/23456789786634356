@@ -1135,6 +1135,8 @@
     .gx-ib141 { display: none !important; }
     .gx-sh141 .pn { width: 100%; }
   }
+  /* change 142 (install.py) */
+  .gx-sh141 .bd, .gx-sd141 .bx { overflow-x: hidden; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1143,7 +1145,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="w5sdlj.1co5lh5" data-file="build/app.js">
+<meta name="gx-build" content="pm2umf.1419024" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8276,6 +8278,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   const [gi, setGi] = useState(null);
   const [, bump] = useState(0);
   const dragY = React.useRef(null);
+  const pos142 = gid ? 10 + ({ game: 0, fan: 1, awayTeam: 2, homeTeam: 3 }[gt] || 0) : tab === "sb" ? 0 : 1, sl142 = useSlide105(pos142);
   useEffect(() => { const id = setInterval(() => bump((x) => x + 1), 15000); return () => clearInterval(id); }, []);
   const close = () => { setOut(true); setTimeout(() => { setOut(false); setOpen(false); setGid(null); }, 220); };
   useEffect(() => {
@@ -8337,6 +8340,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   const fpOf = (day, t) => ((day && day.start) || []).reduce((z, p) => z + (p.t === t && p.st ? +(p.a || 0) : 0), 0);
   const openGame = (id) => { setGid(id); setGt("game"); setOpen(true); };
 
+  const gi142 = goals.length ? (gi == null || gi >= goals.length ? goals.length - 1 : gi) : -1, slg142 = useSlide105(gi142);
   // ---------- laptop column ----------
   if (side) {
     const n = goals.length, idx = gi == null || gi >= n ? n - 1 : gi, r = n ? goals[idx] : null;
@@ -8350,7 +8354,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
           {r ? (
             <div className="gs">
               <button type="button" className="ar" aria-label="Earlier goal" disabled={idx <= 0} onClick={() => setGi(idx - 1)}>{"\u2039"}</button>
-              <div className="md">
+              <div key={"gi" + gi142} className={"md gx-sl105 " + slg142}>
                 <div className="tp">
                   <span className="fc">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : null}</span>
                   <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
@@ -8446,7 +8450,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
         <div className="pn" onClick={(e) => e.stopPropagation()}>
           <div className="grab"></div>
           {head}{extra}
-          <div className="bd">{body}</div>
+          <div className="bd"><div key={"p" + pos142} className={"gx-sl105 " + sl142}>{body}</div></div>
         </div>
       </div>, document.body);
   }
