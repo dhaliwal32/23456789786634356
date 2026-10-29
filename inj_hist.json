@@ -127,9 +127,10 @@
 "was": "2026-10-26"
 },
 "3042110": {
-"d": "2026-10-26",
+"d": "2026-10-28",
 "k": "later",
-"now": "2026-11-03",
+"nd": "2026-10-28",
+"now": "2026-11-07",
 "was": "2026-10-22"
 },
 "3042122": {
@@ -709,8 +710,8 @@
 "status": "Injured Reserve"
 },
 "3042110": {
-"back": "2026-11-03",
-"note": "ir",
+"back": "2026-11-07",
+"note": "Wood (undisclosed) was transferred to long-term injured reserve Wednesday, David Alter of The Hockey News reports.",
 "status": "Injured Reserve"
 },
 "3042122": {
