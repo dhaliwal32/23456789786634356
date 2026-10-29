@@ -1181,6 +1181,14 @@
   .gx-h2h.gx-tt147 { border-top: 0 !important; border-bottom: 2px solid var(--line2, var(--line)); margin-bottom: 2px; }
   .gx-h2h.gx-be147 { border-top: 2px solid var(--line2, var(--line)); }
   .gx-h2h .gx-sv147 { color: var(--faint, var(--mute)); }
+  /* change 148 (install.py) */
+  .gx-nc148 .gx-gt141 .cd.me { border-left-color: var(--ink); }
+  .gx-nc148 .gx-gt141 .cd.op { border-left-color: var(--mute); }
+  .gx-nc148 .gx-bt141 .t > div.n.me { box-shadow: inset 4px 0 0 var(--ink); }
+  .gx-nc148 .gx-bt141 .t > div.n.op { box-shadow: inset 4px 0 0 var(--mute); }
+  .gx-nc148 .gx-lg141 .me, .gx-nc148 .gx-lg141 .op, .gx-nc148.gx-sd141 .lg .me, .gx-nc148.gx-sd141 .lg .op { color: var(--ink); }
+  .gx-nc148 i.me { background: var(--ink) !important; }
+  .gx-nc148 i.op { background: var(--mute) !important; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1189,7 +1197,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="ykta68.bvm4x3" data-file="build/app.js">
+<meta name="gx-build" content="27b9qf.1ppx6u5" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2229,7 +2237,7 @@ function Matchup({ s, setS, wk, setWk }) {
             <div className="text-sm font-semibold gx-nm114" style={mine ? { color: "var(--accent)" } : null}><GxFtPic114 id={a} size={22} /><TL s={s} id={a} /></div>
             <div className="gx-num" style={{ fontSize: 28 }}><GxAnimNum131 v={aA} /></div>
           </div>
-          <GxRing v={winProb(A, B, aA, aB)} />
+          <GxRing v={winProb(A, B, aA, aB)} plain={!mine} />
           <div className="min-w-0 text-right" style={{ flex: 1 }}>
             <div className="text-sm text-slate-500 gx-nm114 r"><TL s={s} id={b} /><GxFtPic114 id={b} size={22} /></div>
             <div className="gx-num" style={{ fontSize: 28 }} data-gx="138sc"><GxAnimNum131 v={aB} /></div>
@@ -2242,19 +2250,19 @@ function Matchup({ s, setS, wk, setWk }) {
           </div>
         ) : null}
         <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 8 }}>
-          <span data-gx="114w" style={{ margin: "0 auto", color: margin >= 0 ? "var(--good)" : "var(--bad)" }}>{mine ? (margin >= 0 ? "Projected to win by " : "Projected to lose by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " projected to win by " + f1(Math.abs(margin))}</span>
+          <span data-gx="114w" style={{ margin: "0 auto", color: !mine ? "var(--ink2, var(--ink))" : margin >= 0 ? "var(--good)" : "var(--bad)" }}>{mine ? (margin >= 0 ? "Projected to win by " : "Projected to lose by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " projected to win by " + f1(Math.abs(margin))}</span>
         </div>
       </div>
       <div className="gx-dn108" data-gx="138top">
         <button type="button" className="gx-arw" aria-label="Earlier day" disabled={d <= 0} onClick={() => setDay(d - 1)}>{"\u2039"}</button>
-        <div className="dt">{dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : ""}<small style={{ color: Math.abs(dvD135) < 0.05 ? "var(--mute)" : dvD135 > 0 ? "var(--good)" : "var(--bad)" }}>{(dvD135 > 0 ? "+" : "") + f1(dvD135)}</small></div>
+        <div className="dt">{dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : ""}<small style={{ color: !mine || Math.abs(dvD135) < 0.05 ? "var(--mute)" : dvD135 > 0 ? "var(--good)" : "var(--bad)" }}>{(dvD135 > 0 ? "+" : "") + f1(dvD135)}</small></div>
         <button type="button" className="gx-arw" aria-label="Later day" disabled={d >= n - 1} onClick={() => setDay(d + 1)}>{"\u203a"}</button>
       </div>
       <div key={"d105-" + sel + "-" + d} ref={dr106} {...dh106} className={"gx-pn gx-dr106 gx-sl105 " + sl105b} style={{ marginTop: 12 }}><b></b><b></b><b></b><b></b>
         <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
           <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
         </div>
-        {rows.length ? <div className="gx-h2h gx-tt114 gx-tt147"><div>{state === "final" ? "Final" : state === "live" ? "Live" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
+        {rows.length ? <div className="gx-h2h gx-tt114 gx-tt147"><div>{state === "final" ? "Final" : state === "live" ? "Live" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
         {rows.length ? rows.map(([sl, p, q], i) => (
           <React.Fragment key={i}>
           <div className={"gx-h2h" + (sl === "BE" && (!rows[i - 1] || rows[i - 1][0] !== "BE") ? " gx-be147" : "")} style={i ? null : { borderTop: 0 }}>
@@ -4081,11 +4089,11 @@ function TopBar({ s, setS, tab, go, ageH }) {
     </div>
   );
 }
-const GxRing = ({ v, big }) => {
+const GxRing = ({ v, big, plain }) => {
   // ring v36: the circle is back (older marker kept: dial v35) (news_logos.py)
   const size = big ? 104 : 64, m = size / 2, r = big ? 36 : 26, w = big ? 6 : 5, c = 2 * Math.PI * r;
   const p = v == null ? 0 : Math.max(0.01, Math.min(0.99, v));
-  const col = v == null ? "var(--faint)" : v >= 0.5 ? "var(--good)" : "var(--bad)";
+  const col = v == null ? "var(--faint)" : plain ? "var(--ink2, var(--ink))" : v >= 0.5 ? "var(--good)" : "var(--bad)";
   return (
     <svg viewBox={"0 0 " + size + " " + size} width={size} height={size} className="gx-svg" style={{ flexShrink: 0, display: "block" }} role="img" aria-label={v == null ? "Win chance not available" : wpTxt(v) + " chance to win"}>
       {big ? <circle cx={m} cy={m} r={44} style={{ fill: "none", stroke: "var(--track)", strokeWidth: 1, strokeDasharray: "1 5.9" }} /> : null}
@@ -8481,7 +8489,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
     const dl = (() => { try { return new Date().toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }); } catch (e) { return ""; } })();
     const abA = gxFtAb141(s, a), abB = gxFtAb141(s, b);
     return (
-      <div className="gx-sd141">
+      <div className={"gx-sd141" + (a !== s.me ? " gx-nc148" : "")}>
         <div className="bx">
           <div className="bh"><span>Goal Tracker</span><span className="r">{n ? "Goal " + (idx + 1) + " of " + n : ""}</span></div>
           {r ? (
@@ -8589,7 +8597,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
       }
     }
     return ReactDOM.createPortal(
-      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "")} style={dragNow144 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
+      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "") + (a !== s.me ? " gx-nc148" : "")} style={dragNow144 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
         <div className="pn" ref={pn143} style={dragNow144 ? { transform: "translate3d(0,100%,0)" } : null} onClick={(e) => e.stopPropagation()} onTouchStart={shDown143} onTouchMove={shMove143} onTouchEnd={shUp143} onTouchCancel={shUp143}>
           <div className="grab"></div>
           {head}{extra}
