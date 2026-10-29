@@ -178,8 +178,10 @@
 },
 "3114743": {
 "d": "2026-10-29",
-"k": "news",
-"nd": "2026-10-29"
+"k": "later",
+"nd": "2026-10-29",
+"now": "2026-11-07",
+"was": "2026-10-31"
 },
 "3114755": {
 "d": "2026-10-29",
@@ -781,7 +783,7 @@
 "status": "Injured Reserve"
 },
 "3114743": {
-"back": "2026-10-31",
+"back": "2026-11-07",
 "note": "Fiala (lower leg) was spotted skating in a non-contact jersey at Kings' morning skate Thursday.",
 "status": "Injured Reserve"
 },
