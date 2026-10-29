@@ -617,10 +617,8 @@
 },
 "5474": {
 "d": "2026-10-29",
-"k": "later",
-"nd": "2026-10-29",
-"now": "2026-10-29",
-"was": "2026-10-21"
+"k": "back",
+"was": "2026-10-29"
 },
 "5509": {
 "d": "2026-10-28",
@@ -1174,11 +1172,6 @@
 "5452": {
 "back": "2026-11-04",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5474": {
-"back": "2026-10-29",
-"note": "Carrick (middle body) is expected to be activated off injured reserve ahead of Thursday's game against the Ducks.",
 "status": "Injured Reserve"
 },
 "5509": {
