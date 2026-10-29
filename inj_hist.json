@@ -580,6 +580,11 @@
 "k": "back",
 "was": "2026-10-31"
 },
+"5216882": {
+"d": "2026-10-29",
+"k": "new",
+"now": "2026-11-04"
+},
 "5216907": {
 "d": "2026-10-24",
 "k": "later",
@@ -613,7 +618,7 @@
 "5474": {
 "d": "2026-10-29",
 "k": "later",
-"nd": "2026-10-21",
+"nd": "2026-10-29",
 "now": "2026-10-29",
 "was": "2026-10-21"
 },
@@ -1146,6 +1151,11 @@
 "note": "Demidov (lower body) was placed on injured reserve by the Canadiens on Tuesday, per the NHL media site.",
 "status": "Injured Reserve"
 },
+"5216882": {
+"back": "2026-11-04",
+"note": "out",
+"status": "Out"
+},
 "5216907": {
 "back": "2026-11-14",
 "note": "ir",
@@ -1168,7 +1178,7 @@
 },
 "5474": {
 "back": "2026-10-29",
-"note": "ir",
+"note": "Carrick (middle body) is expected to be activated off injured reserve ahead of Thursday's game against the Ducks.",
 "status": "Injured Reserve"
 },
 "5509": {
