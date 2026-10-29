@@ -1189,6 +1189,8 @@
   .gx-nc148 .gx-lg141 .me, .gx-nc148 .gx-lg141 .op, .gx-nc148.gx-sd141 .lg .me, .gx-nc148.gx-sd141 .lg .op { color: var(--ink); }
   .gx-nc148 i.me { background: var(--ink) !important; }
   .gx-nc148 i.op { background: var(--mute) !important; }
+  /* change 149 (install.py) */
+  .gx-so, .gx-pd-ov, .gx-so107, .gx-bm119, .gx-sh139, .gx-sh141, .fixed.inset-0, .gx-pd, .gx-pd-bd, .gx-sh141 .bd { overscroll-behavior: contain; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1197,7 +1199,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="27b9qf.1ppx6u5" data-file="build/app.js">
+<meta name="gx-build" content="157xowl.13gbdl7" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8360,7 +8362,7 @@ const gxNm141 = (q) => (q && q.name && q.name.default) || [(((q || {}).firstName
 const gxFtAb141 = (s, id) => (id ? gxTag131(s, { ft: id }) : "");
 const gxHs141 = (x, p) => (x && (x.headshot || x.mugshot)) || (p && String(p.id || "")[0] === "e" ? "https://a.espncdn.com/i/headshots/nhl/players/full/" + String(p.id).slice(1) + ".png" : "");
 // a page-wide lock that keeps the page behind the sheet still on phones
-function gxLock141(on) {
+function gxLock141(on) { return; /* gx149: the page-wide lock does this now */
   const b = document.body;
   if (on) { const y = window.scrollY || 0; b.dataset.gx141 = String(y); b.style.position = "fixed"; b.style.top = -y + "px"; b.style.left = "0"; b.style.right = "0"; b.style.width = "100%"; b.style.overflow = "hidden"; }
   else if (b.dataset.gx141 != null) { const y = +b.dataset.gx141 || 0; delete b.dataset.gx141; b.style.position = ""; b.style.top = ""; b.style.left = ""; b.style.right = ""; b.style.width = ""; b.style.overflow = ""; window.scrollTo(0, y); }
@@ -8597,7 +8599,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
       }
     }
     return ReactDOM.createPortal(
-      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "") + (a !== s.me ? " gx-nc148" : "")} style={dragNow144 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
+      <div ref={sh143} className={"gx-sh141" + (out ? " out" : "") + (drag143 ? " dg" : "") + (a !== s.me ? " gx-nc148" : "") + (dragNow144 ? " gx-nl149" : "")} style={dragNow144 ? { background: "rgba(0,0,0,0)" } : null} onClick={close} role="dialog" aria-label="NHL scores">
         <div className="pn" ref={pn143} style={dragNow144 ? { transform: "translate3d(0,100%,0)" } : null} onClick={(e) => e.stopPropagation()} onTouchStart={shDown143} onTouchMove={shMove143} onTouchEnd={shUp143} onTouchCancel={shUp143}>
           <div className="grab"></div>
           {head}{extra}
@@ -8632,6 +8634,24 @@ function gxML147(v, t) {
   const m = w >= 0.5 ? -100 * w / (1 - w) : 100 * (1 - w) / w;
   return Math.round(m / 5) * 5;
 }
+// ---------- change 149: the page behind any pop-up never scrolls (install.py) ----------
+(function () {
+  if (window.__GX149) return;
+  window.__GX149 = 1;
+  const SEL = ".gx-so, .gx-pd-ov, .gx-so107, .gx-bm119, .gx-sh139, .gx-sh141:not(.gx-nl149), .fixed.inset-0, .gx-pd";
+  let locked = false, y = 0, q = 0;
+  const set = (on) => {
+    if (on === locked) return;
+    locked = on;
+    const b = document.body;
+    if (on) { y = window.scrollY || 0; b.style.position = "fixed"; b.style.top = -y + "px"; b.style.left = "0"; b.style.right = "0"; b.style.width = "100%"; b.style.overflow = "hidden"; }
+    else { b.style.position = ""; b.style.top = ""; b.style.left = ""; b.style.right = ""; b.style.width = ""; b.style.overflow = ""; window.scrollTo(0, y); }
+  };
+  const check = () => { q = 0; let on = false; document.querySelectorAll(SEL).forEach((el) => { if (!on && getComputedStyle(el).display !== "none") on = true; }); set(on); };
+  const soon = () => { if (!q) q = requestAnimationFrame(check); };
+  const start = () => { new MutationObserver(soon).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] }); check(); };
+  if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
+})();
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
