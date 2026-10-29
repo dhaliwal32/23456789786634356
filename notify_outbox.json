@@ -6235,7 +6235,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-29T17:10:38Z",
-   "seen": "2026-10-29T23:00:29Z"
+   "seen": "2026-10-29T23:06:25Z"
   },
   {
    "k": "2026-10-29|963b56a55e20",
@@ -6284,6 +6284,54 @@
    "via": "urgent",
    "sent_at": "2026-10-29T19:31:06Z",
    "seen": "2026-10-29T19:31:06Z"
+  },
+  {
+   "k": "2026-10-29|32745f28d3ba",
+   "at": "2026-10-29T23:06:41Z",
+   "title": "Fantasy GM",
+   "text": "Holmberg joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T23:06:41Z",
+   "seen": "2026-10-29T23:06:41Z"
+  },
+  {
+   "k": "2026-10-29|ad0dad311c2c",
+   "at": "2026-10-29T23:06:42Z",
+   "title": "Fantasy GM",
+   "text": "Mercer joined Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T23:06:42Z",
+   "seen": "2026-10-29T23:06:42Z"
+  },
+  {
+   "k": "2026-10-29|20e2f3b96d7d",
+   "at": "2026-10-29T23:06:42Z",
+   "title": "Fantasy GM",
+   "text": "Bj\u00f6rck joined Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T23:06:42Z",
+   "seen": "2026-10-29T23:06:42Z"
+  },
+  {
+   "k": "2026-10-29|78c45af6690c",
+   "at": "2026-10-29T23:06:42Z",
+   "title": "Fantasy GM",
+   "text": "Terry activated",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-29T23:06:42Z",
+   "seen": "2026-10-29T23:06:42Z"
   }
  ],
  "sent": {
