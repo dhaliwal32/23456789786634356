@@ -1,9 +1,9 @@
 {
  "files": {
-  "gm_notify.py": true,
-  "gm_weekly.py": false
+  "fantasy-gm.html": true,
+  "espn_sync.py": true
  },
  "changes": [
-  "130-weekly-note.py"
+  "131-score-anim-nhl-scores.py"
  ]
 }
