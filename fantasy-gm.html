@@ -962,7 +962,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1pv2esc.148xco7" data-file="build/app.js">
+<meta name="gx-build" content="e3b8mn.3upluu" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -7861,7 +7861,8 @@ function GxNhl131({ s }) {
   } else {
     const all = [];
     games.forEach((g) => (g.goals || (L[g.id] || {}).goals || []).forEach((x) => all.push({ g, x })));
-    all.sort((a, b) => String(b.g.startTimeUTC).localeCompare(String(a.g.startTimeUTC)) || ((b.x.periodDescriptor || {}).number || 0) - ((a.x.periodDescriptor || {}).number || 0) || String(b.x.timeInPeriod).localeCompare(String(a.x.timeInPeriod)));
+    const gw134 = ({ g, x }) => { const w = Date.parse(x.wc || ""); if (!isNaN(w)) return w; const m = String(x.timeInPeriod || "0:0").split(":"), n = ((x.periodDescriptor || {}).number || 1) - 1; return (Date.parse(g.startTimeUTC || "") || 0) + (n * 1200 + (+m[0] || 0) * 60 + (+m[1] || 0)) * 1600 + n * 1080e3; };
+    all.sort((a, b) => gw134(b) - gw134(a)); /* change 134 */
     body = all.length ? all.map(({ g, x }, i) => {
       const tm = gxAb131(x.teamAbbrev && x.teamAbbrev.default ? x.teamAbbrev.default : x.teamAbbrev), who = (x.name && x.name.default) || [((x.firstName || {}).default || ""), ((x.lastName || {}).default || "")].join(" ").trim();
       const p = gxFind131(tm, null, who), tag = gxTag131(s, p);
@@ -7971,7 +7972,7 @@ function gxLanding132(sm) {
     const st = ((e.strength || {}).abbreviation) || "";
     (by[n] = by[n] || { periodDescriptor: gxPd132(n), goals: [] }).goals.push({
       name: { default: at.displayName || "" }, teamAbbrev: { default: ab[String((e.team || {}).id)] || "" }, headshot: (at.headshot || {}).href || "",
-      timeInPeriod: (e.clock || {}).displayValue || "", awayScore: e.awayScore, homeScore: e.homeScore, strength: st.indexOf("power") >= 0 ? "PP" : st.indexOf("short") >= 0 ? "SH" : "",
+      timeInPeriod: (e.clock || {}).displayValue || "", wc: e.wallclock || "", awayScore: e.awayScore, homeScore: e.homeScore, strength: st.indexOf("power") >= 0 ? "PP" : st.indexOf("short") >= 0 ? "SH" : "",
       assists: ps.filter((p) => p.type === "assister").map((p) => ({ name: { default: (p.athlete || {}).displayName || "" } })) });
   });
   return { summary: { scoring: Object.keys(by).sort((a, b) => a - b).map((k) => by[k]) } };
