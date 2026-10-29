@@ -962,7 +962,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="13qq7yk.1ksb925" data-file="build/app.js">
+<meta name="gx-build" content="13x3huu.5tkel1" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -7874,8 +7874,8 @@ function GxNhl131({ s }) {
       return (
         <div key={g.id + "-" + i} className="gl">
           <div className="top">{x.headshot || x.mugshot ? <img src={x.headshot || x.mugshot} alt="" /> : <TeamLogo t={tm} size={46} />}
-            <div className="min-w-0"><div className="who">{who + ", " + tm}{tag ? <span className="own">{"(" + tag + ")"}</span> : null}</div><div className="when">{x.timeInPeriod + " " + gxPer131(x.periodDescriptor) + " Period · " + sc}</div></div></div>
-          {(x.assists || []).length ? <div className="as"><span>Assists:</span><span>{(x.assists || []).map((a) => { const an = (a.name && a.name.default) || [((a.firstName || {}).default || ""), ((a.lastName || {}).default || "")].join(" ").trim(), ap = gxFind131(tm, null, an), at = gxTag131(s, ap); return an + (at ? " (" + at + ")" : ""); }).join(", ")}</span></div> : <div className="as"><span>Assists:</span><span>Unassisted</span></div>}
+            <div className="min-w-0"><div className="who">{p ? <button type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { if (window.__NAV) window.__NAV.player(p); }}>{who}</button> : who}{", " + tm}{tag ? <span className="own">{"(" + tag + ")"}</span> : null}</div><div className="when">{x.timeInPeriod + " " + gxPer131(x.periodDescriptor) + " Period · " + sc}</div></div></div>
+          {(x.assists || []).length ? <div className="as"><span>Assists:</span><span>{(x.assists || []).map((a, k) => { const an = (a.name && a.name.default) || [((a.firstName || {}).default || ""), ((a.lastName || {}).default || "")].join(" ").trim(), ap = gxFind131(tm, null, an), at = gxTag131(s, ap); return <React.Fragment key={k}>{k ? ", " : ""}{ap ? <button type="button" className="hover:underline text-left" onClick={() => { if (window.__NAV) window.__NAV.player(ap); }}>{an}</button> : an}{at ? " (" + at + ")" : ""}</React.Fragment>; })}</span></div> : <div className="as"><span>Assists:</span><span>Unassisted</span></div>}
         </div>
       );
     }) : <div className="em">No goals yet today.</div>;
