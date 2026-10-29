@@ -12,7 +12,6 @@ jobs:
         run: |
           mkdir -p ai/research
           curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" > ai/research/espn_scoreboard.json
-          ev=$(python3 -c "import json; j=json.load(open('ai/research/espn_scoreboard.json')); ev=[e for e in j['events'] if e['status']['type']['state']=='in'] or j['events']; print(ev[0]['id'])")
-          curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=$ev" > ai/research/espn_summary.json
+          for ev in $(python3 -c "import json; j=json.load(open('ai/research/espn_scoreboard.json')); print(' '.join(e['id'] for e in j['events']))"); do curl -s "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=$ev" > ai/research/espn_sum_$ev.json; done
           git config user.name "fantasy-bot"; git config user.email "fantasy-bot@users.noreply.github.com"
-          git add ai/research/espn_scoreboard.json ai/research/espn_summary.json; git commit -qm "diag" && (git pull -q --rebase && git push -q || true)
+          git add ai/research/; git commit -qm "diag" && (git pull -q --rebase && git push -q || true)
