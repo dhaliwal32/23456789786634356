@@ -171,6 +171,11 @@
 "now": "2026-10-31",
 "was": "2026-10-24"
 },
+"3114755": {
+"d": "2026-10-29",
+"k": "new",
+"now": "2026-10-31"
+},
 "3114777": {
 "d": "2026-10-25",
 "k": "later",
@@ -397,11 +402,9 @@
 "was": "2026-10-27"
 },
 "4587994": {
-"d": "2026-10-27",
-"k": "dtd",
-"nd": "2026-10-24",
-"now": "2026-10-29",
-"was": "Out"
+"d": "2026-10-29",
+"k": "back",
+"was": "2026-10-29"
 },
 "4587996": {
 "d": "2026-10-28",
@@ -753,6 +756,11 @@
 "note": "Fiala (lower leg fracture) is at least three weeks away from being ready to play, Zach Dooley of the Kings' official site reports Thursday.",
 "status": "Injured Reserve"
 },
+"3114755": {
+"back": "2026-10-31",
+"note": "out",
+"status": "Out"
+},
 "3114777": {
 "back": "2027-01-02",
 "note": "McCann (lower body) will be out for approximately 10 weeks, the team announced Sunday.",
@@ -982,11 +990,6 @@
 "back": "2026-11-12",
 "note": "Tucker had arthroscopic knee surgery and will be re-assessed in six weeks, the team announced Wednesday.",
 "status": "Injured Reserve"
-},
-"4587994": {
-"back": "2026-10-29",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4587996": {
 "back": "2026-11-07",
