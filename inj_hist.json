@@ -300,10 +300,9 @@
 "was": ""
 },
 "4024998": {
-"d": "2026-10-28",
-"k": "dtd",
-"now": "2026-10-29",
-"was": "Out"
+"d": "2026-10-29",
+"k": "back",
+"was": "2026-10-29"
 },
 "4063401": {
 "d": "2026-10-24",
@@ -450,6 +449,11 @@
 "d": "2026-10-22",
 "k": "back",
 "was": "2026-10-22"
+},
+"4697449": {
+"d": "2026-10-29",
+"k": "news",
+"nd": "2026-10-29"
 },
 "4697767": {
 "d": "2026-10-24",
@@ -879,11 +883,6 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
-"4024998": {
-"back": "2026-10-29",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "4031645": {
 "back": "2026-11-01",
 "note": "Carcone (upper body) was placed on injured reserve by the Mammoth on Tuesday.",
@@ -1011,7 +1010,7 @@
 },
 "4697449": {
 "back": "2026-11-03",
-"note": "Faber underwent a procedure to repair his fractured skull and is without a timetable to return, per Michael Russo of The Athletic.",
+"note": "Faber (skull) has cleared his return to play protocol and could resume skating within a few days, per Michael Russo of The Athletic.",
 "status": "Injured Reserve"
 },
 "4781550": {
