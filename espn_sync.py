@@ -74,7 +74,7 @@ pdate = lambda pid: (day1 + timedelta(days=int(pid) - 1)).isoformat()
 lg = get(LEAGUE, params=[("view", "mTeam"), ("view", "mSettings"), ("view", "mMatchupScore"), ("view", "mStatus")])
 dump("espn-raw-league.json", lg)
 teams = [{"id": t["id"], "name": (t.get("name") or f"{t.get('location', '')} {t.get('nickname', '')}".strip()
-                                  or f"Team {t['id']}"), "logo": str(t.get("logo") or "")} for t in lg.get("teams", [])]  # change 114: team pictures
+                                  or f"Team {t['id']}"), "logo": str(t.get("logo") or ""), "abbrev": str(t.get("abbrev") or "")} for t in lg.get("teams", [])]  # change 114: team pictures (abbrev: change 131)
 
 # change 116: keep a copy of each team picture here, so the app can always show it
 try:
