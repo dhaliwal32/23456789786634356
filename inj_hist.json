@@ -341,6 +341,11 @@
 "k": "back",
 "was": ""
 },
+"4319911": {
+"d": "2026-10-28",
+"k": "new",
+"now": "2026-10-30"
+},
 "4392072": {
 "d": "2026-10-27",
 "k": "later",
@@ -933,6 +938,11 @@
 "back": "2026-11-19",
 "note": "Head coach John Hynes said Sunday that Gustavsson (hip) is slated to miss at least another month, Dylan Loucks of The Hockey News reports.",
 "status": "Injured Reserve"
+},
+"4319911": {
+"back": "2026-10-30",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4352803": {
 "back": "2026-12-26",
