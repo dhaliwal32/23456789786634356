@@ -67,11 +67,6 @@
 "k": "back",
 "was": ""
 },
-"2976851": {
-"d": "2026-10-23",
-"k": "back",
-"was": ""
-},
 "2992930": {
 "d": "2026-10-24",
 "k": "back",
@@ -693,6 +688,11 @@
 "2976842": {
 "back": "2026-11-03",
 "note": "Faksa (lower body) will likely miss another week, according to Owen Newkirk of DLLS Sports on Tuesday.",
+"status": "Out"
+},
+"2976851": {
+"back": "2026-10-31",
+"note": "out",
 "status": "Out"
 },
 "3025524": {
