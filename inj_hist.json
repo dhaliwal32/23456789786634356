@@ -1,10 +1,9 @@
 {
 "ev": {
 "2273": {
-"d": "2026-10-28",
-"k": "dtd",
-"now": "2026-10-29",
-"was": "Out"
+"d": "2026-10-29",
+"k": "back",
+"was": ""
 },
 "2558631": {
 "d": "2026-10-28",
@@ -630,10 +629,10 @@
 "was": "2026-10-25"
 },
 "5560": {
-"d": "2026-10-26",
+"d": "2026-10-29",
 "k": "later",
-"nd": "2026-10-26",
-"now": "2026-11-04",
+"nd": "2026-10-29",
+"now": "2026-11-10",
 "was": "2026-10-27"
 },
 "5592": {
@@ -652,11 +651,6 @@
 }
 },
 "last": {
-"2273": {
-"back": "",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "2517899": {
 "back": "2026-12-30",
 "note": "Andersen (knee) isn't expected back until \"maybe\" December, head coach Mike Babcock told NHL.com on Tuesday.",
@@ -784,7 +778,7 @@
 },
 "3114743": {
 "back": "2026-11-07",
-"note": "Fiala (lower leg) was spotted skating in a non-contact jersey at Kings' morning skate Thursday.",
+"note": "Head coach Peter Laviolette said Thursday that Fiala (lower leg) remains on a week-to-week timeline, Zach Dooley of the Kings' official site reports.",
 "status": "Injured Reserve"
 },
 "3114755": {
@@ -1183,8 +1177,8 @@
 "status": "Injured Reserve"
 },
 "5560": {
-"back": "2026-11-04",
-"note": "ir",
+"back": "2026-11-10",
+"note": "Zuccarello (upper body) is regarded as week-to-week, Zach Dooley of the Kings' official site reports Thursday.",
 "status": "Injured Reserve"
 },
 "5592": {
