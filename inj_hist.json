@@ -350,7 +350,7 @@
 "4319911": {
 "d": "2026-10-30",
 "k": "later",
-"now": "2026-11-06",
+"now": "2026-11-14",
 "was": "2026-10-30"
 },
 "4392072": {
@@ -528,7 +528,7 @@
 "d": "2026-10-30",
 "k": "later",
 "nd": "2026-10-30",
-"now": "2026-11-10",
+"now": "2026-11-14",
 "was": "2026-10-29"
 },
 "5080154": {
@@ -907,7 +907,7 @@
 "status": "Out"
 },
 "4064582": {
-"back": "2026-10-30",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -952,7 +952,7 @@
 "status": "Injured Reserve"
 },
 "4319911": {
-"back": "2026-11-06",
+"back": "2026-11-14",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1097,7 +1097,7 @@
 "status": "Injured Reserve"
 },
 "5080152": {
-"back": "2026-11-10",
+"back": "2026-11-14",
 "note": "Head coach Todd McLellan said Friday that Kasper (upper body) is still 10 days to two weeks away from returning to game action, Ansar Khan of MLive.com reports.",
 "status": "Injured Reserve"
 },
