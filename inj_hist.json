@@ -194,7 +194,7 @@
 "3151036": {
 "d": "2026-10-30",
 "k": "later",
-"nd": "2026-10-29",
+"nd": "2026-10-30",
 "now": "2026-11-14",
 "was": "2026-10-29"
 },
@@ -333,7 +333,7 @@
 "d": "2026-10-30",
 "k": "later",
 "nd": "2026-10-30",
-"now": "2026-11-03",
+"now": "2026-11-07",
 "was": "2026-10-31"
 },
 "4233868": {
@@ -803,8 +803,8 @@
 },
 "3151036": {
 "back": "2026-11-14",
-"note": "Foegele (knee) is expected to miss an extended period of time, Jackson Starr of the Senators' official site reports Thursday.",
-"status": "Out"
+"note": "Foegele (knee) was placed on injured reserve Friday, per Bruce Garrioch of Postmedia.",
+"status": "Injured Reserve"
 },
 "3151038": {
 "back": "2027-03-30",
@@ -917,9 +917,9 @@
 "status": "Out"
 },
 "4233643": {
-"back": "2026-11-03",
-"note": "Chytil (upper body) is expected to miss Saturday's game against Toronto, per Jeff Paterson of CanucksArmy.com.",
-"status": "Out"
+"back": "2026-11-07",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4233668": {
 "back": "2026-11-25",
