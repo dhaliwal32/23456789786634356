@@ -1,174 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-22|8f252c6342de",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Maxim Shabanov (F, MIN) is playing 14.4 min per game lately, up +0.2 (PP +2.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T06:55:34Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|bcb22136449b",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Jonas Brodin (D, MIN) is playing 23.9 min per game lately, up +3.2 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T04:10:47Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|2270152aa634",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Noah Ostlund (F, BUF) is playing 20.7 min per game lately, up +5.2 (PP +2.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T06:55:34Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|7b19d78f7f01",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Olen Zellweger (D, BUF) is playing 22.3 min per game lately, up +5.2 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T06:55:34Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|400cf1562d7f",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Oliver Kapanen (F, MTL) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T06:55:34Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|f602af82d086",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Carter Yakemchuk (D, OTT) is playing 20.4 min per game lately, up +4.7 (PP +1.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T02:21:27Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|235b0096ce35",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Stephen Halliday (F, OTT) is playing 15.2 min per game lately, up +6.2 (PP +2.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T02:21:27Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|c8ceae8d60b7",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Lars Eller (F, FLA) is playing 16.8 min per game lately, up +4.5 (PP +0.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T02:09:09Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|2916603c2e57",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Marc Gatcomb (F, VGK) is playing 13.6 min per game lately, up +3.7 (PP -0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T03:09:58Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|a323a456c394",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Zach Bogosian (D, MIN) is playing 19.3 min per game lately, up +4.2 (PP +0.2). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T04:10:47Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|3998301f4146",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Ville Koivunen (F, PIT) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T06:55:35Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|9076cdbd4947",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Daemon Hunt (D, MIN) is playing 16.7 min per game lately, up +4.4 (PP -0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T04:10:47Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|cba692b4ad98",
-   "at": "2026-10-23T00:00:12Z",
-   "title": "Pickup: ice time jump",
-   "text": "Raphael Lavoie (F, VGK) is playing 12.3 min per game lately, up +3.5 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T03:09:58Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
-   "k": "2026-10-22|9493c02827c8",
-   "at": "2026-10-23T00:06:25Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Trevor Connelly (VGK) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-23T00:06:25Z",
-   "via": "morning",
-   "sent_at": "2026-10-23T15:09:00Z"
-  },
-  {
    "k": "2026-10-22|e714751b5346",
    "at": "2026-10-23T01:07:29Z",
    "title": "Pickup idea: bigger role",
@@ -6332,6 +6164,18 @@
    "via": "urgent",
    "sent_at": "2026-10-29T23:06:42Z",
    "seen": "2026-10-29T23:06:42Z"
+  },
+  {
+   "k": "2026-10-29|f17a9a8adf9c",
+   "at": "2026-10-30T00:48:05Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-30T00:48:05Z",
+   "seen": "2026-10-30T00:48:05Z"
   }
  ],
  "sent": {
