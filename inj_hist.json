@@ -233,6 +233,11 @@
 "k": "back",
 "was": "2026-10-29"
 },
+"3904091": {
+"d": "2026-10-30",
+"k": "new",
+"now": "2026-11-01"
+},
 "3939716": {
 "d": "2026-10-29",
 "k": "later",
@@ -822,6 +827,11 @@
 "note": "Konecny (lower body) was placed on injured reserve Sunday, according to the NHL media site.",
 "status": "Injured Reserve"
 },
+"3904091": {
+"back": "2026-11-01",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "3939716": {
 "back": "2026-11-27",
 "note": "Capobianco (leg) is expected to miss around four weeks, per Stars TV host Brien Rea.",
@@ -909,8 +919,8 @@
 },
 "4319911": {
 "back": "2026-11-06",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4352803": {
 "back": "2026-12-26",
@@ -1004,8 +1014,8 @@
 },
 "4874733": {
 "back": "2026-10-31",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "out",
+"status": "Out"
 },
 "4874744": {
 "back": "2026-11-07",
