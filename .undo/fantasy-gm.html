@@ -1319,6 +1319,14 @@
   .gx-sd141 .gv167 i { font-style: normal; display: inline-block; transition: transform .25s ease; }
   .gx-sd141 .gv167 i.up { transform: rotate(180deg); }
   .gx-sd141 .gs .gx-rk163 { margin-top: 10px; }
+  /* change 168 (install.py) */
+  .gx-ed165 circle.sc { fill: #2563eb !important; stroke: #ffffff !important; stroke-width: .5 !important; }
+  .gx-ed165 text.sc { fill: #ffffff !important; }
+  .gx-ed165 circle.ot { fill: #ffffff !important; stroke: #111111 !important; stroke-width: .6 !important; }
+  .gx-ed165 text.ot { fill: #111111 !important; }
+  .gx-ed165 circle.pk { fill: #111111 !important; stroke: #ffffff !important; stroke-width: .5 !important; }
+  .gx-ed165 .ct .lg i.sc { background: #2563eb !important; box-shadow: none !important; }
+  .gx-ed165 .ct .lg i.ot { background: #ffffff !important; box-shadow: inset 0 0 0 1.5px #111111 !important; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1327,7 +1335,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="nhn21o.1cvw48o" data-file="build/app.js">
+<meta name="gx-build" content="1nwgz86.12mkitw" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8958,29 +8966,36 @@ function gxRinkBg165() {
   return out;
 }
 function GxEdge165({ e, s, x }) {
+  /* change 168: smooth glide between frames */
   const F = e.F, fr = F.f || [], n = fr.length, gi = Math.max(0, Math.min(F.gi == null ? n - 1 : F.gi, n - 1));
-  const D = n > 1 ? fr[n - 1][0] : 0, even = !(D > 2000 && D < 60000);
+  const D0 = n > 1 ? fr[n - 1][0] : 0, even = !(D0 > 2000 && D0 < 60000);
   const tOf = (k) => (even ? k * 100 : fr[k][0]);
-  const [i, setI] = useState(0);
+  const T = n ? tOf(n - 1) : 0;
+  const [ms, setMs] = useState(0);
   const [play, setPlay] = useState(true);
   const [run, setRun] = useState(0);
   const [ol166, setOl166] = useState(false);
   useEffect(() => {
     if (!play || n < 2) return undefined;
-    let k = i, raf = 0;
-    const t0 = performance.now() - tOf(k);
+    let raf = 0;
+    const t0 = performance.now() - ms;
     const step = (now) => {
-      const ms = now - t0;
-      while (k < n - 1 && tOf(k + 1) <= ms) k++;
-      setI(k);
-      if (k >= n - 1) { setPlay(false); return; }
+      const m = Math.min(T, now - t0);
+      setMs(m);
+      if (m >= T) { setPlay(false); return; }
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
   }, [play, run]);
   if (!n) return null;
-  const row = (fr[i] || [0, []])[1], scT = e.v.team || F.team, ro = F.ro || {};
+  let k = 0;
+  while (k < n - 1 && tOf(k + 1) <= ms) k++;
+  const k2 = Math.min(n - 1, k + 1), span = tOf(k2) - tOf(k), fq = span > 0 ? Math.max(0, Math.min(1, (ms - tOf(k)) / span)) : 0;
+  const nx = {};
+  ((fr[k2] || [0, []])[1]).forEach((o) => { nx[o[0]] = o; });
+  const row = ((fr[k] || [0, []])[1]).map((o) => { const b = nx[o[0]]; return b ? [o[0], o[1], o[2], o[3] + (b[3] - o[3]) * fq, o[4] + (b[4] - o[4]) * fq] : o; });
+  const scT = e.v.team || F.team, ro = F.ro || {};
   const gRow = ((fr[gi] || [0, []])[1]).filter((o) => o[0]);
   const code = String(F.sc || e.v.sc || ""), scHome = scT === (F.home || e.v.home);
   const mySk = +(scHome ? code[2] : code[1]), opSk = +(scHome ? code[1] : code[2]);
@@ -8988,20 +9003,21 @@ function GxEdge165({ e, s, x }) {
   const isG = (o) => ((ro[o[0]] || [])[1] || "") === "G";
   const teams = [scT].concat([...new Set(gRow.map((o) => o[1]))].filter((t) => t !== scT));
   return (
-    <div className="gx-ed165" data-gx="165">
+    <div className="gx-ed165" data-gx="168">
       <svg viewBox="-102 -45 204 90" role="img" aria-label="Goal replay with every player on the ice">
         {gxRinkBg165()}
-        {row.map((o, k) => (o[0] ? (
-          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.6" className={o[1] === scT ? "sc" : "ot"} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className={o[1] === scT ? "sc" : "ot"}>{o[2]}</text></g>
-        ) : <circle key={"pk" + k} cx={o[3]} cy={o[4]} r="1.5" className="pk" />))}
+        {row.map((o) => (o[0] ? (
+          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.7" className={o[1] === scT ? "sc" : "ot"} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className={o[1] === scT ? "sc" : "ot"}>{o[2]}</text></g>
+        ) : null))}
+        {row.filter((o) => !o[0]).map((o, j) => <circle key={"pk" + j} cx={o[3]} cy={o[4]} r="1.5" className="pk" />)}
       </svg>
       <div className="ct">
-        <button type="button" onClick={() => { setI(0); setPlay(true); setRun((r) => r + 1); }} aria-label="Replay">{"↻"}</button>
-        <button type="button" onClick={() => { if (i >= n - 1) setI(0); setPlay(!play); setRun((r) => r + 1); }}>{play ? "Pause" : "Play"}</button>
-        <button type="button" onClick={() => { setPlay(false); setI(gi); }}>Goal moment</button>
+        <button type="button" onClick={() => { setMs(0); setPlay(true); setRun((r) => r + 1); }} aria-label="Replay">{"↻"}</button>
+        <button type="button" onClick={() => { if (ms >= T) setMs(0); setPlay(!play); setRun((r) => r + 1); }}>{play ? "Pause" : "Play"}</button>
+        <button type="button" onClick={() => { setPlay(false); setMs(tOf(gi)); }}>Goal moment</button>
         <span className="lg"><i className="sc"></i>{scT}<i className="ot"></i>{teams[1] || ""}</span>
       </div>
-      <button type="button" className="dd166" onClick={() => setOl166(!ol166)}>Who was on the ice <i className={ol166 ? "up" : ""}>{"\u25be"}</i></button>
+      <button type="button" className="dd166" onClick={() => setOl166(!ol166)}>Who was on the ice <i className={ol166 ? "up" : ""}>{"▾"}</i></button>
       <div className="ol" style={ol166 ? null : { display: "none" }}>
         <div className="hd">On the ice at the goal{pp ? " (power play, no plus/minus)" : ""}</div>
         {teams.map((t) => (
@@ -9038,7 +9054,7 @@ window.__gxBoot156 = function () { /* gx156: runs once the password is in and th
     var t = el.textContent, h = 0x811c9dc5;
     for (var i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 0x01000193); }
     if ((h >>> 0).toString(36) !== c[0]) { slow(); return; }
-    window.__GX_FAST = c[1];
+    window.__GX_FAST = c[1]; window.__GX_PAGE = c[0]; /* gx168 */
     ["build/lines-tab.js", "build/ask-panel.js", m.getAttribute("data-file") || "build/app.js"].forEach(function (f) {
       var b = document.createElement("script");
       b.src = f + "?v=" + c[1];
