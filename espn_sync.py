@@ -310,6 +310,7 @@ try:
         print(f"(daily) {dd_}: box-score lines for {len(pst_)} league players")
         gstate[dd_] = gs_
     data["daily"] = daily
+    data["dorder"] = {d_: {t_: list(v_.keys()) for t_, v_ in dy_.items()} for d_, dy_ in daily.items()}  # change 152
     data["gstate"] = gstate
     data["pstat"] = pstat
     # change 123: when the NHL leaves a goalie's decision blank, the goalie who played most of the game gets it
