@@ -1,0 +1,278 @@
+{
+ "at": 1793477515.6451535,
+ "when": "2026-10-31 20:11 UTC",
+ "done": true,
+ "tests": [
+  {
+   "game": 2026020217,
+   "landing_status": 200,
+   "replay_fields": [
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev234.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev527.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev641.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev897.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020217/ev938.json"
+    ]
+   ],
+   "pbp_goal_keys": [
+    "details",
+    "eventId",
+    "homeTeamDefendingSide",
+    "periodDescriptor",
+    "pptReplayUrl",
+    "situationCode",
+    "sortOrder",
+    "timeInPeriod",
+    "timeRemaining",
+    "typeCode",
+    "typeDescKey"
+   ],
+   "pbp_goal_sample": "{\"eventId\": 140, \"periodDescriptor\": {\"number\": 1, \"periodType\": \"REG\", \"maxRegulationPeriods\": 3}, \"timeInPeriod\": \"06:04\", \"timeRemaining\": \"13:56\", \"situationCode\": \"1541\", \"homeTeamDefendingSide\": \"left\", \"typeCode\": 505, \"typeDescKey\": \"goal\", \"sortOrder\": 91, \"details\": {\"xCoord\": -66, \"yCoord\": 16, \"zoneCode\": \"O\", \"shotType\": \"snap\", \"scoringPlayerId\": 8485391, \"scoringPlayerTotal\": 2, \"assist1PlayerId\": 8474141, \"assist1PlayerTotal\": 8, \"assist2PlayerId\": 8484144, \"assist2PlayerTotal\": 5, \"eventOwnerTeamId\": 16, \"goalieInNetId\": 8480022, \"awayScore\": 1, \"homeScore\": 0, \"highlightClipSharingUrl\": \"https://nhl.com/video/chi-bos-frondell-scores-ppg-against-michael-dipietro-6407712396112\", \"highlightClipSharingUrlFr\": \"https://nhl.com/fr/video/chi-bos-frondell-marque-un-but-en-a-n-contre-michael-dipietro-6407715832112\", \"highlightClip\": 6407712396112, \"highlightClipFr\": 6407715832112, \"discreteClip\": 6407714360112, \"discreteClipFr\": 6407715140112}, \"pptReplayUrl\": \"https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json\"}",
+   "tracking": [
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json",
+     "status": 200,
+     "bytes": 220968,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934670188, \"onIce\": {\"6028\": {\"id\": 6028, \"playerId\": 8477496, \"x\": 405.7117, \"y\": 780.3893, \"sweaterNumber\": 28, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16040\": {\"id\": 16040, \"playerId\": 8482821, \"x\": 2262.2828, \"y\": 513.0835, \"sweaterNumber\": 40, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6092\": {\"id\": 6092, \"playerId\": 8482177, \"x\": 401.4362, \"y\": 600.812, \"sweaterNumber\": 92, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"6073\": {\"id\": 6073, \"playerId\": 8479325, \"x\": 409.8526, \"y\": 847.9319, \"sweaterNumber\": 73, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16080\": {\"id\": 16080, \"playerId\": 8484390, \"x\": 396.5944, \"y\": 716.3968, \"sweaterNumber\": 80, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16016\": {\"id\": 16016, \"playerId\": 8485391, \"x\": 638.2559, \"y\": 440.945, \"sweaterNumber\": 16, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6030\": {\"id\": 6030, \"playerId\": 8480022, \"x\": 183.298, \"y\": 561.5281, \"sweaterNumber\": 30, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16059\": {\"id\": 16059, \"playerId\": 8477479, \"x\": 348.917, \"y\": 710.3618, \"sweaterNumber\": 59, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6027\": {\"id\": 6027, \"playerId\": 8476854, \"x\": 296.6497, \"y\": 611.1857, \"sweaterNumber\": 27, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16098\": {\"id\": 16098, \"playerId\": 8484144, \"x\": 722.0247, \"y\": 890.0693, \"sweaterNumber\": 98, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16088\": {\"id\": 16088, \"playerId\": 8474141, \"x\": 466.918, \"y\": 869.2963, \"sweaterNumber\": 88, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"1\": {\"id\": 1, \"playerId\": \"\", \"x\": 553.",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934670188, \"onIce\": {\"6028\": {\"id\": 6028, \"playerId\": 8477496, \"x\": 405.7117, \"y\": 780.3893, \"sweaterNumber\": 28, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16040\": {\"id\": 16040, \"playerId\": 8482821, \"x\": 2262.2828, \"y\": 513.0835, \"sweaterNumber\": 40, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6092\": {\"id\": 6092, \"playerId\": 8482177, \"x\": 401.4362, \"y\": 600.812, \"sweaterNumber\": 92, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"6073\": {\"id\": 6073, \"playerId\": 8479325, \"x\": 409.8526, \"y\": 847.9319, \"sweaterNumber\": 73, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16080\": {\"id\": 16080, \"playerId\": 8484390, \"x\": 396.5944, \"y\": 716.3968, \"sweaterNumber\": 80, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16016\": {\"id\": 16016, \"playerId\": 8485391, \"x\": 638.2559, \"y\": 440.945, \"sweaterNumber\": 16, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6030\": {\"id\": 6030, \"playerId\": 8480022, \"x\": 183.298, \"y\": 561.5281, \"sweaterNumber\": 30, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16059\": {\"id\": 16059, \"playerId\": 8477479, \"x\": 348.917, \"y\": 710.3618, \"sweaterNumber\": 59, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6027\": {\"id\": 6027, \"playerId\": 8476854, \"x\": 296.6497, \"y\": 611.1857, \"sweaterNumber\": 27, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16098\": {\"id\": 16098, \"playerId\": 8484144, \"x\": 722.0247, \"y\": 890.0693, \"sweaterNumber\": 98, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16088\": {\"id\": 16088, \"playerId\": 8474141, \"x\": 466.918, \"y\": 869.2963, \"sweaterNumber\": 88, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"1\": {\"id\": 1, \"playerId\": \"\", \"x\": 553.9",
+     "with_referer": true
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020217/ev140.json",
+     "status": 200,
+     "bytes": 220968,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934670188, \"onIce\": {\"6028\": {\"id\": 6028, \"playerId\": 8477496, \"x\": 405.7117, \"y\": 780.3893, \"sweaterNumber\": 28, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16040\": {\"id\": 16040, \"playerId\": 8482821, \"x\": 2262.2828, \"y\": 513.0835, \"sweaterNumber\": 40, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6092\": {\"id\": 6092, \"playerId\": 8482177, \"x\": 401.4362, \"y\": 600.812, \"sweaterNumber\": 92, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"6073\": {\"id\": 6073, \"playerId\": 8479325, \"x\": 409.8526, \"y\": 847.9319, \"sweaterNumber\": 73, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16080\": {\"id\": 16080, \"playerId\": 8484390, \"x\": 396.5944, \"y\": 716.3968, \"sweaterNumber\": 80, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16016\": {\"id\": 16016, \"playerId\": 8485391, \"x\": 638.2559, \"y\": 440.945, \"sweaterNumber\": 16, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6030\": {\"id\": 6030, \"playerId\": 8480022, \"x\": 183.298, \"y\": 561.5281, \"sweaterNumber\": 30, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16059\": {\"id\": 16059, \"playerId\": 8477479, \"x\": 348.917, \"y\": 710.3618, \"sweaterNumber\": 59, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6027\": {\"id\": 6027, \"playerId\": 8476854, \"x\": 296.6497, \"y\": 611.1857, \"sweaterNumber\": 27, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16098\": {\"id\": 16098, \"playerId\": 8484144, \"x\": 722.0247, \"y\": 890.0693, \"sweaterNumber\": 98, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16088\": {\"id\": 16088, \"playerId\": 8474141, \"x\": 466.918, \"y\": 869.2963, \"sweaterNumber\": 88, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"1\": {\"id\": 1, \"playerId\": \"\", \"x\": 553.",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934670188, \"onIce\": {\"6028\": {\"id\": 6028, \"playerId\": 8477496, \"x\": 405.7117, \"y\": 780.3893, \"sweaterNumber\": 28, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16040\": {\"id\": 16040, \"playerId\": 8482821, \"x\": 2262.2828, \"y\": 513.0835, \"sweaterNumber\": 40, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6092\": {\"id\": 6092, \"playerId\": 8482177, \"x\": 401.4362, \"y\": 600.812, \"sweaterNumber\": 92, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"6073\": {\"id\": 6073, \"playerId\": 8479325, \"x\": 409.8526, \"y\": 847.9319, \"sweaterNumber\": 73, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16080\": {\"id\": 16080, \"playerId\": 8484390, \"x\": 396.5944, \"y\": 716.3968, \"sweaterNumber\": 80, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16016\": {\"id\": 16016, \"playerId\": 8485391, \"x\": 638.2559, \"y\": 440.945, \"sweaterNumber\": 16, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6030\": {\"id\": 6030, \"playerId\": 8480022, \"x\": 183.298, \"y\": 561.5281, \"sweaterNumber\": 30, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16059\": {\"id\": 16059, \"playerId\": 8477479, \"x\": 348.917, \"y\": 710.3618, \"sweaterNumber\": 59, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"6027\": {\"id\": 6027, \"playerId\": 8476854, \"x\": 296.6497, \"y\": 611.1857, \"sweaterNumber\": 27, \"teamId\": 6, \"teamAbbrev\": \"BOS\"}, \"16098\": {\"id\": 16098, \"playerId\": 8484144, \"x\": 722.0247, \"y\": 890.0693, \"sweaterNumber\": 98, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"16088\": {\"id\": 16088, \"playerId\": 8474141, \"x\": 466.918, \"y\": 869.2963, \"sweaterNumber\": 88, \"teamId\": 16, \"teamAbbrev\": \"CHI\"}, \"1\": {\"id\": 1, \"playerId\": \"\", \"x\": 553.9",
+     "with_referer": true
+    }
+   ],
+   "shifts_status": 200,
+   "shifts_count": 788,
+   "shifts_sample": "{\"id\": 16808270, \"detailCode\": 0, \"duration\": \"00:33\", \"endTime\": \"00:33\", \"eventDescription\": null, \"eventDetails\": null, \"eventNumber\": 7, \"firstName\": \"Ian\", \"gameId\": 2026020217, \"hexValue\": \"#C8102E\", \"lastName\": \"Cole\", \"period\": 1, \"playerId\": 8474013, \"shiftNumber\": 1, \"startTime\": \"00:00\", \"teamAbbrev\": \"CHI\", \"teamId\": 16, \"teamName\": \"Chicago Blackhawks\", \"typeCode\": 517}",
+   "shifts_cors": null
+  },
+  {
+   "game": 2026020218,
+   "landing_status": 200,
+   "replay_fields": [
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev168.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev329.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev524.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev553.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020218/ev785.json"
+    ]
+   ],
+   "pbp_goal_keys": [
+    "details",
+    "eventId",
+    "homeTeamDefendingSide",
+    "periodDescriptor",
+    "pptReplayUrl",
+    "situationCode",
+    "sortOrder",
+    "timeInPeriod",
+    "timeRemaining",
+    "typeCode",
+    "typeDescKey"
+   ],
+   "pbp_goal_sample": "{\"eventId\": 80, \"periodDescriptor\": {\"number\": 1, \"periodType\": \"REG\", \"maxRegulationPeriods\": 3}, \"timeInPeriod\": \"02:29\", \"timeRemaining\": \"17:31\", \"situationCode\": \"1551\", \"homeTeamDefendingSide\": \"right\", \"typeCode\": 505, \"typeDescKey\": \"goal\", \"sortOrder\": 42, \"details\": {\"xCoord\": 82, \"yCoord\": -3, \"zoneCode\": \"O\", \"shotType\": \"backhand\", \"scoringPlayerId\": 8484164, \"scoringPlayerTotal\": 3, \"assist1PlayerId\": 8482111, \"assist1PlayerTotal\": 6, \"assist2PlayerId\": 8482077, \"assist2PlayerTotal\": 9, \"eventOwnerTeamId\": 19, \"goalieInNetId\": 8476434, \"awayScore\": 1, \"homeScore\": 0, \"highlightClipSharingUrl\": \"https://nhl.com/video/stl-det-dvorsky-scores-goal-against-john-gibson-6407713189112\", \"highlightClipSharingUrlFr\": \"https://nhl.com/fr/video/stl-det-dvorsky-marque-un-but-contre-john-gibson-6407713782112\", \"highlightClip\": 6407713189112, \"highlightClipFr\": 6407713782112, \"discreteClip\": 6407714257112, \"discreteClipFr\": 6407711889112}, \"pptReplayUrl\": \"https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json\"}",
+   "tracking": [
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json",
+     "status": 200,
+     "bytes": 253464,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934666916, \"onIce\": {\"17037\": {\"id\": 17037, \"playerId\": 8477456, \"x\": 409.4707, \"y\": 939.5402, \"sweaterNumber\": 37, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17029\": {\"id\": 17029, \"playerId\": 8484160, \"x\": 799.481, \"y\": 865.9176, \"sweaterNumber\": 29, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17024\": {\"id\": 17024, \"playerId\": 8477971, \"x\": 1050.524, \"y\": 612.0767, \"sweaterNumber\": 24, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17036\": {\"id\": 17036, \"playerId\": 8476434, \"x\": 2265.632, \"y\": 512.2606, \"sweaterNumber\": 36, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19004\": {\"id\": 19004, \"playerId\": 8484188, \"x\": 340.4864, \"y\": 577.87, \"sweaterNumber\": 4, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"17042\": {\"id\": 17042, \"playerId\": 8483679, \"x\": 950.8051, \"y\": 283.1942, \"sweaterNumber\": 42, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17027\": {\"id\": 17027, \"playerId\": 8479992, \"x\": 622.8429, \"y\": 801.0129, \"sweaterNumber\": 27, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19072\": {\"id\": 19072, \"playerId\": 8482111, \"x\": 346.8519, \"y\": 632.3954, \"sweaterNumber\": 72, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19015\": {\"id\": 19015, \"playerId\": 8484164, \"x\": 729.4252, \"y\": 886.874, \"sweaterNumber\": 15, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19030\": {\"id\": 19030, \"playerId\": 8480981, \"x\": 165.7929, \"y\": 544.0898, \"sweaterNumber\": 30, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19081\": {\"id\": 19081, \"playerId\": 8482077, \"x\": 735.8379, \"y\": 475.7734, \"sweaterNumber\": 81, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19077\": {\"id\": 19077, \"pl",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934666916, \"onIce\": {\"17037\": {\"id\": 17037, \"playerId\": 8477456, \"x\": 409.4707, \"y\": 939.5402, \"sweaterNumber\": 37, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17029\": {\"id\": 17029, \"playerId\": 8484160, \"x\": 799.481, \"y\": 865.9176, \"sweaterNumber\": 29, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17024\": {\"id\": 17024, \"playerId\": 8477971, \"x\": 1050.524, \"y\": 612.0767, \"sweaterNumber\": 24, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17036\": {\"id\": 17036, \"playerId\": 8476434, \"x\": 2265.632, \"y\": 512.2606, \"sweaterNumber\": 36, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19004\": {\"id\": 19004, \"playerId\": 8484188, \"x\": 340.4864, \"y\": 577.87, \"sweaterNumber\": 4, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"17042\": {\"id\": 17042, \"playerId\": 8483679, \"x\": 950.8051, \"y\": 283.1942, \"sweaterNumber\": 42, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17027\": {\"id\": 17027, \"playerId\": 8479992, \"x\": 622.8429, \"y\": 801.0129, \"sweaterNumber\": 27, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19072\": {\"id\": 19072, \"playerId\": 8482111, \"x\": 346.8519, \"y\": 632.3954, \"sweaterNumber\": 72, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19015\": {\"id\": 19015, \"playerId\": 8484164, \"x\": 729.4252, \"y\": 886.874, \"sweaterNumber\": 15, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19030\": {\"id\": 19030, \"playerId\": 8480981, \"x\": 165.7929, \"y\": 544.0898, \"sweaterNumber\": 30, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19081\": {\"id\": 19081, \"playerId\": 8482077, \"x\": 735.8379, \"y\": 475.7734, \"sweaterNumber\": 81, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19077\": {\"id\": 19077, \"pla",
+     "with_referer": true
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020218/ev80.json",
+     "status": 200,
+     "bytes": 253464,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934666916, \"onIce\": {\"17037\": {\"id\": 17037, \"playerId\": 8477456, \"x\": 409.4707, \"y\": 939.5402, \"sweaterNumber\": 37, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17029\": {\"id\": 17029, \"playerId\": 8484160, \"x\": 799.481, \"y\": 865.9176, \"sweaterNumber\": 29, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17024\": {\"id\": 17024, \"playerId\": 8477971, \"x\": 1050.524, \"y\": 612.0767, \"sweaterNumber\": 24, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17036\": {\"id\": 17036, \"playerId\": 8476434, \"x\": 2265.632, \"y\": 512.2606, \"sweaterNumber\": 36, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19004\": {\"id\": 19004, \"playerId\": 8484188, \"x\": 340.4864, \"y\": 577.87, \"sweaterNumber\": 4, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"17042\": {\"id\": 17042, \"playerId\": 8483679, \"x\": 950.8051, \"y\": 283.1942, \"sweaterNumber\": 42, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17027\": {\"id\": 17027, \"playerId\": 8479992, \"x\": 622.8429, \"y\": 801.0129, \"sweaterNumber\": 27, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19072\": {\"id\": 19072, \"playerId\": 8482111, \"x\": 346.8519, \"y\": 632.3954, \"sweaterNumber\": 72, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19015\": {\"id\": 19015, \"playerId\": 8484164, \"x\": 729.4252, \"y\": 886.874, \"sweaterNumber\": 15, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19030\": {\"id\": 19030, \"playerId\": 8480981, \"x\": 165.7929, \"y\": 544.0898, \"sweaterNumber\": 30, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19081\": {\"id\": 19081, \"playerId\": 8482077, \"x\": 735.8379, \"y\": 475.7734, \"sweaterNumber\": 81, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19077\": {\"id\": 19077, \"pl",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934666916, \"onIce\": {\"17037\": {\"id\": 17037, \"playerId\": 8477456, \"x\": 409.4707, \"y\": 939.5402, \"sweaterNumber\": 37, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17029\": {\"id\": 17029, \"playerId\": 8484160, \"x\": 799.481, \"y\": 865.9176, \"sweaterNumber\": 29, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17024\": {\"id\": 17024, \"playerId\": 8477971, \"x\": 1050.524, \"y\": 612.0767, \"sweaterNumber\": 24, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17036\": {\"id\": 17036, \"playerId\": 8476434, \"x\": 2265.632, \"y\": 512.2606, \"sweaterNumber\": 36, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19004\": {\"id\": 19004, \"playerId\": 8484188, \"x\": 340.4864, \"y\": 577.87, \"sweaterNumber\": 4, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"17042\": {\"id\": 17042, \"playerId\": 8483679, \"x\": 950.8051, \"y\": 283.1942, \"sweaterNumber\": 42, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"17027\": {\"id\": 17027, \"playerId\": 8479992, \"x\": 622.8429, \"y\": 801.0129, \"sweaterNumber\": 27, \"teamId\": 17, \"teamAbbrev\": \"DET\"}, \"19072\": {\"id\": 19072, \"playerId\": 8482111, \"x\": 346.8519, \"y\": 632.3954, \"sweaterNumber\": 72, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19015\": {\"id\": 19015, \"playerId\": 8484164, \"x\": 729.4252, \"y\": 886.874, \"sweaterNumber\": 15, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19030\": {\"id\": 19030, \"playerId\": 8480981, \"x\": 165.7929, \"y\": 544.0898, \"sweaterNumber\": 30, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19081\": {\"id\": 19081, \"playerId\": 8482077, \"x\": 735.8379, \"y\": 475.7734, \"sweaterNumber\": 81, \"teamId\": 19, \"teamAbbrev\": \"STL\"}, \"19077\": {\"id\": 19077, \"pla",
+     "with_referer": true
+    }
+   ],
+   "shifts_status": 200,
+   "shifts_count": 763,
+   "shifts_sample": "{\"id\": 16808297, \"detailCode\": 0, \"duration\": \"00:47\", \"endTime\": \"01:28\", \"eventDescription\": null, \"eventDetails\": null, \"eventNumber\": 59, \"firstName\": \"Ben\", \"gameId\": 2026020218, \"hexValue\": \"#C8102E\", \"lastName\": \"Chiarot\", \"period\": 1, \"playerId\": 8475279, \"shiftNumber\": 1, \"startTime\": \"00:41\", \"teamAbbrev\": \"DET\", \"teamId\": 17, \"teamName\": \"Detroit Red Wings\", \"typeCode\": 517}",
+   "shifts_cors": null
+  },
+  {
+   "game": 2026020219,
+   "landing_status": 200,
+   "replay_fields": [
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev282.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev416.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev423.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev552.json"
+    ],
+    [
+     "pptReplayUrl",
+     "https://wsr.nhle.com/sprites/20262027/2026020219/ev796.json"
+    ]
+   ],
+   "pbp_goal_keys": [
+    "details",
+    "eventId",
+    "homeTeamDefendingSide",
+    "periodDescriptor",
+    "pptReplayUrl",
+    "situationCode",
+    "sortOrder",
+    "timeInPeriod",
+    "timeRemaining",
+    "typeCode",
+    "typeDescKey"
+   ],
+   "pbp_goal_sample": "{\"eventId\": 244, \"periodDescriptor\": {\"number\": 1, \"periodType\": \"REG\", \"maxRegulationPeriods\": 3}, \"timeInPeriod\": \"11:14\", \"timeRemaining\": \"08:46\", \"situationCode\": \"1551\", \"homeTeamDefendingSide\": \"left\", \"typeCode\": 505, \"typeDescKey\": \"goal\", \"sortOrder\": 151, \"details\": {\"xCoord\": 63, \"yCoord\": -15, \"zoneCode\": \"O\", \"shotType\": \"wrist\", \"scoringPlayerId\": 8483513, \"scoringPlayerTotal\": 1, \"assist1PlayerId\": 8477021, \"assist1PlayerTotal\": 4, \"assist2PlayerId\": 8480246, \"assist2PlayerTotal\": 1, \"eventOwnerTeamId\": 18, \"goalieInNetId\": 8476883, \"awayScore\": 0, \"homeScore\": 1, \"highlightClipSharingUrl\": \"https://nhl.com/video/tbl-nsh-schaefer-scores-goal-against-andrei-vasilevskiy-6407717885112\", \"highlightClipSharingUrlFr\": \"https://nhl.com/fr/video/tbl-nsh-schaefer-marque-un-but-contre-andrei-vasilevskiy-6407716993112\", \"highlightClip\": 6407717885112, \"highlightClipFr\": 6407716993112, \"discreteClip\": 6407718376112, \"discreteClipFr\": 6407717776112}, \"pptReplayUrl\": \"https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json\"}",
+   "tracking": [
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json",
+     "status": 200,
+     "bytes": 243033,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934711437, \"onIce\": {\"18029\": {\"id\": 18029, \"playerId\": 8481020, \"x\": 142.2215, \"y\": 485.4458, \"sweaterNumber\": 29, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18014\": {\"id\": 18014, \"playerId\": 8477021, \"x\": 324.7693, \"y\": 438.267, \"sweaterNumber\": 14, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18081\": {\"id\": 18081, \"playerId\": 8476539, \"x\": 196.4512, \"y\": 353.2905, \"sweaterNumber\": 81, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18048\": {\"id\": 18048, \"playerId\": 8480246, \"x\": 285.2173, \"y\": 655.7389, \"sweaterNumber\": 48, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18076\": {\"id\": 18076, \"playerId\": 8476869, \"x\": 305.5296, \"y\": 410.7476, \"sweaterNumber\": 76, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14029\": {\"id\": 14029, \"playerId\": 8480995, \"x\": 348.493, \"y\": 389.1722, \"sweaterNumber\": 29, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14088\": {\"id\": 14088, \"playerId\": 8476883, \"x\": 2260.5595, \"y\": 497.5217, \"sweaterNumber\": 88, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14077\": {\"id\": 14077, \"playerId\": 8475167, \"x\": 1428.5117, \"y\": 106.5659, \"sweaterNumber\": 77, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14027\": {\"id\": 14027, \"playerId\": 8474151, \"x\": 1555.2335, \"y\": 56.4351, \"sweaterNumber\": 27, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"18049\": {\"id\": 18049, \"playerId\": 8483513, \"x\": 202.1996, \"y\": 440.1622, \"sweaterNumber\": 49, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14071\": {\"id\": 14071, \"playerId\": 8478519, \"x\": 675.5521, \"y\": 476.6738, \"sweaterNumber\": 71, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14038\": {\"id\": 14038",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934711437, \"onIce\": {\"18029\": {\"id\": 18029, \"playerId\": 8481020, \"x\": 142.2215, \"y\": 485.4458, \"sweaterNumber\": 29, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18014\": {\"id\": 18014, \"playerId\": 8477021, \"x\": 324.7693, \"y\": 438.267, \"sweaterNumber\": 14, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18081\": {\"id\": 18081, \"playerId\": 8476539, \"x\": 196.4512, \"y\": 353.2905, \"sweaterNumber\": 81, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18048\": {\"id\": 18048, \"playerId\": 8480246, \"x\": 285.2173, \"y\": 655.7389, \"sweaterNumber\": 48, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18076\": {\"id\": 18076, \"playerId\": 8476869, \"x\": 305.5296, \"y\": 410.7476, \"sweaterNumber\": 76, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14029\": {\"id\": 14029, \"playerId\": 8480995, \"x\": 348.493, \"y\": 389.1722, \"sweaterNumber\": 29, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14088\": {\"id\": 14088, \"playerId\": 8476883, \"x\": 2260.5595, \"y\": 497.5217, \"sweaterNumber\": 88, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14077\": {\"id\": 14077, \"playerId\": 8475167, \"x\": 1428.5117, \"y\": 106.5659, \"sweaterNumber\": 77, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14027\": {\"id\": 14027, \"playerId\": 8474151, \"x\": 1555.2335, \"y\": 56.4351, \"sweaterNumber\": 27, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"18049\": {\"id\": 18049, \"playerId\": 8483513, \"x\": 202.1996, \"y\": 440.1622, \"sweaterNumber\": 49, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14071\": {\"id\": 14071, \"playerId\": 8478519, \"x\": 675.5521, \"y\": 476.6738, \"sweaterNumber\": 71, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14038\": {\"id\": 14038,",
+     "with_referer": true
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json",
+     "status": 403,
+     "bytes": 2523,
+     "ctype": "text/html; charset=UTF-8",
+     "cors": null,
+     "head": "\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>403 - Access Denied</title>\n  <link rel=\"icon\" href=\"\">\n  <style>\n  html, body {\n    margin: 0;\n    padding: 0;\n    height: 100%;\n  }\n\n  iframe {\n    display: block;\n    border: none;\n    width: 100vw;\n    height: 100vh;\n  }\n</style>\n</head>\n<body>\n  <iframe srcdoc=\"&lt;!doctype html&gt;&lt;html lang&#x3D;en&gt;&lt;head&gt;&lt;meta charset&#x3D;utf-8&gt;&lt;meta name&#x3D;viewport content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;&lt;title&gt;403 - Access Denied&lt;&#x2F;title&gt;&lt;link rel&#x3D;stylesheet href&#x3D;&quot;https:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css2?family&#x3D;Inter:wght@400;700;900&amp;display&#x3D;swap&quot;&gt;&lt;style&gt;*{box-sizing:border-box}html{font-size:10px}html,body{margin:0;height:100%;width:100%}body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#151515;overflow:hidden}.e{display:flex;align-items:center;height:100vh;background:#fff url(https:&#x2F;&#x2F;www.nhl.com&#x2F;assets&#x2F;images&#x2F;errors&#x2F;error-page-bg.webp) center&#x2F;cover no-repeat;font-weight:700}.b{text-align:center;margin:auto;padding:.8rem;max-width:56rem}.t{font-size:5.6rem;line-height:1;font-weight:900;margin:0}.s{font-size:3.6rem;margin:.8rem 0 0}.c{font-size:15rem;font-weight:900;word-spacing:4.8rem;position:relative;line-height:1;margin:0}.p{width:13.8rem;position:absolute;top:50%;left:50%;transform:translate",
+     "with_referer": false
+    },
+    {
+     "url": "https://wsr.nhle.com/sprites/20262027/2026020219/ev244.json",
+     "status": 200,
+     "bytes": 243033,
+     "ctype": "application/json",
+     "cors": "https://www.nhl.com",
+     "head": "[{\"timeStamp\": 17934711437, \"onIce\": {\"18029\": {\"id\": 18029, \"playerId\": 8481020, \"x\": 142.2215, \"y\": 485.4458, \"sweaterNumber\": 29, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18014\": {\"id\": 18014, \"playerId\": 8477021, \"x\": 324.7693, \"y\": 438.267, \"sweaterNumber\": 14, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18081\": {\"id\": 18081, \"playerId\": 8476539, \"x\": 196.4512, \"y\": 353.2905, \"sweaterNumber\": 81, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18048\": {\"id\": 18048, \"playerId\": 8480246, \"x\": 285.2173, \"y\": 655.7389, \"sweaterNumber\": 48, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18076\": {\"id\": 18076, \"playerId\": 8476869, \"x\": 305.5296, \"y\": 410.7476, \"sweaterNumber\": 76, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14029\": {\"id\": 14029, \"playerId\": 8480995, \"x\": 348.493, \"y\": 389.1722, \"sweaterNumber\": 29, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14088\": {\"id\": 14088, \"playerId\": 8476883, \"x\": 2260.5595, \"y\": 497.5217, \"sweaterNumber\": 88, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14077\": {\"id\": 14077, \"playerId\": 8475167, \"x\": 1428.5117, \"y\": 106.5659, \"sweaterNumber\": 77, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14027\": {\"id\": 14027, \"playerId\": 8474151, \"x\": 1555.2335, \"y\": 56.4351, \"sweaterNumber\": 27, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"18049\": {\"id\": 18049, \"playerId\": 8483513, \"x\": 202.1996, \"y\": 440.1622, \"sweaterNumber\": 49, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14071\": {\"id\": 14071, \"playerId\": 8478519, \"x\": 675.5521, \"y\": 476.6738, \"sweaterNumber\": 71, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14038\": {\"id\": 14038",
+     "frames": 140,
+     "frame0": "{\"timeStamp\": 17934711437, \"onIce\": {\"18029\": {\"id\": 18029, \"playerId\": 8481020, \"x\": 142.2215, \"y\": 485.4458, \"sweaterNumber\": 29, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18014\": {\"id\": 18014, \"playerId\": 8477021, \"x\": 324.7693, \"y\": 438.267, \"sweaterNumber\": 14, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18081\": {\"id\": 18081, \"playerId\": 8476539, \"x\": 196.4512, \"y\": 353.2905, \"sweaterNumber\": 81, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18048\": {\"id\": 18048, \"playerId\": 8480246, \"x\": 285.2173, \"y\": 655.7389, \"sweaterNumber\": 48, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"18076\": {\"id\": 18076, \"playerId\": 8476869, \"x\": 305.5296, \"y\": 410.7476, \"sweaterNumber\": 76, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14029\": {\"id\": 14029, \"playerId\": 8480995, \"x\": 348.493, \"y\": 389.1722, \"sweaterNumber\": 29, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14088\": {\"id\": 14088, \"playerId\": 8476883, \"x\": 2260.5595, \"y\": 497.5217, \"sweaterNumber\": 88, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14077\": {\"id\": 14077, \"playerId\": 8475167, \"x\": 1428.5117, \"y\": 106.5659, \"sweaterNumber\": 77, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14027\": {\"id\": 14027, \"playerId\": 8474151, \"x\": 1555.2335, \"y\": 56.4351, \"sweaterNumber\": 27, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"18049\": {\"id\": 18049, \"playerId\": 8483513, \"x\": 202.1996, \"y\": 440.1622, \"sweaterNumber\": 49, \"teamId\": 18, \"teamAbbrev\": \"NSH\"}, \"14071\": {\"id\": 14071, \"playerId\": 8478519, \"x\": 675.5521, \"y\": 476.6738, \"sweaterNumber\": 71, \"teamId\": 14, \"teamAbbrev\": \"TBL\"}, \"14038\": {\"id\": 14038,",
+     "with_referer": true
+    }
+   ],
+   "shifts_status": 200,
+   "shifts_count": 478,
+   "shifts_sample": "{\"id\": 16809089, \"detailCode\": 0, \"duration\": \"00:44\", \"endTime\": \"01:44\", \"eventDescription\": null, \"eventDetails\": null, \"eventNumber\": 62, \"firstName\": \"Ryan\", \"gameId\": 2026020219, \"hexValue\": \"#111111\", \"lastName\": \"McDonagh\", \"period\": 1, \"playerId\": 8474151, \"shiftNumber\": 1, \"startTime\": \"01:00\", \"teamAbbrev\": \"TBL\", \"teamId\": 14, \"teamName\": \"Tampa Bay Lightning\", \"typeCode\": 517}",
+   "shifts_cors": null
+  }
+ ],
+ "games_seen": 6
+}
