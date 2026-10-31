@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_notify.py": true,
+  "gm_edge_probe.py": false
  },
  "changes": [
-  "163-goal-visualizer.py"
+  "164-edge-probe.py"
  ]
 }
