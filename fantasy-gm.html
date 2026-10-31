@@ -1278,6 +1278,29 @@
   .gx-gt141 .gv163 i { display: inline-block; transition: transform .25s ease; font-style: normal; }
   .gx-gt141 .gv163 i.up { transform: rotate(180deg); }
   .gx-gt141 .gvb163 { padding: 0 12px 12px; }
+  /* change 165 (install.py) */
+  .gx-ed165 svg { display: block; width: 100%; height: auto; }
+  .gx-ed165 circle.sc { fill: var(--accent); stroke: var(--ink); stroke-width: .4; }
+  .gx-ed165 circle.ot { fill: var(--card); stroke: var(--ink); stroke-width: .6; }
+  .gx-ed165 text { font-weight: 700; font-family: inherit; }
+  .gx-ed165 text.sc { fill: #fff; }
+  .gx-ed165 text.ot { fill: var(--ink); }
+  .gx-ed165 circle.pk { fill: var(--ink); stroke: var(--bg); stroke-width: .4; }
+  .gx-ed165 .ct { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .gx-ed165 .ct button { padding: 5px 10px; border-radius: 8px; background: var(--card2, var(--bg)); box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; }
+  .gx-ed165 .ct .lg { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--mute); }
+  .gx-ed165 .ct .lg i { display: inline-block; width: 10px; height: 10px; border-radius: 99px; margin-left: 6px; }
+  .gx-ed165 .ct .lg i.sc { background: var(--accent); }
+  .gx-ed165 .ct .lg i.ot { background: var(--card); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .gx-ed165 .ol { margin-top: 8px; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 4px 12px; font-size: 13px; }
+  .gx-ed165 .ol .tm { min-width: 0; }
+  .gx-ed165 .ol .pl > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gx-ed165 .ol .hd { grid-column: 1 / -1; color: var(--mute); font-size: 12px; }
+  .gx-ed165 .ol .tn { font-weight: 600; margin-bottom: 2px; }
+  .gx-ed165 .ol .pl { display: flex; align-items: center; gap: 6px; line-height: 1.6; min-width: 0; }
+  .gx-ed165 .ol .pl > span { flex: 1; min-width: 0; }
+  .gx-ed165 .ol .pl .tg { color: var(--mute); }
+  .gx-ed165 .ol .pl b { font-weight: 600; width: 22px; text-align: right; flex: none; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1286,7 +1309,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="l9aw38.hw85cg" data-file="build/app.js">
+<meta name="gx-build" content="101ul7t.1x018pr" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8600,7 +8623,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
                   <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
                   <div className="mb"><TeamLogo t={gxAb131((r.g.awayTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.awayTeam || {}).abbrev)}</span><b>{r.x.awayScore}</b><TeamLogo t={gxAb131((r.g.homeTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.homeTeam || {}).abbrev)}</span><b>{r.x.homeScore}</b></div>
                 </div>
-                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? <GxRink163 x={r.x} g={r.g} tm={r.tm} /> : null}
+                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? <GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /> : null}
               </div>
               <button type="button" className="ar" aria-label="Later goal" disabled={idx >= n - 1} onClick={() => setGi(idx + 1 >= n - 1 ? null : idx + 1)}>{"\u203a"}</button>
             </div>
@@ -8690,7 +8713,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
           <div key={r.g.id + "-" + r.i} className={"cd " + r.mk}>
             <div className="top"><span className="ph">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} /> : <TeamLogo t={r.tm} size={34} />}</span>
               <div className="tx"><div className="who">{pBtn(r.p, r.n, "s")}{", " + r.tm}{r.tag ? " (" + r.tag + ")" : ""}</div><div className="when">{(r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor) + " Period - " + sc(r)}</div></div></div>
-            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} /></div> : null}</>; })() : null}
+            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}
           </div>
         ))}</div> : <div style={{ padding: 16, color: "var(--mute)" }}>No goals yet today.</div>;
       }
@@ -8821,9 +8844,10 @@ function useTick159(on) {
 const gxAnyInt159 = () => (((window.__NHLNOW || {}).games) || []).some((g) => (g.clock || {}).inIntermission);
 // ---------- change 163: goal visualizer (install.py) ----------
 // rink in feet: x -100..100 (nets at +/-89), y -42.5..42.5; ESPN gives the shot spot as coordinate {x, y}
-function GxRink163({ x, g, tm }) {
+function GxRink163({ x, g, tm, s }) {
+  const e165 = useEdge165(x, g, tm); /* gx165 */
   const cx = +x.cx, cy = +x.cy;
-  if (isNaN(cx) || isNaN(cy)) return null;
+  if ((isNaN(cx) || isNaN(cy)) && !e165) return null;
   const side = cx >= 0 ? 1 : -1, nx = side * 89;
   const A = gxAb131((g.awayTeam || {}).abbrev), H = gxAb131((g.homeTeam || {}).abbrev), as = +x.awayScore, hs = +x.homeScore;
   const score = isNaN(as) || isNaN(hs) ? "" : as === hs ? as + "-" + hs + " Tied" : Math.max(as, hs) + "-" + Math.min(as, hs) + " " + (as > hs ? A : H);
@@ -8832,7 +8856,7 @@ function GxRink163({ x, g, tm }) {
   const dot = (px, py, k) => <circle key={k} cx={px} cy={py} r="0.9" fill={red} opacity=".8" />;
   return (
     <div className="gx-rk163" data-gx="163">
-      <svg viewBox="-102 -45 204 90" role="img" aria-label={"Goal by " + (x.name && x.name.default ? x.name.default : "") + " from the spot shown"}>
+      {e165 ? <GxEdge165 key={e165.k} e={e165} s={s} x={x} /> : <svg viewBox="-102 -45 204 90" role="img" aria-label={"Goal by " + (x.name && x.name.default ? x.name.default : "") + " from the spot shown"}>
         <rect x="-100" y="-42.5" width="200" height="85" rx="28" fill="var(--card2, var(--bg))" stroke={ln} strokeWidth="1" />
         <line x1="0" y1="-42.5" x2="0" y2="42.5" stroke={red} strokeWidth="1" strokeDasharray="2 1.5" />
         <line x1="-25" y1="-42.5" x2="-25" y2="42.5" stroke={blue} strokeWidth="1.2" />
@@ -8849,11 +8873,126 @@ function GxRink163({ x, g, tm }) {
         <line x1={cx} y1={-cy} x2={nx} y2="0" stroke="var(--ink)" strokeWidth="0.7" strokeDasharray="1.6 1.2" opacity=".8" />
         <circle cx={cx} cy={-cy} r="3.4" fill="var(--accent)" stroke="var(--ink)" strokeWidth="0.7" />
         <text x={side > 0 ? -60 : 60} y="2.5" textAnchor="middle" fontSize="7" fill="var(--mute)" fontWeight="600">{tm}</text>
-      </svg>
+      </svg>}
       <div className="tl">
         <div><b>{score || "-"}</b><small>Score</small></div>
         <div><b>{(x.timeInPeriod || "") + " " + gxPer131(x.periodDescriptor)}</b><small>Time</small></div>
         <div><b>{x.shot ? String(x.shot).replace(/\s*Shot$/i, "") : "-"}</b><small>Shot</small></div>
+      </div>
+    </div>
+  );
+}
+// ---------- change 165: goal replay with every player on the ice (NHL EDGE tracking saved by gm_edge.py) (install.py) ----------
+const E165 = { idx: null, at: 0, busy: false, files: {} };
+function gxEdgeLoad165() {
+  if (E165.busy || Date.now() - E165.at < 60000) return;
+  E165.busy = true;
+  fetch("edge/index.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((j) => {
+    E165.busy = false; E165.at = Date.now();
+    if (j) { E165.idx = j; window.dispatchEvent(new Event("gx-edge165")); }
+  });
+}
+const gxSec165 = (t) => { const m = String(t || "").split(":"); return (+m[0] || 0) * 60 + (+m[1] || 0); };
+function gxEdgeFind165(x, g, tm) {
+  const I = E165.idx;
+  if (!I || !x) return null;
+  const per = (x.periodDescriptor || {}).number || 1, sec = gxSec165(x.timeInPeriod), day = (g || {}).gameDate;
+  let best = null;
+  Object.entries(I.goals || {}).forEach(([k, v]) => {
+    if (!v.ok || v.team !== tm || v.per !== per || (day && v.d && v.d !== day)) return;
+    const d = Math.min(Math.abs(gxSec165(v.t) - sec), Math.abs(gxSec165(v.tr) - sec));
+    if (d <= 3 && (!best || d < best.d)) best = { k, v, d };
+  });
+  return best;
+}
+function useEdge165(x, g, tm) {
+  const [, t] = useState(0);
+  useEffect(() => {
+    const f = () => t((n) => n + 1);
+    window.addEventListener("gx-edge165", f); gxEdgeLoad165();
+    const id = setInterval(gxEdgeLoad165, 60000);
+    return () => { window.removeEventListener("gx-edge165", f); clearInterval(id); };
+  }, []);
+  const m = gxEdgeFind165(x, g, tm);
+  if (!m) return null;
+  const F = E165.files[m.k];
+  if (F === undefined) {
+    E165.files[m.k] = null;
+    fetch("edge/" + m.k + ".json").then((r) => (r.ok ? r.json() : false)).catch(() => false).then((j) => { E165.files[m.k] = j || false; window.dispatchEvent(new Event("gx-edge165")); });
+    return null;
+  }
+  return F ? { k: m.k, v: m.v, F } : null;
+}
+function gxRinkBg165() {
+  const red = "#d64545", blue = "#3d73d9", ln = "var(--line2, var(--line))";
+  const out = [
+    <rect key="b" x="-100" y="-42.5" width="200" height="85" rx="28" fill="var(--card2, var(--bg))" stroke={ln} strokeWidth="1" />,
+    <line key="c" x1="0" y1="-42.5" x2="0" y2="42.5" stroke={red} strokeWidth="1" strokeDasharray="2 1.5" />,
+    <line key="bl" x1="-25" y1="-42.5" x2="-25" y2="42.5" stroke={blue} strokeWidth="1.2" />,
+    <line key="br" x1="25" y1="-42.5" x2="25" y2="42.5" stroke={blue} strokeWidth="1.2" />,
+    <line key="gl" x1="-89" y1="-38.5" x2="-89" y2="38.5" stroke={red} strokeWidth="0.5" />,
+    <line key="gr" x1="89" y1="-38.5" x2="89" y2="38.5" stroke={red} strokeWidth="0.5" />,
+    <circle key="cc" cx="0" cy="0" r="15" fill="none" stroke={blue} strokeWidth="0.6" opacity=".7" />,
+    <rect key="nl" x="-92.3" y="-3" width="3.3" height="6" fill="none" stroke={red} strokeWidth="0.6" />,
+    <rect key="nr" x="89" y="-3" width="3.3" height="6" fill="none" stroke={red} strokeWidth="0.6" />,
+  ];
+  [[-69, -22], [-69, 22], [69, -22], [69, 22]].forEach(([a, b], i) => out.push(<circle key={"f" + i} cx={a} cy={b} r="15" fill="none" stroke={red} strokeWidth="0.6" opacity=".7" />));
+  return out;
+}
+function GxEdge165({ e, s, x }) {
+  const F = e.F, fr = F.f || [], n = fr.length, gi = Math.max(0, Math.min(F.gi == null ? n - 1 : F.gi, n - 1));
+  const D = n > 1 ? fr[n - 1][0] : 0, even = !(D > 2000 && D < 60000);
+  const tOf = (k) => (even ? k * 100 : fr[k][0]);
+  const [i, setI] = useState(0);
+  const [play, setPlay] = useState(true);
+  const [run, setRun] = useState(0);
+  useEffect(() => {
+    if (!play || n < 2) return undefined;
+    let k = i, raf = 0;
+    const t0 = performance.now() - tOf(k);
+    const step = (now) => {
+      const ms = now - t0;
+      while (k < n - 1 && tOf(k + 1) <= ms) k++;
+      setI(k);
+      if (k >= n - 1) { setPlay(false); return; }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [play, run]);
+  if (!n) return null;
+  const row = (fr[i] || [0, []])[1], scT = e.v.team || F.team, ro = F.ro || {};
+  const gRow = ((fr[gi] || [0, []])[1]).filter((o) => o[0]);
+  const code = String(F.sc || e.v.sc || ""), scHome = scT === (F.home || e.v.home);
+  const mySk = +(scHome ? code[2] : code[1]), opSk = +(scHome ? code[1] : code[2]);
+  const pp = code.length === 4 && mySk > opSk;
+  const isG = (o) => ((ro[o[0]] || [])[1] || "") === "G";
+  const teams = [scT].concat([...new Set(gRow.map((o) => o[1]))].filter((t) => t !== scT));
+  return (
+    <div className="gx-ed165" data-gx="165">
+      <svg viewBox="-102 -45 204 90" role="img" aria-label="Goal replay with every player on the ice">
+        {gxRinkBg165()}
+        {row.map((o, k) => (o[0] ? (
+          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.6" className={o[1] === scT ? "sc" : "ot"} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className={o[1] === scT ? "sc" : "ot"}>{o[2]}</text></g>
+        ) : <circle key={"pk" + k} cx={o[3]} cy={o[4]} r="1.5" className="pk" />))}
+      </svg>
+      <div className="ct">
+        <button type="button" onClick={() => { setI(0); setPlay(true); setRun((r) => r + 1); }} aria-label="Replay">{"↻"}</button>
+        <button type="button" onClick={() => { if (i >= n - 1) setI(0); setPlay(!play); setRun((r) => r + 1); }}>{play ? "Pause" : "Play"}</button>
+        <button type="button" onClick={() => { setPlay(false); setI(gi); }}>Goal moment</button>
+        <span className="lg"><i className="sc"></i>{scT}<i className="ot"></i>{teams[1] || ""}</span>
+      </div>
+      <div className="ol">
+        <div className="hd">On the ice at the goal{pp ? " (power play, no plus/minus)" : ""}</div>
+        {teams.map((t) => (
+          <div key={t} className="tm"><div className="tn">{t + (t === scT ? " (scored)" : "")}</div>
+            {gRow.filter((o) => o[1] === t).sort((a, b) => (isG(a) ? 1 : 0) - (isG(b) ? 1 : 0) || a[2] - b[2]).map((o) => {
+              const r = ro[o[0]] || [], nm = r[0] || "#" + o[2], p = gxFind131(t, o[2], nm), tag = gxTag131(s, p);
+              const pm = isG(o) || pp || code.length !== 4 ? "" : t === scT ? "+1" : "-1";
+              return <div key={o[0]} className="pl"><span className="truncate">{"#" + o[2] + " "}{p && window.__NAV ? <button type="button" className="hover:underline" onClick={() => window.__NAV.player(p)}>{shortN(nm)}</button> : shortN(nm)}{isG(o) ? " (G)" : ""}{tag ? <span className="tg">{" (" + tag + ")"}</span> : null}</span><b>{pm}</b></div>;
+            })}
+          </div>
+        ))}
       </div>
     </div>
   );
