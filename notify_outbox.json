@@ -4014,7 +4014,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T16:49:08Z",
-   "seen": "2026-10-31T17:08:18Z"
+   "seen": "2026-10-31T17:14:19Z"
+  },
+  {
+   "k": "2026-10-31|df0eb0c5091e",
+   "at": "2026-10-31T17:14:19Z",
+   "title": "Fantasy GM",
+   "text": "Wedgewood not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-31T17:14:19Z",
+   "seen": "2026-10-31T17:14:19Z"
   }
  ],
  "sent": {
