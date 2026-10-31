@@ -1,53 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|f49abd0da3d6",
-   "at": "2026-10-24T19:17:46Z",
-   "title": "Your player: lineup change",
-   "text": "Jared McCann (SEA) is no longer in the lineup (was 1st line) - scratched, hurt or moved",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-24T19:17:46Z"
-  },
-  {
-   "k": "2026-10-24|0792f75ec373",
-   "at": "2026-10-24T19:17:46Z",
-   "title": "Your player: power-play change",
-   "text": "Jared McCann (SEA) is off PP1",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T19:17:46Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|696b798953f1",
-   "at": "2026-10-24T19:17:46Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Brock Boeser (VAN) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T19:17:46Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|a3b4ae614ddc",
-   "at": "2026-10-24T19:17:46Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jake DeBrusk (VAN) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T19:17:46Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|356575ff8958",
    "at": "2026-10-24T20:24:21Z",
    "title": "Pickup: ice time jump",
@@ -3980,7 +3933,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T19:16:38Z"
+   "seen": "2026-10-31T19:22:37Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
