@@ -3933,7 +3933,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T19:22:37Z"
+   "seen": "2026-10-31T19:28:36Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
@@ -3946,6 +3946,18 @@
    "via": "urgent",
    "sent_at": "2026-10-31T17:26:40Z",
    "seen": "2026-10-31T17:26:40Z"
+  },
+  {
+   "k": "2026-10-31|0a7b09779ed1",
+   "at": "2026-10-31T19:28:53Z",
+   "title": "Fantasy GM",
+   "text": "Ward joined Panarin's line (LA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-31T19:28:53Z",
+   "seen": "2026-10-31T19:28:53Z"
   }
  ],
  "sent": {
