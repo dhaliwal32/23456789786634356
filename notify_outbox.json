@@ -4002,7 +4002,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T16:49:08Z",
-   "seen": "2026-10-31T17:20:20Z"
+   "seen": "2026-10-31T17:26:20Z"
   },
   {
    "k": "2026-10-31|df0eb0c5091e",
@@ -4014,7 +4014,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T17:20:20Z"
+   "seen": "2026-10-31T17:26:20Z"
+  },
+  {
+   "k": "2026-10-31|ff76dba6fd02",
+   "at": "2026-10-31T17:26:40Z",
+   "title": "Fantasy GM",
+   "text": "Frondell joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-31T17:26:40Z",
+   "seen": "2026-10-31T17:26:40Z"
   }
  ],
  "sent": {
