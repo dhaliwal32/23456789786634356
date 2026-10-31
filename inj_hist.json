@@ -161,9 +161,9 @@
 "was": "2026-10-27"
 },
 "3069448": {
-"d": "2026-10-27",
+"d": "2026-10-31",
 "k": "later",
-"now": "2026-10-31",
+"now": "2026-11-08",
 "was": "2026-10-24"
 },
 "3114743": {
@@ -214,6 +214,12 @@
 "k": "later",
 "now": "2026-11-03",
 "was": "2026-10-29"
+},
+"3654006": {
+"d": "2026-10-31",
+"k": "later",
+"now": "2026-11-22",
+"was": "2026-10-31"
 },
 "3797": {
 "d": "2026-10-26",
@@ -278,9 +284,9 @@
 "was": ""
 },
 "3942714": {
-"d": "2026-10-25",
+"d": "2026-10-31",
 "k": "later",
-"now": "2026-10-31",
+"now": "2026-11-05",
 "was": "2026-10-20"
 },
 "3943996": {
@@ -364,6 +370,12 @@
 "k": "back",
 "was": ""
 },
+"4419778": {
+"d": "2026-10-31",
+"k": "later",
+"now": "2026-11-08",
+"was": "2026-10-31"
+},
 "4565225": {
 "d": "2026-10-30",
 "k": "dtd",
@@ -371,9 +383,9 @@
 "was": "Out"
 },
 "4565226": {
-"d": "2026-10-29",
+"d": "2026-10-31",
 "k": "later",
-"now": "2026-10-31",
+"now": "2026-11-04",
 "was": "2026-10-22"
 },
 "4565235": {
@@ -770,7 +782,7 @@
 "status": "Injured Reserve"
 },
 "3069448": {
-"back": "2026-10-31",
+"back": "2026-11-08",
 "note": "Grzelcyk (lower body) suffered a \"flare-up\" and could be out for at least \"a few days,\" head coach Lindy Ruff told Rachel Lenzi of The Buffalo News on Tuesday.",
 "status": "Injured Reserve"
 },
@@ -830,7 +842,7 @@
 "status": "Injured Reserve"
 },
 "3654006": {
-"back": "2026-10-31",
+"back": "2026-11-22",
 "note": "Lyon (upper body) had a setback in his recovery and is without a timeline to return, the team announced Thursday.",
 "status": "Injured Reserve"
 },
@@ -880,7 +892,7 @@
 "status": "Injured Reserve"
 },
 "3942714": {
-"back": "2026-10-31",
+"back": "2026-11-05",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -980,7 +992,7 @@
 "status": "Injured Reserve"
 },
 "4419778": {
-"back": "2026-10-31",
+"back": "2026-11-08",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -990,7 +1002,7 @@
 "status": "Day-To-Day"
 },
 "4565226": {
-"back": "2026-10-31",
+"back": "2026-11-04",
 "note": "ir",
 "status": "Injured Reserve"
 },
