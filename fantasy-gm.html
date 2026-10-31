@@ -1354,6 +1354,16 @@
     .gx-ed165 .ct button { padding: 6px 9px; font-size: 13px; }
     .gx-ed165 .ct .lg { width: 100%; justify-content: flex-end; margin-left: 0; }
   }
+  /* change 173 (install.py) */
+  .gx-sc141 .gw173 { border-bottom: 1px solid var(--line); }
+  .gx-sc141 .gw173 > .gr { border-bottom: 0; }
+  .gx-sc141 .gv173 { display: flex; align-items: center; gap: 6px; margin: -4px 16px 10px 72px; padding: 0; background: none; color: var(--accent); font-size: 13px; font-weight: 600; }
+  .gx-sc141 .gv173 i { font-style: normal; display: inline-block; transition: transform .25s ease; }
+  .gx-sc141 .gv173 i.up { transform: rotate(180deg); }
+  .gx-sc141 .gvb173 { padding: 0 16px 14px; max-width: 640px; margin: 0 auto; animation: gx173in .25s ease; }
+  @keyframes gx173in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .gx-sc141 .gvb173 { animation: none; } }
+  @media (max-width: 640px) { .gx-sc141 .gv173 { margin-left: 72px; } .gx-sc141 .gvb173 { padding: 0 12px 12px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1362,7 +1372,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="vxn27p.sjldp9" data-file="build/app.js">
+<meta name="gx-build" content="kg7lwl.ihyfjt" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8741,7 +8751,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
         body = gs.length ? <div className="gx-sc141"><div className="h1">SCORING</div>{Object.keys(per).sort((x, y) => x - y).map((k) => (
           <React.Fragment key={k}>
             <div className="ph"><span>{GX_PER141[k] || (+k === 4 ? "OVERTIME" : "SHOOTOUT")}</span><span>{aw}</span><span>{hm}</span></div>
-            {per[k].map((r) => <div key={r.i} className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}</small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>)}
+            {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}</small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{r.x.cx != null ? (() => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}</div>)}
           </React.Fragment>
         ))}</div> : <div className="em" style={{ padding: 16, color: "var(--mute)" }}>{pre(g) ? "Not started yet." : "No goals yet."}</div>;
       } else if (!bx) {
