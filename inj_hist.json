@@ -154,10 +154,10 @@
 "now": "2026-11-07"
 },
 "3069352": {
-"d": "2026-10-27",
+"d": "2026-10-31",
 "k": "later",
 "nd": "2026-10-27",
-"now": "2026-10-31",
+"now": "2026-11-03",
 "was": "2026-10-27"
 },
 "3069448": {
@@ -561,6 +561,12 @@
 "k": "back",
 "was": "2026-10-31"
 },
+"5216860": {
+"d": "2026-10-31",
+"k": "later",
+"now": "2026-11-07",
+"was": "2026-10-31"
+},
 "5216882": {
 "d": "2026-10-29",
 "k": "new",
@@ -759,7 +765,7 @@
 "status": "Injured Reserve"
 },
 "3069352": {
-"back": "2026-10-31",
+"back": "2026-11-03",
 "note": "Lindell (lower body) is expected to return to the Stars' lineup within the next 4-7 days, per Owen Newkirk of DLLS Sports.",
 "status": "Injured Reserve"
 },
@@ -1164,7 +1170,7 @@
 "status": "Injured Reserve"
 },
 "5216860": {
-"back": "2026-10-31",
+"back": "2026-11-07",
 "note": "Demidov (lower body) was placed on injured reserve by the Canadiens on Tuesday, per the NHL media site.",
 "status": "Injured Reserve"
 },
