@@ -1260,6 +1260,8 @@
   /* change 158 (install.py) */
   .gx-h2h .gx-idle147 { opacity: 1 !important; }
   .gx-h2h .gx-pc .gx-nm, .gx-h2h .gx-pc .gx-nm button { color: var(--ink) !important; }
+  /* change 159 (install.py) */
+  .gx-sd141 .gm .st { width: 96px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1268,7 +1270,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="15g7d2h.nshxv8" data-file="build/app.js">
+<meta name="gx-build" content="1sjwq3t.vl588x" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3885,12 +3887,13 @@ const gState = (t, dt) => {
 };
 const gScore = (t, dt) => { const L = ((window.__LIVESC || {})[dt] || {})[t]; return L || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t] || null; };
 const LiveTag = ({ st, t, dt, e157 }) => {
+  useTick159(st === "L" && !!(t && dt && (gScore(t, dt) || {}).int)); /* gx159 */
   // live tag v21: pill + score from the player's team's side (news_logos.py)
   if (st !== "L" && st !== "F") return null;
   const sc = t && dt ? gScore(t, dt) : null;
   const has = !!(sc && sc.my != null && sc.op != null);
   const res = has && st === "F" ? (sc.my > sc.op ? "W" : sc.my < sc.op ? "L" : "") : "";
-  const tail = !sc ? "" : st === "F" ? (sc.per === "OT" || sc.per === "SO" ? " " + sc.per : "") : sc.int ? " · " + sc.per + " int." : sc.per ? " · " + sc.per + (sc.clk ? " " + sc.clk : "") : "";
+  const tail = !sc ? "" : st === "F" ? (sc.per === "OT" || sc.per === "SO" ? " " + sc.per : "") : sc.int ? " · " + gxIntT159(t, sc.per) : sc.per ? " · " + sc.per + (sc.clk ? " " + sc.clk : "") : "";
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
       {null /* gx152 pills */}
@@ -8194,7 +8197,7 @@ function GxNhl131({ s, opp }) {
   const nick = (ab) => (typeof GX_NICK119 !== "undefined" && GX_NICK119[gxAb131(ab)]) || ab;
   const nLive = games.filter(live).length;
   const toggle = () => { setGid(null); setOpen(true); }; /* gx139 */
-  const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxPer131(g.periodDescriptor) + " int." : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
+  const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxIntG159(g) : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
   const order = (g) => (live(g) ? 0 : g.gameState === "FUT" || g.gameState === "PRE" ? 1 : 2);
   games.sort((a, b) => order(a) - order(b) || String(a.startTimeUTC).localeCompare(String(b.startTimeUTC)));
   const teamRow = (T) => <div className="tm"><TeamLogo t={gxAb131(T.abbrev)} size={22} /><span>{nick(T.abbrev)}</span><b>{T.score != null ? T.score : ""}</b></div>;
@@ -8444,6 +8447,7 @@ function gxLock141(on) { return; /* gx149: the page-wide lock does this now */
   else if (b.dataset.gx141 != null) { const y = +b.dataset.gx141 || 0; delete b.dataset.gx141; b.style.position = ""; b.style.top = ""; b.style.left = ""; b.style.right = ""; b.style.width = ""; b.style.overflow = ""; window.scrollTo(0, y); }
 }
 function GxNhl141({ s, a, b, tA, tB, side }) {
+  useTick159(gxAnyInt159()); /* gx159 */
   const [open, setOpen] = useState(false);
   const [out, setOut] = useState(false);
   const [tab, setTab] = useState("sb");
@@ -8536,7 +8540,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
     });
     return () => { dead = true; };
   }, [wantGoals, J]);
-  const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxPer131(g.periodDescriptor) + " int." : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
+  const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxIntG159(g) : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
   const order = (g) => (live(g) ? 0 : pre(g) ? 1 : 2);
   games.sort((x, y) => order(x) - order(y) || String(x.startTimeUTC).localeCompare(String(y.startTimeUTC)));
   const who = (p) => (p && p.ft === a ? "me" : p && p.ft === b ? "op" : "");
@@ -8768,6 +8772,36 @@ function gxOrd152(s, id, l, dt, K) {
     });
   };
 })();
+// ---------- change 159: intermission countdown (install.py) ----------
+const GX_INT159 = 18 * 60; /* NHL intermissions are 18 minutes */
+function gxIntEnd159(g) {
+  const n = ((g || {}).periodDescriptor || {}).number || 1, key = "gx159:" + g.id + ":" + n;
+  const c = (typeof G132 !== "undefined" && G132.sum[g.id]) || null, js = c && c.js;
+  let end = 0;
+  ((js && js.plays) || []).forEach((p) => { if (((p.period || {}).number || 0) === n) { const w = Date.parse(p.wallclock || ""); if (!isNaN(w) && w > end) end = w; } });
+  let seen = 0;
+  try { seen = +localStorage.getItem(key) || 0; if (!seen) { seen = Date.now(); localStorage.setItem(key, String(seen)); } } catch (e) { seen = (window.__INT159 = window.__INT159 || {})[key] || (window.__INT159[key] = Date.now()); }
+  return end && end <= seen + 60e3 ? end : seen;
+}
+function gxIntLeft159(g) {
+  if (!g || !(g.clock || {}).inIntermission) return null;
+  return Math.max(0, GX_INT159 - Math.floor((Date.now() - gxIntEnd159(g)) / 1000));
+}
+const gxIntFmt159 = (sec) => String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+function gxIntG159(g) {
+  const per = gxPer131(g.periodDescriptor), left = gxIntLeft159(g);
+  return per + " INT" + (left ? " " + gxIntFmt159(left) : "");
+}
+function gxIntT159(team, per) {
+  const g = (((window.__NHLNOW || {}).games) || []).find((x) => (x.clock || {}).inIntermission && (gxAb131((x.homeTeam || {}).abbrev) === team || gxAb131((x.awayTeam || {}).abbrev) === team));
+  return g ? gxIntG159(g) : per + " INT";
+}
+// redraws every second while "on" (an intermission clock is showing)
+function useTick159(on) {
+  const [, t] = useState(0);
+  useEffect(() => { if (!on) return undefined; const id = setInterval(() => t((x) => x + 1), 1000); return () => clearInterval(id); }, [on]);
+}
+const gxAnyInt159 = () => (((window.__NHLNOW || {}).games) || []).some((g) => (g.clock || {}).inIntermission);
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
