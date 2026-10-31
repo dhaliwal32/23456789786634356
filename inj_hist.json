@@ -189,6 +189,11 @@
 "now": "2027-01-02",
 "was": "2026-10-28"
 },
+"3114802": {
+"d": "2026-10-31",
+"k": "new",
+"now": "2026-11-04"
+},
 "3124": {
 "d": "2026-10-29",
 "k": "back",
@@ -823,6 +828,11 @@
 "back": "2027-01-02",
 "note": "McCann (lower body) will be out for approximately 10 weeks, the team announced Sunday.",
 "status": "Injured Reserve"
+},
+"3114802": {
+"back": "2026-11-04",
+"note": "Kempe (undisclosed) won't be in the lineup against Buffalo on Saturday, per Zach Dooley of the Kings' official site.",
+"status": "Out"
 },
 "3150479": {
 "back": "2026-11-04",
