@@ -1209,6 +1209,30 @@
   .gx-sim107 .dy { flex: 1 0 64px !important; padding: 8px 4px !important; }
   .gx-sim107 .dy b { font-size: 15px !important; }
   @media (max-width: 640px) { .gx-sim107 .dy span { font-size: 12px !important; } }
+  /* change 152 (install.py) */
+  .gx-h2h [data-gx="094p"], .gx-h2h [data-gx="135n"] > div { white-space: nowrap; }
+  .gx-pd, .gx-pd-bd { overscroll-behavior: auto; }
+  .gx-sd141 .gm .tr b, .gx-ns131 .tr b { flex: none; width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
+  .gx-sd141 .gm .tr i, .gx-ns131 .tr i { flex: none; }
+  .gx-sd141 .gm .tr i:not(.ar), .gx-ns131 .tr i:not(.ar) { width: 6px; }
+  .gx-sd141 .gm .tms { width: 160px; }
+  .gx-face.gx-fb152 { display: inline-flex; align-items: center; justify-content: center; }
+  .gx-sc99 .gx-ro:not(.gx-roh) > .n:not([style]), .gx-sc99 .gx-ro:not(.gx-roh) > .n > div:not([style]),
+  .gx-sc99 .gx-pk:not(.text-xs) > .n:not([style]), .gx-sc99 .gx-rk:not(.gx-rkh) > .n,
+  .gx-sc99 .gx-ro > :nth-child(12), .gx-sc99 .gx-pk > :nth-child(10), .gx-sc99.gx-rk106 > .gx-rk > :nth-child(8) { color: var(--mute) !important; font-weight: 400 !important; }
+  .gx-sc99 .gx-roh > .on, .gx-sc99 .gx-pk.text-xs > .on, .gx-sc99 .gx-rkh > .on { color: var(--ink) !important; }
+  .gx-sc99 .gx-ro > :nth-child(13) { order: 1; }
+  .gx-sc99 .gx-ro { grid-template-columns: 44px 200px 40px 62px 72px 70px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  .gx-sc99 .gx-pk > :nth-child(11) { order: 1; }
+  .gx-sc99 .gx-pk.full { grid-template-columns: 44px 220px 40px 62px 56px 70px 66px 58px 62px 56px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  .gx-sc99.gx-rk106 > .gx-rk > :nth-child(4), .gx-sc99.gx-rk106 > .gx-rk > :nth-child(8), .gx-sc99.gx-rk106 > .gx-rk > :nth-child(9) { order: 1; }
+  .gx-sc99.gx-rk106 > .gx-rk > :nth-child(5) { display: none !important; }
+  .gx-sc99.gx-rk106 > .gx-rk { grid-template-columns: 38px 44px 200px 170px 40px 62px 64px 70px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  @media (max-width: 640px) {
+    .gx-sc99 .gx-ro { grid-template-columns: 36px 142px 34px 56px 62px 60px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+    .gx-sc99 .gx-pk.full { grid-template-columns: 36px 150px 34px 56px 52px 64px 60px 52px 58px 52px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+    .gx-sc99.gx-rk106 > .gx-rk { grid-template-columns: 30px 36px 142px 34px 56px 50px 56px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1217,7 +1241,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="mu1saw.1wdgdy0" data-file="build/app.js">
+<meta name="gx-build" content="15kxbx1.6a8w3u" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1688,8 +1712,10 @@ function App() {
       if (window.gxLive120) window.gxLive120(js, () => tick((x) => x + 1));
     }).catch(() => {});
     pull();
-    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull(); }, 15 * 1000); /* gx120 */
-    return () => { dead = true; clearInterval(id); };
+    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull(); }, 10 * 1000); /* gx120 */
+    const vis152 = () => { if (!document.hidden) { G120.busy = false; pull(); } }; /* gx152 */
+    document.addEventListener("visibilitychange", vis152); window.addEventListener("focus", vis152);
+    return () => { dead = true; clearInterval(id); document.removeEventListener("visibilitychange", vis152); window.removeEventListener("focus", vis152); };
   }, []);
   useEffect(() => {
     let st = init();
@@ -2203,7 +2229,7 @@ function Matchup({ s, setS, wk, setWk }) {
     out.IR = rest.filter((p) => p.ir).map((p) => ({ ...p, idle147: true, dt }));
     return out;
   };
-  const fa147 = full147(a, x), fb147 = full147(b, y);
+  const fa147 = gxOrd152(s, a, x, dates[d], K) || full147(a, x), fb147 = gxOrd152(s, b, y, dates[d], K) || full147(b, y); /* gx152 */
   const rows = [];
   ["BE", "IR"].forEach((sl) => { for (let i = 0; i < Math.max(fa147[sl].length, fb147[sl].length); i++) rows.push([sl, fa147[sl][i] || null, fb147[sl][i] || null]); });
   const tail147 = rows.splice(0, rows.length);
@@ -2229,7 +2255,7 @@ function Matchup({ s, setS, wk, setWk }) {
     return (
       <div className={"min-w-0 gx-pc" + (p.st === "F" ? " gx-fin" : "")} style={{ flexDirection: right ? "row-reverse" : "row" }} onClick={() => setBx118(bx118 === p.id + "|" + p.dt ? "" : p.id + "|" + p.dt)}><span className="gx-fw" style={{ display: "inline-flex" }}><GxFace p={p} size={30} /></span><div className={"min-w-0" + (right ? " text-right" : "")} style={{ flex: 1 }}>
         <div className="truncate gx-nm"><button type="button" className="hover:underline text-left" onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.player(p); }}><span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span></button><span className="gx-tl98"><TeamLogo t={p.t} size={15} /></span></div>
-        <div className="text-xs text-slate-500 truncate">{p.st ? <>{gxOpp98(p)}<LiveTag st={p.st} t={p.t} dt={p.dt} />{p.st === "F" ? <span className="m-inl"> Final</span> : null}<span className="gx-st98">{line ? " " + line : ""}</span></> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>{p.st && line ? <div className="gx-sl98">{line}</div> : null}</div>
+        <div className="text-xs text-slate-500 truncate">{p.st ? <>{gxOpp98(p)}<LiveTag st={p.st} t={p.t} dt={p.dt} />{null /* gx152 */}<span className="gx-st98">{line ? " " + line : ""}</span></> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>{p.st && line ? <div className="gx-sl98">{line}</div> : null}</div>
       </div>
     );
   };
@@ -2279,10 +2305,10 @@ function Matchup({ s, setS, wk, setWk }) {
         <button type="button" className="gx-arw" aria-label="Later day" disabled={d >= n - 1} onClick={() => setDay(d + 1)}>{"\u203a"}</button>
       </div>
       <div key={"d105-" + sel + "-" + d} ref={dr106} {...dh106} className={"gx-pn gx-dr106 gx-sl105 " + sl105b} style={{ marginTop: 12 }}><b></b><b></b><b></b><b></b>
-        <div style={{ display: "flex", alignItems: "baseline", marginBottom: 6 }}>
+        <div style={{ display: "none" }} data-gx="152t">
           <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
         </div>
-        {rows.length ? <div className="gx-h2h gx-tt114 gx-tt147"><div>{state === "final" ? "Final" : state === "live" ? "Live" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
+        {rows.length ? <div className="gx-h2h gx-tt114 gx-tt147"><div>{state === "final" ? "Final" : state === "live" ? "Today" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
         {rows.length ? rows.map(([sl, p, q], i) => (
           <React.Fragment key={i}>
           <div className={"gx-h2h" + (sl === "BE" && (!rows[i - 1] || rows[i - 1][0] !== "BE") ? " gx-be147" : "")} style={i ? null : { borderTop: 0 }}>
@@ -3824,6 +3850,8 @@ const pby = () => { const L = window.__PLAYERS || []; if (!__PB || __PB.k !== L)
 const actDay = (tid, dt) => { const D = ((window.ESPN_DATA || {}).daily || {})[dt]; return D ? D[String(tid).replace(/^t/, "")] || null : null; };
 const gState = (t, dt) => {
   const x = ((window.__LIVESC || {})[dt] || {})[t] || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t];
+  const lv152 = ((window.__LIVESC || {})[dt] || {})[t]; /* gx152: wait for puck drop */
+  if (lv152 && (lv152.s === "P" || (lv152.s === "L" && !lv152.f && !lv152.my && !lv152.op && lv152.per === "1st" && !lv152.int))) return { s: "P", f: 0 };
   if (x && x.s === "F") return { s: "F", f: 1 };
   if (x && x.s === "L") return { s: "L", f: x.f || 0 };
   const g = gameOf(t, dt), st = g && g.st ? Date.parse(g.st) : NaN;
@@ -3840,7 +3868,7 @@ const LiveTag = ({ st, t, dt }) => {
   const tail = !sc ? "" : st === "F" ? (sc.per === "OT" || sc.per === "SO" ? " " + sc.per : "") : sc.int ? " · " + sc.per + " int." : sc.per ? " · " + sc.per + (sc.clk ? " " + sc.clk : "") : "";
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
-      {st === "L" ? <span className="gm-pill inline-flex items-center gap-1 bg-red-100 text-red-600"><span className="gm-dot"></span>LIVE</span> : <span className="gm-pill bg-slate-200 text-slate-500">FINAL</span>}
+      {null /* gx152 pills */}
       {has ? <span className={"text-xs font-semibold " + ("text-slate-700" /* gx139 */)}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
     </span>
   );
@@ -6043,7 +6071,7 @@ function GxRankings({ s }) {
     .filter((p) => p.p === pos && rank[p.id] && (own === "all" || (own === "rost" ? p.ft !== "fa" : own === "fa" ? p.ft === "fa" : p.ft === own)) && (!qq || nrm(p.n).includes(qq)))
     .map((p) => ({ p, rk: rank[p.id], e: pv(p), sf: p.gp ? p.tot / p.gp : null }))
     .sort((a, b) => (sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0)));
-  const shown = gxSort108(rows, s, (x) => x.p).slice(0, n);
+  const shown = gxSort108(rows, s, (x) => x.p, { Avg: (p) => (p.gp ? p.tot / p.gp : -Infinity), Exp: pv }).slice(0, n); /* gx152 */
   const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
   const owner = (p) => (p.ft === "fa" ? <span className="text-slate-500">{p.wv ? "Waivers" : "Free agent"}</span> : <TL s={s} id={p.ft} className={p.ft === s.me ? "font-semibold" : ""} />);
   const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => { setSort(k); setN(50); }}>{l}</button>;
@@ -6064,7 +6092,7 @@ function GxRankings({ s }) {
         <GxRngSel100 /><div className="gx-sc99 gx-rk106">
         <div className="gx-rk gx-rkh">
           <span>#</span><span></span><span>Player</span><span className="m-hide">Fantasy team</span>
-          {HB("gp", "GP", "m-hide")}{HB("sf", "Avg")}{HB("exp", "Expected")}<GxSH106 mode={pos === "G" ? "go" : "sk"} />
+          <span className="n m-hide">GP</span><GxHB108 k="Avg" /><GxHB108 k="Exp" l="Expected" />{/* gx152 */}<GxSH106 mode={pos === "G" ? "go" : "sk"} />
         </div>
         {shown.map(({ p, rk, e, sf }) => {
           const me = p.ft === s.me, st = stTag(p);
@@ -6972,7 +7000,7 @@ function GxFace({ p, t, size }) {
   const [bad, setBad] = useState(false);
   const tm = (p && p.t) || t, z = size || 28;
   const eid = p && typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
-  if (!eid || bad) return <TeamLogo t={tm} size={size} />;
+  if (!eid || bad) return <span className="gx-face gx-fb152" style={{ width: "calc(" + z + "px * var(--gx-fs, 1))", height: "calc(" + z + "px * var(--gx-fs, 1))" }}><TeamLogo t={tm} size={Math.round(z * 0.8)} /></span>;
   const b = Math.max(11, Math.round(z * 0.5));
   return (
     <span className="gx-face" style={{ width: "calc(" + z + "px * var(--gx-fs, 1))", height: "calc(" + z + "px * var(--gx-fs, 1))" }} title={(p.n || "") + " (" + tm + ")"}>
@@ -7292,12 +7320,12 @@ function gxVals106(p, s, rng) {
 function GxSC106({ p, s, mode }) {
   const rng = gxUse100();
   useEffect(() => { gxLoad100(rng); });
-  const v0 = gxVals106(p, s, rng), v = mode === "mx" && p.p === "G" ? [v0[0], v0[1], "-", "-", "-", "-", "-", "-", "-", "-", v0[10]] : v0, out = mode === "cm" ? v.slice(0, 1) : v;
-  return out.map((c, i) => <div key={"c106" + i} className={"n " + (i === 0 ? "font-semibold" : "text-slate-500")}>{c}</div>);
+  const v0 = gxVals106(p, s, rng), v1 = mode === "mx" && p.p === "G" ? [v0[0], v0[1], "-", "-", "-", "-", "-", "-", "-", "-", v0[10]] : v0, v = [v1[1], v1[0], ...v1.slice(2)] /* gx152 */, out = mode === "cm" ? v1.slice(0, 1) : v;
+  return out.map((c, i) => <div key={"c106" + i} className={"n text-slate-500" /* gx152 */}>{c}</div>);
 }
 function GxSH106({ mode }) {
   const rng = gxUse100();
-  const H = mode === "go" ? GX_GO106 : mode === "cm" ? GX_CM106 : GX_SK106;
+  const H0 = mode === "go" ? GX_GO106 : mode === "cm" ? GX_CM106 : GX_SK106, H = H0.length > 1 ? [H0[1], H0[0], ...H0.slice(2)] : H0; /* gx152 */
   const S = gxUseSort108();
   return H.map((h, i) => <button type="button" key={h + i} className={"n gx-sh108" + (S.k === h ? " on" : "")} onClick={() => gxSet108(h)}>{gxProjR100(rng) && h === "GP" ? "Gms" : h}{S.k === h ? <i>{S.dir > 0 ? "\u25bc" : "\u25b2"}</i> : null}</button>);
 }
@@ -7445,13 +7473,15 @@ const gxNum108 = (v) => {
   const n = parseFloat(x.replace("%", "").replace("+", ""));
   return isNaN(n) ? -Infinity : x.indexOf("%") > 0 && n > 1 ? n / 100 : n;
 };
-function gxSort108(list, s, get) {
+function gxSort108(list, s, get, ov152) {
   const k = GX108.k;
   if (!k) return list;
   const rng = gxRng100(), g = get || ((x) => x), K = s.blend;
   const val = (p) => {
     if (k === "Avg") return p.gp ? p.tot / p.gp : -Infinity;
-    if (k === "Exp" || k === "Rank") return gxPgAvg(p, K);
+    if (ov152 && ov152[k]) return ov152[k](p); /* gx152 */
+    if (k === "Exp") return effAvg(p, K);
+    if (k === "Rank") return gxPgAvg(p, K);
     const H = p.p === "G" ? GX_GO106 : GX_SK106, i = H.indexOf(k);
     if (i < 0) return -Infinity;
     const v = gxNum108(gxVals106(p, s, rng)[i]);
@@ -7881,11 +7911,11 @@ function gxRebuild120() {
   return true;
 }
 window.gxLive120 = (js, done) => {
-  if (G120.busy || !js || !js.games) return;
+  if ((G120.busy && Date.now() - (G120.bt || 0) < 20000) || !js || !js.games) return; /* gx152 */
   const isF = (g) => g.gameState === "FINAL" || g.gameState === "OFF";
   const games = js.games.filter((g) => g.id && (g.gameState === "LIVE" || g.gameState === "CRIT" || (isF(g) && !G120.fin[g.id])));
   if (!games.length) return;
-  G120.busy = true;
+  G120.busy = true; G120.bt = Date.now();
   const U = "https://api-web.nhle.com/v1/gamecenter/";
   Promise.all(games.map((g) => fetch(U + g.id + "/boxscore").then((r) => (r.ok ? r.json() : null)).catch(() => null).then((bx) => {
     if (!bx) return null;
@@ -8672,6 +8702,46 @@ function gxML147(v, t) {
   const soon = () => { if (!q) q = requestAnimationFrame(check); };
   const start = () => { new MutationObserver(soon).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] }); check(); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
+})();
+// ---------- change 152: Matchup rows in ESPN's own lineup order (install.py) ----------
+// ESPN's daily lineup (slot per player, in ESPN's order) for a team on a day, shaped like full147's output; null when ESPN has no lineup for that day
+function gxOrd152(s, id, l, dt, K) {
+  const AD = dt ? actDay(id, dt) : null;
+  if (!AD || !Object.keys(AD).length) return null;
+  const SL = { 3: "F", 4: "D", 6: "UTIL", 5: "G", 7: "BE", 8: "IR" };
+  const by = {}; s.players.forEach((p) => (by[p.id] = p));
+  const st = {}, bn = {};
+  (l.start || []).forEach((p) => (st[p.id] = p)); (l.bench || []).forEach((p) => (bn[p.id] = p));
+  const out = { F: [], D: [], UTIL: [], G: [], BE: [], IR: [] };
+  const ord = ((((window.ESPN_DATA || {}).dorder || {})[dt]) || {})[String(id).replace(/^t/, "")];
+  (ord && ord.length ? ord.filter((k) => AD[k]) : Object.keys(AD)).forEach((pid) => {
+    const v = AD[pid], sl = SL[v && v[1]], p0 = by["e" + pid];
+    if (!sl || !p0) return;
+    const g = gameOf(p0.t, dt);
+    if (sl === "BE" || sl === "IR") { const o = Object.assign({}, st[p0.id] || bn[p0.id] || p0, { slot: sl, dt }); if (g && sl === "BE") o.bench147 = true; else o.idle147 = true; out[sl].push(o); return; }
+    if (st[p0.id]) { out[sl].push(Object.assign({}, st[p0.id], { slot: sl })); return; }
+    if (!g) { out[sl].push(Object.assign({}, p0, { slot: sl, dt, idle147: true })); return; }
+    const gs = gState(p0.t, dt), isG = p0.p === "G", gst = isG ? gStart(p0, dt) : null;
+    const x0 = effAvg(p0, K, dt) * (isG ? (gst ? gst.v : p0.prob) : p0.prob) * avail(p0, dt);
+    const on = gs.s !== "P";
+    out[sl].push(Object.assign({}, p0, { slot: sl, dt, st: on ? gs.s : "", a: on ? gxLiveA120(p0, dt, v[0]) : null, x0, x: on ? 0 : x0, gs: gst ? gst.l : "" }));
+  });
+  return out;
+}
+// ---------- change 152: live data never gets stuck (install.py) ----------
+// a feed call that hangs (phone asleep, slow network) gives up after 12 seconds, so the next pull can run
+(function () {
+  if (window.__GXF152) return;
+  const f0 = window.fetch;
+  window.__GXF152 = f0;
+  window.fetch = function (u, o) {
+    const s = typeof u === "string" ? u : (u && u.url) || "";
+    if (s.indexOf("site.api.espn.com") < 0 && s.indexOf("api-web.nhle.com") < 0) return f0.call(window, u, o);
+    return new Promise((res, rej) => {
+      const t = setTimeout(() => rej(new Error("timeout")), 12000);
+      f0.call(window, u, o).then((r) => { clearTimeout(t); res(r); }, (e) => { clearTimeout(t); rej(e); });
+    });
+  };
 })();
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
