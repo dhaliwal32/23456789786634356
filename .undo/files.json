@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "build_app.js": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "168-replay-smooth-and-fresh.py"
+  "169-replay-team-colours-big.py"
  ]
 }
