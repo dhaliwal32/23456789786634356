@@ -1327,6 +1327,17 @@
   .gx-ed165 circle.pk { fill: #111111 !important; stroke: #ffffff !important; stroke-width: .5 !important; }
   .gx-ed165 .ct .lg i.sc { background: #2563eb !important; box-shadow: none !important; }
   .gx-ed165 .ct .lg i.ot { background: #ffffff !important; box-shadow: inset 0 0 0 1.5px #111111 !important; }
+  /* change 169 (install.py) */
+  .gx-gv169 { z-index: 70; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 24px; animation: gx101-fade .18s ease-out; }
+  .gx-gv169 .bx { width: min(980px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; overscroll-behavior: contain; background: var(--card); border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.45); padding: 18px 22px 22px; animation: gx101-pop .22s cubic-bezier(.2,.8,.2,1); }
+  .gx-gv169 .hd { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .gx-gv169 .hd .xx { margin-left: auto; font-size: 28px; line-height: 1; color: var(--mute); width: 36px; height: 36px; border-radius: 99px; }
+  .gx-gv169 .hd .xx:hover { background: var(--card2, var(--bg)); color: var(--ink); }
+  .gx-gv169 .gx-rk163 { margin-top: 4px; }
+  .gx-gv169 .gx-rk163 .tl b { font-size: 17px; }
+  .gx-gv169 .gx-rk163 .tl small { font-size: 12px; }
+  .gx-gv169 .gx-ed165 .ct button { font-size: 14px; padding: 7px 14px; }
+  .gx-gv169 .gx-ed165 .ol { font-size: 14px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1335,7 +1346,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1nwgz86.12mkitw" data-file="build/app.js">
+<meta name="gx-build" content="1a372an.1aotstj" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8649,7 +8660,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
                   <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
                   <div className="mb"><TeamLogo t={gxAb131((r.g.awayTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.awayTeam || {}).abbrev)}</span><b>{r.x.awayScore}</b><TeamLogo t={gxAb131((r.g.homeTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.homeTeam || {}).abbrev)}</span><b>{r.x.homeScore}</b></div>
                 </div>
-                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /> : null}</>; })() : null}
+                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxGvModal169 title={shortN(r.n) + " \u00b7 " + r.tm + " \u00b7 " + (r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor)} onClose={() => setGv163((o) => ({ ...o, [k167]: false }))}><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></GxGvModal169> : null}</>; })() : null}
               </div>
               <button type="button" className="ar" aria-label="Later goal" disabled={idx >= n - 1} onClick={() => setGi(idx + 1 >= n - 1 ? null : idx + 1)}>{"\u203a"}</button>
             </div>
@@ -9002,12 +9013,13 @@ function GxEdge165({ e, s, x }) {
   const pp = code.length === 4 && mySk > opSk;
   const isG = (o) => ((ro[o[0]] || [])[1] || "") === "G";
   const teams = [scT].concat([...new Set(gRow.map((o) => o[1]))].filter((t) => t !== scT));
+  const C169 = gxPair169(scT, teams[1] || ""); /* gx169 */
   return (
     <div className="gx-ed165" data-gx="168">
       <svg viewBox="-102 -45 204 90" role="img" aria-label="Goal replay with every player on the ice">
         {gxRinkBg165()}
         {row.map((o) => (o[0] ? (
-          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.7" className={o[1] === scT ? "sc" : "ot"} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className={o[1] === scT ? "sc" : "ot"}>{o[2]}</text></g>
+          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.7" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 0)} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 1)}>{o[2]}</text></g>
         ) : null))}
         {row.filter((o) => !o[0]).map((o, j) => <circle key={"pk" + j} cx={o[3]} cy={o[4]} r="1.5" className="pk" />)}
       </svg>
@@ -9015,7 +9027,7 @@ function GxEdge165({ e, s, x }) {
         <button type="button" onClick={() => { setMs(0); setPlay(true); setRun((r) => r + 1); }} aria-label="Replay">{"↻"}</button>
         <button type="button" onClick={() => { if (ms >= T) setMs(0); setPlay(!play); setRun((r) => r + 1); }}>{play ? "Pause" : "Play"}</button>
         <button type="button" onClick={() => { setPlay(false); setMs(tOf(gi)); }}>Goal moment</button>
-        <span className="lg"><i className="sc"></i>{scT}<i className="ot"></i>{teams[1] || ""}</span>
+        <span className="lg"><i style={{ background: C169.sc.f, boxShadow: "inset 0 0 0 1.5px " + C169.sc.s }}></i>{scT}<i style={{ background: C169.ot.f, boxShadow: "inset 0 0 0 1.5px " + C169.ot.s }}></i>{teams[1] || ""}</span>
       </div>
       <button type="button" className="dd166" onClick={() => setOl166(!ol166)}>Who was on the ice <i className={ol166 ? "up" : ""}>{"▾"}</i></button>
       <div className="ol" style={ol166 ? null : { display: "none" }}>
@@ -9032,6 +9044,27 @@ function GxEdge165({ e, s, x }) {
       </div>
     </div>
   );
+}
+// ---------- change 169: team colours for the replay, big replay window on the laptop (install.py) ----------
+function gxHex169(h) { const m = String(h || "").replace("#", ""); return [parseInt(m.slice(0, 2), 16) || 0, parseInt(m.slice(2, 4), 16) || 0, parseInt(m.slice(4, 6), 16) || 0]; }
+function gxLum169(h) { const c = gxHex169(h); return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; }
+function gxPair169(a, b) {
+  const ca = gxTC101(a), cb = gxTC101(b), x = gxHex169(ca), y = gxHex169(cb);
+  const dist = Math.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2 + (x[2] - y[2]) ** 2);
+  const solid = (c) => ({ f: c, t: gxLum169(c) > 0.55 ? "#111111" : "#ffffff", s: gxLum169(c) > 0.55 ? "#111111" : "#ffffff" });
+  const ring = (c) => ({ f: "#ffffff", t: gxLum169(c) > 0.75 ? "#111111" : c, s: gxLum169(c) > 0.75 ? "#111111" : c });
+  return { sc: solid(ca), ot: dist < 130 ? ring(cb) : solid(cb) };
+}
+const gxCol169 = (c, txt) => (txt ? { fill: c.t, fontWeight: 700 } : { fill: c.f, stroke: c.s, strokeWidth: c.f === "#ffffff" ? 0.9 : 0.5 });
+function GxGvModal169({ title, onClose, children }) {
+  useEffect(() => { const k = (e) => { if (e.key === "Escape") onClose(); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, []);
+  return ReactDOM.createPortal(
+    <div className="fixed inset-0 gx-gv169" onClick={onClose} role="dialog" aria-label="Goal Visualizer">
+      <div className="bx" onClick={(e) => e.stopPropagation()}>
+        <div className="hd"><span>{title}</span><button type="button" className="xx" aria-label="Close" onClick={onClose}>{"×"}</button></div>
+        {children}
+      </div>
+    </div>, document.body);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
