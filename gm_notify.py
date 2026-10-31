@@ -454,9 +454,9 @@ if __name__ == "__main__":
             flush()
         except Exception as ex:
             print(f"(notify) WARNING: {ex}")
-        try:  # change 164: one-time EDGE tracking test
-            import gm_edge_probe
-            gm_edge_probe.run()
+        try:  # change 165: save NHL EDGE goal tracking for the app
+            import gm_edge
+            gm_edge.run()
         except Exception as ex:
             print(f"(edge probe) WARNING: {ex}")
         try:  # change 130: Monday note

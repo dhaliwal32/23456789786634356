@@ -1,9 +1,10 @@
 {
  "files": {
+  "fantasy-gm.html": true,
   "gm_notify.py": true,
-  "gm_edge_probe.py": false
+  "gm_edge.py": false
  },
  "changes": [
-  "164-edge-probe.py"
+  "165-goal-replay-on-ice.py"
  ]
 }
