@@ -1364,6 +1364,11 @@
   @keyframes gx173in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .gx-sc141 .gvb173 { animation: none; } }
   @media (max-width: 640px) { .gx-sc141 .gv173 { margin-left: 72px; } .gx-sc141 .gvb173 { padding: 0 12px 12px; } }
+  /* change 174 (install.py) */
+  .gx-wt174 { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 16px 10px; padding: 10px; border-radius: 10px; background: var(--card2, var(--bg)); border: 1px solid var(--line); color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; }
+  .gx-wt174 svg { width: 14px; height: 14px; fill: currentColor; }
+  .gx-wt174:active { transform: scale(.98); }
+  .gx-wi174 { flex: 1 1 220px; min-width: 0; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1372,7 +1377,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="kg7lwl.ihyfjt" data-file="build/app.js">
+<meta name="gx-build" content="shwt8n.k3r13k" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -5028,6 +5033,7 @@ function SetupPage({ s, setS, go, sub }) {
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
     <div className="gx-sr"><span>Projections</span><span className="text-sm">Combined</span></div>
     <div className="gx-sr"><span>Favourite team (Lines)</span><GxFavSel112 /></div>
+    <div className="gx-sr"><span>Watch link</span><GxWatchSel174 /></div>
     <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>One projection built from ESPN, the GM model and the AI, re-tested every night on every game played. The AI Lab shows how each one is doing.</div>
   </>);
   if (sub === "rules") return page("Pickup rules", <>
@@ -8731,6 +8737,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
       const aw = gxAb131((g.awayTeam || {}).abbrev), hm = gxAb131((g.homeTeam || {}).abbrev);
       extra = <>
         <div className="gx-gv141"><div className="tms">{rows2(g)}</div><div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div></div>
+        <a className="gx-wt174" href={gxWatchUrl174(gid)} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z" /></svg>Watch</a>
         <div className="gx-tb141">{[["game", "GAME"], ["fan", "FANTASY"], ["awayTeam", aw], ["homeTeam", hm]].map(([k, l]) => <button key={k} type="button" className={gt === k ? "on" : ""} onClick={() => setGt(k)}>{l}</button>)}</div>
       </>;
       const table = (list, gl) => {
@@ -9129,6 +9136,17 @@ function GxGvModal169({ title, onClose, children }) {
         {children}
       </div>
     </div>, document.body);
+}
+// ---------- change 174: Watch button link (install.py) ----------
+function gxWatchUrl174(id) {
+  let u = "";
+  try { u = String(uiGet().gxWatch174 || "").trim(); } catch (e) {}
+  if (u && !/^https?:\/\//i.test(u)) u = "https://" + u;
+  return u || "https://www.espn.com/nhl/game/_/gameId/" + id;
+}
+function GxWatchSel174() {
+  const [v, setV] = useState(() => { try { return uiGet().gxWatch174 || ""; } catch (e) { return ""; } });
+  return <input type="url" inputMode="url" className={inp + " gx-wi174"} placeholder="Blank = ESPN Gamecast for that game" value={v} onChange={(e) => { setV(e.target.value); uiSet("gxWatch174", e.target.value.trim()); }} />;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
