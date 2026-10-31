@@ -1253,6 +1253,10 @@
   .gx-h2h .gx-tp155 { font-size: 12px; color: var(--mute); margin-left: 6px; font-weight: 400; white-space: nowrap; }
   .gx-h2h .gx-pc .text-xs .m-inl { display: inline !important; }
   @media (max-width: 640px) { .gx-h2h .gx-tp155 { display: none; } }
+  /* change 157 (install.py) */
+  .gx-h2h .gx-on157[data-gx="138pts"] { color: var(--ink) !important; }
+  .gx-h2h.gx-tt147.gx-on157 > div:nth-child(2), .gx-h2h.gx-tt147.gx-on157 > div:nth-child(4) { color: var(--ink) !important; }
+  .gx-h2h .gx-fin, .gx-h2h > .gx-fin + div, .gx-h2h > div:has(+ .gx-fin) { opacity: 1 !important; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1261,7 +1265,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1xi2wpl.1xcuomi" data-file="build/app.js">
+<meta name="gx-build" content="15g7d2h.nshxv8" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2273,7 +2277,7 @@ function Matchup({ s, setS, wk, setWk }) {
     return (
       <div className={"min-w-0 gx-pc" + (p.st === "F" ? " gx-fin" : "")} style={{ flexDirection: right ? "row-reverse" : "row" }} onClick={() => setBx118(bx118 === p.id + "|" + p.dt ? "" : p.id + "|" + p.dt)}><span className="gx-fw" style={{ display: "inline-flex" }}><GxFace p={p} size={30} /></span><div className={"min-w-0" + (right ? " text-right" : "")} style={{ flex: 1 }}>
         <div className="truncate gx-nm"><button type="button" className="hover:underline text-left" onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.player(p); }}><span className="m-hide">{p.n}</span><span className="m-inl">{shortN(p.n)}</span></button><span className="gx-tl98"><TeamLogo t={p.t} size={15} /></span><span className="gx-tp155">{p.t + " " + p.p}</span></div>
-        <div className="text-xs text-slate-500 truncate">{p.st ? <>{gxOpp98(p)}<LiveTag st={p.st} t={p.t} dt={p.dt} />{null /* gx152 */}<span className="gx-st98">{line ? " " + line : ""}</span></> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>{p.st && line ? <div className="gx-sl98">{line}</div> : null}</div>
+        <div className="text-xs text-slate-500 truncate">{p.st ? <>{gxOpp98(p)}<LiveTag st={p.st} t={p.t} dt={p.dt} e157 />{null /* gx152 */}<span className="gx-st98">{line ? " " + line : ""}</span></> : <>{mGame(p)}{st ? " \u00b7 " + st.toLowerCase() : ""}</>}</div>{p.st && line ? <div className="gx-sl98">{line}</div> : null}</div>
       </div>
     );
   };
@@ -2283,7 +2287,7 @@ function Matchup({ s, setS, wk, setWk }) {
     if (v == null) return <div className={"text-slate-500" + (right ? "" : " text-right")}>{"\u2013"}</div>;
     if (state === "live" && !p.st) return <div className={right ? "" : "text-right"} data-gx="135n"><span style={{ color: "var(--faint)" }}>{"\u2013"}</span><div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }}><span className="m-hide">proj </span>{f1(v)}</div></div>;
     const win = state === "live" ? !!(q && q.st) && v - o >= 0.05 : o == null || v - o >= 0.05;
-    return <div className={right ? "" : "text-right"} style={null} data-gx="138pts">{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
+    return <div className={(right ? "" : "text-right") + (p.st ? " gx-on157" : "")} style={null} data-gx="138pts">{p.st && p.a == null ? "\u2013" : f1(v)}{p.st && p.x0 != null ? <div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400 }} data-gx="094p"><span className="m-hide">proj </span>{f1(p.x0)}</div> : null}</div>;
   };
   const sit = (l, id) => (l.bench && l.bench.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>{teamName(s, id)} would sit: {l.bench.map((p) => shortN(p.n)).join(", ")}</div> : null);
   const lv135 = (l) => (l.start || []).reduce((t, p) => t + (p.st ? +(p.a || 0) : 0), 0);
@@ -2326,7 +2330,7 @@ function Matchup({ s, setS, wk, setWk }) {
         <div style={{ display: "none" }} data-gx="152t">
           <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
         </div>
-        {rows.length ? <div className="gx-h2h gx-tt114 gx-tt147"><div>{state === "final" ? "Final" : state === "live" ? "Today" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
+        {rows.length ? <div className={"gx-h2h gx-tt114 gx-tt147" + (state !== "projected" ? " gx-on157" : "")}><div>{state === "final" ? "Final" : state === "live" ? "Today" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
         {rows.length ? rows.map(([sl, p, q], i) => (
           <React.Fragment key={i}>
           <div className={"gx-h2h" + (sl === "BE" && (!rows[i - 1] || rows[i - 1][0] !== "BE") ? " gx-be147" : "")} style={i ? null : { borderTop: 0 }}>
@@ -3877,7 +3881,7 @@ const gState = (t, dt) => {
   return dt && dt < todayISO() ? { s: "F", f: 1 } : { s: "P", f: 0 };
 };
 const gScore = (t, dt) => { const L = ((window.__LIVESC || {})[dt] || {})[t]; return L || ((((window.ESPN_DATA || {}).gstate || {})[dt]) || {})[t] || null; };
-const LiveTag = ({ st, t, dt }) => {
+const LiveTag = ({ st, t, dt, e157 }) => {
   // live tag v21: pill + score from the player's team's side (news_logos.py)
   if (st !== "L" && st !== "F") return null;
   const sc = t && dt ? gScore(t, dt) : null;
@@ -3887,7 +3891,7 @@ const LiveTag = ({ st, t, dt }) => {
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-middle">
       {null /* gx152 pills */}
-      {has ? <span className={"text-xs font-semibold " + ("text-slate-700" /* gx139 */)}>{res ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}</span></span> : null}
+      {has ? <span className={"text-xs font-semibold " + ("text-slate-700" /* gx139 */)}>{res && !e157 ? res + " " : ""}{sc.my}–{sc.op}<span className="font-normal text-slate-500">{tail}{e157 && st === "F" ? " Final" : ""}</span></span> : null}
     </span>
   );
 };
