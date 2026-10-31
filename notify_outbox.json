@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|f2e2bfa79681",
-   "at": "2026-10-24T22:45:19Z",
-   "title": "Pickup: ice time jump",
-   "text": "Andre Lee (F, LA) is playing 13.2 min per game lately, up +3.3 (PP +0.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|92e60dac66c4",
    "at": "2026-10-24T23:03:30Z",
    "title": "Pickup idea: bigger role",
@@ -3851,7 +3839,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T22:41:14Z"
+   "seen": "2026-10-31T22:47:21Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
