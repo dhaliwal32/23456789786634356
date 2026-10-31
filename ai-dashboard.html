@@ -61,6 +61,7 @@ details.grp[open]>summary{margin-bottom:12px}
 /* r52 no corners */
 section::before{display:none}
 </style>
+<script src="gx-lock.js"></script>
 </head>
 <body>
 <header>
@@ -411,7 +412,7 @@ function secOff(D) {
   const [rep, val, reg, proj, status, research] = await Promise.all([
     j("ai/report.json"), j("ai/models/validation.json"), j("ai/models/registry.json"),
     j("ai/models/ai_proj.json"), j("ai/models/status.json"), j("ai/research/log.json")]);
-  await loadScript("espn-data.js");
+  await window.gxLoadData156().catch(() => null); /* gx156 */
   const D = {rep, val, reg, proj, status, research, ED: window.ESPN_DATA || {}};
   const run = fns => fns.map(fn => { try { return fn(D); } catch (e) { return `<section><div class="empty">This section failed to load: ${esc(e.message)}</div></section>`; } }).join("");
   document.getElementById("app").innerHTML = run([secVerdict, secHealth, secOff, secPlayers])

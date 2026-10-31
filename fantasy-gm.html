@@ -12,7 +12,7 @@
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <!-- change 074 (gx074-head): Babel loads only when needed, see the loader at the end of the page -->
-<script>window.ESPN_DATA = null; document.write('<script src="espn-data.js?t=' + Date.now() + '"><\/script>');</script>
+<script>window.ESPN_DATA = null; document.write('<script data-boot="1" src="gx-lock.js?t=' + Date.now() + '"><\/script>');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
@@ -1261,7 +1261,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="185ixxf.1trhs16" data-file="build/app.js">
+<meta name="gx-build" content="1xi2wpl.1xcuomi" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1749,9 +1749,8 @@ function App() {
   useEffect(() => {
     if (!loaded) return;
     const poll129 = () => {
-      const sc = document.createElement("script");
-      sc.src = "espn-data.js?t=" + Date.now();
-      sc.onload = () => {
+      const sc = { remove() {} }; /* gx156: the data comes unscrambled from gx-lock.js */
+      const onl156 = () => {
         sc.remove();
         const E = window.ESPN_DATA;
         if (!E || !E.generated || E.generated === window.__GX102G) return;
@@ -1759,8 +1758,7 @@ function App() {
         tick((x) => x + 1);
         setS((st) => { if (E.generated === st.lastSync) return st; try { const n = applyESPN(st, E); setSyncMsg("Auto-updated " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })); return n; } catch (e) { return st; } });
       };
-      sc.onerror = () => sc.remove();
-      document.head.appendChild(sc);
+      if (window.gxLoadData156) window.gxLoadData156().then(onl156, () => {});
       const ls = document.createElement("script"); ls.src = "lines-data.js?t=" + Date.now(); ls.onload = ls.onerror = () => ls.remove(); document.head.appendChild(ls);
     };
     window.__gxPoll129 = poll129; /* gx129 */
@@ -8766,7 +8764,7 @@ function gxOrd152(s, id, l, dt, K) {
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
-(function () {
+window.__gxBoot156 = function () { /* gx156: runs once the password is in and the data is unscrambled */
   var started = false;
   function slow() {
     if (started) return;
@@ -8793,7 +8791,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
       document.body.appendChild(b);
     });
   } catch (e) { slow(); }
-})();
+};
+if (window.__gxReady156 || !window.gxLoadData156) window.__gxBoot156();
 </script>
 </body>
 </html>

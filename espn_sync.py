@@ -514,6 +514,11 @@ except Exception as ex:
 
 with open(OUT, "w", encoding="utf-8") as f:
     f.write("window.ESPN_DATA = " + json.dumps(data) + ";\n")
+try:  # change 156: the published copy is scrambled; only the app password opens it
+    import gm_lock
+    gm_lock.write_enc(os.path.join(HERE, "espn-data.enc.js"), json.dumps(data))
+except Exception as ex:
+    print(f"(lock) could not write espn-data.enc.js: {ex}")
 
 rostered = sum(1 for p in players if p["ft"])
 print(f"League: {data['leagueName']}  |  current week: {current}")

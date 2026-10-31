@@ -1,0 +1,7 @@
+__pycache__/
+secrets_local.py
+.env
+.env.*
+*.bak
+*.pyc
+*.tmp

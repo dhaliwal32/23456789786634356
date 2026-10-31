@@ -5,3 +5,4 @@ secrets_local.py
 *.bak
 *.pyc
 *.tmp
+espn-data.js
