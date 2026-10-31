@@ -104,9 +104,11 @@
 "now": "2026-11-03"
 },
 "3042044": {
-"d": "2026-10-29",
-"k": "new",
-"now": "2026-10-31"
+"d": "2026-10-31",
+"k": "later",
+"nd": "2026-10-31",
+"now": "2026-11-21",
+"was": "2026-10-31"
 },
 "3042062": {
 "d": "2026-10-28",
@@ -205,10 +207,10 @@
 "now": "2026-11-04"
 },
 "3151036": {
-"d": "2026-10-30",
+"d": "2026-10-31",
 "k": "later",
-"nd": "2026-10-30",
-"now": "2026-11-14",
+"nd": "2026-10-31",
+"now": "2026-11-25",
 "was": "2026-10-29"
 },
 "3151784": {
@@ -755,9 +757,9 @@
 "status": "Day-To-Day"
 },
 "3042044": {
-"back": "2026-10-31",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-21",
+"note": "Burakovsky (lower body) is expected to miss the next 3-4 weeks, Jackson Starr of the Senators' official site reports Saturday.",
+"status": "Out"
 },
 "3042085": {
 "back": "2026-11-28",
@@ -840,8 +842,8 @@
 "status": "Suspension"
 },
 "3151036": {
-"back": "2026-11-14",
-"note": "Foegele (knee) was placed on injured reserve Friday, per Bruce Garrioch of Postmedia.",
+"back": "2026-11-25",
+"note": "Foegele (knee) will miss 3-4 weeks, Jackson Starr of the Senators' official site reports Saturday.",
 "status": "Injured Reserve"
 },
 "3151038": {
