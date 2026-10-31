@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_edge.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "171-wider-side-no-shootout.py"
+  "172-replay-phone-smooth-zoom.py"
  ]
 }
