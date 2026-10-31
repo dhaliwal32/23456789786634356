@@ -458,6 +458,12 @@
 "now": "2026-11-12",
 "was": "2026-10-24"
 },
+"4874720": {
+"d": "2026-10-31",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-10-31"
+},
 "4874722": {
 "d": "2026-10-29",
 "k": "new",
@@ -470,10 +476,10 @@
 "was": "Out"
 },
 "4894355": {
-"d": "2026-10-29",
+"d": "2026-10-31",
 "k": "later",
 "nd": "2026-10-29",
-"now": "2026-10-31",
+"now": "2026-11-08",
 "was": "2026-10-29"
 },
 "4894398": {
@@ -1018,7 +1024,7 @@
 "status": "Injured Reserve"
 },
 "4874720": {
-"back": "2026-10-31",
+"back": "2026-11-28",
 "note": "Edvinsson (contract dispute) is on the Red Wings' injured, non-roster list, per the NHL media site Wednesday.",
 "status": "Injured Reserve"
 },
@@ -1048,7 +1054,7 @@
 "status": "Injured Reserve"
 },
 "4894355": {
-"back": "2026-10-31",
+"back": "2026-11-08",
 "note": "Danforth (upper body) was placed on injured reserve Thursday, per the NHL media site.",
 "status": "Injured Reserve"
 },
