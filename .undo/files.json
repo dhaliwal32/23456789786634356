@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_edge.py": true
  },
  "changes": [
-  "170-scorer-ring.py"
+  "171-wider-side-no-shootout.py"
  ]
 }
