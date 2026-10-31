@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|a223aefd0c5e",
-   "at": "2026-10-24T17:16:05Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Collin Graf (SJ) promoted: 3rd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T17:16:05Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|9da5e42b078b",
    "at": "2026-10-24T17:51:38Z",
    "title": "Lineup: starter is OUT",
@@ -4014,7 +4002,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T16:49:08Z",
-   "seen": "2026-10-31T17:14:19Z"
+   "seen": "2026-10-31T17:20:20Z"
   },
   {
    "k": "2026-10-31|df0eb0c5091e",
@@ -4026,7 +4014,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T17:14:19Z"
+   "seen": "2026-10-31T17:20:20Z"
   }
  ],
  "sent": {
