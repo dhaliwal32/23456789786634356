@@ -6,6 +6,8 @@ const B = require("/tmp/babel/node_modules/@babel/standalone");
 
 const hash = (t) => { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); };
 const OPEN = '<script type="text/babel">';
+// change 168: a page older than this build reloads itself once (GitHub serves the newest build to every page)
+const GUARD168 = (h) => '(function(){var p=window.__GX_PAGE;if(!p||p==="' + h + '")return;var k="gx168-reload";var s="";try{s=sessionStorage.getItem(k)||"";}catch(e){}if(s===p)return;try{sessionStorage.setItem(k,p);}catch(e){}location.replace(location.pathname+"?v="+Date.now()+location.hash);throw new Error("gx168: reloading a newer page");})();\n';
 const META = /[ \t]*<meta name="gx-build"[^>]*>\n?/g;
 const log = [];
 const say = (x) => { console.log(x); log.push("- " + x.replace(/^\(build\) /, "")); };
@@ -47,7 +49,7 @@ function buildPage(page, appOut) {
   if (a < 0) { say("(build) " + page + ": no app code found, skipped"); return; }
   const b = html.indexOf("</script>", a);
   const src = html.slice(a + OPEN.length, b);
-  const app = "/* built from " + page + " - do not edit, run Install changes instead */\n" + trApp(src, page);
+  const app = "/* built from " + page + " - do not edit, run Install changes instead */\n" + GUARD168(hash(src)) + trApp(src, page);
   const ver = hash(parts["build/lines-tab.js"] + parts["build/ask-panel.js"] + app);
   const tag = '<meta name="gx-build" content="' + hash(src) + "." + ver + '" data-file="' + appOut + '">\n';
   html = html.replace(META, "").replace("</head>", tag + "</head>");
