@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|431912c0407c",
-   "at": "2026-10-24T21:38:31Z",
-   "title": "Your player: injury update",
-   "text": "Jared McCann (SEA) injury status: Out -> Injury Reserve",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-24T21:38:31Z"
-  },
-  {
    "k": "2026-10-24|21d9151d8912",
    "at": "2026-10-24T22:02:14Z",
    "title": "Possible scratch tonight",
@@ -3873,7 +3862,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T21:33:19Z"
+   "seen": "2026-10-31T21:39:18Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
