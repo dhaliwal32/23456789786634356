@@ -96,7 +96,7 @@ def run():
             nm = (((r.get("firstName") or {}).get("default") or "") + " " + ((r.get("lastName") or {}).get("default") or "")).strip()
             ro[str(r.get("playerId"))] = [nm, r.get("positionCode") or "", r.get("sweaterNumber"), tid.get(r.get("teamId"), "")]
         for p in pbp.get("plays") or []:
-            if p.get("typeDescKey") != "goal" or not p.get("pptReplayUrl"):
+            if p.get("typeDescKey") != "goal" or not p.get("pptReplayUrl") or (p.get("periodDescriptor") or {}).get("periodType") == "SO":  # change 171
                 continue
             key = f"{gid}-{p.get('eventId')}"
             old = G.get(key) or {}

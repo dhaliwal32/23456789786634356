@@ -1346,7 +1346,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1a372an.1aotstj" data-file="build/app.js">
+<meta name="gx-build" content="m37fu8.1ontxsz" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9019,7 +9019,7 @@ function GxEdge165({ e, s, x }) {
       <svg viewBox="-102 -45 204 90" role="img" aria-label="Goal replay with every player on the ice">
         {gxRinkBg165()}
         {row.map((o) => (o[0] ? (
-          <g key={"p" + o[0]}><circle cx={o[3]} cy={o[4]} r="3.7" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 0)} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 1)}>{o[2]}</text></g>
+          <g key={"p" + o[0]}>{F.scorer && String(o[0]) === String(F.scorer) ? <><circle cx={o[3]} cy={o[4]} r="5.6" fill="none" stroke="#111111" strokeWidth="0.35" opacity=".6" /><circle cx={o[3]} cy={o[4]} r="5.2" fill="none" stroke={C169.sc.f} strokeWidth="1" data-gx="170" /></> : null}<circle cx={o[3]} cy={o[4]} r="3.7" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 0)} /><text x={o[3]} y={o[4] + 1.25} textAnchor="middle" fontSize="3.4" className="t169" style={gxCol169(o[1] === scT ? C169.sc : C169.ot, 1)}>{o[2]}</text></g>
         ) : null))}
         {row.filter((o) => !o[0]).map((o, j) => <circle key={"pk" + j} cx={o[3]} cy={o[4]} r="1.5" className="pk" />)}
       </svg>

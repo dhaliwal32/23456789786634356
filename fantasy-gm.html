@@ -1338,6 +1338,12 @@
   .gx-gv169 .gx-rk163 .tl small { font-size: 12px; }
   .gx-gv169 .gx-ed165 .ct button { font-size: 14px; padding: 7px 14px; }
   .gx-gv169 .gx-ed165 .ol { font-size: 14px; }
+  /* change 171 (install.py) */
+  @media (min-width: 1300px) {
+    .gx-mu141 { grid-template-columns: minmax(0, 1fr) 450px; gap: 22px; }
+  }
+  .gx-sd141 .gs .asl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-sd141 .gs .tp .min-w-0 > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1346,7 +1352,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="m37fu8.1ontxsz" data-file="build/app.js">
+<meta name="gx-build" content="11nl2im.1rfkkxw" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8475,6 +8481,7 @@ function gxLanding132(sm) {
   ((sm || {}).plays || []).forEach((e) => {
     if (!e.scoringPlay) return;
     const n = (e.period || {}).number || 1, ps = e.participants || [], sco = ps.find((p) => p.type === "scorer") || {}, at = sco.athlete || {};
+    if (n >= 5 || /shootout/i.test(String((e.type || {}).text || "") + " " + String(((e.period || {}).displayValue) || ""))) return; /* gx171: shootout goals do not count */
     const st = ((e.strength || {}).abbreviation) || "";
     (by[n] = by[n] || { periodDescriptor: gxPd132(n), goals: [] }).goals.push({
       name: { default: at.displayName || "" }, teamAbbrev: { default: ab[String((e.team || {}).id)] || "" }, headshot: (at.headshot || {}).href || "",
