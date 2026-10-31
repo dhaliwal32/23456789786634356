@@ -158,7 +158,7 @@
 "d": "2026-10-31",
 "k": "later",
 "nd": "2026-10-27",
-"now": "2026-11-03",
+"now": "2026-10-31",
 "was": "2026-10-27"
 },
 "3069448": {
@@ -384,10 +384,10 @@
 "was": "2026-10-31"
 },
 "4565225": {
-"d": "2026-10-30",
-"k": "dtd",
-"now": "2026-10-31",
-"was": "Out"
+"d": "2026-10-31",
+"k": "later",
+"now": "2026-11-02",
+"was": "2026-10-31"
 },
 "4565226": {
 "d": "2026-10-31",
@@ -489,9 +489,9 @@
 "was": "2026-10-31"
 },
 "4874722": {
-"d": "2026-10-29",
-"k": "new",
-"now": "2026-10-31"
+"d": "2026-10-31",
+"k": "back",
+"was": ""
 },
 "4874733": {
 "d": "2026-10-31",
@@ -787,7 +787,7 @@
 "status": "Injured Reserve"
 },
 "3069352": {
-"back": "2026-11-03",
+"back": "2026-10-31",
 "note": "Lindell (lower body) is expected to return to the Stars' lineup within the next 4-7 days, per Owen Newkirk of DLLS Sports.",
 "status": "Injured Reserve"
 },
@@ -1012,9 +1012,9 @@
 "status": "Injured Reserve"
 },
 "4565225": {
-"back": "2026-10-31",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-02",
+"note": "out",
+"status": "Out"
 },
 "4565226": {
 "back": "2026-11-04",
@@ -1070,11 +1070,6 @@
 "back": "2027-01-05",
 "note": "Eklund had surgery to repair a torn ankle tendon and will be out 10-12 weeks, Bruce Garrioch of Postmedia reports Thursday.",
 "status": "Injured Reserve"
-},
-"4874722": {
-"back": "",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4874733": {
 "back": "2026-10-31",
