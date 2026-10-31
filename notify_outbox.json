@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|92e60dac66c4",
-   "at": "2026-10-24T23:03:30Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Josh Norris (BUF) promoted: 3rd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T23:03:30Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|9eee1bee16ee",
-   "at": "2026-10-24T23:03:30Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Ryan Shea (EDM) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-24T23:03:30Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|dff64d958475",
    "at": "2026-10-25T00:04:35Z",
    "title": "Pickup: new PP1 free agent",
@@ -3839,7 +3815,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T22:58:23Z"
+   "seen": "2026-10-31T23:04:33Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
@@ -3864,6 +3840,18 @@
    "via": "urgent",
    "sent_at": "2026-10-31T19:28:53Z",
    "seen": "2026-10-31T19:28:53Z"
+  },
+  {
+   "k": "2026-10-31|b58505417a4e",
+   "at": "2026-10-31T23:04:58Z",
+   "title": "Fantasy GM",
+   "text": "Newhook joined MTL PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-10-31T23:04:58Z",
+   "seen": "2026-10-31T23:04:58Z"
   }
  ],
  "sent": {
