@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|bb2cc3c8ac3a",
-   "at": "2026-10-24T18:46:31Z",
-   "title": "Pickup: ice time jump",
-   "text": "Daemon Hunt (D, NSH) is playing 17.5 min per game lately, up +5.2 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|f49abd0da3d6",
    "at": "2026-10-24T19:17:46Z",
    "title": "Your player: lineup change",
@@ -3992,7 +3980,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T18:45:28Z"
+   "seen": "2026-10-31T18:46:37Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
