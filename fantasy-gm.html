@@ -1275,7 +1275,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="k3frrm.1gfbkos" data-file="build/app.js">
+<meta name="gx-build" content="17x9nye.x3xr0k" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1746,7 +1746,7 @@ function App() {
       if (window.gxLive120) window.gxLive120(js, () => tick((x) => x + 1));
     }).catch(() => {});
     pull();
-    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull(); }, 10 * 1000); /* gx120 */
+    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull(); }, 2 * 1000); /* gx120 gx162 */
     const vis152 = () => { if (!document.hidden) { G120.busy = false; pull(); } }; /* gx152 */
     document.addEventListener("visibilitychange", vis152); window.addEventListener("focus", vis152);
     return () => { dead = true; clearInterval(id); document.removeEventListener("visibilitychange", vis152); window.removeEventListener("focus", vis152); };
@@ -8344,8 +8344,8 @@ function gxNow132(js) {
 // one ESPN game summary, shared by the box score, power play and goal readers (kept 10 seconds)
 function gxSum132(id) {
   const c = G132.sum[id];
-  if (c && (c.p || Date.now() - c.at < 10000)) return c.p ? c.p : Promise.resolve(c.js);
-  const p = fetch(GX_E132 + "summary?event=" + id + "&_=" + Math.floor(Date.now() / 5000)).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((js) => { G132.sum[id] = { js, at: Date.now() }; return js; });
+  if (c && (c.p || Date.now() - c.at < 2000)) return c.p ? c.p : Promise.resolve(c.js);
+  const p = fetch(GX_E132 + "summary?event=" + id + "&_=" + Math.floor(Date.now() / 2000)).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((js) => { G132.sum[id] = { js, at: Date.now() }; return js; });
   G132.sum[id] = { p, at: Date.now(), js: c && c.js };
   return p;
 }
@@ -8421,7 +8421,7 @@ function gxLanding132(sm) {
     const s = typeof u === "string" ? u : (u && u.url) || "";
     if (s.indexOf("https://api-web.nhle.com/v1/") !== 0) return nf(u, o);
     const path = s.slice(28).split("?")[0];
-    if (path === "score/now") return nf(GX_E132 + "scoreboard?dates=" + todayISO().replace(/-/g, "") + "&_=" + Math.floor(Date.now() / 5000)).then((r) => (r.ok ? r.json() : null)).then((js) => ok(js ? gxNow132(js) : null)).catch(() => ok(null));
+    if (path === "score/now") return nf(GX_E132 + "scoreboard?dates=" + todayISO().replace(/-/g, "") + "&_=" + Math.floor(Date.now() / 2000)).then((r) => (r.ok ? r.json() : null)).then((js) => ok(js ? gxNow132(js) : null)).catch(() => ok(null));
     const m = path.match(/^gamecenter\/([^/]+)\/(boxscore|play-by-play|landing)$/);
     if (!m) return nf(u, o);
     return gxSum132(m[1]).then((sm) => ok(sm ? (m[2] === "boxscore" ? gxBox132(sm) : m[2] === "play-by-play" ? gxPbp132(sm) : gxLanding132(sm)) : null));
