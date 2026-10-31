@@ -1,66 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|356575ff8958",
-   "at": "2026-10-24T20:24:21Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tristan Luneau (D, ANA) is playing 19.6 min per game lately, up +4.2 (PP +0.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|1f07dfeb7188",
-   "at": "2026-10-24T20:24:21Z",
-   "title": "Pickup: ice time jump",
-   "text": "Oliver Bonk (D, PHI) is playing 20.1 min per game lately, up +3.4 (PP +1.9). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|ec09aa2a6eb1",
-   "at": "2026-10-24T20:24:21Z",
-   "title": "Pickup: ice time jump",
-   "text": "Denver Barkey (F, PHI) is playing 15.1 min per game lately, up +1.5 (PP +1.5). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|2868f1c8cbb2",
-   "at": "2026-10-24T20:24:21Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tyson Hinds (D, ANA) is playing 18.7 min per game lately, up +3.8 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|f00bbec82053",
-   "at": "2026-10-24T20:24:21Z",
-   "title": "Pickup: ice time jump",
-   "text": "Judd Caulfield (F, ANA) is playing 13.0 min per game lately, up +0.7 (PP +1.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|431912c0407c",
    "at": "2026-10-24T21:38:31Z",
    "title": "Your player: injury update",
@@ -3933,7 +3873,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T20:23:48Z"
+   "seen": "2026-10-31T20:29:47Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
