@@ -1305,6 +1305,20 @@
   .gx-ed165 .dd166 { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 8px; padding: 8px; border-radius: 8px; background: var(--card2, var(--bg)); color: var(--mute); font-size: 13px; }
   .gx-ed165 .dd166 i { font-style: normal; display: inline-block; transition: transform .25s ease; }
   .gx-ed165 .dd166 i.up { transform: rotate(180deg); }
+  /* change 167 (install.py) */
+  .gx-sd141 .gs { align-items: flex-start; padding: 14px 10px 14px 6px; }
+  .gx-sd141 .gs .ar { margin-top: 10px; }
+  .gx-sd141 .gs .tp { align-items: center; gap: 12px; }
+  .gx-sd141 .gs .nm { color: var(--ink); font-size: 15px; font-weight: 600; line-height: 1.3; }
+  .gx-sd141 .gs .nm button { color: inherit; }
+  .gx-sd141 .gs .sm { font-size: 12.5px; color: var(--mute); line-height: 1.45; }
+  .gx-sd141 .gs .mb { align-self: center; }
+  .gx-sd141 .gs .asl { font-size: 13px; line-height: 1.45; margin-top: 10px; padding-left: 58px; }
+  .gx-sd141 .gs .asl button { color: var(--ink); }
+  .gx-sd141 .gv167 { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 12px; padding: 9px; border-radius: 8px; background: var(--card2, var(--bg)); color: var(--ink); font-size: 13px; font-weight: 600; }
+  .gx-sd141 .gv167 i { font-style: normal; display: inline-block; transition: transform .25s ease; }
+  .gx-sd141 .gv167 i.up { transform: rotate(180deg); }
+  .gx-sd141 .gs .gx-rk163 { margin-top: 10px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1313,7 +1327,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="19xxln.1rig02n" data-file="build/app.js">
+<meta name="gx-build" content="nhn21o.1cvw48o" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8627,7 +8641,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
                   <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
                   <div className="mb"><TeamLogo t={gxAb131((r.g.awayTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.awayTeam || {}).abbrev)}</span><b>{r.x.awayScore}</b><TeamLogo t={gxAb131((r.g.homeTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.homeTeam || {}).abbrev)}</span><b>{r.x.homeScore}</b></div>
                 </div>
-                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? <GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /> : null}
+                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /> : null}</>; })() : null}
               </div>
               <button type="button" className="ar" aria-label="Later goal" disabled={idx >= n - 1} onClick={() => setGi(idx + 1 >= n - 1 ? null : idx + 1)}>{"\u203a"}</button>
             </div>
