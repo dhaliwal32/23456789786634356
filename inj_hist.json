@@ -144,10 +144,11 @@
 "was": "2026-10-22"
 },
 "3069341": {
-"d": "2026-10-30",
-"k": "new",
+"d": "2026-10-31",
+"k": "later",
 "nd": "2026-10-30",
-"now": "2026-10-31"
+"now": "2026-11-03",
+"was": "2026-10-31"
 },
 "3069342": {
 "d": "2026-10-28",
@@ -777,9 +778,9 @@
 "status": "Injured Reserve"
 },
 "3069341": {
-"back": "2026-10-31",
-"note": "Parayko didn't practice Friday due to an upper-body injury but is considered probable for Saturday's game against the Red Wings, Lou Korac of NHL.com reports.",
-"status": "Day-To-Day"
+"back": "2026-11-03",
+"note": "out",
+"status": "Out"
 },
 "3069342": {
 "back": "2026-11-07",
