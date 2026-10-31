@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|21d9151d8912",
-   "at": "2026-10-24T22:02:14Z",
-   "title": "Possible scratch tonight",
-   "text": "Charle-Edouard D'Astous (TB, 6:00 PM) is not in tonight's lineup on Daily Faceoff - he may be scratched or hurt. Check and swap him out before puck drop.",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-24T22:02:14Z"
-  },
-  {
    "k": "2026-10-24|f2e2bfa79681",
    "at": "2026-10-24T22:45:19Z",
    "title": "Pickup: ice time jump",
@@ -3862,7 +3851,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-10-31T21:57:13Z"
+   "seen": "2026-10-31T22:03:20Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
