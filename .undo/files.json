@@ -1,10 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_notify.py": true,
-  "gm_edge.py": false
+  "fantasy-gm.html": true
  },
  "changes": [
-  "165-goal-replay-on-ice.py"
+  "166-on-ice-dropdown.py"
  ]
 }
