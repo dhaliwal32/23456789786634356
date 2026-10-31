@@ -1,8 +1,14 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "ai-dashboard.html": true,
+  "ai-history.html": true,
+  "espn_sync.py": true,
+  ".gitignore": true,
+  "gm_lock.py": false,
+  "gx-lock.js": false
  },
  "changes": [
-  "155-matchup-team-like-espn.py"
+  "156-password-lock.py"
  ]
 }

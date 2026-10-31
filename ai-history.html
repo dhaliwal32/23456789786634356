@@ -67,6 +67,7 @@ select option{background:var(--card);color:var(--tx)}
   .mg{grid-template-columns:minmax(0,1fr) 40px 40px 40px 40px 52px;gap:4px}
 }
 </style>
+<script src="gx-lock.js"></script>
 </head>
 <body>
 <header>
@@ -388,7 +389,7 @@ async function drawMatch() {
 
 // ---------- start ----------
 (async () => {
-  await loadScript("espn-data.js");
+  await window.gxLoadData156().catch(() => null); /* gx156 */
   const E = window.ESPN_DATA || {}, today = todayET();
   if (!E.teams) { $("app").innerHTML = `<section><div class="empty">Could not load the league data (espn-data.js). Try again in a few minutes.</div></section>`; return; }
   const weeks = appWeeks(E).filter(w => w.dates[0] <= today);
