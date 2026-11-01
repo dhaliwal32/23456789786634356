@@ -3441,6 +3441,16 @@
    "via": "urgent",
    "sent_at": "2026-11-01T04:03:14Z",
    "seen": "2026-11-01T06:54:37Z"
+  },
+  {
+   "k": "2026-11-01|8e731e922ce7",
+   "at": "2026-11-01T07:00:38Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-01T07:00:38Z"
   }
  ],
  "sent": {
