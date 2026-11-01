@@ -1,61 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|4921ead5553a",
-   "at": "2026-10-25T04:03:15Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Sam Reinhart (FLA, 12:00 PM) is on your bench with a game today, while Mika Zibanejad (NYR) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T04:03:15Z"
-  },
-  {
-   "k": "2026-10-24|29c19a10b403",
-   "at": "2026-10-25T04:03:15Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Scott Wedgewood (COL, 5:00 PM) is on your bench with a game today, while Lukas Dostal (ANA) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T04:03:15Z"
-  },
-  {
-   "k": "2026-10-24|82e953bdda39",
-   "at": "2026-10-25T04:03:15Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Sam Bennett (FLA, 12:00 PM) is on your bench with a game today, while Mika Zibanejad (NYR) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T04:03:15Z"
-  },
-  {
-   "k": "2026-10-24|32c5c1637670",
-   "at": "2026-10-25T04:03:15Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Patrick Kane (CHI, 12:00 PM) is on your bench with a game today, while Mika Zibanejad (NYR) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T04:03:15Z"
-  },
-  {
-   "k": "2026-10-24|228e455ef23e",
-   "at": "2026-10-25T04:03:15Z",
-   "title": "Lineup: bench player has a game",
-   "text": "Gabriel Vilardi (WPG, 4:00 PM) is on your bench with a game today, while Mika Zibanejad (NYR) is starting with no game. Swap them.",
-   "section": "lineup",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T04:03:15Z"
-  },
-  {
    "k": "2026-10-24|dedccf2938a6",
    "at": "2026-10-25T04:33:15Z",
    "title": "Pickup: ice time jump",
@@ -3555,7 +3500,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-01T04:03:14Z",
-   "seen": "2026-11-01T04:03:14Z"
+   "seen": "2026-11-01T04:09:14Z"
   }
  ],
  "sent": {
