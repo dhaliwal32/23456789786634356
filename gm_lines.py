@@ -503,11 +503,60 @@ def relevance(ch, p):
     return None
 
 
+def star_left180(prev, cur, players, now, new):
+    """change 180: your player or a free agent who was on a top-30 forward's line and no longer is"""
+    fw = [p for p in players if p.get("p") == "F"]
+    stars = {norm(p["n"]): p["n"] for p in sorted(fw, key=lambda p: -(p.get("pavg") or 0))[:30]}
+    pl = {}
+    for p in players:
+        if p.get("p") == "F":
+            pl.setdefault(norm(p["n"]), p)
+    byk = {(c["team"], c["key"]): c for c in new if c.get("type") in ("line", "lineup")}
+    out = []
+    for t, pv in (prev or {}).items():
+        cv = (cur or {}).get(t) or {}
+        if pv == cv or not (complete(pv) and complete(cv)):
+            continue
+        slot_now = {}
+        for s in ES:
+            if s.startswith("F"):
+                for n in cv.get(s) or []:
+                    slot_now[norm(n)] = s
+        for s in ES:
+            if not s.startswith("F"):
+                continue
+            names = pv.get(s) or []
+            had = [x for x in names if norm(x) in stars]
+            for n in names:
+                k = norm(n)
+                if k in stars:
+                    continue
+                p = pl.get(k)
+                if not p or not ((p.get("ft") or 0) == MY_TEAM_ID or not p.get("ft")):
+                    continue
+                sk = slot_now.get(k)
+                gone = [x for x in had if sk is None or slot_now.get(norm(x)) != sk]
+                if not gone:
+                    continue
+                star = stars[norm(gone[0])]
+                c = byk.get((t, k))
+                if c:
+                    if c.get("who") != "star":
+                        c["who"], c["star"] = "starleft", star
+                    continue
+                c = chg(now, "line", t, n, f"{n} ({t}) is no longer on {star}'s line", "", s, s, "F")
+                c["who"], c["star"], c["e"] = "starleft", star, str(p["id"])
+                out.append(c)
+    return out
+
+
 def alert_for(c):
     # change 121: a few words only, and only power play joins and watched players coming back
     last = str(c.get("name") or "").split()[-1] if c.get("name") else ""
     if c.get("who") == "star" and c.get("star"):
         return "Fantasy GM", f"{last} joined {str(c['star']).split()[-1]}'s line ({c['team']})"
+    if c.get("who") == "starleft" and c.get("star"):  # change 180
+        return "Fantasy GM", f"{last} left {str(c['star']).split()[-1]}'s line ({c['team']})"
     if c["type"] == "pp" and c["dir"] == "up" and c.get("who") in ("mine", "fa"):
         return "Fantasy GM", f"{last} joined {c['team']} PP1"
     if c.get("who") == "watch":
@@ -583,6 +632,7 @@ def run(force=False):
     if not due and not any("no" in v for pl in (state.get("rosters") or {}).values() for v in pl.values()):
         print("(lines) no jersey numbers saved yet - reading rosters now")
         due = True
+    prev180 = copy.deepcopy(state.get("lines") or {})  # change 180: lines before this read
     new = []
     if due:
         for name, fn in (("lines", step_lines), ("rosters", step_rosters)):
@@ -619,6 +669,11 @@ def run(force=False):
                 c["who"], c["star"] = "star", star[0]
     except Exception:
         print(f"(lines) WARNING star line check failed:\n{traceback.format_exc()}")
+    # change 180: your player or a free agent leaving a superstar's line
+    try:
+        new += star_left180(prev180, state.get("lines") or {}, players, now, new)
+    except Exception:
+        print(f"(lines) WARNING star line left check failed:\n{traceback.format_exc()}")
     old = state.get("changes") or []
     ids = {c["id"] for c in old}
     fresh = [c for c in new if c["id"] not in ids]
@@ -712,6 +767,20 @@ def selftest():
     check("my player is alert-worthy", relevance({"type": "line", "dir": "down", "to": "F3"}, p_mine) == "mine")
     check("free agent promoted to F2 is alert-worthy", relevance({"type": "line", "dir": "up", "to": "F2"}, p_fa) == "fa")
     check("free agent moved to F3 is not", relevance({"type": "line", "dir": "up", "to": "F3"}, p_fa) is None)
+    # change 180 checks
+    pls = [{"id": "e1", "n": "Aa One", "p": "F", "pavg": 9, "ft": 7}, {"id": "e2", "n": "Bb One", "p": "F", "pavg": 2, "ft": MY_TEAM_ID},
+           {"id": "e3", "n": "Cc One", "p": "F", "pavg": 2, "ft": 0}, {"id": "e4", "n": "Dd Two", "p": "F", "pavg": 2, "ft": 5}]
+    pls += [{"id": "x%d" % i, "n": "Star Number%d" % i, "p": "F", "pavg": 8, "ft": 6} for i in range(29)]
+    b180 = copy.deepcopy(base)
+    c180 = copy.deepcopy(base)
+    c180["F1"] = ["Aa One", "Dd Two", "Ee Two"]
+    c180["F2"] = ["Bb One", "Cc One", "Ff Two"]
+    left = star_left180({"TOR": b180}, {"TOR": c180}, pls, now, [])
+    check("your player off a star's line is found", any(c["name"] == "Bb One" and c["who"] == "starleft" and c["star"] == "Aa One" for c in left))
+    check("free agent off a star's line is found", any(c["name"] == "Cc One" for c in left))
+    check("other team's player is not", not any(c["name"] == "Dd Two" for c in left))
+    check("left alert text", alert_for(left[0]) == ("Fantasy GM", left[0]["name"].split()[-1] + " left One's line (TOR)"))
+    check("no change, no alert", not star_left180({"TOR": b180}, {"TOR": copy.deepcopy(b180)}, pls, now, []))
     print("INFO  " + txt[:300])
     print(f"\n{sum(ok)}/{len(ok)} checks passed" + ("" if all(ok) else "  <-- SOMETHING FAILED"))
     return 0 if all(ok) else 1
