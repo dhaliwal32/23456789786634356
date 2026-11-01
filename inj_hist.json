@@ -232,9 +232,8 @@
 },
 "3900169": {
 "d": "2026-11-01",
-"k": "later",
-"now": "2026-11-01",
-"was": "2026-10-24"
+"k": "back",
+"was": ""
 },
 "3900219": {
 "d": "2026-10-29",
@@ -370,10 +369,9 @@
 "now": "2026-11-01"
 },
 "4392072": {
-"d": "2026-10-27",
-"k": "later",
-"now": "2026-11-01",
-"was": "2026-10-24"
+"d": "2026-11-01",
+"k": "back",
+"was": "2026-11-01"
 },
 "4392454": {
 "d": "2026-10-27",
@@ -383,6 +381,7 @@
 "4419679": {
 "d": "2026-11-01",
 "k": "new",
+"nd": "2026-11-01",
 "now": "2026-11-03"
 },
 "4419778": {
@@ -837,11 +836,6 @@
 "note": "Barzal (knee) will not join the Islanders for their two-game road trip, Andrew Gross of Newsday reports Thursday.",
 "status": "Injured Reserve"
 },
-"3900169": {
-"back": "",
-"note": "Konecny (lower body) was placed on injured reserve Sunday, according to the NHL media site.",
-"status": "Injured Reserve"
-},
 "3904178": {
 "back": "2026-11-03",
 "note": "day-to-day",
@@ -957,11 +951,6 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
-"4392072": {
-"back": "2026-11-01",
-"note": "Tippett (upper body) was placed on injured reserve Monday, per the NHL media site.",
-"status": "Injured Reserve"
-},
 "4392260": {
 "back": "2026-12-05",
 "note": "ir",
@@ -969,7 +958,7 @@
 },
 "4419679": {
 "back": "2026-11-03",
-"note": "out",
+"note": "Koepke (undisclosed) was unavailable for Sunday's game against Carolina, according to Mike McIntyre of the Winnipeg Free Press.",
 "status": "Out"
 },
 "4419778": {
