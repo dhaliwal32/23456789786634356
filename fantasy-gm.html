@@ -1407,6 +1407,11 @@
   .gx-gc140 .c179 .od .x { overflow: hidden; max-height: 0; transition: max-height .28s ease; }
   .gx-gc140 .c179 .od .x.on { max-height: 60px; }
   .gx-gc140 .c179 .od .x > div { padding: 0 12px 10px; text-align: center; color: var(--mute); }
+  /* change 181 (install.py) */
+  .gx-sd141 .gm.c181 { cursor: pointer; }
+  .gx-sd141 .gm .st.w181 { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .gx-sd141 .gm .wt181 { display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 12px; border-radius: 999px; background: #5b7cf0; color: #fff; font-size: 12px; font-weight: 600; text-decoration: none; }
+  .gx-sd141 .gm .wt181:hover { filter: brightness(1.1); }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1415,7 +1420,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="jjr1bz.12jvt0u" data-file="build/app.js">
+<meta name="gx-build" content="pz7q3h.qzo3yo" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8765,13 +8770,13 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
             const ta = gxAb131((g.awayTeam || {}).abbrev), th = gxAb131((g.homeTeam || {}).abbrev);
             return (
               <React.Fragment key={g.id}>
-              <button type="button" className="gm" onClick={() => openGame(g.id)}>
+              <div role="button" tabIndex={0} className="gm c181" onClick={() => openGame(g.id)}>
                 <div className="tms">{rows2(g)}</div>
-                {pre(g) ? (() => { const d = g.startTimeUTC ? new Date(g.startTimeUTC) : null; return <div className="st pg">{d ? (d.getMonth() + 1) + "/" + d.getDate() : ""}<b>{status(g)}</b></div>; })() : <div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div>}
+                {pre(g) ? (() => { const d = g.startTimeUTC ? new Date(g.startTimeUTC) : null; return <div className="st pg">{d ? (d.getMonth() + 1) + "/" + d.getDate() : ""}<b>{status(g)}</b></div>; })() : <div className={"st" + (live(g) ? " lv w181" : "")}><span>{status(g)}</span>{live(g) ? <a className="wt181" href={gxWatchUrl175(g, g.id)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Watch</a> : null}</div>}
                 {pre(g)
                   ? <div className="fp"><div><b>{abA}:</b> {nOf146(tA, ta, th)} Players</div><div><b>{abB}:</b> {nOf146(tB, ta, th)} Players</div></div>
                   : <div className="fp"><div><b>{abA}:</b> {f1(fpOf(tA, ta) + fpOf(tA, th))} FPTS</div><div><b>{abB}:</b> {f1(fpOf(tB, ta) + fpOf(tB, th))} FPTS</div></div>}
-              </button>
+              </div>
               {pre(g) && g.ml && (g.ml.a != null || g.ou != null) ? (
                 <div className="od">
                   <button type="button" onClick={() => setOx146((o) => ({ ...o, [g.id]: !o[g.id] }))}><span className="k">ML:</span> <b>{ta + " " + ml146(gxML147(g.ml.a, ta))}</b> <span className="k">@</span> <b>{th + " " + ml146(gxML147(g.ml.h, th))}</b>{g.ou != null ? <><span className="k">{" \u00b7 Total:"}</span> <b>{g.ou}</b></> : null}<span className={"c" + (ox146[g.id] ? " up" : "")}>{"\u2304"}</span></button>
