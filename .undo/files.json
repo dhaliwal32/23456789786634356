@@ -1,8 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_lines.py": true
  },
  "changes": [
-  "179-phone-scores-espn.py"
+  "180-star-line-left-alert.py"
  ]
 }
