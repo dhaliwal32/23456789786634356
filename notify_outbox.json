@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|dedccf2938a6",
-   "at": "2026-10-25T04:33:15Z",
-   "title": "Pickup: ice time jump",
-   "text": "Kailer Yamamoto (F, UTA) is playing 15.2 min per game lately, up +3.0 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|d054caf6fbb7",
    "at": "2026-10-25T05:16:04Z",
    "title": "Pickup: ice time jump",
@@ -3500,7 +3488,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-01T04:03:14Z",
-   "seen": "2026-11-01T04:27:14Z"
+   "seen": "2026-11-01T04:33:21Z"
   }
  ],
  "sent": {
