@@ -315,9 +315,8 @@
 },
 "4031645": {
 "d": "2026-11-01",
-"k": "later",
-"now": "2026-11-07",
-"was": "2026-11-01"
+"k": "back",
+"was": "2026-11-07"
 },
 "4063401": {
 "d": "2026-10-29",
@@ -846,8 +845,8 @@
 },
 "3941974": {
 "back": "2026-11-05",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "3942043": {
 "back": "2026-11-10",
@@ -873,11 +872,6 @@
 "back": "2026-11-02",
 "note": "day-to-day",
 "status": "Day-To-Day"
-},
-"4031645": {
-"back": "2026-11-07",
-"note": "Carcone (upper body) was placed on injured reserve by the Mammoth on Tuesday.",
-"status": "Injured Reserve"
 },
 "4063268": {
 "back": "2026-12-04",
