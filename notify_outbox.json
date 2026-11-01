@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-25|12aace93485d",
-   "at": "2026-10-25T15:16:42Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Oliver Bjorkstrand (NYR) promoted: 4th line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T15:16:42Z",
-   "via": "pregame",
-   "sent_at": "2026-10-25T18:02:18Z"
-  },
-  {
    "k": "2026-10-25|9a31e9ef7b25",
    "at": "2026-10-25T22:23:58Z",
    "title": "Pickup: ice time jump",
@@ -2912,7 +2900,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-01T15:14:56Z"
+   "seen": "2026-11-01T15:24:58Z"
   }
  ],
  "sent": {
