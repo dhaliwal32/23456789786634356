@@ -70,6 +70,12 @@
 "k": "news",
 "nd": "2026-10-27"
 },
+"3042014": {
+"d": "2026-11-01",
+"k": "later",
+"now": "2027-01-30",
+"was": "2026-11-21"
+},
 "3042016": {
 "d": "2026-10-27",
 "k": "later",
@@ -689,7 +695,7 @@
 "status": "Injured Reserve"
 },
 "3042014": {
-"back": "2026-11-21",
+"back": "2027-01-30",
 "note": "Domi (back) was transferred from the non-roster list to long-term injured reserve Wednesday, per PuckPedia.",
 "status": "Injured Reserve"
 },
