@@ -24,18 +24,18 @@
 "was": "2026-10-31"
 },
 "2968829": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-31",
 "now": "2026-11-03",
-"was": "2026-10-31"
+"was": "Out"
 },
 "2976842": {
-"d": "2026-10-30",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-27",
 "now": "2026-11-05",
-"was": "2026-10-27"
+"was": "Out"
 },
 "2976849": {
 "d": "2026-10-27",
@@ -77,10 +77,10 @@
 "was": "2026-11-01"
 },
 "3042019": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "now": "2026-11-05",
-"was": "2026-10-31"
+"was": "Out"
 },
 "3042037": {
 "d": "2026-10-30",
@@ -127,11 +127,11 @@
 "was": "2026-10-22"
 },
 "3069341": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-30",
 "now": "2026-11-03",
-"was": "2026-10-31"
+"was": "Out"
 },
 "3069342": {
 "d": "2026-10-28",
@@ -247,9 +247,10 @@
 "was": ""
 },
 "3904178": {
-"d": "2026-10-31",
-"k": "new",
-"now": "2026-11-03"
+"d": "2026-11-01",
+"k": "dtd",
+"now": "2026-11-03",
+"was": "Out"
 },
 "3939716": {
 "d": "2026-10-29",
@@ -297,11 +298,11 @@
 "was": "2026-10-28"
 },
 "3988782": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-31",
 "now": "2026-11-02",
-"was": "2026-10-31"
+"was": "Out"
 },
 "3995": {
 "d": "2026-10-29",
@@ -375,15 +376,16 @@
 "was": "2026-10-31"
 },
 "4565224": {
-"d": "2026-10-31",
-"k": "new",
-"now": "2026-11-03"
+"d": "2026-11-01",
+"k": "dtd",
+"now": "2026-11-03",
+"was": "Out"
 },
 "4565225": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "now": "2026-11-02",
-"was": "2026-10-31"
+"was": "Out"
 },
 "4565226": {
 "d": "2026-10-31",
@@ -402,11 +404,11 @@
 "was": "2026-10-29"
 },
 "4565282": {
-"d": "2026-10-30",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-30",
 "now": "2026-11-05",
-"was": "2026-10-31"
+"was": "Out"
 },
 "4587580": {
 "d": "2026-10-19",
@@ -468,10 +470,10 @@
 "was": ""
 },
 "4874733": {
-"d": "2026-10-31",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "now": "2026-11-02",
-"was": "2026-10-31"
+"was": "Out"
 },
 "4894355": {
 "d": "2026-10-31",
@@ -635,13 +637,13 @@
 },
 "2968829": {
 "back": "2026-11-03",
-"note": "Girgensons (lower body) won't play against Nashville on Saturday, per Lightning reporter Gabby Shirley.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976842": {
 "back": "2026-11-05",
-"note": "Faksa (lower body) will likely miss another week, according to Owen Newkirk of DLLS Sports on Tuesday.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976851": {
 "back": "2026-11-14",
@@ -680,8 +682,8 @@
 },
 "3042019": {
 "back": "2026-11-05",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042037": {
 "back": "2026-11-03",
@@ -725,8 +727,8 @@
 },
 "3069341": {
 "back": "2026-11-03",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3069342": {
 "back": "2026-11-07",
@@ -820,8 +822,8 @@
 },
 "3904178": {
 "back": "2026-11-03",
-"note": "Cernak (undisclosed) won't be in the lineup against Nashville on Saturday, according to Lightning reporter Gabby Shirley.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-11-27",
@@ -855,8 +857,8 @@
 },
 "3988782": {
 "back": "2026-11-02",
-"note": "O'Connor (personal) will not play in Saturday's home clash against the Flames, per Corey Masisak of The Denver Post.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4031645": {
 "back": "2026-11-01",
@@ -955,13 +957,13 @@
 },
 "4565224": {
 "back": "2026-11-03",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4565225": {
 "back": "2026-11-02",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4565226": {
 "back": "2026-11-04",
@@ -970,8 +972,8 @@
 },
 "4565282": {
 "back": "2026-11-05",
-"note": "Head coach Todd McLellan said Friday that Johansson (undisclosed) will miss at least three more games, Ansar Khan of MLive.com reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4587580": {
 "back": "2026-11-17",
@@ -1020,8 +1022,8 @@
 },
 "4874733": {
 "back": "2026-11-02",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-07",
