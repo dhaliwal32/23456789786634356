@@ -1,78 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|dff64d958475",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Charlie Coyle (F, CBJ) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|baa25cdba492",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Damon Severson (D, CBJ) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|f7d88ff0da29",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: ice time jump",
-   "text": "Alexandre Carrier (D, MTL) is playing 22.3 min per game lately, up +3.4 (PP +0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|cf25f64ab91a",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: ice time jump",
-   "text": "Danila Yurov (F, MIN) is playing 16.2 min per game lately, up +3.0 (PP +2.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T05:10:03Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|9c6650517339",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: ice time jump",
-   "text": "Kaiden Guhle (D, MTL) is playing 23.2 min per game lately, up +3.4 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
-   "k": "2026-10-24|070d97689a26",
-   "at": "2026-10-25T00:04:35Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Berkly Catton (F, SEA) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T06:59:49Z",
-   "via": "morning",
-   "sent_at": "2026-10-25T15:06:20Z"
-  },
-  {
    "k": "2026-10-24|4987ee866e02",
    "at": "2026-10-25T00:41:27Z",
    "title": "Lineup: starter is OUT",
@@ -3815,7 +3743,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-11-01T00:01:02Z"
+   "seen": "2026-11-01T00:06:36Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
