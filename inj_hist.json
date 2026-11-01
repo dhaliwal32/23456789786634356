@@ -171,9 +171,10 @@
 "was": "2026-10-28"
 },
 "3114802": {
-"d": "2026-10-31",
-"k": "new",
-"now": "2026-11-04"
+"d": "2026-11-01",
+"k": "dtd",
+"now": "2026-11-04",
+"was": "Out"
 },
 "3124": {
 "d": "2026-10-29",
@@ -318,9 +319,9 @@
 "was": "2026-10-29"
 },
 "4063605": {
-"d": "2026-10-27",
+"d": "2026-11-01",
 "k": "later",
-"now": "2026-11-03",
+"now": "2026-11-14",
 "was": "2026-10-22"
 },
 "4064582": {
@@ -513,11 +514,11 @@
 "was": "2026-10-27"
 },
 "5080176": {
-"d": "2026-10-26",
-"k": "later",
+"d": "2026-11-01",
+"k": "dtd",
 "nd": "2026-10-26",
 "now": "2026-11-04",
-"was": "2026-10-24"
+"was": "Out"
 },
 "5080179": {
 "d": "2026-10-31",
@@ -555,9 +556,10 @@
 "was": "2026-10-31"
 },
 "5216882": {
-"d": "2026-10-29",
-"k": "new",
-"now": "2026-11-04"
+"d": "2026-11-01",
+"k": "dtd",
+"now": "2026-11-04",
+"was": "Out"
 },
 "5291947": {
 "d": "2026-10-29",
@@ -763,8 +765,8 @@
 },
 "3114802": {
 "back": "2026-11-04",
-"note": "Kempe (undisclosed) won't be in the lineup against Buffalo on Saturday, per Zach Dooley of the Kings' official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3150479": {
 "back": "2026-11-04",
@@ -867,7 +869,7 @@
 "status": "Injured Reserve"
 },
 "4063605": {
-"back": "2026-11-03",
+"back": "2026-11-14",
 "note": "out",
 "status": "Out"
 },
@@ -1083,8 +1085,8 @@
 },
 "5080176": {
 "back": "2026-11-04",
-"note": "Kulich has been placed in concussion protocol, per Rachel Lenzi of The Buffalo News on Monday.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080177": {
 "back": "2027-02-12",
@@ -1153,8 +1155,8 @@
 },
 "5216882": {
 "back": "2026-11-04",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5216907": {
 "back": "2026-11-14",
