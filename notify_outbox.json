@@ -1,17 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-25|885fd499ea45",
-   "at": "2026-10-25T13:16:09Z",
-   "title": "Your player: injury update",
-   "text": "Victor Hedman (TB) injury status: Out -> Day To Day",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T13:16:09Z"
-  },
-  {
    "k": "2026-10-25|12aace93485d",
    "at": "2026-10-25T15:16:42Z",
    "title": "Pickup idea: bigger role",
@@ -2923,7 +2912,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-01T13:14:37Z"
+   "seen": "2026-11-01T13:24:40Z"
   }
  ],
  "sent": {
