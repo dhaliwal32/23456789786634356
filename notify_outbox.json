@@ -1,54 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-25|9a31e9ef7b25",
-   "at": "2026-10-25T22:23:58Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tyler Bertuzzi (F, CHI) is playing 18.3 min per game lately, up +0.1 (PP +2.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T23:55:51Z",
-   "via": "morning",
-   "sent_at": "2026-10-26T15:00:18Z"
-  },
-  {
-   "k": "2026-10-25|4e5ea566e151",
-   "at": "2026-10-25T22:23:58Z",
-   "title": "Pickup: ice time jump",
-   "text": "Roman Kantserov (F, CHI) is playing 19.6 min per game lately, up +1.1 (PP +2.7). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T23:55:51Z",
-   "via": "morning",
-   "sent_at": "2026-10-26T15:00:18Z"
-  },
-  {
-   "k": "2026-10-25|3fed886bce1c",
-   "at": "2026-10-25T22:23:58Z",
-   "title": "Pickup: ice time jump",
-   "text": "Teuvo Teravainen (F, CHI) is playing 17.3 min per game lately, up +1.0 (PP +3.4). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T23:55:51Z",
-   "via": "morning",
-   "sent_at": "2026-10-26T15:00:18Z"
-  },
-  {
-   "k": "2026-10-25|97d57d0e6bea",
-   "at": "2026-10-25T22:23:58Z",
-   "title": "Pickup: ice time jump",
-   "text": "Lars Eller (F, FLA) is playing 17.3 min per game lately, up +4.8 (PP +0.2). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-25T23:55:51Z",
-   "via": "morning",
-   "sent_at": "2026-10-26T15:00:18Z"
-  },
-  {
    "k": "2026-10-25|f397ed098d4e",
    "at": "2026-10-25T22:48:52Z",
    "title": "Goalie not confirmed yet",
@@ -2900,7 +2852,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-01T22:18:43Z"
+   "seen": "2026-11-01T22:24:45Z"
   }
  ],
  "sent": {
