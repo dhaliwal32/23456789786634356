@@ -1,28 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-24|58e5dd324f84",
-   "at": "2026-10-25T01:05:50Z",
-   "title": "Your player: lineup change",
-   "text": "Charle-Edouard D'Astous (TB) is in the lineup on the 3rd pair",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T01:05:50Z"
-  },
-  {
-   "k": "2026-10-24|eaab9dae34cf",
-   "at": "2026-10-25T01:05:50Z",
-   "title": "Your player: lineup change",
-   "text": "Victor Hedman (TB) is no longer in the lineup (was 3rd pair) - scratched, hurt or moved",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-25T01:05:50Z"
-  },
-  {
    "k": "2026-10-24|3e637c04b85f",
    "at": "2026-10-25T02:06:26Z",
    "title": "Pickup: ice time jump",
@@ -3721,7 +3699,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-11-01T01:02:24Z"
+   "seen": "2026-11-01T01:08:25Z"
   },
   {
    "k": "2026-10-31|ff76dba6fd02",
