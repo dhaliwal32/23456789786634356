@@ -1377,7 +1377,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="shwt8n.k3r13k" data-file="build/app.js">
+<meta name="gx-build" content="1td7xhp.lmn5dz" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8737,7 +8737,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
       const aw = gxAb131((g.awayTeam || {}).abbrev), hm = gxAb131((g.homeTeam || {}).abbrev);
       extra = <>
         <div className="gx-gv141"><div className="tms">{rows2(g)}</div><div className={"st" + (live(g) ? " lv" : "")}>{status(g)}</div></div>
-        <a className="gx-wt174" href={gxWatchUrl174(gid)} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z" /></svg>Watch</a>
+        <a className="gx-wt174" href={gxWatchUrl175(g, gid)} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z" /></svg>Watch</a>
         <div className="gx-tb141">{[["game", "GAME"], ["fan", "FANTASY"], ["awayTeam", aw], ["homeTeam", hm]].map(([k, l]) => <button key={k} type="button" className={gt === k ? "on" : ""} onClick={() => setGt(k)}>{l}</button>)}</div>
       </>;
       const table = (list, gl) => {
@@ -9147,6 +9147,19 @@ function gxWatchUrl174(id) {
 function GxWatchSel174() {
   const [v, setV] = useState(() => { try { return uiGet().gxWatch174 || ""; } catch (e) { return ""; } });
   return <input type="url" inputMode="url" className={inp + " gx-wi174"} placeholder="Blank = ESPN Gamecast for that game" value={v} onChange={(e) => { setV(e.target.value); uiSet("gxWatch174", e.target.value.trim()); }} />;
+}
+// ---------- change 175: Watch link with the game added (install.py) ----------
+const GX_NHL175 = { LA: "lak", NJ: "njd", SJ: "sjs", TB: "tbl", UTAH: "uta" };
+function gxWatchUrl175(g, id) {
+  let u = "";
+  try { u = String(uiGet().gxWatch174 || "").trim(); } catch (e) {}
+  if (!u) return gxWatchUrl174(id);
+  if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+  const c = (t) => { const a = String(gxAb131((t || {}).abbrev) || "").toUpperCase(); return GX_NHL175[a] || a.toLowerCase(); };
+  const d = g && (g.gameDate || gxEtDay132(g.startTimeUTC));
+  const aw = c(g && g.awayTeam), hm = c(g && g.homeTeam);
+  if (!d || !aw || !hm) return u;
+  return u.replace(/\/+$/, "") + "/live/nhl/" + d + "/" + aw + "-" + hm;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
