@@ -1425,7 +1425,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="6eudlp.rb9ibt" data-file="build/app.js">
+<meta name="gx-build" content="anc46d.rctnwl" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9260,10 +9260,11 @@ function gxPen182(sm) {
     const ty = String((e.type || {}).text || ""), tx = String(e.text || ""), tm = ab[String((e.team || {}).id)];
     if (!tm || ((e.period || {}).number || 1) >= 5) return;
     if (e.scoringPlay) { goals.push({ t: tm, at: sec(e) }); return; }
-    if (!/penalt/i.test(ty) || /penalty shot/i.test(ty + " " + tx)) return;
-    let m = +e.penaltyMinutes || +((e.penalty || {}).minutes) || 0;
+    const T183 = e.type || {}, pt183 = String(T183.penaltyType || ""); /* change 183: ESPN penalty plays */
+    if (!(T183.penaltyMinutes != null || pt183 || /penalt/i.test(ty)) || /penalty shot/i.test(ty + " " + tx + " " + pt183)) return;
+    let m = +T183.penaltyMinutes || +e.penaltyMinutes || +((e.penalty || {}).minutes) || 0;
     if (!m) { const r = tx.match(/(\d+)\s*(?:min|minutes)\b/i) || tx.match(/\((\d+)\)/); m = r ? +r[1] : /major|fighting/i.test(tx) ? 5 : 2; }
-    if (m >= 10 || (/misconduct/i.test(ty + " " + tx) && m !== 2 && m !== 4 && m !== 5)) return;
+    if (m >= 10 || /misconduct/i.test(pt183) || (/misconduct/i.test(ty + " " + tx) && m !== 2 && m !== 4 && m !== 5)) return;
     const at = sec(e);
     pens.push({ t: tm, at, m, end: at + m * 60 });
   });
