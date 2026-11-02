@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-26|a0c43a3b95e3",
-   "at": "2026-10-26T23:08:17Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Josh Doan (BUF) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T23:08:17Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
    "k": "2026-10-26|57f4e220df7e",
    "at": "2026-10-27T00:03:05Z",
    "title": "Pickup: ice time jump",
@@ -1873,7 +1861,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-02T22:31:10Z",
-   "seen": "2026-11-02T23:02:34Z"
+   "seen": "2026-11-02T23:08:31Z"
   }
  ],
  "sent": {
