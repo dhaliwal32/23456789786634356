@@ -1825,7 +1825,115 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-02T15:09:27Z",
-   "seen": "2026-11-02T17:47:54Z"
+   "seen": "2026-11-02T17:54:18Z"
+  },
+  {
+   "k": "2026-11-02|a475c576741c",
+   "at": "2026-11-02T17:54:15Z",
+   "title": "Fantasy GM",
+   "text": "Benn joined Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:15Z",
+   "seen": "2026-11-02T17:54:15Z"
+  },
+  {
+   "k": "2026-11-02|8195fdbe9eca",
+   "at": "2026-11-02T17:54:16Z",
+   "title": "Fantasy GM",
+   "text": "Hyry joined Robertson's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:16Z",
+   "seen": "2026-11-02T17:54:16Z"
+  },
+  {
+   "k": "2026-11-02|4a57193ceb5c",
+   "at": "2026-11-02T17:54:16Z",
+   "title": "Fantasy GM",
+   "text": "Steel left Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:16Z",
+   "seen": "2026-11-02T17:54:16Z"
+  },
+  {
+   "k": "2026-11-02|536d538e717f",
+   "at": "2026-11-02T17:54:16Z",
+   "title": "Fantasy GM",
+   "text": "Seguin left Robertson's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:16Z",
+   "seen": "2026-11-02T17:54:16Z"
+  },
+  {
+   "k": "2026-11-02|d3301d70d1e9",
+   "at": "2026-11-02T17:54:16Z",
+   "title": "Fantasy GM",
+   "text": "Newhook left Caufield's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:16Z",
+   "seen": "2026-11-02T17:54:16Z"
+  },
+  {
+   "k": "2026-11-02|8ce726c42862",
+   "at": "2026-11-02T17:54:17Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:17Z",
+   "seen": "2026-11-02T17:54:17Z"
+  },
+  {
+   "k": "2026-11-02|d86e465fe33a",
+   "at": "2026-11-02T17:54:17Z",
+   "title": "Fantasy GM",
+   "text": "Holmberg left Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:17Z",
+   "seen": "2026-11-02T17:54:17Z"
+  },
+  {
+   "k": "2026-11-02|ae78a200520e",
+   "at": "2026-11-02T17:54:17Z",
+   "title": "Fantasy GM",
+   "text": "Vilardi joined Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:17Z",
+   "seen": "2026-11-02T17:54:17Z"
+  },
+  {
+   "k": "2026-11-02|e053fd56f1dc",
+   "at": "2026-11-02T17:54:17Z",
+   "title": "Fantasy GM",
+   "text": "Bj\u00f6rck left Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T17:54:17Z",
+   "seen": "2026-11-02T17:54:17Z"
   }
  ],
  "sent": {
