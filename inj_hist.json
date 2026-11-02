@@ -184,6 +184,11 @@
 "now": "2026-11-03",
 "was": "2026-10-29"
 },
+"3648008": {
+"d": "2026-11-02",
+"k": "new",
+"now": "2026-11-03"
+},
 "3654006": {
 "d": "2026-10-31",
 "k": "later",
@@ -794,6 +799,11 @@
 "back": "2026-12-03",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"3648008": {
+"back": "2026-11-03",
+"note": "Rodrigues (illness) is questionable for Tuesday's matchup against Edmonton, per Amanda Stein of the Devils' official site.",
+"status": "Day-To-Day"
 },
 "3654006": {
 "back": "2026-11-22",
