@@ -1,90 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-26|03ca64371dad",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Mason Marchment (SJ) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|469cc79ea0a1",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Bobby McMann (SEA) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|71609d9b7e11",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jake DeBrusk (VAN) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|89f9e668a750",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Jonathan Lekkerimaki (VAN) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|a3119f255375",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Zeev Buium (VAN) promoted: 2nd pair -> top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|225eddd6666f",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Brett Howden (VGK) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|f95980ec6c5a",
-   "at": "2026-10-26T19:28:01Z",
-   "title": "Pickup idea: bigger role",
-   "text": "William Karlsson (VGK) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T19:28:01Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
    "k": "2026-10-26|a0c43a3b95e3",
    "at": "2026-10-26T23:08:17Z",
    "title": "Pickup idea: bigger role",
@@ -1934,6 +1850,18 @@
    "via": "urgent",
    "sent_at": "2026-11-02T17:54:17Z",
    "seen": "2026-11-02T17:54:17Z"
+  },
+  {
+   "k": "2026-11-02|99297e80153d",
+   "at": "2026-11-02T19:58:16Z",
+   "title": "Fantasy GM",
+   "text": "Graf left Celebrini's line (SJ)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-02T19:58:16Z",
+   "seen": "2026-11-02T19:58:16Z"
   }
  ],
  "sent": {
