@@ -1587,6 +1587,43 @@
   .gx-sw194 .wc.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accentSoft); }
   .gx-sw194 .nt { font-size: 12px; color: var(--mute); margin-top: 6px; }
   @media (max-width: 640px) { .gx-sw194 .gr { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gx-sw194 .wc { padding: 6px 8px; } }
+  /* change 195 (install.py) */
+  .gx-mo195 { margin-top: 14px; }
+  .gx-mo195 .sec195 { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); margin: 14px 0 8px; }
+  .gx-mo195 .tl195 { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+  .gx-mo195 .tl195 > div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; height: 66px; min-width: 0; }
+  .gx-mo195 .tl195 small { display: block; font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-mo195 .tl195 b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .gx-mo195 .br195 { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px; overscroll-behavior-x: contain; }
+  .gx-mo195 .br195 .c { flex: 0 0 40px; display: grid; grid-template-rows: 16px 48px 16px; justify-items: center; border-radius: 6px; padding: 4px 0; }
+  .gx-mo195 .br195 .c.po { background: var(--card3, var(--card2)); }
+  .gx-mo195 .br195 .v { font-size: 10.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .gx-mo195 .br195 .bx { display: flex; align-items: flex-end; height: 48px; }
+  .gx-mo195 .br195 .bx i { display: block; width: 14px; border-radius: 3px 3px 0 0; }
+  .gx-mo195 .br195 .w { font-size: 11px; color: var(--mute); }
+  .gx-mo195 .nt195 { font-size: 12px; color: var(--mute); margin-top: 6px; }
+  .gx-mo195 .tb195 { overflow-x: auto; overscroll-behavior-x: contain; }
+  .gx-mo195 .tr195 { display: grid; grid-template-columns: 220px repeat(6, 56px) 64px; align-items: center; min-width: max-content; height: 48px; border-top: 1px solid var(--line); }
+  .gx-mo195 .tr195.hd { height: 30px; border-top: 0; font-size: 12px; color: var(--mute); }
+  .gx-mo195 .tr195 .pc195 { display: flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden; position: sticky; left: 0; background: var(--card); height: 100%; z-index: 1; }
+  .gx-mo195 .tr195 .pc195 i { flex: none; font-style: normal; font-size: 10px; font-weight: 700; width: 32px; text-align: center; border-radius: 99px; padding: 1px 0; color: #fff; }
+  .gx-mo195 .tr195 .pc195 i.in { background: var(--good); }
+  .gx-mo195 .tr195 .pc195 i.out { background: var(--bad); }
+  .gx-mo195 .tr195 .nm { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
+  .gx-mo195 .tr195 .nm small { margin-left: 6px; font-size: 12px; color: var(--mute); }
+  .gx-mo195 .tr195 .n { text-align: right; padding-right: 8px; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--mute); }
+  .gx-mo195 .tr195 .n.b { color: var(--ink); font-weight: 600; }
+  .gx-mo195 .tr195.hd .n { color: var(--mute); font-weight: 400; }
+  .gx-mo195 .tr195 .n.st { text-align: right; }
+  .gx-mo195 .ro195 .sec { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); margin: 14px 0 8px; font-weight: 400; }
+  .gx-mo195 .ro195 .wc { cursor: default; }
+  .gx-mo195 .ro195 .nt { display: none; }
+  @media (max-width: 640px) {
+    .gx-mo195 .tr195 { grid-template-columns: 176px repeat(6, 46px) 54px; }
+    .gx-mo195 .tr195 .pc195 { gap: 6px; }
+    .gx-mo195 .tr195 .pc195 i { width: 30px; }
+    .gx-mo195 .tr195 .nm small { display: none; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1595,7 +1632,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="xutioi.1eoxsm" data-file="build/app.js">
+<meta name="gx-build" content="16a8pyw.11kcnwk" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4115,6 +4152,7 @@ function TradeBuilder({ s, initPartner, setS }) {
             {res.wb != null && res.wa != null ? <div className="gx-stc"><div className="text-xs text-slate-500">Next week</div><div className="gx-stv">{arrow(res.wb, res.wa, wpTxt, Math.round(res.wa * 100) - Math.round(res.wb * 100))}</div><div className="text-xs text-slate-500">chance to win</div></div> : null}
           </div>
           {det110 && res.mode82 ? <GxTradeModes82 res={res} cmp={cmp82} tm={tm82} setTm={setTm82} /> : null}
+          {det110 && res.meL && res.myL ? <GxMore195 s={s} before={res.meL} after={res.myL} ins={[...Rv, ...picks.filter(Boolean)]} outs={[...Gv, ...drops]} weeks /> : null}
           {res.short.length ? <div className="text-sm" style={{ marginTop: 10, color: "var(--bad)" }}>{gxYou(s, "This leaves you", "This leaves " + teamName(s, s.me).trim())} short at {res.short.map((k) => GN[k]).join(" and ")}.</div> : null}
           <div className="text-xs text-slate-500" data-r59="after" style={{ marginTop: 10 }}>{gxYou(s, "Your roster after: ", teamName(s, s.me) + " after: ") + (act1 - drops.length + picks.filter(Boolean).length) + " of 22 active. Trades take " + GX_TRADE_DAYS + " days, so it goes through " + dayLabel(gxTradeDay()) + "; until then both teams keep their players, and the numbers above count that." + (irIn.length ? " Your IR spot is taken, so " + irIn.map((p) => p.n).join(" and ") + " would use an active spot." : "") + (thOver > 0 ? " " + teamName(s, partner) + " would be over 22 and would have to drop " + thOver + " too." : "")}</div>
           <button type="button" className="gx-mr110" onClick={() => setDet110(!det110)}>{det110 ? "Hide details" : "More details"}</button>{/* gx086-apply */}<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginTop: 12 }}>
@@ -7841,7 +7879,7 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose, w194, onW19
                 </div>
                 {w194 && wb194.length ? <GxSimWeeks194 s={s} before={wb194} after={wa194} sel={w194} onW={onW194} /> : null}
                 <button type="button" className="lk bt150" onClick={() => setDet(!det)}>{det ? "Hide details" : "More details"}</button>
-                {det ? <GxPickRes92 s={s} myR={myR} ok={[{ a, d }]} /> : null}
+                {det ? <GxMore195 s={s} before={myR} after={rosterOn(pick)} ins={[a]} outs={[d]} /> : null}{det ? <GxPickRes92 s={s} myR={myR} ok={[{ a, d }]} /> : null}
                 <div className="act">
                   <button type="button" className="pr" onClick={() => { if (window.__QA) window.__QA.espn(a); }}>Add on ESPN</button>
                   <button type="button" onClick={apply}>Try it here</button>
@@ -9826,6 +9864,84 @@ function GxSimWeeks194({ s, before, after, sel, onW }) {
         })}
       </div>
       <div className="nt">Highlighted weeks count in the points above. Tap a week to add or remove it.</div>
+    </div>
+  );
+}
+// ---------- change 195: more useful More details for Simulate and Trades (install.py) ----------
+function gxGms195(s, p, a, b) {
+  let g = 0;
+  for (let i = a; i < b && i < s.weeks.length; i++) {
+    const w = deriveWeek(s.weeks[i], s.autoDone), st = i === s.wk ? w.done || 0 : 0;
+    (w.games[p.t] || []).forEach((d) => { const dt = w.dates ? w.dates[d] : null; if (d >= st && !p.ir && avail(p, dt) > 0) g++; });
+  }
+  return g;
+}
+function gxAvg195(p, s, rng) {
+  const v = gxVals106(p, s, rng), fp = parseFloat(v[0]), gp = parseFloat(v[1]);
+  return !isNaN(fp) && gp > 0 ? f1(fp / gp) : gp === 0 ? "-" : "...";
+}
+function GxMore195({ s, before, after, ins, outs, weeks }) {
+  gxUse100();
+  useEffect(() => { gxLoad100("l15"); gxLoad100("sea"); }, []);
+  const K = s.blend, end = s.weeks.length;
+  const pw = useMemo(() => {
+    const out = [];
+    for (let i = s.wk; i < end; i++) {
+      const w = deriveWeek(s.weeks[i], s.autoDone), fr = i === s.wk ? w.done || 0 : 0;
+      let d = 0;
+      try { d = weekProj(after, w, K, fr).total - weekProj(before, w, K, fr).total; } catch (e) {}
+      out.push({ i, opp: oppOf(s.weeks[i] || {}, s.me), d, wl: String((s.weeks[i] || {}).label || "Week " + (i + 1)).split(" \u00b7 ")[0].replace("Week ", "W") });
+    }
+    return out;
+  }, [s, before, after]);
+  const lastReg = pw.reduce((m, x) => (x.opp ? x.i : m), -1);
+  const sum = (L) => L.reduce((t, x) => t + x.d, 0);
+  const po = pw.filter((x) => x.i > lastReg && !x.opp);
+  const tiles = [["This week", sum(pw.slice(0, 1))], ["Next 4 weeks", sum(pw.slice(0, 4))], ["Rest of season", sum(pw)]].concat(po.length ? [["Playoffs", sum(po)]] : []);
+  const mx = Math.max(1, ...pw.map((x) => Math.abs(x.d)));
+  const wb = useMemo(() => (weeks ? gxWkWins194(s, before) : []), [s, before, !!weeks]);
+  const wa = useMemo(() => (weeks ? gxWkWins194(s, after) : []), [s, after, !!weeks]);
+  const sg = (v) => (v >= 0 ? "+" : "") + f1(v);
+  const row = (p, kind) => {
+    const st = p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || String(p.status).replace(/_/g, " ") : "";
+    return (
+      <div key={kind + p.id} className="tr195">
+        <span className="pc195"><i className={kind}>{kind === "in" ? "IN" : "OUT"}</i><GxFace p={p} size={22} /><span className="nm">{p.n}<small>{p.p + " \u00b7 " + p.t}</small></span></span>
+        <span className="n b">{f1(gxPgAvg(p, K))}</span>
+        <span className="n">{p.gp ? f1(p.tot / p.gp) : "-"}</span>
+        <span className="n">{gxAvg195(p, s, "l15")}</span>
+        <span className="n">{gxGms195(s, p, s.wk, s.wk + 1)}</span>
+        <span className="n">{gxGms195(s, p, s.wk, s.wk + 4)}</span>
+        <span className="n">{gxGms195(s, p, s.wk, end)}</span>
+        <span className="n st" style={{ color: st ? "var(--bad)" : "var(--mute)" }}>{st || "OK"}</span>
+      </div>
+    );
+  };
+  return (
+    <div className="gx-mo195">
+      <div className="sec195">Points you gain</div>
+      <div className="tl195">
+        {tiles.map(([l, v]) => <div key={l}><small>{l}</small><b style={{ color: v > 0.05 ? "var(--good)" : v < -0.05 ? "var(--bad)" : "var(--ink)" }}>{sg(v)}</b></div>)}
+      </div>
+      <div className="sec195">Points by week</div>
+      <div className="br195">
+        {pw.map((x) => (
+          <div key={x.i} className={"c" + (x.opp ? "" : " po")} title={x.wl + ": " + sg(x.d)}>
+            <span className="v" style={{ color: x.d > 0.05 ? "var(--good)" : x.d < -0.05 ? "var(--bad)" : "var(--mute)" }}>{Math.abs(x.d) < 0.05 ? "0" : sg(x.d)}</span>
+            <span className="bx"><i style={{ height: Math.max(2, Math.round((Math.abs(x.d) / mx) * 44)) + "px", background: x.d >= 0 ? "var(--good)" : "var(--bad)", opacity: Math.abs(x.d) < 0.05 ? 0.25 : 1 }}></i></span>
+            <span className="w">{x.wl}</span>
+          </div>
+        ))}
+      </div>
+      {po.length ? <div className="nt195">Shaded weeks are playoff weeks.</div> : null}
+      <div className="sec195">Players in and out</div>
+      <div className="tb195">
+        <div className="tr195 hd"><span className="pc195">Player</span><span className="n">Exp</span><span className="n">Avg</span><span className="n">L15</span><span className="n">This wk</span><span className="n">Next 4</span><span className="n">Rest</span><span className="n st">Status</span></div>
+        {(ins || []).filter(Boolean).map((p) => row(p, "in"))}
+        {(outs || []).filter(Boolean).map((p) => row(p, "out"))}
+      </div>
+      <div className="nt195">Exp = expected points a game. Avg = season average, L15 = last 15 days. Games columns count games left.</div>
+      {weeks && wb.length ? <div className="gx-sw194 ro195"><GxSimWeeks194 s={s} before={wb} after={wa} sel={[]} onW={null} /></div> : null}
     </div>
   );
 }
