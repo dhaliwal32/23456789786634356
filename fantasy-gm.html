@@ -1474,6 +1474,14 @@
     .gx-v184 .ct184 { padding: 0 8px 8px; }
   }
   .gx-gv169 .gx-v184 { margin-top: 2px; }
+  /* change 185 (install.py) */
+  .gx-v184 .sg185 { display: flex; justify-content: center; gap: 4px; margin: 8px auto 2px; padding: 3px; width: max-content; border-radius: 99px; background: #dcdcdc; }
+  .gx-v184 .sg185 button { height: 30px; padding: 0 16px; border-radius: 99px; font-size: 13px; font-weight: 700; color: #555555; display: inline-flex; align-items: center; gap: 6px; transition: background .15s ease, color .15s ease; }
+  .gx-v184 .sg185 button.on { background: #ffffff; color: #121212; box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  .gx-v184 .sg185 button svg { width: 12px; height: 12px; }
+  .gx-v184 .vd185 { padding: 8px 10px 10px; animation: gx184-dn .22s ease-out; }
+  .gx-v184 .vd185 video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000000; border-radius: 8px; }
+  .gx-v184 .vd185 small { display: block; margin-top: 6px; font-size: 12px; color: #666666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1482,7 +1490,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="ucxf4e.1sw4g5p" data-file="build/app.js">
+<meta name="gx-build" content="r7rfzl.1bdrzha" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8641,6 +8649,17 @@ function gxLanding132(sm) {
       timeInPeriod: (e.clock || {}).displayValue || "", wc: e.wallclock || "", awayScore: e.awayScore, homeScore: e.homeScore, strength: st.indexOf("power") >= 0 ? "PP" : st.indexOf("short") >= 0 ? "SH" : "", cx: e.coordinate ? e.coordinate.x : null, cy: e.coordinate ? e.coordinate.y : null, gN184: sco.ytdGoals != null ? sco.ytdGoals : ((String(e.text || "").match(/Goal \((\d+)\)/) || [])[1]), shot: ((String(e.text || "").match(/Goal \(\d+\)\s*([^,]+)/) || [])[1] || "").trim(), /* gx163 */
       assists: ps.filter((p) => p.type === "assister").map((p) => ({ name: { default: (p.athlete || {}).displayName || "" }, n184: p.ytdAssists != null ? p.ytdAssists : gxAstN184(e.text, (p.athlete || {}).displayName) })) });
   });
+  try { /* change 185: the video clip for each goal, from ESPN's list of game videos */
+    const vs = (((sm || {}).videos) || []).map((v) => ({ h: String(v.headline || ""), u: (((v.links || {}).source) || {}).href || "", p: (typeof v.thumbnail === "string" ? v.thumbnail : (v.thumbnail || {}).href) || "", d: +v.duration || 0 })).filter((v) => v.u && /\.mp4(\?|$)/i.test(v.u));
+    const used = {};
+    const esc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    Object.keys(by).sort((a, b) => a - b).forEach((k) => by[k].goals.forEach((q) => {
+      const nm = (q.name || {}).default || "", last = nm.split(" ").slice(1).join(" ");
+      let i = nm ? vs.findIndex((v, j) => !used[j] && v.h.indexOf(nm) >= 0) : -1;
+      if (i < 0 && last) i = vs.findIndex((v, j) => !used[j] && new RegExp("\\b" + esc(last) + "\\b").test(v.h));
+      if (i >= 0) { used[i] = 1; q.vid185 = vs[i]; }
+    }));
+  } catch (er) {}
   return { summary: { scoring: Object.keys(by).sort((a, b) => a - b).map((k) => by[k]) } };
 }
 (function () {
@@ -8820,7 +8839,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
                   <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
                   <div className="mb"><TeamLogo t={gxAb131((r.g.awayTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.awayTeam || {}).abbrev)}</span><b>{r.x.awayScore}</b><TeamLogo t={gxAb131((r.g.homeTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.homeTeam || {}).abbrev)}</span><b>{r.x.homeScore}</b></div>
                 </div>
-                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxGvModal169 title={shortN(r.n) + " \u00b7 " + r.tm + " \u00b7 " + (r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor)} onClose={() => setGv163((o) => ({ ...o, [k167]: false }))}><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></GxGvModal169> : null}</>; })() : null}
+                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null || r.x.vid185 ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxGvModal169 title={shortN(r.n) + " \u00b7 " + r.tm + " \u00b7 " + (r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor)} onClose={() => setGv163((o) => ({ ...o, [k167]: false }))}><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></GxGvModal169> : null}</>; })() : null}
               </div>
               <button type="button" className="ar" aria-label="Later goal" disabled={idx >= n - 1} onClick={() => setGi(idx + 1 >= n - 1 ? null : idx + 1)}>{"\u203a"}</button>
             </div>
@@ -8885,7 +8904,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
         body = gs.length ? <div className="gx-sc141"><div className="h1">SCORING</div>{Object.keys(per).sort((x, y) => x - y).map((k) => (
           <React.Fragment key={k}>
             <div className="ph"><span>{GX_PER141[k] || (+k === 4 ? "OVERTIME" : "SHOOTOUT")}</span><span>{aw}</span><span>{hm}</span></div>
-            {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}</small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{r.x.cx != null ? (() => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}</div>)}
+            {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}</small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{r.x.cx != null || r.x.vid185 ? (() => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}</div>)}
           </React.Fragment>
         ))}</div> : <div className="em" style={{ padding: 16, color: "var(--mute)" }}>{pre(g) ? "Not started yet." : "No goals yet."}</div>;
       } else if (!bx) {
@@ -8928,7 +8947,7 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
           <div key={r.g.id + "-" + r.i} className={"cd " + r.mk}>
             <div className="top"><span className="ph">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} /> : <TeamLogo t={r.tm} size={34} />}</span>
               <div className="tx"><div className="who">{pBtn(r.p, r.n, "s")}{", " + r.tm}{r.tag ? " (" + r.tag + ")" : ""}</div><div className="when">{(r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor) + " Period - " + sc(r)}</div></div></div>
-            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>Goal Visualizer <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}
+            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null || r.x.vid185 ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}
           </div>
         ))}</div> : <div style={{ padding: 16, color: "var(--mute)" }}>No goals yet today.</div>;
       }
@@ -9062,11 +9081,24 @@ const gxAnyInt159 = () => (((window.__NHLNOW || {}).games) || []).some((g) => (g
 function GxRink163({ x, g, tm, s }) {
   /* change 184: drawn like NHL.com's Goal Visualizer */
   const e165 = useEdge165(x, g, tm); /* gx165 */
+  const [vw185, setVw185] = useState(null); /* change 185: Visualizer or Video */
   const cx = +x.cx, cy = +x.cy;
-  if ((isNaN(cx) || isNaN(cy)) && !e165) return null;
+  if ((isNaN(cx) || isNaN(cy)) && !e165 && !x.vid185) return null;
+  const vw = x.vid185 ? vw185 || ((isNaN(cx) || isNaN(cy)) && !e165 ? "v" : "z") : "z";
   const A = gxAb131((g.awayTeam || {}).abbrev), H = gxAb131((g.homeTeam || {}).abbrev), T = gxAb131(tm), O = T === H ? A : H;
   const nm = (x.name && x.name.default) || "";
-  const head = <div className="hd184"><b>{gxNick141(A) + " @ " + gxNick141(H)}</b><small>{gxDate184(g.gameDate)}</small></div>;
+  const head = <><div className="hd184"><b>{gxNick141(A) + " @ " + gxNick141(H)}</b><small>{gxDate184(g.gameDate)}</small></div>
+    {x.vid185 ? <div className="sg185" data-gx="185">
+      <button type="button" className={vw === "z" ? "on" : ""} disabled={(isNaN(cx) || isNaN(cy)) && !e165} onClick={() => setVw185("z")}>Visualizer</button>
+      <button type="button" className={vw === "v" ? "on" : ""} onClick={() => setVw185("v")}>{GX_IC184.ply}Video</button>
+    </div> : null}</>;
+  if (vw === "v") return (
+    <div className="gx-rk163 gx-v184" data-gx="184">
+      {head}
+      <div className="vd185"><video key={x.vid185.u} src={x.vid185.u} poster={x.vid185.p || undefined} controls playsInline autoPlay preload="metadata" />{x.vid185.h ? <small>{x.vid185.h}</small> : null}</div>
+      <GxGvCard184 x={x} g={g} tm={tm} no={gxPdNo({ t: T, n: nm })} onPlay={null} />
+    </div>
+  );
   if (e165) return <div className="gx-rk163 gx-v184" data-gx="184">{head}<GxEdge165 key={e165.k} e={e165} s={s} x={x} g={g} tm={tm} /></div>;
   // still picture when NHL tracking is not saved for this goal: the scorer at the shot spot and the puck's path to the net
   const side = cx >= 0 ? 1 : -1, nx = side * 89, px = cx, py = -cy, no = gxPdNo({ t: T, n: nm });
