@@ -10,6 +10,12 @@
 "k": "back",
 "was": "2026-10-31"
 },
+"2562606": {
+"d": "2026-11-02",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-11-02"
+},
 "2590829": {
 "d": "2026-10-30",
 "k": "later",
@@ -328,9 +334,10 @@
 "was": "2026-10-31"
 },
 "4233648": {
-"d": "2026-11-01",
-"k": "new",
-"now": "2026-11-03"
+"d": "2026-11-02",
+"k": "dtd",
+"now": "2026-11-03",
+"was": "Out"
 },
 "4233720": {
 "d": "2026-11-01",
@@ -365,10 +372,11 @@
 "was": ""
 },
 "4419679": {
-"d": "2026-11-01",
-"k": "new",
+"d": "2026-11-02",
+"k": "dtd",
 "nd": "2026-11-01",
-"now": "2026-11-03"
+"now": "2026-11-03",
+"was": "Out"
 },
 "4419778": {
 "d": "2026-10-31",
@@ -601,7 +609,7 @@
 "status": "Injured Reserve"
 },
 "2562606": {
-"back": "2026-11-02",
+"back": "2026-11-28",
 "note": "Huberdeau (hip) skated with his teammates Saturday, but he isn't close to returning, Pat Steinberg of QR Calgary 770 AM reports.",
 "status": "Injured Reserve"
 },
@@ -867,8 +875,8 @@
 },
 "4233648": {
 "back": "2026-11-03",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233668": {
 "back": "2026-11-25",
@@ -927,8 +935,8 @@
 },
 "4419679": {
 "back": "2026-11-03",
-"note": "Koepke (undisclosed) was unavailable for Sunday's game against Carolina, according to Mike McIntyre of the Winnipeg Free Press.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4419778": {
 "back": "2026-11-08",
