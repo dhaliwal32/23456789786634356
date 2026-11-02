@@ -1559,6 +1559,20 @@
     .gx-h2h { --gx-fs: 1.1; }
     .gx-h2h > .gx-pc { min-height: 56px; }
   }
+  /* change 193 (install.py) */
+  .gx-wk193 { width: 100%; margin-top: 10px; }
+  .gx-wk193 .qk > div { flex-wrap: wrap; overflow: visible; }
+  .gx-wk193 .tp { font-size: 12px; color: var(--mute); margin: 10px 0 6px; }
+  .gx-wk193 .gr { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 8px; max-height: 300px; overflow-y: auto; overscroll-behavior: contain; padding: 2px; }
+  .gx-wk193 .wc { display: grid; grid-template-rows: 18px 16px 20px 20px; align-items: center; height: 88px; padding: 6px 10px; border: 1px solid var(--line2); border-radius: 10px; text-align: left; min-width: 0; transition: background .15s ease, border-color .15s ease; }
+  .gx-wk193 .wc > * { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-wk193 .wc .l { font-size: 13px; font-weight: 600; }
+  .gx-wk193 .wc .d { font-size: 11.5px; color: var(--mute); }
+  .gx-wk193 .wc .o { display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--ink2, var(--ink)); }
+  .gx-wk193 .wc .o img, .gx-wk193 .wc .o .gx-fp114 { flex: none; }
+  .gx-wk193 .wc b { font-size: 14px; font-variant-numeric: tabular-nums; }
+  .gx-wk193 .wc.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accentSoft); }
+  @media (max-width: 640px) { .gx-wk193 .gr { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gx-wk193 .wc { padding: 6px 8px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1567,7 +1581,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1dcefp9.uh0n2w" data-file="build/app.js">
+<meta name="gx-build" content="1kjo8lo.1o7x3ql" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1856,8 +1870,9 @@ function computeMoves(s, o) {
   const fas = s.players.filter((p) => p.ft === "fa");
   const wt = (p) => (p.p === "G" ? { ...p, gwMul: gw } : p);
   const n = H === 0 ? s.weeks.length - s.wk : H;
-  const horizon = s.weeks.slice(s.wk, s.wk + n).map((w, i) => { const dw = deriveWeek(w, s.autoDone); return { wk: dw, from: i === 0 ? dw.done : 0 }; });
-  const lineupAware = H !== 0;
+  const W193 = Array.isArray(o.wks) && o.wks.length ? [...new Set(o.wks)].filter((i) => i >= s.wk && i < s.weeks.length).sort((a, b) => a - b) : null; /* change 193: chosen weeks */
+  const horizon = W193 ? W193.map((wi) => { const dw = deriveWeek(s.weeks[wi], s.autoDone); return { wk: dw, from: wi === s.wk ? dw.done : 0 }; }) : s.weeks.slice(s.wk, s.wk + n).map((w, i) => { const dw = deriveWeek(w, s.autoDone); return { wk: dw, from: i === 0 ? dw.done : 0 }; });
+  const lineupAware = W193 ? W193.length <= 4 : H !== 0;
   const total = (roster) => { const r = roster.map(wt); return horizon.reduce((t, h) => t + weekProj(r, h.wk, K, h.from).total, 0); };
   const gamesIn = (p) => { const a = pickStart(p); let g = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) g++; })); return g; };
   const rawPts = (p, ref) => { const a = pickStart(ref || p); let t = 0; horizon.forEach((h) => (h.wk.games[p.t] || []).forEach((d) => { const dt = h.wk.dates ? h.wk.dates[d] : null; if (d >= h.from && (!dt || dt >= a) && !p.ir && avail(p, dt)) t += effAvg(wt(p), K, dt) * p.prob; })); return t; };
@@ -4748,6 +4763,8 @@ function Pickups({ s, setS, wk }) {
   const effAvg = gxPgAvg; /* gx088-pk */
   const K = s.blend;
   const [H, setH] = useState(1);
+  const [wm193, setWm193] = useState("h1"); /* change 193: h1, h4, h0, lose or pick */
+  const [wks193, setWks193] = useState(null);
   const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
   const [q, setQ] = useState(() => { const v = window.__PICK_Q || ""; window.__PICK_Q = ""; return v; });
   const [limit, setLimit] = useState(40); /* gx122: 40 then more on scroll */
@@ -4764,7 +4781,7 @@ function Pickups({ s, setS, wk }) {
   const plan = sP !== s;
   const wkP = useMemo(() => (plan ? deriveWeek(sP.weeks[sP.wk], sP.autoDone) : wk), [sP, wk]);
   const gxHideV = gxUseHide(); /* gx075-m */
-  const M = useMemo(() => gxMoves102(s, sP, { H, pos, q }), [sP, H, pos, q, gxHideV]);
+  const M = useMemo(() => gxMoves102(s, sP, wks193 ? { H, pos, q, wks: wks193 } : { H, pos, q }), [sP, H, pos, q, gxHideV, wks193]);
   const base = useMemo(() => planBase(s, sP), [sP]);
   const minGain = s.minGain ?? 3;
   const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
@@ -4803,14 +4820,13 @@ function Pickups({ s, setS, wk }) {
     <div className="space-y-3">
       <GxFaToggle105 cur="adddrop" go={(t, k) => { window.location.hash = gxHash(t, k); }} />
       <div className="text-sm">
-        <span className="font-semibold">{ml === 0 ? "No moves left" : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left"}</span>{!plan ? <GxHsLine s={s} base={base} ml={ml} /> : null}{/* gx083-h */}
+        <span className="font-semibold">{ml === 0 ? "No moves left" : ml == null ? "" : ml + " move" + (ml === 1 ? "" : "s") + " left"}</span>{/* change 193: next-week line removed */}
         {plan ? <span className="text-slate-500">{" \u00b7 showing next week"}</span> : null}
       </div>
-      <GxFlt108 label={({ all: "All", F: "Forwards", D: "Defence", G: "Goalies" })[pos] + " \u00b7 " + ({ 1: plan ? "Next week" : "This week", 4: "Next 4 weeks", 0: "Rest of season" })[H] + " \u00b7 " + gxRngLbl108()}><div className="flex flex-wrap gap-2 items-center">
+      <GxFlt108 label={({ all: "All", F: "Forwards", D: "Defence", G: "Goalies" })[pos] + " \u00b7 " + (wks193 ? (wm193 === "lose" ? "Losing weeks (" + wks193.length + ")" : wks193.length === 1 ? gxWkShort193(sP, wks193[0]) : wks193.length + " weeks") : ({ 1: plan ? "Next week" : "This week", 4: "Next 4 weeks", 0: "Rest of season" })[H]) + " \u00b7 " + gxRngLbl108()}><div className="flex flex-wrap gap-2 items-center">
         <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(40); }} />
-        <Pills items={[[1, plan ? "Next week" : "This week"], [4, "Next 4 weeks"], [0, "Rest of season"]]} value={H} onChange={(v) => { setH(v); setLimit(40); }} />
-      </div><GxRngSel100 /></GxFlt108>
-      {!plan ? <GxHeadStart s={s} base={base} ml={ml} /> : null}{/* gx083 */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
+      </div><GxWkPick193 s={s} sP={sP} plan={plan} mode={wm193} wks={wks193} onPick={(m, a) => { setWm193(m); setLimit(40); if (m === "h1" || m === "h4" || m === "h0") { setWks193(null); setH(m === "h1" ? 1 : m === "h4" ? 4 : 0); } else setWks193(a); }} /><GxRngSel100 /></GxFlt108>
+      {/* change 193: Pickups for next week removed */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className={"gx-pk text-xs text-slate-500 " + gxPkMode106(pos)} style={{ borderTop: 0, paddingTop: 0 }}>
@@ -4853,7 +4869,7 @@ function Pickups({ s, setS, wk }) {
           ))}
         </GxPanel>
       ) : null}
-      {sim ? <GxSim107 s={sP} setS={setS} wk={wkP} M={M} H={H} hLabel={hLabel} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
+      {sim ? <GxSim107 s={sP} setS={setS} wk={wkP} M={M} H={wks193 ? (wks193.length === 1 && wks193[0] === sP.wk ? 1 : 2) : H} hLabel={wks193 ? (wks193.length === 1 ? gxWkShort193(sP, wks193[0]).toLowerCase() : "the " + wks193.length + " weeks you picked") : hLabel} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
     </div>
   );
 }
@@ -7493,7 +7509,7 @@ const GX102 = new WeakMap();
 function gxMoves102(s, sP, o) {
   let m = GX102.get(s);
   if (!m) { m = new Map(); GX102.set(s, m); }
-  const key = [o.H, o.pos, o.q, window.__PMODE, [...gxHideSet()].sort().join(",")].join("|");
+  const key = [o.H, o.pos, o.q, window.__PMODE, [...gxHideSet()].sort().join(","), (o.wks || []).join(".")].join("|"); /* change 193 */
   if (!m.has(key)) m.set(key, computeMoves(sP, o));
   return m.get(key);
 }
@@ -9719,6 +9735,40 @@ function gxRow191(r, sc) {
   return { d: r.d, x, fp: gxEst(x, sc) + (r.SHP || 0) * (sc.SHP ?? 0), est: false, st: "F", h191: true };
 }
 const gxAvg191 = (L) => { const q = (L || []).filter((r) => !r.dnp && r.fp != null && r.st !== "L" && r.st !== "P"); return q.length ? [q.reduce((t, r) => t + r.fp, 0) / q.length, q.length] : null; };
+// ---------- change 193: pick which weeks count for pickups (install.py) ----------
+const gxWkShort193 = (s, i) => String(((s.weeks || [])[i] || {}).label || "Week " + (i + 1)).split(" \u00b7 ")[0];
+function GxWkPick193({ s, sP, plan, mode, wks, onPick }) {
+  const list = useMemo(() => {
+    const out = [];
+    for (let i = sP.wk; i < sP.weeks.length; i++) {
+      const w = sP.weeks[i] || {}, opp = oppOf(w, sP.me);
+      let wc = null;
+      try { wc = opp ? winChance({ ...sP, wk: i }) : null; } catch (e) {}
+      const L = String(w.label || "Week " + (i + 1)).split(" \u00b7 ");
+      out.push({ i, wl: L[0], dl: L[1] || "", opp, wc });
+    }
+    return out;
+  }, [sP]);
+  const sel = new Set(mode === "h1" ? [sP.wk] : mode === "h4" ? list.slice(0, 4).map((x) => x.i) : mode === "h0" ? list.map((x) => x.i) : wks || []);
+  const lose = list.filter((x) => x.wc != null && x.wc < 0.5).map((x) => x.i);
+  const tog = (i) => { const n = new Set(sel); if (n.has(i)) n.delete(i); else n.add(i); const a = [...n].sort((x, y) => x - y); if (a.length) onPick("pick", a); };
+  return (
+    <div className="gx-wk193">
+      <div className="qk"><Pills items={[["h1", plan ? "Next week" : "This week"], ["h4", "Next 4 weeks"], ["h0", "Rest of season"], ["lose", "Losing weeks" + (lose.length ? " (" + lose.length + ")" : "")]]} value={mode} onChange={(v) => { if (v === "lose") { if (lose.length) onPick("lose", lose); } else onPick(v, null); }} /></div>
+      <div className="tp">Or tap the weeks you want</div>
+      <div className="gr">
+        {list.map((x) => (
+          <button key={x.i} type="button" className={"wc" + (sel.has(x.i) ? " on" : "")} onClick={() => tog(x.i)} aria-pressed={sel.has(x.i)}>
+            <span className="l">{x.wl}</span>
+            <span className="d">{x.dl}</span>
+            <span className="o">{x.opp ? <><GxFtPic114 id={x.opp} size={14} /><span>{gxTag131(s, { ft: x.opp }) || teamName(s, x.opp)}</span></> : <span>No matchup</span>}</span>
+            <b style={{ color: x.wc == null ? "var(--mute)" : x.wc >= 0.5 ? "var(--good)" : "var(--bad)" }}>{x.wc == null ? "-" : wpTxt(x.wc)}</b>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */

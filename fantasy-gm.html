@@ -1573,6 +1573,20 @@
   .gx-wk193 .wc b { font-size: 14px; font-variant-numeric: tabular-nums; }
   .gx-wk193 .wc.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accentSoft); }
   @media (max-width: 640px) { .gx-wk193 .gr { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gx-wk193 .wc { padding: 6px 8px; } }
+  /* change 194 (install.py) */
+  .gx-sw194 { margin-top: 4px; }
+  .gx-sw194 .gr { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; max-height: 262px; overflow-y: auto; overscroll-behavior: contain; padding: 2px; }
+  .gx-sw194 .wc { display: grid; grid-template-rows: 18px 20px 22px; align-items: center; height: 76px; padding: 6px 10px; border: 1px solid var(--line2); border-radius: 10px; text-align: left; min-width: 0; transition: background .15s ease, border-color .15s ease; }
+  .gx-sw194 .wc > * { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-sw194 .wc .l { font-size: 13px; font-weight: 600; }
+  .gx-sw194 .wc .o { display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--mute); }
+  .gx-sw194 .wc .w { display: flex; align-items: baseline; gap: 4px; font-variant-numeric: tabular-nums; }
+  .gx-sw194 .wc .w .b { font-size: 12.5px; color: var(--mute); }
+  .gx-sw194 .wc .w .ar { font-size: 11px; color: var(--mute); }
+  .gx-sw194 .wc .w b { font-size: 15px; }
+  .gx-sw194 .wc.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accentSoft); }
+  .gx-sw194 .nt { font-size: 12px; color: var(--mute); margin-top: 6px; }
+  @media (max-width: 640px) { .gx-sw194 .gr { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gx-sw194 .wc { padding: 6px 8px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1581,7 +1595,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1kjo8lo.1o7x3ql" data-file="build/app.js">
+<meta name="gx-build" content="xutioi.1eoxsm" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4869,7 +4883,7 @@ function Pickups({ s, setS, wk }) {
           ))}
         </GxPanel>
       ) : null}
-      {sim ? <GxSim107 s={sP} setS={setS} wk={wkP} M={M} H={wks193 ? (wks193.length === 1 && wks193[0] === sP.wk ? 1 : 2) : H} hLabel={wks193 ? (wks193.length === 1 ? gxWkShort193(sP, wks193[0]).toLowerCase() : "the " + wks193.length + " weeks you picked") : hLabel} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
+      {sim ? <GxSim107 w194={gxSelW194(sP, wm193, wks193)} onW194={(arr) => { setWm193("pick"); setWks193(arr); setLimit(40); }} s={sP} setS={setS} wk={wkP} M={M} H={wks193 ? (wks193.length === 1 && wks193[0] === sP.wk ? 1 : 2) : H} hLabel={wks193 ? (wks193.length === 1 ? gxWkShort193(sP, wks193[0]).toLowerCase() : "the " + wks193.length + " weeks you picked") : hLabel} init={sim} wBase={base} onClose={() => setSim(null)} /> : null}
     </div>
   );
 }
@@ -7710,7 +7724,7 @@ function GxSH106({ mode }) {
 }
 const gxPkMode106 = (pos) => (pos === "G" ? "full go" : "full sk");
 // ---------- change 107: Simulate a pickup, cleaned up (install.py) ----------
-function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
+function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose, w194, onW194 }) {
   const ea = gxPgAvg, K = M.K, myR = M.myR, today = todayISO();
   const byId = (id) => (id ? s.players.find((p) => p.id === id) || null : null);
   const [addId, setAddId] = useState(init.add || "");
@@ -7754,7 +7768,7 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
     const r = rosterOn(pick);
     const dg = dayG.find((x) => x.dt === pick);
     return { gain: H === 1 && dg ? dg.g : M.total(r) - M.total(myR), win: winChance(s, r) };
-  }, [addId, dropId, pick]);
+  }, [addId, dropId, pick, M]); /* change 194 */
   const qq = nrm(q);
   const opts = !chg ? [] : qq ? M.fas.filter((p) => p.prob > 0 && nrm(p.n).includes(qq)).sort((x, y) => ea(y, K) - ea(x, K)).slice(0, 8) : M.res.slice(0, 8).map((r) => r.f);
   const apply = () => {
@@ -7763,6 +7777,9 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
     close();
   };
   const DN = (dt) => (dt === today ? "Today" : dayLabel(dt).split(",")[0]);
+  /* change 194: win chance by week, now and after the swap */
+  const wb194 = useMemo(() => (w194 ? gxWkWins194(s, null) : []), [s, !!w194]);
+  const wa194 = useMemo(() => (w194 && a && d && pick ? gxWkWins194(s, rosterOn(pick)) : []), [s, addId, dropId, pick, !!w194]);
   const sg = (v) => (v >= 0 ? "+" : "") + f1(v);
   return (
     <div className={"gx-so107" + (out ? " out" : "")} onClick={close}>
@@ -7822,6 +7839,7 @@ function GxSim107({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
                   <div><small>{"Points, " + hLabel}</small><b style={{ color: R.gain >= 0 ? "var(--good)" : "var(--bad)" }}>{sg(R.gain)}</b></div>
                   <div><small>{"Win " + (String(hLabel).indexOf("next week") === 0 ? "next week" : "this week")}</small><b>{(wBase != null ? wpTxt(wBase) + " → " : "") + (R.win == null ? "-" : wpTxt(R.win))}</b></div>
                 </div>
+                {w194 && wb194.length ? <GxSimWeeks194 s={s} before={wb194} after={wa194} sel={w194} onW={onW194} /> : null}
                 <button type="button" className="lk bt150" onClick={() => setDet(!det)}>{det ? "Hide details" : "More details"}</button>
                 {det ? <GxPickRes92 s={s} myR={myR} ok={[{ a, d }]} /> : null}
                 <div className="act">
@@ -9766,6 +9784,48 @@ function GxWkPick193({ s, sP, plan, mode, wks, onPick }) {
           </button>
         ))}
       </div>
+    </div>
+  );
+}
+// ---------- change 194: win chance by week in the Simulate box (install.py) ----------
+function gxSelW194(sP, mode, wks) {
+  const all = [];
+  for (let i = sP.wk; i < sP.weeks.length; i++) all.push(i);
+  return mode === "h1" ? [sP.wk] : mode === "h4" ? all.slice(0, 4) : mode === "h0" ? all : wks || [sP.wk];
+}
+// every remaining week: { i, wl, opp, wc } for my roster (or a changed roster)
+function gxWkWins194(sP, roster) {
+  const out = [];
+  for (let i = sP.wk; i < sP.weeks.length; i++) {
+    const w = sP.weeks[i] || {}, opp = oppOf(w, sP.me);
+    if (!opp) continue;
+    let wc = null;
+    try { wc = winChance({ ...sP, wk: i }, roster || undefined); } catch (e) {}
+    out.push({ i, wl: String(w.label || "Week " + (i + 1)).split(" \u00b7 ")[0], opp, wc });
+  }
+  return out;
+}
+function GxSimWeeks194({ s, before, after, sel, onW }) {
+  const A = {};
+  (after || []).forEach((x) => { A[x.i] = x.wc; });
+  const S = new Set(sel || []);
+  const tog = (i) => { const n = new Set(S); if (n.has(i)) n.delete(i); else n.add(i); const arr = [...n].sort((x, y) => x - y); if (arr.length && onW) onW(arr); };
+  return (
+    <div className="gx-sw194">
+      <div className="sec">Win chance by week</div>
+      <div className="gr">
+        {before.map((x) => {
+          const n = A[x.i], dl = n != null && x.wc != null ? Math.round(n * 100) - Math.round(x.wc * 100) : 0;
+          return (
+            <button key={x.i} type="button" className={"wc" + (S.has(x.i) ? " on" : "")} onClick={() => tog(x.i)} aria-pressed={S.has(x.i)}>
+              <span className="l">{x.wl}</span>
+              <span className="o"><GxFtPic114 id={x.opp} size={14} /><span>{gxTag131(s, { ft: x.opp }) || teamName(s, x.opp)}</span></span>
+              <span className="w"><span className="b">{x.wc == null ? "-" : wpTxt(x.wc)}</span><span className="ar">{"\u2192"}</span><b style={{ color: dl > 0 ? "var(--good)" : dl < 0 ? "var(--bad)" : "var(--ink)" }}>{n == null ? "-" : wpTxt(n)}</b></span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="nt">Highlighted weeks count in the points above. Tap a week to add or remove it.</div>
     </div>
   );
 }
