@@ -168,11 +168,6 @@
 "now": "2026-11-04",
 "was": "Out"
 },
-"3124": {
-"d": "2026-10-29",
-"k": "back",
-"was": "2026-10-29"
-},
 "3150479": {
 "d": "2026-11-02",
 "k": "back",
@@ -408,6 +403,11 @@
 "k": "back",
 "was": "2026-10-27"
 },
+"4565264": {
+"d": "2026-11-02",
+"k": "new",
+"now": "2026-11-03"
+},
 "4565266": {
 "d": "2026-10-29",
 "k": "back",
@@ -497,6 +497,7 @@
 "5075840": {
 "d": "2026-10-28",
 "k": "later",
+"nd": "2026-11-02",
 "now": "2026-11-07",
 "was": "2026-10-29"
 },
@@ -768,6 +769,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"3124": {
+"back": "2026-11-03",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "3151036": {
 "back": "2026-11-25",
 "note": "Foegele (knee) will miss 3-4 weeks, Jackson Starr of the Senators' official site reports Saturday.",
@@ -953,6 +959,11 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
+"4565264": {
+"back": "2026-11-03",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "4565282": {
 "back": "2026-11-05",
 "note": "day-to-day",
@@ -1040,7 +1051,7 @@
 },
 "5075840": {
 "back": "2026-11-07",
-"note": "ir",
+"note": "Soderblom (upper body) is week-to-week, per Penguins PR on Monday.",
 "status": "Injured Reserve"
 },
 "5079": {
