@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "espn_sync.py": true
  },
  "changes": [
-  "196-pickups-win-follows-weeks.py"
+  "197-league-draft.py"
  ]
 }

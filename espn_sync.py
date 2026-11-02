@@ -190,6 +190,39 @@ data = {"generated": datetime.now().isoformat(timespec="seconds"),
         "leagueName": lg.get("settings", {}).get("name", ""), "myTeamId": MY_TEAM_ID,
         "currentPeriod": current, "teams": teams, "players": players,
         "periods": periods, "matchups": matchups, "slots": {str(k): v for k, v in slots.items()}, "acq": ({str(t.get("id")): ((t.get("transactionCounter") or {}).get("matchupAcquisitionTotals") or {}) for t in lg.get("teams", [])} if any("transactionCounter" in t for t in lg.get("teams", [])) else None)}
+# change 197: draft order and every pick (players no longer in the player list get a short line of their own)
+try:
+    _dr = get(LEAGUE, params=[("view", "mDraftDetail"), ("view", "mSettings")])
+    _dd = _dr.get("draftDetail") or {}
+    _ds = (_dr.get("settings") or {}).get("draftSettings") or {}
+    _picks = [{"o": x.get("overallPickNumber"), "r": x.get("roundId"), "rp": x.get("roundPickNumber"), "t": x.get("teamId"),
+               "p": x.get("playerId"), "k": 1 if x.get("keeper") else 0} for x in (_dd.get("picks") or []) if x.get("playerId")]
+    _known = {p_["id"] for p_ in players}
+    _miss = [x["p"] for x in _picks if x["p"] not in _known]
+    _extra = []
+    if _miss:
+        try:
+            _pl = get(LEAGUE, params={"view": "kona_player_info"}, fantasy_filter={"players": {"filterIds": {"value": _miss}, "limit": len(_miss)}})
+            for _e in (_pl.get("players", []) if isinstance(_pl, dict) else []):
+                _p = _e.get("player") or {}
+                _tot = _avg = _pav = None
+                for _st in _p.get("stats") or []:
+                    if _st.get("seasonId") != SEASON or _st.get("statSplitTypeId") != 0:
+                        continue
+                    if _st.get("statSourceId") == 0:
+                        _tot, _avg = _st.get("appliedTotal"), _st.get("appliedAverage")
+                    elif _st.get("statSourceId") == 1:
+                        _pav = _st.get("appliedAverage")
+                _extra.append({"id": _p.get("id"), "n": _p.get("fullName"), "t": pro_abbr.get(_p.get("proTeamId")) or "",
+                               "p": {4: "D", 5: "G"}.get(_p.get("defaultPositionId"), "F"), "ft": _e.get("onTeamId", 0) or 0,
+                               "gp": round(_tot / _avg) if _tot and _avg else 0, "tot": round(_tot or 0, 1), "pavg": round(_pav or 0, 2)})
+        except Exception as _ex:
+            print("(draft) missing players not read:", _ex)
+    data["draft"] = {"order": _ds.get("pickOrder") or [], "type": _ds.get("type") or "", "date": _ds.get("date"),
+                     "done": bool(_dd.get("drafted")), "picks": _picks, "extra": _extra}
+    print(f"(draft) {len(_picks)} picks, order {data['draft']['order']}, {len(_extra)} players read separately")
+except Exception as _ex:
+    print("(draft) skipped:", _ex)
 # 3b) actual points per player per day + NHL game states (news_logos.py round 16)
 try:
     today_et = datetime.now(ET).date()
