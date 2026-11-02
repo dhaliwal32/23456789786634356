@@ -1,77 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-26|ac657366d98e",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Your player's line changed",
-   "text": "Trevor Zegras (PHI) promoted: 2nd line -> 1st line",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-26T17:25:52Z"
-  },
-  {
-   "k": "2026-10-26|744e07ff63a1",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Mikael Backlund (CGY) is in the lineup on the 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T17:25:52Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|57ee2d792517",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Trevor Moore (LA) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T17:25:52Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|8f21d684c452",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Christian Dvorak (PHI) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T17:25:52Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|cbd25a958de4",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Noah Cates (PHI) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T17:25:52Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
-   "k": "2026-10-26|c3500c15f83a",
-   "at": "2026-10-26T17:25:52Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Porter Martone (PHI) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-26T17:25:52Z",
-   "via": "pregame",
-   "sent_at": "2026-10-26T22:01:04Z"
-  },
-  {
    "k": "2026-10-26|03ca64371dad",
    "at": "2026-10-26T19:28:01Z",
    "title": "Pickup idea: bigger role",
@@ -1896,7 +1825,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-02T15:09:27Z",
-   "seen": "2026-11-02T17:23:54Z"
+   "seen": "2026-11-02T17:29:54Z"
   }
  ],
  "sent": {
