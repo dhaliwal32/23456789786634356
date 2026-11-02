@@ -189,6 +189,11 @@
 "k": "new",
 "now": "2026-11-03"
 },
+"3648015": {
+"d": "2026-11-02",
+"k": "new",
+"now": "2026-11-11"
+},
 "3654006": {
 "d": "2026-10-31",
 "k": "later",
@@ -370,10 +375,8 @@
 },
 "4419679": {
 "d": "2026-11-02",
-"k": "dtd",
-"nd": "2026-11-01",
-"now": "2026-11-03",
-"was": "Out"
+"k": "back",
+"was": "2026-11-03"
 },
 "4419778": {
 "d": "2026-10-31",
@@ -810,6 +813,11 @@
 "note": "Rodrigues (illness) is questionable for Tuesday's matchup against Edmonton, per Amanda Stein of the Devils' official site.",
 "status": "Day-To-Day"
 },
+"3648015": {
+"back": "2026-11-11",
+"note": "Greer (upper body) was placed on injured reserve Monday.",
+"status": "Injured Reserve"
+},
 "3654006": {
 "back": "2026-11-22",
 "note": "Lyon (upper body) had a setback in his recovery and is without a timeline to return, the team announced Thursday.",
@@ -939,11 +947,6 @@
 "back": "2026-12-05",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"4419679": {
-"back": "2026-11-03",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4419778": {
 "back": "2026-11-08",
