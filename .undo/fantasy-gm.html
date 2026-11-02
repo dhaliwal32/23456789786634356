@@ -1508,6 +1508,13 @@
   .gx-tp187 { display: inline-flex; flex: none; padding: 0; border-radius: 7px; transition: transform .12s ease, opacity .12s ease; }
   .gx-tp187:hover { opacity: .85; }
   .gx-tp187:active { transform: scale(.94); }
+  /* change 188 (install.py) */
+  @media (max-width: 640px) {
+    .gx-so107 > .gx-sim107.gx-pk113 { display: flex; flex-direction: column; height: 100%; min-height: 100%; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+    .gx-pk113 .hd, .gx-pk113 .sr, .gx-pk113 .act { flex: none; }
+    .gx-pk113 .lst { max-height: none; flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; }
+    .gx-pk113 .act { margin-top: 10px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
