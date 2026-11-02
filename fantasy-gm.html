@@ -1538,6 +1538,16 @@
     .gx-pk189 .lf { gap: 6px; }
     .gx-pk189 .tp189 .gx-rs100 > span { display: none; }
   }
+  /* change 190 (install.py) */
+  .gx-sim107.gx-pk189 { max-width: 1100px; }
+  .gx-pk189 .hr189, .gx-pk189 .it.r189 { grid-template-columns: 250px 58px 58px repeat(11, 60px) !important; width: max-content !important; min-width: max-content; }
+  .gx-pk189 .lf { overflow: hidden; }
+  .gx-pk189 .lf .nm190 { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .gx-pk189 .lf .ck, .gx-pk189 .lf .gx-face, .gx-pk189 .lf img { flex: none; }
+  .gx-pk189 .n { overflow: hidden; text-overflow: clip; }
+  @media (max-width: 640px) {
+    .gx-pk189 .hr189, .gx-pk189 .it.r189 { grid-template-columns: 172px 46px 46px repeat(11, 46px) !important; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1546,7 +1556,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="jgnfec.1fj7l5" data-file="build/app.js">
+<meta name="gx-build" content="bmv62k.1my9z2a" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8013,19 +8023,19 @@ function GxPick113({ title, list, sel, onToggle, onClose, pg, s }) {
   const close = () => { if (out) return; setOut(true); setTimeout(onClose, 160); };
   const qq = nrm(q), ord = { F: 0, D: 1, G: 2 };
   const rows = list.filter((p) => !qq || nrm(p.n).includes(qq)).sort((a, b) => (a.ir ? 1 : 0) - (b.ir ? 1 : 0) || ord[a.p] - ord[b.p] || pg(b) - pg(a));
-  const srt = (L) => (s && S.k ? gxSort108(L, s, null, { PG: (p) => pg(p) }) : L);
+  const srt = (L) => (s && S.k ? gxSort108(L, s, null, { PG: (p) => pg(p), A190: (p) => { const a = parseFloat(gxAvg190(p, s)); return isNaN(a) ? -Infinity : a; } }) : L);
   const sk = srt(rows.filter((p) => p.p !== "G")), go = srt(rows.filter((p) => p.p === "G"));
   const row = (p) => {
     const on = sel.includes(p.id);
     return (
       <button key={p.id} type="button" className={"it r189" + (on ? " on" : "")} onClick={() => onToggle(p.id)}>
-        <span className="lf"><span className="ck">{on ? "\u2713" : ""}</span><GxFace p={p} size={26} /><span className="min-w-0"><span className="block truncate">{p.n}</span><span className="block truncate text-xs text-slate-500">{p.p + " \u00b7 " + p.t + (p.ir ? " \u00b7 IR" : "")}</span></span></span>
-        <span className="n pg">{f1(pg(p))}</span>
+        <span className="lf"><span className="ck">{on ? "\u2713" : ""}</span><GxFace p={p} size={26} /><span className="min-w-0 nm190"><span className="block truncate">{p.n}</span><span className="block truncate text-xs text-slate-500">{p.p + " \u00b7 " + p.t + (p.ir ? " \u00b7 IR" : "")}</span></span></span>
+        <span className="n pg">{gxAvg190(p, s)}</span><span className="n">{f1(pg(p))}</span>
         {s ? <GxSC106 p={p} s={s} mode={p.p === "G" ? "go" : "sk"} /> : null}
       </button>
     );
   };
-  const head = (lbl, mode) => <div className="hr189"><span className="lf">{lbl}</span><GxHB108 k="PG" l="P/G" />{s ? <GxSH106 mode={mode} /> : null}</div>;
+  const head = (lbl, mode) => <div className="hr189"><span className="lf">{lbl}</span><GxHB108 k="A190" l="Avg" /><GxHB108 k="PG" l="Exp" />{s ? <GxSH106 mode={mode} /> : null}</div>;
   return (
     <div className={"gx-so107" + (out ? " out" : "")} onClick={close}>
       <div className="gx-sim107 gx-pk113 gx-pk189" onClick={(e) => e.stopPropagation()}>
@@ -9616,6 +9626,12 @@ const GX_IC186 = {
   in: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4L14 14M5 7h4M7 5v4" /></svg>,
   out: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4L14 14M5 7h4" /></svg>,
 };
+// ---------- change 190: average points per game played in the chosen stats range (install.py) ----------
+function gxAvg190(p, s) {
+  if (!s) return "-";
+  const v = gxVals106(p, s, gxRng100()), fp = parseFloat(v[0]), gp = parseFloat(v[1]);
+  return !isNaN(fp) && gp > 0 ? f1(fp / gp) : "-";
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
