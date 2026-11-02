@@ -1482,6 +1482,28 @@
   .gx-v184 .vd185 { padding: 8px 10px 10px; animation: gx184-dn .22s ease-out; }
   .gx-v184 .vd185 video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000000; border-radius: 8px; }
   .gx-v184 .vd185 small { display: block; margin-top: 6px; font-size: 12px; color: #666666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* change 186 (install.py) */
+  .gx-v184 .ct184 .ib.on186 { background: #8f8f8f; }
+  .gx-v184 .vd185 video { border: 1px solid #c9c9c9; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+  html[data-theme="dark"] .gx-v184 { background: #141518; color: #ececec; box-shadow: inset 0 0 0 1px #2a2c31; }
+  html[data-theme="dark"] .gx-v184 .hd184 b { color: #f2f2f2; }
+  html[data-theme="dark"] .gx-v184 .hd184 small, html[data-theme="dark"] .gx-v184 .vd185 small { color: #9a9ca1; }
+  html[data-theme="dark"] .gx-v184 .ct184 .ib, html[data-theme="dark"] .gx-v184 .ct184 .oi184 { background: #2c2e33; color: #e6e6e6; }
+  html[data-theme="dark"] .gx-v184 .ct184 .ib:hover { background: #3a3c42; }
+  html[data-theme="dark"] .gx-v184 .ct184 .ib.on186 { background: #55585f; }
+  html[data-theme="dark"] .gx-v184 .cd184 { background: #1c1d21; }
+  html[data-theme="dark"] .gx-v184 .nm184 .tx { color: #f2f2f2; }
+  html[data-theme="dark"] .gx-v184 .nm184 .tx small, html[data-theme="dark"] .gx-v184 .tl184 small { color: #9a9ca1; }
+  html[data-theme="dark"] .gx-v184 .as184 span { color: #c9cacd; }
+  html[data-theme="dark"] .gx-v184 .tl184 > div { background: #26282d; }
+  html[data-theme="dark"] .gx-v184 .tl184 b { color: #f2f2f2; }
+  html[data-theme="dark"] .gx-v184 .ol184 { background: #1c1d21; border-top-color: #2a2c31; }
+  html[data-theme="dark"] .gx-v184 .ol184 .ol { color: #e6e6e6; }
+  html[data-theme="dark"] .gx-v184 .ol184 .ol .hd, html[data-theme="dark"] .gx-v184 .ol184 .ol .pl .tg { color: #9a9ca1; }
+  html[data-theme="dark"] .gx-v184 .sg185 { background: #2c2e33; }
+  html[data-theme="dark"] .gx-v184 .sg185 button { color: #a0a2a7; }
+  html[data-theme="dark"] .gx-v184 .sg185 button.on { background: #45474d; color: #ffffff; box-shadow: none; }
+  html[data-theme="dark"] .gx-v184 .vd185 video { border-color: #3a3c42; box-shadow: 0 2px 14px rgba(0,0,0,.5); }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1490,7 +1512,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="r7rfzl.1bdrzha" data-file="build/app.js">
+<meta name="gx-build" content="179lev1.ken359" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9109,8 +9131,8 @@ function GxRink163({ x, g, tm, s }) {
       <div className="rw184">
         <svg viewBox="-106.25 -48.75 212.5 97.5" role="img" aria-label={"Goal by " + nm + " from the spot shown"}>
           {gxRink184({ L: side < 0 ? O : T, R: side > 0 ? O : T, H, id: "s" + (g.id || "") + (x.timeInPeriod || "") })}
-          <line x1={px} y1={py} x2={nx} y2="0" stroke="#121212" strokeWidth="0.35" strokeDasharray="1.2 1" />
-          <circle cx={nx} cy="0" r="1" fill="#121212" />
+          <line x1={px} y1={py} x2={nx} y2="0" stroke={gxDk186() ? "#e8e8e8" : "#121212"} strokeWidth="0.35" strokeDasharray="1.2 1" />
+          <circle cx={nx} cy="0" r="1" fill={gxDk186() ? "#e8e8e8" : "#121212"} />
           <g transform={"translate(" + px + " " + py + ") scale(" + (gxBig184() ? 1.6 : 1) + ")"}>
             <circle r="4.17" fill="none" stroke={C.sc.f} strokeWidth="0.5" />
             <circle r="3.17" fill={C.sc.f} stroke={C.sc.s} strokeWidth="0.25" />
@@ -9191,7 +9213,28 @@ function GxEdge165({ e, s, x, g, tm }) {
   const [ol166, setOl166] = useState(false);
   const [big, setBig] = useState(() => gxBig184());
   useEffect(() => { const f = () => setBig(gxBig184()); window.addEventListener("resize", f); return () => window.removeEventListener("resize", f); }, []);
-  const k = big ? 1.6 : 1;
+  /* change 186: phone zoom to the goal half */
+  const [zm186, setZm186] = useState(false);
+  const pk186 = ((fr[gi] || [0, []])[1]).find((o) => !o[0]);
+  const side186 = pk186 ? (pk186[3] >= 0 ? 1 : -1) : (+x.cx || 0) >= 0 ? 1 : -1;
+  const VB186 = [-106.25, -48.75, 212.5, 97.5], VZ186 = side186 > 0 ? [-3, -45.5, 109.25, 91] : [-106.25, -45.5, 109.25, 91];
+  const vbNow186 = React.useRef(VB186);
+  useEffect(() => {
+    const el = svg.current;
+    if (!el) return undefined;
+    const from = vbNow186.current.slice(), to = zm186 && big ? VZ186 : VB186, t0 = performance.now(), D = 320;
+    let raf = 0;
+    const step = (now) => {
+      const q = Math.min(1, (now - t0) / D), ez = 1 - Math.pow(1 - q, 3);
+      const v = from.map((a, i) => a + (to[i] - a) * ez);
+      vbNow186.current = v;
+      el.setAttribute("viewBox", v.map((n) => n.toFixed(2)).join(" "));
+      if (q < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [zm186, big, side186]);
+  const k = big ? (zm186 ? 1.1 : 1.6) : 1;
   const svg = React.useRef(null), cur = React.useRef(0);
   // every player who appears at any point, with his first spot
   const all = useMemo(() => {
@@ -9257,7 +9300,7 @@ function GxEdge165({ e, s, x, g, tm }) {
         {gxRink184({ L: side < 0 ? otT : scT, R: side > 0 ? otT : scT, H: gH || F.home, id: e.k })}
         {all.map(([id, o]) => {
           const q = P0[id], tr = q ? "translate(" + q[0].toFixed(2) + " " + q[1].toFixed(2) + ")" : "translate(0 0)", hide = q ? null : { display: "none" };
-          if (id === "pk") return <g key="pk" data-p="pk" transform={tr} style={hide}><circle r={1 * k} fill="#121212" stroke="#121212" strokeWidth="0.25" /></g>;
+          if (id === "pk") return <g key="pk" data-p="pk" transform={tr} style={hide}><circle r={1 * k} fill={gxDk186() ? "#f2f2f2" : "#121212"} stroke={gxDk186() ? "#f2f2f2" : "#121212"} strokeWidth="0.25" /></g>;
           const c = o[1] === scT ? C.sc : C.ot, sc = F.scorer && id === String(F.scorer);
           return (
             <g key={"p" + id} data-p={id} transform={tr} style={hide}><g transform={"scale(" + k + ")"}>
@@ -9272,6 +9315,7 @@ function GxEdge165({ e, s, x, g, tm }) {
         <button type="button" className="ib" onClick={replay} aria-label="Replay" title="Replay">{GX_IC184.rep}</button>
         <button type="button" className="ib" onClick={() => { if (play) { stopAt(cur.current); } else { if (cur.current >= T) { cur.current = 0; setMs(0); } setPlay(true); setRun((r) => r + 1); } }} aria-label={play ? "Pause" : "Play"} title={play ? "Pause" : "Play"}>{play ? GX_IC184.pau : GX_IC184.ply}</button>
         <button type="button" className="ib" onClick={() => stopAt(tOf(gi))} aria-label="Goal moment" title="Goal moment">{GX_IC184.gol}</button>
+        {big ? <button type="button" className={"ib" + (zm186 ? " on186" : "")} onClick={() => setZm186(!zm186)} aria-label={zm186 ? "Full rink" : "Zoom in"} title={zm186 ? "Full rink" : "Zoom in"} data-gx="186">{zm186 ? GX_IC186.out : GX_IC186.in}</button> : null}
         <button type="button" className="oi184" onClick={() => setOl166(!ol166)}>On ice <i className={ol166 ? "up" : ""}>{"\u25be"}</i></button>
       </div>
       <GxGvCard184 x={x} g={g || {}} tm={tm || scT} no={scNo} onPlay={replay} />
@@ -9412,31 +9456,32 @@ function GxPPg182({ g }) {
 const GX_RED184 = "#cc3333", GX_BLUE184 = "#3366cc";
 const gxBig184 = () => { try { return window.matchMedia("(max-width: 640px)").matches; } catch (e) { return false; } };
 let GX_ICE184 = null;
-function gxIce184() {
+function gxIce184(dk) {
+  const K186 = dk ? "d" : "l"; window.__GXICE186 = window.__GXICE186 || {}; /* change 186: dark ice */
+  if (window.__GXICE186[K186] != null) return window.__GXICE186[K186];
   // faint skate marks on white, made once and kept
-  if (GX_ICE184 !== null) return GX_ICE184;
   try {
     const c = document.createElement("canvas"); c.width = 1000; c.height = 425;
     const x = c.getContext("2d");
-    x.fillStyle = "#fbfbfb"; x.fillRect(0, 0, 1000, 425);
+    x.fillStyle = dk ? "#1b1d21" : "#fbfbfb"; x.fillRect(0, 0, 1000, 425);
     let sd = 7;
     const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647; };
     for (let i = 0; i < 900; i++) {
       const a = rnd() * 1000, b = rnd() * 425, r = 20 + rnd() * 160, s = rnd() * 6.3, l = 0.15 + rnd() * 0.6;
-      x.strokeStyle = "rgba(120,130,140," + (0.025 + rnd() * 0.05).toFixed(3) + ")";
+      x.strokeStyle = (dk ? "rgba(210,220,230," : "rgba(120,130,140,") + (0.025 + rnd() * 0.05).toFixed(3) + ")";
       x.lineWidth = 0.5 + rnd() * 0.9;
       x.beginPath(); x.arc(a, b, r, s, s + l); x.stroke();
     }
-    GX_ICE184 = c.toDataURL("image/jpeg", 0.8);
-  } catch (e) { GX_ICE184 = ""; }
-  return GX_ICE184;
+    window.__GXICE186[K186] = c.toDataURL("image/jpeg", 0.8);
+  } catch (e) { window.__GXICE186[K186] = ""; }
+  return window.__GXICE186[K186];
 }
 const gxLogo184 = (t) => "https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[gxAb131(t)] || gxAb131(t)) + "_light.svg";
 // the rink in feet (x -100..100, y -42.5..42.5); L / R = team code at each end, H = home team for centre ice
 function gxRink184({ L, R, H, id }) {
-  const red = GX_RED184, blue = GX_BLUE184, cp = "gxb184" + id, ice = gxIce184(), out = [];
+  const dk = gxDk186(), red = dk ? "#e05a5a" : GX_RED184, blue = dk ? "#5b8ff0" : GX_BLUE184, cp = "gxb184" + id + (dk ? "d" : ""), ice = gxIce184(dk), out = []; /* change 186: dark rink */
   out.push(<defs key="df"><clipPath id={cp}><rect x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" /></clipPath></defs>);
-  out.push(<rect key="ice" x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" fill="#fbfbfb" />);
+  out.push(<rect key="ice" x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" fill={dk ? "#1b1d21" : "#fbfbfb"} />);
   const g = [];
   if (ice) g.push(<image key="im" href={ice} x="-100" y="-42.5" width="200" height="85" preserveAspectRatio="none" />);
   // trapezoids behind the nets and the goal lines
@@ -9444,12 +9489,12 @@ function gxRink184({ L, R, H, id }) {
     g.push(<path key={"tz" + s} d={"M " + s * 89 + " -11 L " + s * 100 + " -14 M " + s * 89 + " 11 L " + s * 100 + " 14"} stroke={red} strokeWidth="0.25" fill="none" />);
     g.push(<line key={"gl" + s} x1={s * 89} y1="-42.5" x2={s * 89} y2="42.5" stroke={red} strokeWidth="0.25" />);
     g.push(<path key={"cr" + s} d={"M " + s * 89 + " -4 L " + s * 84.5 + " -4 A 4.5 4.5 0 0 " + (s > 0 ? 0 : 1) + " " + s * 84.5 + " 4 L " + s * 89 + " 4 Z"} fill="rgba(51,102,204,.16)" stroke={red} strokeWidth="0.25" />);
-    g.push(<path key={"nt" + s} d={"M " + s * 89 + " -3 L " + s * 91.5 + " -3 Q " + s * 93.3 + " -3 " + s * 93.3 + " -1.2 L " + s * 93.3 + " 1.2 Q " + s * 93.3 + " 3 " + s * 91.5 + " 3 L " + s * 89 + " 3"} fill="#ffffff" stroke={red} strokeWidth="0.35" />);
+    g.push(<path key={"nt" + s} d={"M " + s * 89 + " -3 L " + s * 91.5 + " -3 Q " + s * 93.3 + " -3 " + s * 93.3 + " -1.2 L " + s * 93.3 + " 1.2 Q " + s * 93.3 + " 3 " + s * 91.5 + " 3 L " + s * 89 + " 3"} fill={dk ? "#2a2c31" : "#ffffff"} stroke={red} strokeWidth="0.35" />);
     g.push(<rect key={"bl" + s} x={s * 25 - 0.5} y="-42.5" width="1" height="85" fill={blue} />);
   });
   // centre red line (dashed), centre circle, referee crease
   g.push(<rect key="rl" x="-0.5" y="-42.5" width="1" height="85" fill={red} />);
-  for (let y = -41; y < 42; y += 3.4) g.push(<rect key={"rd" + y} x="-0.2" y={y} width="0.4" height="1.5" fill="#ffffff" />);
+  for (let y = -41; y < 42; y += 3.4) g.push(<rect key={"rd" + y} x="-0.2" y={y} width="0.4" height="1.5" fill={dk ? "#1b1d21" : "#ffffff"} />);
   g.push(<path key="rc" d="M -10 42.5 A 10 10 0 0 1 10 42.5" fill="none" stroke={red} strokeWidth="0.25" />);
   // end-zone faceoff circles with hash marks and the L marks around each dot
   [[-69, -22], [-69, 22], [69, -22], [69, 22]].forEach(([a, b], i) => {
@@ -9464,14 +9509,14 @@ function gxRink184({ L, R, H, id }) {
   });
   [[-20, -22], [-20, 22], [20, -22], [20, 22]].forEach(([a, b], i) => g.push(<circle key={"nz" + i} cx={a} cy={b} r="1" fill={red} />));
   // centre ice: home logo, then the blue circle and dot on top
-  if (H) g.push(<image key="lg" href={gxLogo184(H)} x="-16.7" y="-16.7" width="33.4" height="33.4" preserveAspectRatio="xMidYMid meet" />);
+  if (H) g.push(<image key="lg" href={gxLogoT186(H)} x="-16.7" y="-16.7" width="33.4" height="33.4" preserveAspectRatio="xMidYMid meet" />);
   g.push(<circle key="cc" cx="0" cy="0" r="15" fill="none" stroke={blue} strokeWidth="0.25" />);
   g.push(<circle key="cd" cx="0" cy="0" r="0.5" fill={blue} />);
   // which team defends each end
-  if (L) g.push(<text key="tl" transform="translate(-95.2 0) rotate(90)" textAnchor="middle" dominantBaseline="central" fontSize="5.3" fontWeight="700" fill="#121212">{L}</text>);
-  if (R) g.push(<text key="tr" transform="translate(95.2 0) rotate(-90)" textAnchor="middle" dominantBaseline="central" fontSize="5.3" fontWeight="700" fill="#121212">{R}</text>);
+  if (L) g.push(<text key="tl" transform="translate(-95.2 0) rotate(90)" textAnchor="middle" dominantBaseline="central" fontSize="5.3" fontWeight="700" fill={dk ? "#e8e8e8" : "#121212"}>{L}</text>);
+  if (R) g.push(<text key="tr" transform="translate(95.2 0) rotate(-90)" textAnchor="middle" dominantBaseline="central" fontSize="5.3" fontWeight="700" fill={dk ? "#e8e8e8" : "#121212"}>{R}</text>);
   out.push(<g key="cl" clipPath={"url(#" + cp + ")"}>{g}</g>);
-  out.push(<rect key="bd" x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" fill="none" stroke="#c5c5c7" strokeWidth="0.3" />);
+  out.push(<rect key="bd" x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" fill="none" stroke={dk ? "#4a4c52" : "#c5c5c7"} strokeWidth="0.3" />);
   return out;
 }
 // player circle colours: scoring team filled with its colour, the other team white with its colour as ring and number
@@ -9511,7 +9556,7 @@ function GxGvCard184({ x, g, tm, no, onPlay }) {
           {no != null ? <span className="bg" style={{ background: col, color: lb > 0.62 ? "#121212" : "#ffffff", boxShadow: "0 0 0 1.5px #ffffff, 0 0 0 3px " + col }}>{no}</span> : null}
           <span className="tx">{p && window.__NAV ? <button type="button" onClick={() => window.__NAV.player(p)}>{nm}</button> : nm}{no != null ? " #" + no : ""}{gN != null ? <small>{" (" + gN + ")"}</small> : null}</span>
         </div>
-        <div className="as184"><img src={gxLogo184(tm)} alt={gxAb131(tm)} loading="lazy" /><span>{ast || "Unassisted"}</span></div>
+        <div className="as184"><img src={gxLogoT186(tm)} alt={gxAb131(tm)} loading="lazy" /><span>{ast || "Unassisted"}</span></div>
       </div>
       <div className="tl184">
         <div><b>{score}</b><small>Score</small></div>
@@ -9522,6 +9567,13 @@ function GxGvCard184({ x, g, tm, no, onPlay }) {
     </div>
   );
 }
+// ---------- change 186: zoom icons for the phone goal replay, dark look (install.py) ----------
+const gxDk186 = () => { try { return document.documentElement.getAttribute("data-theme") === "dark"; } catch (e) { return false; } };
+const gxLogoT186 = (t) => "https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[gxAb131(t)] || gxAb131(t)) + (gxDk186() ? "_dark.svg" : "_light.svg");
+const GX_IC186 = {
+  in: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4L14 14M5 7h4M7 5v4" /></svg>,
+  out: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4L14 14M5 7h4" /></svg>,
+};
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
