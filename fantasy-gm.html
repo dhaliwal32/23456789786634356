@@ -1632,7 +1632,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="16a8pyw.11kcnwk" data-file="build/app.js">
+<meta name="gx-build" content="q0hk9v.146htqj" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4835,19 +4835,22 @@ function Pickups({ s, setS, wk }) {
   const gxHideV = gxUseHide(); /* gx075-m */
   const M = useMemo(() => gxMoves102(s, sP, wks193 ? { H, pos, q, wks: wks193 } : { H, pos, q }), [sP, H, pos, q, gxHideV, wks193]);
   const base = useMemo(() => planBase(s, sP), [sP]);
+  /* change 196: Win column follows the picked weeks */
+  const ww196 = gxSelW194(sP, wm193, wks193), wk196 = ww196.join(".");
+  const base196 = useMemo(() => (base == null && ww196.length === 1 && ww196[0] === sP.wk ? null : gxWinW196(sP, null, ww196)), [sP, wk196, base]);
   const minGain = s.minGain ?? 3;
   const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
   // change 079: sort the whole list by any heading before it is cut to the first rows
   const [srt79, setSrt79] = useState("add");
-  const wAll79 = useMemo(() => { const o = {}; if (srt79 !== "win" || base == null) return o; all.slice(0, 150).forEach((r) => { o[r.f.id] = winChance(sP, afterMove(sP, r.f, r.d)); }); return o; }, [M, srt79, base]);
+  const wAll79 = useMemo(() => { const o = {}; if (srt79 !== "win" || base == null) return o; all.slice(0, 150).forEach((r) => { o[r.f.id] = gxWinW196(sP, afterMove(sP, r.f, r.d), ww196); }); return o; }, [M, srt79, base, wk196]);
   const key79 = { l5: (r) => gxL5v(hist[String(r.f.id).slice(1)]), g: (r) => M.gamesIn(r.f), x: (r) => effAvg(r.f, K), win: (r) => (wAll79[r.f.id] != null ? wAll79[r.f.id] : -1) }[srt79];
   const rows = (key79 ? [...all].sort((a, b) => key79(b) - key79(a) || b.gain - a.gain) : all).slice(0, limit);
   const wins = useMemo(() => {
     const o = {};
     if (base == null) return o;
-    rows.forEach((r) => { o[r.f.id] = winChance(sP, afterMove(sP, r.f, r.d)); });
+    rows.forEach((r) => { o[r.f.id] = gxWinW196(sP, afterMove(sP, r.f, r.d), ww196); });
     return o;
-  }, [M, limit, base, srt79, wAll79]);
+  }, [M, limit, base, srt79, wAll79, wk196]);
   const ids = (srt79 === "l5" ? all.slice(0, 150) : rows).map((r) => String(r.f.id).slice(1)).join(",");
   useEffect(() => {
     let dead = false;
@@ -4883,7 +4886,7 @@ function Pickups({ s, setS, wk }) {
       <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className={"gx-pk text-xs text-slate-500 " + gxPkMode106(pos)} style={{ borderTop: 0, paddingTop: 0 }}>
           <span></span><span>{"Player"}</span>
-          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">Win</GxSH><span className="n">Avg</span><span className="n">Rost</span><GxSH106 mode={pos === "G" ? "go" : "sk"} />{/* gx109h */}
+          <GxSH k="l5" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Last 5</GxSH><GxSH k="g" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Games</GxSH><GxSH k="x" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add" cls="m-hide">Expected</GxSH><GxSH k="add" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">Adds</GxSH><GxSH k="win" cur={srt79} set={(v) => { setSrt79(v); setLimit(40); }} def="add">{ww196.length === 1 ? (ww196[0] === sP.wk ? "Win" : "Win " + gxWkShort193(sP, ww196[0]).replace("Week ", "W")) : "Win avg"}</GxSH><span className="n">Avg</span><span className="n">Rost</span><GxSH106 mode={pos === "G" ? "go" : "sk"} />{/* gx109h */}
         </div>
         {rows.length ? gxSort108(rows, s, (r) => r.f).map((r) => {
           const keep = r.gain > 0 && effAvg(r.f, K) - effAvg(r.d, K) >= 0, tg = shortTag(r.f, K), w = wins[r.f.id];
@@ -4899,7 +4902,7 @@ function Pickups({ s, setS, wk }) {
               <div className="n text-slate-500 m-hide">{M.gamesIn(r.f)}</div>
               <div className="n m-hide">{f1(effAvg(r.f, K))}</div>
               <div className="n font-semibold" style={{ color: r.gain > 0 ? "var(--good)" : "var(--bad)" }}>{(r.gain >= 0 ? "+" : "") + f1(r.gain)}</div>
-              <div className="n" style={w != null && base != null ? { color: w > base + 0.004 ? "var(--good)" : w < base - 0.004 ? "var(--bad)" : "var(--ink)" } : null}>{w == null ? "\u2013" : wpTxt(w)}</div>
+              <div className="n" title={base196 != null && w != null ? "Now " + wpTxt(base196) + ", after " + wpTxt(w) : ""} style={w != null && base196 != null ? { color: w > base196 + 0.004 ? "var(--good)" : w < base196 - 0.004 ? "var(--bad)" : "var(--ink)" } : null}>{w == null ? "\u2013" : wpTxt(w)}</div>
               <div className="n text-slate-500">{r.f.gp ? f1(r.f.tot / r.f.gp) : "-"}</div>
               <div className="n text-slate-500">{r.f.own != null ? Math.round(r.f.own) + "%" : "-"}</div>
               <GxSC106 p={r.f} s={s} mode={pos === "G" ? "full" : "mx"} />
@@ -9944,6 +9947,15 @@ function GxMore195({ s, before, after, ins, outs, weeks }) {
       {weeks && wb.length ? <div className="gx-sw194 ro195"><GxSimWeeks194 s={s} before={wb} after={wa} sel={[]} onW={null} /></div> : null}
     </div>
   );
+}
+// ---------- change 196: chance to win over the picked weeks (install.py) ----------
+// one week: that week's chance; several: the average over the weeks that have a matchup
+function gxWinW196(sP, roster, wks) {
+  const L = (wks && wks.length ? wks : [sP.wk]).filter((i) => oppOf(sP.weeks[i] || {}, sP.me));
+  if (!L.length) return null;
+  let t = 0, n = 0;
+  L.forEach((i) => { let v = null; try { v = winChance(i === sP.wk ? sP : { ...sP, wk: i }, roster || undefined); } catch (e) {} if (v != null) { t += v; n++; } });
+  return n ? t / n : null;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
