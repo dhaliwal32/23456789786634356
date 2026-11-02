@@ -349,10 +349,10 @@
 "was": "2026-10-30"
 },
 "4378683": {
-"d": "2026-11-01",
-"k": "later",
+"d": "2026-11-02",
+"k": "dtd",
 "now": "2026-11-03",
-"was": "2026-11-01"
+"was": "Out"
 },
 "4392072": {
 "d": "2026-11-01",
@@ -517,7 +517,7 @@
 "was": "Out"
 },
 "5080179": {
-"d": "2026-10-31",
+"d": "2026-11-02",
 "k": "dtd",
 "nd": "2026-10-31",
 "now": "2026-11-03",
@@ -558,11 +558,11 @@
 "was": "2026-10-29"
 },
 "5428": {
-"d": "2026-10-29",
-"k": "later",
+"d": "2026-11-02",
+"k": "dtd",
 "nd": "2026-10-29",
 "now": "2026-11-03",
-"was": "2026-10-29"
+"was": "Out"
 },
 "5452": {
 "d": "2026-11-01",
@@ -917,8 +917,8 @@
 },
 "4378683": {
 "back": "2026-11-03",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4392260": {
 "back": "2026-12-05",
@@ -1067,8 +1067,8 @@
 },
 "5080179": {
 "back": "2026-11-03",
-"note": "Howard (knee) won't play against the Rangers on Sunday, per Stephen Whyno of the Associated Press.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080212": {
 "back": "2026-11-21",
@@ -1142,8 +1142,8 @@
 },
 "5428": {
 "back": "2026-11-03",
-"note": "Head coach Rod Brind'Amour said Thursday that Hall (undisclosed) will miss a few more games, Chip Alexander of The Raleigh News &amp; Observer reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5452": {
 "back": "2026-11-02",
