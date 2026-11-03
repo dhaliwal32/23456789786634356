@@ -200,6 +200,11 @@
 "now": "2026-11-22",
 "was": "2026-10-31"
 },
+"3735": {
+"d": "2026-11-02",
+"k": "new",
+"now": "2026-11-04"
+},
 "3797": {
 "d": "2026-10-26",
 "k": "back",
@@ -825,6 +830,11 @@
 "back": "2026-11-22",
 "note": "Lyon (upper body) had a setback in his recovery and is without a timeline to return, the team announced Thursday.",
 "status": "Injured Reserve"
+},
+"3735": {
+"back": "2026-11-04",
+"note": "out",
+"status": "Out"
 },
 "3852": {
 "back": "2026-11-21",
