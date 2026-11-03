@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-27|7642746c4ed2",
-   "at": "2026-10-27T19:32:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Mattias Ekholm (EDM) is in the lineup on the top pair",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T19:32:53Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
-   "k": "2026-10-27|9553d8881bcb",
-   "at": "2026-10-27T19:32:53Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Collin Graf (SJ) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T19:32:53Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
    "k": "2026-10-27|ced2536dc491",
    "at": "2026-10-28T00:01:47Z",
    "title": "Pickup: ice time jump",
@@ -1188,7 +1164,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-03T19:27:13Z"
+   "seen": "2026-11-03T19:33:09Z"
   },
   {
    "k": "2026-11-03|bec95318d775",
@@ -1212,7 +1188,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-03T19:15:10Z",
-   "seen": "2026-11-03T19:27:13Z"
+   "seen": "2026-11-03T19:33:09Z"
   }
  ],
  "sent": {
