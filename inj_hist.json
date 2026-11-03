@@ -173,9 +173,9 @@
 "was": "2026-10-29"
 },
 "3535": {
-"d": "2026-10-29",
+"d": "2026-11-03",
 "k": "later",
-"now": "2026-11-03",
+"now": "2026-11-21",
 "was": "2026-10-29"
 },
 "3648008": {
@@ -446,9 +446,11 @@
 "was": "2026-10-29"
 },
 "4697449": {
-"d": "2026-10-29",
-"k": "news",
-"nd": "2026-10-29"
+"d": "2026-11-03",
+"k": "later",
+"nd": "2026-10-29",
+"now": "2026-11-23",
+"was": "2026-11-03"
 },
 "4874720": {
 "d": "2026-10-31",
@@ -537,10 +539,16 @@
 "k": "back",
 "was": ""
 },
+"5160": {
+"d": "2026-11-03",
+"k": "sooner",
+"now": "2026-11-07",
+"was": "2026-11-27"
+},
 "5172": {
-"d": "2026-10-29",
+"d": "2026-11-03",
 "k": "later",
-"now": "2026-11-03",
+"now": "2026-11-21",
 "was": "2026-10-29"
 },
 "5216860": {
@@ -779,7 +787,7 @@
 "status": "Injured Reserve"
 },
 "3535": {
-"back": "2026-11-03",
+"back": "2026-11-21",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -984,7 +992,7 @@
 "status": "Day-To-Day"
 },
 "4697449": {
-"back": "2026-11-03",
+"back": "2026-11-23",
 "note": "Faber (skull) has cleared his return to play protocol and could resume skating within a few days, per Michael Russo of The Athletic.",
 "status": "Injured Reserve"
 },
@@ -1109,9 +1117,9 @@
 "status": "Injured Reserve"
 },
 "5160": {
-"back": "2026-11-27",
-"note": "ir",
-"status": "Injured Reserve"
+"back": "2026-11-07",
+"note": "out",
+"status": "Out"
 },
 "5161": {
 "back": "2027-01-12",
@@ -1119,7 +1127,7 @@
 "status": "Injured Reserve"
 },
 "5172": {
-"back": "2026-11-03",
+"back": "2026-11-21",
 "note": "ir",
 "status": "Injured Reserve"
 },
