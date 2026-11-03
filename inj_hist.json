@@ -98,10 +98,9 @@
 "was": "2026-11-05"
 },
 "3042037": {
-"d": "2026-10-30",
-"k": "new",
-"nd": "2026-10-30",
-"now": "2026-11-03"
+"d": "2026-11-03",
+"k": "back",
+"was": "2026-11-03"
 },
 "3042044": {
 "d": "2026-11-02",
@@ -195,9 +194,9 @@
 "was": "2026-10-29"
 },
 "3648008": {
-"d": "2026-11-02",
-"k": "new",
-"now": "2026-11-03"
+"d": "2026-11-03",
+"k": "back",
+"was": "2026-11-03"
 },
 "3648015": {
 "d": "2026-11-02",
@@ -692,11 +691,6 @@
 "note": "out",
 "status": "Out"
 },
-"3042037": {
-"back": "2026-11-03",
-"note": "Mantha (undisclosed) didn't finish Friday's game versus the Golden Knights, and head coach Sheldon Keefe didn't have an update on the winger's status in his pos",
-"status": "Day-To-Day"
-},
 "3042044": {
 "back": "2026-11-27",
 "note": "ir",
@@ -801,11 +795,6 @@
 "back": "2026-12-03",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"3648008": {
-"back": "2026-11-03",
-"note": "Rodrigues (illness) is questionable for Tuesday's matchup against Edmonton, per Amanda Stein of the Devils' official site.",
-"status": "Day-To-Day"
 },
 "3648015": {
 "back": "2026-11-11",
