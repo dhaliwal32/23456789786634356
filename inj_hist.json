@@ -549,6 +549,11 @@
 "now": "2026-11-03",
 "was": "Out"
 },
+"5080221": {
+"d": "2026-11-02",
+"k": "new",
+"now": "2026-11-05"
+},
 "5149186": {
 "d": "2026-11-02",
 "k": "new",
@@ -1105,6 +1110,11 @@
 "back": "2026-11-21",
 "note": "Casey will be out of action for 6-8 weeks after undergoing a knee procedure, Kristy Flannery of The Hockey News reports Friday.",
 "status": "Injured Reserve"
+},
+"5080221": {
+"back": "2026-11-05",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080232": {
 "back": "2027-01-25",
