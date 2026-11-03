@@ -1,65 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-27|b101051d82ba",
-   "at": "2026-10-27T17:30:38Z",
-   "title": "Your player's line changed",
-   "text": "Patrick Kane (CHI) moved down: 1st line -> 2nd line",
-   "section": "mine",
-   "urgent": false,
-   "sent": true,
-   "via": "off",
-   "sent_at": "2026-10-27T17:30:38Z"
-  },
-  {
-   "k": "2026-10-27|009c4d01ff19",
-   "at": "2026-10-27T17:30:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Frank Nazar (CHI) promoted: 3rd line -> 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T17:30:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
-   "k": "2026-10-27|682c116fcbd7",
-   "at": "2026-10-27T17:30:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Ben Kindel (PIT) is in the lineup on the 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T17:30:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
-   "k": "2026-10-27|c27e454ebc5e",
-   "at": "2026-10-27T17:30:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Egor Chinakhov (PIT) is in the lineup on the 2nd line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T17:30:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
-   "k": "2026-10-27|03a8c2b2d34f",
-   "at": "2026-10-27T17:30:38Z",
-   "title": "Pickup idea: bigger role",
-   "text": "Lawson Crouse (UTA) promoted: 2nd line -> 1st line",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T17:30:38Z",
-   "via": "pregame",
-   "sent_at": "2026-10-27T22:05:55Z"
-  },
-  {
    "k": "2026-10-27|52efddc59e3b",
    "at": "2026-10-27T19:08:28Z",
    "title": "Goalie not starting tonight",
@@ -1257,7 +1198,19 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-03T17:24:15Z"
+   "seen": "2026-11-03T17:30:20Z"
+  },
+  {
+   "k": "2026-11-03|bec95318d775",
+   "at": "2026-11-03T17:30:42Z",
+   "title": "Fantasy GM",
+   "text": "Newhook joined Caufield's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-03T17:30:42Z",
+   "seen": "2026-11-03T17:30:42Z"
   }
  ],
  "sent": {
