@@ -1,54 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-26|57f4e220df7e",
-   "at": "2026-10-27T00:03:05Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tristan Luneau (D, ANA) is playing 20.0 min per game lately, up +4.3 (PP +0.3). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T06:54:06Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
-   "k": "2026-10-26|221f969e48f0",
-   "at": "2026-10-27T00:03:05Z",
-   "title": "Pickup: new PP1 free agent",
-   "text": "Erik Gustafsson (D, LA) was just moved onto his team's top power-play unit and is a free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T06:54:06Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
-   "k": "2026-10-26|318adaa6d4ac",
-   "at": "2026-10-27T00:03:06Z",
-   "title": "Pickup: ice time jump",
-   "text": "Spencer Stastney (D, PIT) is playing 19.8 min per game lately, up +4.5 (PP -0.1). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T06:54:06Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
-   "k": "2026-10-26|82a016aed87f",
-   "at": "2026-10-27T00:03:06Z",
-   "title": "Pickup: ice time jump",
-   "text": "Tyson Hinds (D, ANA) is playing 19.8 min per game lately, up +4.9 (PP +0.0). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T06:54:06Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
    "k": "2026-10-26|14e26ba71705",
    "at": "2026-10-27T03:55:55Z",
    "title": "Pickup: ice time jump",
@@ -1861,7 +1813,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-02T22:31:10Z",
-   "seen": "2026-11-02T23:57:47Z"
+   "seen": "2026-11-03T00:03:52Z"
   }
  ],
  "sent": {
