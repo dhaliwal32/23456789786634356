@@ -393,11 +393,11 @@
 "was": "2026-10-31"
 },
 "4565224": {
-"d": "2026-11-01",
-"k": "dtd",
+"d": "2026-11-03",
+"k": "later",
 "nd": "2026-11-02",
-"now": "2026-11-03",
-"was": "Out"
+"now": "2026-11-05",
+"was": "2026-11-03"
 },
 "4565225": {
 "d": "2026-11-03",
@@ -587,7 +587,7 @@
 "5428": {
 "d": "2026-11-03",
 "k": "later",
-"nd": "2026-10-29",
+"nd": "2026-11-03",
 "now": "2026-11-05",
 "was": "2026-11-03"
 },
@@ -942,7 +942,7 @@
 "status": "Injured Reserve"
 },
 "4565224": {
-"back": "2026-11-03",
+"back": "2026-11-05",
 "note": "Dach (illness) won't participate in Monday's practice.",
 "status": "Day-To-Day"
 },
@@ -1153,8 +1153,8 @@
 },
 "5428": {
 "back": "2026-11-05",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Hall (upper body) isn't expected to play against Nashville on Tuesday, per Walt Ruff of the Hurricanes' official site.",
+"status": "Out"
 },
 "5509": {
 "back": "2026-11-07",

@@ -1007,8 +1007,10 @@
    "text": "Dostal not starting",
    "section": "lineup",
    "urgent": true,
-   "sent": false,
-   "seen": "2026-11-02T00:58:19Z"
+   "sent": true,
+   "seen": "2026-11-02T00:58:19Z",
+   "via": "urgent",
+   "sent_at": "2026-11-03T19:15:10Z"
   },
   {
    "k": "2026-11-01|715ac6f18b74",
@@ -1186,7 +1188,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-03T19:09:09Z"
+   "seen": "2026-11-03T19:15:10Z"
   },
   {
    "k": "2026-11-03|bec95318d775",
@@ -1199,6 +1201,18 @@
    "via": "urgent",
    "sent_at": "2026-11-03T17:30:42Z",
    "seen": "2026-11-03T17:30:42Z"
+  },
+  {
+   "k": "2026-11-03|8e731e922ce7",
+   "at": "2026-11-03T19:15:10Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-03T19:15:10Z",
+   "seen": "2026-11-03T19:15:10Z"
   }
  ],
  "sent": {
