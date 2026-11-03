@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-27|52efddc59e3b",
-   "at": "2026-10-27T19:08:28Z",
-   "title": "Goalie not starting tonight",
-   "text": "Ilya Sorokin (NYI, 5:00 PM): Daily Faceoff lists Semyon Varlamov (Confirmed). Swap in a goalie who is starting.",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-27T19:08:28Z",
-   "seen": "2026-10-27T23:55:42Z"
-  },
-  {
    "k": "2026-10-27|7642746c4ed2",
    "at": "2026-10-27T19:32:53Z",
    "title": "Pickup idea: bigger role",
@@ -1198,7 +1186,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-03T19:03:16Z"
+   "seen": "2026-11-03T19:09:09Z"
   },
   {
    "k": "2026-11-03|bec95318d775",
