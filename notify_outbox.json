@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-27|58c89c3a073f",
-   "at": "2026-10-27T07:33:22Z",
-   "title": "Pickup: ice time jump",
-   "text": "Emmitt Finnie (F, DET) is playing 19.2 min per game lately, up +3.2 (PP +0.8). Likely promoted - free agent.",
-   "section": "pickup",
-   "urgent": false,
-   "sent": true,
-   "seen": "2026-10-27T23:55:42Z",
-   "via": "morning",
-   "sent_at": "2026-10-27T15:04:37Z"
-  },
-  {
    "k": "2026-10-27|b101051d82ba",
    "at": "2026-10-27T17:30:38Z",
    "title": "Your player's line changed",
@@ -1269,7 +1257,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": false,
-   "seen": "2026-11-03T07:32:42Z"
+   "seen": "2026-11-03T07:42:31Z"
   }
  ],
  "sent": {
