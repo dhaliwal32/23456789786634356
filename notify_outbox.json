@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-28|df0eb0c5091e",
-   "at": "2026-10-28T17:29:04Z",
-   "title": "Fantasy GM",
-   "text": "Wedgewood not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-28T17:29:04Z",
-   "seen": "2026-10-29T00:56:34Z"
-  },
-  {
    "k": "2026-10-28|94301cd938f7",
    "at": "2026-10-28T21:04:11Z",
    "title": "Fantasy GM",
@@ -525,6 +513,18 @@
    "via": "urgent",
    "sent_at": "2026-11-04T15:29:40Z",
    "seen": "2026-11-04T15:29:40Z"
+  },
+  {
+   "k": "2026-11-04|c7710d13aafa",
+   "at": "2026-11-04T17:35:50Z",
+   "title": "Fantasy GM",
+   "text": "Nazar joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-04T17:35:50Z",
+   "seen": "2026-11-04T17:35:50Z"
   }
  ],
  "sent": {
