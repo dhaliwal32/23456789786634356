@@ -142,6 +142,7 @@
 "3094261": {
 "d": "2026-11-04",
 "k": "sooner",
+"nd": "2026-11-04",
 "now": "2026-11-07",
 "was": "2026-12-02"
 },
@@ -350,6 +351,12 @@
 "d": "2026-11-01",
 "k": "back",
 "was": ""
+},
+"4233868": {
+"d": "2026-11-04",
+"k": "sooner",
+"now": "2026-11-04",
+"was": "2026-11-06"
 },
 "4272888": {
 "d": "2026-10-28",
@@ -756,7 +763,7 @@
 },
 "3094261": {
 "back": "2026-11-07",
-"note": "Gourde (hip) was placed on the injured non-roster list Monday.",
+"note": "Gourde (hip) will miss Thursday's game against Chicago, but he might be available at some point during the upcoming four-game road trip, per Benjamin Pierce of ",
 "status": "Injured Reserve"
 },
 "3096217": {
@@ -900,7 +907,7 @@
 "status": "Injured Reserve"
 },
 "4233868": {
-"back": "2026-11-06",
+"back": "2026-11-04",
 "note": "Timmins (lower body) doesn't have a timeline for his return yet, according to Heather Engel of NHL.com on Tuesday.",
 "status": "Injured Reserve"
 },
