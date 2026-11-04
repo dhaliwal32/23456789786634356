@@ -139,6 +139,12 @@
 "now": "2026-11-08",
 "was": "2026-10-24"
 },
+"3094261": {
+"d": "2026-11-04",
+"k": "sooner",
+"now": "2026-11-07",
+"was": "2026-12-02"
+},
 "3114743": {
 "d": "2026-10-29",
 "k": "later",
@@ -749,7 +755,7 @@
 "status": "Injured Reserve"
 },
 "3094261": {
-"back": "2026-12-02",
+"back": "2026-11-07",
 "note": "Gourde (hip) was placed on the injured non-roster list Monday.",
 "status": "Injured Reserve"
 },
