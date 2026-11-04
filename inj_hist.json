@@ -363,9 +363,8 @@
 },
 "4233868": {
 "d": "2026-11-04",
-"k": "sooner",
-"now": "2026-11-04",
-"was": "2026-11-06"
+"k": "back",
+"was": "2026-11-04"
 },
 "4272888": {
 "d": "2026-10-28",
@@ -913,11 +912,6 @@
 "4233668": {
 "back": "2026-11-25",
 "note": "Poehling (knee) is expected to miss 6-8 weeks with an MCL sprain.",
-"status": "Injured Reserve"
-},
-"4233868": {
-"back": "2026-11-04",
-"note": "ir",
 "status": "Injured Reserve"
 },
 "4233890": {
