@@ -1660,6 +1660,20 @@
     .gx-dr197 .tr197 .pc { left: 44px; gap: 6px; }
     .gx-dr197 .or197 .oc { flex-basis: 66px; }
   }
+  /* change 201 (install.py) */
+  .gx-tg201 { display: grid; grid-template-columns: minmax(0, 1fr) 112px 14px; align-items: center; column-gap: 10px; width: 100%; padding: 10px 14px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); text-align: left; cursor: pointer; transition: transform .12s ease; }
+  .gx-tg201:active { transform: scale(.985); }
+  .gx-tg201 .k { grid-column: 1 / -1; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+  .gx-tg201 .tms { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .gx-tg201 .tr { display: grid; grid-template-columns: 24px minmax(0, 1fr) 30px; align-items: center; column-gap: 8px; height: 26px; }
+  .gx-tg201 .tr .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; color: var(--ink); }
+  .gx-tg201 .tr b { text-align: right; font-size: 17px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .gx-tg201 .tr.lo .nm, .gx-tg201 .tr.lo b { color: var(--mute); }
+  .gx-tg201 .tr.me .nm { font-weight: 600; }
+  .gx-tg201 .st { font-size: 13px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 1px solid var(--line); padding-left: 10px; height: 58px; display: flex; align-items: center; }
+  .gx-tg201 .st.lv { color: #e5484d; }
+  .gx-tg201 .cv { color: var(--mute); font-size: 18px; text-align: right; }
+  .gx-pd-t tr.go201 { cursor: pointer; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1668,7 +1682,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="uiuqwn.dzew1h" data-file="build/app.js">
+<meta name="gx-build" content="1blcb55.zadmj8" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2277,7 +2291,7 @@ function App() {
         <div key={tab + "/" + (sub || "")} className="gx-pg101">{content}</div>
         {false && window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
-      {player ? <GxPdSafe key={player.id} p={player} s={s} wk={wk} H={LH} onClose={() => setPlayer(null)} /> : null}
+      {player ? <GxPdSafe key={player.id} p={player} s={s} wk={wk} H={LH} onClose={() => setPlayer(null)} /> : null}<GxNhl141 s={s} a={s.me} b={(wk && oppOf(wk, s.me)) || s.opp} only201 />
     </div>
   );
 }
@@ -7340,6 +7354,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
           ) : null}
 
           {tab === "ov" ? (<>
+            <GxTg201 t={p.t} />
             <div className="gx-pd-pn">
               <div className="gx-pd-h">Stats<span className="r">fantasy points (FPTS) by your league's scoring</span></div>
               {log === null ? <div className="text-sm text-slate-500">Loading games...</div> : (
@@ -7358,7 +7373,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
               {nextG.length ? (
                 <table className="gx-pd-t" style={{ marginTop: 10 }}><thead><tr><th>Next games</th><th>Opp</th><th>Proj</th></tr></thead>
                   <tbody>{nextG.map((g) => { const r = per(g.d), lv = gState(p.t, g.d).s !== "P", a = lv ? gxPdReal(p, g.d) : null; return (
-                    <tr key={g.d} className={lv ? "lv" : ""}>
+                    <tr key={g.d} className={(lv ? "lv" : "") + (lv && g.d === todayISO() && gxGame201(p.t) ? " go201" : "")} onClick={lv && g.d === todayISO() && gxGame201(p.t) ? () => gxOpen201(gxGame201(p.t).id) : undefined}>
                       <td>{dayLabel(g.d)}</td>
                       <td><span className="inline-flex items-center gap-1 justify-end">{g.h ? "vs" : "@"} <TeamLogo t={g.o} size={16} /> {g.o}</span></td>
                       
@@ -8927,7 +8942,7 @@ function gxLock141(on) { return; /* gx149: the page-wide lock does this now */
   if (on) { const y = window.scrollY || 0; b.dataset.gx141 = String(y); b.style.position = "fixed"; b.style.top = -y + "px"; b.style.left = "0"; b.style.right = "0"; b.style.width = "100%"; b.style.overflow = "hidden"; }
   else if (b.dataset.gx141 != null) { const y = +b.dataset.gx141 || 0; delete b.dataset.gx141; b.style.position = ""; b.style.top = ""; b.style.left = ""; b.style.right = ""; b.style.width = ""; b.style.overflow = ""; window.scrollTo(0, y); }
 }
-function GxNhl141({ s, a, b, tA, tB, side }) {
+function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
   useTick159(gxAnyInt159()); /* gx159 */
   const [gv163, setGv163] = useState({});
   const [open, setOpen] = useState(false);
@@ -9046,6 +9061,19 @@ function GxNhl141({ s, a, b, tA, tB, side }) {
   const openGame = (id) => { setGid(id); setGt("game"); setOpen(true); };
 
   const gi142 = goals.length ? (gi == null || gi >= goals.length ? goals.length - 1 : gi) : -1, slg142 = useSlide105(gi142);
+  // change 201: the copy kept on every page only opens a game from the player screen
+  useEffect(() => {
+    if (!only201) return undefined;
+    const h = (e) => { const id = e && e.detail && e.detail.id; if (!id) return; setGid(id); setGt("game"); setOut(false); setDm144(""); setOpen(true); };
+    window.addEventListener("gx-game201", h);
+    return () => window.removeEventListener("gx-game201", h);
+  }, [only201]);
+  useEffect(() => {
+    if (!only201 || !open) return undefined;
+    const id = setInterval(() => bump((x) => x + 1), 2000);
+    return () => clearInterval(id);
+  }, [only201, open]);
+  if (only201) return open ? GX_SHEET141() : null;
   // ---------- laptop column ----------
   if (side) {
     const n = goals.length, idx = gi == null || gi >= n ? n - 1 : gi, r = n ? goals[idx] : null;
@@ -10059,6 +10087,34 @@ function GxDraft197({ s }) {
         </>
       ) : <div className="text-sm text-slate-500" style={{ marginTop: 8 }}>ESPN hasn't listed any picks yet.</div>}
     </div>
+  );
+}
+// ---------- change 201: today's game on the player screen opens the NHL scores game view (install.py) ----------
+function gxGame201(t) {
+  const J = window.__NHLNOW || {};
+  return (J.games || []).find((g) => gxAb131((g.awayTeam || {}).abbrev) === t || gxAb131((g.homeTeam || {}).abbrev) === t) || null;
+}
+function gxGs201(g) {
+  const st = g ? g.gameState : "";
+  return st === "LIVE" || st === "CRIT" ? "L" : st === "FINAL" || st === "OFF" ? "F" : "P";
+}
+function gxOpen201(id) { try { window.dispatchEvent(new CustomEvent("gx-game201", { detail: { id } })); } catch (e) {} }
+function GxTg201({ t }) {
+  const [, bump] = useState(0);
+  useEffect(() => { const id = setInterval(() => bump((x) => x + 1), 2000); return () => clearInterval(id); }, []);
+  useTick159(gxAnyInt159());
+  const g = gxGame201(t), k = gxGs201(g);
+  if (!g || k === "P") return null;
+  const A = g.awayTeam || {}, H = g.homeTeam || {}, aw = +A.score > +H.score, hw = +H.score > +A.score, fin = k === "F";
+  const st = k === "L" ? ((g.clock || {}).inIntermission ? gxIntG159(g) : gxPer131(g.periodDescriptor) + " - " + ((g.clock || {}).timeRemaining || "")) : "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "");
+  const row = (T, win, lose) => <div className={"tr" + (fin && lose ? " lo" : "") + (gxAb131(T.abbrev) === t ? " me" : "")}><TeamLogo t={gxAb131(T.abbrev)} size={24} /><span className="nm">{gxNick141(T.abbrev)}</span><b>{T.score == null ? "" : T.score}</b></div>;
+  return (
+    <button type="button" className="gx-tg201" onClick={() => gxOpen201(g.id)} aria-label="Open this game in NHL scores">
+      <div className="k">{k === "L" ? "Today's game, live" : "Today's game"}</div>
+      <div className="tms">{row(A, aw, hw)}{row(H, hw, aw)}</div>
+      <div className={"st" + (k === "L" ? " lv" : "")}>{st}</div>
+      <div className="cv">{"\u203a"}</div>
+    </button>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
