@@ -31,11 +31,9 @@
 "was": "2026-10-31"
 },
 "2968829": {
-"d": "2026-11-04",
-"k": "dtd",
-"nd": "2026-11-02",
-"now": "2026-11-05",
-"was": "Out"
+"d": "2026-11-05",
+"k": "back",
+"was": "2026-11-05"
 },
 "2976842": {
 "d": "2026-11-02",
@@ -590,11 +588,9 @@
 "was": "2026-10-29"
 },
 "5428": {
-"d": "2026-11-04",
-"k": "dtd",
-"nd": "2026-11-05",
-"now": "2026-11-05",
-"was": "Out"
+"d": "2026-11-05",
+"k": "back",
+"was": "2026-11-05"
 },
 "5452": {
 "d": "2026-11-02",
@@ -662,11 +658,6 @@
 "status": "Injured Reserve"
 },
 "2967072": {
-"back": "2026-11-05",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
-"2968829": {
 "back": "2026-11-05",
 "note": "day-to-day",
 "status": "Day-To-Day"
@@ -1145,11 +1136,6 @@
 "back": "2026-11-12",
 "note": "O'Brien (lower body) was placed on non-roster injured reserve Wednesday.",
 "status": "Injured Reserve"
-},
-"5428": {
-"back": "2026-11-05",
-"note": "Hall (upper body) is expected to be a game-time decision Thursday versus the Islanders, per Brian Compton of NHL.com.",
-"status": "Day-To-Day"
 },
 "5509": {
 "back": "2026-11-07",
