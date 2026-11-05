@@ -475,9 +475,10 @@
 },
 "4697411": {
 "d": "2026-11-04",
-"k": "new",
+"k": "dtd",
 "nd": "2026-11-04",
-"now": "2026-11-07"
+"now": "2026-11-07",
+"was": "Out"
 },
 "4697448": {
 "d": "2026-11-04",
@@ -1014,8 +1015,8 @@
 },
 "4697411": {
 "back": "2026-11-07",
-"note": "Greig (lower body) is day-to-day after missing Wednesday's game versus the Sabres, Bruce Garrioch of Postmedia reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697448": {
 "back": "2026-11-07",
