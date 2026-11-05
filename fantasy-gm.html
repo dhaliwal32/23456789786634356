@@ -1682,7 +1682,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1blcb55.zadmj8" data-file="build/app.js">
+<meta name="gx-build" content="1l3jyq6.1oxmq46" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6507,7 +6507,7 @@ const gxYou = (s, you, other) => (!window.__TB_REAL || s.me === window.__TB_REAL
 function GxRankings({ s }) {
   gxUseSort108(); /* gx109 */
   const K = s.blend;
-  const [pos, setPos] = useState("F");
+  const [pos, setPos] = useState("A"); /* gx202 */
   const [own, setOwn] = useState("all");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("exp");
@@ -6520,20 +6520,21 @@ function GxRankings({ s }) {
     });
     return o;
   }, [s.players, K, window.__PMODE]);
+  const rankA202 = useMemo(() => { const o = {}; s.players.filter((p) => rank[p.id]).map((p) => [p.id, pv(p)]).sort((a, b) => b[1] - a[1]).forEach((x, i) => (o[x[0]] = i + 1)); return o; }, [rank]);
   const qq = nrm(q);
   const rows = s.players
-    .filter((p) => p.p === pos && rank[p.id] && (own === "all" || (own === "rost" ? p.ft !== "fa" : own === "fa" ? p.ft === "fa" : p.ft === own)) && (!qq || nrm(p.n).includes(qq)))
-    .map((p) => ({ p, rk: rank[p.id], e: pv(p), sf: p.gp ? p.tot / p.gp : null }))
+    .filter((p) => (pos === "A" || p.p === pos) && rank[p.id] && (own === "all" || (own === "rost" ? p.ft !== "fa" : own === "fa" ? p.ft === "fa" : p.ft === own)) && (!qq || nrm(p.n).includes(qq)))
+    .map((p) => ({ p, rk: pos === "A" ? rankA202[p.id] : rank[p.id], e: pv(p), sf: p.gp ? p.tot / p.gp : null }))
     .sort((a, b) => (sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0)));
   const shown = gxSort108(rows, s, (x) => x.p, { Avg: (p) => (p.gp ? p.tot / p.gp : -Infinity), Exp: pv }).slice(0, n); /* gx152 */
   const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
   const owner = (p) => (p.ft === "fa" ? <span className="text-slate-500">{p.wv ? "Waivers" : "Free agent"}</span> : <TL s={s} id={p.ft} className={p.ft === s.me ? "font-semibold" : ""} />);
   const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => { setSort(k); setN(50); }}>{l}</button>;
-  const PN78 = { F: "forwards", D: "defencemen", G: "goalies" };
+  const PN78 = { A: "players", F: "forwards", D: "defencemen", G: "goalies" };
   return (
     <div className="space-y-3" data-c78="rank">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="gx-seg">{[["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]].map(([k, l]) => <button key={k} type="button" className={pos === k ? "on" : ""} onClick={() => { setPos(k); setN(50); }}>{l}</button>)}</span>
+        <span className="gx-seg">{[["A", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]].map(([k, l]) => <button key={k} type="button" className={pos === k ? "on" : ""} onClick={() => { setPos(k); setN(50); }}>{l}</button>)}</span>
         <select className={inp} value={own} onChange={(e) => { setOwn(e.target.value); setN(50); }}>
           <option value="all">Every player</option>
           <option value="rost">On a fantasy team</option>
@@ -6556,12 +6557,12 @@ function GxRankings({ s }) {
               <GxFace p={p} size={22} />
               <div className="min-w-0">
                 <div className="truncate"><PN p={p} className={me ? "font-semibold" : ""} />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
-                <div className="text-xs text-slate-500 truncate"><span className="m-inl">{owner(p)}{" · "}</span>{p.t}{sort === "tot" ? " · " + f1(p.tot) + " pts" : ""}</div>
+                <div className="text-xs text-slate-500 truncate"><span className="m-inl">{owner(p)}{" · "}</span>{p.t}{pos === "A" ? " · " + p.p : ""}{sort === "tot" ? " · " + f1(p.tot) + " pts" : ""}</div>
               </div>
               <span className="truncate text-sm m-hide">{owner(p)}</span>
               <span className="n text-slate-500 m-hide">{p.gp || "–"}</span>
               <span className="n">{sf == null ? "–" : f1(sf)}</span>
-              <span className="n font-semibold">{f1(e)}</span><GxSC106 p={p} s={s} mode="full" />
+              <span className="n font-semibold">{f1(e)}</span><GxSC106 p={p} s={s} mode={pos === "A" ? "mx" : "full"} />
             </div>
           );
         })}
