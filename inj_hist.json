@@ -172,9 +172,10 @@
 "was": "2026-10-29"
 },
 "3535": {
-"d": "2026-11-03",
+"d": "2026-11-05",
 "k": "later",
-"now": "2026-11-21",
+"nd": "2026-11-05",
+"now": "2026-11-12",
 "was": "2026-10-29"
 },
 "3648008": {
@@ -347,10 +348,9 @@
 "was": "2026-11-04"
 },
 "4319911": {
-"d": "2026-10-30",
-"k": "later",
-"now": "2026-11-14",
-"was": "2026-10-30"
+"d": "2026-11-05",
+"k": "back",
+"was": ""
 },
 "4331586": {
 "d": "2026-11-04",
@@ -556,9 +556,10 @@
 "was": "2026-11-27"
 },
 "5172": {
-"d": "2026-11-03",
+"d": "2026-11-05",
 "k": "later",
-"now": "2026-11-21",
+"nd": "2026-11-05",
+"now": "2026-11-12",
 "was": "2026-10-29"
 },
 "5216860": {
@@ -778,8 +779,8 @@
 "status": "Injured Reserve"
 },
 "3535": {
-"back": "2026-11-21",
-"note": "ir",
+"back": "2026-11-12",
+"note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
 "status": "Injured Reserve"
 },
 "3541": {
@@ -885,11 +886,6 @@
 "4272674": {
 "back": "2026-11-19",
 "note": "Head coach John Hynes said Sunday that Gustavsson (hip) is slated to miss at least another month, Dylan Loucks of The Hockey News reports.",
-"status": "Injured Reserve"
-},
-"4319911": {
-"back": "",
-"note": "ir",
 "status": "Injured Reserve"
 },
 "4331586": {
@@ -1108,8 +1104,8 @@
 "status": "Injured Reserve"
 },
 "5172": {
-"back": "2026-11-21",
-"note": "ir",
+"back": "2026-11-12",
+"note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
 "status": "Injured Reserve"
 },
 "5188490": {
