@@ -536,7 +536,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T16:13:56Z",
-   "seen": "2026-11-05T17:21:33Z"
+   "seen": "2026-11-05T17:27:35Z"
+  },
+  {
+   "k": "2026-11-05|56fe124d89c2",
+   "at": "2026-11-05T17:27:59Z",
+   "title": "Fantasy GM",
+   "text": "Newhook left Caufield's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-05T17:27:59Z",
+   "seen": "2026-11-05T17:27:59Z"
   }
  ],
  "sent": {
