@@ -537,6 +537,18 @@
    "via": "urgent",
    "sent_at": "2026-11-05T15:24:13Z",
    "seen": "2026-11-05T15:24:13Z"
+  },
+  {
+   "k": "2026-11-05|a485707c4cb6",
+   "at": "2026-11-05T16:13:56Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-05T16:13:56Z",
+   "seen": "2026-11-05T16:13:56Z"
   }
  ],
  "sent": {
