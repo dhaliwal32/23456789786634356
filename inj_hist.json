@@ -535,9 +535,11 @@
 "was": "Out"
 },
 "5080221": {
-"d": "2026-11-02",
-"k": "new",
-"now": "2026-11-05"
+"d": "2026-11-05",
+"k": "later",
+"nd": "2026-11-05",
+"now": "2026-11-08",
+"was": "2026-11-05"
 },
 "5149180": {
 "d": "2026-11-04",
@@ -1070,9 +1072,9 @@
 "status": "Injured Reserve"
 },
 "5080221": {
-"back": "2026-11-05",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-08",
+"note": "Poitras (nose) won't play Thursday in Pittsburgh, per Kevin Paul Dupont of The Boston Globe.",
+"status": "Out"
 },
 "5080232": {
 "back": "2027-01-25",
