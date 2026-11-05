@@ -287,11 +287,6 @@
 "k": "back",
 "was": "2026-10-29"
 },
-"4024998": {
-"d": "2026-10-29",
-"k": "back",
-"was": "2026-10-29"
-},
 "4031645": {
 "d": "2026-11-01",
 "k": "back",
@@ -738,7 +733,7 @@
 "status": "Injured Reserve"
 },
 "3069341": {
-"back": "2026-11-05",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -851,6 +846,11 @@
 "back": "2026-11-08",
 "note": "Although Terry's (hip) return doesn't appear to be imminent, he is getting close to playing, Derek Lee of The Hockey News reports Saturday.",
 "status": "Injured Reserve"
+},
+"4024998": {
+"back": "2026-11-07",
+"note": "out",
+"status": "Out"
 },
 "4063268": {
 "back": "2026-12-04",
