@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-29|bebfee068c77",
-   "at": "2026-10-29T19:31:06Z",
-   "title": "Fantasy GM",
-   "text": "Krebs joined Thompson's line (BUF)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-29T19:31:06Z",
-   "seen": "2026-10-29T19:31:06Z"
-  },
-  {
    "k": "2026-10-29|32745f28d3ba",
    "at": "2026-10-29T23:06:41Z",
    "title": "Fantasy GM",
@@ -500,7 +488,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T16:13:56Z",
-   "seen": "2026-11-05T19:30:41Z"
+   "seen": "2026-11-05T19:36:37Z"
   },
   {
    "k": "2026-11-05|56fe124d89c2",
@@ -524,7 +512,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T17:45:33Z",
-   "seen": "2026-11-05T19:30:41Z"
+   "seen": "2026-11-05T19:36:37Z"
   }
  ],
  "sent": {
