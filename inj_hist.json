@@ -108,11 +108,9 @@
 "nd": "2026-11-04"
 },
 "3069341": {
-"d": "2026-11-04",
-"k": "dtd",
-"nd": "2026-10-30",
-"now": "2026-11-05",
-"was": "Out"
+"d": "2026-11-05",
+"k": "back",
+"was": ""
 },
 "3069342": {
 "d": "2026-11-04",
@@ -313,10 +311,11 @@
 "was": "2026-10-29"
 },
 "4233536": {
-"d": "2026-11-03",
-"k": "new",
+"d": "2026-11-05",
+"k": "later",
 "nd": "2026-11-04",
-"now": "2026-11-05"
+"now": "2026-11-07",
+"was": "2026-11-05"
 },
 "4233594": {
 "d": "2026-11-05",
@@ -732,11 +731,6 @@
 "note": "Ullmark (lower body) is expected to miss the next 1-2 weeks, Claire Hanna of TSN reports Thursday.",
 "status": "Injured Reserve"
 },
-"3069341": {
-"back": "",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "3069448": {
 "back": "2026-11-08",
 "note": "Grzelcyk (lower body) suffered a \"flare-up\" and could be out for at least \"a few days,\" head coach Lindy Ruff told Rachel Lenzi of The Buffalo News on Tuesday.",
@@ -858,7 +852,7 @@
 "status": "Injured Reserve"
 },
 "4233536": {
-"back": "2026-11-05",
+"back": "2026-11-07",
 "note": "The Stars announced Wednesday that Heiskanen (upper body) is considered day-to-day, Mike Heika of the Stars' official site reports.",
 "status": "Day-To-Day"
 },
