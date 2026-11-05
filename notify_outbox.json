@@ -500,7 +500,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T16:13:56Z",
-   "seen": "2026-11-05T17:39:37Z"
+   "seen": "2026-11-05T17:45:33Z"
   },
   {
    "k": "2026-11-05|56fe124d89c2",
@@ -513,6 +513,18 @@
    "via": "urgent",
    "sent_at": "2026-11-05T17:27:59Z",
    "seen": "2026-11-05T17:27:59Z"
+  },
+  {
+   "k": "2026-11-05|df0eb0c5091e",
+   "at": "2026-11-05T17:45:33Z",
+   "title": "Fantasy GM",
+   "text": "Wedgewood not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-05T17:45:33Z",
+   "seen": "2026-11-05T17:45:33Z"
   }
  ],
  "sent": {
