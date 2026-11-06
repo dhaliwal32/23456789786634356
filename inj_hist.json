@@ -1,9 +1,10 @@
 {
 "ev": {
 "2562606": {
-"d": "2026-11-02",
+"d": "2026-11-06",
 "k": "later",
-"now": "2026-11-28",
+"nd": "2026-11-06",
+"now": "2026-11-11",
 "was": "2026-11-02"
 },
 "2562622": {
@@ -170,7 +171,7 @@
 "3535": {
 "d": "2026-11-06",
 "k": "later",
-"nd": "2026-11-05",
+"nd": "2026-11-06",
 "now": "2026-11-07",
 "was": "2026-10-29"
 },
@@ -429,6 +430,7 @@
 "4874733": {
 "d": "2026-11-06",
 "k": "later",
+"nd": "2026-11-06",
 "now": "2026-11-08",
 "was": "2026-11-06"
 },
@@ -515,7 +517,7 @@
 "5172": {
 "d": "2026-11-06",
 "k": "later",
-"nd": "2026-11-05",
+"nd": "2026-11-06",
 "now": "2026-11-07",
 "was": "2026-10-29"
 },
@@ -567,8 +569,8 @@
 "status": "Injured Reserve"
 },
 "2562606": {
-"back": "2026-11-28",
-"note": "Huberdeau (hip) skated with his teammates Saturday, but he isn't close to returning, Pat Steinberg of QR Calgary 770 AM reports.",
+"back": "2026-11-11",
+"note": "Huberdeau (hip) took the ice in a regular jersey Friday, Pat Steinberg of QR Calgary 770 AM reports.",
 "status": "Injured Reserve"
 },
 "2562622": {
@@ -733,7 +735,7 @@
 },
 "3535": {
 "back": "2026-11-07",
-"note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
+"note": "Foligno (upper body) might be available to face the Lightning on Saturday, Michael Russo of The Athletic reports.",
 "status": "Injured Reserve"
 },
 "3541": {
@@ -938,8 +940,8 @@
 },
 "4874733": {
 "back": "2026-11-08",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Othmann (upper body) is not expected to be back in the lineup versus the Ducks on Friday, Pat Steinberg of QR Calgary 770 AM reports.",
+"status": "Out"
 },
 "4874744": {
 "back": "2026-11-07",
@@ -1053,7 +1055,7 @@
 },
 "5172": {
 "back": "2026-11-07",
-"note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
+"note": "Foligno (lower body) has been ruled out for Friday's game against the Sharks but could play in Saturday's matchup against the Lightning, Michael Russo of The At",
 "status": "Injured Reserve"
 },
 "5188490": {
