@@ -427,10 +427,10 @@
 "was": ""
 },
 "4874733": {
-"d": "2026-11-05",
-"k": "dtd",
-"now": "2026-11-06",
-"was": "Out"
+"d": "2026-11-06",
+"k": "later",
+"now": "2026-11-08",
+"was": "2026-11-06"
 },
 "4874748": {
 "d": "2026-11-02",
@@ -513,10 +513,10 @@
 "was": "2026-11-27"
 },
 "5172": {
-"d": "2026-11-05",
+"d": "2026-11-06",
 "k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-12",
+"now": "2026-11-07",
 "was": "2026-10-29"
 },
 "5216860": {
@@ -937,7 +937,7 @@
 "status": "Injured Reserve"
 },
 "4874733": {
-"back": "2026-11-06",
+"back": "2026-11-08",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -1052,7 +1052,7 @@
 "status": "Injured Reserve"
 },
 "5172": {
-"back": "2026-11-12",
+"back": "2026-11-07",
 "note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
 "status": "Injured Reserve"
 },
