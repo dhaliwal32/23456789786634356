@@ -13,10 +13,10 @@
 "was": "2026-11-03"
 },
 "2590824": {
-"d": "2026-11-05",
-"k": "later",
+"d": "2026-11-06",
+"k": "dtd",
 "now": "2026-11-07",
-"was": "2026-11-05"
+"was": "Out"
 },
 "2590829": {
 "d": "2026-10-30",
@@ -24,11 +24,6 @@
 "nd": "2026-10-30",
 "now": "2026-12-27",
 "was": "2026-10-31"
-},
-"2967072": {
-"d": "2026-11-05",
-"k": "back",
-"was": "2026-11-07"
 },
 "2968829": {
 "d": "2026-11-05",
@@ -84,9 +79,10 @@
 "was": "2026-11-05"
 },
 "3042020": {
-"d": "2026-11-05",
-"k": "new",
-"now": "2026-11-07"
+"d": "2026-11-06",
+"k": "dtd",
+"now": "2026-11-07",
+"was": "Out"
 },
 "3042037": {
 "d": "2026-11-03",
@@ -253,6 +249,12 @@
 "k": "back",
 "was": ""
 },
+"4024998": {
+"d": "2026-11-06",
+"k": "dtd",
+"now": "2026-11-07",
+"was": "Out"
+},
 "4031645": {
 "d": "2026-11-01",
 "k": "back",
@@ -269,11 +271,11 @@
 "was": ""
 },
 "4233536": {
-"d": "2026-11-05",
-"k": "later",
+"d": "2026-11-06",
+"k": "dtd",
 "nd": "2026-11-05",
 "now": "2026-11-07",
-"was": "2026-11-05"
+"was": "Out"
 },
 "4233594": {
 "d": "2026-11-05",
@@ -288,11 +290,11 @@
 "was": "2026-10-31"
 },
 "4233648": {
-"d": "2026-11-05",
-"k": "later",
+"d": "2026-11-06",
+"k": "dtd",
 "nd": "2026-11-05",
 "now": "2026-11-07",
-"was": "2026-11-05"
+"was": "Out"
 },
 "4233720": {
 "d": "2026-11-01",
@@ -432,6 +434,12 @@
 "now": "2026-11-08",
 "was": "2026-10-29"
 },
+"4915850": {
+"d": "2026-11-06",
+"k": "dtd",
+"now": "2026-11-07",
+"was": "Out"
+},
 "5075840": {
 "d": "2026-11-02",
 "k": "later",
@@ -471,17 +479,17 @@
 "was": "Out"
 },
 "5080221": {
-"d": "2026-11-05",
-"k": "later",
+"d": "2026-11-06",
+"k": "dtd",
 "nd": "2026-11-05",
 "now": "2026-11-08",
-"was": "2026-11-05"
+"was": "Out"
 },
 "5149180": {
-"d": "2026-11-05",
-"k": "later",
+"d": "2026-11-06",
+"k": "dtd",
 "now": "2026-11-07",
-"was": "2026-11-05"
+"was": "Out"
 },
 "5149186": {
 "d": "2026-11-03",
@@ -560,8 +568,8 @@
 },
 "2590824": {
 "back": "2026-11-07",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -577,6 +585,11 @@
 "back": "2027-07-01",
 "note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
 "status": "Injured Reserve"
+},
+"2967072": {
+"back": "2026-11-07",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976851": {
 "back": "2026-11-14",
@@ -625,8 +638,8 @@
 },
 "3042020": {
 "back": "2026-11-07",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042044": {
 "back": "2026-11-27",
@@ -775,8 +788,8 @@
 },
 "4024998": {
 "back": "2026-11-07",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4063268": {
 "back": "2026-12-04",
@@ -785,8 +798,8 @@
 },
 "4233536": {
 "back": "2026-11-07",
-"note": "Heiskanen (upper body) will not play in Thursday's road clash against the Blue Jackets, per Mike Heika of the Stars' official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233643": {
 "back": "2026-11-09",
@@ -795,8 +808,8 @@
 },
 "4233648": {
 "back": "2026-11-07",
-"note": "Yamamoto (upper body) won't play Thursday versus the Canadiens.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233668": {
 "back": "2026-11-25",
@@ -955,8 +968,8 @@
 },
 "4915850": {
 "back": "2026-11-07",
-"note": "Nikishin (not injury related) will need some time before he makes his 2026-27 debut, according to Cory Lavalette of the North State Journal on Monday.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5075840": {
 "back": "2026-11-14",
@@ -995,8 +1008,8 @@
 },
 "5080221": {
 "back": "2026-11-08",
-"note": "Poitras (nose) won't play Thursday in Pittsburgh, per Kevin Paul Dupont of The Boston Globe.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080232": {
 "back": "2027-01-25",
@@ -1005,8 +1018,8 @@
 },
 "5149180": {
 "back": "2026-11-07",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149191": {
 "back": "2026-11-15",
