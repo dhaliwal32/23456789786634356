@@ -15,6 +15,7 @@
 "2590824": {
 "d": "2026-11-06",
 "k": "dtd",
+"nd": "2026-11-06",
 "now": "2026-11-07",
 "was": "Out"
 },
@@ -52,6 +53,11 @@
 "k": "later",
 "now": "2026-11-08",
 "was": "2026-11-05"
+},
+"3041970": {
+"d": "2026-11-06",
+"k": "news",
+"nd": "2026-11-06"
 },
 "3042014": {
 "d": "2026-11-01",
@@ -162,10 +168,10 @@
 "was": "2026-10-29"
 },
 "3535": {
-"d": "2026-11-05",
+"d": "2026-11-06",
 "k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-12",
+"now": "2026-11-07",
 "was": "2026-10-29"
 },
 "3648008": {
@@ -190,6 +196,11 @@
 "nd": "2026-11-02",
 "now": "2026-11-12",
 "was": "2026-11-04"
+},
+"3852": {
+"d": "2026-11-06",
+"k": "news",
+"nd": "2026-11-06"
 },
 "3870": {
 "d": "2026-10-31",
@@ -567,7 +578,7 @@
 },
 "2590824": {
 "back": "2026-11-07",
-"note": "day-to-day",
+"note": "Gibson (lower body) participated in Friday's practice session, Helene St. James of the Detroit Free Press reports.",
 "status": "Day-To-Day"
 },
 "2590829": {
@@ -607,7 +618,7 @@
 },
 "3041970": {
 "back": "2026-11-27",
-"note": "Barkov (lower body) resumed skating Wednesday, George Richards of Florida Hockey Now reports.",
+"note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
 },
 "3041999": {
@@ -721,7 +732,7 @@
 "status": "Injured Reserve"
 },
 "3535": {
-"back": "2026-11-12",
+"back": "2026-11-07",
 "note": "Foligno (upper body) will travel with the Wild during the team's upcoming three-game road trip, per Joe Smith of The Athletic.",
 "status": "Injured Reserve"
 },
@@ -747,7 +758,7 @@
 },
 "3852": {
 "back": "2026-11-21",
-"note": "Marchand (leg) has started skating and is tentatively three weeks away from returning, per George Richards.",
+"note": "Head coach Paul Maurice said Friday that Marchand (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers",
 "status": "Injured Reserve"
 },
 "3899946": {
