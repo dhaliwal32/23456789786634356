@@ -47,6 +47,11 @@
 "now": "2026-11-14",
 "was": "2026-10-31"
 },
+"3024798": {
+"d": "2026-11-05",
+"k": "new",
+"now": "2026-11-07"
+},
 "3025524": {
 "d": "2026-11-05",
 "k": "later",
@@ -671,6 +676,11 @@
 "back": "2026-11-14",
 "note": "Matheson (lower body) is expected to miss two weeks, Renaud Lavoie of TVA Sports reports Saturday.",
 "status": "Out"
+},
+"3024798": {
+"back": "2026-11-07",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3025524": {
 "back": "2026-11-08",
