@@ -113,6 +113,12 @@
 "k": "news",
 "nd": "2026-11-04"
 },
+"3069285": {
+"d": "2026-11-06",
+"k": "later",
+"now": "2026-11-10",
+"was": "2026-11-07"
+},
 "3069341": {
 "d": "2026-11-05",
 "k": "back",
@@ -398,11 +404,11 @@
 "was": "2026-11-01"
 },
 "4697411": {
-"d": "2026-11-04",
-"k": "dtd",
+"d": "2026-11-06",
+"k": "later",
 "nd": "2026-11-04",
-"now": "2026-11-07",
-"was": "Out"
+"now": "2026-11-10",
+"was": "2026-11-07"
 },
 "4697448": {
 "d": "2026-11-06",
@@ -679,7 +685,7 @@
 "status": "Injured Reserve"
 },
 "3069285": {
-"back": "2026-11-07",
+"back": "2026-11-10",
 "note": "Ullmark (lower body) is expected to miss the next 1-2 weeks, Claire Hanna of TSN reports Thursday.",
 "status": "Injured Reserve"
 },
@@ -914,9 +920,9 @@
 "status": "Injured Reserve"
 },
 "4697411": {
-"back": "2026-11-07",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-10",
+"note": "out",
+"status": "Out"
 },
 "4697449": {
 "back": "2026-11-10",
