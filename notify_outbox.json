@@ -501,6 +501,18 @@
    "via": "urgent",
    "sent_at": "2026-11-06T00:39:38Z",
    "seen": "2026-11-06T00:57:12Z"
+  },
+  {
+   "k": "2026-11-06|07b25eb6e0b9",
+   "at": "2026-11-06T15:01:24Z",
+   "title": "Fantasy GM",
+   "text": "Kindel joined PIT PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-06T15:01:24Z",
+   "seen": "2026-11-06T15:01:24Z"
   }
  ],
  "sent": {
