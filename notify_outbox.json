@@ -464,7 +464,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T17:45:33Z",
-   "seen": "2026-11-06T00:01:34Z"
+   "seen": "2026-11-06T00:07:31Z"
   },
   {
    "k": "2026-11-05|f17a9a8adf9c",
@@ -476,7 +476,43 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T23:49:30Z",
-   "seen": "2026-11-06T00:01:34Z"
+   "seen": "2026-11-06T00:07:31Z"
+  },
+  {
+   "k": "2026-11-05|6dfd509fea74",
+   "at": "2026-11-06T00:07:48Z",
+   "title": "Fantasy GM",
+   "text": "Hall joined Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-06T00:07:48Z",
+   "seen": "2026-11-06T00:07:48Z"
+  },
+  {
+   "k": "2026-11-05|2d150780849b",
+   "at": "2026-11-06T00:07:48Z",
+   "title": "Fantasy GM",
+   "text": "Martinook left Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-06T00:07:48Z",
+   "seen": "2026-11-06T00:07:48Z"
+  },
+  {
+   "k": "2026-11-05|2610c0a9513c",
+   "at": "2026-11-06T00:07:48Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-06T00:07:48Z",
+   "seen": "2026-11-06T00:07:48Z"
   }
  ],
  "sent": {
