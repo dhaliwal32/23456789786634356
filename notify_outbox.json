@@ -464,7 +464,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-05T17:45:33Z",
-   "seen": "2026-11-06T00:33:29Z"
+   "seen": "2026-11-06T00:39:38Z"
   },
   {
    "k": "2026-11-05|f17a9a8adf9c",
@@ -513,6 +513,18 @@
    "via": "urgent",
    "sent_at": "2026-11-06T00:07:48Z",
    "seen": "2026-11-06T00:07:48Z"
+  },
+  {
+   "k": "2026-11-05|8e731e922ce7",
+   "at": "2026-11-06T00:39:38Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-06T00:39:38Z",
+   "seen": "2026-11-06T00:39:38Z"
   }
  ],
  "sent": {
