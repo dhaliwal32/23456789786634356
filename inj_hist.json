@@ -439,8 +439,8 @@
 },
 "4874718": {
 "d": "2026-11-07",
-"k": "new",
-"now": "2026-11-07"
+"k": "back",
+"was": "2026-11-07"
 },
 "4874720": {
 "d": "2026-10-31",
@@ -987,11 +987,6 @@
 "note": "Blankenburg (undisclosed) was placed on injured reserve by the Maple Leafs on Friday, David Alter of The Hockey News reports.",
 "status": "Injured Reserve"
 },
-"4874718": {
-"back": "2026-11-07",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "4874720": {
 "back": "2026-11-28",
 "note": "Edvinsson (contract dispute) is on the Red Wings' injured, non-roster list, per the NHL media site Wednesday.",
@@ -1149,7 +1144,7 @@
 },
 "5275337": {
 "back": "2026-11-21",
-"note": "Hagens (back) was put on injured reserve Saturday.",
+"note": "Head coach Marco Sturm announced Saturday that Hagens (back) is expected to miss multiple weeks, per Jack Studley of Boston Hockey Now.",
 "status": "Injured Reserve"
 },
 "5291944": {
