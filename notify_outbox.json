@@ -501,6 +501,18 @@
    "via": "urgent",
    "sent_at": "2026-11-06T23:48:30Z",
    "seen": "2026-11-07T00:43:55Z"
+  },
+  {
+   "k": "2026-11-06|ed21f1764a4e",
+   "at": "2026-11-07T00:49:55Z",
+   "title": "Fantasy GM",
+   "text": "Dostal confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-07T00:49:55Z",
+   "seen": "2026-11-07T00:49:55Z"
   }
  ],
  "sent": {
