@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-31|c0d3b02539c1",
-   "at": "2026-10-31T16:49:08Z",
-   "title": "Fantasy GM",
-   "text": "Sorokin confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-31T16:49:08Z",
-   "seen": "2026-10-31T17:57:26Z"
-  },
-  {
-   "k": "2026-10-31|df0eb0c5091e",
-   "at": "2026-10-31T17:14:19Z",
-   "title": "Fantasy GM",
-   "text": "Wedgewood not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-31T17:14:19Z",
-   "seen": "2026-11-01T01:57:54Z"
-  },
-  {
-   "k": "2026-10-31|ff76dba6fd02",
-   "at": "2026-10-31T17:26:40Z",
-   "title": "Fantasy GM",
-   "text": "Frondell joined CHI PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-31T17:26:40Z",
-   "seen": "2026-10-31T17:26:40Z"
-  },
-  {
    "k": "2026-10-31|0a7b09779ed1",
    "at": "2026-10-31T19:28:53Z",
    "title": "Fantasy GM",
@@ -513,6 +477,18 @@
    "via": "urgent",
    "sent_at": "2026-11-07T00:49:55Z",
    "seen": "2026-11-07T00:55:58Z"
+  },
+  {
+   "k": "2026-11-07|df0eb0c5091e",
+   "at": "2026-11-07T18:25:59Z",
+   "title": "Fantasy GM",
+   "text": "Wedgewood not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-07T18:25:59Z",
+   "seen": "2026-11-07T18:25:59Z"
   }
  ],
  "sent": {
