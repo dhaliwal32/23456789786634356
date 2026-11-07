@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-10-31|b58505417a4e",
-   "at": "2026-10-31T23:04:58Z",
-   "title": "Fantasy GM",
-   "text": "Newhook joined MTL PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-10-31T23:04:58Z",
-   "seen": "2026-10-31T23:04:58Z"
-  },
-  {
    "k": "2026-10-31|8e731e922ce7",
    "at": "2026-11-01T04:03:14Z",
    "title": "Fantasy GM",
@@ -476,7 +464,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-07T18:25:59Z",
-   "seen": "2026-11-07T23:03:18Z"
+   "seen": "2026-11-07T23:09:18Z"
   },
   {
    "k": "2026-11-07|2f2fe0c254f5",
@@ -500,7 +488,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-07T22:45:35Z",
-   "seen": "2026-11-07T23:03:18Z"
+   "seen": "2026-11-07T23:09:18Z"
   }
  ],
  "sent": {
