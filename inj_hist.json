@@ -403,6 +403,11 @@
 "now": "2026-11-12",
 "was": "2026-11-05"
 },
+"4697395": {
+"d": "2026-11-07",
+"k": "new",
+"now": "2026-11-08"
+},
 "4697401": {
 "d": "2026-11-03",
 "k": "back",
@@ -951,6 +956,11 @@
 "back": "2026-11-17",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"4697395": {
+"back": "2026-11-08",
+"note": "Lundell (undisclosed) won't play against Washington on Saturday, Rob Darragh of the Panthers' official site reports.",
+"status": "Out"
 },
 "4697411": {
 "back": "2026-11-10",
