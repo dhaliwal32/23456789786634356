@@ -467,9 +467,11 @@
 "was": "2026-11-07"
 },
 "4874748": {
-"d": "2026-11-02",
-"k": "news",
-"nd": "2026-11-06"
+"d": "2026-11-07",
+"k": "sooner",
+"nd": "2026-11-06",
+"now": "2026-11-10",
+"was": "2026-11-25"
 },
 "4894355": {
 "d": "2026-10-31",
@@ -1011,7 +1013,7 @@
 "status": "Injured Reserve"
 },
 "4874748": {
-"back": "2026-11-25",
+"back": "2026-11-10",
 "note": "Mailloux (hand) has completed his conditioning assignment with AHL Springfield and rejoined the Blues, the team announced Friday.",
 "status": "Injured Reserve"
 },
