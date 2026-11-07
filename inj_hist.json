@@ -611,6 +611,11 @@
 "now": "2026-11-21",
 "was": "2026-11-08"
 },
+"5334662": {
+"d": "2026-11-07",
+"k": "new",
+"now": "2026-11-09"
+},
 "5428": {
 "d": "2026-11-05",
 "k": "back",
@@ -1157,6 +1162,11 @@
 "back": "2026-11-12",
 "note": "O'Brien (lower body) was placed on non-roster injured reserve Wednesday.",
 "status": "Injured Reserve"
+},
+"5334662": {
+"back": "2026-11-09",
+"note": "out",
+"status": "Out"
 },
 "5560": {
 "back": "2026-11-10",
