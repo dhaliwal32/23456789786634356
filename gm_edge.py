@@ -140,6 +140,11 @@ def run():
     with open(IDX, "w") as f:
         json.dump(idx, f, separators=(",", ":"))
     print(f"(edge) {new} new goal replay(s), {sum(1 for v in G.values() if v.get('ok'))} saved")
+    try:  # change 205: who was on the ice for every goal, from shift charts
+        import gm_onice
+        gm_onice.update("edge/onice.json", 25)
+    except Exception as ex:
+        print(f"(onice) WARNING: {ex}")
 
 
 if __name__ == "__main__":

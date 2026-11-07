@@ -96,6 +96,32 @@ def score(me):
     return None
 
 
+def push_onice():
+    """change 205: fill who was on the ice for new goals and commit it, so the app shows it within a minute or two"""
+    try:
+        import subprocess
+        import gm_onice
+        if not gm_onice.update("edge/onice-live.json", 20, live_only=True):
+            return
+        run = lambda *a: subprocess.run(["git", *a], cwd=HERE, capture_output=True, text=True)
+        run("config", "user.name", "fantasy-bot")
+        run("config", "user.email", "fantasy-bot@users.noreply.github.com")
+        run("add", "edge/onice-live.json")
+        if run("diff", "--cached", "--quiet").returncode == 0:
+            return
+        run("commit", "-q", "-m", "on ice " + datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"))
+        for _ in range(4):
+            if run("pull", "-q", "--rebase", "-X", "theirs").returncode == 0 and run("push", "-q").returncode == 0:
+                log("on ice saved")
+                return
+            run("rebase", "--abort")
+            time.sleep(5)
+        log("on ice: push failed (does live-alerts.yml have contents: write?)")
+        run("reset", "-q", "--hard", "origin/main")
+    except Exception as e:
+        log("on ice failed", e)
+
+
 def main():
     if not ESPN_S2 or not SWID:
         sys.exit("ESPN_S2 and SWID are missing")
@@ -134,6 +160,7 @@ def main():
                 last = side
             elif side != 0:
                 last = side
+        push_onice()  # change 205
         time.sleep(EVERY)
 
 

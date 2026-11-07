@@ -1,8 +1,11 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_edge.py": true,
+  "gm_live.py": true,
+  "gm_onice.py": false
  },
  "changes": [
-  "204-all-players-sort-place.py"
+  "205-goal-power-play-on-ice.py"
  ]
 }
