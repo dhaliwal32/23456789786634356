@@ -108,6 +108,12 @@
 "nd": "2026-11-06",
 "now": "2026-11-07"
 },
+"3042110": {
+"d": "2026-11-07",
+"k": "later",
+"now": "2026-11-30",
+"was": "2026-11-07"
+},
 "3067822": {
 "d": "2026-11-03",
 "k": "back",
@@ -221,9 +227,11 @@
 "was": "2026-11-01"
 },
 "3899946": {
-"d": "2026-11-04",
-"k": "news",
-"nd": "2026-11-04"
+"d": "2026-11-07",
+"k": "later",
+"nd": "2026-11-04",
+"now": "2026-11-14",
+"was": "2026-11-07"
 },
 "3900169": {
 "d": "2026-11-01",
@@ -309,11 +317,11 @@
 "was": "2026-10-31"
 },
 "4233648": {
-"d": "2026-11-06",
-"k": "dtd",
+"d": "2026-11-07",
+"k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-07",
-"was": "Out"
+"now": "2026-11-11",
+"was": "2026-11-07"
 },
 "4233720": {
 "d": "2026-11-01",
@@ -467,10 +475,10 @@
 "was": "2026-10-29"
 },
 "4915850": {
-"d": "2026-11-06",
-"k": "dtd",
-"now": "2026-11-07",
-"was": "Out"
+"d": "2026-11-07",
+"k": "later",
+"now": "2026-11-22",
+"was": "2026-11-07"
 },
 "4915856": {
 "d": "2026-11-06",
@@ -699,7 +707,7 @@
 "status": "Injured Reserve"
 },
 "3042110": {
-"back": "2026-11-07",
+"back": "2026-11-30",
 "note": "Wood (undisclosed) was transferred to long-term injured reserve Wednesday, David Alter of The Hockey News reports.",
 "status": "Injured Reserve"
 },
@@ -794,7 +802,7 @@
 "status": "Injured Reserve"
 },
 "3899946": {
-"back": "2026-11-07",
+"back": "2026-11-14",
 "note": "Barzal (knee) practiced Wednesday, but he wore a no-contact jersey, and there's still no timetable for his return, per Stefen Rosner of NHL.com.",
 "status": "Injured Reserve"
 },
@@ -849,9 +857,9 @@
 "status": "Injured Reserve"
 },
 "4233648": {
-"back": "2026-11-07",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-11",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4233668": {
 "back": "2026-11-25",
@@ -1009,7 +1017,7 @@
 "status": "Injured Reserve"
 },
 "4915850": {
-"back": "2026-11-07",
+"back": "2026-11-22",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
