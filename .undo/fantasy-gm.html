@@ -1676,6 +1676,21 @@
   .gx-pd-t tr.go201 { cursor: pointer; }
   /* change 203 (install.py) */
   @media (max-width: 640px) { .gx-sc99.gx-rk106 > .gx-rk > :nth-child(1) { font-size: 12px; padding-left: 2px !important; overflow: hidden; white-space: nowrap; } }
+  /* change 204 (install.py) */
+  .gx-sc99.gx-rk106 > .gx-rk > .gx-n204 { flex-direction: row !important; justify-content: flex-start !important; align-items: center; gap: 0; padding-left: 4px !important; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .gx-n204 > b { width: 32px; color: var(--ink); font-weight: 600; }
+  .gx-n204 > i { width: 30px; font-style: normal; color: var(--mute); font-size: 12px; }
+  .gx-sc99.gx-rk106 > .gx-rk { grid-template-columns: 70px 44px 200px 170px 40px 62px 64px 70px 40px 40px 42px 46px 46px 46px 48px 44px 56px; }
+  .gx-sc99.gx-rk106 > .gx-rk > :nth-child(2) { left: 70px; }
+  .gx-sc99.gx-rk106 > .gx-rk > :nth-child(3) { left: 114px; }
+  @media (max-width: 640px) {
+    .gx-sc99.gx-rk106 > .gx-rk { grid-template-columns: 58px 36px 130px 34px 56px 50px 56px 34px 34px 36px 40px 40px 42px 44px 40px 52px; }
+    .gx-sc99.gx-rk106 > .gx-rk > :nth-child(2) { left: 58px; }
+    .gx-sc99.gx-rk106 > .gx-rk > :nth-child(3) { left: 94px; }
+    .gx-sc99.gx-rk106 > .gx-rk > .gx-n204 { padding-left: 2px !important; }
+    .gx-n204 > b { width: 28px; font-size: 13px; }
+    .gx-n204 > i { width: 28px; font-size: 11px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1684,7 +1699,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="lmp1zy.5da62o" data-file="build/app.js">
+<meta name="gx-build" content="o483ys.doe5zz" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6553,14 +6568,14 @@ function GxRankings({ s }) {
       <div className="gx-pn"><b></b><b></b><b></b><b></b>
         <GxRngSel100 /><div className="gx-sc99 gx-rk106">
         <div className="gx-rk gx-rkh">
-          <span>#</span><span></span><span>Player</span><span className="m-hide">Fantasy team</span>
+          <span className="gx-n204"><b style={{ fontWeight: 400, color: "var(--mute)" }}>#</b><i>Rk</i></span><span></span><span>Player</span><span className="m-hide">Fantasy team</span>
           <span className="n m-hide">GP</span><GxHB108 k="Avg" /><GxHB108 k="Exp" l="Expected" />{/* gx152 */}<GxSH106 mode={pos === "G" ? "go" : "sk"} />
         </div>
-        {shown.map(({ p, rk, e, sf }) => {
+        {shown.map(({ p, rk, e, sf }, i204) => {
           const me = p.ft === s.me, st = stTag(p);
           return (
             <div key={p.id} className={"gx-rk" + (me ? " me" : "")}>
-              <span className="text-slate-500" style={{ paddingLeft: 4 }}>{rk}</span>
+              <span className="text-slate-500 gx-n204" title="Place in this list, then rank"><b>{i204 + 1}</b><i>{rk}</i></span>
               <GxFace p={p} size={22} />
               <div className="min-w-0">
                 <div className="truncate"><PN p={p} className={me ? "font-semibold" : ""} />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>

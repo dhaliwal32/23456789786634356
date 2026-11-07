@@ -1691,6 +1691,29 @@
     .gx-n204 > b { width: 28px; font-size: 13px; }
     .gx-n204 > i { width: 28px; font-size: 11px; }
   }
+  /* change 205 (install.py) */
+  .gx-pp205 { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; line-height: 16px; vertical-align: 1px; white-space: nowrap; background: var(--warn); color: #111111; }
+  .gx-pp205.sh, .gx-pp205.en { background: none; color: var(--mute); box-shadow: inset 0 0 0 1px var(--line2, var(--line)); }
+  .gx-sc141 .gr small .gx-pp205 { font-size: 10px; }
+  .ol205 { padding: 4px 12px 12px; animation: gx173in .25s ease; }
+  .gx-sd141 .ol205 { padding: 10px 2px 0; }
+  .gx-sc141 .ol205 { margin: -4px 16px 12px 72px; padding: 0; max-width: 560px; }
+  .ol205 .hd205 { color: var(--mute); font-size: 12px; margin-bottom: 6px; }
+  .ol205 .tg205 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 14px; }
+  .ol205 .tn205 { font-weight: 700; font-size: 13px; color: var(--ink); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ol205 .pl205 { display: grid; grid-template-columns: 32px minmax(0, 1fr) 24px; align-items: center; height: 22px; font-size: 13px; font-weight: 400; line-height: 22px; color: var(--ink); }
+  .ol205 .pl205 .no205 { color: var(--mute); font-variant-numeric: tabular-nums; }
+  .ol205 .pl205 .nm205 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ol205 .pl205 .nm205 button { color: inherit; font: inherit; }
+  .ol205 .pl205 .nm205 .t205 { color: var(--mute); }
+  .ol205 .pl205 .pm205 { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--mute); }
+  .ol205 .em205 { color: var(--mute); font-size: 13px; }
+  .gx-sc141 .gv173 + .gv173.oi205 { margin-top: -2px; }
+  .gx-gt141 .ph { position: relative; }
+  .gx-gt141 .ph .gx-pp205 { position: absolute; right: 1px; bottom: 2px; margin: 0; padding: 0 4px; font-size: 10px; line-height: 15px; }
+  .gx-gt141 .ph .gx-pp205.sh, .gx-gt141 .ph .gx-pp205.en { background: var(--card, #1c1d21); color: var(--ink); }
+  @media (max-width: 640px) { .gx-sc141 .ol205 { margin-left: 72px; margin-right: 12px; } }
+  @media (prefers-reduced-motion: reduce) { .ol205 { animation: none; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1699,7 +1722,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="o483ys.doe5zz" data-file="build/app.js">
+<meta name="gx-build" content="yleu4r.7x9oy1" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8910,7 +8933,7 @@ function gxLanding132(sm) {
     const st = ((e.strength || {}).abbreviation) || "";
     (by[n] = by[n] || { periodDescriptor: gxPd132(n), goals: [] }).goals.push({
       name: { default: at.displayName || "" }, teamAbbrev: { default: ab[String((e.team || {}).id)] || "" }, headshot: (at.headshot || {}).href || "",
-      timeInPeriod: (e.clock || {}).displayValue || "", wc: e.wallclock || "", awayScore: e.awayScore, homeScore: e.homeScore, strength: st.indexOf("power") >= 0 ? "PP" : st.indexOf("short") >= 0 ? "SH" : "", cx: e.coordinate ? e.coordinate.x : null, cy: e.coordinate ? e.coordinate.y : null, gN184: sco.ytdGoals != null ? sco.ytdGoals : ((String(e.text || "").match(/Goal \((\d+)\)/) || [])[1]), shot: ((String(e.text || "").match(/Goal \(\d+\)\s*([^,]+)/) || [])[1] || "").trim(), /* gx163 */
+      timeInPeriod: (e.clock || {}).displayValue || "", wc: e.wallclock || "", awayScore: e.awayScore, homeScore: e.homeScore, strength: st.indexOf("power") >= 0 ? "PP" : st.indexOf("short") >= 0 ? "SH" : st.indexOf("empty") >= 0 ? "EN" : "", cx: e.coordinate ? e.coordinate.x : null, cy: e.coordinate ? e.coordinate.y : null, gN184: sco.ytdGoals != null ? sco.ytdGoals : ((String(e.text || "").match(/Goal \((\d+)\)/) || [])[1]), shot: ((String(e.text || "").match(/Goal \(\d+\)\s*([^,]+)/) || [])[1] || "").trim(), /* gx163 */
       assists: ps.filter((p) => p.type === "assister").map((p) => ({ name: { default: (p.athlete || {}).displayName || "" }, n184: p.ytdAssists != null ? p.ytdAssists : gxAstN184(e.text, (p.athlete || {}).displayName) })) });
   });
   try { /* change 185: the video clip for each goal, from ESPN's list of game videos */
@@ -9113,10 +9136,10 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
               <div key={"gi" + gi142} className={"md gx-sl105 " + slg142}>
                 <div className="tp">
                   <span className="fc">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : null}</span>
-                  <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}</div></div>
+                  <div className="min-w-0"><div className="nm">{pBtn(r.p, shortN(r.n), "s")}</div><div className="sm">{r.tm + (pos ? " " + pos : "")}</div><div className="sm">{(r.x.timeInPeriod || "") + " - " + gxPer131(r.x.periodDescriptor)}<GxStr205 x={r.x} /></div></div>
                   <div className="mb"><TeamLogo t={gxAb131((r.g.awayTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.awayTeam || {}).abbrev)}</span><b>{r.x.awayScore}</b><TeamLogo t={gxAb131((r.g.homeTeam || {}).abbrev)} size={16} /><span>{gxAb131((r.g.homeTeam || {}).abbrev)}</span><b>{r.x.homeScore}</b></div>
                 </div>
-                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null || r.x.vid185 ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxGvModal169 title={shortN(r.n) + " \u00b7 " + r.tm + " \u00b7 " + (r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor)} onClose={() => setGv163((o) => ({ ...o, [k167]: false }))}><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></GxGvModal169> : null}</>; })() : null}
+                <div className="asl">Assists: {r.as.length ? r.as.map((q, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}{q.at ? " (" + q.at + ")" : ""}</React.Fragment>) : "Unassisted"}</div>{r.x.cx != null || r.x.vid185 ? (() => { const k167 = "L" + r.g.id + "-" + r.i, on = !!gv163[k167]; return <><button type="button" className="gv167" onClick={() => setGv163((o) => ({ ...o, [k167]: !on }))}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <GxGvModal169 title={shortN(r.n) + " \u00b7 " + r.tm + " \u00b7 " + (r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor)} onClose={() => setGv163((o) => ({ ...o, [k167]: false }))}><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></GxGvModal169> : null}</>; })() : null}<GxOi205 x={r.x} g={r.g} tm={r.tm} s={s} cls="gv167" />
               </div>
               <button type="button" className="ar" aria-label="Later goal" disabled={idx >= n - 1} onClick={() => setGi(idx + 1 >= n - 1 ? null : idx + 1)}>{"\u203a"}</button>
             </div>
@@ -9181,7 +9204,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
         body = gs.length ? <div className="gx-sc141"><div className="h1">SCORING</div>{Object.keys(per).sort((x, y) => x - y).map((k) => (
           <React.Fragment key={k}>
             <div className="ph"><span>{GX_PER141[k] || (+k === 4 ? "OVERTIME" : "SHOOTOUT")}</span><span>{aw}</span><span>{hm}</span></div>
-            {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}</small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{r.x.cx != null || r.x.vid185 ? (() => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}</div>)}
+            {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}<GxStr205 x={r.x} /></small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{r.x.cx != null || r.x.vid185 ? (() => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}<GxOi205 x={r.x} g={r.g} tm={r.tm} s={s} cls="gv173" /></div>)}
           </React.Fragment>
         ))}</div> : <div className="em" style={{ padding: 16, color: "var(--mute)" }}>{pre(g) ? "Not started yet." : "No goals yet."}</div>;
       } else if (!bx) {
@@ -9222,9 +9245,9 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
         const list = goals.slice().reverse();
         body = list.length ? <div className="gx-gt141">{list.map((r) => (
           <div key={r.g.id + "-" + r.i} className={"cd " + r.mk}>
-            <div className="top"><span className="ph">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} /> : <TeamLogo t={r.tm} size={34} />}</span>
+            <div className="top"><span className="ph">{gxHs141(r.x, r.p) ? <img src={gxHs141(r.x, r.p)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} /> : <TeamLogo t={r.tm} size={34} />}<GxStr205 x={r.x} short /></span>
               <div className="tx"><div className="who">{pBtn(r.p, r.n, "s")}{", " + r.tm}{r.tag ? " (" + r.tag + ")" : ""}</div><div className="when">{(r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor) + " Period - " + sc(r)}</div></div></div>
-            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null || r.x.vid185 ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}
+            <div className="as"><span>Assists:</span><div className="ls">{r.as.length ? r.as.map((q, k) => <div key={k}>{pBtn(q.ap, q.an, "a")}{q.at ? " (" + q.at + ")" : ""}</div>) : <div>Unassisted</div>}</div></div>{r.x.cx != null || r.x.vid185 ? (() => { const k163 = r.g.id + "-" + r.i, on = !!gv163[k163]; return <><button type="button" className="gv163" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k163]: !on })); }}>{r.x.vid185 ? "Video and Visualizer" : "Goal Visualizer"} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb163"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; })() : null}<GxOi205 x={r.x} g={r.g} tm={r.tm} s={s} cls="gv163" />
           </div>
         ))}</div> : <div style={{ padding: 16, color: "var(--mute)" }}>No goals yet today.</div>;
       }
@@ -10138,6 +10161,91 @@ function GxTg201({ t }) {
       <div className={"st" + (k === "L" ? " lv" : "")}>{st}</div>
       <div className="cv">{"\u203a"}</div>
     </button>
+  );
+}
+// ---------- change 205: power play tag and players on the ice for each goal (install.py) ----------
+function GxStr205({ x, short }) {
+  const k = (x || {}).strength;
+  if (!k) return null;
+  return <span title={k === "PP" ? "Power play goal" : k === "SH" ? "Shorthanded goal" : "Empty net goal"} className={"gx-pp205 " + k.toLowerCase()} data-gx="205">{short ? k : k === "PP" ? "Power play" : k === "SH" ? "Shorthanded" : "Empty net"}</span>;
+}
+const E205 = { at: 0, busy: false, m: {} };
+function gxOiLoad205() {
+  if (E205.busy || Date.now() - E205.at < 25000) return;
+  E205.busy = true;
+  const one = (f) => fetch("edge/" + f + "?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  Promise.all([one("onice.json"), one("onice-live.json")]).then((js) => {
+    E205.busy = false; E205.at = Date.now();
+    const m = {};
+    js.forEach((j) => Object.entries((j && j.goals) || {}).forEach(([k, v]) => { if (v && v.on && v.on.length && !m[k]) m[k] = v; }));
+    E205.m = m; window.dispatchEvent(new Event("gx-oi205"));
+  });
+}
+function gxOiFind205(x, g, tm) {
+  if (!x) return null;
+  const per = (x.periodDescriptor || {}).number || 1, s0 = gxSec165(x.timeInPeriod), day = (g || {}).gameDate;
+  let best = null;
+  Object.values(E205.m).forEach((v) => {
+    if (v.team !== tm || v.per !== per || (day && v.d && v.d !== day)) return;
+    const d = Math.min(Math.abs(gxSec165(v.t) - s0), Math.abs(gxSec165(v.tr) - s0));
+    if (d <= 3 && (!best || d < best.d)) best = { v, d };
+  });
+  return best ? best.v : null;
+}
+// plus/minus counts unless the scoring team had more skaters (situation code: away goalie, away skaters, home skaters, home goalie)
+function gxPmOk205(code, scT, home) {
+  const c = String(code || "");
+  if (c.length !== 4) return false;
+  const hs = home === scT, mine = +(hs ? c[2] : c[1]), them = +(hs ? c[1] : c[2]);
+  return !(mine > them);
+}
+function GxOiList205({ x, g, tm, s }) {
+  const v = gxOiFind205(x, g, tm);
+  const e = useEdge165(v ? null : x, g, tm);
+  let rows = [], home = "", code = "";
+  if (v) {
+    rows = v.on.map((o) => ({ id: o[0], t: o[1], no: o[2], n: o[3] || "", gl: o[4] === "G" }));
+    home = v.home; code = v.sc;
+  } else if (e) {
+    const F = e.F || {}, fr = F.f || [], n = fr.length, gi = Math.max(0, Math.min(F.gi == null ? n - 1 : F.gi, n - 1)), ro = F.ro || {};
+    rows = ((fr[gi] || [0, []])[1] || []).filter((o) => o[0]).map((o) => { const r = ro[o[0]] || []; return { id: o[0], t: o[1], no: o[2], n: r[0] || "", gl: r[1] === "G" }; });
+    home = F.home; code = F.sc;
+  }
+  if (!rows.length) return <div className="em205">Loading...</div>;
+  const pm = gxPmOk205(code, tm, home);
+  const teams = [tm].concat([...new Set(rows.map((r) => r.t))].filter((t) => t !== tm)).filter((t) => rows.some((r) => r.t === t));
+  return (
+    <>
+      <div className="hd205">{"On the ice at the goal" + (pm ? "" : " (power play goal, no plus/minus)")}</div>
+      <div className="tg205">
+        {teams.map((t) => (
+          <div key={t} className="min-w-0"><div className="tn205">{t + (t === tm ? " (scored)" : "")}</div>
+            {rows.filter((r) => r.t === t).sort((a, b) => (a.gl ? 1 : 0) - (b.gl ? 1 : 0) || (+a.no || 0) - (+b.no || 0)).map((r) => {
+              const p = gxFind131(t, r.no, r.n), tag = gxTag131(s, p), nm = r.n ? shortN(r.n) : "#" + r.no;
+              return <div key={r.id} className="pl205"><span className="no205">{r.no != null ? "#" + r.no : ""}</span><span className="nm205">{p && window.__NAV ? <button type="button" className="hover:underline" onClick={(ev) => { ev.stopPropagation(); window.__NAV.player(p); }}>{nm}</button> : nm}{tag ? <span className="t205">{" (" + tag + ")"}</span> : null}</span><span className="pm205">{r.gl ? "G" : pm ? (t === tm ? "+1" : "-1") : ""}</span></div>;
+            })}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+function GxOi205({ x, g, tm, s, cls }) {
+  const [, tk] = useState(0);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const f = () => tk((n) => n + 1);
+    window.addEventListener("gx-oi205", f); window.addEventListener("gx-edge165", f);
+    gxOiLoad205(); gxEdgeLoad165();
+    const id = setInterval(() => { gxOiLoad205(); gxEdgeLoad165(); }, 30000);
+    return () => { window.removeEventListener("gx-oi205", f); window.removeEventListener("gx-edge165", f); clearInterval(id); };
+  }, []);
+  if (!x || !(gxOiFind205(x, g, tm) || gxEdgeFind165(x, g, tm))) return null;
+  return (
+    <>
+      <button type="button" className={cls + " oi205"} onClick={(e) => { e.stopPropagation(); setOn(!on); }}>On ice <i className={on ? "up" : ""}>{"\u25be"}</i></button>
+      {on ? <div className="ol205" onClick={(e) => e.stopPropagation()}><GxOiList205 x={x} g={g} tm={tm} s={s} /></div> : null}
+    </>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
