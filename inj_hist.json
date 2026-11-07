@@ -494,10 +494,10 @@
 "was": "2026-10-29"
 },
 "5080152": {
-"d": "2026-11-05",
+"d": "2026-11-07",
 "k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-07",
+"now": "2026-11-14",
 "was": "2026-10-29"
 },
 "5080154": {
@@ -563,9 +563,10 @@
 "was": "2026-11-04"
 },
 "5275337": {
-"d": "2026-11-05",
-"k": "new",
-"now": "2026-11-08"
+"d": "2026-11-07",
+"k": "later",
+"now": "2026-11-14",
+"was": "2026-11-08"
 },
 "5428": {
 "d": "2026-11-05",
@@ -1031,7 +1032,7 @@
 "status": "Injured Reserve"
 },
 "5080152": {
-"back": "2026-11-07",
+"back": "2026-11-14",
 "note": "Head coach Todd McLellan said Thursday that he expects Kasper (upper body) to return at some point during the Red Wings' upcoming four-game road trip, Max Bultm",
 "status": "Injured Reserve"
 },
@@ -1126,9 +1127,9 @@
 "status": "Injured Reserve"
 },
 "5275337": {
-"back": "2026-11-08",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-14",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "5291944": {
 "back": "2026-11-12",
