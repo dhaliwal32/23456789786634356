@@ -60,6 +60,11 @@
 "k": "news",
 "nd": "2026-11-06"
 },
+"3041996": {
+"d": "2026-11-06",
+"k": "new",
+"now": "2026-11-10"
+},
 "3042014": {
 "d": "2026-11-01",
 "k": "later",
@@ -641,6 +646,11 @@
 "back": "2026-11-27",
 "note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
+},
+"3041996": {
+"back": "2026-11-10",
+"note": "out",
+"status": "Out"
 },
 "3041999": {
 "back": "2026-11-11",
