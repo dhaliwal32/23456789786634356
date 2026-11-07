@@ -72,12 +72,6 @@
 "now": "2026-11-08",
 "was": "2026-11-01"
 },
-"3042017": {
-"d": "2026-11-03",
-"k": "sooner",
-"now": "2026-11-07",
-"was": "2026-11-09"
-},
 "3042019": {
 "d": "2026-11-01",
 "k": "later",
@@ -256,10 +250,10 @@
 "was": "2026-10-24"
 },
 "3942043": {
-"d": "2026-11-05",
+"d": "2026-11-07",
 "k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-07",
+"now": "2026-11-14",
 "was": "2026-10-29"
 },
 "3942714": {
@@ -319,7 +313,7 @@
 "4233648": {
 "d": "2026-11-07",
 "k": "later",
-"nd": "2026-11-05",
+"nd": "2026-11-07",
 "now": "2026-11-11",
 "was": "2026-11-07"
 },
@@ -677,7 +671,7 @@
 "status": "Injured Reserve"
 },
 "3042017": {
-"back": "2026-11-07",
+"back": "2026-11-09",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -817,7 +811,7 @@
 "status": "Injured Reserve"
 },
 "3942043": {
-"back": "2026-11-07",
+"back": "2026-11-14",
 "note": "Head coach Todd McLellan stated that Appleton (undisclosed) is expected to return to the lineup during the Red Wings' upcoming four-game road trip, per Max Bult",
 "status": "Injured Reserve"
 },
@@ -858,7 +852,7 @@
 },
 "4233648": {
 "back": "2026-11-11",
-"note": "ir",
+"note": "Yamamoto (upper body) was placed on injured reserve Friday.",
 "status": "Injured Reserve"
 },
 "4233668": {
@@ -1018,8 +1012,8 @@
 },
 "4915850": {
 "back": "2026-11-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "out",
+"status": "Out"
 },
 "4915856": {
 "back": "2026-11-10",
