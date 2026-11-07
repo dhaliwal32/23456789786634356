@@ -348,6 +348,11 @@
 "now": "2026-11-09",
 "was": "2026-11-05"
 },
+"4378686": {
+"d": "2026-11-06",
+"k": "new",
+"now": "2026-11-08"
+},
 "4392072": {
 "d": "2026-11-01",
 "k": "back",
@@ -876,6 +881,11 @@
 "back": "2026-11-09",
 "note": "Durzi (undisclosed) was put on injured reserve Thursday, per Mollie Walker of the New York Post.",
 "status": "Injured Reserve"
+},
+"4378686": {
+"back": "2026-11-08",
+"note": "out",
+"status": "Out"
 },
 "4392260": {
 "back": "2026-12-05",
