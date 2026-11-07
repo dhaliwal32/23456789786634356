@@ -65,6 +65,34 @@ def on_ice(shifts, per, t, ro):
     return on
 
 
+def from_track(url, ro):
+    """change 206: players on the ice at the goal moment of the goal's NHL tracking file (posted a few minutes after the goal)"""
+    try:
+        import gm_edge
+        r = requests.get(url, headers=NHL, timeout=20)
+        fr = r.json() if r.status_code == 200 else None
+        if not isinstance(fr, list) or not fr:
+            return None
+        P = gm_edge.pack(fr)
+        row = P[gm_edge.goal_frame(P)][1]
+        on = []
+        for o in row:
+            if not o[0]:
+                continue
+            r0 = ro.get(str(o[0])) or []
+            on.append([o[0], r0[3] if len(r0) > 3 and r0[3] else o[1], r0[2] if len(r0) > 2 and r0[2] is not None else o[2],
+                       r0[0] if r0 else "", r0[1] if len(r0) > 1 else ""])
+        teams = {}
+        for o in on:
+            teams[o[1]] = teams.get(o[1], 0) + 1
+        if len(teams) != 2 or min(teams.values()) < 3 or len(on) > 14:
+            return None
+        return on
+    except Exception as ex:
+        print(f"(onice) tracking failed: {ex}")
+        return None
+
+
 def update(out="edge/onice.json", budget=25, live_only=False):
     """fills on-ice lists for today's goals; returns True when the file changed"""
     path = os.path.join(HERE, out)
@@ -89,7 +117,7 @@ def update(out="edge/onice.json", budget=25, live_only=False):
             break
         gid, day = g["id"], g.get("gameDate") or ""
         n_goals = sum(int((g.get(x) or {}).get("score") or 0) for x in ("homeTeam", "awayTeam"))
-        if n_goals and sum(1 for k, v in G.items() if v.get("g") == gid and v.get("on")) >= n_goals:
+        if n_goals and sum(1 for k, v in G.items() if v.get("g") == gid and v.get("on") and v.get("src") != "t") >= n_goals:
             continue  # every goal of this game already done
         try:
             pbp = getj(f"https://api-web.nhle.com/v1/gamecenter/{gid}/play-by-play")
@@ -105,18 +133,19 @@ def update(out="edge/onice.json", budget=25, live_only=False):
         for r in pbp.get("rosterSpots") or []:
             nm = (((r.get("firstName") or {}).get("default") or "") + " " + ((r.get("lastName") or {}).get("default") or "")).strip()
             ro[str(r.get("playerId"))] = [nm, r.get("positionCode") or "", r.get("sweaterNumber"), tid.get(r.get("teamId"), "")]
-        todo = []
+        todo, rp206 = [], {}
         for p in pbp.get("plays") or []:
             pd = p.get("periodDescriptor") or {}
             if p.get("typeDescKey") != "goal" or pd.get("periodType") == "SO":
                 continue
             key = f"{gid}-{p.get('eventId')}"
-            if (G.get(key) or {}).get("on"):
+            if (G.get(key) or {}).get("on") and (G.get(key) or {}).get("src") != "t":
                 continue
             d = p.get("details") or {}
             todo.append((key, {"d": day, "g": gid, "ev": p.get("eventId"), "per": pd.get("number"), "t": p.get("timeInPeriod"),
                                "tr": p.get("timeRemaining"), "team": tid.get(d.get("eventOwnerTeamId"), ""), "sc": p.get("situationCode"),
                                "home": home, "scorer": d.get("scoringPlayerId")}))
+            rp206[key] = p.get("pptReplayUrl")
         if not todo or time.time() - seen.get(str(gid), 0) < SHIFT_GAP:
             continue
         seen[str(gid)] = time.time()
@@ -124,11 +153,13 @@ def update(out="edge/onice.json", budget=25, live_only=False):
             shifts = (getj(f"https://api.nhle.com/stats/rest/en/shiftcharts?cayenneExp=gameId={gid}", NHL) or {}).get("data") or []
         except Exception as ex:
             print(f"(onice) shift chart {gid} failed: {ex}")
-            continue
+            shifts = []
         for key, ent in todo:
-            on = on_ice(shifts, ent["per"], ent["t"], ro)
+            on, src206 = on_ice(shifts, ent["per"], ent["t"], ro), "s"
+            if not on and rp206.get(key) and not (G.get(key) or {}).get("on"):  # change 206: NHL posts shifts only after each period
+                on, src206 = from_track(rp206[key], ro), "t"
             if on:
-                ent["on"], ent["ok"], ent["at"] = on, True, time.time()
+                ent["on"], ent["ok"], ent["at"], ent["src"] = on, True, time.time(), src206
                 G[key] = ent
                 changed = True
     cut = (datetime.now(timezone.utc) - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
