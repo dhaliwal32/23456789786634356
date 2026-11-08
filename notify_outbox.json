@@ -525,6 +525,30 @@
    "via": "urgent",
    "sent_at": "2026-11-08T18:24:22Z",
    "seen": "2026-11-08T18:24:22Z"
+  },
+  {
+   "k": "2026-11-08|fbf20ee680df",
+   "at": "2026-11-08T20:27:37Z",
+   "title": "Fantasy GM",
+   "text": "Connelly joined Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T20:27:37Z",
+   "seen": "2026-11-08T20:27:37Z"
+  },
+  {
+   "k": "2026-11-08|579a87895893",
+   "at": "2026-11-08T20:27:37Z",
+   "title": "Fantasy GM",
+   "text": "Howden left Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T20:27:37Z",
+   "seen": "2026-11-08T20:27:37Z"
   }
  ],
  "sent": {
