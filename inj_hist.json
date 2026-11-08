@@ -46,16 +46,16 @@
 "was": "2026-11-05"
 },
 "3024798": {
-"d": "2026-11-07",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-07",
 "now": "2026-11-11",
-"was": "2026-11-07"
+"was": "Out"
 },
 "3025524": {
-"d": "2026-11-05",
+"d": "2026-11-08",
 "k": "later",
-"now": "2026-11-08",
+"now": "2026-11-11",
 "was": "2026-11-05"
 },
 "3041970": {
@@ -106,11 +106,11 @@
 "was": "2026-10-31"
 },
 "3042048": {
-"d": "2026-11-07",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-06",
 "now": "2026-11-10",
-"was": "2026-11-07"
+"was": "Out"
 },
 "3042054": {
 "d": "2026-11-07",
@@ -150,10 +150,17 @@
 "k": "back",
 "was": "2026-11-07"
 },
+"3069448": {
+"d": "2026-11-08",
+"k": "later",
+"now": "2026-11-14",
+"was": "2026-11-08"
+},
 "3069687": {
-"d": "2026-11-07",
-"k": "new",
-"now": "2026-11-10"
+"d": "2026-11-08",
+"k": "dtd",
+"now": "2026-11-10",
+"was": "Out"
 },
 "3094261": {
 "d": "2026-11-07",
@@ -281,11 +288,11 @@
 "was": "2026-11-03"
 },
 "4233536": {
-"d": "2026-11-06",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-05",
 "now": "2026-11-12",
-"was": "2026-11-07"
+"was": "Out"
 },
 "4233594": {
 "d": "2026-11-05",
@@ -444,6 +451,12 @@
 "now": "2026-11-10",
 "was": "2026-11-25"
 },
+"4894355": {
+"d": "2026-11-08",
+"k": "later",
+"now": "2026-11-22",
+"was": "2026-11-08"
+},
 "4894487": {
 "d": "2026-11-07",
 "k": "back",
@@ -524,10 +537,10 @@
 "was": "2026-11-08"
 },
 "5149180": {
-"d": "2026-11-07",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "now": "2026-11-09",
-"was": "2026-11-07"
+"was": "Out"
 },
 "5149186": {
 "d": "2026-11-03",
@@ -639,11 +652,11 @@
 },
 "3024798": {
 "back": "2026-11-11",
-"note": "Schmidt (upper body) will miss Saturday's game in Ottawa.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3025524": {
-"back": "2026-11-08",
+"back": "2026-11-11",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -689,8 +702,8 @@
 },
 "3042048": {
 "back": "2026-11-10",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042054": {
 "back": "2026-11-12",
@@ -718,14 +731,14 @@
 "status": "Injured Reserve"
 },
 "3069448": {
-"back": "2026-11-08",
+"back": "2026-11-14",
 "note": "Grzelcyk (lower body) suffered a \"flare-up\" and could be out for at least \"a few days,\" head coach Lindy Ruff told Rachel Lenzi of The Buffalo News on Tuesday.",
 "status": "Injured Reserve"
 },
 "3069687": {
 "back": "2026-11-10",
-"note": "Anderson (personal) won't play against Toronto on Saturday, Renaud Lavoie of TVA Sports reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3094261": {
 "back": "2026-11-12",
@@ -839,8 +852,8 @@
 },
 "4233536": {
 "back": "2026-11-12",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233643": {
 "back": "2026-11-09",
@@ -988,7 +1001,7 @@
 "status": "Injured Reserve"
 },
 "4894355": {
-"back": "2026-11-08",
+"back": "2026-11-22",
 "note": "Danforth (upper body) was placed on injured reserve Thursday, per the NHL media site.",
 "status": "Injured Reserve"
 },
@@ -1069,8 +1082,8 @@
 },
 "5149180": {
 "back": "2026-11-09",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149191": {
 "back": "2026-11-15",
