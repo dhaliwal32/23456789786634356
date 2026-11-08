@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-01|715ac6f18b74",
-   "at": "2026-11-01T23:08:17Z",
-   "title": "Fantasy GM",
-   "text": "Wright joined Forsberg's line (NSH)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-01T23:08:17Z",
-   "seen": "2026-11-01T23:08:17Z"
-  },
-  {
    "k": "2026-11-02|weekly-5",
    "at": "2026-11-02T15:09:27Z",
    "title": "Fantasy GM",
@@ -597,6 +585,18 @@
    "via": "urgent",
    "sent_at": "2026-11-08T22:49:31Z",
    "seen": "2026-11-08T22:55:29Z"
+  },
+  {
+   "k": "2026-11-08|f17a9a8adf9c",
+   "at": "2026-11-08T23:45:11Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T23:45:11Z",
+   "seen": "2026-11-08T23:45:11Z"
   }
  ],
  "sent": {
