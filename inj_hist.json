@@ -396,12 +396,16 @@
 "now": "2026-11-12",
 "was": "2026-11-05"
 },
+"4587580": {
+"d": "2026-11-08",
+"k": "sooner",
+"now": "2026-11-14",
+"was": "2026-11-17"
+},
 "4697395": {
 "d": "2026-11-08",
-"k": "dtd",
-"nd": "2026-11-07",
-"now": "2026-11-08",
-"was": "Out"
+"k": "back",
+"was": "2026-11-08"
 },
 "4697401": {
 "d": "2026-11-03",
@@ -936,7 +940,7 @@
 "status": "Injured Reserve"
 },
 "4587580": {
-"back": "2026-11-17",
+"back": "2026-11-14",
 "note": "Maccelli (lower body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
@@ -954,11 +958,6 @@
 "back": "2026-11-17",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"4697395": {
-"back": "2026-11-08",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4697411": {
 "back": "2026-11-10",
