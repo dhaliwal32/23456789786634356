@@ -73,7 +73,7 @@
 "3042016": {
 "d": "2026-11-02",
 "k": "later",
-"nd": "2026-11-04",
+"nd": "2026-11-08",
 "now": "2026-11-08",
 "was": "2026-11-01"
 },
@@ -165,9 +165,9 @@
 "was": "2026-12-02"
 },
 "3114735": {
-"d": "2026-11-05",
-"k": "new",
-"now": "2026-11-08"
+"d": "2026-11-08",
+"k": "back",
+"was": "2026-11-08"
 },
 "3114743": {
 "d": "2026-11-07",
@@ -702,7 +702,7 @@
 },
 "3042016": {
 "back": "2026-11-08",
-"note": "Morrissey (wrist) won't play Thursday versus Vancouver, but he hasn't been ruled out for Sunday against Tampa Bay, per Danielle Bain of TSN.",
+"note": "Morrissey (wrist) won't play against Tampa Bay on Sunday, Mike McIntyre of the Winnipeg Free Press reports.",
 "status": "Injured Reserve"
 },
 "3042017": {
@@ -769,11 +769,6 @@
 "back": "2026-12-21",
 "note": "Co-president of hockey operations Henrik Sedin said Monday that he hopes Demko (hip) will be ready to return before Christmas, Kevin Woodley of NHL.com reports.",
 "status": "Injured Reserve"
-},
-"3114735": {
-"back": "2026-11-08",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "3114743": {
 "back": "2026-11-14",
