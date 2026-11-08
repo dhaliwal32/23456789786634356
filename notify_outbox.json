@@ -560,7 +560,31 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-08T21:48:43Z",
-   "seen": "2026-11-08T22:23:42Z"
+   "seen": "2026-11-08T22:30:06Z"
+  },
+  {
+   "k": "2026-11-08|c419c88b9b07",
+   "at": "2026-11-08T22:30:43Z",
+   "title": "Fantasy GM",
+   "text": "Gourde joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T22:30:43Z",
+   "seen": "2026-11-08T22:30:43Z"
+  },
+  {
+   "k": "2026-11-08|d53cf90b346c",
+   "at": "2026-11-08T22:30:43Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves left Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T22:30:43Z",
+   "seen": "2026-11-08T22:30:43Z"
   }
  ],
  "sent": {
