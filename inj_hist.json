@@ -19,16 +19,11 @@
 "now": "2026-11-09"
 },
 "2590824": {
-"d": "2026-11-07",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-06",
 "now": "2026-11-10",
-"was": "2026-11-07"
-},
-"2967072": {
-"d": "2026-11-07",
-"k": "back",
-"was": "2026-11-07"
+"was": "Out"
 },
 "2968829": {
 "d": "2026-11-05",
@@ -253,6 +248,12 @@
 "now": "2026-11-14",
 "was": "2026-10-29"
 },
+"3942638": {
+"d": "2026-11-08",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-11-08"
+},
 "3942714": {
 "d": "2026-11-07",
 "k": "later",
@@ -362,6 +363,12 @@
 "k": "back",
 "was": "2026-11-03"
 },
+"4419778": {
+"d": "2026-11-08",
+"k": "later",
+"now": "2026-11-14",
+"was": "2026-11-08"
+},
 "4565224": {
 "d": "2026-11-05",
 "k": "back",
@@ -392,10 +399,11 @@
 "was": "2026-11-05"
 },
 "4697395": {
-"d": "2026-11-07",
-"k": "new",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-07",
-"now": "2026-11-08"
+"now": "2026-11-08",
+"was": "Out"
 },
 "4697401": {
 "d": "2026-11-03",
@@ -408,11 +416,11 @@
 "was": "2026-11-01"
 },
 "4697411": {
-"d": "2026-11-06",
-"k": "later",
+"d": "2026-11-08",
+"k": "dtd",
 "nd": "2026-11-06",
 "now": "2026-11-10",
-"was": "2026-11-07"
+"was": "Out"
 },
 "4697448": {
 "d": "2026-11-06",
@@ -579,9 +587,10 @@
 "was": "2026-11-08"
 },
 "5334662": {
-"d": "2026-11-07",
-"k": "new",
-"now": "2026-11-09"
+"d": "2026-11-08",
+"k": "dtd",
+"now": "2026-11-09",
+"was": "Out"
 },
 "5428": {
 "d": "2026-11-05",
@@ -622,8 +631,8 @@
 },
 "2590824": {
 "back": "2026-11-10",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -639,6 +648,11 @@
 "back": "2027-07-01",
 "note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
 "status": "Injured Reserve"
+},
+"2967072": {
+"back": "2026-11-10",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976833": {
 "back": "2026-11-08",
@@ -831,7 +845,7 @@
 "status": "Injured Reserve"
 },
 "3942638": {
-"back": "2026-11-08",
+"back": "2026-11-28",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -921,7 +935,7 @@
 "status": "Injured Reserve"
 },
 "4419778": {
-"back": "2026-11-08",
+"back": "2026-11-14",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -957,13 +971,13 @@
 },
 "4697395": {
 "back": "2026-11-08",
-"note": "Lundell (undisclosed) is considered questionable to play Sunday versus the Bruins, George Richards of Florida Hockey Now reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697411": {
 "back": "2026-11-10",
-"note": "Greig (lower body) won't play in Saturday's game against the Mammoth, TSN 1200 Ottawa reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697449": {
 "back": "2026-11-10",
@@ -1142,8 +1156,8 @@
 },
 "5334662": {
 "back": "2026-11-09",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5560": {
 "back": "2026-11-10",
