@@ -259,10 +259,10 @@
 "was": "2026-10-20"
 },
 "3942905": {
-"d": "2026-11-03",
+"d": "2026-11-08",
 "k": "sooner",
 "nd": "2026-10-31",
-"now": "2026-11-08",
+"now": "2026-11-14",
 "was": "2026-11-21"
 },
 "3988782": {
@@ -570,6 +570,12 @@
 "k": "back",
 "was": ""
 },
+"5188523": {
+"d": "2026-11-08",
+"k": "later",
+"now": "2026-11-15",
+"was": "2026-11-08"
+},
 "5216860": {
 "d": "2026-11-04",
 "k": "later",
@@ -845,7 +851,7 @@
 "status": "Injured Reserve"
 },
 "3942905": {
-"back": "2026-11-08",
+"back": "2026-11-14",
 "note": "Although Terry's (hip) return doesn't appear to be imminent, he is getting close to playing, Derek Lee of The Hockey News reports Saturday.",
 "status": "Injured Reserve"
 },
@@ -1020,7 +1026,7 @@
 "status": "Injured Reserve"
 },
 "4915856": {
-"back": "2026-11-10",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -1110,7 +1116,7 @@
 "status": "Injured Reserve"
 },
 "5188523": {
-"back": "2026-11-08",
+"back": "2026-11-15",
 "note": "Head coach Joel Quenneville said Friday that Moore (lower body) is still \"a ways from skating,\" Patrick Present of The Hockey News reports.",
 "status": "Injured Reserve"
 },
