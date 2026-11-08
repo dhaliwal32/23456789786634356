@@ -1746,7 +1746,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1mj41nu.gvuoz4" data-file="build/app.js">
+<meta name="gx-build" content="17ulpos.x7kevo" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9181,7 +9181,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
               <React.Fragment key={g.id}>
               <div role="button" tabIndex={0} className="gm c181" onClick={() => openGame(g.id)}>
                 <div className="tms">{rows2(g)}</div>
-                {pre(g) ? (() => { const d = g.startTimeUTC ? new Date(g.startTimeUTC) : null; return <div className="st pg">{d ? (d.getMonth() + 1) + "/" + d.getDate() : ""}<b>{status(g)}</b></div>; })() : <div className={"st" + (live(g) ? " lv w181" : "")}><span>{status(g)}</span><GxPPg182 g={g} />{live(g) ? <a className="wt181" href={gxWatchUrl175(g, g.id)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Watch</a> : null}</div>}
+                {pre(g) ? (() => { const d = g.startTimeUTC ? new Date(g.startTimeUTC) : null; return <div className="st pg">{d ? (d.getMonth() + 1) + "/" + d.getDate() : ""}<b>{status(g)}</b></div>; })() : <div className={"st" + (live(g) ? " lv w181" : "")}><span>{status(g)}</span><GxPPg182 g={g} />{live(g) ? <a className="wt181" href={gxWatchUrl175(g, g.id)} target="_blank" rel="noopener noreferrer" onClick={gxWatchGo211}>Watch</a> : null}</div>}
                 {pre(g)
                   ? <div className="fp"><div><b>{abA}:</b> {nOf146(tA, ta, th)} Players</div><div><b>{abB}:</b> {nOf146(tB, ta, th)} Players</div></div>
                   : <div className="fp"><div><b>{abA}:</b> {f1(fpOf(tA, ta) + fpOf(tA, th))} FPTS</div><div><b>{abB}:</b> {f1(fpOf(tB, ta) + fpOf(tB, th))} FPTS</div></div>}
@@ -9256,7 +9256,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
               <div key={g.id} role="button" tabIndex={0} className="cd c179" onClick={() => openGame(g.id)}>
                 <div className="tp">
                   <div className="tms">{p0 ? [rw(g.awayTeam || {}), rw(g.homeTeam || {})] : rows2(g)}</div>
-                  <div className={"st" + (live(g) ? " lv" : p0 ? " pr" : "")}><span>{status(g)}</span><GxPPg182 g={g} />{live(g) ? <a className="wt179" href={gxWatchUrl175(g, g.id)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Watch</a> : null}</div>
+                  <div className={"st" + (live(g) ? " lv" : p0 ? " pr" : "")}><span>{status(g)}</span><GxPPg182 g={g} />{live(g) ? <a className="wt179" href={gxWatchUrl175(g, g.id)} target="_blank" rel="noopener noreferrer" onClick={gxWatchGo211}>Watch</a> : null}</div>
                 </div>
                 {p0 && g.ml && (g.ml.a != null || g.ou != null) ? (
                   <div className="od" onClick={(e) => e.stopPropagation()}>
@@ -10395,6 +10395,22 @@ function GxLogTot210({ log, isG }) {
     T = [["G", g], ["A", a], ["PTS", g + a], ["GP", q.length]];
   }
   return <div className="gx-tt210" data-gx="210">{T.map(([k, v]) => <div key={k}><b>{v}</b><small>{k}</small></div>)}</div>;
+}
+// ---------- change 211: Watch opens in Safari from the home screen app (install.py) ----------
+function gxHome211() {
+  try {
+    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent || "") || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const st = window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    return ios && st;
+  } catch (e) { return false; }
+}
+function gxWatchGo211(e) {
+  e.stopPropagation();
+  if (!gxHome211()) return;
+  const u = String((e.currentTarget && e.currentTarget.href) || "");
+  if (!/^https?:\/\//i.test(u)) return;
+  e.preventDefault();
+  window.location.href = "x-safari-" + u;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
