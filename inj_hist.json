@@ -103,10 +103,11 @@
 "was": "2026-10-31"
 },
 "3042048": {
-"d": "2026-11-06",
-"k": "new",
+"d": "2026-11-07",
+"k": "later",
 "nd": "2026-11-06",
-"now": "2026-11-07"
+"now": "2026-11-10",
+"was": "2026-11-07"
 },
 "3042110": {
 "d": "2026-11-07",
@@ -418,6 +419,7 @@
 "4697395": {
 "d": "2026-11-07",
 "k": "new",
+"nd": "2026-11-07",
 "now": "2026-11-08"
 },
 "4697401": {
@@ -731,9 +733,9 @@
 "status": "Injured Reserve"
 },
 "3042048": {
-"back": "2026-11-07",
-"note": "McCarron (undisclosed) didn't finish Friday's 4-1 win over the Sharks and is questionable for Saturday's game against Tampa Bay, according to Michael Russo of T",
-"status": "Day-To-Day"
+"back": "2026-11-10",
+"note": "out",
+"status": "Out"
 },
 "3042085": {
 "back": "2026-11-28",
@@ -982,7 +984,7 @@
 },
 "4697395": {
 "back": "2026-11-08",
-"note": "Lundell (undisclosed) won't play against Washington on Saturday, Rob Darragh of the Panthers' official site reports.",
+"note": "Lundell (undisclosed) is considered questionable to play Sunday versus the Bruins, George Richards of Florida Hockey Now reports.",
 "status": "Out"
 },
 "4697411": {
@@ -1087,8 +1089,8 @@
 },
 "5080223": {
 "back": "2026-11-30",
-"note": "Salomonsson (personal) is out indefinitely, according to Ken Wiebe of The Winnipeg Free Press on Saturday.",
-"status": "Out"
+"note": "ir-nr",
+"status": "Injured Reserve"
 },
 "5080225": {
 "back": "2026-11-14",
