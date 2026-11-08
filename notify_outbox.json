@@ -501,6 +501,30 @@
    "via": "urgent",
    "sent_at": "2026-11-08T16:21:41Z",
    "seen": "2026-11-08T16:21:41Z"
+  },
+  {
+   "k": "2026-11-08|95d08bdba1de",
+   "at": "2026-11-08T18:24:22Z",
+   "title": "Fantasy GM",
+   "text": "Eller joined Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T18:24:22Z",
+   "seen": "2026-11-08T18:24:22Z"
+  },
+  {
+   "k": "2026-11-08|dff7a67ea943",
+   "at": "2026-11-08T18:24:22Z",
+   "title": "Fantasy GM",
+   "text": "Lundell left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-08T18:24:22Z",
+   "seen": "2026-11-08T18:24:22Z"
   }
  ],
  "sent": {
