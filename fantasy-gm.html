@@ -2042,6 +2042,19 @@
   .rm236.white .gx-fg224.gx-lt227 { background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--rg) 22%, transparent), transparent 55%), linear-gradient(180deg, var(--w1), var(--w2) 60%, var(--w3)); }
   .rm236.carbon .gx-fg224.gx-lt227 { background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--rg) 22%, transparent), transparent 55%), repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 2px, rgba(0,0,0,0) 2px 4px), linear-gradient(180deg, var(--w1), var(--w2) 60%, var(--w3)); }
   @media (max-width: 640px) { .gx-rk111.rm236 { padding: 40px 5px 80px; } .rm236 .fl236 { height: 72px; } .rm236 .cl236 i { width: 24px; } }
+  /* change 237 (install.py): spotlight on available players */
+  .rm236 .gx-fg224.gx-lt227.fa { box-shadow: inset 0 10px 14px -10px rgba(0,0,0,.4), 0 0 0 1px rgba(255,246,214,.35), 0 0 22px 2px rgba(255,240,200,.28), 0 4px 8px rgba(0,0,0,.35); }
+  .rm236 .gx-fg224.gx-lt227.fa::before { background: #fff8e6; box-shadow: 0 0 8px 2px #fff3d1, 0 0 20px 6px rgba(255,240,200,.55); }
+  .rm236 .gx-fg224.gx-lt227::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0; background: rgba(0,0,0,.22); }
+  .rm236 .gx-fg224.gx-lt227.fa::after { background: radial-gradient(ellipse 62% 20% at 50% 93%, rgba(255,244,214,.55), transparent 72%), linear-gradient(180deg, rgba(255,244,214,.6), rgba(255,244,214,.18) 70%, rgba(255,244,214,.08));
+    clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%); }
+  .rm236 .gx-fg224.gx-lt227 > * { position: relative; z-index: 1; }
+  .rm236 .gx-fg224.gx-lt227.fa .ow227 span:first-child:empty { display: none; }
+  .rm236 .gx-fg224.gx-lt227 .ow227 .gx-wv218 { margin: 0 2px 0 0; }
+  .gx-ln111 .at237 { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 4px; margin-top: 10px; }
+  .gx-ln111 .at237 button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 0 4px; border-radius: 10px; font-size: 9.5px; font-weight: 600; color: var(--mute); letter-spacing: .02em; }
+  .gx-ln111 .at237 button.on { background: var(--card2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line2); }
+  @media (max-width: 640px) { .gx-ln111 .at237 { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2050,7 +2063,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="5z2awm.13f7ebx" data-file="build/app.js">
+<meta name="gx-build" content="82o0zb.slyjpv" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8516,7 +8529,7 @@ function GxLines111({ s }) {
           <div className="md jr231"><span className="pl232">{last}</span><GxJersey232 t={p ? p.t : t} name={last} no={((T && T.no) || {})[n]} goalie={isG} /></div>
           <span className="nm">{last}</span>
           <span className="sb227">{(((T && T.no) || {})[n] != null ? "#" + ((T && T.no) || {})[n] + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
-          <span className="ow227">{p ? <><span>{mine ? "YOURS" : fa ? (p.wv ? "WAIVERS" : "FA") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9)}</span><b>{f1(gxPgAvg(p, s.blend))}</b></> : null}</span>
+          <span className="ow227">{p ? <><span>{mine ? "YOURS" : fa ? (p.wv ? <i className="gx-wv218" title="On waivers" data-gx="237" /> : "") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9)}</span><b>{f1(gxPgAvg(p, s.blend))}</b></> : null}</span>
         </button>
       ); }
     const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa";
@@ -8556,7 +8569,7 @@ function GxLines111({ s }) {
           <div className="sug">{hits.map((c) => <button key={c} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(c)}><TeamLogo t={c} size={24} /><span>{nameOf(c)}</span><span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>{c}</span></button>)}</div>
         ) : null}
       </div>
-      {recent.length ? <div className="rec">{recent.map((c) => <button key={c} type="button" onClick={() => pick(c)}><TeamLogo t={c} size={18} />{c}</button>)}</div> : null}
+      <div className="at237" data-gx="237a">{teams.map((c) => <button key={c} type="button" className={c === t ? "on" : ""} aria-label={nameOf(c)} onClick={() => pick(c)}><TeamLogo t={c} size={26} />{c}</button>)}</div>
       {T ? (
         <>
           <div className="hd">
