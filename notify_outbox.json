@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-02|weekly-5",
-   "at": "2026-11-02T15:09:27Z",
-   "title": "Fantasy GM",
-   "text": "Week 5: you 495, Sarm 486 (won by 9). App was 17% off on your players.",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-02T15:09:27Z",
-   "seen": "2026-11-02T18:56:46Z"
-  },
-  {
    "k": "2026-11-02|a475c576741c",
    "at": "2026-11-02T17:54:15Z",
    "title": "Fantasy GM",
@@ -632,7 +620,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-09T15:03:12Z",
-   "seen": "2026-11-09T15:03:12Z"
+   "seen": "2026-11-09T15:13:05Z"
   }
  ],
  "sent": {
