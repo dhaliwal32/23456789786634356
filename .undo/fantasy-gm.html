@@ -8,7 +8,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#121212" />
 <title>Fantasy Islands GM</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta name="gx-tw" content="1hsmqb3">
+<script>/* gx216-tw: use the styles built on GitHub; if they are missing, build them in the browser like before */(function () {
+  var m = document.querySelector('meta[name="gx-tw"]'), v = m && m.getAttribute("content");
+  if (!v || /[?&]tw\b/.test(location.search)) { document.write('<script src="https://cdn.tailwindcss.com"><\/script>'); return; }
+  window.__gxTwFail216 = function () { if (window.__gxTw216) return; window.__gxTw216 = 1; var s = document.createElement("script"); s.src = "https://cdn.tailwindcss.com"; document.head.appendChild(s); };
+  document.write('<link rel="stylesheet" href="build/tw.css?v=' + v + '" onerror="__gxTwFail216()">');
+})();</script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <!-- change 074 (gx074-head): Babel loads only when needed, see the loader at the end of the page -->
@@ -1738,6 +1744,14 @@
   .gx-tt210 > div { flex: 1 1 0; min-width: 0; height: 52px; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .gx-tt210 b { font-size: 18px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
   .gx-tt210 small { font-size: 11px; letter-spacing: .06em; color: var(--mute); margin-top: 2px; }
+  /* change 213 (install.py): tabs slide in from the side they are on */
+  @keyframes gx213-r { from { opacity: 0; transform: translate3d(28px, 0, 0); } to { opacity: 1; transform: none; } }
+  @keyframes gx213-l { from { opacity: 0; transform: translate3d(-28px, 0, 0); } to { opacity: 1; transform: none; } }
+  .gx-pg101.gx-in213r { animation: gx213-r .24s cubic-bezier(.2, .8, .2, 1); }
+  .gx-pg101.gx-in213l { animation: gx213-l .24s cubic-bezier(.2, .8, .2, 1); }
+  @media (prefers-reduced-motion: reduce) { .gx-pg101.gx-in213r, .gx-pg101.gx-in213l { animation: none !important; } }
+  /* change 213: "hidden" here stopped the phone top bar from staying at the top; "clip" cuts the same sideways overflow without that */
+  @media (max-width: 640px) { html, body { overflow-x: clip; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1746,7 +1760,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="17ulpos.x7kevo" data-file="build/app.js">
+<meta name="gx-build" content="1y3t709.1ofvzoq" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -1810,8 +1824,9 @@ const iso = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, 
 const fromIso = (x) => new Date(x + "T12:00:00");
 const addDays = (x, n) => { const d = fromIso(x); d.setDate(d.getDate() + n); return iso(d); };
 const todayISO = () => iso(new Date());
-const dayLabel = (x) => fromIso(x).toLocaleDateString("en-US", { weekday: "short", month: "numeric", day: "numeric" });
-const mdL = (x) => fromIso(x).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+/* change 212: date words worked out once per date */ const GX_DL212 = new Map(), GX_MD212 = new Map();
+const dayLabel = (x) => { let v = GX_DL212.get(x); if (v === undefined) { v = fromIso(x).toLocaleDateString("en-US", { weekday: "short", month: "numeric", day: "numeric" }); GX_DL212.set(x, v); } return v; };
+const mdL = (x) => { let v = GX_MD212.get(x); if (v === undefined) { v = fromIso(x).toLocaleDateString("en-US", { month: "short", day: "numeric" }); GX_MD212.set(x, v); } return v; };
 const SCHED = (() => {
   const out = {};
   Object.entries(SR).forEach(([t, str]) => {
@@ -1821,7 +1836,9 @@ const SCHED = (() => {
   });
   return out;
 })();
-const wkGames = (dates) => { const g = {}; NHL.forEach((t) => { g[t] = []; dates.forEach((d, i) => { if (SCHED[t] && SCHED[t].has(d)) g[t].push(i); }); }); return g; };
+const GX_WG212 = new Map(); /* change 212: each week's games worked out once */
+const wkGames = (dates) => { const k212 = dates.join(","); let v212 = GX_WG212.get(k212); if (!v212) { v212 = gxWkGames212(dates); GX_WG212.set(k212, v212); } return v212; };
+const gxWkGames212 = (dates) => { const g = {}; NHL.forEach((t) => { g[t] = []; dates.forEach((d, i) => { if (SCHED[t] && SCHED[t].has(d)) g[t].push(i); }); }); return g; };
 const lab = (i, dates) => `Week ${i + 1} · ${mdL(dates[0])} – ${mdL(dates[dates.length - 1])}`;
 const mkW = (i, start, len) => { const dates = [...Array(len)].map((_, k) => addDays(start, k)); return { label: lab(i, dates), dates, pairs: [], done: 0, act: {} }; };
 const defaultWeeks = () => { const w = [mkW(0, "2026-09-29", 6)]; let st = "2026-10-05"; for (let i = 1; i < 28; i++) { w.push(mkW(i, st, 7)); st = addDays(st, 7); } w[0].pairs = [["me", "kap"]]; return w; };
@@ -2309,12 +2326,30 @@ function App() {
   const wk = useMemo(() => deriveWeek(w0, s.autoDone), [w0, s.autoDone]);
   const setWk = (patch) => setS((st) => ({ ...st, weeks: st.weeks.map((w, i) => (i === st.wk ? { ...w, ...(typeof patch === "function" ? patch(w) : patch) } : w)) }));
   const go = (t, sub, extra) => {
-    setTab(t); setPlayer(null);
-    if (sub) setSubs((x) => ({ ...x, [t]: sub }));
-    if (extra && extra.partner) setTradePartner(extra.partner);
-    if (t === "teams") setTeamView(null);
-    window.scrollTo(0, 0);
+    /* change 213: remember this page's place, then switch in the background so the tap shows at once */
+    const from213 = tab + "/" + (subs[tab] || ""), to213 = t + "/" + (sub || subs[t] || "");
+    if (from213 === to213) { window.__GX213Y[to213] = 0; setPlayer(null); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); } return; }
+    window.__GX213Y[from213] = window.scrollY;
+    window.__GX213GO = to213;
+    React.startTransition(() => {
+      setTab(t); setPlayer(null);
+      if (sub) setSubs((x) => ({ ...x, [t]: sub }));
+      if (extra && extra.partner) setTradePartner(extra.partner);
+      if (t === "teams") setTeamView(null);
+    });
   };
+  const key213 = tab + "/" + (subs[tab] || "");
+  const prev213 = React.useRef({ k: key213, i: 0 });
+  const idx213 = gxTabIdx213(tab);
+  const dir213 = prev213.current.k === key213 ? "" : idx213 > prev213.current.i ? " gx-in213r" : idx213 < prev213.current.i ? " gx-in213l" : "";
+  React.useLayoutEffect(() => {
+    const was = prev213.current.k;
+    prev213.current = { k: key213, i: idx213 };
+    if (was === key213) return;
+    const y = window.__GX213GO === key213 ? window.__GX213Y[key213] || 0 : 0;
+    window.__GX213GO = null;
+    window.scrollTo(0, y);
+  }, [key213]);
   const openTeam = (id) => {
     setPlayer(null);
     if (!id || id === "fa") { go("moves", "adddrop"); return; }
@@ -2352,7 +2387,7 @@ function App() {
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
         <GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
-        <div key={tab + "/" + (sub || "")} className="gx-pg101">{content}</div>
+        <div key={tab + "/" + (sub || "")} className={"gx-pg101" + dir213}>{content}</div>
         {false && window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
       {player ? <GxPdSafe key={player.id} p={player} s={s} wk={wk} H={LH} onClose={() => setPlayer(null)} /> : null}<GxNhl141 s={s} a={s.me} b={(wk && oppOf(wk, s.me)) || s.opp} only201 />
@@ -4958,13 +4993,13 @@ function Pickups({ s, setS, wk }) {
   const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
   // change 079: sort the whole list by any heading before it is cut to the first rows
   const [srt79, setSrt79] = useState("add");
-  const wAll79 = useMemo(() => { const o = {}; if (srt79 !== "win" || base == null) return o; all.slice(0, 150).forEach((r) => { o[r.f.id] = gxWinW196(sP, afterMove(sP, r.f, r.d), ww196); }); return o; }, [M, srt79, base, wk196]);
+  const wAll79 = useMemo(() => { const o = {}; if (srt79 !== "win" || base == null) return o; all.slice(0, 150).forEach((r) => { o[r.f.id] = gxWinC215(s, sP, r.f, r.d, ww196); }); return o; }, [M, srt79, base, wk196]);
   const key79 = { l5: (r) => gxL5v(hist[String(r.f.id).slice(1)]), g: (r) => M.gamesIn(r.f), x: (r) => effAvg(r.f, K), win: (r) => (wAll79[r.f.id] != null ? wAll79[r.f.id] : -1) }[srt79];
   const rows = (key79 ? [...all].sort((a, b) => key79(b) - key79(a) || b.gain - a.gain) : all).slice(0, limit);
   const wins = useMemo(() => {
     const o = {};
     if (base == null) return o;
-    rows.forEach((r) => { o[r.f.id] = gxWinW196(sP, afterMove(sP, r.f, r.d), ww196); });
+    rows.forEach((r) => { o[r.f.id] = gxWinC215(s, sP, r.f, r.d, ww196); });
     return o;
   }, [M, limit, base, srt79, wAll79, wk196]);
   const ids = (srt79 === "l5" ? all.slice(0, 150) : rows).map((r) => String(r.f.id).slice(1)).join(",");
@@ -7250,6 +7285,9 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
   const eid = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
   const isG = p.p === "G";
   const [tab, setTab] = useState("ov");
+  /* change 214: wait for the slide-in to finish before the heavy loading starts */
+  const [rd214, setRd214] = useState(false);
+  useEffect(() => { setRd214(false); const t214 = setTimeout(() => setRd214(true), 260); return () => clearTimeout(t214); }, [p0.id]);
   const [log, setLog] = useState(null);
   const [nLog, setNLog] = useState(100000); /* gx118: full log */
   /* change 191: past seasons */
@@ -7261,6 +7299,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
   useEffect(() => {
     let dead = false;
     setSea191("cur"); setPrev191(null);
+    if (!rd214) return undefined; /* change 214 */
     gxHistIdx191().then((I) => {
       const L = [...new Set(Object.keys(I || {}).map((k) => k.split("/")[0]))].sort().reverse().slice(1);
       if (dead) return;
@@ -7269,7 +7308,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
       else setPrev191([]);
     });
     return () => { dead = true; };
-  }, [p.id]);
+  }, [p.id, rd214]);
   useEffect(() => {
     let dead = false;
     if (sea191 === "cur") return undefined;
@@ -7292,6 +7331,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
   useEffect(() => {
     let dead = false;
     setLog(null);
+    if (!rd214) return undefined; /* change 214: game log after the slide-in */
     if (!eid) { setLog([]); return; }
     const past = [...((SCHED && SCHED[p.t]) || [])].filter((d) => d <= today).sort().reverse();
     gxBoxIdx().then((idx) => {
@@ -7309,7 +7349,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
       }));
     }).catch(() => { if (!dead) setLog([]); });
     return () => { dead = true; };
-  }, [p.id]);
+  }, [p.id, rd214]);
 
   // header facts
   const sp = String(p.n || "").indexOf(" "), first = sp > 0 ? p.n.slice(0, sp) : "", last = sp > 0 ? p.n.slice(sp + 1) : p.n;
@@ -7706,6 +7746,8 @@ const gxTabOn103 = (k, tab) => {
 };
 function GxTopM103({ s, tab, go, ageH }) {
   const ref = React.useRef(null);
+  const [pend213, setPend213] = useState(null); /* change 213: the tapped tab lights up at once */
+  useEffect(() => { setPend213(null); }, [tab, (window.__ROUTE || {}).sub]);
   const sub = (window.__ROUTE || {}).sub;
   useEffect(() => {
     const n = ref.current, el = n && n.querySelector(".on");
@@ -7725,7 +7767,7 @@ function GxTopM103({ s, tab, go, ageH }) {
       </div>
       <nav className="tb" ref={ref} aria-label="Main">
         {GX_TABS103.map(([k, l, t, sb]) => (
-          <a key={k} href={gxHash(t, sb || undefined)} className={gxTabOn103(k, tab) ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go(t, sb || undefined); }}>{l}</a>
+          <a key={k} href={gxHash(t, sb || undefined)} className={(pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
         ))}
       </nav>
     </div>
@@ -10411,6 +10453,18 @@ function gxWatchGo211(e) {
   if (!/^https?:\/\//i.test(u)) return;
   e.preventDefault();
   window.location.href = "x-safari-" + u;
+}
+// ---------- change 213: tabs answer at once, slide, and remember where you were (install.py) ----------
+window.__GX213Y = window.__GX213Y || {};
+const gxTabIdx213 = (tab) => { const i = GX_TABS103.findIndex((x) => gxTabOn103(x[0], tab)); return i < 0 ? 99 : i; };
+// ---------- change 215: win chance after each pickup worked out once per sync (install.py) ----------
+const GX_WN215 = new WeakMap();
+function gxWinC215(s, sP, f, d, wks) {
+  let m = GX_WN215.get(s);
+  if (!m) { m = new Map(); GX_WN215.set(s, m); }
+  const k = [sP.wk, (wks || []).join("."), f && f.id, d ? d.id : "", Math.floor(Date.now() / 120000)].join("|");
+  if (!m.has(k)) m.set(k, gxWinW196(sP, afterMove(sP, f, d), wks));
+  return m.get(k);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
