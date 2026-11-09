@@ -2069,6 +2069,19 @@
   @media (max-width: 640px) { .gx-mr238 .wn238 b { font-size: 16px; } }
   /* change 239 (install.py): Table / My team choice on Roster */
   .gx-rv239 > .gx-seg103 { margin-bottom: 10px; }
+  /* change 240 (install.py): phone top bar in one row */
+  @media (max-width: 640px) {
+    .gx-tm103 .hd { display: none; }
+    .gx-tm103 .tb { align-items: stretch; padding: 0 2px 0 6px; }
+    .gx-tm103 .tb .me240 { flex: none; position: relative; display: flex; align-items: center; justify-content: center; width: 32px; margin-right: 2px; border-bottom: 3px solid transparent; }
+    .gx-tm103 .tb .me240 .pc { display: block; width: 26px; height: 26px; border-radius: 99px; overflow: hidden; }
+    .gx-tm103 .tb .me240 .pc.sp240 { animation: gx-sp240 .8s ease-in-out; }
+    .gx-tm103 .tb .me240 .dt240 { position: absolute; right: 1px; top: 50%; margin-top: 4px; width: 8px; height: 8px; border-radius: 99px; box-shadow: 0 0 0 2px var(--bg); }
+    .gx-tm103 .tb a { padding: 13px 1px 10px; font-size: clamp(9.5px, 2.7vw, 12.5px); }
+    .max-w-6xl.mx-auto.px-3.py-4 { padding-top: 8px; }
+    .gx-bx226 { margin-top: 0 !important; }
+  }
+  @keyframes gx-sp240 { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2077,7 +2090,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="10jh662.fqqcsn" data-file="build/app.js">
+<meta name="gx-build" content="1qbcn8l.vsawxc" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8087,6 +8100,7 @@ function GxTopM103({ s, tab, go, ageH }) {
         </button>
       </div>
       <nav className="tb" ref={ref} aria-label="Main">
+        <button type="button" className="me240" data-gx="240" aria-label={name + ", check for new data"} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) + ". Tap to check for new data" : "Not synced yet"} onClick={(e) => { const pc = e.currentTarget.querySelector(".pc"); if (pc) { pc.classList.remove("sp240"); void pc.offsetWidth; pc.classList.add("sp240"); } if (window.__gxPoll129) window.__gxPoll129(); }}><span className="pc"><GxFtPic114 id={s.me} size={26} /></span><span className="dt240" style={{ background: dot }}></span></button>
         {GX_TABS103.map(([k, l, t, sb]) => (
           <a key={k} href={gxHash(t, sb || undefined)} className={(pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
         ))}

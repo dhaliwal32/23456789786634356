@@ -2082,6 +2082,25 @@
     .gx-bx226 { margin-top: 0 !important; }
   }
   @keyframes gx-sp240 { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
+  /* change 241 (install.py): big phone tabs, More menu, view as another team */
+  .gx-tm103 .mr241 { display: none; }
+  @media (max-width: 640px) {
+    .gx-tm103 .tb a.sd241 { display: none; }
+    .gx-tm103 .tb a, .gx-tm103 .tb .mr241 { flex: 1 1 auto; padding: 14px 3px 11px; font-size: clamp(12px, 3.5vw, 14px); letter-spacing: 0; }
+    .gx-tm103 .tb .mr241 { display: flex; align-items: center; justify-content: center; gap: 3px; font-weight: 700; text-transform: uppercase; color: var(--mute); border-bottom: 3px solid transparent; white-space: nowrap; }
+    .gx-tm103 .tb .mr241.on { color: var(--ink); border-bottom-color: var(--accent); }
+    .gx-tm103 .tb .mr241 svg { width: 12px; height: 12px; flex: none; }
+  }
+  .gx-mm241 { position: fixed; inset: 0; z-index: 80; }
+  .gx-mm241 .bg { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+  .gx-mm241 .pn { position: absolute; right: 8px; min-width: 200px; background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 6px; box-shadow: 0 12px 30px rgba(0,0,0,.5); animation: gx-mm241 .16s ease-out; }
+  .gx-mm241 .pn a { display: flex; align-items: center; min-height: 48px; padding: 0 14px; border-radius: 10px; font-size: 16px; font-weight: 600; color: var(--ink); }
+  .gx-mm241 .pn a.on { background: var(--card3, var(--card2)); }
+  .gx-mm241 .pn a:active { background: var(--hover); }
+  @keyframes gx-mm241 { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .gx-as241 { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 8px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line2); font-size: 13px; color: var(--ink2); }
+  .gx-as241 b { color: var(--ink); }
+  .gx-as241 button { margin-left: auto; flex: none; padding: 6px 12px; border-radius: 9px; border: 1px solid var(--line2); background: var(--card3, var(--card2)); color: var(--ink); font-weight: 600; font-size: 13px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2090,7 +2109,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1qbcn8l.vsawxc" data-file="build/app.js">
+<meta name="gx-build" content="qpw8dd.ps8qtc" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2225,7 +2244,7 @@ function applyESPN(s, E) {
   }
   const ci = weeks.findIndex((w) => w.period === E.currentPeriod);
   const wk = ci >= 0 ? ci : 0;
-  const me = "t" + E.myTeamId;
+  const me = gxMe241(teams, "t" + E.myTeamId); /* change 241 */
   const opp = teams.some((t) => t.id === s.opp) && s.opp !== me ? s.opp : (teams.find((t) => t.id !== me) || {}).id;
   return { ...s, teams, me, opp, players: gxSimPlayers(players), weeks, wk, lastSync: E.generated, league: E.leagueName || "", goalies: E.goalies || s.goalies || {} };
 }
@@ -2716,7 +2735,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
+        <GxAsBar241 s={s} /><GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
         <div key={tab + "/" + (sub || "")} className={"gx-pg101" + dir213}>{content}</div>
         {false && window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -5783,6 +5802,7 @@ function SetupPage({ s, setS, go, sub }) {
   if (sub === "display") return page("Display", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
     <div className="gx-sr"><span>Projections</span><span className="text-sm">Combined</span></div>
+    <div className="gx-sr"><span>My team (view the app as)</span><GxMeSel241 s={s} /></div>
     <div className="gx-sr"><span>Favourite team (Lines)</span><GxFavSel112 /></div>
     <div className="gx-sr"><span>Watch link</span><GxWatchSel174 /></div>
     <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>One projection built from ESPN, the GM model and the AI, re-tested every night on every game played. The AI Lab shows how each one is doing.</div>
@@ -8102,8 +8122,9 @@ function GxTopM103({ s, tab, go, ageH }) {
       <nav className="tb" ref={ref} aria-label="Main">
         <button type="button" className="me240" data-gx="240" aria-label={name + ", check for new data"} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) + ". Tap to check for new data" : "Not synced yet"} onClick={(e) => { const pc = e.currentTarget.querySelector(".pc"); if (pc) { pc.classList.remove("sp240"); void pc.offsetWidth; pc.classList.add("sp240"); } if (window.__gxPoll129) window.__gxPoll129(); }}><span className="pc"><GxFtPic114 id={s.me} size={26} /></span><span className="dt240" style={{ background: dot }}></span></button>
         {GX_TABS103.map(([k, l, t, sb]) => (
-          <a key={k} href={gxHash(t, sb || undefined)} className={(pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
+          <a key={k} href={gxHash(t, sb || undefined)} className={((pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : "") + (GX_MAIN241.includes(k) ? "" : " sd241")} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
         ))}
+        <GxMore241 tab={tab} go={go} />
       </nav>
     </div>
   );
@@ -12144,6 +12165,57 @@ function GxRosterView239({ P }) {
       {v === "team" ? <GxMyRoom238 s={P.s} /> : <MyTeam {...P} />}
     </div>
   );
+}
+// ---------- change 241: More menu for the phone tabs, view as another team (install.py) ----------
+const GX_MAIN241 = ["roster", "matchup", "players", "lines"];
+function GxMore241({ tab, go }) {
+  const [open, setOpen] = useState(false);
+  const [top, setTop] = useState(60);
+  const ref = React.useRef(null);
+  const side = GX_TABS103.filter((x) => !GX_MAIN241.includes(x[0]));
+  const cur = side.find((x) => gxTabOn103(x[0], tab));
+  useEffect(() => { setOpen(false); }, [tab, (window.__ROUTE || {}).sub]);
+  useEffect(() => { if (!open) return undefined; const k = (e) => { if (e.key === "Escape") setOpen(false); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [open]);
+  const tap = () => { const r = ref.current && ref.current.getBoundingClientRect(); if (r) setTop(r.bottom + 6); setOpen((o) => !o); };
+  return (
+    <>
+      <button ref={ref} type="button" className={"mr241" + (cur ? " on" : "")} data-gx="241" aria-expanded={open} onClick={tap}>
+        {cur ? cur[1] : "More"}
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M3 4.5l3 3 3-3"></path></svg>
+      </button>
+      {open ? ReactDOM.createPortal(
+        <div className="gx-mm241">
+          <div className="bg" onClick={() => setOpen(false)}></div>
+          <div className="pn" style={{ top }}>
+            {side.map(([k, l, t, sb]) => <a key={k} href={gxHash(t, sb || undefined)} className={cur && cur[0] === k ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setOpen(false); go(t, sb || undefined); }}>{l}</a>)}
+          </div>
+        </div>, document.body) : null}
+    </>
+  );
+}
+function gxMe241(teams, real) {
+  const v = uiGet().me241;
+  return v && v !== real && (teams || []).some((t) => t.id === v) ? v : real;
+}
+function gxReal241() { const E = window.ESPN_DATA; return E && E.myTeamId != null ? "t" + E.myTeamId : null; }
+function gxSetMe241(id) {
+  const real = gxReal241();
+  uiSet("me241", !id || id === real ? "" : id);
+  try { const v = JSON.parse(localStorage.getItem(KEY) || "null"); if (v) { v.lastSync = null; localStorage.setItem(KEY, JSON.stringify(v)); } } catch (e) {}
+  try { location.replace(location.pathname + "?v=" + Date.now() + "#myteam"); } catch (e) { location.reload(); }
+}
+function GxMeSel241({ s }) {
+  const real = gxReal241();
+  return (
+    <select className={inp} value={s.me} onChange={(e) => gxSetMe241(e.target.value)} data-gx="241s">
+      {(s.teams || []).map((t) => <option key={t.id} value={t.id}>{t.name + (t.id === real ? " (yours)" : "")}</option>)}
+    </select>
+  );
+}
+function GxAsBar241({ s }) {
+  const real = gxReal241();
+  if (!real || s.me === real) return null;
+  return <div className="gx-as241" data-gx="241b"><span>Viewing as <b>{teamName(s, s.me)}</b></span><button type="button" onClick={() => gxSetMe241(real)}>Back to mine</button></div>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
