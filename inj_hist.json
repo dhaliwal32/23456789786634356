@@ -296,7 +296,7 @@
 "d": "2026-11-09",
 "k": "later",
 "nd": "2026-11-03",
-"now": "2026-11-13",
+"now": "2026-11-09",
 "was": "2026-10-31"
 },
 "4233648": {
@@ -326,6 +326,13 @@
 "k": "later",
 "now": "2026-11-12",
 "was": "2026-11-04"
+},
+"4352803": {
+"d": "2026-11-09",
+"k": "sooner",
+"nd": "2026-11-09",
+"now": "2026-11-25",
+"was": "2026-12-26"
 },
 "4378682": {
 "d": "2026-11-09",
@@ -404,11 +411,9 @@
 "was": "2026-11-03"
 },
 "4697411": {
-"d": "2026-11-08",
-"k": "dtd",
-"nd": "2026-11-06",
-"now": "2026-11-10",
-"was": "Out"
+"d": "2026-11-09",
+"k": "back",
+"was": "2026-11-10"
 },
 "4697448": {
 "d": "2026-11-06",
@@ -864,7 +869,7 @@
 "status": "Day-To-Day"
 },
 "4233643": {
-"back": "2026-11-13",
+"back": "2026-11-09",
 "note": "Chytil (upper body) won't travel with the Canucks during their upcoming two-game road trip, per Jeff Paterson of CanucksArmy.com.",
 "status": "Injured Reserve"
 },
@@ -899,8 +904,8 @@
 "status": "Injured Reserve"
 },
 "4352803": {
-"back": "2026-12-26",
-"note": "Sandin (knee) was placed on long-term injured reserve Monday.",
+"back": "2026-11-25",
+"note": "Sandin (knee) will be with the Capitals for their two-game road trip, Tarik El-Bashir of Monumental Sports Network reports Monday.",
 "status": "Injured Reserve"
 },
 "4352804": {
@@ -962,11 +967,6 @@
 "back": "2026-11-17",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"4697411": {
-"back": "2026-11-10",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4697449": {
 "back": "2026-11-14",
