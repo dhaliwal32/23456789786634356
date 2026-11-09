@@ -621,6 +621,18 @@
    "via": "urgent",
    "sent_at": "2026-11-09T00:35:00Z",
    "seen": "2026-11-09T00:35:00Z"
+  },
+  {
+   "k": "2026-11-09|weekly-6",
+   "at": "2026-11-09T15:03:12Z",
+   "title": "Fantasy GM",
+   "text": "Week 6: you 582, Gyani 382 (won by 200). App was 8% off on your players.",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-09T15:03:12Z",
+   "seen": "2026-11-09T15:03:12Z"
   }
  ],
  "sent": {
