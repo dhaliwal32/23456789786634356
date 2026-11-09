@@ -1966,6 +1966,13 @@
   .gx-bx226 .wc230 { font-size: 12.5px; color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .gx-bx226 .wc230 b { color: var(--ink); font-weight: 600; }
   .gx-bx226 .sm230 { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 12.5px; font-weight: 600; }
+  /* change 231 (install.py): jersey backs on Lines */
+  .gx-fg224.gx-lt227 .md.jr231 { width: 100%; max-width: 104px; height: auto; aspect-ratio: 120 / 112; background: none; border-radius: 0; overflow: visible; display: block; }
+  .gx-fg224.gx-lt227 .md.jr231 svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .gx-fg224.gx-lt227 .jr231 .nm231 { font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-weight: 900; letter-spacing: .04em; }
+  .gx-fg224.gx-lt227 .jr231 .no231 { font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-weight: 900; }
+  .gx-fg224.gx-lt227 .nm { display: none; }
+  .gx-fg224.gx-lt227 .sb227 { margin-top: 4px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1974,7 +1981,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="etv775.p409a" data-file="build/app.js">
+<meta name="gx-build" content="m7xv4p.cmofb6" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8437,7 +8444,7 @@ function GxLines111({ s }) {
       const isG = (ln.G || []).includes(n) || (p && p.p === "G");
       return (
         <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "")} aria-label={n} onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }} data-gx="229t">
-          <div className="md"><GxLnPic227 p={p} no={((T && T.no) || {})[n]} /></div>
+          <div className="md jr231"><GxJersey231 t={p ? p.t : t} name={last} no={((T && T.no) || {})[n]} goalie={isG} /></div>
           <span className="nm">{last}</span>
           <span className="sb227">{(((T && T.no) || {})[n] != null ? "#" + ((T && T.no) || {})[n] + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
           <span className="ow227">{p ? <><span>{mine ? "YOURS" : fa ? (p.wv ? "WAIVERS" : "FA") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9)}</span><b>{f1(gxPgAvg(p, s.blend))}</b></> : null}</span>
@@ -11838,6 +11845,35 @@ function GxBox230({ s, wk }) {
         </div>
       </div>
     </div>
+  );
+}
+// ---------- change 231: jersey backs on Lines (install.py) ----------
+// a plain jersey seen from behind in the team's colours (GX_JC224: body, trim, numbers), name arched over a big number
+function GxJersey231({ t, name, no, goalie }) {
+  const c = GX_JC224[t] || GX_JC224[String(t || "").toUpperCase()] || ["#3a3d44", "#9aa0a8", "#ffffff"];
+  const body = c[0], trim = c[1], num = c[2] || "#ffffff";
+  const id = "j231" + String(t || "x") + String(no == null ? "" : no) + String(name || "").replace(/[^A-Za-z]/g, "");
+  const nm = String(name || "").toUpperCase();
+  const nmSize = Math.max(6.2, Math.min(10.5, 92 / Math.max(5, nm.length)));
+  const nTxt = no == null ? "" : String(no);
+  const outline = (hex) => { const h = String(hex).replace("#", ""); const v = parseInt(h.length === 3 ? h.split("").map((x) => x + x).join("") : h, 16); const r = (v >> 16) & 255, g = (v >> 8) & 255, b = v & 255; return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? "rgba(0,0,0,.35)" : "rgba(255,255,255,.18)"; };
+  const shirt = "M42 6 Q60 14 78 6 L98 12 Q108 16 112 26 L119 58 L101 64 L95 44 L94 106 Q60 111 26 106 L25 44 L19 64 L1 58 L8 26 Q12 16 22 12 Z";
+  return (
+    <svg viewBox="0 0 120 112" role="img" aria-label={(name || "") + (nTxt ? " number " + nTxt : "")}>
+      <defs><clipPath id={id}><path d={shirt} /></clipPath></defs>
+      <path d={shirt} style={{ fill: body, stroke: outline(body), strokeWidth: 1 }} />
+      <g clipPath={"url(#" + id + ")"}>
+        <rect x="0" y="45" width="30" height="5.5" style={{ fill: trim }} /><rect x="0" y="52.5" width="30" height="2.4" style={{ fill: num }} /><rect x="0" y="56.8" width="30" height="5.5" style={{ fill: trim }} />
+        <rect x="90" y="45" width="30" height="5.5" style={{ fill: trim }} /><rect x="90" y="52.5" width="30" height="2.4" style={{ fill: num }} /><rect x="90" y="56.8" width="30" height="5.5" style={{ fill: trim }} />
+        <rect x="0" y="88" width="120" height="5.5" style={{ fill: trim }} /><rect x="0" y="95.5" width="120" height="2.4" style={{ fill: num }} />
+        {goalie ? <rect x="0" y="99.5" width="120" height="5" style={{ fill: trim }} /> : null}
+        <path d="M42 6 Q60 14 78 6 L80 9 Q60 18 40 9 Z" style={{ fill: trim }} />
+        <path d="M25 44 L25 104" style={{ stroke: "rgba(0,0,0,.18)", strokeWidth: 1 }} /><path d="M95 44 L95 104" style={{ stroke: "rgba(0,0,0,.18)", strokeWidth: 1 }} />
+      </g>
+      <path id={id + "a"} d="M30 33 Q60 25 90 33" fill="none" />
+      <text className="nm231" style={{ fontSize: nmSize, fill: num, stroke: trim, strokeWidth: 0.9, paintOrder: "stroke" }} textAnchor="middle"><textPath href={"#" + id + "a"} startOffset="50%">{nm}</textPath></text>
+      <text className="no231" x="60" y="79" textAnchor="middle" style={{ fontSize: nTxt.length > 1 ? 40 : 44, fill: num, stroke: trim, strokeWidth: 2.4, paintOrder: "stroke", strokeLinejoin: "round" }}>{nTxt}</text>
+    </svg>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
