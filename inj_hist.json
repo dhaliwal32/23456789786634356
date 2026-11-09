@@ -14,9 +14,9 @@
 "was": "2026-11-03"
 },
 "2562624": {
-"d": "2026-11-07",
-"k": "new",
-"now": "2026-11-09"
+"d": "2026-11-09",
+"k": "back",
+"was": "2026-11-09"
 },
 "2590824": {
 "d": "2026-11-08",
@@ -334,10 +334,10 @@
 "was": "2026-11-09"
 },
 "4378683": {
-"d": "2026-11-05",
+"d": "2026-11-09",
 "k": "later",
 "nd": "2026-11-05",
-"now": "2026-11-09",
+"now": "2026-11-16",
 "was": "2026-11-05"
 },
 "4378686": {
@@ -622,11 +622,6 @@
 "back": "2026-11-28",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"2562624": {
-"back": "2026-11-09",
-"note": "Nugent-Hopkins took a puck to the side of the head in Saturday's game versus the Canucks, Derek Van Diest of NHL.com reports. Per the Sportsnet broadcast, the f",
-"status": "Day-To-Day"
 },
 "2590824": {
 "back": "2026-11-10",
@@ -919,7 +914,7 @@
 "status": "Injured Reserve"
 },
 "4378683": {
-"back": "2026-11-09",
+"back": "2026-11-16",
 "note": "Durzi (undisclosed) was put on injured reserve Thursday, per Mollie Walker of the New York Post.",
 "status": "Injured Reserve"
 },
