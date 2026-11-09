@@ -3,7 +3,10 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "217-players-filters-saved.py",
-  "218-waivers-dot.py"
+  "219-players-one-row.py",
+  "220-tab-bar-fits.py",
+  "221-all-players-filters-block.py",
+  "222-matchup-plain-numbers.py",
+  "223-consistent-photos-taps.py"
  ]
 }
