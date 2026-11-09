@@ -3,6 +3,7 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "225-matchup-box.py"
+  "226-matchup-box-more.py",
+  "227-lines-cards.py"
  ]
 }
