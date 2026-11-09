@@ -354,6 +354,11 @@
 "now": "2027-09-15",
 "was": "2026-11-08"
 },
+"4393049": {
+"d": "2026-11-09",
+"k": "new",
+"now": "2026-11-10"
+},
 "4419679": {
 "d": "2026-11-02",
 "k": "back",
@@ -934,6 +939,11 @@
 "back": "2026-12-05",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"4393049": {
+"back": "2026-11-10",
+"note": "Evans sustained a hand injury during Monday's practice session, per Sportsnet.",
+"status": "Day-To-Day"
 },
 "4419778": {
 "back": "2026-11-14",
