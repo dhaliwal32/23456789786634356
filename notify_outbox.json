@@ -525,6 +525,18 @@
    "via": "urgent",
    "sent_at": "2026-11-09T16:57:45Z",
    "seen": "2026-11-09T16:57:45Z"
+  },
+  {
+   "k": "2026-11-09|5bd9b2633752",
+   "at": "2026-11-09T19:02:44Z",
+   "title": "Fantasy GM",
+   "text": "Wennberg joined SJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-09T19:02:44Z",
+   "seen": "2026-11-09T19:02:44Z"
   }
  ],
  "sent": {
