@@ -187,6 +187,11 @@
 "k": "back",
 "was": "2026-11-04"
 },
+"3151187": {
+"d": "2026-11-08",
+"k": "new",
+"now": "2026-11-11"
+},
 "3535": {
 "d": "2026-11-07",
 "k": "back",
@@ -799,6 +804,11 @@
 "back": "2027-03-30",
 "note": "Merzlikins is expected to miss 4-6 months to begin the 2026-27 regular season while recovering from a shoulder injury, per Luke Fox of Sportsnet.",
 "status": "Injured Reserve"
+},
+"3151187": {
+"back": "2026-11-11",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3151297": {
 "back": "2027-09-15",
