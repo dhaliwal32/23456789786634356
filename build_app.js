@@ -61,4 +61,33 @@ function buildPage(page, appOut) {
 buildPage("fantasy-gm.html", "build/app.js");
 buildPage("fantasy-gm-test.html", "build/app-test.js");
 
+// change 216: build the Tailwind styles once here, so phones don't build them on every open.
+// If this fails, build/tw.css is removed and the page builds the styles itself like before.
+const TWM216 = /[ \t]*<meta name="gx-tw"[^>]*>\n?/g;
+function twPage216(page, h) {
+  if (!fs.existsSync(page)) return;
+  let html = fs.readFileSync(page, "utf8").replace(/\r\n/g, "\n").replace(TWM216, "");
+  const at = html.indexOf("<script>/* gx216-tw");
+  if (at < 0) return;
+  if (h) html = html.slice(0, at) + '<meta name="gx-tw" content="' + h + '">\n' + html.slice(at);
+  write(page, html);
+}
+let tw216 = "";
+try {
+  const files = ["fantasy-gm.html", "fantasy-gm-test.html", "build/app.js", "build/app-test.js", "build/lines-tab.js", "build/ask-panel.js"].filter((f) => fs.existsSync(f));
+  require("child_process").execSync('npx --yes tailwindcss@3 --content "' + files.join(",") + '" -o build/tw-new.css --minify', { stdio: "pipe", timeout: 240000 });
+  const css = fs.readFileSync("build/tw-new.css", "utf8");
+  fs.unlinkSync("build/tw-new.css");
+  if (css.length < 5000 || css.indexOf(".flex{") < 0) throw new Error("the styles came out incomplete");
+  write("build/tw.css", css);
+  tw216 = hash(css);
+  say("(build) styles -> build/tw.css (" + Math.round(css.length / 1024) + " KB)");
+} catch (e) {
+  say("(build) styles not built, the page will build them itself: " + String((e && e.message) || e).slice(0, 200));
+  try { fs.unlinkSync("build/tw.css"); } catch (x) {}
+  try { fs.unlinkSync("build/tw-new.css"); } catch (x) {}
+}
+twPage216("fantasy-gm.html", tw216);
+twPage216("fantasy-gm-test.html", tw216);
+
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "\n### Fast app build\n" + log.join("\n") + "\n");
