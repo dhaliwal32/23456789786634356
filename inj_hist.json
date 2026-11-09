@@ -226,6 +226,11 @@
 "k": "back",
 "was": ""
 },
+"3904098": {
+"d": "2026-11-08",
+"k": "new",
+"now": "2026-11-10"
+},
 "3904178": {
 "d": "2026-11-03",
 "k": "back",
@@ -829,6 +834,11 @@
 "back": "2026-11-14",
 "note": "Barzal (knee) practiced Wednesday, but he wore a no-contact jersey, and there's still no timetable for his return, per Stefen Rosner of NHL.com.",
 "status": "Injured Reserve"
+},
+"3904098": {
+"back": "2026-11-10",
+"note": "out",
+"status": "Out"
 },
 "3939716": {
 "back": "2026-11-27",
