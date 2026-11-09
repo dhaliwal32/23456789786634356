@@ -1,8 +1,13 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "build_app.js": true
  },
  "changes": [
-  "211-watch-opens-safari.py"
+  "212-faster-open.py",
+  "213-tabs-slide.py",
+  "214-player-screen-smooth.py",
+  "215-players-list-smooth.py",
+  "216-ready-made-styles.py"
  ]
 }
