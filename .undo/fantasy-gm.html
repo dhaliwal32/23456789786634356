@@ -1959,7 +1959,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1kjs0gq.c21xv6" data-file="build/app.js">
+<meta name="gx-build" content="47on79.223zwu" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8421,7 +8421,7 @@ function GxLines111({ s }) {
     { const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa", last = n.split(" ").slice(1).join(" ") || n;
       const isG = (ln.G || []).includes(n) || (p && p.p === "G");
       return (
-        <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "")} aria-label={n} onClick={(e) => { const md = e.currentTarget.querySelector(".md"); setZoom224({ n, from: md ? md.getBoundingClientRect() : null }); }}>
+        <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "")} aria-label={n} onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }} data-gx="229t">
           <div className="md"><GxLnPic227 p={p} no={((T && T.no) || {})[n]} /></div>
           <span className="nm">{last}</span>
           <span className="sb227">{(((T && T.no) || {})[n] != null ? "#" + ((T && T.no) || {})[n] + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
@@ -11415,11 +11415,9 @@ function GxBox226({ s, wk }) {
       <div className="lay">
         <div className="min-w-0">{board}{det}</div>
         <div className="min-w-0">
-          <GxJumbo228 J={J228} k={k} setK={setK} onTap={(id) => openP(s.players.find((p) => p.id === id))} fb={(
-            <div ref={stg} className="stg" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
-              <div ref={pr} className="pr">{fToday}{fWin}{fGames}{fPlayers}</div>
-            </div>
-          )} />
+          {/* change 229: flat box again */}<div ref={stg} className="stg" data-gx="229" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
+            <div ref={pr} className="pr">{fToday}{fWin}{fGames}{fPlayers}</div>
+          </div>
           <div className="tb">{NAMES.map((t, j) => <button key={t} type="button" className={k === j ? "on" : ""} onClick={() => turn(j)}>{t}</button>)}</div>
         </div>
       </div>
