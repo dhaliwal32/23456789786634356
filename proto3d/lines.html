@@ -1,0 +1,118 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lines 3D test</title>
+<style>
+:root{--ink:#f3f5f8;--mute:#9aa3b2;--card:rgba(12,15,24,.78);--line:rgba(255,255,255,.12);--acc:#ff3b30}
+html[data-theme=light]{--ink:#0b1220;--mute:#5b6576;--card:rgba(255,255,255,.82);--line:rgba(10,20,40,.12)}
+html,body{margin:0;height:100%;background:#04060b;color:var(--ink);font-family:-apple-system,"SF Pro Display","Segoe UI",Roboto,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent}
+html[data-theme=light] body{background:#dfe6ee}
+#box{position:fixed;inset:0}
+.gx3tg{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 8px 4px;border-radius:8px;background:rgba(6,9,16,.62);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);white-space:nowrap;transform-origin:50% 0;will-change:transform}
+html[data-theme=light] .gx3tg{background:rgba(255,255,255,.8);border-color:rgba(10,20,40,.12)}
+.gx3tg b{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--mute)}
+.gx3tg span{font-size:12.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--ink)}
+.gx3tg.me{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.gx3tg.fa{border-color:#2fbf71}
+.hd{position:fixed;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;display:flex;align-items:center;gap:10px;pointer-events:none;transition:opacity .3s,transform .3s}
+.hd .t{font-size:20px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
+.hd .s{font-size:12px;color:var(--mute);font-weight:700;letter-spacing:1px}
+.rows{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 14px);display:flex;gap:6px;justify-content:center;transition:opacity .3s,transform .3s}
+.rows button{flex:1;max-width:56px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.5px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hint{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 60px);text-align:center;font-size:11px;color:var(--mute);letter-spacing:1px;font-weight:700;transition:opacity .3s}
+.off{opacity:0!important;pointer-events:none!important;transform:translateY(10px)}
+/* focus view */
+.fv{position:fixed;inset:0;pointer-events:none}
+.fv>*{pointer-events:auto}
+.fv .top{position:absolute;top:calc(env(safe-area-inset-top) + 10px);left:12px;right:12px;display:flex;align-items:center;justify-content:space-between}
+.btn{height:38px;min-width:38px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:800;font-size:14px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:disabled{opacity:.35}
+.who{position:absolute;top:calc(env(safe-area-inset-top) + 60px);left:16px;right:16px;display:flex;align-items:flex-start;gap:12px;pointer-events:none}
+.who .no{font-size:64px;font-weight:900;line-height:.82;letter-spacing:-3px;color:transparent;-webkit-text-stroke:2px var(--ink);opacity:.9}
+.who .f{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--mute);text-transform:uppercase}
+.who .l{font-size:30px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;line-height:1.02}
+.who .p{margin-top:5px;font-size:11px;letter-spacing:2px;font-weight:800;color:var(--acc)}
+.who .own{margin-left:auto;font-size:10.5px;letter-spacing:1.5px;font-weight:800;padding:5px 9px;border-radius:6px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+.who .own.me{border-color:var(--acc);color:var(--acc)}
+.who .own.fa{border-color:#2fbf71;color:#2fbf71}
+.pn{position:absolute;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom) + 10px);border-radius:18px;background:var(--card);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:hidden;touch-action:pan-y}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;height:40px;background:none;border:0;color:var(--mute);font-weight:800;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;position:relative}
+.tabs button.on{color:var(--ink)}
+.tabs button.on::after{content:"";position:absolute;left:22%;right:22%;bottom:0;height:3px;border-radius:2px;background:var(--acc);box-shadow:0 0 10px var(--acc)}
+.body{height:208px;position:relative}
+.pg{position:absolute;inset:0;padding:12px 14px;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.pg.l{transform:translateX(-30%);opacity:0;pointer-events:none}.pg.r{transform:translateX(30%);opacity:0;pointer-events:none}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px}
+.st .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.st .k{font-size:9.5px;letter-spacing:1.6px;color:var(--mute);font-weight:800;margin-top:1px}
+.big{display:flex;align-items:flex-end;gap:14px;margin-bottom:10px}
+.big .v{font-size:40px;font-weight:900;line-height:1}
+.big .k{font-size:10px;letter-spacing:1.6px;color:var(--mute);font-weight:800}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:6px 0 10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),#ffb340);box-shadow:0 0 12px var(--acc)}
+.gl{display:grid;grid-template-columns:52px 1fr 50px 34px 34px 40px;align-items:center;height:32px;font-size:13px;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--line)}
+.gl.h{height:22px;font-size:9.5px;letter-spacing:1.4px;color:var(--mute);font-weight:800}
+.gl span:nth-child(n+3){text-align:right}
+.gl .fp{font-weight:800}
+.nx{display:grid;grid-template-columns:64px 1fr 70px;align-items:center;height:36px;border-bottom:1px solid var(--line);font-size:13.5px}
+.nx .o{font-weight:800}.nx span:last-child{text-align:right;font-weight:800}
+.trend{display:inline-block;font-size:10px;letter-spacing:1.4px;font-weight:800;padding:3px 7px;border-radius:5px;margin-left:6px}
+.dots{display:flex;gap:5px;justify-content:center;padding:0 0 9px}
+.dots i{width:6px;height:6px;border-radius:3px;background:var(--line);transition:width .3s,background .3s}.dots i.on{width:18px;background:var(--acc)}
+.fv.off .pn{transform:translateY(40px)}
+.fv .pn,.fv .who,.fv .top{transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1)}
+.fv.off .who{transform:translateY(-14px)}
+</style></head><body>
+<div id="box"></div>
+<div class="hd" id="hd"><div><div class="t">Florida Panthers</div><div class="s">LINES · EVEN STRENGTH</div></div></div>
+<div class="hint" id="hint">DRAG TO MOVE · TAP A PLAYER</div>
+<div class="rows" id="rows"></div>
+<div class="fv off" id="fv">
+  <div class="top"><button class="btn" id="bk">&#8249; Lines</button><span><button class="btn" id="pv">&#8249;</button> <button class="btn" id="nx">&#8250;</button></span></div>
+  <div class="who"><div class="no" id="wno"></div><div><div class="f" id="wf"></div><div class="l" id="wl"></div><div class="p" id="wp"></div></div><div class="own" id="wo"></div></div>
+  <div class="pn" id="pn"><div class="tabs" id="tabs"></div><div class="body" id="pgs"></div><div class="dots" id="dots"></div></div>
+</div>
+<script src="../vendor/gx3d.js"></script>
+<script src="../vendor/gx3d-lines.js"></script>
+<script>
+const Q = new URLSearchParams(location.search), dark = Q.get("theme") !== "light"; document.documentElement.dataset.theme = dark ? "dark" : "light";
+const L = {"F1": ["Brady Tkachuk", "Sam Bennett", "Matthew Tkachuk"], "F2": ["Carter Verhaeghe", "Sam Reinhart", "Lars Eller"], "F3": ["Eetu Luostarinen", "Anton Lundell", "Cole Reinhardt"], "F4": ["Bokondji Imama", "Cole Schwindt", "Garnet Hathaway"], "D1": ["Gustav Forsling", "Aaron Ekblad"], "D2": ["Niko Mikkola", "Seth Jones"], "D3": ["Uvis Balinskis", "Dmitry Kulikov"], "G": ["Jacob Markstrom", "Akira Schmid"]};
+const NO = {"Brady Tkachuk": 8, "Matthew Tkachuk": 19, "Sam Bennett": 9, "Carter Verhaeghe": 23, "Lars Eller": 20, "Sam Reinhart": 13, "Anton Lundell": 15, "Cole Reinhardt": 29, "Eetu Luostarinen": 27, "Bokondji Imama": 14, "Cole Schwindt": 79, "Garnet Hathaway": 21, "Aaron Ekblad": 5, "Gustav Forsling": 42, "Niko Mikkola": 77, "Seth Jones": 3, "Dmitry Kulikov": 7, "Uvis Balinskis": 26, "Akira Schmid": 40, "Jacob Markstrom": 25};
+const ROWN = { F1: "L1", F2: "L2", F3: "L3", F4: "L4", D1: "D1", D2: "D2", D3: "D3", G: "G" }, POS = ["LW", "C", "RW"], DP = ["LD", "RD"];
+const players = []; let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+Object.keys(L).forEach((k) => L[k].forEach((n, i) => { const sp = n.indexOf(" "); players.push({ id: n, first: n.slice(0, sp), last: n.slice(sp + 1), no: NO[n], goalie: k === "G", row: ROWN[k], col: i, body: "#C8102E", trim: "#041E42", num: "#FFFFFF", ring: n === "Sam Reinhart" ? "me" : n === "Cole Reinhardt" ? "fa" : "", pos: k === "G" ? "G" : k[0] === "D" ? DP[i] : POS[i], line: k }); }));
+const TABS = ["Season", "Fantasy", "Last 5", "Next"];
+function stats(p) { seed = p.no * 31 + 3; const r = (a, b) => Math.round(a + rnd() * (b - a));
+  if (p.goalie) return { sea: [["GP", r(6, 11)], ["W", r(3, 7)], ["L", r(1, 4)], ["OTL", r(0, 2)], ["SV%", "." + r(895, 925)], ["GAA", (2.2 + rnd()).toFixed(2)], ["SV", r(180, 330)], ["SO", r(0, 2)]], fp: (4 + rnd() * 3).toFixed(1) };
+  const g = r(1, 9), a = r(2, 12); return { sea: [["GP", 13], ["G", g], ["A", a], ["PTS", g + a], ["+/-", (r(-4, 8) > 0 ? "+" : "") + r(-4, 8)], ["PPP", r(0, 6)], ["SOG", r(20, 55)], ["HIT", r(4, 40)], ["BLK", r(2, 20)], ["PIM", r(0, 14)], ["TOI", r(12, 21) + ":" + String(r(0, 59)).padStart(2, "0")], ["FOW", p.pos === "C" ? r(40, 160) : 0]], fp: (2 + rnd() * 3.5).toFixed(1) }; }
+const OPP = [["Nov 3", "@ TOR"], ["Nov 4", "vs BOS"], ["Nov 6", "@ OTT"], ["Nov 7", "vs MTL"], ["Nov 9", "@ BUF"]], NEXT = [["Mon 10", "@ CBJ", "7:30 PM"], ["Wed 12", "vs DET", "4:30 PM"], ["Fri 14", "@ STL", "5:00 PM"], ["Sat 15", "vs CHI", "4:00 PM"], ["Tue 18", "@ NSH", "5:00 PM"]];
+function page(p, k) {
+  const S = stats(p);
+  if (k === 0) return '<div class="g4">' + S.sea.slice(0, 12).map(([a, b]) => '<div class="st"><div class="v">' + b + '</div><div class="k">' + a + "</div></div>").join("") + "</div>";
+  if (k === 1) { const rk = (p.no % 40) + 3; return '<div class="big"><div><div class="v">' + S.fp + '</div><div class="k">FPTS / GAME</div></div><div><div class="v" style="font-size:28px">' + (S.fp * 13).toFixed(1) + '</div><div class="k">SEASON FPTS</div></div><div style="margin-left:auto;text-align:right"><div class="v" style="font-size:28px">' + rk + '</div><div class="k">' + (p.goalie ? "G" : p.pos[1] === "D" ? "D" : "F") + ' RANK</div></div></div><div class="k" style="font-size:10px;letter-spacing:1.6px;color:var(--mute);font-weight:800">PROJECTED ' + (S.fp * 1.04).toFixed(1) + ' / GAME</div><div class="bar"><i style="width:' + Math.min(96, 30 + S.fp * 11) + '%"></i></div><div class="g4"><div class="st"><div class="v">3</div><div class="k">GAMES LEFT</div></div><div class="st"><div class="v">' + (S.fp * 3.1).toFixed(1) + '</div><div class="k">WEEK PROJ</div></div><div class="st"><div class="v">' + (40 + p.no % 50) + '%</div><div class="k">ROSTERED</div></div><div class="st"><div class="v">' + p.line.replace("F", "L") + '</div><div class="k">LINE</div></div></div>'; }
+  if (k === 2) { seed = p.no * 7; const rows = OPP.map(([d, o]) => { const g = Math.round(rnd() * 1.3), a = Math.round(rnd() * 1.6), fp = (g * 3 + a * 2 + rnd() * 3).toFixed(1); return '<div class="gl"><span>' + d + "</span><span>" + o + '</span><span class="fp">' + fp + "</span><span>" + g + "</span><span>" + a + "</span><span>" + (rnd() > 0.5 ? "+1" : "0") + "</span></div>"; }).join("");
+    const hot = p.no % 3 !== 0; return '<div style="display:flex;align-items:center;margin-bottom:4px;font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--mute)">LAST 5 GAMES<span class="trend" style="background:' + (hot ? "rgba(255,90,60,.18);color:#ff7a5c" : "rgba(90,150,255,.18);color:#7aa8ff") + '">' + (hot ? "HOT" : "COLD") + '</span></div><div class="gl h"><span>DATE</span><span>OPP</span><span>FPTS</span><span>G</span><span>A</span><span>+/-</span></div>' + rows; }
+  return '<div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--mute);margin-bottom:4px">NEXT GAMES</div>' + NEXT.map(([d, o, t]) => '<div class="nx"><span style="color:var(--mute);font-weight:700">' + d + '</span><span class="o">' + o + ' <small style="color:var(--mute);font-weight:600">' + t + "</small></span><span>" + (stats(p).fp * (0.9 + Math.random() * 0.25)).toFixed(1) + "</span></div>").join("");
+}
+let cur = null, K = 0;
+function render(id, k) {
+  const p = players.find((x) => x.id === id); if (!p) return;
+  if (cur !== id) { cur = id; wno.textContent = p.no; wf.textContent = p.first; wl.textContent = p.last; wp.textContent = p.pos + " · " + (p.goalie ? "GOALIE" : p.line.replace("F", "LINE ").replace(/^D/, "PAIR ")) + " · FLA"; wo.textContent = p.ring === "me" ? "YOURS" : p.ring === "fa" ? "FREE AGENT" : "TEAM 6"; wo.className = "own " + p.ring;
+    pgs.innerHTML = TABS.map((_, i) => '<div class="pg ' + (i < k ? "l" : i > k ? "r" : "") + '">' + page(p, i) + "</div>").join(""); }
+  K = k; [...pgs.children].forEach((el, i) => (el.className = "pg " + (i < k ? "l" : i > k ? "r" : "")));
+  tabs.innerHTML = TABS.map((t, i) => '<button class="' + (i === k ? "on" : "") + '" data-k="' + i + '">' + t + "</button>").join("");
+  dots.innerHTML = TABS.map((_, i) => '<i class="' + (i === k ? "on" : "") + '"></i>').join("");
+  const ix = players.findIndex((x) => x.id === id); pv.disabled = ix === 0; nx.disabled = ix === players.length - 1;
+}
+const v = gxLn3D.mount(box, { players, rows: ["L1", "L2", "L3", "L4", "D1", "D2", "D3", "G"], dark, base: "../models3d/", accent: "#ff3b30",
+  onStop: (id, k) => { render(id, k); fv.classList.remove("off"); hd.classList.add("off"); rows.classList.add("off"); hint.classList.add("off"); },
+  onBack: () => {}, onReady: () => { window.__ready = true; } });
+window.__v = v;
+rows.innerHTML = ["L1", "L2", "L3", "L4", "D1", "D2", "D3", "G"].map((r) => '<button data-r="' + r + '">' + r + "</button>").join("");
+rows.onclick = (e) => { const b = e.target.closest("button"); if (b) v.jump(b.dataset.r); };
+tabs.onclick = (e) => { const b = e.target.closest("button"); if (b) v.stop(+b.dataset.k); };
+bk.onclick = () => { fv.classList.add("off"); hd.classList.remove("off"); rows.classList.remove("off"); hint.classList.remove("off"); v.back(); cur = null; };
+pv.onclick = () => v.next(-1); nx.onclick = () => v.next(1);
+let sw = null; pn.addEventListener("pointerdown", (e) => (sw = { x: e.clientX, y: e.clientY }));
+pn.addEventListener("pointerup", (e) => { if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null; if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) v.stop(K + (dx < 0 ? 1 : -1)); });
+addEventListener("keydown", (e) => { if (e.key === "Escape") bk.onclick(); if (e.key === "ArrowRight") v.stop(K + 1); if (e.key === "ArrowLeft") v.stop(K - 1); });
+</script></body></html>
