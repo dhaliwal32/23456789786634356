@@ -620,7 +620,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-09T15:03:12Z",
-   "seen": "2026-11-09T16:51:26Z"
+   "seen": "2026-11-09T16:57:46Z"
+  },
+  {
+   "k": "2026-11-09|43f467f8e8e8",
+   "at": "2026-11-09T16:57:45Z",
+   "title": "Fantasy GM",
+   "text": "Monahan joined CBJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-09T16:57:45Z",
+   "seen": "2026-11-09T16:57:45Z"
   }
  ],
  "sent": {
