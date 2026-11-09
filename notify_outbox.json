@@ -597,6 +597,30 @@
    "via": "urgent",
    "sent_at": "2026-11-08T23:45:11Z",
    "seen": "2026-11-09T00:28:36Z"
+  },
+  {
+   "k": "2026-11-08|8e731e922ce7",
+   "at": "2026-11-09T00:34:36Z",
+   "title": "Fantasy GM",
+   "text": "Dostal not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-09T00:34:36Z",
+   "seen": "2026-11-09T00:34:36Z"
+  },
+  {
+   "k": "2026-11-08|b6201e40a574",
+   "at": "2026-11-09T00:35:00Z",
+   "title": "Fantasy GM",
+   "text": "Sissons joined Matthews's line (TOR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-09T00:35:00Z",
+   "seen": "2026-11-09T00:35:00Z"
   }
  ],
  "sent": {
