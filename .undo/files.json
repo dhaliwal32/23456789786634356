@@ -3,7 +3,6 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "226-matchup-box-more.py",
-  "227-lines-cards.py"
+  "228-roster-jumbotron.py"
  ]
 }
