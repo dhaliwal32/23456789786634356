@@ -1752,6 +1752,8 @@
   @media (prefers-reduced-motion: reduce) { .gx-pg101.gx-in213r, .gx-pg101.gx-in213l { animation: none !important; } }
   /* change 213: "hidden" here stopped the phone top bar from staying at the top; "clip" cuts the same sideways overflow without that */
   @media (max-width: 640px) { html, body { overflow-x: clip; } }
+  /* change 218 (install.py): yellow dot for players on waivers */
+  .gx-wv218 { display: inline-block; width: 7px; height: 7px; border-radius: 99px; background: var(--warn); margin-left: 6px; vertical-align: middle; flex: none; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1760,7 +1762,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1y3t709.1ofvzoq" data-file="build/app.js">
+<meta name="gx-build" content="1k3tjmj.1o3s4uv" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -4965,10 +4967,11 @@ function Pickups({ s, setS, wk }) {
   gxUseSort108(); /* gx109 */
   const effAvg = gxPgAvg; /* gx088-pk */
   const K = s.blend;
-  const [H, setH] = useState(1);
-  const [wm193, setWm193] = useState("h1"); /* change 193: h1, h4, h0, lose or pick */
-  const [wks193, setWks193] = useState(null);
-  const [pos, setPos] = useState(() => { const v = window.__PICK_POS || "all"; window.__PICK_POS = ""; return v; });
+  const sv217 = useMemo(() => gxPkSaved217(s), []); /* change 217: start from the saved filters */
+  const [H, setH] = useState(sv217.H);
+  const [wm193, setWm193] = useState(sv217.wm); /* change 193: h1, h4, h0, lose or pick */
+  const [wks193, setWks193] = useState(sv217.wks);
+  const [pos, setPos] = useState(() => { const v = window.__PICK_POS || sv217.pos; window.__PICK_POS = ""; return v; });
   const [q, setQ] = useState(() => { const v = window.__PICK_Q || ""; window.__PICK_Q = ""; return v; });
   const [limit, setLimit] = useState(40); /* gx122: 40 then more on scroll */
   useEffect(() => {
@@ -4992,7 +4995,8 @@ function Pickups({ s, setS, wk }) {
   const minGain = s.minGain ?? 3;
   const all = q ? M.res : M.res.filter((r) => r.gain >= minGain);
   // change 079: sort the whole list by any heading before it is cut to the first rows
-  const [srt79, setSrt79] = useState("add");
+  const [srt79, setSrt79] = useState(sv217.srt);
+  useEffect(() => { try { uiSet("gxPk217", Object.assign({}, uiGet().gxPk217 || {}, { wm: wm193, wks: wks193, srt: srt79 })); } catch (e) {} }, [wm193, wks193, srt79]); /* change 217 */
   const wAll79 = useMemo(() => { const o = {}; if (srt79 !== "win" || base == null) return o; all.slice(0, 150).forEach((r) => { o[r.f.id] = gxWinC215(s, sP, r.f, r.d, ww196); }); return o; }, [M, srt79, base, wk196]);
   const key79 = { l5: (r) => gxL5v(hist[String(r.f.id).slice(1)]), g: (r) => M.gamesIn(r.f), x: (r) => effAvg(r.f, K), win: (r) => (wAll79[r.f.id] != null ? wAll79[r.f.id] : -1) }[srt79];
   const rows = (key79 ? [...all].sort((a, b) => key79(b) - key79(a) || b.gain - a.gain) : all).slice(0, limit);
@@ -5030,7 +5034,7 @@ function Pickups({ s, setS, wk }) {
         {plan ? <span className="text-slate-500">{" \u00b7 showing next week"}</span> : null}
       </div>
       <GxFlt108 label={({ all: "All", F: "Forwards", D: "Defence", G: "Goalies" })[pos] + " \u00b7 " + (wks193 ? (wm193 === "lose" ? "Losing weeks (" + wks193.length + ")" : wks193.length === 1 ? gxWkShort193(sP, wks193[0]) : wks193.length + " weeks") : ({ 1: plan ? "Next week" : "This week", 4: "Next 4 weeks", 0: "Rest of season" })[H]) + " \u00b7 " + gxRngLbl108()}><div className="flex flex-wrap gap-2 items-center">
-        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(40); }} />
+        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(40); try { uiSet("gxPk217", Object.assign({}, uiGet().gxPk217 || {}, { pos: v })); } catch (e) {} }} />
       </div><GxWkPick193 s={s} sP={sP} plan={plan} mode={wm193} wks={wks193} onPick={(m, a) => { setWm193(m); setLimit(40); if (m === "h1" || m === "h4" || m === "h0") { setWks193(null); setH(m === "h1" ? 1 : m === "h4" ? 4 : 0); } else setWks193(a); }} /><GxRngSel100 /></GxFlt108>
       {/* change 193: Pickups for next week removed */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -5046,7 +5050,7 @@ function Pickups({ s, setS, wk }) {
             <div key={r.f.id} className={"gx-pk row " + gxPkMode106(pos)} role="button" onClick={() => { if (window.__NAV) window.__NAV.player(r.f); }} data-gx="151">
               <div className="gx-fc99"><GxFace p={r.f} size={26} /></div>
               <div className="min-w-0">
-                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
+                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <i className="gx-wv218" title="On waivers" /> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 6 }}>{st}</span> : null}</div>
                 {/* gx106: no text under the player */}
               </div>
               {spark(r.f)}
@@ -6608,11 +6612,13 @@ const gxYou = (s, you, other) => (!window.__TB_REAL || s.me === window.__TB_REAL
 function GxRankings({ s }) {
   gxUseSort108(); /* gx109 */
   const K = s.blend;
-  const [pos, setPos] = useState("A"); /* gx202 */
-  const [own, setOwn] = useState("all");
-  const [nhl203, setNhl203] = useState("all");
+  const rk217 = useMemo(() => gxRkSaved217(), []); /* change 217: start from the saved filters */
+  const [pos, setPos] = useState(rk217.pos); /* gx202 */
+  const [own, setOwn] = useState(rk217.own);
+  const [nhl203, setNhl203] = useState(rk217.nhl);
   const [q, setQ] = useState("");
-  const [sort, setSort] = useState("exp");
+  const [sort, setSort] = useState(rk217.sort);
+  useEffect(() => { try { uiSet("gxRk217", { pos, own, nhl: nhl203, sort }); } catch (e) {} }, [pos, own, nhl203, sort]); /* change 217 */
   const [n, setN] = useState(50);
   const pv = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
   const rank = useMemo(() => {
@@ -6630,7 +6636,7 @@ function GxRankings({ s }) {
     .sort((a, b) => (sort === "exp" ? a.rk - b.rk : sort === "gp" ? (b.p.gp || 0) - (a.p.gp || 0) || a.rk - b.rk : sort === "sf" ? (b.sf == null ? -99 : b.sf) - (a.sf == null ? -99 : a.sf) : (b.p.tot || 0) - (a.p.tot || 0)));
   const shown = gxSort108(rows, s, (x) => x.p, { Avg: (p) => (p.gp ? p.tot / p.gp : -Infinity), Exp: pv }).slice(0, n); /* gx152 */
   const stTag = (p) => (p.ir ? "IR" : p.status && p.status !== "ACTIVE" ? M_ST[p.status] || p.status.replace(/_/g, " ") : "");
-  const owner = (p) => (p.ft === "fa" ? <span className="text-slate-500">{p.wv ? "Waivers" : "Free agent"}</span> : <TL s={s} id={p.ft} className={p.ft === s.me ? "font-semibold" : ""} />);
+  const owner = (p) => (p.ft === "fa" ? <span className="text-slate-500">Free agent</span> : <TL s={s} id={p.ft} className={p.ft === s.me ? "font-semibold" : ""} />); /* change 218: waivers shown as a dot by the name */
   const HB = (k, l, cls) => <button type="button" className={"n " + (cls || "") + (sort === k ? " on" : "")} onClick={() => { setSort(k); setN(50); }}>{l}</button>;
   const PN78 = { A: "players", F: "forwards", D: "defencemen", G: "goalies" };
   return (
@@ -6662,7 +6668,7 @@ function GxRankings({ s }) {
               <span className="text-slate-500 gx-n204" title="Place in this list, then rank"><b>{i204 + 1}</b><i>{rk}</i></span>
               <GxFace p={p} size={22} />
               <div className="min-w-0">
-                <div className="truncate"><PN p={p} className={me ? "font-semibold" : ""} />{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
+                <div className="truncate"><PN p={p} className={me ? "font-semibold" : ""} />{p.wv && p.ft === "fa" ? <i className="gx-wv218" title="On waivers" /> : null}{st ? <span className="text-xs" style={{ color: "var(--bad)", marginLeft: 8 }}>{st}</span> : null}</div>
                 <div className="text-xs text-slate-500 truncate"><span className="m-inl">{owner(p)}{" · "}</span>{p.t}{pos === "A" ? " · " + p.p : ""}{sort === "tot" ? " · " + f1(p.tot) + " pts" : ""}</div>
               </div>
               <span className="truncate text-sm m-hide">{owner(p)}</span>
@@ -6796,7 +6802,7 @@ function GxHeadStart({ s, base, ml }) {
             <div key={r.f.id} className="gx-hs83">
               <GxFace p={r.f} size={26} />
               <div className="min-w-0">
-                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}</div>
+                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <i className="gx-wv218" title="On waivers" /> : null}</div>
                 <div className="text-xs text-slate-500">{"Swap for " + r.d.n + " · "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button>{" · "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); gxHide.toggle(r.f.id); }}>Hide</button></div>
               </div>
               <div className="n" style={{ color: r.now < base - 0.004 ? "var(--bad)" : "var(--ink)" }}>{wpTxt(r.now)}</div>
@@ -6870,7 +6876,7 @@ function GxInjPage({ s }) {
       <div key={nk} className={"gx-ij85" + (i ? "" : " first")}>
         <GxFace p={r.p} size={26} />
         <div className="min-w-0">
-          <div className="truncate"><PN p={r.p} className="" /> <span className="text-xs text-slate-500">{r.p.p}</span>{r.good && allP && who !== "mine" ? <span className="good">Good</span> : null}{r.p.wv ? <span className="text-xs" style={{ color: "var(--warn)", marginLeft: 6 }}>on waivers</span> : null}</div>
+          <div className="truncate"><PN p={r.p} className="" /> <span className="text-xs text-slate-500">{r.p.p}</span>{r.good && allP && who !== "mine" ? <span className="good">Good</span> : null}{r.p.wv ? <i className="gx-wv218" title="On waivers" /> : null}</div>
           <div className="text-xs text-slate-500">{(who === "fa" ? "" : owner(r.p) + " · ") + st}</div>
           {upd && r.e ? <div className="text-xs">{evTxt(r.e)}<span className="text-slate-500">{" · " + gxIjAgo(gxIjLast(r.e))}</span></div> : !upd && r.e && r.e.k !== "news" ? <div className="text-xs">{evTxt(r.e)}</div> : null}
           {/* gx105: news text removed */}
@@ -10465,6 +10471,23 @@ function gxWinC215(s, sP, f, d, wks) {
   const k = [sP.wk, (wks || []).join("."), f && f.id, d ? d.id : "", Math.floor(Date.now() / 120000)].join("|");
   if (!m.has(k)) m.set(k, gxWinW196(sP, afterMove(sP, f, d), wks));
   return m.get(k);
+}
+// ---------- change 217: Players filters remembered on this device (install.py) ----------
+function gxPkSaved217(s) {
+  let v = {};
+  try { v = uiGet().gxPk217 || {}; } catch (e) {}
+  const cur = (s && s.wk) || 0;
+  let wm = ["h1", "h4", "h0", "lose", "pick"].includes(v.wm) ? v.wm : "h1";
+  let wks = Array.isArray(v.wks) ? v.wks.filter((i) => typeof i === "number" && i >= cur) : null;
+  if ((wm === "pick" || wm === "lose") && !(wks && wks.length)) { wm = "h1"; wks = null; }
+  if (wm !== "pick" && wm !== "lose") wks = null;
+  const H = wm === "h4" ? 4 : wm === "h0" ? 0 : 1;
+  return { wm, wks, H, pos: ["all", "F", "D", "G"].includes(v.pos) ? v.pos : "all", srt: typeof v.srt === "string" ? v.srt : "add" };
+}
+function gxRkSaved217() {
+  let v = {};
+  try { v = uiGet().gxRk217 || {}; } catch (e) {}
+  return { pos: ["A", "F", "D", "G"].includes(v.pos) ? v.pos : "A", own: typeof v.own === "string" ? v.own : "all", nhl: typeof v.nhl === "string" ? v.nhl : "all", sort: typeof v.sort === "string" ? v.sort : "exp" };
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

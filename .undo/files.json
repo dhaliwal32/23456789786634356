@@ -1,13 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "build_app.js": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "212-faster-open.py",
-  "213-tabs-slide.py",
-  "214-player-screen-smooth.py",
-  "215-players-list-smooth.py",
-  "216-ready-made-styles.py"
+  "217-players-filters-saved.py",
+  "218-waivers-dot.py"
  ]
 }
