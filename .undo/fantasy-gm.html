@@ -1944,6 +1944,13 @@
   .gx-lz224 .sp.ph227 { transform: none !important; transition: none !important; display: flex; align-items: flex-end; justify-content: center; height: 100%; }
   .gx-lz224 .sp.ph227 img { height: 100%; max-height: 230px; width: auto; display: block; filter: drop-shadow(0 8px 18px rgba(0,0,0,.45)); }
   .gx-lz224 .sp.ph227 .no227 { font-size: 96px; font-weight: 700; color: rgba(255,255,255,.9); line-height: 1; margin-bottom: 40px; }
+  /* change 228 (install.py): 3D scoreboard in the Roster box */
+  .gx-bx226 .jb228 { position: relative; aspect-ratio: 1 / 1; max-height: 540px; }
+  .gx-bx226 .jb228 .gl228 { position: absolute; inset: 0; }
+  .gx-bx226 .jb228 .gl228 canvas { border-radius: 14px; }
+  .gx-bx226 .jb228.on .stg { visibility: hidden; }
+  .gx-bx226 .jb228 .stg { position: absolute; inset: 0; }
+  .gx-bx225.gx-bx226.full .jb228 { max-height: 62vh; margin: 0 auto; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1952,7 +1959,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="ajvx5j.17mla99" data-file="build/app.js">
+<meta name="gx-build" content="1kjs0gq.c21xv6" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -11373,15 +11380,46 @@ function GxBox226({ s, wk }) {
       <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Grey numbers are projections.</div>
     </div>
   ) : null;
+  // change 228: what the four screens of the 3D scoreboard show
+  const J228 = {
+    nmA, nmB,
+    today: ti < 0 ? { none: "Today is not part of this week.", right: "" } : {
+      right: tA.filter((x) => x.g.s === "L").length + tB.filter((x) => x.g.s === "L").length + " playing now",
+      a: tA.map(({ q, v, real, g }) => ({ n: lastN(q.n), st: g.s === "L" ? "LIVE" : g.s === "F" ? "FINAL" : gameTime(gameOf(q.t, today)), live: g.s === "L", v, real, id: q.id })),
+      b: tB.map(({ q, v, real, g }) => ({ n: lastN(q.n), st: g.s === "L" ? "LIVE" : g.s === "F" ? "FINAL" : gameTime(gameOf(q.t, today)), live: g.s === "L", v, real, id: q.id })),
+      ta: tSum(tA), tb: tSum(tB), pa: tProj(tA), pb: tProj(tB),
+    },
+    win: {
+      right: over ? "Final" : "Now",
+      line: over ? (sa >= sb ? "Won by " + f1(sa - sb) : "Lost by " + f1(sb - sa)) : (fa >= fb ? "On pace to win by " : "On pace to lose by ") + f1(Math.abs(fa - fb)),
+      sub: over ? "" : "They should finish near " + f1(fb) + ". You need " + f1(Math.max(0, need)) + " more" + (leftA ? ", " + f1(perG) + " a game left." : "."),
+      hist: wHist.map((v, j) => ({ v, d: DN(fdays[j]) })),
+      cells: [["If you add 10", over ? "\u2013" : wpTxt(swing(10))], ["If they add 10", over ? "\u2013" : wpTxt(swing(-10))], ["Need a game", over || !leftA ? "\u2013" : f1(perG)], ["Your pace", f1(fa)], ["Their pace", f1(fb)], ["Spread", "\u00b1" + f1(sdNow)]],
+    },
+    games: {
+      right: up ? "Projected" : "Left " + leftA + " v " + leftB, leftLab: up ? "All" : "Left",
+      days: dates.map((_, d) => DN(d)), ti, a: dates.map((_, d) => gms(X, d)), b: dates.map((_, d) => gms(Y, d)), fut: dates.map((_, d) => st(d) === "p"),
+      la: up ? totG(X) : leftA, lb: up ? totG(Y) : leftB,
+      cells: [["All week", totG(X) + " v " + totG(Y)], ["Played", gpA + " v " + gpB], ["Today", gToday(X) + " v " + gToday(Y)], ["Bench with a game", (X.wasted || 0) + " v " + (Y.wasted || 0)], ["Empty spots", (X.empty || 0) + " v " + (Y.empty || 0)], ["Vs projection", done ? sg(vsA) + " v " + sg(vsB) : "\u2013"]],
+    },
+    players: {
+      a: top(SA, 5).map((o) => ({ n: lastN(o.p.n), sub: o.p.t + " \u00b7 " + o.gp + " GP", v: o.pts, id: o.p.id })),
+      b: top(SB, 5).map((o) => ({ n: lastN(o.p.n), sub: o.p.t + " \u00b7 " + o.gp + " GP", v: o.pts, id: o.p.id })),
+      la: lefts(SA).map((o) => ({ n: lastN(o.p.n) + " \u00b7 " + o.left + (o.live ? " live" : " left"), v: "+" + f1(o.rem), id: o.p.id })),
+      lb: lefts(SB).map((o) => ({ n: lastN(o.p.n) + " \u00b7 " + o.left + (o.live ? " live" : " left"), v: "+" + f1(o.rem), id: o.p.id })),
+    },
+  };
   return (
     <div className={cls}>
       {head}
       <div className="lay">
         <div className="min-w-0">{board}{det}</div>
         <div className="min-w-0">
-          <div ref={stg} className="stg" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
-            <div ref={pr} className="pr">{fToday}{fWin}{fGames}{fPlayers}</div>
-          </div>
+          <GxJumbo228 J={J228} k={k} setK={setK} onTap={(id) => openP(s.players.find((p) => p.id === id))} fb={(
+            <div ref={stg} className="stg" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
+              <div ref={pr} className="pr">{fToday}{fWin}{fGames}{fPlayers}</div>
+            </div>
+          )} />
           <div className="tb">{NAMES.map((t, j) => <button key={t} type="button" className={k === j ? "on" : ""} onClick={() => turn(j)}>{t}</button>)}</div>
         </div>
       </div>
@@ -11396,6 +11434,43 @@ function GxLnPic227({ p, no, big }) {
   const id = p ? String(p.id || "").replace(/^e/, "") : "";
   if (!id || bad) return <span className="no227">{no != null ? no : "\u2013"}</span>;
   return <img src={"https://a.espncdn.com/i/headshots/nhl/players/full/" + id + ".png"} alt="" loading="lazy" onError={() => setBad(true)} />;
+}
+// ---------- change 228: 3D scoreboard in the Roster box (install.py) ----------
+// loads the 3D library and the scoreboard only when the box is shown; the flat box stays as the fallback
+const GX228 = (window.__GX228 = window.__GX228 || { p: null });
+function gxLoad228() {
+  if (window.gxJumbo) return Promise.resolve(true);
+  if (GX228.p) return GX228.p;
+  const add = (src) => new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = src; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+  GX228.p = (window.GX3D ? Promise.resolve() : add("vendor/gx3d.js?v=228")).then(() => add("vendor/gx3d-jumbo.js?v=228")).then(() => !!window.gxJumbo);
+  GX228.p.catch(() => { GX228.p = null; });
+  return GX228.p;
+}
+function GxJumbo228({ J, k, setK, onTap, fb }) {
+  const box = React.useRef(null), ctl = React.useRef(null), tapR = React.useRef(onTap);
+  const [on, setOn] = useState(false);
+  tapR.current = onTap;
+  useEffect(() => {
+    let dead = false;
+    const ok = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
+    if (!ok) return undefined;
+    gxLoad228().then((y) => {
+      if (dead || !y || !box.current) return;
+      ctl.current = window.gxJumbo.mount(box.current, { base: "models3d/", onFace: (f) => setK(f), onTap: (id) => tapR.current && tapR.current(id), onReady: () => { if (!dead) setOn(true); }, onError: () => { if (!dead) setOn(false); } });
+      if (J) ctl.current.set(J);
+      ctl.current.turn(k);
+    }).catch(() => {});
+    return () => { dead = true; if (ctl.current) { ctl.current.destroy(); ctl.current = null; } };
+  }, []);
+  const key = JSON.stringify(J);
+  useEffect(() => { if (ctl.current && J) ctl.current.set(J); }, [key]);
+  useEffect(() => { if (ctl.current) ctl.current.turn(k); }, [k]);
+  return (
+    <div className={"jb228" + (on ? " on" : "")}>
+      {fb}
+      <div ref={box} className="gl228" style={on ? null : { visibility: "hidden" }}></div>
+    </div>
+  );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
