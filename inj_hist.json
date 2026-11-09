@@ -585,10 +585,11 @@
 "was": "2026-11-08"
 },
 "5334662": {
-"d": "2026-11-08",
-"k": "dtd",
-"now": "2026-11-09",
-"was": "Out"
+"d": "2026-11-09",
+"k": "later",
+"nd": "2026-11-09",
+"now": "2026-11-22",
+"was": "2026-11-09"
 },
 "5428": {
 "d": "2026-11-05",
@@ -1148,9 +1149,9 @@
 "status": "Injured Reserve"
 },
 "5334662": {
-"back": "2026-11-09",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-22",
+"note": "Smits (upper body) is week-to-week, according to Peter Baugh of The Athletic on Monday.",
+"status": "Out"
 },
 "5560": {
 "back": "2026-11-10",
