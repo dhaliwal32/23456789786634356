@@ -2002,6 +2002,10 @@
   .gx-gc140 .c179 .wt179, .gx-sd141 .gm .wt181 { background: var(--card3, var(--card2)); color: var(--ink); border: 1px solid var(--line2); }
   .gx-gc140 .c179 .wt179:active, .gx-sd141 .gm .wt181:active { background: var(--hover); }
   .gx-sd141 .gm .wt181:hover { filter: none; border-color: var(--mute); }
+  /* change 235 (install.py): jersey fixes */
+  .gx-fg224.gx-lt227 .md.jr231 { aspect-ratio: auto; height: auto; }
+  .gx-fg224.gx-lt227 .md.jr231 svg { height: auto; aspect-ratio: 120 / 140; }
+  .gx-fg224.gx-lt227 .sb227 { position: relative; z-index: 2; margin-top: 3px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2010,7 +2014,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="aa4ny3.19f5xdu" data-file="build/app.js">
+<meta name="gx-build" content="1w49qey.1v6ckv7" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -11933,8 +11937,8 @@ function GxJersey232({ t, name, no, goalie }) {
   const id = "j232" + String(t || "x") + String(no == null ? "" : no) + String(name || "").replace(/[^A-Za-z]/g, "");
   const nm = String(name || "").toUpperCase(), nTxt = no == null ? "" : String(no);
   const three = num.toLowerCase() !== trim.toLowerCase() && num.toLowerCase() !== body.toLowerCase(), dark = gxLum232(body) < 70;
-  const nmSize = 9.5, nmW = nm.length * nmSize * 0.8, NMMAX = 58;
-  const shirt = "M44 20 Q60 29 76 20 L100 26 Q112 31 116 43 L119 78 L102 83 L96 58 L96 128 Q60 134 24 128 L24 58 L18 83 L1 78 L4 43 Q8 31 20 26 Z";
+  const nmSize = Math.min(9.5, 60 / Math.max(1, nm.length * 0.86)), nmW = 0, NMMAX = 58;
+  const shirt = "M44 20 Q60 29 76 20 L100 26 Q112 31 115 42 L120 112 L103 117 L96 62 L96 128 Q60 134 24 128 L24 62 L17 117 L0 112 L5 42 Q8 31 20 26 Z"; /* change 235 */
   // stripes: three colours get trim / number / trim bands, two colours get two trim bands
   const band = (y, x, w) => three
     ? [<rect key={"a" + y + x} x={x} y={y} width={w} height="5" style={{ fill: trim }} />, <rect key={"b" + y + x} x={x} y={y + 6.2} width={w} height="2.4" style={{ fill: num }} />, <rect key={"c" + y + x} x={x} y={y + 9.8} width={w} height="5" style={{ fill: trim }} />]
@@ -11960,9 +11964,9 @@ function GxJersey232({ t, name, no, goalie }) {
       <path d={shirt} style={{ fill: body }} />
       <g clipPath={"url(#" + id + "c)"}>
         {dark ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: trim, opacity: 0.9 }} /> : null}
-        {band(60, 0, 24)}{band(60, 96, 24)}{band(108, 0, 120)}
+        {band(80, 0, 26)}{band(80, 94, 26)}{band(108, 24, 72)}
         <path d="M44 20 Q60 29 76 20 L79 24 Q60 34 41 24 Z" style={{ fill: trim }} />
-        <path d="M0 74 L22 80 L22 86 L0 80 Z M120 74 L98 80 L98 86 L120 80 Z" style={{ fill: trim }} />
+        <path d="M0 104 L19 109 L18 117 L0 112 Z M120 104 L101 109 L102 117 L120 112 Z" style={{ fill: trim }} />
         {goalie ? <rect x="0" y="122" width="120" height="4" style={{ fill: num }} /> : null}
         <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "m)" }} />
         <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "s)" }} />
