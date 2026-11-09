@@ -2101,6 +2101,20 @@
   .gx-as241 { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 8px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line2); font-size: 13px; color: var(--ink2); }
   .gx-as241 b { color: var(--ink); }
   .gx-as241 button { margin-left: auto; flex: none; padding: 6px 12px; border-radius: 9px; border: 1px solid var(--line2); background: var(--card3, var(--card2)); color: var(--ink); font-weight: 600; font-size: 13px; }
+  /* change 242 (install.py): team menu from the top bar */
+  .gx-tw242 { display: flex; align-items: flex-end; gap: 0; padding: 0; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; border-radius: 10px; }
+  .gx-tw242:hover .nm242 { text-decoration: underline; text-underline-offset: 3px; }
+  .gx-tm242 { position: fixed; inset: 0; z-index: 85; }
+  .gx-tm242 .bg { position: absolute; inset: 0; background: rgba(0,0,0,.4); }
+  .gx-tm242 .pn { position: absolute; width: min(320px, calc(100vw - 16px)); max-height: calc(100vh - 90px); overflow-y: auto; overscroll-behavior: contain; background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 6px; box-shadow: 0 14px 34px rgba(0,0,0,.55); animation: gx-mm241 .16s ease-out; }
+  .gx-tm242 .hd { padding: 8px 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .gx-tm242 .it { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 50px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--ink); text-align: left; }
+  .gx-tm242 .it:active, .gx-tm242 .it:hover { background: var(--hover); }
+  .gx-tm242 .it.on { background: var(--card3, var(--card2)); }
+  .gx-tm242 .it .tn { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-tm242 .it small { flex: none; font-size: 11px; font-weight: 600; color: var(--mute); }
+  .gx-tm242 .it svg { width: 16px; height: 16px; flex: none; }
+  .gx-tm242 .sep { height: 1px; background: var(--line2); margin: 6px 8px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2109,7 +2123,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="qpw8dd.ps8qtc" data-file="build/app.js">
+<meta name="gx-build" content="ybdnuq.yraass" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -2735,7 +2749,7 @@ function App() {
         <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
-        <GxAsBar241 s={s} /><GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
+        <GxAsBar241 s={s} /><GxTeamMenu242 s={s} /><GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
         <div key={tab + "/" + (sub || "")} className={"gx-pg101" + dir213}>{content}</div>
         {false && window.AskPanel ? <window.AskPanel {...P} tab={tab} H={{ effAvg, sigOf, tags, avail, effBack, gStart, teamName, f1, computeMoves, weekProj, oppOf, todayISO }} /> : null}
       </div>
@@ -5021,11 +5035,13 @@ function TopBar({ s, setS, tab, go, ageH }) {
   const W = gxWarn(s);
   return (
     <div className="m-hide max-w-6xl mx-auto px-3 flex items-end gap-1" style={{ paddingTop: 10 }}>
+      <button type="button" className="gx-tw242" title="Switch team" onClick={gxOpenTeams242} data-gx="242l">
       <span className="gx-badge gx-bp121"><GxFtPic114 id={s.me} size={30} /></span>
       <span style={{ margin: "0 14px 10px 8px", lineHeight: 1.2, minWidth: 0 }}>
-        <span className="block font-semibold truncate" style={{ maxWidth: 180 }}>{name}</span>
+        <span className="block font-semibold truncate nm242" style={{ maxWidth: 180 }}>{name}</span>
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
       </span>
+      </button>
       {GX_TABS103.map(([k, l, t, sb]) => <a key={k} href={gxHash(t, sb || undefined)} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go(t, sb || undefined); }} className={"gx-tab" + (gxTabOn103(k, tab) ? " on" : "")}>{l}</a>)}
       <a className="gx-tab" href="ai-dashboard.html" target="_blank" rel="noopener" data-r63="ailab">AI Lab</a>
       <button type="button" className="ml-auto gx-tab" onClick={() => window.dispatchEvent(new Event("gm-search"))}>Search</button>
@@ -8120,7 +8136,7 @@ function GxTopM103({ s, tab, go, ageH }) {
         </button>
       </div>
       <nav className="tb" ref={ref} aria-label="Main">
-        <button type="button" className="me240" data-gx="240" aria-label={name + ", check for new data"} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) + ". Tap to check for new data" : "Not synced yet"} onClick={(e) => { const pc = e.currentTarget.querySelector(".pc"); if (pc) { pc.classList.remove("sp240"); void pc.offsetWidth; pc.classList.add("sp240"); } if (window.__gxPoll129) window.__gxPoll129(); }}><span className="pc"><GxFtPic114 id={s.me} size={26} /></span><span className="dt240" style={{ background: dot }}></span></button>
+        <button type="button" className="me240" data-gx="240" aria-label={name + ", check for new data"} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) + ". Tap to check for new data" : "Not synced yet"} onClick={gxOpenTeams242} data-gx242="1"><span className="pc"><GxFtPic114 id={s.me} size={26} /></span><span className="dt240" style={{ background: dot }}></span></button>
         {GX_TABS103.map(([k, l, t, sb]) => (
           <a key={k} href={gxHash(t, sb || undefined)} className={((pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : "") + (GX_MAIN241.includes(k) ? "" : " sd241")} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
         ))}
@@ -12216,6 +12232,43 @@ function GxAsBar241({ s }) {
   const real = gxReal241();
   if (!real || s.me === real) return null;
   return <div className="gx-as241" data-gx="241b"><span>Viewing as <b>{teamName(s, s.me)}</b></span><button type="button" onClick={() => gxSetMe241(real)}>Back to mine</button></div>;
+}
+// ---------- change 242: tap the team at the top to switch teams (install.py) ----------
+function gxOpenTeams242(e) { const r = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : null; window.dispatchEvent(new CustomEvent("gx-teams242", { detail: r ? { left: r.left, bottom: r.bottom } : null })); }
+function GxTeamMenu242({ s }) {
+  const [at, setAt] = useState(null);
+  useEffect(() => {
+    const h = (e) => setAt(e.detail || { left: 8, bottom: 56 });
+    const k = (e) => { if (e.key === "Escape") setAt(null); };
+    window.addEventListener("gx-teams242", h); window.addEventListener("keydown", k);
+    return () => { window.removeEventListener("gx-teams242", h); window.removeEventListener("keydown", k); };
+  }, []);
+  if (!at) return null;
+  const real = gxReal241();
+  const list = [...(s.teams || [])].sort((a, b) => (a.id === real ? -1 : b.id === real ? 1 : String(a.name).localeCompare(String(b.name))));
+  const left = Math.max(8, Math.min(at.left, window.innerWidth - Math.min(320, window.innerWidth - 16) - 8));
+  const refresh = () => { setAt(null); if (window.__gxPoll129) window.__gxPoll129(); };
+  return ReactDOM.createPortal(
+    <div className="gx-tm242" data-gx="242">
+      <div className="bg" onClick={() => setAt(null)}></div>
+      <div className="pn" style={{ top: at.bottom + 6, left }}>
+        <div className="hd">View the app as</div>
+        {list.map((t) => (
+          <button key={t.id} type="button" className={"it" + (t.id === s.me ? " on" : "")} onClick={() => { if (t.id === s.me) { setAt(null); return; } setAt(null); gxSetMe241(t.id); }}>
+            <GxFtPic114 id={t.id} size={28} />
+            <span className="tn">{t.name}</span>
+            {t.id === real ? <small>yours</small> : null}
+            {t.id === s.me ? <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg> : null}
+          </button>
+        ))}
+        <div className="sep"></div>
+        <button type="button" className="it" onClick={refresh}>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v2.8h-2.8"></path></svg>
+          <span className="tn">Refresh</span>
+          <small>{s.lastSync ? fmtTime(s.lastSync) : ""}</small>
+        </button>
+      </div>
+    </div>, document.body);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
