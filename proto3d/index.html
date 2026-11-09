@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Player Kit Prototype</title>
+<style>
+  :root { --bg: #0b0c0f; --card: #15171b; --ink: #f4f5f6; --mute: #8a8d93; --line: #26282d; }
+  @media (prefers-color-scheme: light) { :root { --bg: #f2f4f6; --card: #ffffff; --ink: #14161a; --mute: #5f6670; --line: #dde1e6; } }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 14px -apple-system, Inter, Arial, sans-serif; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 12px 16px 40px; }
+  h1 { font-size: 18px; margin: 4px 0 2px; } .sub { color: var(--mute); font-size: 12.5px; margin-bottom: 10px; }
+  #st { height: 460px; border-radius: 18px; overflow: hidden; background: var(--card); touch-action: pan-y; position: relative; }
+  #st canvas { display: block; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  button { padding: 11px 6px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 14px; font-weight: 600; }
+  button.on { background: var(--ink); color: var(--bg); }
+  pre { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; white-space: pre-wrap; font-size: 12.5px; line-height: 1.5; }
+</style>
+<script src="../vendor/gx3d.js"></script><script src="gxkit.js"></script>
+</head><body><div class="wrap">
+<h1>Player kit prototype</h1><div class="sub">One shared body, three heads, everything else from code. Drag to spin.</div>
+<div id="st"></div>
+<div class="row" id="pl"><button class="on" data-i="0">Lundell</button><button data-i="1">McDavid</button><button data-i="2">Matthews</button></div>
+<div class="row" id="ld"><button class="on" data-l="hi">Close-up model</button><button data-l="low">Lineup model</button><button id="all">All three</button></div>
+<pre id="out">Loading...</pre>
+</div>
+<script>
+(function () {
+  var T = window.GX3D.THREE, st = document.getElementById("st"), out = document.getElementById("out");
+  var P = [{ name: "LUNDELL", no: "15", team: "FLA", head: "A", shoots: "L", build: "avg" }, { name: "MCDAVID", no: "97", team: "EDM", head: "D", shoots: "L", build: "lean" }, { name: "MATTHEWS", no: "34", team: "TOR", head: "C", shoots: "R", build: "big" }];
+  var light = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches;
+  var r = new T.WebGLRenderer({ antialias: true }); r.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); r.setSize(st.clientWidth, st.clientHeight); r.outputColorSpace = T.SRGBColorSpace; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = light ? 1 : 0.95; st.appendChild(r.domElement);
+  var sc = new T.Scene(); sc.background = new T.Color(light ? 0xffffff : 0x15171b); var pm = new T.PMREMGenerator(r); sc.environment = pm.fromScene(new window.GX3D.RoomEnvironment(), 0.04).texture;
+  sc.add(new T.HemisphereLight(0xffffff, light ? 0xc0c8d2 : 0x202430, light ? 0.8 : 0.5)); var k = new T.DirectionalLight(0xffffff, light ? 2 : 2.3); k.position.set(2.5, 6, 5); sc.add(k); var rim = new T.DirectionalLight(light ? 0xffffff : 0x9ec3ff, light ? 0.6 : 1.5); rim.position.set(-4, 3, -5); sc.add(rim);
+  var cam = new T.PerspectiveCamera(28, st.clientWidth / st.clientHeight, 0.05, 60), spin = new T.Group(); sc.add(spin);
+  var ang = Math.PI, vel = 0, drag = null, raf = 0, cur = 0, lod = "hi", all = false, shown = [];
+  function draw() { spin.rotation.y = ang; r.render(sc, cam); }
+  function loop() { raf = 0; if (!drag && Math.abs(vel) > 0.0004) { ang += vel; vel *= 0.93; draw(); raf = requestAnimationFrame(loop); } else draw(); }
+  var cv = r.domElement;
+  cv.addEventListener("pointerdown", function (e) { drag = { x: e.clientX, a: ang, lx: e.clientX }; vel = 0; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", function (e) { if (!drag) return; ang = drag.a + (e.clientX - drag.x) * 0.011; vel = (e.clientX - drag.lx) * 0.011; drag.lx = e.clientX; if (!raf) raf = requestAnimationFrame(function () { raf = 0; draw(); }); });
+  cv.addEventListener("pointerup", function () { drag = null; if (!raf) raf = requestAnimationFrame(loop); });
+  var seen = {};
+  async function show() {
+    shown.forEach(function (o) { spin.remove(o); GXKit.dispose(o); }); shown = [];
+    var list = all ? P : [P[cur]], t0 = performance.now(), key = lod + (all ? "all" : list[0].head);
+    out.textContent = "Loading...";
+    var roots = await Promise.all(list.map(function (p) { return GXKit.build(p, "./", lod); }));
+    roots.forEach(function (o, i) { o.position.x = all ? (i - 1) * 1.1 : 0; spin.add(o); shown.push(o); });
+    if (all) { cam.position.set(0, 1.2, 7.2); cam.lookAt(0, 0.95, 0); } else { cam.position.set(0, 1.0, 4.6); cam.lookAt(0, 0.95, 0); }
+    cam.aspect = st.clientWidth / st.clientHeight; cam.updateProjectionMatrix(); draw();
+    var ms = Math.round(performance.now() - t0), tris = 0; spin.traverse(function (x) { if (x.isMesh && x.geometry.index) tris += x.geometry.index.count / 3; });
+    var bytes = 0; performance.getEntriesByType("resource").forEach(function (e) { if (/\.glb$|gx3d\.js|gxkit\.js|meta\.json/.test(e.name)) bytes += e.transferSize || 0; });
+    out.textContent = (all ? "All three" : list[0].name + " #" + list[0].no + " (" + list[0].team + ", head " + list[0].head + ", " + (list[0].shoots === "R" ? "shoots right" : "shoots left") + ", " + list[0].build + " build)") +
+      "\nModel: " + (lod === "hi" ? "close-up" : "lineup") + " · " + Math.round(tris).toLocaleString() + " triangles on screen" +
+      "\nReady in " + ms + " ms" + (seen[key] ? " (already downloaded)" : "") + "\nDownloaded so far this visit: " + (bytes / 1048576).toFixed(2) + " MB" + "\nDraw calls: " + r.info.render.calls;
+    seen[key] = 1;
+  }
+  document.querySelectorAll("#pl button").forEach(function (b) { b.onclick = function () { all = false; document.querySelectorAll("#pl button,#all").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); cur = +b.dataset.i; show(); }; });
+  document.querySelectorAll("#ld button[data-l]").forEach(function (b) { b.onclick = function () { document.querySelectorAll("#ld button[data-l]").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); lod = b.dataset.l; show(); }; });
+  document.getElementById("all").onclick = function () { all = !all; this.classList.toggle("on", all); show(); };
+  new ResizeObserver(function () { r.setSize(st.clientWidth, st.clientHeight); cam.aspect = st.clientWidth / st.clientHeight; cam.updateProjectionMatrix(); draw(); }).observe(st);
+  show().catch(function (e) { out.textContent = "Could not load: " + e; });
+})();
+</script></body></html>
