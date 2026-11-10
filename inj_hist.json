@@ -170,9 +170,10 @@
 "was": "2026-11-05"
 },
 "3151187": {
-"d": "2026-11-08",
-"k": "new",
-"now": "2026-11-11"
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-12-02",
+"was": "2026-11-11"
 },
 "3535": {
 "d": "2026-11-07",
@@ -339,9 +340,9 @@
 "now": "2026-11-10"
 },
 "4419778": {
-"d": "2026-11-08",
+"d": "2026-11-10",
 "k": "later",
-"now": "2026-11-14",
+"now": "2026-11-23",
 "was": "2026-11-08"
 },
 "4565224": {
@@ -406,6 +407,12 @@
 "nd": "2026-11-05",
 "now": "2026-11-14",
 "was": "2026-11-03"
+},
+"4781550": {
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-11-23",
+"was": "2026-11-12"
 },
 "4874718": {
 "d": "2026-11-07",
@@ -530,11 +537,6 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
-},
-"5161": {
-"d": "2026-11-10",
-"k": "back",
-"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -752,9 +754,9 @@
 "status": "Injured Reserve"
 },
 "3151187": {
-"back": "2026-11-11",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-12-02",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "3151297": {
 "back": "2027-09-15",
@@ -912,7 +914,7 @@
 "status": "Day-To-Day"
 },
 "4419778": {
-"back": "2026-11-14",
+"back": "2026-11-23",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -952,7 +954,7 @@
 "status": "Injured Reserve"
 },
 "4781550": {
-"back": "2026-11-12",
+"back": "2026-11-23",
 "note": "Blankenburg (undisclosed) was placed on injured reserve by the Maple Leafs on Friday, David Alter of The Hockey News reports.",
 "status": "Injured Reserve"
 },
@@ -1074,6 +1076,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
