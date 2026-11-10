@@ -67,11 +67,9 @@
 "was": ""
 },
 "3042016": {
-"d": "2026-11-08",
-"k": "later",
-"nd": "2026-11-08",
-"now": "2026-11-10",
-"was": "2026-11-01"
+"d": "2026-11-10",
+"k": "back",
+"was": ""
 },
 "3042017": {
 "d": "2026-11-09",
@@ -336,6 +334,7 @@
 "4393049": {
 "d": "2026-11-09",
 "k": "new",
+"nd": "2026-11-10",
 "now": "2026-11-10"
 },
 "4419778": {
@@ -678,11 +677,6 @@
 "note": "Domi (back) was transferred from the non-roster list to long-term injured reserve Wednesday, per PuckPedia.",
 "status": "Injured Reserve"
 },
-"3042016": {
-"back": "",
-"note": "Morrissey (wrist) won't play against Tampa Bay on Sunday, Mike McIntyre of the Winnipeg Free Press reports.",
-"status": "Injured Reserve"
-},
 "3042019": {
 "back": "2026-11-28",
 "note": "out",
@@ -910,7 +904,7 @@
 },
 "4393049": {
 "back": "2026-11-10",
-"note": "Evans sustained a hand injury during Monday's practice session, per Sportsnet.",
+"note": "Evans (hand) is expected to be a game-time decision for Tuesday's home clash against the Wild, per Eric Engels of Sportsnet.",
 "status": "Day-To-Day"
 },
 "4419778": {
