@@ -1,8 +1,8 @@
 {
  "files": {
-  "ai-history.html": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "243-history-off-by.py"
+  "244-day-all-and-ir-back.py"
  ]
 }
