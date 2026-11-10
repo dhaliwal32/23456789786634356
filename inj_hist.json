@@ -139,10 +139,9 @@
 "was": "2026-11-08"
 },
 "3069687": {
-"d": "2026-11-08",
-"k": "dtd",
-"now": "2026-11-10",
-"was": "Out"
+"d": "2026-11-10",
+"k": "back",
+"was": "2026-11-10"
 },
 "3094261": {
 "d": "2026-11-08",
@@ -544,6 +543,11 @@
 "k": "back",
 "was": ""
 },
+"5161": {
+"d": "2026-11-10",
+"k": "back",
+"was": "2027-01-12"
+},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -723,11 +727,6 @@
 "back": "2026-11-14",
 "note": "Grzelcyk (lower body) suffered a \"flare-up\" and could be out for at least \"a few days,\" head coach Lindy Ruff told Rachel Lenzi of The Buffalo News on Tuesday.",
 "status": "Injured Reserve"
-},
-"3069687": {
-"back": "2026-11-10",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "3096217": {
 "back": "2026-12-21",
@@ -1077,11 +1076,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
