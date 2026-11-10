@@ -53,3 +53,9 @@ jobs:
             if [ $left -gt 0 ]; then sleep $left; fi
           done
           exit $fail
+      - name: Keep a private copy of the league data for the AI job
+        if: always() && hashFiles('espn-data.js') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: espn-data.js
+          key: espn-data-${{ github.run_id }}-${{ github.run_attempt }}
