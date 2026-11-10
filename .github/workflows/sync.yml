@@ -19,6 +19,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install requests
+      - name: Load the last saved league data (keeps the day by day history)
+        uses: actions/cache/restore@v4
+        with:
+          path: espn-data.js
+          key: espn-data-latest
+          restore-keys: espn-data-
+      - run: if [ -f espn-data.js ]; then mv espn-data.js espn-data.prev.tmp; fi
       - name: Sync (repeats every 6 minutes during game hours)
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
