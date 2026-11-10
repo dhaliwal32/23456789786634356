@@ -437,11 +437,11 @@
 "was": "Out"
 },
 "4874940": {
-"d": "2026-11-09",
-"k": "later",
+"d": "2026-11-10",
+"k": "dtd",
 "nd": "2026-11-09",
 "now": "2026-11-11",
-"was": "2026-11-09"
+"was": "Out"
 },
 "4894355": {
 "d": "2026-11-08",
@@ -515,11 +515,11 @@
 "was": "2026-11-08"
 },
 "5149180": {
-"d": "2026-11-09",
-"k": "later",
+"d": "2026-11-10",
+"k": "dtd",
 "nd": "2026-11-09",
 "now": "2026-11-13",
-"was": "2026-11-09"
+"was": "Out"
 },
 "5149186": {
 "d": "2026-11-03",
@@ -530,11 +530,6 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
-},
-"5161": {
-"d": "2026-11-10",
-"k": "back",
-"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -977,8 +972,8 @@
 },
 "4874940": {
 "back": "2026-11-11",
-"note": "Dach (illness) won't play against the Rangers on Monday.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4894355": {
 "back": "2026-11-22",
@@ -1052,8 +1047,8 @@
 },
 "5149180": {
 "back": "2026-11-13",
-"note": "Willander (lower body) has been ruled out for Monday's game against the Flyers, Canucks play-by-play announcer Brendan Batchelor reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149191": {
 "back": "2026-11-15",
@@ -1068,6 +1063,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
