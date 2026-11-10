@@ -19,11 +19,9 @@
 "was": "2026-11-09"
 },
 "2590824": {
-"d": "2026-11-08",
-"k": "dtd",
-"nd": "2026-11-06",
-"now": "2026-11-10",
-"was": "Out"
+"d": "2026-11-10",
+"k": "back",
+"was": "2026-11-10"
 },
 "2968829": {
 "d": "2026-11-05",
@@ -178,6 +176,12 @@
 "k": "back",
 "was": "2026-11-03"
 },
+"3654006": {
+"d": "2026-11-10",
+"k": "sooner",
+"now": "2026-11-14",
+"was": "2026-11-22"
+},
 "3735": {
 "d": "2026-11-02",
 "k": "later",
@@ -221,11 +225,9 @@
 "was": "2026-10-24"
 },
 "3942043": {
-"d": "2026-11-08",
-"k": "later",
-"nd": "2026-11-05",
-"now": "2026-11-10",
-"was": "2026-10-29"
+"d": "2026-11-10",
+"k": "back",
+"was": ""
 },
 "3942638": {
 "d": "2026-11-08",
@@ -596,11 +598,6 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
-"2590824": {
-"back": "2026-11-10",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "2590829": {
 "back": "2026-12-27",
 "note": "ir",
@@ -762,7 +759,7 @@
 "status": "Injured Reserve"
 },
 "3654006": {
-"back": "2026-11-22",
+"back": "2026-11-14",
 "note": "Lyon (upper body) had a setback in his recovery and is without a timeline to return, the team announced Thursday.",
 "status": "Injured Reserve"
 },
@@ -794,11 +791,6 @@
 "3941974": {
 "back": "2026-11-21",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"3942043": {
-"back": "",
-"note": "Head coach Todd McLellan stated that Appleton (undisclosed) is expected to return to the lineup during the Red Wings' upcoming four-game road trip, per Max Bult",
 "status": "Injured Reserve"
 },
 "3942638": {
