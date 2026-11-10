@@ -31,16 +31,16 @@
 "was": "2026-11-05"
 },
 "2976833": {
-"d": "2026-11-09",
-"k": "dtd",
-"now": "2026-11-10",
-"was": "Out"
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-11-12",
+"was": "2026-11-10"
 },
 "2993474": {
-"d": "2026-11-09",
-"k": "dtd",
-"now": "2026-11-10",
-"was": "Out"
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-11-17",
+"was": "2026-11-10"
 },
 "3024798": {
 "d": "2026-11-09",
@@ -381,6 +381,12 @@
 "now": "2026-11-14",
 "was": "2026-11-17"
 },
+"4587996": {
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-11-23",
+"was": "2026-11-17"
+},
 "4697395": {
 "d": "2026-11-08",
 "k": "back",
@@ -538,6 +544,11 @@
 "k": "back",
 "was": ""
 },
+"5161": {
+"d": "2026-11-10",
+"k": "back",
+"was": "2027-01-12"
+},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -629,7 +640,7 @@
 "status": "Day-To-Day"
 },
 "2976833": {
-"back": "2026-11-10",
+"back": "2026-11-12",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -639,9 +650,9 @@
 "status": "Out"
 },
 "2993474": {
-"back": "2026-11-10",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-17",
+"note": "out",
+"status": "Out"
 },
 "3024798": {
 "back": "2026-11-14",
@@ -799,7 +810,7 @@
 "status": "Injured Reserve"
 },
 "3904098": {
-"back": "2026-11-10",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -944,7 +955,7 @@
 "status": "Injured Reserve"
 },
 "4587996": {
-"back": "2026-11-17",
+"back": "2026-11-23",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1076,11 +1087,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
