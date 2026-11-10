@@ -2314,7 +2314,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1tij67q.1xittw9" data-file="build/app.js">
+<meta name="gx-build" content="1si6go1.fai0vq" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -11840,12 +11840,13 @@ function GxBox230({ s, wk }) {
   const NF = 4, STEP = 360 / NF, NAMES = ["Day", "Win", "Graph", "Players"]; /* change 252 */
   const [pick, setPick] = useState(null);
   const [who, setWho] = useState(null);
-  const [k, setK] = useState(0);
+  const [k, setK] = useState(() => { const v = Number(uiGet().bx255); return v >= 0 && v <= 3 ? Math.floor(v) : 0; }); /* change 255: last side */
   const [sel, setSel] = useState(null);
   const [full, setFull] = useState(false);
   const [dv, setDv] = useState(null);
   const [bp, setBp] = useState(null);
-  const stg = React.useRef(null), pr = React.useRef(null), ang = React.useRef(0), drag = React.useRef(null);
+  const stg = React.useRef(null), pr = React.useRef(null), ang = React.useRef(k * 90), drag = React.useRef(null);
+  useEffect(() => { try { if (uiGet().bx255 !== k) uiSet("bx255", k); } catch (e) {} }, [k]);
   const i = gxWkAt61(s, pick), cur = i === s.wk;
   const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
   const me = who && (w.pairs || []).some((p) => p[0] === who || p[1] === who) ? who : s.me;
@@ -12999,6 +13000,18 @@ function GxZm254({ children }) {
     </div>
   );
 }
+// ---------- change 256: phone opens on Matchup (install.py) ----------
+// runs once when the page loads, before the app reads the address; sessionStorage is empty only on a fresh start
+// (home screen icon after the app was closed, or a new tab), so a refresh or the app's own reloads keep the page
+(function gxStart256() {
+  try {
+    if (!(window.matchMedia && window.matchMedia("(max-width: 640px)").matches)) return;
+    if (sessionStorage.getItem("gx256")) return;
+    sessionStorage.setItem("gx256", "1");
+    if (String(window.location.hash || "").indexOf("&p=") >= 0) return; // a link to a player opens that player
+    window.history.replaceState(null, "", window.location.pathname + window.location.search + "#matchup");
+  } catch (e) {}
+})();
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
