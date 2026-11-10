@@ -3,6 +3,7 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "247-trades-tab-phone.py"
+  "248-lines-hot-cold-numbers.py",
+  "249-jersey-team-designs.py"
  ]
 }
