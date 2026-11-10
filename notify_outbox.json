@@ -526,7 +526,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-10T18:05:33Z",
-   "seen": "2026-11-10T20:58:24Z"
+   "seen": "2026-11-10T21:04:24Z"
   },
   {
    "k": "2026-11-10|cb5f81259425",
@@ -599,6 +599,30 @@
    "via": "urgent",
    "sent_at": "2026-11-10T20:14:52Z",
    "seen": "2026-11-10T20:14:52Z"
+  },
+  {
+   "k": "2026-11-10|2ae5f921f5bb",
+   "at": "2026-11-10T21:04:45Z",
+   "title": "Fantasy GM",
+   "text": "Gourde joined Guentzel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-10T21:04:45Z",
+   "seen": "2026-11-10T21:04:45Z"
+  },
+  {
+   "k": "2026-11-10|968de7db82a2",
+   "at": "2026-11-10T21:04:45Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-10T21:04:45Z",
+   "seen": "2026-11-10T21:04:45Z"
   }
  ],
  "sent": {
