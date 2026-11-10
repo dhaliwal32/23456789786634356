@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#121212" />
 <title>Fantasy Islands GM</title>
-<meta name="gx-tw" content="1uqlcex">
+<meta name="gx-tw" content="1uber43">
 <script>/* gx216-tw: use the styles built on GitHub; if they are missing, build them in the browser like before */(function () {
   var m = document.querySelector('meta[name="gx-tw"]'), v = m && m.getAttribute("content");
   if (!v || /[?&]tw\b/.test(location.search)) { document.write('<script src="https://cdn.tailwindcss.com"><\/script>'); return; }
@@ -2158,6 +2158,22 @@
     .gx-tm103 .tb a, .gx-tm103 .tb .mr241 { padding: 14px 2px 11px; font-size: clamp(10.5px, 3.05vw, 13px); }
     .gx-tm103 .tb .mr241 svg { width: 10px; height: 10px; }
   }
+  /* change 248 (install.py): spotlight, hot and cold stalls */
+  .gx-fg224.gx-lt227.st246.fa::after { display: block !important; content: "" !important; position: absolute !important; left: 0 !important; right: 0 !important; top: 0 !important; bottom: auto !important; height: 100cqw !important; z-index: 0 !important; pointer-events: none; clip-path: none !important; border-radius: 0 !important; mix-blend-mode: screen; opacity: 1;
+    background: radial-gradient(ellipse 16cqw 3.5cqw at 50% 0, rgba(255,252,238,.95), transparent 75%), linear-gradient(180deg, rgba(255,236,196,.5), rgba(255,226,180,.2) 65%, rgba(255,220,170,.06)) !important;
+    -webkit-mask: var(--bm248) center / 100% 100% no-repeat; mask: var(--bm248) center / 100% 100% no-repeat; }
+  .gx-fg224.gx-lt227.st246.fa .md.jr231 svg { filter: brightness(1.12) drop-shadow(0 0 2cqw rgba(255,226,160,.5)) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.55)) !important; }
+  .gx-fg224.gx-lt227.st246 .hc248 { position: absolute; left: 0; top: 0; width: 100%; height: 100cqw; pointer-events: none; z-index: 2; }
+  .gx-fg224.gx-lt227.st246 .hc248 svg { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; aspect-ratio: auto !important; filter: none !important; }
+  .gx-fg224.gx-lt227.st246.h2 .md.jr231 svg, .gx-fg224.gx-lt227.st246.h3 .md.jr231 svg { filter: drop-shadow(0 0 2.4cqw rgba(255,200,80,.55)) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.55)) !important; }
+  .gx-fg224.gx-lt227.st246.c2 .md.jr231 svg { filter: saturate(.75) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.55)) !important; }
+  .gx-fg224.gx-lt227.st246.c3 .md.jr231 svg { filter: saturate(.5) brightness(.85) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.55)) !important; }
+  .gx-fg224.gx-lt227.st246.c3 .hc248 { background: linear-gradient(180deg, rgba(150,155,160,.16), rgba(90,95,100,.22)); }
+  @keyframes gx-sp248 { 0% { transform: translateY(0); } 50% { transform: translateY(2.2px); } 100% { transform: translateY(0); } }
+  .gx-fg224.gx-lt227.st246 .hc248 .sp { animation: gx-sp248 3.2s ease-in-out infinite; transform-box: fill-box; }
+  @keyframes gx-tw248 { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+  .gx-fg224.gx-lt227.st246 .hc248 .tw { animation: gx-tw248 2.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .gx-fg224.gx-lt227.st246 .hc248 .sp, .gx-fg224.gx-lt227.st246 .hc248 .tw { animation: none; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2166,7 +2182,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="5l69c7.1atclei" data-file="build/app.js">
+<meta name="gx-build" content="1a36vut.185ya3t" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8627,16 +8643,19 @@ function GxLines111({ s }) {
   const byName = useMemo(() => { const o = {}; s.players.forEach((p) => { const k = nrm(p.n); if (!o[k] || p.t === t) o[k] = p; }); return o; }, [s.players, t]);
   const ord = (arr) => [...(arr || [])].sort((a, b) => (GX_ORD111[df[a]] ?? 9) - (GX_ORD111[df[b]] ?? 9));
   const [zoom224, setZoom224] = useState(null); /* change 224: the zoomed player */
+  const [h248, setH248] = useState({}); /* change 248: last 5 games for hot and cold stalls */
+  const ids248 = useMemo(() => { const out = new Set(); Object.values(ln || {}).forEach((a) => { if (Array.isArray(a)) a.forEach((n) => { const p = n && byName[nrm(n)]; if (p) out.add(String(p.id).slice(1)); }); }); return [...out].join(","); }, [ln, byName]);
+  useEffect(() => { let dead = false; if (!ids248) return undefined; gxLast5(ids248.split(","), s.sc || {}).then((h) => { if (!dead) setH248(h || {}); }); return () => { dead = true; }; }, [ids248]);
   const chip = (n, i) => {
     /* change 224: players standing on the rink; tap to zoom */
     if (!n) return <div key={"e" + i} className="gx-fg224 gx-lt227 empty"></div>;
     { const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa", last = n.split(" ").slice(1).join(" ") || n;
       const isG = (ln.G || []).includes(n) || (p && p.p === "G");
       return (
-        <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "") + gxSt246c(t)} style={gxSt246s(t)} aria-label={n} onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }} data-gx="229t">
-          <div className="md jr231"><span className="pl232">{last}</span><GxJersey232 t={p ? p.t : t} name={last} no={((T && T.no) || {})[n]} goalie={isG} /></div>
+        <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "") + gxSt246c(t) + (gxSt246c(t) && gxHC248(p, h248, s) ? " " + gxHC248(p, h248, s) : "")} style={gxSt246s(t)} aria-label={n} onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }} data-gx="229t">
+          <div className="md jr231"><span className="pl232">{last}</span><GxJersey232 t={p ? p.t : t} name={last} no={gxNo248(T, n)} goalie={isG} /></div><GxHC248 k={gxHC248(p, h248, s)} />
           <span className="nm">{last}</span>
-          <span className="sb227">{(((T && T.no) || {})[n] != null ? "#" + ((T && T.no) || {})[n] + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
+          <span className="sb227">{(gxNo248(T, n) != null ? "#" + gxNo248(T, n) + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
           <span className="ow227">{p ? <><span>{mine ? "YOURS" : fa ? (p.wv ? <i className="gx-wv218" title="On waivers" data-gx="237" /> : "") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9)}</span><b>{f1(gxPgAvg(p, s.blend))}</b></> : null}</span>
         </button>
       ); }
@@ -12093,7 +12112,10 @@ function GxJersey232({ t, name, no, goalie }) {
   const body = c[0], trim = c[1], num = c[2] || "#ffffff";
   const id = "j232" + String(t || "x") + String(no == null ? "" : no) + String(name || "").replace(/[^A-Za-z]/g, "");
   const nm = String(name || "").toUpperCase(), nTxt = no == null ? "" : String(no);
-  const three = num.toLowerCase() !== trim.toLowerCase() && num.toLowerCase() !== body.toLowerCase(), dark = gxLum232(body) < 70;
+  const D = GX_JD249[String(t || "").toUpperCase()] || null; /* change 249 */
+  const ST = D ? D.st : null, NF = D ? D.n : num, NO = D ? D.o : trim, NM = D ? D.nm : num, NMO = D ? (D.o.toLowerCase() === D.nm.toLowerCase() ? "rgba(0,0,0,.45)" : D.o) : trim;
+  const bandD = (y, x, w) => ST.map((c, i) => <rect key={"d" + y + x + i} x={x} y={y + i * 3.4} width={w} height="3.4" style={{ fill: c }} />);
+  const three = num.toLowerCase() !== trim.toLowerCase() && num.toLowerCase() !== body.toLowerCase(), dark = D ? !!D.y : gxLum232(body) < 70;
   const nmSize = Math.min(9.5, 60 / Math.max(1, nm.length * 0.86)), nmW = 0, NMMAX = 58;
   const shirt = "M44 20 Q60 29 76 20 L100 26 Q112 31 115 42 L120 112 L103 117 L96 62 L96 128 Q60 134 24 128 L24 62 L17 117 L0 112 L5 42 Q8 31 20 26 Z"; /* change 235 */
   // stripes: three colours get trim / number / trim bands, two colours get two trim bands
@@ -12102,9 +12124,9 @@ function GxJersey232({ t, name, no, goalie }) {
     : [<rect key={"a" + y + x} x={x} y={y} width={w} height="4.6" style={{ fill: trim }} />, <rect key={"c" + y + x} x={x} y={y + 7.4} width={w} height="4.6" style={{ fill: trim }} />];
   const twill = (props, kids) => [
     <text key="sh" {...props} transform="translate(0.7 1.3)" style={{ ...props.style, fill: "rgba(0,0,0,.4)", stroke: "rgba(0,0,0,.4)", strokeWidth: props.sw + 1.6 }}>{kids}</text>,
-    <text key="o2" {...props} style={{ ...props.style, fill: num, stroke: gxLum232(trim) > 140 ? "rgba(0,0,0,.55)" : "rgba(255,255,255,.35)", strokeWidth: props.sw + 1.6, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
-    <text key="o1" {...props} style={{ ...props.style, fill: num, stroke: trim, strokeWidth: props.sw, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
-    <text key="st" {...props} style={{ ...props.style, fill: "none", stroke: gxLum232(num) > 140 ? "rgba(0,0,0,.28)" : "rgba(255,255,255,.4)", strokeWidth: 0.35, strokeDasharray: "0.9 0.9" }}>{kids}</text>,
+    <text key="o2" {...props} style={{ ...props.style, fill: props.f || num, stroke: gxLum232(props.k || trim) > 140 ? "rgba(0,0,0,.55)" : "rgba(255,255,255,.35)", strokeWidth: props.sw + 1.6, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
+    <text key="o1" {...props} style={{ ...props.style, fill: props.f || num, stroke: props.k || trim, strokeWidth: props.sw, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
+    <text key="st" {...props} style={{ ...props.style, fill: "none", stroke: gxLum232(props.f || num) > 140 ? "rgba(0,0,0,.28)" : "rgba(255,255,255,.4)", strokeWidth: 0.35, strokeDasharray: "0.9 0.9" }}>{kids}</text>,
   ];
   return (
     <svg viewBox="0 0 120 140" role="img" aria-label={(name || "") + (nTxt ? " number " + nTxt : "")}>
@@ -12113,17 +12135,21 @@ function GxJersey232({ t, name, no, goalie }) {
         <pattern id={id + "m"} width="2.2" height="2.2" patternUnits="userSpaceOnUse"><circle cx="0.55" cy="0.55" r="0.42" fill="rgba(0,0,0,.16)" /><circle cx="1.65" cy="1.65" r="0.42" fill="rgba(255,255,255,.06)" /></pattern>
         <linearGradient id={id + "s"} x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#000" stopOpacity=".42" /><stop offset=".2" stopColor="#000" stopOpacity=".1" /><stop offset=".5" stopColor="#fff" stopOpacity=".08" /><stop offset=".8" stopColor="#000" stopOpacity=".1" /><stop offset="1" stopColor="#000" stopOpacity=".42" /></linearGradient>
         <linearGradient id={id + "v"} x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".1" /><stop offset=".35" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".3" /></linearGradient>
-        <path id={id + "a"} d="M27 47 Q60 37 93 47" fill="none" />
+        <path id={id + "a"} d={dark ? "M27 57 Q60 47 93 57" : "M27 47 Q60 37 93 47"} fill="none" />
       </defs>
       <path d="M60 3 Q66 3 66 8 Q66 12 61 13 L60 19" style={{ fill: "none", stroke: "#b9bcc2", strokeWidth: 2.2, strokeLinecap: "round" }} />
       <path d="M24 26 Q60 14 96 26" style={{ fill: "none", stroke: "#8e6a45", strokeWidth: 4, strokeLinecap: "round" }} />
       <path d={shirt} transform="translate(1.5 2.5)" style={{ fill: "rgba(0,0,0,.35)" }} />
-      <path d={shirt} style={{ fill: body }} />
+      <path d={shirt} style={{ fill: D ? D.b : body }} />
       <g clipPath={"url(#" + id + "c)"}>
-        {dark ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: trim, opacity: 0.9 }} /> : null}
-        {band(80, 0, 26)}{band(80, 94, 26)}{band(108, 24, 72)}
-        <path d="M44 20 Q60 29 76 20 L79 24 Q60 34 41 24 Z" style={{ fill: trim }} />
-        <path d="M0 104 L19 109 L18 117 L0 112 Z M120 104 L101 109 L102 117 L120 112 Z" style={{ fill: trim }} />
+        {D ? <>
+          {D.sl ? <><rect x="0" y="86" width="23.6" height="40" style={{ fill: D.sl }} /><rect x="96.4" y="86" width="23.6" height="40" style={{ fill: D.sl }} /></> : null}
+          {D.y ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: D.y }} /> : null}
+          {(D.ys || []).map((c, i) => <path key={"ys" + i} d={"M0 " + (41.2 + i * 2.6) + " Q60 " + (48.2 + i * 2.6) + " 120 " + (41.2 + i * 2.6)} style={{ fill: "none", stroke: c, strokeWidth: 2.6 }} />)}
+        </> : dark ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: trim, opacity: 0.9 }} /> : null}
+        {D ? <>{bandD(76, 0, 26)}{bandD(76, 94, 26)}{bandD(108, 24, 72)}{D.hm ? <rect x="24" y={108 + ST.length * 3.4} width="72" height="40" style={{ fill: D.hm }} /> : null}</> : <>{band(80, 0, 26)}{band(80, 94, 26)}{band(108, 24, 72)}</>}
+        <path d="M44 20 Q60 29 76 20 L79 24 Q60 34 41 24 Z" style={{ fill: D ? (D.col || D.y || ST[0]) : trim }} />
+        <path d="M0 104 L19 109 L18 117 L0 112 Z M120 104 L101 109 L102 117 L120 112 Z" style={{ fill: D ? (D.hm || ST[0]) : trim }} />
         {goalie ? <rect x="0" y="122" width="120" height="4" style={{ fill: num }} /> : null}
         <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "m)" }} />
         <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "s)" }} />
@@ -12132,8 +12158,8 @@ function GxJersey232({ t, name, no, goalie }) {
         <path d="M25 61 Q31 67 28 80 M95 61 Q89 67 92 80" style={{ fill: "none", stroke: "rgba(255,255,255,.07)", strokeWidth: 1, strokeLinecap: "round" }} />
         <path d="M45 22 Q34 36 24 58 M75 22 Q86 36 96 58" style={{ fill: "none", stroke: "rgba(0,0,0,.28)", strokeWidth: 0.6, strokeDasharray: "1.4 1.2" }} />
       </g>
-      {twill({ className: "nm231", textAnchor: "middle", style: { fontSize: nmSize }, sw: 1.2 }, <textPath href={"#" + id + "a"} startOffset="50%" {...(nmW > NMMAX ? { textLength: NMMAX, lengthAdjust: "spacingAndGlyphs" } : {})}>{nm}</textPath>)}
-      {twill({ className: "no231", x: 60, y: 95, textAnchor: "middle", style: { fontSize: nTxt.length > 1 ? 40 : 44 }, sw: 3 }, nTxt)}
+      {twill({ className: "nm231", textAnchor: "middle", style: { fontSize: nmSize }, sw: 1.2, f: NM, k: NMO }, <textPath href={"#" + id + "a"} startOffset="50%" {...(nmW > NMMAX ? { textLength: NMMAX, lengthAdjust: "spacingAndGlyphs" } : {})}>{nm}</textPath>)}
+      {twill({ className: "no231", x: 60, y: 95, textAnchor: "middle", style: { fontSize: nTxt.length > 1 ? 40 : 44 }, sw: 3, f: NF, k: NO }, nTxt)}
     </svg>
   );
 }
@@ -12405,6 +12431,109 @@ function GxIrBack244({ s }) {
 const GX_ST246 = new Set(["ANA", "BOS", "BUF", "CAR", "CBJ", "CGY", "CHI", "COL", "DAL", "DET", "EDM", "FLA", "LA", "MIN", "MTL", "NJ", "NSH", "NYI", "NYR", "OTT", "PHI", "PIT", "SEA", "SJ", "STL", "TB", "TOR", "UTA", "VAN", "VGK", "WPG", "WSH"]);
 const gxSt246c = (t) => (GX_ST246.has(String(t || "").toUpperCase()) ? " st246" : "");
 const gxSt246s = (t) => { const T = String(t || "").toUpperCase(); return GX_ST246.has(T) ? { "--st": "url(stalls/" + T + ".jpg?v=1)" } : undefined; };
+// ---------- change 248: hot and cold stalls on Lines (install.py) ----------
+// soft cone of light for the available-player spotlight (blurred trapezoid used as a mask)
+(function () { try { const s = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><filter id='b' x='-20%' y='-20%' width='140%' height='140%'><feGaussianBlur stdDeviation='3.2'/></filter></defs><polygon points='40,0 60,0 88,100 12,100' fill='white' filter='url(#b)'/></svg>"; document.documentElement.style.setProperty("--bm248", "url(\"data:image/svg+xml," + encodeURIComponent(s) + "\")"); } catch (e) {} })();
+// jersey number by name, ignoring accents (Lekkerimaki / Lekkerimäki)
+function gxNo248(T, n) { const m = (T && T.no) || {}; if (m[n] != null) return m[n]; const k = nrm(n); for (const x in m) if (nrm(x) === k) return m[x]; return null; }
+// last 5 games against what he is expected to score: h1..h3 hot, c1..c3 cold, "" normal
+function gxHC248(p, hist, s) {
+  if (!p) return "";
+  const a = (hist || {})[String(p.id).slice(1)];
+  if (!a || a.length < 4) return "";
+  const exp = effAvg(p, s.blend);
+  if (!(exp > 0.5)) return "";
+  const r = a.reduce((t, v) => t + v, 0) / a.length / exp - 1;
+  return r >= 1 ? "h3" : r >= 0.7 ? "h2" : r >= 0.4 ? "h1" : r <= -0.8 ? "c3" : r <= -0.6 ? "c2" : r <= -0.4 ? "c1" : "";
+}
+function gxCup248(x, y, h, k) {
+  const w = h * 0.62, s = h / 10;
+  return (
+    <g key={k} transform={"translate(" + x + " " + y + ") scale(" + s + ")"}>
+      <ellipse cx="0" cy="0.2" rx="4.2" ry="0.7" fill="rgba(0,0,0,.45)" />
+      <path d="M-3 0 h6 v-1.4 h-6 Z" fill="#5a3b12" />
+      <path d="M-1.9 -1.4 h3.8 l-0.5 -1.1 h-2.8 Z" fill="#b8860b" />
+      <path d="M-0.55 -2.5 h1.1 v-2.1 h-1.1 Z" fill="#c9971a" />
+      <path d="M-3.1 -9.6 h6.2 q0 4.6 -3.1 5.1 q-3.1 -0.5 -3.1 -5.1 Z" fill="#e0aa1e" stroke="#7a560c" strokeWidth="0.18" />
+      <path d="M-3.1 -8.9 q-2 0 -1.9 1.5 q0.2 1.4 2.1 1.3 M3.1 -8.9 q2 0 1.9 1.5 q-0.2 1.4 -2.1 1.3" fill="none" stroke="#d29c19" strokeWidth="0.45" />
+      <path d="M-2.2 -9.2 q-0.1 3.4 1.2 4.2" fill="none" stroke="#fff1b0" strokeWidth="0.45" opacity=".8" />
+      <circle className="tw" cx="1.6" cy="-8.6" r="0.35" fill="#fff" />
+    </g>
+  );
+}
+function gxWeb248(cx, cy, r, ang0, k) {
+  const sp = [], n = 6, a1 = ang0, a2 = ang0 + 90;
+  const pt = (a, rr) => [cx + Math.cos(a * Math.PI / 180) * rr, cy + Math.sin(a * Math.PI / 180) * rr];
+  for (let i = 0; i <= n; i++) { const a = a1 + (a2 - a1) * i / n, [x, y] = pt(a, r); sp.push(<line key={"l" + i} x1={cx} y1={cy} x2={x} y2={y} />); }
+  for (let j = 1; j <= 4; j++) {
+    const rr = r * j / 4.4; let d = "";
+    for (let i = 0; i <= n; i++) { const a = a1 + (a2 - a1) * i / n, [x, y] = pt(a, rr); d += (i ? " Q" + pt(a - (a2 - a1) / n / 2, rr * 0.86).map((v) => v.toFixed(2)).join(" ") + " " : "M") + x.toFixed(2) + " " + y.toFixed(2); }
+    sp.push(<path key={"r" + j} d={d} fill="none" />);
+  }
+  return <g key={k} stroke="rgba(235,240,245,.6)" strokeWidth="0.32">{sp}</g>;
+}
+function gxSpider248(x, y, top, s, k) {
+  const legs = [];
+  for (let i = 0; i < 4; i++) { const yy = -0.9 + i * 0.6; legs.push(<path key={"a" + i} d={"M-0.6 " + yy + " q-1.6 -0.8 -2.4 " + (0.9 + i * 0.5)} />, <path key={"b" + i} d={"M0.6 " + yy + " q1.6 -0.8 2.4 " + (0.9 + i * 0.5)} />); }
+  return (
+    <g key={k}>
+      <line x1={x} y1={top} x2={x} y2={y - 1.6 * s} stroke="rgba(235,240,245,.55)" strokeWidth="0.22" />
+      <g className="sp" transform={"translate(" + x + " " + y + ") scale(" + s + ")"}>
+        <g fill="none" stroke="#111" strokeWidth="0.32" strokeLinecap="round">{legs}</g>
+        <ellipse cx="0" cy="0.5" rx="1.1" ry="1.4" fill="#141414" stroke="#3a3a3a" strokeWidth="0.15" />
+        <circle cx="0" cy="-1" r="0.7" fill="#1c1c1c" />
+        <circle cx="-0.25" cy="-1.15" r="0.13" fill="#c33" /><circle cx="0.25" cy="-1.15" r="0.13" fill="#c33" />
+      </g>
+    </g>
+  );
+}
+function GxHC248({ k }) {
+  if (!k) return null;
+  const g = [];
+  if (k === "h1") g.push(gxCup248(84, 95, 9, "a"));
+  if (k === "h2") g.push(gxCup248(16, 95, 9, "a"), gxCup248(84, 95, 11, "b"));
+  if (k === "h3") g.push(gxCup248(10, 95, 8, "a"), gxCup248(21, 95.5, 12, "b"), gxCup248(79, 95.5, 12, "c"), gxCup248(90, 95, 8, "d"));
+  if (k === "c1") g.push(gxWeb248(0, 0, 18, 0, "w1"));
+  if (k === "c2") g.push(gxWeb248(0, 0, 22, 0, "w1"), gxWeb248(100, 0, 18, 90, "w2"), gxSpider248(80, 30, 0, 1.2, "s1"));
+  if (k === "c3") g.push(gxWeb248(0, 0, 28, 0, "w1"), gxWeb248(100, 0, 26, 90, "w2"), gxWeb248(0, 100, 16, 270, "w3"), gxWeb248(100, 100, 16, 180, "w4"), gxSpider248(18, 38, 0, 1.3, "s1"), gxSpider248(84, 24, 0, 1, "s2"), gxSpider248(70, 52, 0, 0.9, "s3"));
+  return <span className={"hc248"} aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none">{g}</svg></span>;
+}
+// ---------- change 249: per-team jersey colours and stripes from Kuvar's jersey sheet (install.py) ----------
+// b body, y shoulder yoke, ys stripes under the yoke, sl lower sleeves, st sleeve and hem stripes (top to bottom), hm below the hem stripes, col collar, n number, o number outline, nm name
+const GX_JD249 = {
+  ANA: { b: "#1e8a4c", col: "#4b2a7b", sl: "#4b2a7b", st: ["#f2c230", "#4b2a7b", "#f2c230"], hm: "#4b2a7b", n: "#f2c230", o: "#4b2a7b", nm: "#f2c230" },
+  BOS: { b: "#5a3a22", st: ["#f2c230", "#5a3a22", "#f2c230"], n: "#f2c230", o: "#2e1c10", nm: "#f2c230" },
+  BUF: { b: "#1f4fae", st: ["#ffffff", "#c9a227", "#ffffff"], hm: "#1f4fae", n: "#ffffff", o: "#0f2a66", nm: "#ffffff" },
+  CAR: { b: "#3a3b3f", st: ["#c8102e", "#9a9da3", "#c8102e"], hm: "#3a3b3f", n: "#f2f2f2", o: "#1c1c1f", nm: "#f2f2f2" },
+  CBJ: { b: "#a7aab0", y: "#2f6fcf", sl: "#2f6fcf", st: ["#0f1e3d", "#2f6fcf", "#0f1e3d"], hm: "#0f1e3d", n: "#1a2238", o: "#a7aab0", nm: "#1a2238" },
+  CGY: { b: "#c8102e", st: ["#e8c45a", "#ffffff", "#e8c45a"], hm: "#d6ad3e", n: "#ffffff", o: "#c9952a", nm: "#f1c75a" },
+  CHI: { b: "#1e8a3c", st: ["#111111", "#f3efe0", "#111111", "#f3efe0", "#111111"], hm: "#f3efe0", n: "#ffffff", o: "#111111", nm: "#ffffff" },
+  COL: { b: "#f2f4f7", y: "#7fb3e0", sl: "#7fb3e0", st: ["#1f3b66", "#9aa3ad"], hm: "#9aa3ad", n: "#7fb3e0", o: "#1f3b66", nm: "#2a4a7a" },
+  DAL: { b: "#f4f5f2", st: ["#111111", "#39d35a", "#111111"], hm: "#111111", n: "#111111", o: "#39d35a", nm: "#111111" },
+  DET: { b: "#d2192f", sl: "#d2192f", st: ["#ffffff", "#ffffff"], hm: "#ffffff", n: "#ffffff", o: "#9e1022", nm: "#ffffff" },
+  EDM: { b: "#141518", st: ["#ff6a13", "#141518", "#ff6a13"], hm: "#141518", n: "#141518", o: "#ff6a13", nm: "#ff6a13" },
+  FLA: { b: "#f25d63", y: "#162447", ys: ["#f7d031", "#f28c1e", "#e2373b"], sl: "#162447", st: ["#f7d031", "#f28c1e"], hm: "#162447", n: "#f7d031", o: "#162447", nm: "#162447" },
+  LA: { b: "#5b2a86", st: ["#f2c230", "#111111", "#f2c230"], hm: "#111111", n: "#111111", o: "#f2c230", nm: "#f2c230" },
+  MIN: { b: "#141414", st: ["#1f7a3a", "#ffffff", "#1f7a3a"], hm: "#141414", n: "#141414", o: "#2fa04f", nm: "#ffffff" },
+  MTL: { b: "#f4f4f4", st: ["#c8102e", "#1f3a8a", "#c8102e"], hm: "#f4f4f4", n: "#c8102e", o: "#f4f4f4", nm: "#c8102e" },
+  NJ: { b: "#141414", st: ["#c8102e", "#141414", "#c8102e"], hm: "#c8102e", n: "#c8102e", o: "#141414", nm: "#c8102e" },
+  NSH: { b: "#0f1f3d", st: ["#f2b81c", "#0f1f3d", "#f2b81c"], hm: "#0f1f3d", n: "#f2b81c", o: "#0f1f3d", nm: "#f2b81c" },
+  NYI: { b: "#f4f4f4", y: "#132a52", sl: "#132a52", st: ["#9cc3e6", "#f47d30"], hm: "#132a52", n: "#132a52", o: "#f47d30", nm: "#132a52" },
+  NYR: { b: "#14234a", st: ["#c8102e", "#ffffff", "#c8102e"], hm: "#14234a", n: "#c8102e", o: "#ffffff", nm: "#ffffff" },
+  OTT: { b: "#141414", st: ["#c9a227", "#c8102e", "#c9a227"], hm: "#141414", n: "#e8b04a", o: "#7a1020", nm: "#e8b04a" },
+  PHI: { b: "#6b6c70", st: ["#f47a20", "#111111", "#f47a20", "#111111", "#f47a20"], hm: "#6b6c70", n: "#f47a20", o: "#111111", nm: "#111111" },
+  PIT: { b: "#141e3a", y: "#9fc6ea", st: ["#9fc6ea", "#f2c230", "#9fc6ea"], hm: "#9fc6ea", n: "#c9a227", o: "#141e3a", nm: "#f2c230" },
+  SEA: { b: "#0f1c33", st: ["#e6dfc8", "#7fd0d6", "#e6dfc8"], hm: "#e6dfc8", n: "#d8d2bd", o: "#0f1c33", nm: "#ffffff" },
+  SJ: { b: "#1fb2c2", sl: "#111111", st: ["#ffffff", "#9aa0a6"], hm: "#111111", n: "#ffffff", o: "#111111", nm: "#ffffff" },
+  STL: { b: "#141414", st: ["#2a6fd6", "#9fc6ea", "#2a6fd6"], hm: "#141414", n: "#ffffff", o: "#2a6fd6", nm: "#ffffff" },
+  TB: { b: "#151515", sl: "#6b6e73", st: ["#7fb3e0", "#7fb3e0"], hm: "#7fb3e0", n: "#7fb3e0", o: "#151515", nm: "#7fb3e0" },
+  TOR: { b: "#ece6d4", st: ["#1b2b56", "#ece6d4", "#1b2b56"], hm: "#1b2b56", n: "#1b2b56", o: "#ece6d4", nm: "#1b2b56" },
+  UTA: { b: "#8ec3ea", sl: "#111111", st: ["#ffffff", "#111111"], hm: "#111111", n: "#111111", o: "#8ec3ea", nm: "#111111" },
+  VAN: { b: "#0f1f3d", st: ["#2a6fd6", "#0f1f3d", "#2a6fd6"], hm: "#0f1f3d", n: "#2a6fd6", o: "#0f1f3d", nm: "#2a6fd6" },
+  VGK: { b: "#141414", ys: ["#1e6b4a", "#c9a227"], st: ["#1e6b4a", "#c9a227", "#c8102e", "#c9a227"], hm: "#141414", n: "#d4b25c", o: "#141414", nm: "#d4b25c" },
+  WPG: { b: "#0d1a33", st: ["#41c8e6", "#0d1a33", "#41c8e6"], hm: "#0d1a33", n: "#0d1a33", o: "#41c8e6", nm: "#41c8e6" },
+  WSH: { b: "#2a5fb0", y: "#f4f4f4", st: ["#ffffff", "#c9a227", "#ffffff"], hm: "#2a5fb0", n: "#ffffff", o: "#c9a227", nm: "#ffffff" },
+};
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
