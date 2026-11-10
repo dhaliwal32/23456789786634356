@@ -1,1 +1,1 @@
-{"run":"2026-11-09T21:28:28Z","code":"ai-stage2-v1","trained":true,"weekly_files_refreshed":2,"history_rows":834954,"errors":["predict: FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/23456789786634356/23456789786634356/espn-data.js'"]}
+{"run":"2026-11-10T18:42:23Z","code":"ai-stage2-v1","trained":false,"weekly_files_refreshed":1,"history_rows":835068,"errors":["predict: FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/23456789786634356/23456789786634356/espn-data.js'"]}
