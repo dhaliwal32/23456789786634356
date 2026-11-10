@@ -3,6 +3,7 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "254-box-tap-zoom.py"
+  "255-box-remember-side.py",
+  "256-phone-opens-matchup.py"
  ]
 }
