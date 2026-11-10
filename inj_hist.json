@@ -208,10 +208,11 @@
 "nd": "2026-11-06"
 },
 "3891922": {
-"d": "2026-11-09",
-"k": "new",
+"d": "2026-11-10",
+"k": "later",
 "nd": "2026-11-09",
-"now": "2026-11-10"
+"now": "2026-11-12",
+"was": "2026-11-10"
 },
 "3899946": {
 "d": "2026-11-09",
@@ -793,9 +794,9 @@
 "status": "Injured Reserve"
 },
 "3891922": {
-"back": "2026-11-10",
-"note": "Head coach Peter Laviolette said Monday that Gustafsson is considered day-to-day due to an undisclosed injury, Alexander Legget of MayorsManor.com reports.",
-"status": "Day-To-Day"
+"back": "2026-11-12",
+"note": "out",
+"status": "Out"
 },
 "3899946": {
 "back": "2026-11-14",
