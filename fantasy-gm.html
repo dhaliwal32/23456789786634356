@@ -2153,6 +2153,11 @@
   .gx-fg224.gx-lt227.st246 .sb227, .gx-fg224.gx-lt227.st246 .ow227, html[data-theme="light"] .gx-fg224.gx-lt227.st246 .sb227, html[data-theme="light"] .gx-fg224.gx-lt227.st246 .ow227 { color: rgba(255,255,255,.74) !important; }
   .gx-fg224.gx-lt227.st246 .ow227 b, html[data-theme="light"] .gx-fg224.gx-lt227.st246 .ow227 b { color: #fff !important; }
   .gx-fg224.gx-lt227.st246.fa .ow227 span:first-child { color: #7fe0a3 !important; }
+  /* change 247 (install.py) */
+  @media (max-width: 640px) {
+    .gx-tm103 .tb a, .gx-tm103 .tb .mr241 { padding: 14px 2px 11px; font-size: clamp(10.5px, 3.05vw, 13px); }
+    .gx-tm103 .tb .mr241 svg { width: 10px; height: 10px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2161,7 +2166,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="53jpr.d0zdzg" data-file="build/app.js">
+<meta name="gx-build" content="5l69c7.1atclei" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -12220,7 +12225,7 @@ function GxRosterView239({ P }) {
   );
 }
 // ---------- change 241: More menu for the phone tabs, view as another team (install.py) ----------
-const GX_MAIN241 = ["roster", "matchup", "players", "lines"];
+const GX_MAIN241 = ["roster", "matchup", "players", "lines", "trades"]; // change 247
 function GxMore241({ tab, go }) {
   const [open, setOpen] = useState(false);
   const [top, setTop] = useState(60);
