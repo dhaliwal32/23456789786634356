@@ -1,11 +1,10 @@
 {
  "files": {
   "fantasy-gm.html": true,
-  "alert_prefs.json": true,
-  "gm_lines.py": true,
-  "gm_signals.py": true
+  "espn_sync.py": true
  },
  "changes": [
-  "258-injury-watch-alerts.py"
+  "259-graph-past-weeks.py",
+  "260-phone-icons-lines-teams.py"
  ]
 }
