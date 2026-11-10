@@ -572,6 +572,12 @@
 "d": "2026-11-07",
 "k": "back",
 "was": "2026-11-07"
+},
+"5560": {
+"d": "2026-11-10",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-11-10"
 }
 },
 "last": {
@@ -1111,7 +1117,7 @@
 "status": "Out"
 },
 "5560": {
-"back": "2026-11-10",
+"back": "2026-11-28",
 "note": "Zuccarello (upper body) is regarded as week-to-week, Zach Dooley of the Kings' official site reports Thursday.",
 "status": "Injured Reserve"
 },
