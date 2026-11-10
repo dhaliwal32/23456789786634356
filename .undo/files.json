@@ -1,8 +1,11 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "alert_prefs.json": true,
+  "gm_lines.py": true,
+  "gm_signals.py": true
  },
  "changes": [
-  "257-best-pickup-options.py"
+  "258-injury-watch-alerts.py"
  ]
 }
