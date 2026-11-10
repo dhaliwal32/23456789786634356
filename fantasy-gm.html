@@ -2328,6 +2328,38 @@
   /* change 258 (install.py) */
   .gx-pd-ac button.rw258.on, .gx-pdm .bt button.rw258.on { border-color: var(--ink2); }
   .gx-pdm .bt button.rw258 { white-space: nowrap; }
+  /* change 259 (install.py) */
+  .gf252 .gw259 { display: flex; align-items: center; gap: 6px; height: 32px; margin: -2px 0 6px; }
+  .gf252 .gw259 .ar { width: 30px; height: 30px; flex: none; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
+  .gf252 .gw259 .ar:disabled { opacity: .35; }
+  .gf252 .gw259 .wl { min-width: 0; font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gf252 .gw259 .wl small { margin-left: 6px; font-size: 11.5px; font-weight: 400; color: var(--mute); }
+  .gf252 .gw259 .sp { flex: 1; }
+  .gf252 .gw259 .sb { flex: none; height: 28px; padding: 0 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 12px; font-weight: 600; }
+  .gf252 .gw259 .sb.on { background: var(--card3, var(--hover)); }
+  .gf252 .nt259 { font-size: 12px; color: var(--mute); margin-top: 6px; }
+  .gx-pn.gx-bx226 .fc.fin259 { position: relative; inset: auto; margin-top: 12px; height: 340px; display: flex; flex-direction: column; overflow: hidden; backface-visibility: visible; -webkit-backface-visibility: visible; }
+  @media (max-width: 640px) { .gx-pn.gx-bx226 .fc.fin259 { height: 330px; } }
+  /* change 260 (install.py) */
+  .gx-pdm .ic260 { display: none; }
+  @media (max-width: 640px) {
+    .gx-pdm .bt { display: none !important; }
+    .gx-pdm .ic260 { position: relative; display: flex; gap: 6px; margin: 12px 0 2px; }
+    .gx-pdm .ic260 button { flex: 1 1 0; min-width: 0; max-width: 76px; height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 12px; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 10.5px; font-weight: 600; line-height: 1; white-space: nowrap; }
+    .gx-pdm .ic260 button svg { width: 20px; height: 20px; flex: none; }
+    .gx-pdm .ic260 button.pr { background: #fff; color: #111; border-color: #fff; }
+    .gx-pdm .ic260 button.on { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.6); }
+    .gx-ln111 .tg260 { display: flex; align-items: center; gap: 8px; width: 100%; height: 40px; padding: 0 12px; margin-bottom: 8px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 13.5px; font-weight: 600; }
+    .gx-ln111 .tg260 .sp { flex: 1; }
+    .gx-ln111 .tg260 .cv { color: var(--mute); font-size: 12px; transition: transform .2s ease; }
+    .gx-ln111 .tg260.op .cv { transform: rotate(180deg); }
+    .gx-ln111 .at237.cl260 { display: none; }
+    .gx-ln111 .at237.op260 { animation: gx260in .2s ease; }
+    @keyframes gx260in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  }
+  .gx-ln111 .tg260 { display: none; }
+  @media (max-width: 640px) { .gx-ln111 .tg260 { display: flex; } }
+  @media (prefers-reduced-motion: reduce) { .gx-ln111 .at237.op260 { animation: none; } .gx-ln111 .tg260 .cv { transition: none; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2336,7 +2368,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="1uct7p.7kkxtt" data-file="build/app.js">
+<meta name="gx-build" content="t92ild.1bus8es" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -7998,6 +8030,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
             </div>
             {eid && img ? <img className="ph" alt="" src={"https://a.espncdn.com/i/headshots/nhl/players/full/" + eid + ".png"} onError={() => setImg(false)} /> : null}
           </div>
+          <GxPdIcons260 p={p} Q={Q} act={act} close101={close101} />
           <div className="strip">
             <div><b>{rk || "-"}</b><span>POS RANK</span></div>
             <div><b>{avgSoFar == null ? "-" : f1(avgSoFar)}</b><span>AVG FPTS</span></div>
@@ -8777,6 +8810,7 @@ function GxLines111({ s }) {
   const L = window.LINES_DATA || { teams: {}, changes: [] };
   const teams = Object.keys(L.teams || {}).filter((t) => ((L.teams[t] || {}).lines || {}).F1).sort();
   const [t, setT] = useState(() => window.__LINES_TEAM || uiGet().ln111fav || uiGet().ln111 || "");
+  const [tg260, setTg260] = useState(() => uiGet().ln260 === "o"); /* change 260: teams grid open */
   const [fav112, setFav112] = useState(() => uiGet().ln111fav || "");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
@@ -8845,13 +8879,14 @@ function GxLines111({ s }) {
   const st = (T && T.st) || {};
   return (
     <div className="gx-ln111">
+      <GxTeamsTog260 t={t} open={tg260} set={(v) => { setTg260(v); uiSet("ln260", v ? "o" : "c"); }} />
       <div className="srch">
         <input className={inp + " w-full"} placeholder="Search a team" value={q} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} onChange={(e) => { setQ(e.target.value); setOpen(true); }} />
         {open && hits.length ? (
           <div className="sug">{hits.map((c) => <button key={c} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(c)}><TeamLogo t={c} size={24} /><span>{nameOf(c)}</span><span className="text-xs text-slate-500" style={{ marginLeft: "auto" }}>{c}</span></button>)}</div>
         ) : null}
       </div>
-      <div className="at237" data-gx="237a">{teams.map((c) => <button key={c} type="button" className={c === t ? "on" : ""} aria-label={nameOf(c)} onClick={() => pick(c)}><TeamLogo t={c} size={26} />{c}</button>)}</div>
+      <div className={"at237" + (tg260 ? " op260" : " cl260")} data-gx="237a">{teams.map((c) => <button key={c} type="button" className={c === t ? "on" : ""} aria-label={nameOf(c)} onClick={() => pick(c)}><TeamLogo t={c} size={26} />{c}</button>)}</div>
       {T ? (
         <>
           <div className="hd">
@@ -11964,7 +11999,7 @@ function GxBox230({ s, wk }) {
             <div className="text-sm text-slate-500" style={{ marginTop: 6 }}>{sa > sb ? "Won by " + f1(sa - sb) : sa < sb ? "Lost by " + f1(sb - sa) : "Tied"}</div>
           </div>
         ) : <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>{fin ? "No result saved for this week." : "The matchup for this week is not set yet."}</div>}
-        {fin ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Day by day scores are only kept for the current week.</div> : null}
+        {fin && opp ? <div className="fc gf252 fin259"><GxGraphWrap259 s={s} i={i} go={(j) => { setPick(Math.max(0, Math.min(s.weeks.length - 1, j))); setSel(null); }} me={me} cur={null} nmA={nmA} nmB={nmB} plain={me !== s.me} today={today} /></div> : null}{/* change 259 */}
       </div>
     );
   }
@@ -12205,7 +12240,7 @@ function GxBox230({ s, wk }) {
         <div className="min-w-0">{board}{me !== s.me || !cur ? null : <GxBp257 s={s} openP={openP} />}</div>
         <GxZm254>
           {/* change 229: flat box again */}<div ref={stg} className="stg" data-gx="229" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
-            <div ref={pr} className="pr">{fToday}{fWin}<div className="fc gf252"><GxGraph252 dates={dates} today={today} DN={DN} nmA={nmA} nmB={nmB} plain={!mineMu} onDay={showDay} A={dates.map((_, d) => (gxOn252(X, Y, d, st) ? (X.days[d] || {}).act || 0 : null))} B={dates.map((_, d) => (gxOn252(X, Y, d, st) ? (Y.days[d] || {}).act || 0 : null))} PA={dates.map((_, d) => exp(X, d))} PB={dates.map((_, d) => exp(Y, d))} NA={dates.map((_, d) => (st(d) === "f" ? 0 : (X.days[d] || {}).total || 0))} NB={dates.map((_, d) => (st(d) === "f" ? 0 : (Y.days[d] || {}).total || 0))} /></div>{fPlayers}</div>
+            <div ref={pr} className="pr">{fToday}{fWin}<div className="fc gf252"><GxGraphWrap259 s={s} i={i} go={(j) => { setPick(Math.max(0, Math.min(s.weeks.length - 1, j))); setSel(null); }} me={me} nmA={nmA} nmB={nmB} plain={!mineMu} today={today} cur={{ dates, today, DN, nmA, nmB, plain: !mineMu, onDay: showDay, A: dates.map((_, d) => (gxOn252(X, Y, d, st) ? (X.days[d] || {}).act || 0 : null)), B: dates.map((_, d) => (gxOn252(X, Y, d, st) ? (Y.days[d] || {}).act || 0 : null)), PA: dates.map((_, d) => exp(X, d)), PB: dates.map((_, d) => exp(Y, d)), NA: dates.map((_, d) => (st(d) === "f" ? 0 : (X.days[d] || {}).total || 0)), NB: dates.map((_, d) => (st(d) === "f" ? 0 : (Y.days[d] || {}).total || 0)) }} /></div>{fPlayers}</div>
           </div>
           <div className="tb">{NAMES.map((t, j) => <button key={t} type="button" className={k === j ? "on" : ""} onClick={() => turn(j)}>{t}</button>)}</div>
         </GxZm254>{/* change 254 */}
@@ -12709,7 +12744,7 @@ function gxOn252(X, Y, d, st) {
   const on = (L) => ((L.days[d] || {}).start || []).some((q) => q.st === "L" || q.st === "F");
   return on(X) || on(Y);
 }
-function GxGraph252({ dates, today, DN, A, B, PA, PB, NA, NB, nmA, nmB, plain, onDay }) {
+function GxGraph252({ dates, today, DN, A, B, PA, PB, NA, NB, nmA, nmB, plain, onDay, lab, sub, tag, res }) { /* change 259 */
   const [md, setMd] = useState(() => (uiGet().gr252 === "day" ? "day" : "run"));
   const n = dates.length;
   const lastReal = (() => { let j = -1; for (let d = 0; d < n; d++) if (A[d] != null) j = d; return j; })();
@@ -12776,10 +12811,10 @@ function GxGraph252({ dates, today, DN, A, B, PA, PB, NA, NB, nmA, nmB, plain, o
   return (
     <>
       <div className="ft">
-        <span className="gx-tag">Projection vs actual</span>
+        <span className="gx-tag">{tag || "Projection vs actual"}</span>
         <span className="sg252" onPointerDown={(e) => e.stopPropagation()}>
-          <button type="button" className={run ? "on" : ""} onClick={() => setM("run")}>Running total</button>
-          <button type="button" className={!run ? "on" : ""} onClick={() => setM("day")}>By day</button>
+          <button type="button" className={run ? "on" : ""} onClick={() => setM("run")}>{(lab || [])[0] || "Running total"}</button>
+          <button type="button" className={!run ? "on" : ""} onClick={() => setM("day")}>{(lab || [])[1] || "By day"}</button>
         </span>
       </div>
       <div className="lg252">
@@ -12809,7 +12844,7 @@ function GxGraph252({ dates, today, DN, A, B, PA, PB, NA, NB, nmA, nmB, plain, o
         </svg>
       </div>
       <div className="rd252">
-        <div className="dn">{dates[sel] === today ? "Today" : DN(sel)}<small style={{ display: "block" }}>{run ? "so far" : "that day"}</small></div>
+        <div className="dn">{dates[sel] === today ? "Today" : DN(sel)}<small style={{ display: "block" }}>{res ? res(sel) : run ? (sub || [])[0] || "so far" : (sub || [])[1] || "that day"}</small></div>
         {cell(nmA, aR, aP, aN, "")}
         {cell(nmB, bR, bP, bN, "op")}
       </div>
@@ -13166,6 +13201,117 @@ function GxRwBtn258({ p }) {
   const hurt = p.status && String(p.status).toUpperCase() !== "ACTIVE";
   if (!on && !hurt) return null;
   return <button type="button" className={"rw258" + (on ? " on" : "")} data-gx="258" onClick={() => gxRw258.toggle(p)}>{on ? "Injury alerts on" : "Injury alerts"}</button>;
+}
+// ---------- change 259: Graph side for past weeks and the season (install.py) ----------
+// finished days come from E.dhist[date][team] = [lineup points, pregame projection, lineup players with a projection]
+function gxWkDh259(s, j, me) {
+  const H = (window.ESPN_DATA || {}).dhist || {}, wk = s.weeks[j] || {}, dates = wk.dates || [];
+  const opp = oppOf(wk, me);
+  const row = (t, d) => { const x = (H[d] || {})[String(t).replace(/\D/g, "")]; return x || null; };
+  const A = dates.map((d) => { const x = row(me, d); return x ? x[0] : null; });
+  const B = dates.map((d) => { const x = opp ? row(opp, d) : null; return x ? x[0] : null; });
+  const PA = dates.map((d) => { const x = row(me, d); return x && x[1] != null ? x[1] : null; });
+  const PB = dates.map((d) => { const x = opp ? row(opp, d) : null; return x && x[1] != null ? x[1] : null; });
+  const have = dates.filter((d) => H[d]).length;
+  return { dates, opp, A, B, PA, PB, have, n: dates.length };
+}
+function GxGraphWrap259({ s, i, go, me, cur, nmA, nmB, plain, today }) {
+  const [sea, setSea] = useState(() => uiGet().gr259 === "s");
+  const setS = (v) => { setSea(v); uiSet("gr259", v ? "s" : ""); };
+  const gen = (window.ESPN_DATA || {}).generated;
+  const lab = (j) => String((s.weeks[j] || {}).label || "Week " + (j + 1)).split(" \u00b7 ");
+  const season = useMemo(() => {
+    const out = [];
+    for (let j = 0; j < s.weeks.length; j++) {
+      const ds = (s.weeks[j] || {}).dates || [];
+      if (!ds.length || ds[ds.length - 1] >= today) continue;
+      const g = gxWkDh259(s, j, me);
+      if (!g.opp || !g.have) continue;
+      const sum = (a) => a.reduce((t, v) => t + (v || 0), 0);
+      const pOk = (a) => a.every((v, d) => v != null || !g.A[d]);
+      out.push({ j, a: sum(g.A), b: sum(g.B), pa: pOk(g.PA) ? sum(g.PA) : null, pb: pOk(g.PB) ? sum(g.PB) : null, full: g.have === g.n, opp: g.opp });
+    }
+    return out;
+  }, [s.weeks, me, gen, today]);
+  const W = (j) => lab(j)[0].replace(/^Week\s*/i, "W");
+  const head = (
+    <div className="gw259" onPointerDown={(e) => e.stopPropagation()}>
+      {sea ? <span className="wl">Season</span> : (
+        <>
+          <button type="button" className="ar" aria-label="Earlier week" disabled={i <= 0} onClick={() => go(i - 1)}>{"\u2039"}</button>
+          <span className="wl">{lab(i)[0]}<small>{lab(i)[1] || ""}</small></span>
+          <button type="button" className="ar" aria-label="Next week" disabled={i >= s.weeks.length - 1} onClick={() => go(i + 1)}>{"\u203a"}</button>
+        </>
+      )}
+      <span className="sp"></span>
+      <button type="button" className={"sb" + (sea ? " on" : "")} onClick={() => setS(!sea)}>{sea ? "Back to week" : "Season"}</button>
+    </div>
+  );
+  if (sea) {
+    if (!season.length) return <>{head}<div className="nt259">No finished weeks saved yet. The sync reads past days from ESPN a few at a time, so this fills in over the next hour.</div></>;
+    const L = season.map((x) => W(x.j));
+    const res = (k) => { const x = season[k]; if (!x) return ""; return x.a > x.b ? "Won" : x.a < x.b ? "Lost" : "Tied"; };
+    return (
+      <>{head}
+        <GxGraph252 key="sea" dates={L} today={null} DN={(d) => L[d]} nmA={nmA} nmB={nmB} plain={plain} onDay={(d) => { setS(false); go(season[d].j); }}
+          lab={["Season total", "By week"]} sub={["season so far", "that week"]} res={res}
+          A={season.map((x) => x.a)} B={season.map((x) => x.b)} PA={season.map((x) => x.pa)} PB={season.map((x) => x.pb)}
+          NA={season.map(() => 0)} NB={season.map(() => 0)} />
+        {season.some((x) => !x.full) ? <div className="nt259">Some past days are still loading from ESPN.</div> : null}
+      </>
+    );
+  }
+  if (cur) return <>{head}<GxGraph252 key={"c" + i} {...cur} /></>;
+  const g = gxWkDh259(s, i, me);
+  const ds = g.dates;
+  if (!ds.length || ds[0] > today) return <>{head}<div className="nt259">This week hasn't started yet.</div></>;
+  if (!g.opp) return <>{head}<div className="nt259">No matchup this week.</div></>;
+  if (!g.have) return <>{head}<div className="nt259">This week's days are still loading from ESPN. The sync reads a few past days at a time, so it fills in over the next hour.</div></>;
+  const DN = (d) => dayLabel(ds[d]).split(",")[0].slice(0, 3);
+  return (
+    <>{head}
+      <GxGraph252 key={"p" + i} dates={ds} today={today} DN={DN} nmA={nmA} nmB={g.opp ? teamName(s, g.opp) : nmB} plain={plain} onDay={null}
+        A={g.A} B={g.B} PA={g.PA.map((v, d) => (v == null && g.A[d] != null ? null : v))} PB={g.PB} NA={ds.map(() => 0)} NB={ds.map(() => 0)} />
+      {g.have < g.n ? <div className="nt259">Some days of this week are still loading from ESPN.</div> : null}
+    </>
+  );
+}
+// ---------- change 260: phone player screen icon buttons (install.py) ----------
+const GX_IC260 = {
+  sim: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h11l-3-3M17 17H6l3 3" /></svg>,
+  trade: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 9h13M13 5l4 4-4 4M20 15H7M11 11l-4 4 4 4" /></svg>,
+  add: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" /></svg>,
+  open: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>,
+  star: (on) => <svg viewBox="0 0 24 24" fill={on ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" /></svg>,
+  hide: (on) => on
+    ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></svg>
+    : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 3l18 18M10.6 5.1A9.7 9.7 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.3 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.4 9.4 0 0 0 4.4-1.1M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>,
+  bell: (on) => <svg viewBox="0 0 24 24" fill={on ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16zM10 21h4" /></svg>,
+};
+function GxPdIcons260({ p, Q, act, close101 }) {
+  const [, tick] = useState(0);
+  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gx-rw258", h); window.addEventListener("gm-watch", h); return () => { window.removeEventListener("gx-rw258", h); window.removeEventListener("gm-watch", h); }; }, []);
+  if (!Q || !p) return null;
+  const fa = Q.fa(p), other = !fa && !Q.mine(p);
+  const rw = gxRw258.has(p), hurt = p.status && String(p.status).toUpperCase() !== "ACTIVE";
+  const wt = Q.starred(p), hid = gxHideSet().has(p.id);
+  const B = (k, ic, label, fn, cls) => <button key={k} type="button" className={cls || ""} aria-label={label} onClick={fn}>{ic}<span>{label}</span></button>;
+  const list = [];
+  if (fa) list.push(B("sim", GX_IC260.sim, "Simulate", act(Q.sim), "pr"));
+  if (!fa) list.push(B("trade", GX_IC260.trade, "Trade", act(Q.trade), "pr")); /* own players too (Kuvar) */
+  list.push(B("espn", fa ? GX_IC260.add : GX_IC260.open, fa ? "Add" : "ESPN", () => Q.espn(p)));
+  if (fa) list.push(B("watch", GX_IC260.star(wt), wt ? "Watching" : "Watch", () => { Q.star(p); tick((x) => x + 1); }, wt ? "on" : ""));
+  if (fa) list.push(B("hide", GX_IC260.hide(hid), hid ? "Show" : "Hide", () => { gxHide.toggle(p.id); close101(); }));
+  if (rw || hurt) list.push(B("inj", GX_IC260.bell(rw), rw ? "Alerts on" : "Injury", () => gxRw258.toggle(p), rw ? "on" : ""));
+  return <div className="ic260" data-gx="260">{list}</div>;
+}
+// ---------- change 260: phone Lines, open and close the all-teams grid (remembered on the device) ----------
+function GxTeamsTog260({ t, open, set }) {
+  return (
+    <button type="button" className={"tg260" + (open ? " op" : "")} data-gx="260l" aria-expanded={open} onClick={() => set(!open)}>
+      {t ? <TeamLogo t={t} size={22} /> : null}<span>{open ? "Hide teams" : "All teams"}</span><span className="sp"></span><span className="cv">{"\u25be"}</span>
+    </button>
+  );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

@@ -343,6 +343,99 @@ try:
         print(f"(daily) {dd_}: box-score lines for {len(pst_)} league players")
         gstate[dd_] = gs_
     data["daily"] = daily
+    # ---------- change 259: day by day history for every finished day (install.py) ----------
+    # dhist[date][team] = [points scored by lineup players (not bench 7 / IR 8), their pregame projection
+    # from ai/joined (None if not saved), lineup players with a projection]; kept in the locked data only
+    try:
+        def _dh_proj259(dd_):
+            try:
+                with open(os.path.join(HERE, "ai", "joined", dd_ + ".json"), encoding="utf-8") as f_:
+                    recs_ = json.load(f_).get("recs") or []
+            except Exception:
+                return None
+            pj_ = {}
+            for r_ in recs_:
+                c_ = r_.get("combo")
+                if c_ is None:
+                    c_ = r_.get("gm") if r_.get("gm") is not None else r_.get("espn")
+                if c_ is None:
+                    continue
+                if r_.get("pos") == "G":
+                    sp_g = r_.get("start_p")
+                    if sp_g is None:
+                        sp_g = r_.get("ai_start_p")
+                    c_ = c_ * (sp_g if sp_g is not None else 1)
+                pj_[str(r_.get("pid"))] = c_
+            return pj_
+
+        def _dh_day259(day_, dd_):
+            pj_ = _dh_proj259(dd_)
+            out_ = {}
+            for t_, tm_ in day_.items():
+                a_, p_, g_ = 0.0, 0.0, 0
+                for pid_, v_ in tm_.items():
+                    if v_[1] in (7, 8):
+                        continue
+                    if v_[0]:
+                        a_ += v_[0]
+                    if pj_ and pid_ in pj_:
+                        p_ += pj_[pid_]
+                        g_ += 1
+                out_[t_] = [round(a_, 1), round(p_, 1) if pj_ is not None else None, g_]
+            return out_
+
+        def _dh_fetch259(sp_):
+            rs_ = get(LEAGUE, params=[("view", "mMatchupScore"), ("view", "mScoreboard"), ("scoringPeriodId", sp_)])
+            day_ = {}
+            for m_ in rs_.get("schedule", []):
+                for side_ in ("home", "away"):
+                    ts_ = m_.get(side_) or {}
+                    ents_ = (ts_.get("rosterForCurrentScoringPeriod") or {}).get("entries") or []
+                    if not ents_:
+                        continue
+                    tm_ = {}
+                    for en_ in ents_:
+                        pe_ = en_.get("playerPoolEntry") or {}
+                        pts_ = None
+                        for st_ in (pe_.get("player") or {}).get("stats") or []:
+                            if st_.get("scoringPeriodId") == sp_ and st_.get("statSourceId") == 0:
+                                pts_ = st_.get("appliedTotal")
+                                break
+                        tm_[str(en_.get("playerId"))] = [None if pts_ is None else round(pts_, 2), en_.get("lineupSlotId")]
+                    day_[str(ts_.get("teamId"))] = tm_
+            return day_
+
+        old_dh_ = {}
+        for fn_ in (OUT, os.path.join(HERE, "espn-data.prev.tmp")):  # the last file, or the copy the workflow restored
+            try:
+                with open(fn_, encoding="utf-8") as f_:
+                    raw_ = f_.read()
+                old_dh_ = (json.loads(raw_[raw_.index("{"):raw_.rindex("}") + 1]).get("dhist") or {})
+            except Exception:
+                old_dh_ = {}
+            if old_dh_:
+                break
+        dh_ = {d_: v_ for d_, v_ in old_dh_.items() if isinstance(v_, dict)}
+        tday_ = today_et.isoformat()
+        for dd_, day_ in daily.items():
+            if dd_ < tday_:
+                dh_[dd_] = _dh_day259(day_, dd_)
+        season_ = sorted({d_ for p_ in periods for d_ in p_["dates"]})
+        missing_ = [d_ for d_ in season_ if d_ < tday_ and d_ not in dh_]
+        got_ = 0
+        for dd_ in missing_[:12]:
+            sp_ = (date.fromisoformat(dd_) - day1).days + 1
+            try:
+                day_ = _dh_fetch259(sp_)
+                if day_:
+                    dh_[dd_] = _dh_day259(day_, dd_)
+                    got_ += 1
+            except Exception as ex:
+                print(f"(history) {dd_} failed: {ex}")
+        data["dhist"] = dh_
+        print(f"(history) {len(dh_)} finished days saved, {got_} read from ESPN now, {max(0, len(missing_) - got_)} still to read")
+    except Exception as ex:
+        print(f"(history) skipped: {type(ex).__name__}: {ex}")
     data["dorder"] = {d_: {t_: list(v_.keys()) for t_, v_ in dy_.items()} for d_, dy_ in daily.items()}  # change 152
     data["gstate"] = gstate
     data["pstat"] = pstat
