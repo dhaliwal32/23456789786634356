@@ -2135,6 +2135,10 @@
   .gx-ir244 .op .r .n small { display: block; font-size: 10.5px; color: var(--mute); }
   .gx-ir244 .op .r.best { background: var(--hover); border-radius: 8px; }
   .gx-ir244 .op .ft { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--mute); }
+  /* change 245 (install.py): stash an injured free agent */
+  .gx-ir244 .op .r .fr245 { text-align: right; font-size: 12px; line-height: 1.25; }
+  .gx-ir244 .op .r .fr245 small { display: block; font-size: 10.5px; color: var(--mute); }
+  .gx-ir244 .op .nt245 { font-size: 12px; color: var(--mute); margin: 2px 0 4px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2143,7 +2147,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="jwxdrv.19ntzse" data-file="build/app.js">
+<meta name="gx-build" content="h92d9z.hjdvkb" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -12319,7 +12323,10 @@ function GxIrBack244({ s }) {
         const pool = mine.filter((q) => !q.ir && q.id !== P.id && !irOpts.some((o) => o.q.id === q.id)).sort((a, b) => gxPgAvg(a, s.blend) - gxPgAvg(b, s.blend)).slice(0, 8);
         const drops = pool.map((q) => ({ q, v: gxPgAvg(q, s.blend), w: pct(winChance(s, on.filter((r) => r.id !== q.id))) }))
           .sort((a, b) => (b.w || 0) - (a.w || 0) || a.v - b.v).slice(0, 5);
-        if (!dead) setCalc({ base, irOpts, drops });
+        /* change 245: good injured free agents who could take the IR spot */
+        const stash = irOpts.length ? [] : s.players.filter((q) => q.ft === "fa" && ["OUT", "INJURY_RESERVE"].includes(String(q.status || "").toUpperCase()))
+          .sort((a, b) => gxPgAvg(b, s.blend) - gxPgAvg(a, s.blend)).slice(0, 4);
+        if (!dead) setCalc({ base, irOpts, drops, stash });
       } catch (e) { if (!dead) setCalc({ err: true }); }
     }, 60);
     return () => { dead = true; clearTimeout(id); };
@@ -12353,6 +12360,18 @@ function GxIrBack244({ s }) {
                   {calc.irOpts.length ? <><div className="gt">Move to IR instead (no drop)</div>{calc.irOpts.map((o, i) => row(o, o.q.t + " \u00b7 " + String(o.q.status || "").replace(/_/g, " ").toLowerCase() + (o.q.back ? " \u00b7 back " + dayLabel(o.q.back) : ""), i === 0))}</> : null}
                   <div className="gt">{calc.irOpts.length ? "Or drop" : "Drop one to make room"}</div>
                   {calc.drops.map((o, i) => row(o, o.q.t + " \u00b7 " + o.q.p, !calc.irOpts.length && i === 0))}
+                  {calc.stash && calc.stash.length && calc.drops.length ? <>{/* change 245 */}
+                    <div className="gt">Then stash an injured free agent in IR</div>
+                    <div className="nt245">{"Drop " + calc.drops[0].q.n + ", pick up one of these and put him in the IR spot " + p.n.split(" ").slice(-1)[0] + " leaves. He doesn't play now, but you keep him for when he's back."}</div>
+                    {calc.stash.map((q, i) => (
+                      <div key={q.id} className={"r" + (i === 0 ? " best" : "")}>
+                        <GxFace p={q} size={26} />
+                        <button type="button" className="nn text-left" onClick={() => openP(q)}><b>{q.n}</b><small>{q.t + " \u00b7 " + q.p + " \u00b7 " + (String(q.status || "").toUpperCase() === "OUT" ? "out" : "IR") + (q.back && q.back >= today ? " \u00b7 back " + dayLabel(q.back) : "")}</small></button>
+                        <span className="n">{f1(gxPgAvg(q, s.blend))}<small>pts/g</small></span>
+                        <span className="fr245">Add<small>to IR</small></span>
+                      </div>
+                    ))}
+                  </> : null}
                   <div className="ft"><span>{"Your win chance this week now: " + wp(calc.base)}</span><button type="button" className="bt" onClick={() => window.__QA && window.__QA.espn && window.__QA.espn(p)}>Do it on ESPN</button></div>
                 </>
               )}
