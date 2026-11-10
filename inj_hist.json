@@ -419,11 +419,9 @@
 "was": "2026-11-07"
 },
 "4874733": {
-"d": "2026-11-09",
-"k": "dtd",
-"nd": "2026-11-06",
-"now": "2026-11-11",
-"was": "Out"
+"d": "2026-11-10",
+"k": "back",
+"was": "2026-11-11"
 },
 "4874744": {
 "d": "2026-11-06",
@@ -799,7 +797,7 @@
 "status": "Injured Reserve"
 },
 "3942043": {
-"back": "2026-11-10",
+"back": "",
 "note": "Head coach Todd McLellan stated that Appleton (undisclosed) is expected to return to the lineup during the Red Wings' upcoming four-game road trip, per Max Bult",
 "status": "Injured Reserve"
 },
@@ -952,11 +950,6 @@
 "back": "2027-01-05",
 "note": "Eklund had surgery to repair a torn ankle tendon and will be out 10-12 weeks, Bruce Garrioch of Postmedia reports Thursday.",
 "status": "Injured Reserve"
-},
-"4874733": {
-"back": "2026-11-11",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-27",
