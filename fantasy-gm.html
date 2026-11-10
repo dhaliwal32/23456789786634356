@@ -2325,6 +2325,9 @@
   .gx-bx226 .bp257 .dl257 .nn small { display: block; font-size: 11px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gx-bx226 .bp257 .dl257 .n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .gx-bx226 .bp257 .dl257 .n small { display: block; font-size: 10.5px; color: var(--mute); }
+  /* change 258 (install.py) */
+  .gx-pd-ac button.rw258.on, .gx-pdm .bt button.rw258.on { border-color: var(--ink2); }
+  .gx-pdm .bt button.rw258 { white-space: nowrap; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2333,7 +2336,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="rwi0id.bp7p3a" data-file="build/app.js">
+<meta name="gx-build" content="1uct7p.7kkxtt" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6982,11 +6985,11 @@ const gxSyncPick = (s) => {
   });
   let watch = [];
   try { watch = JSON.parse(localStorage.getItem("gm-watch") || "[]") || []; } catch (e) {}
-  return { set, keep, back, watch, hide: gxHide.list() /* gx075-s1 */, theme: window.__themePref ? window.__themePref() : "auto" };
+  return { set, keep, back, watch, hide: gxHide.list() /* gx075-s1 */, ...(gxRw258.get() ? { rwatch: gxRw258.get() } : {}) /* gx258 */, theme: window.__themePref ? window.__themePref() : "auto" };
 };
 const gxSyncSig = (P) => {
   const srt = (o) => { const x = {}; Object.keys(o || {}).sort().forEach((k) => (x[k] = o[k])); return x; };
-  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), (P.hide || []).slice().sort() /* gx075-s2 */, P.theme || "auto"]);
+  return JSON.stringify([srt(P.set), (P.keep || []).slice().sort(), srt(P.back), (P.watch || []).slice().sort(), (P.hide || []).slice().sort() /* gx075-s2 */, P.theme || "auto", Array.isArray(P.rwatch) ? P.rwatch.slice().sort() : null /* gx258 */]);
 };
 const gxSyncApply = (st, R) => {
   const next = { ...st }, keep = new Set(R.keep || []), back = R.back || {};
@@ -7007,7 +7010,7 @@ function GxSync({ s, setS }) {
   sRef.current = s;
   useEffect(() => {
     const h = () => tick((x) => x + 1);
-    window.addEventListener("gm-watch", h); window.addEventListener("gm-theme", h); window.addEventListener("gm-hide", h); /* gx075-s4 */
+    window.addEventListener("gm-watch", h); window.addEventListener("gm-theme", h); window.addEventListener("gm-hide", h); /* gx075-s4 */ window.addEventListener("gx-rw258", h); /* gx258 */
     return () => { window.removeEventListener("gm-watch", h); window.removeEventListener("gm-theme", h); };
   }, []);
   const hdr = (key) => ({ Authorization: "Bearer " + key, Accept: "application/vnd.github+json" });
@@ -7030,7 +7033,7 @@ function GxSync({ s, setS }) {
       if (R.at <= seen) return false;
       try { localStorage.setItem(GX_SYNC_AT, R.at); } catch (e) {}
       setS((st) => gxSyncApply(st, R));
-      if (Array.isArray(R.hide)) gxHide.set(R.hide); /* gx075-s3 */ if (Array.isArray(R.watch)) { try { localStorage.setItem("gm-watch", JSON.stringify(R.watch)); } catch (e) {} window.dispatchEvent(new Event("gm-watch")); }
+      if (Array.isArray(R.hide)) gxHide.set(R.hide); /* gx075-s3 */ if (Array.isArray(R.rwatch)) gxRw258.set(R.rwatch); /* gx258 */ if (Array.isArray(R.watch)) { try { localStorage.setItem("gm-watch", JSON.stringify(R.watch)); } catch (e) {} window.dispatchEvent(new Event("gm-watch")); }
       if (R.theme && window.__themePref && window.__setTheme && window.__themePref() !== R.theme) window.__setTheme(R.theme);
       return true;
     }).catch((e) => { if (key) gxSyncNote(e && e.message === "key" ? "GitHub refused the key. It needs Contents: Read and write on this repo." : "Could not reach GitHub. Trying again in 2 minutes."); return true; });
@@ -7989,6 +7992,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
                 <div className="bt">
                   <button type="button" className="pr" onClick={act(Q.sim)}>Simulate</button>
                   {Q.tradeable(p) ? <button type="button" onClick={act(Q.trade)}>Trade</button> : <><button type="button" onClick={() => Q.espn(p)}>Add on ESPN</button><button type="button" onClick={() => { gxHide.toggle(p.id); close101(); }}>{gxHideSet().has(p.id) ? "Show" : "Hide"}</button></>}
+                  <GxRwBtn258 p={p} />
                 </div>
               ) : null}
             </div>
@@ -8032,7 +8036,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
             <button type="button" className="pr" onClick={act(Q.sim)}>Simulate</button>
             {Q.tradeable(p) ? <button type="button" onClick={act(Q.trade)}>Add to a trade</button> : null}
             <button type="button" onClick={() => Q.espn(p)}>{Q.fa(p) ? "Add on ESPN" : "Open on ESPN"}</button>
-            {Q.fa(p) ? <GxPdWatch p={p} Q={Q} /> : null}{Q.fa(p) ? <button type="button" onClick={() => { gxHide.toggle(p.id); onClose(); }}>{gxHideSet().has(p.id) ? "Show in pickups" : "Hide from pickups"}</button> : null}
+            <GxRwBtn258 p={p} />{Q.fa(p) ? <GxPdWatch p={p} Q={Q} /> : null}{Q.fa(p) ? <button type="button" onClick={() => { gxHide.toggle(p.id); onClose(); }}>{gxHideSet().has(p.id) ? "Show in pickups" : "Hide from pickups"}</button> : null}
           </div>
         ) : null}
         <div className="gx-pd-tb">
@@ -13119,6 +13123,49 @@ function GxBp257({ s, openP }) {
       )}
     </div>
   );
+}
+// ---------- change 258: Injury alerts list (install.py) ----------
+// names, kept on this device ("gx-rw258") and in settings.json ("rwatch") when sync is on; the GitHub side reads it every sync
+const GX_RW258 = "gx-rw258";
+const gxRw258 = {
+  get: () => { try { const r = localStorage.getItem(GX_RW258); if (r == null) return null; const a = JSON.parse(r); return Array.isArray(a) ? a : []; } catch (e) { return null; } },
+  set: (l) => {
+    const a = [...new Set((l || []).filter((x) => typeof x === "string"))].sort();
+    const raw = JSON.stringify(a);
+    let old = null;
+    try { old = localStorage.getItem(GX_RW258); } catch (e) {}
+    if (raw === old) return;
+    try { localStorage.setItem(GX_RW258, raw); } catch (e) {}
+    window.dispatchEvent(new Event("gx-rw258"));
+  },
+  has: (p) => (gxRw258.get() || window.__RW258 || []).some((n) => nrm(n) === nrm(p && p.n)),
+  toggle: (p) => {
+    const l = (gxRw258.get() || window.__RW258 || []).slice();
+    const i = l.findIndex((n) => nrm(n) === nrm(p.n));
+    if (i >= 0) l.splice(i, 1); else l.push(p.n);
+    gxRw258.set(l);
+  },
+};
+// first time on a device: start from the list the GitHub side uses (alert_prefs.json)
+(function gxRwSeed258() {
+  try {
+    if (gxRw258.get() != null) return;
+    fetch("alert_prefs.json?t=" + Date.now(), { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j) => {
+      if (gxRw258.get() != null) return;
+      const l = j && Array.isArray(j.return_watch) ? j.return_watch : [];
+      window.__RW258 = l;
+      gxRw258.set(l);
+    }).catch(() => {});
+  } catch (e) {}
+})();
+function GxRwBtn258({ p }) {
+  const [, tick] = useState(0);
+  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gx-rw258", h); return () => window.removeEventListener("gx-rw258", h); }, []);
+  if (!p) return null;
+  const on = gxRw258.has(p);
+  const hurt = p.status && String(p.status).toUpperCase() !== "ACTIVE";
+  if (!on && !hurt) return null;
+  return <button type="button" className={"rw258" + (on ? " on" : "")} data-gx="258" onClick={() => gxRw258.toggle(p)}>{on ? "Injury alerts on" : "Injury alerts"}</button>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

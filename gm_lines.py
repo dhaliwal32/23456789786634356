@@ -469,6 +469,13 @@ def team_fp(ln, fp):
 # ----------------------------------------------------------------- 5. alerts
 # change 121: players to watch for a return from injury (alert_prefs.json "return_watch")
 def _watch121():
+    try:  # change 258: the list saved from the app's Injury alerts button
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings.json"), encoding="utf-8") as f:
+            w = json.load(f).get("rwatch")
+        if isinstance(w, list):
+            return {norm(x) for x in w if isinstance(x, str)}
+    except Exception:
+        pass
     try:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "alert_prefs.json"), encoding="utf-8") as f:
             w = json.load(f).get("return_watch")

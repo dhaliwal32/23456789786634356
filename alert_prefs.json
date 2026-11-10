@@ -20,5 +20,6 @@
   "pickup_new_pp1": true,
   "pickup_ice_time_jump": true,
   "pickup_trending": true,
-  "pickup_bigger_role": true
+  "pickup_bigger_role": true,
+  "return_watch": ["Jared McCann", "Brad Marchand"]
 }

@@ -548,6 +548,89 @@ def gstart(players):
     print(f"(signals) goalie starts: {len(out)} goalies ({pre} from last season's share until 3 games), {flags} with a big change in who starts")
     return out
 
+# ---------- change 258: injury alerts for watched players (install.py) ----------
+RW_STATE258 = os.path.join(HERE, "rw_state.json")
+
+
+def _rw_names258():
+    for fn, key in (("settings.json", "rwatch"), ("alert_prefs.json", "return_watch")):
+        try:
+            with open(os.path.join(HERE, fn), encoding="utf-8") as f:
+                w = json.load(f).get(key)
+            if isinstance(w, list):
+                return [x for x in w if isinstance(x, str)]
+        except Exception:
+            pass
+    return ["Troy Terry"]
+
+
+def _md258(d):
+    try:
+        x = datetime.strptime(str(d)[:10], "%Y-%m-%d")
+        return x.strftime("%b ") + str(x.day)
+    except Exception:
+        return str(d or "?")
+
+
+def rw_alerts258(ev, cur, players):
+    """a few words each, titled Fantasy GM: first alert when a player is added, then every time his return date
+    or ESPN's injury note changes. Status changes and back-in-lineup alerts come from gm_lines.py (change 121)."""
+    try:
+        import gm_notify
+    except Exception as ex:
+        print(f"(signals) injury alerts unavailable: {ex}")
+        return ev
+    try:
+        import hashlib
+        names = {norm(n): n for n in _rw_names258()}
+        try:
+            with open(RW_STATE258, encoding="utf-8") as f:
+                st = json.load(f)
+        except Exception:
+            st = {}
+        hello = set(st.get("hello") or []) & set(names)
+        seen = st.get("seen") or {}
+        sent = 0
+        for p in players or []:
+            k = norm(p.get("n") or "")
+            if k not in names:
+                continue
+            pid, last = str(p.get("id")), str(p.get("n") or "").split()[-1]
+            x = (cur or {}).get(pid)
+            if k not in hello:
+                if x:
+                    msg = f"{last} back around {_md258(x['back'])}" if x.get("back") else f"{last} out, no return date yet"
+                else:
+                    msg = f"{last} is not on the injury list"
+                gm_notify.add(f"rw258|hello|{pid}", "Fantasy GM", msg, "mine", urgent=True)
+                hello.add(k)
+                sent += 1
+                if x:
+                    seen[pid] = {"back": x.get("back") or "", "note": x.get("note") or ""}
+                continue
+            if not x:
+                continue
+            o = seen.get(pid) or {}
+            b, ob, note = x.get("back") or "", o.get("back") or "", x.get("note") or ""
+            dated = False
+            if b and ob and b != ob:
+                gm_notify.add(f"rw258|date|{pid}|{ob}|{b}", "Fantasy GM", f"{last} return moved to {_md258(b)} (was {_md258(ob)})", "mine", urgent=True)
+                dated = True
+                sent += 1
+            if len(note) > 15 and note != (o.get("note") or "") and o and not dated:
+                h = hashlib.md5(note.encode("utf-8")).hexdigest()[:10]
+                gm_notify.add(f"rw258|news|{pid}|{h}", "Fantasy GM", f"{last} injury news", "mine", urgent=True)
+                sent += 1
+            seen[pid] = {"back": b or ob, "note": note or o.get("note") or ""}
+        seen = {k2: v for k2, v in seen.items() if any(str(q.get("id")) == k2 and norm(q.get("n") or "") in names for q in players or [])}
+        with open(RW_STATE258, "w", encoding="utf-8") as f:
+            json.dump({"hello": sorted(hello), "seen": seen}, f, indent=0, sort_keys=True)
+        print(f"(signals) injury alerts: watching {len(names)}, {sent} handed to notifications")
+    except Exception as ex:
+        print(f"(signals) injury alerts failed: {type(ex).__name__}: {ex}")
+    return ev
+
+
 def build(players):
     out = {}
     try:
@@ -557,7 +640,7 @@ def build(players):
         cache = {}
     steps = (("recent", lambda: recent(players)), ("pp1", lambda: pp1(players, cache)), ("lines", lambda: lines(players, cache)),
              ("news", lambda: news(players)), ("teampp", team_pp), ("injuries", lambda: injuries(players)),
-             ("injmoves", lambda: inj_moves(out.get("injuries"))), ("toi", lambda: toi(players)), ("luck", lambda: luck(players)), ("gstart", lambda: gstart(players)))
+             ("injmoves", lambda: rw_alerts258(inj_moves(out.get("injuries")), out.get("injuries"), players)), ("toi", lambda: toi(players)), ("luck", lambda: luck(players)), ("gstart", lambda: gstart(players)))
     for name, fn in steps:
         try:
             out[name] = fn()
