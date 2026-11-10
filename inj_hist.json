@@ -183,6 +183,11 @@
 "now": "2026-11-15",
 "was": "2026-11-11"
 },
+"3652964": {
+"d": "2026-11-10",
+"k": "new",
+"now": "2026-11-24"
+},
 "3654006": {
 "d": "2026-11-10",
 "k": "sooner",
@@ -253,7 +258,7 @@
 "3942905": {
 "d": "2026-11-10",
 "k": "sooner",
-"nd": "2026-10-31",
+"nd": "2026-11-10",
 "now": "2026-11-11",
 "was": "2026-11-21"
 },
@@ -772,6 +777,11 @@
 "note": "Greer (upper body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
+"3652964": {
+"back": "2026-11-24",
+"note": "out",
+"status": "Out"
+},
 "3654006": {
 "back": "2026-11-14",
 "note": "Lyon (shoulder) will travel with the Sabres during the team's upcoming road trip, per Heather Engel of NHL.com.",
@@ -819,7 +829,7 @@
 },
 "3942905": {
 "back": "2026-11-11",
-"note": "Although Terry's (hip) return doesn't appear to be imminent, he is getting close to playing, Derek Lee of The Hockey News reports Saturday.",
+"note": "Terry (hip) will likely make his 2026-27 debut against Nashville on Wednesday, according to Eric Stephens of The Athletic.",
 "status": "Injured Reserve"
 },
 "4063268": {
