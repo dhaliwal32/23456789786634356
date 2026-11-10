@@ -1,40 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-02|3ec531891484",
-   "at": "2026-11-03T05:04:37Z",
-   "title": "Fantasy GM",
-   "text": "Wedgewood confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-03T05:04:37Z",
-   "seen": "2026-11-03T06:56:28Z"
-  },
-  {
-   "k": "2026-11-03|3ec531891484",
-   "at": "2026-11-03T07:02:24Z",
-   "title": "Fantasy GM",
-   "text": "Wedgewood confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": false,
-   "seen": "2026-11-03T23:59:40Z"
-  },
-  {
-   "k": "2026-11-03|bec95318d775",
-   "at": "2026-11-03T17:30:42Z",
-   "title": "Fantasy GM",
-   "text": "Newhook joined Caufield's line (MTL)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-03T17:30:42Z",
-   "seen": "2026-11-03T17:30:42Z"
-  },
-  {
    "k": "2026-11-03|8e731e922ce7",
    "at": "2026-11-03T19:15:10Z",
    "title": "Fantasy GM",
@@ -537,6 +503,30 @@
    "via": "urgent",
    "sent_at": "2026-11-10T02:32:12Z",
    "seen": "2026-11-10T02:56:11Z"
+  },
+  {
+   "k": "2026-11-10|581e1b2beecf",
+   "at": "2026-11-10T17:34:11Z",
+   "title": "Fantasy GM",
+   "text": "Norris joined Thompson's line (BUF)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-10T17:34:11Z",
+   "seen": "2026-11-10T17:34:11Z"
+  },
+  {
+   "k": "2026-11-10|be9b996265cf",
+   "at": "2026-11-10T17:34:11Z",
+   "title": "Fantasy GM",
+   "text": "Sissons left Matthews's line (TOR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-10T17:34:11Z",
+   "seen": "2026-11-10T17:34:11Z"
   }
  ],
  "sent": {
