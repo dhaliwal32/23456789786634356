@@ -527,6 +527,18 @@
    "via": "urgent",
    "sent_at": "2026-11-10T17:34:11Z",
    "seen": "2026-11-10T17:34:11Z"
+  },
+  {
+   "k": "2026-11-10|7122c8e5ec8e",
+   "at": "2026-11-10T18:05:33Z",
+   "title": "Fantasy GM",
+   "text": "Skinner not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-10T18:05:33Z",
+   "seen": "2026-11-10T18:05:33Z"
   }
  ],
  "sent": {
