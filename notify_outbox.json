@@ -586,7 +586,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-11T20:58:47Z",
-   "seen": "2026-11-11T23:03:04Z"
+   "seen": "2026-11-11T23:08:02Z"
   },
   {
    "k": "2026-11-11|rw258|date|2517899|2026-12-30|2027-01-09",
@@ -599,6 +599,42 @@
    "via": "urgent",
    "sent_at": "2026-11-11T21:40:27Z",
    "seen": "2026-11-11T21:40:27Z"
+  },
+  {
+   "k": "2026-11-11|2adc21c0202c",
+   "at": "2026-11-11T23:08:27Z",
+   "title": "Fantasy GM",
+   "text": "Cirelli joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-11T23:08:27Z",
+   "seen": "2026-11-11T23:08:27Z"
+  },
+  {
+   "k": "2026-11-11|d5dad7246d4a",
+   "at": "2026-11-11T23:08:27Z",
+   "title": "Fantasy GM",
+   "text": "Gourde left Kucherov's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-11T23:08:27Z",
+   "seen": "2026-11-11T23:08:27Z"
+  },
+  {
+   "k": "2026-11-11|0799292796ca",
+   "at": "2026-11-11T23:08:28Z",
+   "title": "Fantasy GM",
+   "text": "O'Reilly left Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-11T23:08:28Z",
+   "seen": "2026-11-11T23:08:28Z"
   }
  ],
  "sent": {
