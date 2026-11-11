@@ -107,7 +107,7 @@ def push(title, msg, prio="default", tags=""):
     if not NTFY_TOPIC or "PASTE" in NTFY_TOPIC:
         print("(notify) off - no ntfy topic")
         return False
-    headers = {"Title": title, "Priority": prio, "Click": APP_URL}
+    headers = {"Title": title, "Priority": prio}  # change 261: no Click link, tapping opens ntfy
     if tags:
         headers["Tags"] = tags
     r = requests.post(f"https://ntfy.sh/{NTFY_TOPIC}", data=msg.encode("utf-8"), headers=headers, timeout=20)

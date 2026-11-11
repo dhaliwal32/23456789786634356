@@ -1,10 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "espn_sync.py": true
+  "gm_notify.py": true,
+  "gm_live.py": true
  },
  "changes": [
-  "259-graph-past-weeks.py",
-  "260-phone-icons-lines-teams.py"
+  "261-alert-tap-opens-ntfy.py"
  ]
 }

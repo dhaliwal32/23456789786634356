@@ -40,7 +40,7 @@ def push(title, msg):
         return
     try:
         requests.post(f"https://ntfy.sh/{NTFY_TOPIC}", data=msg.encode("utf-8"),
-                      headers={"Title": title, "Priority": "default", "Click": APP_URL}, timeout=20)
+                      headers={"Title": title, "Priority": "default"}, timeout=20)  # change 261: no Click link, tapping opens ntfy
     except Exception as e:
         log("ntfy failed", e)
 
