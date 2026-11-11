@@ -18,6 +18,11 @@
 "k": "back",
 "was": "2026-11-09"
 },
+"2563027": {
+"d": "2026-11-10",
+"k": "new",
+"now": "2026-11-12"
+},
 "2590824": {
 "d": "2026-11-10",
 "k": "back",
@@ -392,6 +397,11 @@
 "now": "2026-11-14",
 "was": "2026-11-17"
 },
+"4587933": {
+"d": "2026-11-10",
+"k": "new",
+"now": "2026-11-12"
+},
 "4587996": {
 "d": "2026-11-10",
 "k": "later",
@@ -620,6 +630,11 @@
 "back": "2026-11-28",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"2563027": {
+"back": "2026-11-12",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -930,6 +945,11 @@
 "back": "2026-11-12",
 "note": "Tucker had arthroscopic knee surgery and will be re-assessed in six weeks, the team announced Wednesday.",
 "status": "Injured Reserve"
+},
+"4587933": {
+"back": "2026-11-12",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4587996": {
 "back": "2026-11-23",
