@@ -256,6 +256,11 @@
 "k": "back",
 "was": ""
 },
+"3942638": {
+"d": "2026-11-11",
+"k": "back",
+"was": ""
+},
 "3942714": {
 "d": "2026-11-10",
 "k": "later",
@@ -700,8 +705,8 @@
 },
 "3042037": {
 "back": "2026-12-05",
-"note": "out",
-"status": "Out"
+"note": "Mantha (throat) was placed on long-term injured reserve by the Devils on Wednesday, retroactive to Nov. 7.",
+"status": "Injured Reserve"
 },
 "3042044": {
 "back": "2026-11-27",
@@ -825,11 +830,6 @@
 },
 "3941974": {
 "back": "2026-11-21",
-"note": "ir",
-"status": "Injured Reserve"
-},
-"3942638": {
-"back": "",
 "note": "ir",
 "status": "Injured Reserve"
 },
