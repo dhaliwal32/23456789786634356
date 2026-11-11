@@ -23,10 +23,10 @@
 "was": "2026-11-10"
 },
 "2967072": {
-"d": "2026-11-10",
-"k": "later",
+"d": "2026-11-11",
+"k": "dtd",
 "now": "2026-11-11",
-"was": "2026-11-10"
+"was": "Out"
 },
 "2968829": {
 "d": "2026-11-05",
@@ -34,11 +34,11 @@
 "was": "2026-11-05"
 },
 "2976833": {
-"d": "2026-11-10",
-"k": "later",
+"d": "2026-11-11",
+"k": "dtd",
 "nd": "2026-11-10",
 "now": "2026-11-12",
-"was": "2026-11-10"
+"was": "Out"
 },
 "2976851": {
 "d": "2026-11-11",
@@ -213,11 +213,11 @@
 "nd": "2026-11-06"
 },
 "3891922": {
-"d": "2026-11-10",
-"k": "later",
+"d": "2026-11-11",
+"k": "dtd",
 "nd": "2026-11-09",
 "now": "2026-11-12",
-"was": "2026-11-10"
+"was": "Out"
 },
 "3899946": {
 "d": "2026-11-09",
@@ -513,10 +513,10 @@
 "now": "2026-11-14"
 },
 "5103599": {
-"d": "2026-11-07",
+"d": "2026-11-11",
 "k": "later",
 "nd": "2026-11-07",
-"now": "2026-11-12",
+"now": "2026-11-14",
 "was": "2026-11-08"
 },
 "5149180": {
@@ -617,13 +617,13 @@
 },
 "2967072": {
 "back": "2026-11-11",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976833": {
 "back": "2026-11-12",
-"note": "Rielly (lower body) has been deemed day-to-day and will not play in Tuesday's home clash against the Avalanche, per David Alter of The Hockey News.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976851": {
 "back": "2026-11-16",
@@ -777,8 +777,8 @@
 },
 "3891922": {
 "back": "2026-11-12",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3899946": {
 "back": "2026-11-14",
@@ -1011,7 +1011,7 @@
 "status": "Injured Reserve"
 },
 "5103599": {
-"back": "2026-11-12",
+"back": "2026-11-14",
 "note": "Vilmanis (undisclosed) will probably miss a few games, according to George Richards of Florida Hockey Now on Saturday.",
 "status": "Out"
 },
