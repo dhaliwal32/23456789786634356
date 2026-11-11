@@ -304,6 +304,12 @@
 "k": "back",
 "was": "2026-11-04"
 },
+"4271998": {
+"d": "2026-11-11",
+"k": "sooner",
+"now": "2026-11-14",
+"was": "2026-11-19"
+},
 "4272674": {
 "d": "2026-11-05",
 "k": "news",
@@ -856,7 +862,7 @@
 "status": "Injured Reserve"
 },
 "4271998": {
-"back": "2026-11-19",
+"back": "2026-11-14",
 "note": "Lindgren (upper body) was placed on injured reserve by the Kraken on Thursday and is expected to miss four to six weeks.",
 "status": "Injured Reserve"
 },
