@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-04|60625b8c0303",
-   "at": "2026-11-04T21:05:54Z",
-   "title": "Fantasy GM",
-   "text": "Chromiak left Panarin's line (LA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-04T21:05:54Z",
-   "seen": "2026-11-04T21:05:54Z"
-  },
-  {
    "k": "2026-11-05|f1218c5cf69e",
    "at": "2026-11-05T15:24:13Z",
    "title": "Fantasy GM",
@@ -598,7 +586,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-11T20:58:47Z",
-   "seen": "2026-11-11T21:04:32Z"
+   "seen": "2026-11-11T21:10:30Z"
   }
  ],
  "sent": {
