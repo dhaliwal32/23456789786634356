@@ -1,9 +1,8 @@
 {
  "files": {
-  "gm_notify.py": true,
-  "gm_live.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "261-alert-tap-opens-ntfy.py"
+  "262-box-open-close-graph-zoom.py"
  ]
 }
