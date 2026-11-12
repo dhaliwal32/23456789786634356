@@ -635,6 +635,54 @@
    "via": "urgent",
    "sent_at": "2026-11-11T23:08:28Z",
    "seen": "2026-11-11T23:08:28Z"
+  },
+  {
+   "k": "2026-11-11|96762d91602b",
+   "at": "2026-11-12T03:28:41Z",
+   "title": "Fantasy GM",
+   "text": "But joined Keller's line (UTA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-12T03:28:41Z",
+   "seen": "2026-11-12T03:28:41Z"
+  },
+  {
+   "k": "2026-11-11|a397b5d14183",
+   "at": "2026-11-12T03:28:41Z",
+   "title": "Fantasy GM",
+   "text": "Lee left Keller's line (UTA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-12T03:28:41Z",
+   "seen": "2026-11-12T03:28:41Z"
+  },
+  {
+   "k": "2026-11-11|1686ba8431bf",
+   "at": "2026-11-12T03:28:41Z",
+   "title": "Fantasy GM",
+   "text": "Hayton left Keller's line (UTA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-12T03:28:41Z",
+   "seen": "2026-11-12T03:28:41Z"
+  },
+  {
+   "k": "2026-11-11|c8cad0b82587",
+   "at": "2026-11-12T03:28:41Z",
+   "title": "Fantasy GM",
+   "text": "Lee joined UTA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-12T03:28:41Z",
+   "seen": "2026-11-12T03:28:41Z"
   }
  ],
  "sent": {
