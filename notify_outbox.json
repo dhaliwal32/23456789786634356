@@ -1,54 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-05|f1218c5cf69e",
-   "at": "2026-11-05T15:24:13Z",
-   "title": "Fantasy GM",
-   "text": "Giroux joined OTT PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-05T15:24:13Z",
-   "seen": "2026-11-05T15:24:13Z"
-  },
-  {
-   "k": "2026-11-05|b1c8c7b99df8",
-   "at": "2026-11-05T15:24:13Z",
-   "title": "Fantasy GM",
-   "text": "Misa joined Celebrini's line (SJ)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-05T15:24:13Z",
-   "seen": "2026-11-05T15:24:13Z"
-  },
-  {
-   "k": "2026-11-05|a485707c4cb6",
-   "at": "2026-11-05T16:13:56Z",
-   "title": "Fantasy GM",
-   "text": "Sorokin not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-05T16:13:56Z",
-   "seen": "2026-11-05T23:55:29Z"
-  },
-  {
-   "k": "2026-11-05|56fe124d89c2",
-   "at": "2026-11-05T17:27:59Z",
-   "title": "Fantasy GM",
-   "text": "Newhook left Caufield's line (MTL)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-05T17:27:59Z",
-   "seen": "2026-11-05T17:27:59Z"
-  },
-  {
    "k": "2026-11-05|df0eb0c5091e",
    "at": "2026-11-05T17:45:33Z",
    "title": "Fantasy GM",
@@ -683,6 +635,18 @@
    "via": "urgent",
    "sent_at": "2026-11-12T03:28:41Z",
    "seen": "2026-11-12T03:28:41Z"
+  },
+  {
+   "k": "2026-11-12|18542b348f21",
+   "at": "2026-11-12T17:38:58Z",
+   "title": "Fantasy GM",
+   "text": "Kane joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-12T17:38:58Z",
+   "seen": "2026-11-12T17:38:58Z"
   }
  ],
  "sent": {
