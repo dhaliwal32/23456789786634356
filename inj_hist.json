@@ -222,10 +222,8 @@
 },
 "3735": {
 "d": "2026-11-12",
-"k": "later",
-"nd": "2026-11-12",
-"now": "2026-11-12",
-"was": "2026-11-04"
+"k": "back",
+"was": "2026-11-12"
 },
 "3852": {
 "d": "2026-11-06",
@@ -233,11 +231,11 @@
 "nd": "2026-11-06"
 },
 "3891922": {
-"d": "2026-11-11",
-"k": "dtd",
+"d": "2026-11-12",
+"k": "later",
 "nd": "2026-11-09",
-"now": "2026-11-12",
-"was": "Out"
+"now": "2026-11-14",
+"was": "2026-11-12"
 },
 "3899946": {
 "d": "2026-11-09",
@@ -823,20 +821,15 @@
 "note": "Lyon (shoulder) will travel with the Sabres during the team's upcoming road trip, per Heather Engel of NHL.com.",
 "status": "Injured Reserve"
 },
-"3735": {
-"back": "2026-11-12",
-"note": "Kane (upper body) will likely be in the lineup versus Buffalo on Thursday, Mark Lazerus of The Athletic reports.",
-"status": "Injured Reserve"
-},
 "3852": {
 "back": "2026-11-21",
 "note": "Head coach Paul Maurice said Friday that Marchand (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers",
 "status": "Injured Reserve"
 },
 "3891922": {
-"back": "2026-11-12",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-14",
+"note": "out",
+"status": "Out"
 },
 "3899946": {
 "back": "2026-11-14",
