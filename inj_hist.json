@@ -298,10 +298,9 @@
 "was": "2026-11-07"
 },
 "4063569": {
-"d": "2026-11-11",
-"k": "new",
-"nd": "2026-11-12",
-"now": "2026-11-12"
+"d": "2026-11-12",
+"k": "back",
+"was": ""
 },
 "4233536": {
 "d": "2026-11-11",
@@ -703,8 +702,8 @@
 },
 "2976833": {
 "back": "2026-11-14",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "out",
+"status": "Out"
 },
 "2993474": {
 "back": "2026-11-19",
@@ -870,11 +869,6 @@
 "back": "2026-12-04",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"4063569": {
-"back": "",
-"note": "MacEwen (wrist) is a game-time decision for Thursday's home clash against the Wild, per Andre Leal of The Hockey News.",
-"status": "Day-To-Day"
 },
 "4233536": {
 "back": "2026-11-14",
