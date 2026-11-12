@@ -309,10 +309,8 @@
 },
 "4233648": {
 "d": "2026-11-11",
-"k": "later",
-"nd": "2026-11-07",
-"now": "2026-11-11",
-"was": "2026-11-07"
+"k": "back",
+"was": "2026-11-11"
 },
 "4233668": {
 "d": "2026-11-11",
@@ -688,8 +686,8 @@
 },
 "3024798": {
 "back": "2026-11-14",
-"note": "Schmidt (upper body) has no timeline for his return to the lineup, per Brogan Houston of the Deseret News on Monday.",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "3025524": {
 "back": "2026-11-14",
@@ -869,11 +867,6 @@
 "4233643": {
 "back": "2026-11-13",
 "note": "Chytil (shoulder) will not be in action versus the Flyers on Monday, Canucks play-by-play announcer Brendan Batchelor reports.",
-"status": "Injured Reserve"
-},
-"4233648": {
-"back": "2026-11-11",
-"note": "Yamamoto (upper body) was placed on injured reserve Friday.",
 "status": "Injured Reserve"
 },
 "4233668": {
