@@ -569,11 +569,9 @@
 "now": "2026-11-14"
 },
 "5103599": {
-"d": "2026-11-11",
-"k": "later",
-"nd": "2026-11-07",
-"now": "2026-11-14",
-"was": "2026-11-08"
+"d": "2026-11-12",
+"k": "back",
+"was": "2026-11-14"
 },
 "5149180": {
 "d": "2026-11-10",
@@ -591,11 +589,6 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
-},
-"5161": {
-"d": "2026-11-12",
-"k": "back",
-"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -1076,11 +1069,6 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
-"5103599": {
-"back": "2026-11-14",
-"note": "Vilmanis (undisclosed) will probably miss a few games, according to George Richards of Florida Hockey Now on Saturday.",
-"status": "Out"
-},
 "5149180": {
 "back": "2026-11-13",
 "note": "day-to-day",
@@ -1094,6 +1082,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
