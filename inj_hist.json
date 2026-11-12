@@ -213,10 +213,10 @@
 "was": "2026-11-22"
 },
 "3735": {
-"d": "2026-11-11",
+"d": "2026-11-12",
 "k": "later",
 "nd": "2026-11-08",
-"now": "2026-11-14",
+"now": "2026-11-12",
 "was": "2026-11-04"
 },
 "3852": {
@@ -326,7 +326,7 @@
 "4271998": {
 "d": "2026-11-12",
 "k": "sooner",
-"now": "2026-11-12",
+"now": "2026-11-14",
 "was": "2026-11-19"
 },
 "4272674": {
@@ -819,7 +819,7 @@
 "status": "Injured Reserve"
 },
 "3735": {
-"back": "2026-11-14",
+"back": "2026-11-12",
 "note": "Kane (upper body) was placed on injured reserve Sunday.",
 "status": "Injured Reserve"
 },
@@ -894,7 +894,7 @@
 "status": "Injured Reserve"
 },
 "4271998": {
-"back": "2026-11-12",
+"back": "2026-11-14",
 "note": "Lindgren (upper body) was placed on injured reserve by the Kraken on Thursday and is expected to miss four to six weeks.",
 "status": "Injured Reserve"
 },
