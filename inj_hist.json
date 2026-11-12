@@ -214,11 +214,9 @@
 "now": "2026-11-24"
 },
 "3654006": {
-"d": "2026-11-10",
-"k": "sooner",
-"nd": "2026-11-10",
-"now": "2026-11-14",
-"was": "2026-11-22"
+"d": "2026-11-12",
+"k": "back",
+"was": "2026-11-14"
 },
 "3735": {
 "d": "2026-11-12",
@@ -609,6 +607,12 @@
 "now": "2026-11-14",
 "was": "2026-11-08"
 },
+"5216882": {
+"d": "2026-11-12",
+"k": "later",
+"now": "2026-11-19",
+"was": "2026-11-17"
+},
 "5275337": {
 "d": "2026-11-07",
 "k": "later",
@@ -815,11 +819,6 @@
 "back": "2026-11-24",
 "note": "out",
 "status": "Out"
-},
-"3654006": {
-"back": "2026-11-14",
-"note": "Lyon (shoulder) will travel with the Sabres during the team's upcoming road trip, per Heather Engel of NHL.com.",
-"status": "Injured Reserve"
 },
 "3852": {
 "back": "2026-11-21",
@@ -1087,9 +1086,9 @@
 "status": "Injured Reserve"
 },
 "5216882": {
-"back": "2026-11-17",
-"note": "Helenius (upper body) is week-to-week, according to Matthew Fairburn of The Athletic on Monday.",
-"status": "Out"
+"back": "2026-11-19",
+"note": "ir",
+"status": "Injured Reserve"
 },
 "5216907": {
 "back": "2026-11-14",
