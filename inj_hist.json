@@ -30,10 +30,10 @@
 "was": "2026-11-10"
 },
 "2967072": {
-"d": "2026-11-11",
-"k": "later",
+"d": "2026-11-12",
+"k": "dtd",
 "now": "2026-11-13",
-"was": "2026-11-11"
+"was": "Out"
 },
 "2968829": {
 "d": "2026-11-05",
@@ -46,6 +46,11 @@
 "nd": "2026-11-10",
 "now": "2026-11-12",
 "was": "Out"
+},
+"2976851": {
+"d": "2026-11-12",
+"k": "back",
+"was": ""
 },
 "2993474": {
 "d": "2026-11-12",
@@ -65,11 +70,6 @@
 "k": "later",
 "now": "2026-11-14",
 "was": "2026-11-05"
-},
-"3025535": {
-"d": "2026-11-12",
-"k": "back",
-"was": "2026-11-14"
 },
 "3041970": {
 "d": "2026-11-06",
@@ -166,10 +166,10 @@
 "was": "2026-11-08"
 },
 "3114743": {
-"d": "2026-11-07",
+"d": "2026-11-12",
 "k": "later",
 "nd": "2026-11-10",
-"now": "2026-11-14",
+"now": "2026-11-12",
 "was": "2026-11-07"
 },
 "3114770": {
@@ -682,16 +682,11 @@
 },
 "2967072": {
 "back": "2026-11-13",
-"note": "out",
-"status": "Out"
-},
-"2976833": {
-"back": "2026-11-12",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
-"2976851": {
-"back": "",
+"2976833": {
+"back": "2026-11-12",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -709,6 +704,11 @@
 "back": "2026-11-14",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"3025535": {
+"back": "2026-11-14",
+"note": "Pesce has been ruled out for Thursday's game against Washington due to an illness, Kristy Flannery of The Hockey News reports.",
+"status": "Out"
 },
 "3041970": {
 "back": "2026-11-27",
@@ -766,7 +766,7 @@
 "status": "Day-To-Day"
 },
 "3114743": {
-"back": "2026-11-14",
+"back": "2026-11-12",
 "note": "Fiala (lower leg) should play Thursday against the Islanders or Saturday against Calgary, according to Emily Kaplan of ESPN.",
 "status": "Injured Reserve"
 },
@@ -827,7 +827,7 @@
 },
 "3735": {
 "back": "2026-11-12",
-"note": "Kane (upper body) was placed on injured reserve Sunday.",
+"note": "Kane (upper body) will likely be in the lineup versus Buffalo on Thursday, Mark Lazerus of The Athletic reports.",
 "status": "Injured Reserve"
 },
 "3852": {
@@ -972,8 +972,8 @@
 },
 "4587933": {
 "back": "2026-11-18",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Kovacevic (undisclosed) is undergoing imaging Thursday and won't play in the Devils' home matchup against the Capitals, Kristy Flannery of The Hockey News repor",
+"status": "Out"
 },
 "4587996": {
 "back": "2026-11-23",
