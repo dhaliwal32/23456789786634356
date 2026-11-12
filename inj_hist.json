@@ -29,6 +29,11 @@
 "k": "back",
 "was": "2026-11-10"
 },
+"2593131": {
+"d": "2026-11-12",
+"k": "new",
+"now": "2026-11-14"
+},
 "2967072": {
 "d": "2026-11-12",
 "k": "dtd",
@@ -95,6 +100,11 @@
 "d": "2026-11-09",
 "k": "back",
 "was": "2026-11-09"
+},
+"3042019": {
+"d": "2026-11-12",
+"k": "back",
+"was": "2026-11-28"
 },
 "3042020": {
 "d": "2026-11-07",
@@ -246,10 +256,10 @@
 "now": "2026-11-14"
 },
 "3941974": {
-"d": "2026-11-09",
+"d": "2026-11-12",
 "k": "later",
 "nd": "2026-10-22",
-"now": "2026-11-21",
+"now": "2026-12-03",
 "was": "2026-10-24"
 },
 "3942043": {
@@ -405,11 +415,9 @@
 "was": "2026-11-05"
 },
 "4587580": {
-"d": "2026-11-08",
-"k": "sooner",
-"nd": "2026-11-09",
-"now": "2026-11-14",
-"was": "2026-11-17"
+"d": "2026-11-12",
+"k": "back",
+"was": "2026-11-14"
 },
 "4587904": {
 "d": "2026-11-12",
@@ -673,6 +681,11 @@
 "note": "Rust (lower body) will be re-evaluated in six weeks, Michelle Crechiolo of the Penguins' official site reports Thursday.",
 "status": "Injured Reserve"
 },
+"2593131": {
+"back": "2026-11-14",
+"note": "Pageau is dealing with a lower-body injury and will be sidelined against the Kings on Thursday.",
+"status": "Out"
+},
 "2952729": {
 "back": "2027-07-01",
 "note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
@@ -717,11 +730,6 @@
 "back": "2027-01-30",
 "note": "Domi (back) was transferred from the non-roster list to long-term injured reserve Wednesday, per PuckPedia.",
 "status": "Injured Reserve"
-},
-"3042019": {
-"back": "2026-11-28",
-"note": "out",
-"status": "Out"
 },
 "3042037": {
 "back": "2026-12-05",
@@ -849,7 +857,7 @@
 "status": "Injured Reserve"
 },
 "3941974": {
-"back": "2026-11-21",
+"back": "2026-12-03",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -946,11 +954,6 @@
 "4565282": {
 "back": "2026-11-14",
 "note": "Johansson (undisclosed) will be with the Red Wings for their upcoming four-game road trip, Ansar Khan of MLive.com reports Friday.",
-"status": "Injured Reserve"
-},
-"4587580": {
-"back": "2026-11-14",
-"note": "Maccelli (lower body) is day-to-day, according to Andrew Gross of Newsday on Monday.",
 "status": "Injured Reserve"
 },
 "4587854": {
