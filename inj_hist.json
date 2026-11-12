@@ -401,10 +401,10 @@
 "was": "2026-11-07"
 },
 "4565282": {
-"d": "2026-11-06",
+"d": "2026-11-12",
 "k": "later",
 "nd": "2026-11-06",
-"now": "2026-11-12",
+"now": "2026-11-14",
 "was": "2026-11-05"
 },
 "4587580": {
@@ -528,9 +528,10 @@
 "was": "2026-11-14"
 },
 "5080143": {
-"d": "2026-11-11",
-"k": "new",
-"now": "2026-11-12"
+"d": "2026-11-12",
+"k": "dtd",
+"now": "2026-11-12",
+"was": "Out"
 },
 "5080152": {
 "d": "2026-11-10",
@@ -578,11 +579,6 @@
 "k": "back",
 "was": ""
 },
-"5161": {
-"d": "2026-11-12",
-"k": "back",
-"was": "2027-01-12"
-},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -601,6 +597,12 @@
 "nd": "2026-11-07",
 "now": "2026-11-21",
 "was": "2026-11-08"
+},
+"5291944": {
+"d": "2026-11-12",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-11-12"
 },
 "5334662": {
 "d": "2026-11-09",
@@ -942,7 +944,7 @@
 "status": "Injured Reserve"
 },
 "4565282": {
-"back": "2026-11-12",
+"back": "2026-11-14",
 "note": "Johansson (undisclosed) will be with the Red Wings for their upcoming four-game road trip, Ansar Khan of MLive.com reports Friday.",
 "status": "Injured Reserve"
 },
@@ -1023,8 +1025,8 @@
 },
 "5080143": {
 "back": "2026-11-12",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080153": {
 "back": "2026-11-24",
@@ -1081,6 +1083,11 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
+"status": "Injured Reserve"
+},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1112,7 +1119,7 @@
 "status": "Injured Reserve"
 },
 "5291944": {
-"back": "2026-11-12",
+"back": "2026-11-28",
 "note": "O'Brien (lower body) was placed on non-roster injured reserve Wednesday.",
 "status": "Injured Reserve"
 },
