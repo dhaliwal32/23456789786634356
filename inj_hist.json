@@ -36,9 +36,10 @@
 "was": "2026-11-14"
 },
 "2593131": {
-"d": "2026-11-12",
-"k": "new",
-"now": "2026-11-14"
+"d": "2026-11-13",
+"k": "dtd",
+"now": "2026-11-14",
+"was": "Out"
 },
 "2967072": {
 "d": "2026-11-12",
@@ -47,11 +48,11 @@
 "was": "Out"
 },
 "2976833": {
-"d": "2026-11-12",
-"k": "later",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-10",
 "now": "2026-11-14",
-"was": "2026-11-12"
+"was": "Out"
 },
 "2976851": {
 "d": "2026-11-12",
@@ -76,6 +77,12 @@
 "k": "later",
 "now": "2026-11-14",
 "was": "2026-11-05"
+},
+"3025535": {
+"d": "2026-11-13",
+"k": "dtd",
+"now": "2026-11-14",
+"was": "Out"
 },
 "3041969": {
 "d": "2026-11-12",
@@ -182,11 +189,11 @@
 "was": "2026-11-12"
 },
 "3114770": {
-"d": "2026-11-12",
-"k": "later",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-12",
 "now": "2026-11-14",
-"was": "2026-11-12"
+"was": "Out"
 },
 "3151187": {
 "d": "2026-11-10",
@@ -226,11 +233,11 @@
 "nd": "2026-11-06"
 },
 "3891922": {
-"d": "2026-11-12",
-"k": "later",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-09",
 "now": "2026-11-14",
-"was": "2026-11-12"
+"was": "Out"
 },
 "3899946": {
 "d": "2026-11-09",
@@ -250,15 +257,17 @@
 "was": ""
 },
 "3904178": {
-"d": "2026-11-11",
-"k": "new",
-"now": "2026-11-14"
+"d": "2026-11-13",
+"k": "dtd",
+"now": "2026-11-14",
+"was": "Out"
 },
 "3941973": {
-"d": "2026-11-12",
-"k": "new",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-12",
-"now": "2026-11-14"
+"now": "2026-11-14",
+"was": "Out"
 },
 "3941974": {
 "d": "2026-11-12",
@@ -305,11 +314,11 @@
 "was": ""
 },
 "4233536": {
-"d": "2026-11-11",
-"k": "later",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-11",
 "now": "2026-11-14",
-"was": "2026-11-12"
+"was": "Out"
 },
 "4233563": {
 "d": "2026-11-13",
@@ -538,11 +547,11 @@
 "was": "2026-11-14"
 },
 "5080143": {
-"d": "2026-11-12",
-"k": "later",
+"d": "2026-11-13",
+"k": "dtd",
 "nd": "2026-11-12",
 "now": "2026-11-14",
-"was": "2026-11-12"
+"was": "Out"
 },
 "5080152": {
 "d": "2026-11-10",
@@ -594,11 +603,6 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
-},
-"5161": {
-"d": "2026-11-13",
-"k": "back",
-"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -692,8 +696,8 @@
 },
 "2593131": {
 "back": "2026-11-14",
-"note": "Pageau is dealing with a lower-body injury and will be sidelined against the Kings on Thursday.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2952729": {
 "back": "2027-07-01",
@@ -707,8 +711,8 @@
 },
 "2976833": {
 "back": "2026-11-14",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2993474": {
 "back": "2026-11-19",
@@ -727,8 +731,8 @@
 },
 "3025535": {
 "back": "2026-11-14",
-"note": "Pesce has been ruled out for Thursday's game against Washington due to an illness, Kristy Flannery of The Hockey News reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3041969": {
 "back": "2026-11-14",
@@ -792,8 +796,8 @@
 },
 "3114770": {
 "back": "2026-11-14",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3114777": {
 "back": "2027-01-02",
@@ -842,8 +846,8 @@
 },
 "3891922": {
 "back": "2026-11-14",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3899946": {
 "back": "2026-11-14",
@@ -857,8 +861,8 @@
 },
 "3904178": {
 "back": "2026-11-14",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-11-27",
@@ -867,8 +871,8 @@
 },
 "3941973": {
 "back": "2026-11-14",
-"note": "Cirelli (undisclosed) will miss Thursday's game versus the Blue Jackets, Mark Scheig of The Hockey Writers reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3941974": {
 "back": "2026-12-03",
@@ -887,8 +891,8 @@
 },
 "4233536": {
 "back": "2026-11-14",
-"note": "Heiskanen (upper body) has been ruled out for Thursday's game against the Jets, Stars TV host Brien Rea reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233563": {
 "back": "2026-11-14",
@@ -1037,8 +1041,8 @@
 },
 "5080143": {
 "back": "2026-11-14",
-"note": "Cooley (upper body) will miss Thursday's game against St. Louis, per Cole Bagley of KSL Sports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080153": {
 "back": "2026-11-24",
@@ -1093,6 +1097,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
