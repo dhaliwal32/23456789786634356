@@ -490,6 +490,11 @@
 "now": "2026-12-05",
 "was": "2026-11-11"
 },
+"4874731": {
+"d": "2026-11-13",
+"k": "new",
+"now": "2026-11-14"
+},
 "4874733": {
 "d": "2026-11-10",
 "k": "back",
@@ -1026,6 +1031,11 @@
 "back": "2026-12-05",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"4874731": {
+"back": "2026-11-14",
+"note": "Rosen was not on the ice Friday due to an undisclosed injury, Ken Wiebe of The Winnipeg Free Press reports.",
+"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-27",
