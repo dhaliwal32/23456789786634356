@@ -562,6 +562,11 @@
 "k": "back",
 "was": "2026-11-14"
 },
+"5080162": {
+"d": "2026-11-12",
+"k": "new",
+"now": "2026-11-14"
+},
 "5080221": {
 "d": "2026-11-08",
 "k": "back",
@@ -1030,6 +1035,11 @@
 "back": "2026-11-24",
 "note": "Savoie (lower body) was shifted to long-term injured reserve Thursday.",
 "status": "Injured Reserve"
+},
+"5080162": {
+"back": "2026-11-14",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080177": {
 "back": "2027-02-12",
