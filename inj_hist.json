@@ -530,7 +530,7 @@
 "4894747": {
 "d": "2026-11-13",
 "k": "sooner",
-"nd": "2026-11-12",
+"nd": "2026-11-13",
 "now": "2026-11-14",
 "was": "2026-12-01"
 },
@@ -606,11 +606,6 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
-},
-"5161": {
-"d": "2026-11-13",
-"k": "back",
-"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -1044,7 +1039,7 @@
 },
 "4894747": {
 "back": "2026-11-14",
-"note": "Melanson (chest) was sporting a regular jersey during Thursday's game-day skate, Sound of Hockey reports.",
+"note": "Melanson (chest) will be a game-time call for Saturday's clash with the Hurricanes, Tom Gulitti of NHL.com reports.",
 "status": "Injured Reserve"
 },
 "5075840": {
@@ -1110,6 +1105,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
