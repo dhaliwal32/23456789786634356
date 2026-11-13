@@ -76,6 +76,11 @@
 "now": "2026-11-14",
 "was": "2026-11-05"
 },
+"3041969": {
+"d": "2026-11-12",
+"k": "new",
+"now": "2026-11-14"
+},
 "3041970": {
 "d": "2026-11-06",
 "k": "news",
@@ -735,6 +740,11 @@
 "back": "2026-11-14",
 "note": "Pesce has been ruled out for Thursday's game against Washington due to an illness, Kristy Flannery of The Hockey News reports.",
 "status": "Out"
+},
+"3041969": {
+"back": "2026-11-14",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3041970": {
 "back": "2026-11-27",
