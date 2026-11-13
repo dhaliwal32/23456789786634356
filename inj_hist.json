@@ -31,8 +31,9 @@
 },
 "2590861": {
 "d": "2026-11-12",
-"k": "new",
-"now": "2026-11-14"
+"k": "later",
+"now": "2026-11-19",
+"was": "2026-11-14"
 },
 "2593131": {
 "d": "2026-11-12",
@@ -585,6 +586,7 @@
 "5080162": {
 "d": "2026-11-12",
 "k": "later",
+"nd": "2026-11-12",
 "now": "2026-11-17",
 "was": "2026-11-14"
 },
@@ -713,9 +715,9 @@
 "status": "Injured Reserve"
 },
 "2590861": {
-"back": "2026-11-14",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-19",
+"note": "out",
+"status": "Out"
 },
 "2591155": {
 "back": "2026-12-05",
@@ -1079,8 +1081,8 @@
 },
 "5080162": {
 "back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Bichsel (lower body) is expected to miss at least two games after getting injured Thursday versus the Jets, Robert Tiffin of NHL.com reports.",
+"status": "Out"
 },
 "5080177": {
 "back": "2027-02-12",
