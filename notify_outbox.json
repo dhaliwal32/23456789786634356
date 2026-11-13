@@ -695,6 +695,18 @@
    "via": "urgent",
    "sent_at": "2026-11-13T01:11:00Z",
    "seen": "2026-11-13T01:11:00Z"
+  },
+  {
+   "k": "2026-11-12|63f437451d93",
+   "at": "2026-11-13T01:45:37Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T01:45:37Z",
+   "seen": "2026-11-13T01:45:37Z"
   }
  ],
  "sent": {
