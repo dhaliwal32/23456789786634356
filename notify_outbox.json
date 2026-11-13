@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-05|6dfd509fea74",
-   "at": "2026-11-06T00:07:48Z",
-   "title": "Fantasy GM",
-   "text": "Hall joined Jarvis's line (CAR)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-06T00:07:48Z",
-   "seen": "2026-11-06T00:07:48Z"
-  },
-  {
-   "k": "2026-11-05|2d150780849b",
-   "at": "2026-11-06T00:07:48Z",
-   "title": "Fantasy GM",
-   "text": "Martinook left Jarvis's line (CAR)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-06T00:07:48Z",
-   "seen": "2026-11-06T00:07:48Z"
-  },
-  {
-   "k": "2026-11-05|2610c0a9513c",
-   "at": "2026-11-06T00:07:48Z",
-   "title": "Fantasy GM",
-   "text": "Goncalves joined Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-06T00:07:48Z",
-   "seen": "2026-11-06T00:07:48Z"
-  },
-  {
    "k": "2026-11-05|8e731e922ce7",
    "at": "2026-11-06T00:39:38Z",
    "title": "Fantasy GM",
@@ -634,7 +598,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-12T19:17:52Z",
-   "seen": "2026-11-13T00:02:53Z"
+   "seen": "2026-11-13T00:08:55Z"
   },
   {
    "k": "2026-11-12|d73770801c2f",
@@ -671,6 +635,54 @@
    "via": "urgent",
    "sent_at": "2026-11-12T23:07:16Z",
    "seen": "2026-11-12T23:07:16Z"
+  },
+  {
+   "k": "2026-11-12|d71eca5d8706",
+   "at": "2026-11-13T00:09:16Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves left Guentzel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T00:09:16Z",
+   "seen": "2026-11-13T00:09:16Z"
+  },
+  {
+   "k": "2026-11-12|cca80584b9c3",
+   "at": "2026-11-13T00:09:16Z",
+   "title": "Fantasy GM",
+   "text": "O'Reilly left Guentzel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T00:09:16Z",
+   "seen": "2026-11-13T00:09:16Z"
+  },
+  {
+   "k": "2026-11-12|1abf6a0a482b",
+   "at": "2026-11-13T00:09:16Z",
+   "title": "Fantasy GM",
+   "text": "Gourde left Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T00:09:16Z",
+   "seen": "2026-11-13T00:09:16Z"
+  },
+  {
+   "k": "2026-11-12|5c7733b684ad",
+   "at": "2026-11-13T00:09:16Z",
+   "title": "Fantasy GM",
+   "text": "Protas joined Tuch's line (WSH)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T00:09:16Z",
+   "seen": "2026-11-13T00:09:16Z"
   }
  ],
  "sent": {
