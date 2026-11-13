@@ -843,6 +843,30 @@
    "via": "urgent",
    "sent_at": "2026-11-13T15:22:10Z",
    "seen": "2026-11-13T15:22:10Z"
+  },
+  {
+   "k": "2026-11-13|b6a239f6d1d8",
+   "at": "2026-11-13T19:30:29Z",
+   "title": "Fantasy GM",
+   "text": "Monahan joined CBJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T19:30:29Z",
+   "seen": "2026-11-13T19:30:29Z"
+  },
+  {
+   "k": "2026-11-13|6324e56cb83c",
+   "at": "2026-11-13T19:30:29Z",
+   "title": "Fantasy GM",
+   "text": "Misa left Celebrini's line (SJ)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T19:30:29Z",
+   "seen": "2026-11-13T19:30:29Z"
   }
  ],
  "sent": {
