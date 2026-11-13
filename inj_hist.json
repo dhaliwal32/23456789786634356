@@ -545,6 +545,12 @@
 "k": "back",
 "was": ""
 },
+"5075840": {
+"d": "2026-11-13",
+"k": "later",
+"now": "2026-11-19",
+"was": "2026-11-14"
+},
 "5079": {
 "d": "2026-11-10",
 "k": "back",
@@ -1044,7 +1050,7 @@
 "status": "Injured Reserve"
 },
 "5075840": {
-"back": "2026-11-14",
+"back": "2026-11-19",
 "note": "Soderblom (upper body) is week-to-week, per Penguins PR on Monday.",
 "status": "Injured Reserve"
 },
