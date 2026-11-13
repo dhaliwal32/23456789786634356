@@ -671,6 +671,30 @@
    "via": "urgent",
    "sent_at": "2026-11-13T00:09:16Z",
    "seen": "2026-11-13T00:09:16Z"
+  },
+  {
+   "k": "2026-11-12|90f44766d6eb",
+   "at": "2026-11-13T01:11:00Z",
+   "title": "Fantasy GM",
+   "text": "Krebs joined Thompson's line (BUF)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T01:11:00Z",
+   "seen": "2026-11-13T01:11:00Z"
+  },
+  {
+   "k": "2026-11-12|ab1c5602031d",
+   "at": "2026-11-13T01:11:00Z",
+   "title": "Fantasy GM",
+   "text": "Norris left Thompson's line (BUF)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T01:11:00Z",
+   "seen": "2026-11-13T01:11:00Z"
   }
  ],
  "sent": {
