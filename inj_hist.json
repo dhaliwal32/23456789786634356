@@ -253,6 +253,11 @@
 "now": "2026-11-14",
 "was": "2026-11-07"
 },
+"3904091": {
+"d": "2026-11-12",
+"k": "new",
+"now": "2026-11-14"
+},
 "3904098": {
 "d": "2026-11-10",
 "k": "back",
@@ -870,6 +875,11 @@
 "back": "2026-11-14",
 "note": "Barzal (knee) won't be in the lineup against the Sharks on Monday but has been upgraded to day-to-day, Andrew Gross of Newsday reports.",
 "status": "Injured Reserve"
+},
+"3904091": {
+"back": "2026-11-14",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3904178": {
 "back": "2026-11-14",
