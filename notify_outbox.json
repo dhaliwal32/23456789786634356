@@ -755,6 +755,46 @@
    "via": "urgent",
    "sent_at": "2026-11-13T03:11:28Z",
    "seen": "2026-11-13T03:11:28Z"
+  },
+  {
+   "k": "2026-11-13|2547ad788fcc",
+   "at": "2026-11-13T13:21:12Z",
+   "title": "Fantasy GM",
+   "text": "Martinook joined Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-13T13:21:12Z"
+  },
+  {
+   "k": "2026-11-13|9709d8211cf9",
+   "at": "2026-11-13T13:21:12Z",
+   "title": "Fantasy GM",
+   "text": "Staal joined Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-13T13:21:12Z"
+  },
+  {
+   "k": "2026-11-13|948891f2f585",
+   "at": "2026-11-13T13:21:12Z",
+   "title": "Fantasy GM",
+   "text": "Jankowski left Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-13T13:21:12Z"
+  },
+  {
+   "k": "2026-11-13|ceadea9371de",
+   "at": "2026-11-13T13:21:12Z",
+   "title": "Fantasy GM",
+   "text": "Hall left Jarvis's line (CAR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-13T13:21:12Z"
   }
  ],
  "sent": {
