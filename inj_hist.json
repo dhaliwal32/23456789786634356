@@ -493,6 +493,7 @@
 "4874731": {
 "d": "2026-11-13",
 "k": "later",
+"nd": "2026-11-13",
 "now": "2026-11-17",
 "was": "2026-11-14"
 },
@@ -592,10 +593,10 @@
 "was": ""
 },
 "5080223": {
-"d": "2026-11-07",
+"d": "2026-11-13",
 "k": "later",
 "nd": "2026-11-07",
-"now": "2026-11-30",
+"now": "2026-11-17",
 "was": "2026-11-08"
 },
 "5080225": {
@@ -1035,8 +1036,8 @@
 },
 "4874731": {
 "back": "2026-11-17",
-"note": "Rosen was not on the ice Friday due to an undisclosed injury, Ken Wiebe of The Winnipeg Free Press reports.",
-"status": "Day-To-Day"
+"note": "Rosen (undisclosed) has been ruled out for Saturday's game against the Blackhawks, Ken Wiebe of The Winnipeg Free Press reports.",
+"status": "Out"
 },
 "4874744": {
 "back": "2026-11-27",
@@ -1094,7 +1095,7 @@
 "status": "Injured Reserve"
 },
 "5080223": {
-"back": "2026-11-30",
+"back": "2026-11-17",
 "note": "ir-nr",
 "status": "Injured Reserve"
 },
