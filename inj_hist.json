@@ -296,6 +296,11 @@
 "now": "2026-11-14",
 "was": "2026-10-20"
 },
+"3942866": {
+"d": "2026-11-13",
+"k": "new",
+"now": "2026-11-19"
+},
 "3942905": {
 "d": "2026-11-11",
 "k": "back",
@@ -330,11 +335,9 @@
 "was": "2026-11-12"
 },
 "4233643": {
-"d": "2026-11-09",
-"k": "later",
-"nd": "2026-11-13",
-"now": "2026-11-13",
-"was": "2026-10-31"
+"d": "2026-11-13",
+"k": "back",
+"was": "2026-11-13"
 },
 "4233648": {
 "d": "2026-11-11",
@@ -909,6 +912,11 @@
 "note": "Montembeault (lower body) is considered day-to-day, according to Renaud Lavoie of TVA Sports on Saturday.",
 "status": "Injured Reserve"
 },
+"3942866": {
+"back": "2026-11-19",
+"note": "ir",
+"status": "Injured Reserve"
+},
 "4063268": {
 "back": "2026-12-04",
 "note": "ir",
@@ -923,11 +931,6 @@
 "back": "2026-11-14",
 "note": "day-to-day",
 "status": "Day-To-Day"
-},
-"4233643": {
-"back": "2026-11-13",
-"note": "Chytil (shoulder) looks set to return to the lineup against the Rangers on Friday, Jeff Paterson of CanucksArmy.com reports.",
-"status": "Injured Reserve"
 },
 "4233668": {
 "back": "2026-12-06",
