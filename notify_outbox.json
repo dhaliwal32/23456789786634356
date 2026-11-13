@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-06|07b25eb6e0b9",
-   "at": "2026-11-06T15:01:24Z",
-   "title": "Fantasy GM",
-   "text": "Kindel joined PIT PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-06T15:01:24Z",
-   "seen": "2026-11-06T15:01:24Z"
-  },
-  {
    "k": "2026-11-06|f17a9a8adf9c",
    "at": "2026-11-06T23:48:30Z",
    "title": "Fantasy GM",
@@ -795,6 +783,66 @@
    "urgent": true,
    "sent": false,
    "seen": "2026-11-13T13:21:12Z"
+  },
+  {
+   "k": "2026-11-13|0920d42166c6",
+   "at": "2026-11-13T15:22:09Z",
+   "title": "Fantasy GM",
+   "text": "Nazar joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T15:22:09Z",
+   "seen": "2026-11-13T15:22:09Z"
+  },
+  {
+   "k": "2026-11-13|7c218a4da5bf",
+   "at": "2026-11-13T15:22:09Z",
+   "title": "Fantasy GM",
+   "text": "Kasper joined DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T15:22:09Z",
+   "seen": "2026-11-13T15:22:09Z"
+  },
+  {
+   "k": "2026-11-13|81fa8a54fe94",
+   "at": "2026-11-13T15:22:10Z",
+   "title": "Fantasy GM",
+   "text": "Arvidsson left DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T15:22:10Z",
+   "seen": "2026-11-13T15:22:10Z"
+  },
+  {
+   "k": "2026-11-13|60169e317dd3",
+   "at": "2026-11-13T15:22:10Z",
+   "title": "Fantasy GM",
+   "text": "Eklund joined NYI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T15:22:10Z",
+   "seen": "2026-11-13T15:22:10Z"
+  },
+  {
+   "k": "2026-11-13|d2d3db64c14d",
+   "at": "2026-11-13T15:22:10Z",
+   "title": "Fantasy GM",
+   "text": "Yamamoto joined UTA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-13T15:22:10Z",
+   "seen": "2026-11-13T15:22:10Z"
   }
  ],
  "sent": {
