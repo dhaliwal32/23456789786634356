@@ -331,7 +331,7 @@
 "4233643": {
 "d": "2026-11-09",
 "k": "later",
-"nd": "2026-11-09",
+"nd": "2026-11-13",
 "now": "2026-11-13",
 "was": "2026-10-31"
 },
@@ -606,6 +606,11 @@
 "d": "2026-11-07",
 "k": "back",
 "was": ""
+},
+"5161": {
+"d": "2026-11-13",
+"k": "back",
+"was": "2027-01-12"
 },
 "5172": {
 "d": "2026-11-07",
@@ -909,7 +914,7 @@
 },
 "4233643": {
 "back": "2026-11-13",
-"note": "Chytil (shoulder) will not be in action versus the Flyers on Monday, Canucks play-by-play announcer Brendan Batchelor reports.",
+"note": "Chytil (shoulder) looks set to return to the lineup against the Rangers on Friday, Jeff Paterson of CanucksArmy.com reports.",
 "status": "Injured Reserve"
 },
 "4233668": {
@@ -1105,11 +1110,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
