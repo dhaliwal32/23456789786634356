@@ -95,6 +95,11 @@
 "k": "news",
 "nd": "2026-11-06"
 },
+"3041996": {
+"d": "2026-11-13",
+"k": "back",
+"was": "2026-11-14"
+},
 "3041999": {
 "d": "2026-11-11",
 "k": "back",
@@ -598,11 +603,9 @@
 "was": "2026-11-14"
 },
 "5149180": {
-"d": "2026-11-10",
-"k": "dtd",
-"nd": "2026-11-09",
-"now": "2026-11-13",
-"was": "Out"
+"d": "2026-11-13",
+"k": "back",
+"was": "2026-11-13"
 },
 "5149191": {
 "d": "2026-11-11",
@@ -753,11 +756,6 @@
 "back": "2026-11-27",
 "note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
-},
-"3041996": {
-"back": "2026-11-14",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "3042014": {
 "back": "2027-01-30",
@@ -1098,11 +1096,6 @@
 "back": "2027-01-25",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"5149180": {
-"back": "2026-11-13",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "5149209": {
 "back": "2026-12-01",
