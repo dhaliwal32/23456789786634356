@@ -174,6 +174,12 @@
 "k": "back",
 "was": "2026-11-12"
 },
+"3114755": {
+"d": "2026-11-14",
+"k": "later",
+"now": "2026-12-20",
+"was": "2026-11-14"
+},
 "3114770": {
 "d": "2026-11-13",
 "k": "dtd",
@@ -275,10 +281,10 @@
 "was": ""
 },
 "3942714": {
-"d": "2026-11-12",
+"d": "2026-11-14",
 "k": "later",
 "nd": "2026-10-31",
-"now": "2026-11-14",
+"now": "2026-11-16",
 "was": "2026-10-20"
 },
 "3942866": {
@@ -602,6 +608,11 @@
 "k": "back",
 "was": ""
 },
+"5161": {
+"d": "2026-11-14",
+"k": "back",
+"was": "2027-01-12"
+},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -805,7 +816,7 @@
 "status": "Day-To-Day"
 },
 "3114755": {
-"back": "2026-11-14",
+"back": "2026-12-20",
 "note": "ir-nr",
 "status": "Injured Reserve"
 },
@@ -895,7 +906,7 @@
 "status": "Injured Reserve"
 },
 "3942714": {
-"back": "2026-11-14",
+"back": "2026-11-16",
 "note": "Montembeault (lower body) is considered day-to-day, according to Renaud Lavoie of TVA Sports on Saturday.",
 "status": "Injured Reserve"
 },
@@ -1112,11 +1123,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
