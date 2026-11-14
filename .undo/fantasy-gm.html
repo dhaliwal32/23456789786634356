@@ -2437,6 +2437,8 @@
   .gx-tk270 .it270 .tx270 { font-size: 14px; line-height: 1.4; margin-top: 4px; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
   .gx-tk270 .it270 .th270 { font-size: 11.5px; color: var(--mute); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gx-tk270 .em270 { font-size: 13px; color: var(--mute); padding: 12px 0; }
+  /* change 275 (install.py) */
+  .gx-st275 { display: block; margin: 18px 4px 6px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2445,7 +2447,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="ca8qqw.1mdiwto" data-file="build/app.js">
+<meta name="gx-build" content="1hw4faz.1naxc3g" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6162,6 +6164,15 @@ function SetupPage({ s, setS, go, sub }) {
       </span>
     </div>
   </>);
+  if (sub === "more") return page("More", <>
+    <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
+    {row("inj", "Injury return dates", outN ? outN + " of your players hurt or on IR" : "Everyone on your team is healthy", () => go("setup", "inj"), 1)}
+    {row("bulk", "Edit players", "Projections, play %, fantasy team", () => go("setup", "bulk"), 2)}
+    {row("news", "News", newsN ? newsN + " of your players in the news" : "Nothing new on your players", () => go("news"), 3)}
+    {row("odds", "Betting lines", "Win chances and expected goals for each game", () => go("setup", "odds"), 4)}
+    {row("sched", "Schedule", "Games per NHL team this week", () => go("setup", "sched"), 5)}
+    {row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 6)}
+  </>); /* change 275: More page */
   if (sub === "players") return page("Players and injuries", <>
     {row("inj", "Injury return dates", outN ? outN + " of your players hurt or on IR" : "Everyone on your team is healthy", () => go("setup", "inj"), 0)}
     {row("bulk", "Edit players", "Projections, play %, fantasy team", () => go("setup", "bulk"), 1)}
@@ -6192,16 +6203,26 @@ function SetupPage({ s, setS, go, sub }) {
         <span className="text-sm min-w-0">{syncTxt + " \u00b7 " + (!E ? "check GitHub Actions" : bad.length ? bad.length + " data source" + (bad.length === 1 ? "" : "s") + " not working" : old ? "data is over 2 hours old" : "everything working")}</span>
         <button type="button" className={btn} style={{ marginLeft: "auto" }} onClick={refresh}>Refresh</button>
       </div>
+      {/* change 275: short Setup */}
+      <div className="gx-tag gx-st275">App</div>
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
-        {row("display", "Display", themeTxt + " \u00b7 " + projTxt, () => go("setup", "display"), 0)}
-        {row("rules", "Pickup rules", "Moves must add " + (s.minGain ?? 3) + "+ points \u00b7 top " + top + " protected" + (kept.length ? " plus " + kept.length + " more" : ""), () => go("setup", "rules"), 1)}
-        {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 2)}<GxAutoRow row={row} go={go} />{/* gx089-row */}
-        {row("players", "Players and injuries", "Injury return dates \u00b7 edit players", () => go("setup", "players"), 3)}
-        {row("league", "League info", "News \u00b7 betting lines \u00b7 NHL schedule", () => go("setup", "league"), 4)}
-        {row("data", "Data and backup", (bad.length ? "Not working: " + bad.join(", ") : "All " + src.length + " data sources working") + " \u00b7 backup \u00b7 advanced", () => go("setup", "data"), 5)}
-        {/* change 068: AI Lab links for the phone */}
-        {row("ailab", "AI Lab", "How each projection is doing", () => window.open("ai-dashboard.html", "_blank"), 6)}
-        {row("history", "Prediction history", "Every projection and what happened", () => window.open("ai-history.html", "_blank"), 7)}
+        <div className="gx-sr" style={{ borderTop: 0 }}><span>My team</span><GxMeSel241 s={s} /></div>
+        <div className="gx-sr"><span>Favourite team</span><GxFavSel112 /></div>
+        <div className="gx-sr"><span>Watch link</span><GxWatchSel174 /></div>
+      </div>
+      <div className="gx-tag gx-st275">Alerts and lineup</div>
+      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
+        {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 0)}<GxAutoRow row={row} go={go} />{/* gx089-row */}
+        {row("rules", "Protected players", (top + kept.length) + " players the app will never tell you to drop", () => go("setup", "rules"), 1)}
+      </div>
+      <div className="gx-tag gx-st275">AI</div>
+      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
+        {row("ailab", "AI Lab", "How each projection is doing", () => window.open("ai-dashboard.html", "_blank"), 0)}
+        {row("history", "Prediction history", "Every projection and what happened", () => window.open("ai-history.html", "_blank"), 1)}
+      </div>
+      <div className="gx-tag gx-st275">Rarely used</div>
+      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
+        {row("more", "More", "Injury dates, edit players, betting lines, schedule, backup", () => go("setup", "more"), 0)}
       </div>
     </div>
   );
