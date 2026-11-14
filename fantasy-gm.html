@@ -2683,6 +2683,17 @@
   @media (prefers-reduced-motion: reduce) { .gx-bx226 .bp257 .row230, .gx-bx226 .bp257 .gn257, .gx-bx226 .bp257 .sk291 * { animation: none !important; } }
   /* change 292 (install.py) */
   .gx-tk264 .pn267 { position: static; box-shadow: none; }
+  /* change 293 (install.py) */
+  .gx-ti293 .hd { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .gx-ti293 .hd small { font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ti293 .rw { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; width: 100%; height: 64px; border-top: 1px solid var(--line); color: var(--ink); text-align: left; font-variant-numeric: tabular-nums; }
+  .gx-ti293 .rw:first-of-type { border-top: 0; }
+  .gx-ti293 .sw { min-width: 0; display: grid; grid-template-columns: 40px auto minmax(0,1fr); align-items: center; gap: 2px 8px; }
+  .gx-ti293 .sw small { font-size: 11.5px; color: var(--mute); }
+  .gx-ti293 .sw b { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ti293 .nm { text-align: right; font-size: 12px; color: var(--mute); white-space: nowrap; }
+  .gx-ti293 .nm b { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
+  .gx-ti293 .em { font-size: 13.5px; color: var(--mute); padding: 8px 0 2px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2692,7 +2703,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="x4l6oz.x10hr" data-file="build/app.js">
+<meta name="gx-build" content="v0526p.16tupr9" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3167,7 +3178,7 @@ function App() {
       if (window.gxLive120) window.gxLive120(js, () => tick((x) => x + 1));
     }).catch(() => {});
     pull();
-    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 59000) pull(); }, 2 * 1000); /* gx120 gx162 */
+    const id = setInterval(() => { if (document.hidden) return; if (window.__LIVEANY120 || Date.now() - (window.__LP120 || 0) > 20000) pull(); }, 2 * 1000); /* gx120 gx162 */
     const vis152 = () => { if (!document.hidden) { G120.busy = false; pull(); } }; /* gx152 */
     document.addEventListener("visibilitychange", vis152); window.addEventListener("focus", vis152);
     return () => { dead = true; clearInterval(id); document.removeEventListener("visibilitychange", vis152); window.removeEventListener("focus", vis152); };
@@ -5238,7 +5249,7 @@ function TradeBuilder({ s, initPartner, setS }) {
             
           </div>
         </div>
-      ) : <div className="text-sm text-slate-500">Pick at least one player on each side to see the result.</div>}
+      ) : <GxIdeas293 s={s} onPick={(g, r, tm) => { setPartner(tm); setGive([g]); setGet([r]); }} />}
       {res && vd ? <GxTradeLab113 s={s} res={res} Gv={Gv} Rv={Rv} pg={pg} gl={gl} /> : null}
       {pk113 ? <GxPick113 title={pk113 === "give" ? gxYou(s, "You give", teamName(s, s.me) + " gives") : teamName(s, partner)} list={pk113 === "give" ? mine : theirs} sel={pk113 === "give" ? give : get} pg={pg} s={s} onToggle={(id) => (pk113 === "give" ? toggle(give, setGive, id) : toggle(get, setGet, id))} onClose={() => setPk113(null)} /> : null}
       <div className="gx-pn" style={{ display: "none" }}><b></b><b></b><b></b><b></b>
@@ -5964,7 +5975,7 @@ function Pickups({ s, setS, wk, show289, onShow289 }) {
         <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={(v) => { setPos(v); setLimit(40); try { uiSet("gxPk217", Object.assign({}, uiGet().gxPk217 || {}, { pos: v })); } catch (e) {} }} />
       </div><GxWkPick193 s={s} sP={sP} plan={plan} mode={wm193} wks={wks193} onPick={(m, a) => { setWm193(m); setLimit(40); if (m === "h1" || m === "h4" || m === "h0") { setWks193(null); setH(m === "h1" ? 1 : m === "h4" ? 4 : 0); } else setWks193(a); }} /><GxRngSel100 /></GxFlt108>
       <GxWkStrip289 s={s} sP={sP} plan={plan} mode={wm193} wks={wks193} onPick={(m, a) => { setWm193(m); setLimit(40); if (m === "h1" || m === "h4" || m === "h0") { setWks193(null); setH(m === "h1" ? 1 : m === "h4" ? 4 : 0); } else setWks193(a); }} />
-      {/* change 193: Pickups for next week removed */}<GxWatchPanel s={s} /><GxHiddenPanel s={s} />{/* gx075-p */}
+      {/* change 193: Pickups for next week removed */}{onShow289 ? null : <GxWatchPanel s={s} />}<GxHiddenPanel s={s} />{/* gx075-p */}
       <input className={inp + " w-full"} placeholder="Search any player" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="gx-pn"><b></b><b></b><b></b><b></b><div className="gx-sc99">
         <div className={"gx-pk text-xs text-slate-500 " + gxPkMode106(pos)} style={{ borderTop: 0, paddingTop: 0 }}>
@@ -13896,10 +13907,7 @@ function GxTkLive264({ id }) {
   // step through new events one at a time (0.9 s each); if far behind, skip ahead to the last 5
   useEffect(() => {
     if (!n) return;
-    if (i < 0 || i < n - 6) { setI(Math.max(0, n - 1 - (i < 0 ? 0 : 5))); return; }
-    if (i >= n - 1) return;
-    const t = setTimeout(() => setI((v) => Math.min(n - 1, v + 1)), 900);
-    return () => clearTimeout(t);
+    if (i !== n - 1) setI(n - 1); /* change 293: always the newest play, at once */
   }, [n, i]);
   if (!d) return null;
   const A = d.A || "AWAY", H = d.H || "HOME";
@@ -14101,11 +14109,10 @@ function GxPuck267({ x, y, k, hold, zs, fill }) {
     const still = hold || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
     const cl = (v, m) => Math.max(-m, Math.min(m, v));
-    let leg = { fx: cur.x, fy: cur.y, tx: x, ty: -y, t0: performance.now(), dur: 650 }, raf = 0, on = true, first = true;
+    let leg = { fx: cur.x, fy: cur.y, tx: x, ty: -y, t0: performance.now(), dur: 320 }, raf = 0, on = true, first = true;
     const next = (now) => {
       let tx, ty;
-      if (zs) { tx = zs * (30 + Math.random() * 58); ty = -34 + Math.random() * 68; }
-      else { tx = x + (Math.random() * 20 - 10); ty = -y + (Math.random() * 20 - 10); }
+      tx = x + (Math.random() * 8 - 4); ty = -y + (Math.random() * 8 - 4); /* change 293: stays by the real spot */
       leg = { fx: cur.x, fy: cur.y, tx: cl(tx, 95), ty: cl(ty, 38), t0: now + (first ? 1100 : Math.random() < 0.3 ? 250 + Math.random() * 450 : 0), dur: 900 + Math.random() * 900 };
       first = false;
     };
@@ -14630,7 +14637,7 @@ function GxGoalCard288(P) {
   );
 }
 // ---------- change 289: Players page back with a Show filter, week strip, Goalies tonight, strength rank (install.py) ----------
-const GX_SHOW289 = [["fa", "Free agents"], ["all", "All players"], ["inj", "Injured"]];
+const GX_SHOW289 = [["fa", "Free agents"], ["all", "All players"], ["inj", "Injured"], ["watch", "Watchlist"]];
 function GxPlayers289(P) {
   const { sub } = P;
   const [v, setV] = useState(() => { const u = uiGet().pl289; return sub === "allp" ? "all" : sub === "injuries" ? "inj" : GX_SHOW289.some((x) => x[0] === u) ? u : "fa"; });
@@ -14638,8 +14645,8 @@ function GxPlayers289(P) {
   if (v === "fa") return <Pickups {...P} show289={v} onShow289={pick} />;
   return (
     <div className="space-y-3" data-gx="289">
-      <GxFlt108 label={v === "all" ? "All players" : "Injured"}><div className="flex flex-wrap gap-2 items-center"><Pills items={GX_SHOW289} value={v} onChange={pick} /></div></GxFlt108>
-      <GxRankings s={P.s} st287={v} />
+      <GxFlt108 label={v === "all" ? "All players" : v === "watch" ? "Watchlist" : "Injured"}><div className="flex flex-wrap gap-2 items-center"><Pills items={GX_SHOW289} value={v} onChange={pick} /></div></GxFlt108>
+      {v === "watch" ? (gxWatch.list().length ? <GxWatchPanel s={P.s} /> : <div className="gx-pn text-sm text-slate-500">Your watchlist is empty.</div>) : <GxRankings s={P.s} st287={v} />}
     </div>
   );
 }
@@ -14801,6 +14808,71 @@ function GxGoal291(P) {
           </div>
         </div>, document.body) : null}
     </>
+  );
+}
+// ---------- change 293: trade ideas, watchlist behind Filters (install.py) ----------
+// one-for-one swaps that the trade builder itself scores as good for both teams (points, rest of season)
+// step 1: a quick look at every swap with every team to pick the 36 most promising; step 2: score those the builder's way, a few at a time
+function gxIdeas293(s, done) {
+  const K = s.blend, today = todayISO(), N = { F: 10, D: 5, G: 2 }, nR = s.weeks.length - s.wk;
+  const val = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
+  const ok = (p) => !p.ir && avail(p, today) > 0;
+  const str = (r) => ["F", "D", "G"].reduce((t, k) => t + r.filter((p) => p.p === k && ok(p)).map(val).sort((a, b) => b - a).slice(0, N[k]).reduce((a, b) => a + b, 0), 0);
+  const A = s.players.filter((p) => p.ft === s.me), a0 = str(A), cand = [], teams = {};
+  s.teams.filter((t) => t.id !== s.me).forEach((tm) => {
+    const B = s.players.filter((p) => p.ft === tm.id), b0 = str(B);
+    teams[tm.id] = B;
+    A.filter((p) => ok(p) && !p.keep).forEach((x) => B.filter(ok).forEach((y) => {
+      const da = str(A.filter((p) => p.id !== x.id).concat([y])) - a0, db = str(B.filter((p) => p.id !== y.id).concat([x])) - b0;
+      if (da > -0.3 && db > -0.3) cand.push({ x, y, tm: tm.id, q: Math.min(da, db) + (da + db) / 4 });
+    }));
+  });
+  cand.sort((u, v) => v.q - u.q);
+  const top = cand.slice(0, 36), tD = gxTradeDay(), live = (r) => r.map((p) => (p.ir ? { ...p, ir: false } : p));
+  const base = {}, tot = (id, r) => (base[id] != null ? base[id] : (base[id] = horizonTotal(live(r), s, nR)));
+  const good = [];
+  let i = 0, dead = false;
+  const step = () => {
+    if (dead) return;
+    const end = Math.min(top.length, i + 4);
+    for (; i < end; i++) {
+      const o = top[i], B = teams[o.tm];
+      try {
+        const my = horizonTotal(live(gxTimed(A, A.filter((p) => p.id !== o.x.id).concat([{ ...o.y, ft: s.me }]), tD)), s, nR) - tot(s.me, A);
+        const th = horizonTotal(live(gxTimed(B, B.filter((p) => p.id !== o.y.id).concat([{ ...o.x, ft: o.tm }]), tD)), s, nR) - tot(o.tm, B);
+        if (my >= 2 && th >= 2) good.push({ x: o.x, y: o.y, tm: o.tm, my, th });
+      } catch (e) {}
+    }
+    if (i < top.length) { setTimeout(step, 0); return; }
+    good.sort((u, v) => v.my - u.my);
+    const out = [], ux = {}, uy = {};
+    good.forEach((o) => { if (out.length >= 5 || ux[o.x.id] || uy[o.y.id]) return; ux[o.x.id] = uy[o.y.id] = 1; out.push(o); });
+    done(out);
+  };
+  setTimeout(step, 0);
+  return () => { dead = true; };
+}
+function GxIdeas293({ s, onPick }) {
+  const [list, setList] = useState(() => (window.__TI293 && window.__TI293.k === s.players ? window.__TI293.v : null));
+  useEffect(() => {
+    if (window.__TI293 && window.__TI293.k === s.players) { setList(window.__TI293.v); return undefined; }
+    let stop = null, dead = false;
+    setList(null);
+    const id = setTimeout(() => { try { stop = gxIdeas293(s, (v) => { window.__TI293 = { k: s.players, v }; if (!dead) setList(v); }); } catch (e) { if (!dead) setList([]); } }, 400);
+    return () => { dead = true; clearTimeout(id); if (stop) stop(); };
+  }, [s.players, s.me, s.blend, window.__PMODE]);
+  const sg = (v) => "+" + Math.round(v);
+  return (
+    <div className="gx-pn gx-ti293" data-gx="293">
+      <div className="hd"><span className="gx-tag">Trade ideas</span><small>swaps that help both teams</small></div>
+      {!list ? <div className="em">Looking through every team...</div> : list.length ? list.map((o) => (
+        <button key={o.x.id + "|" + o.y.id} type="button" className="rw" onClick={() => onPick(o.x.id, o.y.id, o.tm)}>
+          <span className="sw"><small>Give</small><GxFace p={o.x} size={14} /><b>{o.x.n}</b><small>Get</small><GxFace p={o.y} size={14} /><b>{o.y.n + " \u00b7 " + (gxTag131(s, o.y) || teamName(s, o.tm))}</b></span>
+          <span className="nm"><b>{"You " + sg(o.my)}</b>{"Them " + sg(o.th)}</span>
+        </button>
+      )) : <div className="em">No one-for-one swap helps both teams right now.</div>}
+      {list && list.length ? <div className="em" style={{ fontSize: 12 }}>Points over the rest of the season, scored the same way as the result below. Tap an idea to load it.</div> : null}
+    </div>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
