@@ -3,6 +3,6 @@
   "talk_mac.py": true
  },
  "changes": [
-  "271-talk-mac-slower.py"
+  "272-talk-mac-curl.py"
  ]
 }
