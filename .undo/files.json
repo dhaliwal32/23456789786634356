@@ -1,10 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_notify.py": true,
-  "gm_live.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "284-box-scroll-player-sheet.py"
+  "285-roster-table-phone-menu.py"
  ]
 }
