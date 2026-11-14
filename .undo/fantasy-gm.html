@@ -2546,6 +2546,34 @@
     .gx-ll285 b { display: block; font-weight: 600; font-size: 15px; }
     .gx-ll285 small { display: block; font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   }
+  /* change 286 (install.py) */
+  .gx-bd286 { margin-top: 12px; }
+  .gx-bd286 .row { display: grid; grid-template-columns: 30px repeat(6, minmax(0, 1fr)); gap: 8px; align-items: stretch; margin-bottom: 8px; }
+  .gx-bd286 .row > .lb { align-self: center; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--mute); }
+  .gx-bd286 .row > .gx-cd286 { grid-column: span 2; }
+  .gx-bd286 .row.c112 > .gx-cd286 { grid-column: span 3; }
+  .gx-bd286 .sp { height: 10px; }
+  .gx-cd286 { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px; min-width: 0; height: 132px; padding: 12px 6px 8px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); color: var(--ink); text-align: center; transition: transform .12s ease, border-color .15s ease, background-color .15s ease; }
+  .gx-cd286:hover { background: var(--card3); }
+  .gx-cd286.me { border-color: var(--accent); }
+  .gx-cd286.empty { background: none; border-style: dashed; }
+  .gx-cd286 .ph { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .gx-cd286 .ph .no { width: 44px; height: 44px; border-radius: 12px; background: var(--card3); color: var(--mute); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
+  .gx-cd286 .nm { max-width: 100%; margin-top: 4px; font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-cd286 .sb { font-size: 11px; color: var(--mute); white-space: nowrap; }
+  .gx-cd286 .bt { margin-top: auto; display: flex; align-items: baseline; justify-content: center; gap: 6px; max-width: 100%; font-size: 11px; color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .gx-cd286 .bt b { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .gx-cd286 .bt .ow { overflow: hidden; text-overflow: ellipsis; }
+  .gx-cd286 .bt .fa { color: var(--good); font-weight: 600; }
+  .gx-cd286 .hc { position: absolute; top: 6px; right: 7px; font-size: 9.5px; font-weight: 700; letter-spacing: .05em; }
+  .gx-cd286 .hc.h { color: var(--warn); }
+  .gx-cd286 .hc.c { color: #7fa8d8; }
+  @media (max-width: 640px) {
+    .gx-bd286 .row { grid-template-columns: 22px repeat(6, minmax(0, 1fr)); gap: 6px; margin-bottom: 6px; }
+    .gx-bd286 .row > .lb { font-size: 11px; }
+    .gx-cd286 { height: 126px; padding: 10px 4px 7px; border-radius: 12px; }
+    .gx-cd286 .nm { font-size: 12.5px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2555,7 +2583,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="18hocdq.wc8wdr" data-file="build/app.js">
+<meta name="gx-build" content="11jfsue.1o55jyf" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9051,15 +9079,19 @@ function GxLines111({ s }) {
   useEffect(() => { let dead = false; if (!ids248) return undefined; gxLast5(ids248.split(","), s.sc || {}).then((h) => { if (!dead) setH248(h || {}); }); return () => { dead = true; }; }, [ids248]);
   const chip = (n, i) => {
     /* change 224: players standing on the rink; tap to zoom */
-    if (!n) return <div key={"e" + i} className="gx-fg224 gx-lt227 empty"></div>;
-    { const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa", last = n.split(" ").slice(1).join(" ") || n;
-      const isG = (ln.G || []).includes(n) || (p && p.p === "G");
+    if (!n) return <div key={"e" + i} className="gx-cd286 empty"></div>;
+    { /* change 286: clean photo card */
+      const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa", last = n.split(" ").slice(1).join(" ") || n;
+      const isG = (ln.G || []).includes(n) || (p && p.p === "G"), no = gxNo248(T, n), hc = gxHC248(p, h248, s);
+      const pos = isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase();
+      const own = !p ? "" : mine ? "Yours" : fa ? (p.wv ? "Waivers" : "Free") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9);
       return (
-        <button key={n + i} type="button" className={"gx-fg224 gx-lt227" + (mine ? " me" : fa ? " fa" : "") + gxSt246c(t) + (gxSt246c(t) && gxHC248(p, h248, s) ? " " + gxHC248(p, h248, s) : "")} style={gxSt246s(t)} aria-label={n} onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }} data-gx="229t">
-          <div className="md jr231"><span className="pl232">{last}</span><GxJersey232 t={p ? p.t : t} name={last} no={gxNo248(T, n)} goalie={isG} /></div>{/* change 250: hot and cold shown on the nameplate */}
+        <button key={n + i} type="button" className={"gx-cd286" + (mine ? " me" : "")} aria-label={n} data-gx="286" onClick={() => { if (p && window.__NAV) window.__NAV.player(p); }}>
+          {hc ? <span className={"hc " + hc.charAt(0)}>{hc.charAt(0) === "h" ? "HOT" : "COLD"}</span> : null}
+          <span className="ph">{p ? <GxFace p={p} size={28} /> : <span className="no">{no != null ? no : last.charAt(0)}</span>}</span>
           <span className="nm">{last}</span>
-          <span className="sb227">{(gxNo248(T, n) != null ? "#" + gxNo248(T, n) + " \u00b7 " : "") + (isG ? "G" : String(df[n] || (p ? p.p : "")).replace(/[0-9]/g, "").toUpperCase())}</span>
-          <span className="ow227">{p ? <><span>{mine ? "YOURS" : fa ? (p.wv ? <i className="gx-wv218" title="On waivers" data-gx="237" /> : "") : ((teamName(s, p.ft) || "").replace(/[^A-Za-z0-9' ]/g, " ").trim().split(/\s+/)[0] || "").slice(0, 9)}</span><b>{f1(gxPgAvg(p, s.blend))}</b></> : null}</span>
+          <span className="sb">{(no != null ? "#" + no + " \u00b7 " : "") + pos}</span>
+          <span className="bt">{p ? <><b>{f1(gxPgAvg(p, s.blend))}</b><span className={"ow" + (fa ? " fa" : "")}>{own}</span></> : null}</span>
         </button>
       ); }
     const p = byName[nrm(n)], mine = p && p.ft === s.me, fa = p && p.ft === "fa";
@@ -9108,10 +9140,7 @@ function GxLines111({ s }) {
             <div className="min-w-0"><div className="nm truncate">{nameOf(t)}</div>{st.w != null ? <div className="rc">{st.w + "-" + st.l + "-" + st.otl + (st.streak ? " · " + st.streak : "")}</div> : null}</div>
           </div>
           <div className="gx-seg103">{[["es", "Even strength"], ["pp", "Power play"], ["pk", "Penalty kill"]].map(([k, l]) => <button key={k} type="button" className={mode === k ? "on" : ""} onClick={() => setMode(k)}>{l}</button>)}</div>
-          {zoomEl224}<div key={t + mode} className={"gx-rk111 rm236 " + gxRoom236(t).cls} style={gxRoom236(t).style} data-gx="236">
-            <GxRoom236 t={t} />
-            <GxRinkLines111 teamCode={t} />
-            <span className="logo"><TeamLogo t={t} size={220} /></span>
+          {zoomEl224}<div key={t + mode} className="gx-bd286" data-gx="286b">
             {rows}
           </div>
           {chg.length ? (
