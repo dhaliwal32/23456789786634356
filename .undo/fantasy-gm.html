@@ -2513,6 +2513,14 @@
   .gx-bx226 .gp276.in280 .dd276 { border-top: 0; padding-top: 0; margin-top: 6px; }
   /* change 281 (install.py) */
   html.gx-pt281 .gx-pd-ov { z-index: 80; }
+  /* change 282 (install.py) */
+  button.gx-sw282 { min-height: 28px !important; min-width: 46px !important; padding: 0 !important; }
+  .gx-sw282::after { content: ""; position: absolute; inset: -9px -6px; }
+  .gx-sw282 { position: relative; width: 46px; height: 28px; border-radius: 99px; background: var(--line2); flex-shrink: 0; transition: background-color .2s ease; }
+  .gx-sw282.on { background: var(--good); }
+  .gx-sw282 i { position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 99px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,.35); transition: transform .2s cubic-bezier(.2,.8,.2,1); }
+  .gx-sw282.on i { transform: translateX(18px); }
+  .gx-sw282:active { transform: none; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2522,7 +2530,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1a32yxh.1gopbdu" data-file="build/app.js">
+<meta name="gx-build" content="3eku8.1744zzi" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6898,6 +6906,8 @@ const gxAlLoad = () => Promise.all([
 function GxAlertsPage() {
   // alerts page v67 (news_logos.py)
   const [d, setD] = useState(null);
+  const [ov282, setOv282] = useState({}); /* change 282: switches tapped here, shown at once */
+  const [er282, setEr282] = useState("");
   const [f, setF] = useState("all");
   const [lim, setLim] = useState(30);
   useEffect(() => {
@@ -6908,7 +6918,18 @@ function GxAlertsPage() {
     return () => { dead = true; clearInterval(id); };
   }, []);
   if (!d) return <div className="text-sm text-slate-500">Loading your phone alerts...</div>;
-  const st = gxAlertState(d.p), log = gxAlertLog(d.b);
+  const P282 = { ...(d.p || {}), ...ov282 };
+  const st = gxAlertState(P282), log = gxAlertLog(d.b);
+  const flip282 = (x) => {
+    const patch = gxAlPatch282(P282, x), back = {};
+    Object.keys(patch).forEach((k) => (back[k] = P282[k]));
+    setEr282(""); setOv282((o) => ({ ...o, ...patch }));
+    gxAlSave282(patch).catch((e) => {
+      setOv282((o) => ({ ...o, ...back }));
+      const m = (e && e.message) || "";
+      setEr282(m === "nokey" ? "To change switches here, first turn on Sync between devices on this device (Setup, More, Data and backup)." : m === "key" ? "GitHub refused the key saved on this device." : "Could not save that. Try again.");
+    });
+  };
   const cut = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 19) + "Z";
   const cnt = {};
   log.forEach((m) => { if (m.held || m.wait || String(m.at || "") < cut) return; const k = gxAlKind(m.title); if (k) cnt[k] = (cnt[k] || 0) + 1; });
@@ -6922,9 +6943,9 @@ function GxAlertsPage() {
       <div className="gx-pn">
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
           <span className="gx-tag">{"Switches \u00b7 " + onN + " on, " + (st.length - onN) + " off"}</span>
-          <a className="text-sm text-blue-600" style={{ marginLeft: "auto" }} href={GX_PREFS_URL} target="_blank" rel="noopener">Change</a>
         </div>
-        <div className="text-xs text-slate-500" style={{ marginTop: 2 }}>Change opens the settings file on GitHub. Set a line to false to switch it off, then commit. It applies at the next sync, within 30 minutes. Nothing is sent from 11 p.m. to 7 a.m.</div>
+        <div className="text-xs text-slate-500" style={{ marginTop: 2 }}>Tap a switch to change it. It applies at the next sync, within 30 minutes. Nothing is sent from 11 p.m. to 7 a.m.</div>
+        {er282 ? <div className="text-xs" style={{ color: "var(--bad)", marginTop: 6 }}>{er282}</div> : null}{/* change 282 */}
         {["Lineup warnings", "Your players", "Pickup ideas", "Summaries"].map((sec) => (
           <div key={sec}>
             <div className="text-xs text-slate-500" style={{ margin: "12px 0 2px", letterSpacing: ".04em" }}>{sec}</div>
@@ -6932,20 +6953,13 @@ function GxAlertsPage() {
               <div key={x.k} className="gx-row" style={i ? null : { borderTop: 0 }}>
                 <div className="min-w-0" style={{ flex: 1 }}>
                   <div>{x.label}</div>
-                  <div className="text-xs text-slate-500">{x.desc + " \u00b7 " + (cnt[x.k] || 0) + " in the last 7 days" + (x.why ? " \u00b7 " + x.why : "")}</div>
+                  <div className="text-xs text-slate-500">{x.desc + " \u00b7 " + (cnt[x.k] || 0) + " in the last 7 days"}</div>
                 </div>
-                <span className="text-sm" style={{ color: x.on ? "var(--good)" : "var(--mute)" }}>{x.on ? "On" : "Off"}</span>
+                <GxSw282 on={x.on} label={x.label} onTap={() => flip282(x)} />
               </div>
             ))}
           </div>
         ))}
-        <div className="text-xs text-slate-500" style={{ margin: "12px 0 2px", letterSpacing: ".04em" }}>Master switches</div>
-        {GX_AL_MASTER.map(([k, l], i) => { const on = !(d.p && d.p[k] === false); return (
-          <div key={k} className="gx-row" style={i ? null : { borderTop: 0 }}>
-            <span className="min-w-0" style={{ flex: 1 }}>{l}<span className="text-xs text-slate-500">{" \u00b7 turns its whole group on or off"}</span></span>
-            <span className="text-sm" style={{ color: on ? "var(--good)" : "var(--mute)" }}>{on ? "On" : "Off"}</span>
-          </div>
-        ); })}
       </div>
       <div className="gx-pn">
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -14311,6 +14325,36 @@ function GxPreTab279({ s, g, gt, a, b, pBtn }) {
       </div>{rows.length ? null : <div className="em">No players found for this team.</div>}</div>
     </div>
   );
+}
+// ---------- change 282: alert switches you tap in the app (install.py) ----------
+const GX_AL_API282 = "https://api.github.com/repos/dhaliwal32/23456789786634356/contents/alert_prefs.json";
+// read alert_prefs.json on GitHub, put the changed lines in, save it
+const gxAlSave282 = (patch) => {
+  const key = gxSyncKey();
+  if (!key) return Promise.reject(new Error("nokey"));
+  const hdr = { Authorization: "Bearer " + key, Accept: "application/vnd.github+json" };
+  const once = (again) => fetch(GX_AL_API282 + "?ref=main&t=" + Date.now(), { headers: hdr, cache: "no-store" })
+    .then((r) => { if (r.status === 401 || r.status === 403) throw new Error("key"); if (!r.ok) throw new Error("read " + r.status); return r.json(); })
+    .then((j) => {
+      let cur = {};
+      try { cur = JSON.parse(gxUnB64(j.content)); } catch (e) {}
+      return fetch(GX_AL_API282, { method: "PUT", headers: { ...hdr, "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Alert switches from the app", content: gxB64(JSON.stringify({ ...cur, ...patch }, null, 2) + "\n"), branch: "main", sha: j.sha }) })
+        .then((r) => { if ((r.status === 409 || r.status === 422) && again) return once(false); if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "key" : "save " + r.status); return true; });
+    });
+  return once(true);
+};
+// what to save when one switch is tapped; if its whole group was switched off, the group comes back on and its other alerts stay off
+const gxAlPatch282 = (p, x) => {
+  const row = GX_AL.find((r) => r[1] === x.k) || [], g = row[4], patch = { [x.k]: !x.on };
+  if (!x.on && g && p && p[g] === false) {
+    patch[g] = true;
+    GX_AL.forEach((r) => { if (r[4] === g && r[1] !== x.k) patch[r[1]] = false; });
+  }
+  return patch;
+};
+function GxSw282({ on, label, onTap }) {
+  return <button type="button" role="switch" aria-checked={!!on} aria-label={label} className={"gx-sw282" + (on ? " on" : "")} onClick={onTap}><i></i></button>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
