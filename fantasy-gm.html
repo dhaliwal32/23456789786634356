@@ -2525,6 +2525,17 @@
   .gx-tk264 .un283 { padding: 0 16px; }
   @media (min-width: 641px) { .gx-tk264 .rw264 { max-width: 560px; margin: 0 auto; } }
   .gx-pv279.gs283 { padding-top: 0; }
+  /* change 284 (install.py) */
+  .gx-bx225 .pr.rs284 { transform: none !important; transform-style: flat !important; will-change: auto; }
+  .gx-bx225 .pr.rs284 > .fc { transform: none !important; visibility: hidden; }
+  .gx-bx225 .pr.rs284 > .fc.fr284 { visibility: visible; }
+  .gx-bx225 .pr.rs284 > .fc.fr284:not(.gf252) { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+  @media (max-width: 640px) {
+    .gx-pd-ov { background: rgba(0,0,0,.6); }
+    .gx-pd { margin: 52px 0 0; min-height: calc(100% - 52px); border-radius: 18px 18px 0 0; }
+    .gx-pd::before { content: ""; position: absolute; top: 7px; left: 50%; width: 40px; height: 5px; margin-left: -20px; border-radius: 99px; background: rgba(255,255,255,.45); z-index: 4; pointer-events: none; }
+    .gx-pd-ov.out .gx-pd { transform: translateY(60vh); }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2534,7 +2545,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1qq0rh8.1isb59u" data-file="build/app.js">
+<meta name="gx-build" content="1lnhu3e.p4u1w0" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -12100,6 +12111,33 @@ function GxBox230({ s, wk }) {
   const [bp, setBp] = useState(null);
   const stg = React.useRef(null), pr = React.useRef(null), ang = React.useRef(k * 90), drag = React.useRef(null);
   useEffect(() => { try { if (uiGet().bx255 !== k) uiSet("bx255", k); } catch (e) {} }, [k]);
+  /* change 284: once the box has stopped turning, the side facing you lies flat so it scrolls on the iPhone; a sideways drag or a turn stands the box up again */
+  useEffect(() => {
+    const el = pr.current, box = stg.current;
+    if (!el || !box) return;
+    const rest = () => { el.__t284 = 0; el.__rest284 = el.style.transform; [...el.children].forEach((f, j) => f.classList.toggle("fr284", j === el.__k284)); el.classList.add("rs284"); };
+    const wake = (turning) => {
+      clearTimeout(el.__t284); el.__t284 = 0;
+      if (!el.classList.contains("rs284")) return;
+      // stand the box up exactly where it was resting first, so a turn starts from the right place
+      const to = el.style.transform;
+      el.classList.remove("an"); el.style.transform = el.__rest284 || to; el.classList.remove("rs284");
+      void el.offsetWidth;
+      if (turning) el.classList.add("an");
+      el.style.transform = to;
+      void el.offsetWidth;
+    };
+    const later = () => { clearTimeout(el.__t284); el.__t284 = setTimeout(rest, 640); };
+    if (!el.__on284) {
+      el.__on284 = 1;
+      let p0 = null;
+      box.addEventListener("pointerdown", (e) => { p0 = { x: e.clientX, y: e.clientY }; }, true);
+      box.addEventListener("pointermove", (e) => { if (!p0) return; const dx = e.clientX - p0.x, dy = e.clientY - p0.y; if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { p0 = null; wake(false); } }, true);
+      const up = () => { p0 = null; later(); };
+      box.addEventListener("pointerup", up, true); box.addEventListener("pointercancel", up, true);
+    }
+    if (el.__k284 !== k) { const first = el.__k284 == null; el.__k284 = k; wake(!first); later(); }
+  });
   const i = gxWkAt61(s, pick), cur = i === s.wk;
   const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
   const me = who && (w.pairs || []).some((p) => p[0] === who || p[1] === who) ? who : s.me;

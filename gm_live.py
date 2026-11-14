@@ -40,6 +40,8 @@ def push(title, msg):
         gm_push.send(title, msg, "#matchup")
     except Exception as e:
         log("app alert failed", e)
+    if True:  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. Delete these two lines to bring ntfy back.
+        return
     if not NTFY_TOPIC:
         log("(no ntfy topic)", title, msg)
         return

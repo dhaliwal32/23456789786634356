@@ -93,6 +93,9 @@ def _day(now):
     return now.astimezone(PT).date().isoformat()
 
 
+NTFY_ON = False  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. True brings ntfy back.
+
+
 def quiet(now):
     h = now.astimezone(PT).hour
     return h >= QUIET_START or h < QUIET_END
@@ -104,11 +107,14 @@ def _clock(dt):
 
 def push(title, msg, prio="default", tags=""):
     """Send one message to the phone right now. Returns True if sent."""
-    try:  # change 278: the same alert also goes to the home-screen app
+    app_ok = False
+    try:  # change 278: the alert goes to the home-screen app
         import gm_push
-        gm_push.send(title, msg, "#myteam")
+        app_ok = gm_push.send(title, msg, "#myteam") > 0
     except Exception as ex:
         print(f"(notify) app alert not sent: {ex}")
+    if not NTFY_ON:  # change 284
+        return app_ok
     if not NTFY_TOPIC or "PASTE" in NTFY_TOPIC:
         print("(notify) off - no ntfy topic")
         return False
