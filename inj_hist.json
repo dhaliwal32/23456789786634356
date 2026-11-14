@@ -608,11 +608,6 @@
 "k": "back",
 "was": ""
 },
-"5161": {
-"d": "2026-11-14",
-"k": "back",
-"was": "2027-01-12"
-},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -851,7 +846,7 @@
 "status": "Injured Reserve"
 },
 "3541": {
-"back": "2026-11-14",
+"back": "",
 "note": "Staal (calf) will be a game-time decision versus the Kraken on Saturday after head coach Rod Brind'Amour told reporters, \"So, we'll find out probably tomorrow a",
 "status": "Injured Reserve"
 },
@@ -1123,6 +1118,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
