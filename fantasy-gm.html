@@ -2511,6 +2511,8 @@
   /* change 280 (install.py) */
   .gx-bx226 .gp276.in280 { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
   .gx-bx226 .gp276.in280 .dd276 { border-top: 0; padding-top: 0; margin-top: 6px; }
+  /* change 281 (install.py) */
+  html.gx-pt281 .gx-pd-ov { z-index: 80; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2520,7 +2522,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1av48tt.boj18o" data-file="build/app.js">
+<meta name="gx-build" content="1a32yxh.1gopbdu" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -9970,7 +9972,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
   const order = (g) => (live(g) ? 0 : pre(g) ? 1 : 2);
   games.sort((x, y) => order(x) - order(y) || String(x.startTimeUTC).localeCompare(String(y.startTimeUTC)));
   const who = (p) => (p && p.ft === a ? "me" : p && p.ft === b ? "op" : "");
-  const go = (p) => { if (p && window.__NAV) { if (open) close(); window.__NAV.player(p); } };
+  const go = (p) => { if (p && window.__NAV) { try { document.documentElement.classList.add("gx-pt281"); } catch (e) {} window.__NAV.player(p); } }; /* change 281: the game stays open underneath */
   const pBtn = (p, label, k, cls) => (p ? <button key={k} type="button" className={"hover:underline text-left " + (cls || "")} style={{ fontWeight: "inherit" }} onClick={(e) => { e.stopPropagation(); go(p); }}>{label}</button> : <React.Fragment key={k}>{label}</React.Fragment>);
   // every goal today, with who scored and assisted
   const goals = [];
@@ -14077,6 +14079,23 @@ function GxPlan276({ s, w, sa, sb, fa, fb, leftA, leftB, up, openP, inWin }) {
     </div>
   );
 }
+// ---------- change 281: player on top of an open game; app alert test through a file (install.py) ----------
+// a game opened from the player screen must still come out on top of him
+(function gxTop281() {
+  if (window.__gxTop281) return;
+  window.__gxTop281 = 1;
+  window.addEventListener("gx-game201", () => { try { document.documentElement.classList.remove("gx-pt281"); } catch (e) {} });
+})();
+// saving push_test.json starts the App alert test job (the phone's key may save files but not start jobs)
+const gxPushPing281 = (key) => {
+  const api = "https://api.github.com/repos/dhaliwal32/23456789786634356/contents/push_test.json";
+  const hdr = { Authorization: "Bearer " + key, Accept: "application/vnd.github+json" };
+  return fetch(api + "?ref=main&t=" + Date.now(), { headers: hdr, cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j) => {
+    const body = { message: "App alert test", content: gxB64(JSON.stringify({ at: new Date().toISOString() }) + "\n"), branch: "main" };
+    if (j && j.sha) body.sha = j.sha;
+    return fetch(api, { method: "PUT", headers: { ...hdr, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  });
+};
 // ---------- change 278: alerts from the app itself (install.py) ----------
 const GX_PUSH_API278 = "https://api.github.com/repos/dhaliwal32/23456789786634356/contents/push_subs.json";
 const GX_PUSH_RUN278 = "https://api.github.com/repos/dhaliwal32/23456789786634356/actions/workflows/push-test.yml/dispatches";
@@ -14155,8 +14174,8 @@ function GxPush278() {
     const key = gxSyncKey();
     if (!key) { setMsg(why(new Error("nokey"))); return; }
     setBusy(true); setMsg("");
-    fetch(GX_PUSH_RUN278, { method: "POST", headers: { Authorization: "Bearer " + key, Accept: "application/vnd.github+json", "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main" }) })
-      .then((r) => setMsg(r.status === 204 ? "Test sent. It should arrive in about a minute." : "Could not start the test (" + r.status + ")."))
+    gxPushPing281(key)
+      .then((r) => setMsg(r.ok ? "Test sent. It should arrive in about a minute." : "Could not start the test (" + r.status + ")."))
       .catch(() => setMsg("Could not reach GitHub. Try again.")).then(() => setBusy(false));
   };
   const sub = st === "load" ? "Checking..." : st === "on" ? "On for this device. Tapping an alert opens the app on the right page."

@@ -2508,6 +2508,9 @@
   .gx-pv279 .tb > .f { font-weight: 600; padding-right: 12px; }
   .gx-pv279 .em { padding: 14px 12px; color: var(--mute); font-size: 13.5px; }
   @media (max-width: 640px) { .gx-pv279 .c3 { grid-template-columns: minmax(0,1fr) 112px minmax(0,1fr); padding: 6px 10px; } .gx-pv279 .l5 { gap: 8px; } .gx-pv279 .l5 .g { grid-template-columns: 34px minmax(0,1fr) auto; padding: 4px 8px; font-size: 12.5px; } }
+  /* change 280 (install.py) */
+  .gx-bx226 .gp276.in280 { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .gx-bx226 .gp276.in280 .dd276 { border-top: 0; padding-top: 0; margin-top: 6px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2517,7 +2520,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="vdban5.as2328" data-file="build/app.js">
+<meta name="gx-build" content="1av48tt.boj18o" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -12299,6 +12302,7 @@ function GxBox230({ s, wk }) {
         <div>Goalie starts left<b>{two(gxGl252(X, "G", dates, st), gxGl252(Y, "G", dates, st))}</b></div>
         <div>Bench with a game<b>{two(X.wasted || 0, Y.wasted || 0)}</b></div>
       </div>
+      {me !== s.me || !cur || over ? null : <GxPlan276 inWin s={s} w={w} sa={sa} sb={sb} fa={fa} fb={fb} leftA={leftA} leftB={leftB} up={up} openP={openP} />}{/* change 280 */}
     </div>
   );
   const maxG = Math.max(1, ...dates.map((_, d) => Math.max(gms(X, d), gms(Y, d))));
@@ -12409,7 +12413,7 @@ function GxBox230({ s, wk }) {
     <div className={cls}>
       {head}
       <div className="lay">
-        <div className="min-w-0">{board}{me !== s.me || !cur || over ? null : <GxPlan276 s={s} w={w} sa={sa} sb={sb} fa={fa} fb={fb} leftA={leftA} leftB={leftB} up={up} openP={openP} />}{me !== s.me || !cur ? null : <GxBp257 s={s} openP={openP} />}</div>
+        <div className="min-w-0">{board}{me !== s.me || !cur ? null : <GxBp257 s={s} openP={openP} />}</div>
         <GxZm254>
           {/* change 229: flat box again */}<div ref={stg} className="stg" data-gx="229" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
             <div ref={pr} className="pr">{fToday}{fWin}<div className="fc gf252"><GxGraphWrap259 s={s} i={i} go={(j) => { setPick(Math.max(0, Math.min(s.weeks.length - 1, j))); setSel(null); }} me={me} nmA={nmA} nmB={nmB} plain={!mineMu} today={today} cur={{ dates, today, DN, nmA, nmB, plain: !mineMu, onDay: showDay, A: dates.map((_, d) => (gxOn252(X, Y, d, st) ? (X.days[d] || {}).act || 0 : null)), B: dates.map((_, d) => (gxOn252(X, Y, d, st) ? (Y.days[d] || {}).act || 0 : null)), PA: dates.map((_, d) => exp(X, d)), PB: dates.map((_, d) => exp(Y, d)), NA: dates.map((_, d) => (st(d) === "f" ? 0 : (X.days[d] || {}).total || 0)), NB: dates.map((_, d) => (st(d) === "f" ? 0 : (Y.days[d] || {}).total || 0)) }} /></div>{fPlayers}</div>
@@ -14034,7 +14038,7 @@ function gxPlan276(s, w, today) {
   const gl = L.start.filter((q) => q.slot === "G" && q.gs && !/confirmed/.test(q.gs.replace("unconfirmed", "")));
   return { d, dt, isT, rows, gl, n: open.length, st: L.start.length, empty: L.empty };
 }
-function GxPlan276({ s, w, sa, sb, fa, fb, leftA, leftB, up, openP }) {
+function GxPlan276({ s, w, sa, sb, fa, fb, leftA, leftB, up, openP, inWin }) {
   const today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
   const [all, setAll] = useState(false);
   const ap = gxUseAp();
@@ -14046,9 +14050,9 @@ function GxPlan276({ s, w, sa, sb, fa, fb, leftA, leftB, up, openP }) {
   const rows = P ? P.rows : [], show = all ? rows : rows.slice(0, 3), fixN = rows.filter((r) => r.fix).length;
   const dn = P ? (P.isT ? "Today" : dayLabel(P.dt).split(",")[0]) : "";
   return (
-    <div className="bp230 gp276" data-gx="276">
+    <div className={inWin ? "gp276 in280" : "bp230 gp276"} data-gx="276">
       <div className="ft"><span className="gx-tag">Game plan</span></div>
-      <div className="say">{say} <span>{say2}</span></div>
+      {inWin ? null : <div className="say">{say} <span>{say2}</span></div>}
       {!P ? null : (
         <>
           <div className="dd276"><span>{dn + " \u00b7 " + P.n + " with a game, " + P.st + " start"}</span><span>{fixN ? (apOn ? "Autopilot will fix " + fixN : fixN + " to change on ESPN") : rows.length ? "who starts over who" : ""}</span></div>
