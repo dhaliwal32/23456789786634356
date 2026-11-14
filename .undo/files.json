@@ -1,13 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_notify.py": true,
-  "gm_live.py": true,
-  "gm_push.py": false,
-  "sw.js": false,
-  "manifest.webmanifest": false
+  "fantasy-gm.html": true
  },
  "changes": [
-  "278-app-alerts.py"
+  "279-game-preview.py"
  ]
 }
