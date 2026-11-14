@@ -41,6 +41,8 @@ Written Nov 9, 2026, by Claude. What Kuvar likes, what he rejected and why, idea
 - Repeated information (win chance shown twice). Each fact once.
 - Lesson: he wants premium and polished, not "cool but rough". Simpler and polished beats ambitious and rough.
 - Player Talk / Reddit (270 to 274): removed; don't bring back unless he asks.
+- Jerseys and locker stalls on Lines and Roster (Nov 14): "very unsmooth, just not clean". Replaced by plain photo cards (286) and a table-only Roster (285). The locker room is no longer something he likes; section 3 above is out of date on that.
+- Too many pages and options: Setup (275), Players (287) and the phone menu (285) were all cut down at his request. Prefer one page with a few filters over several pages.
 
 ## 5. Still open
 
