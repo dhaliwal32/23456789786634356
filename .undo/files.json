@@ -1,9 +1,8 @@
 {
  "files": {
-  "gm_notify.py": true,
-  "gm_talk.py": false
+  "gm_talk.py": true
  },
  "changes": [
-  "268-player-talk-collector.py"
+  "269-talk-backoff.py"
  ]
 }

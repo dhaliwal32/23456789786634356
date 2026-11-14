@@ -193,7 +193,9 @@ def run(force=False):
                 it = item(e, "fan", "Reddit r/" + SUBS[t])
                 if it: found[p["id"]].append(it)
     if F.n and F.fails >= F.n:
-        log(f"every Reddit request failed ({F.n}); keeping old files")
+        log(f"every Reddit request failed ({F.n}); keeping old files, next try in {EVERY_H} hours")
+        st["last"] = now().isoformat(timespec="seconds"); st["req"], st["fails"] = F.n, F.fails  # change 269: back off
+        json.dump(st, open(STATE, "w"))
         return
     cutoff = now() - timedelta(days=KEEP_DAYS)
     for p in mine:
