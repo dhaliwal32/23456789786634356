@@ -1,0 +1,11 @@
+{
+ "subs": [
+  {
+   "endpoint": "https://web.push.apple.com/QCwtpoNfYOM3kndSfI_qIG_3S_AYPqWxB-CFK0K3PbYcujjXa0vDPBHhh1AP5Z35ypHHd40NLsQhtnGViLbJhV24x4OMcrAL-Ld-1r4gdjln163Il6NrqOKviorgRFtjTBvOSVokZFaaQ_yRl3DRILNjoAzNHFISPHmXED6iG-0",
+   "p256dh": "BB4ixqwDk7ZTertSYiuiaGs45gV5VhYS_KiFt_tJBsi_2Ftvrpxd_DcJHP88IphsQn3RM5halWreJL9Kpua01BY",
+   "auth": "WM6UMayAkrs6YnJHGTcIVg",
+   "name": "iPhone",
+   "at": "2026-11-14T11:31:25.602Z"
+  }
+ ]
+}
