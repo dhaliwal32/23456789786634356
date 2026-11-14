@@ -19,6 +19,8 @@ If anything here and those docs disagree, the docs win, except where this file t
 - Never ask for ESPN cookies or API keys. They are GitHub Secrets (ESPN_S2, SWID, NTFY_TOPIC, ODDS_API_KEY).
 - Never put the app password in the repo or in a message.
 - Always show any email and confirm before sending anything.
+- Every pop-up slides in smoothly, closes by tapping outside it, and returns him exactly where he was. He called this "set in stone for every change" (Nov 14). Details in the rulebook, section 1.
+- Phone alerts come from the app itself (gm_push.py, change 278). ntfy is switched off; do not bring it back unless he asks.
 
 ## How a change works (short version; full version in the doc)
 - Every change to the app is ONE Python file in `changes/`, named with the next number, e.g. `changes/275-short-name.py`. It is run by `install.py`.
