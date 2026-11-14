@@ -2,6 +2,9 @@ name: App alert test
 # Sends one test alert to every device that turned on "Alerts from this app" (the Send a test button starts this).
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["push_test.json"]
 permissions:
   contents: read
 jobs:
