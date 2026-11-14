@@ -188,9 +188,9 @@
 "was": "Out"
 },
 "3151187": {
-"d": "2026-11-10",
+"d": "2026-11-14",
 "k": "later",
-"now": "2026-12-02",
+"now": "2026-11-17",
 "was": "2026-11-11"
 },
 "3535": {
@@ -520,10 +520,10 @@
 "was": "2026-11-09"
 },
 "4894747": {
-"d": "2026-11-13",
+"d": "2026-11-14",
 "k": "sooner",
 "nd": "2026-11-13",
-"now": "2026-11-14",
+"now": "2026-11-19",
 "was": "2026-12-01"
 },
 "4915850": {
@@ -837,7 +837,7 @@
 "status": "Injured Reserve"
 },
 "3151187": {
-"back": "2026-12-02",
+"back": "2026-11-17",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1047,7 +1047,7 @@
 "status": "Injured Reserve"
 },
 "4894747": {
-"back": "2026-11-14",
+"back": "2026-11-19",
 "note": "Melanson (chest) will be a game-time call for Saturday's clash with the Hurricanes, Tom Gulitti of NHL.com reports.",
 "status": "Injured Reserve"
 },
