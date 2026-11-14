@@ -35,7 +35,7 @@ DATA = os.path.join(HOME, "data")
 UA = "FantasyIslandsGM/1.0 (personal fantasy hockey app; macOS; github.com/dhaliwal32)"
 KEEP_DAYS = 3
 MAX_ITEMS = 400
-GAP_S = 7  # change 271: Reddit allows only a few requests a minute without an account
+GAP_S = 5  # change 271: Reddit allows only a few requests a minute without an account
 NS = {"a": "http://www.w3.org/2005/Atom"}
 TEAM_SUBS = ["AnaheimDucks", "BostonBruins", "sabres", "canes", "BlueJackets", "CalgaryFlames", "hawks", "ColoradoAvalanche",
              "DallasStars", "DetroitRedWings", "EdmontonOilers", "FloridaPanthers", "losangeleskings", "wildhockey", "Habs",
@@ -68,35 +68,42 @@ FAILS = [0]
 GAP = [GAP_S]
 
 
+def fetch(url):
+    """Change 272: fetch with macOS curl. Reddit answers curl from the Mac but answers Python's own urllib with 429."""
+    r = subprocess.run(["curl", "-s", "-L", "--max-time", "20", "-A", UA, "-H", "Accept: application/atom+xml,application/xml;q=0.9,*/*;q=0.8",
+                        "-w", "\\n%{http_code}", url], capture_output=True)
+    body, _, code = r.stdout.rpartition(b"\n")
+    try:
+        code = int(code.decode().strip() or 0)
+    except ValueError:
+        code = 0
+    return code, body
+
+
 def feed(url):
     """Reads one Reddit feed. Waits GAP seconds before each request; on "too many requests" (429) waits a minute,
     tries again and slows down for the rest of the run. Gives up on the run after 4 failures in a row."""
     if FAILS[0] >= 4:
         return None
     root = None
-    for attempt in (1, 2, 3):
+    for attempt in (1, 2):
         time.sleep(GAP[0] if attempt == 1 else 60)
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
-            with urllib.request.urlopen(req, timeout=20) as r:
-                root = ET.fromstring(r.read())
-            FAILS[0] = 0
+        code, body = fetch(url)
+        if code == 200:
+            try:
+                root = ET.fromstring(body)
+                FAILS[0] = 0
+            except Exception as ex:
+                log(f"could not read {url}: {ex}")
             break
-        except urllib.error.HTTPError as ex:
-            if ex.code == 429:
-                GAP[0] = min(30, GAP[0] * 1.5)
-                log(f"429 (Reddit says slow down), waiting a minute; now {GAP[0]:.0f} s between requests")
-                continue
-            FAILS[0] += 1
-            log(f"{ex.code} {url}")
-            return None
-        except Exception as ex:
-            FAILS[0] += 1
-            log(f"failed {url}: {ex}")
-            return None
+        if code == 429:
+            GAP[0] = min(30, GAP[0] * 1.5)
+            log(f"429 (Reddit says slow down), waiting a minute; now {GAP[0]:.0f} s between requests")
+            continue
+        log(f"{code} {url}")
+        break
     if root is None:
         FAILS[0] += 1
-        log(f"gave up on {url}")
         return None
     out = []
     for e in root.findall("a:entry", NS):
