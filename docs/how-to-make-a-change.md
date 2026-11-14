@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 285.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 289.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -168,14 +168,14 @@ Routing is `go(tab, sub)`, and the address bar mirrors it, e.g. `#moves/trades`.
 |---|---|---|
 | Roster (first page) | `myteam` (`today` too) | Roster box (`GxBox230`: scoreboard, day strip, facts, spinning box Day / Win / Games / Players, best pickup), Back from IR card, Table / My team switch (239) |
 | Matchup | `matchup` | Matchups strip, score, day picker (Summary or any day, 209), head to head, week totals, games left, NHL scores at the bottom |
-| Players | `moves/adddrop`, `moves/allp`, `moves/goalies`, `moves/injuries` | Free agents / All players / Goalies / Injuries (219), Simulate box (107) |
+| Players | `moves/adddrop` | One list with a switch: All, Free agents, Injured, Advice (287); Simulate box (107) |
 | Trades | `moves/trades` | Trade builder, result tiles, More details (195) |
 | Lines | `lines` | `GxLines111` locker room (233 to 251) |
 | League | `league` | League table, matchups, playoff odds, Draft (197), Player rankings `league/players` |
 | Setup | `setup` | Display (Favourite team, Watch link, My team view-as), Pickup rules, Phone alerts, AI Lab, Prediction history |
 | Player screen | tap a name | `GxPlayerDetail` (095): Overview, Game log, News, Lines |
 
-On the phone, Trades / League / Setup sit under a More button (241).
+On the phone the top menu is Roster, Matchup, Players, Lines, Trades and a gear for Setup; League opens from a row at the bottom of Matchup (285).
 
 **Useful building blocks:**
 - Players and teams: `s.players`, `s.me`, `p.ft` (team id or `"fa"`), `PN`, `TL`, `TeamLogo`, `teamName`, `GxFtPic114`.
@@ -208,6 +208,10 @@ Recent rows (add new ones here):
 | 282 | Phone alerts: every alert has a real switch (`GxSw282`) tapped in the app; the GitHub link and the Master switches block are gone. `gxAlSave282(patch)` saves `alert_prefs.json` through the device's GitHub key; `gxAlPatch282` also turns a switched-off group back on while keeping its other alerts off. Taps show at once (`ov282`) and flip back with a message if saving fails. Phone buttons get a forced min-height, so small controls need `min-height ... !important` |
 | 283 | Live game view tidied (Kuvar, Nov 14, before any game had started): only the rink stays pinned while scrolling (pressure bar and current play moved into `.un283`), rink max 560px wide on the laptop, and `GxGmStats283` adds a Team stats card (shots, faceoff %, hits, blocks, takeaways, giveaways, power play, PIM) under Scoring for live and finished games. Tested by replaying a real finished game (NSH at VGK, Nov 13) as live: `live.js` in the session scratchpad cut ESPN's summary to the first N plays, set the status to in progress and grew N on each request. Not yet seen on a truly live game |
 | 284 | Three things. (1) Roster box sides would not scroll with a finger on the iPhone: WebKit does not scroll inside a 3D-turned element, so once the box stops turning the facing side lies flat (`.pr.rs284`, front face `.fr284`, other faces hidden) and a sideways drag or a turn stands it up again from `el.__rest284` (animation checked frame by frame against the old one). Every side but Graph scrolls. Could only be tested in Chromium; needs Kuvar's word that it scrolls on the phone. (2) Phone player screen is a sheet: 52px dark strip on top, grab bar, tap the strip to close. (3) ntfy is off (Kuvar confirmed the app alert arrived): `NTFY_ON = False` in gm_notify.py, an early `return` in gm_live.py `push`, sync-watch.yml sends through gm_push. The NTFY_TOPIC secret must stay: the app alert key is worked out from it |
+| 285 | Roster page shows the table only: the Table / My team switch and the jersey room (`GxMyRoom238`) are no longer shown (Kuvar, Nov 14). Phone top menu: Roster, Matchup, Players, Lines, Trades and a gear for Setup (`GxGear285`, reuses class `mr241`); the More button (`GxMore241`) is no longer shown. League has no phone tab: `GxLgLink285` is a League row at the bottom of Matchup, phone only (`.gx-ll285`). Laptop menu unchanged. Kuvar finds League "kind of useless": give it a purpose before giving it a phone tab again |
+| 286 | Lines: clean photo cards (`.gx-cd286` inside `.gx-bd286`) instead of jerseys, stalls and drawn locker rooms (Kuvar, Nov 14: the jerseys looked unclean). Card: photo, last name, number and position, points a game, owner (your players outlined, free agents "Free" in green), small HOT / COLD mark from `gxHC248`. Rows are a 6-column grid: lines of 3 span 2 each, pairs span 3 each. The jersey, stall and room code (224 to 251) stays in the file unused |
+| 287 | Players is one page (`GxPlayers287`): a switch on top (All, Free agents, Injured, Advice) over the one list (`GxRankings` with `st287`), positions, search, and the fantasy team and NHL team lists behind a More filters button. Injured shows players without a rank too (rank 9999 prints as a dash). Advice is the old Free agents page (`Pickups`: watchlist, win chances, Simulate), kept because nothing else has those. The row of four pages (`GX_PL103`) is gone; `#moves/allp` and `#moves/injuries` open the matching view |
+| 288 | Goalie starts moved to Matchup (Kuvar picked this, Nov 14): `GxGoalCard288` is a card under the matchup, one line on your goalies today, tap to open the full `GoalieStreams` list for any day (open or closed is remembered). `#moves/goalies` still works but has no button |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
