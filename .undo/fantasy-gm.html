@@ -2398,7 +2398,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="tyuhfs.pt294t" data-file="build/app.js">
+<meta name="gx-build" content="725lc9.11e0vcj" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -13569,7 +13569,7 @@ function GxTkLive264({ id }) {
   const clock = d.per ? (d.per > 3 ? "OT" : "P" + d.per) + " " + d.clk : "";
   return (
     <div className="gx-tk264" data-gx="264">
-      <div className="hd264"><span>Live tracker</span>{clock ? <span className="ck264">{clock}</span> : null}</div>
+      <div className="hd264"><span>Live tracker</span><GxClk265 id={id} per={d.per} clk={d.clk} /></div>
       <div className="rw264">
         <svg viewBox="-106.25 -48.75 212.5 97.5" role="img" aria-label="Live tracker">
           {gxRink184({ L: A, R: H, H, id: "tk264" + id })}
@@ -13593,6 +13593,26 @@ function GxTkLive264({ id }) {
       </div>
     </div>
   );
+}
+// ---------- change 265: live tracker clock that ticks every second (install.py) ----------
+// ESPN's clock only changes every few seconds. Between updates the app counts down by itself from the last value.
+// If ESPN's clock has not moved for 8 s, the clock is stopped (whistle), so the app shows ESPN's value and stops counting.
+const gxSec265 = (c) => { const m = String(c || "").match(/^(\d+):(\d{1,2})/); return m ? +m[1] * 60 + +m[2] : null; };
+function GxClk265({ id, per, clk }) {
+  const r = React.useRef({ v: null, sec: null, chg: 0 });
+  const [, tick] = useState(0);
+  const now = Date.now();
+  if (clk !== r.current.v) r.current = { v: clk, sec: gxSec265(clk), chg: now };
+  useEffect(() => { const t = setInterval(() => tick((x) => x + 1), 250); return () => clearInterval(t); }, []);
+  const ty = ((gxHead132(((G132.sum || {})[id] || {}).js).status || {}).type) || {};
+  const brk = ty.name === "STATUS_END_PERIOD" || ty.name === "STATUS_INTERMISSION" || /intermission|end of/i.test(ty.detail || "");
+  const R = r.current, el = (now - R.chg) / 1000;
+  let sec = R.sec;
+  if (sec != null && !brk && sec > 0 && el < 8) sec = Math.max(0, Math.ceil(sec - el));
+  if (!per) return null;
+  const pl = per > 3 ? "OT" : "P" + per;
+  const txt = brk ? (per <= 3 ? pl + " INT" : pl + " END") : sec == null ? pl + " " + (clk || "") : pl + " " + gxMmss132(sec);
+  return <span className="ck264" data-gx="265">{txt}</span>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
