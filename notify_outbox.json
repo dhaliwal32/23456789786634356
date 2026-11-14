@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-06|f17a9a8adf9c",
-   "at": "2026-11-06T23:48:30Z",
-   "title": "Fantasy GM",
-   "text": "Dostal not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-06T23:48:30Z",
-   "seen": "2026-11-07T00:43:55Z"
-  },
-  {
-   "k": "2026-11-06|ed21f1764a4e",
-   "at": "2026-11-07T00:49:55Z",
-   "title": "Fantasy GM",
-   "text": "Dostal confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-07T00:49:55Z",
-   "seen": "2026-11-07T00:55:58Z"
-  },
-  {
    "k": "2026-11-07|df0eb0c5091e",
    "at": "2026-11-07T18:25:59Z",
    "title": "Fantasy GM",
@@ -867,6 +843,30 @@
    "via": "urgent",
    "sent_at": "2026-11-13T19:30:29Z",
    "seen": "2026-11-13T19:30:29Z"
+  },
+  {
+   "k": "2026-11-14|0699889e6ed4",
+   "at": "2026-11-14T17:31:15Z",
+   "title": "Fantasy GM",
+   "text": "Hyry joined Robertson's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-14T17:31:15Z",
+   "seen": "2026-11-14T17:31:15Z"
+  },
+  {
+   "k": "2026-11-14|a64221042df8",
+   "at": "2026-11-14T17:31:15Z",
+   "title": "Fantasy GM",
+   "text": "Lundell joined Tkachuk's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-14T17:31:15Z",
+   "seen": "2026-11-14T17:31:15Z"
   }
  ],
  "sent": {
