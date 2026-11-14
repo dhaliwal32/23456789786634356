@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests
+      - run: pip install requests cryptography
       - name: Watch the matchup and buzz on lead changes
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
