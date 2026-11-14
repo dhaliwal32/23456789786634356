@@ -2642,6 +2642,20 @@
     .gx-sx289 .pn { width: 100%; max-height: calc(100% - 52px); border-radius: 18px 18px 0 0; border: 0; padding: 16px 14px calc(18px + env(safe-area-inset-bottom)); animation: gx101-up .3s cubic-bezier(.2,.8,.2,1); }
     .gx-sx289.out .pn { transform: translateY(60vh); }
   }
+  /* change 290 (install.py) */
+  .gx-tk264 .st290 { display: flex; align-items: center; justify-content: center; gap: 7px; height: 30px; font-size: 13.5px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .gx-tk264 .st290 i, .gx-tk264 .tg264 i, .gx-tk264 .ls266 .r266 .tg266 i { width: 8px; height: 8px; border-radius: 99px; flex: none; display: inline-block; background: var(--line2); }
+  .gx-tk264 .tg264, .gx-tk264 .ls266 .r266 .tg266 { display: inline-flex; align-items: center; gap: 6px; min-width: 0; padding: 0; border-radius: 0; background: none; color: var(--ink2); font-size: 12.5px; font-weight: 600; text-align: left; }
+  .gx-tk264 .ev264 { margin-top: 10px; min-height: 58px; padding: 10px 12px; border-radius: 12px; background: var(--card); gap: 12px; }
+  .gx-tk264 .tg264 { min-width: 48px; }
+  .gx-tk264 .tx264 b { font-size: 14.5px; font-weight: 600; }
+  .gx-tk264 .tx264 span { font-size: 12.5px; height: 18px; }
+  .gx-tk264 .ls266 { border-top: 0; }
+  .gx-tk264 .ls266 .r266 { grid-template-columns: 44px 50px minmax(0, 1fr); height: 38px; font-size: 13px; }
+  .gx-tk264 .ls266 .r266 .tx266 b { font-weight: 600; margin-right: 8px; }
+  .gx-tk264 .pb267 { font-weight: 600; }
+  .gx-tk264 .hd264 { letter-spacing: 0; font-weight: 600; font-size: 14px; }
+  .gx-tk264 .ck264 { font-weight: 600; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2651,7 +2665,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1h0luon.7l4nj1" data-file="build/app.js">
+<meta name="gx-build" content="1ypmj45.1ul9isr" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -13770,7 +13784,7 @@ function gxShots263(sm) {
     else if (/shot|save/i.test(ty)) k = "sog";
     if (!k) return;
     const tid = String(((e.team || {}).id) || "");
-    pts.push({ k, t: tid && tid === H.id ? "h" : tid && tid === A.id ? "a" : "", x: +c.x, y: +c.y });
+    pts.push({ k, t: ((t0) => (/^blocked/i.test(String((e.type || {}).text || "")) ? (t0 === "h" ? "a" : t0 === "a" ? "h" : "") : t0))(tid && tid === H.id ? "h" : tid && tid === A.id ? "a" : ""), /* change 290: a blocked shot belongs to the shooter's team */ x: +c.x, y: +c.y });
   });
   return { pts, A: A.ab, H: H.ab };
 }
@@ -13831,7 +13845,7 @@ function gxTk264(sm) {
   ((sm || {}).plays || []).forEach((e) => {
     const c = e.coordinate, ok = c && c.x != null && c.y != null && !isNaN(+c.x) && !isNaN(+c.y);
     const tid = String(((e.team || {}).id) || "");
-    ev.push({ k: String(e.id || ev.length), ty: String((e.type || {}).text || ""), tx: String(e.text || ""), t: tid && tid === H.id ? "h" : tid && tid === A.id ? "a" : "",
+    ev.push({ k: String(e.id || ev.length), ty: String((e.type || {}).text || ""), tx: String(e.text || ""), t: ((t0) => (/^blocked/i.test(String((e.type || {}).text || "")) ? (t0 === "h" ? "a" : t0 === "a" ? "h" : "") : t0))(tid && tid === H.id ? "h" : tid && tid === A.id ? "a" : ""), /* change 290: a blocked shot belongs to the shooter's team */
       x: ok ? +c.x : null, y: ok ? +c.y : null, goal: !!e.scoringPlay || /^goal/i.test(String((e.type || {}).text || "")),
       per: ((e.period || {}).number) || 0, clk: ((e.clock || {}).displayValue) || "" });
   });
@@ -13890,13 +13904,14 @@ function GxTkLive264({ id }) {
           {p ? <g key={"rp" + p.k} transform={"translate(" + p.x + " " + -p.y + ")"}><circle className="rp266" r="3" fill="none" stroke={zc ? zc.f : "#ffffff"} strokeWidth="0.7" /></g> : null}
           {trail.map((q, j) => <circle key={q.k} cx={q.x} cy={-q.y} r={1.3} fill={col(q.t) ? col(q.t).f : "#9a9a9a"} opacity={0.55 - j * 0.12} />)}
           {p ? <GxPuck267 x={p.x} y={p.y} k={p.k} hold={S267.hold} zs={zs} fill={zc ? zc.f : null} /> : null}
-          {S267.lab && !(e && e.goal) ? <g className="lb267" data-gx="267l" pointerEvents="none"><text x={zs ? zs * 62 : 0} y="-33" textAnchor="middle" fontSize="6.4" fontWeight="900" fill={lc267 ? lc267.f : "#e8e8e8"} stroke="rgba(0,0,0,.55)" strokeWidth="0.9" paintOrder="stroke">{(S267.lt === "h" ? H : S267.lt === "a" ? A : "") + (S267.lt ? " " : "") + S267.lab.toUpperCase()}</text></g> : null}
+          {/* change 290: the label moved off the rink */}
           {pp267 ? <g data-gx="267pp" pointerEvents="none"><rect x="-34" y="31.5" width="68" height="8.6" rx="4.3" fill="#f5a524" /><text x="0" y="37.4" textAnchor="middle" fontSize="4.8" fontWeight="800" fill="#121212">{pp267.pp + " POWER PLAY " + gxMmss132(pp267.left)}</text></g> : null}
           <GxCel267 e={e} c={ec} tm={e ? (e.t === "h" ? H : e.t === "a" ? A : "") : ""} />
         </svg>
       </div>
       </div>{/* change 283: only the rink stays pinned */}
       <div className="un283">
+      {(() => { const y = gxSay290(e, S267, A, H), c = col(y.t); return <div className="st290" data-gx="290">{y.tx ? <><i style={c ? { background: c.f } : null}></i>{y.tx}</> : null}</div>; })()}
       <div className="pb267" data-gx="267b">
         <span style={{ color: cA.f }}>{A}</span>
         <div className="br267"><i style={{ left: 0, width: Math.round(pr267 * 100) + "%", background: cA.f }}></i><i style={{ left: Math.round(pr267 * 100) + "%", width: (100 - Math.round(pr267 * 100)) + "%", background: cH.f }}></i><em></em></div>
@@ -13904,9 +13919,9 @@ function GxTkLive264({ id }) {
         <small>Pressure, last 12 plays</small>
       </div>
       <div className="ev264">
-        {e ? <span className="tg264" style={{ background: ec ? ec.f : "var(--line)", color: ec ? ec.t : "var(--ink)" }}>{e.t === "h" ? H : e.t === "a" ? A : "NHL"}</span> : null}
+        {e ? <span className="tg264"><i style={ec ? { background: ec.f } : null}></i>{e.t === "h" ? H : e.t === "a" ? A : "NHL"}</span> : null}
         <div className="tx264">
-          <b>{e ? (e.goal ? "GOAL" : e.ty || "Play") : "Waiting for the first play"}</b>
+          <b>{e ? gxTy290(e) : "Waiting for the first play"}</b>
           <span>{e ? (gxPlayLeft266(e) ? gxPlayLeft266(e) + "  " : "") + e.tx : ""}</span>
         </div>
       </div>
@@ -13997,8 +14012,8 @@ function GxTkList266({ d, k, col, A, H }) {
         return (
           <div key={q.k} className={"r266" + (j === 0 && first != null && first !== q.k ? " nw266" : "") + (q.goal ? " gl266" : "")}>
             <span className="tm266">{gxPlayLeft266(q)}</span>
-            <span className="tg266" style={{ background: c ? c.f : "var(--line)", color: c ? c.t : "var(--ink)" }}>{q.t === "h" ? H : q.t === "a" ? A : "NHL"}</span>
-            <span className="tx266"><b>{q.goal ? "GOAL" : q.ty || "Play"}</b>{q.tx}</span>
+            <span className="tg266"><i style={c ? { background: c.f } : null}></i>{q.t === "h" ? H : q.t === "a" ? A : "NHL"}</span>
+            <span className="tx266"><b>{gxTy290(q)}</b>{q.tx}</span>
           </div>
         );
       })}
@@ -14700,6 +14715,24 @@ function GxStr289({ s }) {
         </div>, document.body) : null}
     </>
   );
+}
+// ---------- change 290: clean live tracker text (install.py) ----------
+const GX_TY290 = { "face off": "Faceoff", "blocked": "Blocked shot", "missed": "Missed shot", "shot": "Shot on goal", "failed shot attempt": "Shootout miss", "period start": "Period starts", "period end": "Period ends" };
+const gxTy290 = (q) => (!q ? "" : q.goal ? "Goal" : GX_TY290[String(q.ty || "").toLowerCase()] || q.ty || "Play");
+// one plain line for what is happening: "CAR shot blocked", "SEA attacking", "Faceoff"
+function gxSay290(e, S, A, H) {
+  if (!e || e.goal) return { t: "", tx: "" };
+  const who = (t) => (t === "h" ? H : t === "a" ? A : ""), ty = String(e.ty || "");
+  if (/^blocked/i.test(ty)) return { t: e.t, tx: who(e.t) + " shot blocked" };
+  if (/^missed/i.test(ty)) return { t: e.t, tx: who(e.t) + " shot missed" };
+  if (/^shot/i.test(ty)) return { t: e.t, tx: who(e.t) + " shot on goal" };
+  if (/^(face ?off|stoppage|period|end of|shootout)/i.test(ty)) return { t: "", tx: gxTy290(e) };
+  const lab = String((S && S.lab) || ""), t = (S && S.lt) || "";
+  if (!lab) return { t: "", tx: "" };
+  if (/^attack$/i.test(lab)) return { t, tx: who(t) + " attacking" };
+  if (/dangerous/i.test(lab)) return { t, tx: who(t) + " dangerous attack" };
+  if (/possession/i.test(lab)) return { t, tx: who(t) + " in possession" };
+  return { t: "", tx: gxTy290({ ty: lab }) };
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
