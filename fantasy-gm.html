@@ -2405,6 +2405,24 @@
   .gx-tk264 .ls266 .r266.gl266 .tx266 b { color: var(--accent); }
   @keyframes gx266in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .gx-tk264 .rp266, .gx-tk264 .ls266 .r266.nw266 { animation: none; } }
+  /* change 267 (install.py) */
+  .gx-tk264 { display: contents; }
+  .gx-tk264 .pn267 { position: sticky; top: 0; z-index: 6; background: var(--bg); padding: 4px 16px 6px; box-shadow: 0 8px 12px -10px rgba(0,0,0,.6); }
+  .gx-tk264 .ls266 { margin: 4px 16px 10px; }
+  .gx-tk264 .hd264 .rt267 { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+  .gx-tk264 .wt267 { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 7px; background: var(--card3, #2a2c31); color: var(--ink); border: 1px solid var(--line2, #3a3c42); text-decoration: none; letter-spacing: 0; }
+  .gx-tk264 .pb267 { display: grid; grid-template-columns: 38px 1fr 38px; align-items: center; gap: 8px; padding: 8px 2px 0; font-size: 11px; font-weight: 800; }
+  .gx-tk264 .pb267 .br267 { position: relative; height: 8px; border-radius: 4px; overflow: hidden; background: var(--line); }
+  .gx-tk264 .pb267 .br267 i { position: absolute; top: 0; bottom: 0; transition: width .8s ease, left .8s ease; }
+  .gx-tk264 .pb267 .br267 em { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--bg); }
+  .gx-tk264 .pb267 span:last-child { text-align: right; }
+  .gx-tk264 .pb267 small { grid-column: 1 / -1; text-align: center; font-size: 10.5px; font-weight: 500; color: var(--mute); margin-top: -2px; }
+  .gx-tk264 .lb267 { transition: opacity .4s; }
+  .gx-tk264 .cl267 { animation: gx267fl .9s ease-in-out 0s 3 alternate both; }
+  @keyframes gx267fl { from { opacity: .25; } to { opacity: .7; } }
+  .gx-tk264 .ct267 { transform-box: fill-box; transform-origin: center; animation: gx267pop .5s cubic-bezier(.2, 1.4, .4, 1) 1 both; }
+  @keyframes gx267pop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .gx-tk264 .cl267, .gx-tk264 .ct267 { animation: none; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2413,7 +2431,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="5d9rrm.gousi2" data-file="build/app.js">
+<meta name="gx-build" content="gdxqln.1mupjzn" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -13578,13 +13596,14 @@ function GxTkLive264({ id }) {
     if (!p) p = q; else trail.push(q);
   }
   // attacking zone: the team of the latest event with a spot, in the end where it happened
-  const zs = p && p.t && Math.abs(p.x) > 25 ? (p.x > 0 ? 1 : -1) : 0, zc = p ? col(p.t) : null;
+  const S267 = gxAtk267(d, k, e, p), zs = S267.zs, zc = col(S267.t) || (p ? col(p.t) : null), g267 = gxG267(id), pp267 = g267 ? gxPPNow182(g267) : null, pr267 = gxPress267(d, k), lc267 = col(S267.lt);
   const cp = "url(#gxb184tk264" + id + (gxDk186() ? "d" : "") + ")";
   const ec = e ? col(e.t) : null;
   const clock = d.per ? (d.per > 3 ? "OT" : "P" + d.per) + " " + d.clk : "";
   return (
     <div className="gx-tk264" data-gx="264">
-      <div className="hd264"><span>Live tracker</span><small className="sg266" data-gx="266s">{A} {gxSog266(d, "a")} SOG {gxSog266(d, "h")} {H}</small><GxClk266 id={id} per={d.per} clk={d.clk} /></div>
+      <div className="pn267">
+      <div className="hd264"><span>Live tracker</span><small className="sg266" data-gx="266s">{A} {gxSog266(d, "a")} SOG {gxSog266(d, "h")} {H}</small><span className="rt267"><GxClk266 id={id} per={d.per} clk={d.clk} />{g267 ? <a className="wt267" data-gx="267w" href={gxWatchUrl175(g267, id)} target="_blank" rel="noopener" onClick={gxWatchGo211}>Watch</a> : null}</span></div>
       <div className="rw264">
         <svg viewBox="-106.25 -48.75 212.5 97.5" role="img" aria-label="Live tracker">
           {gxRink184({ L: A, R: H, H, id: "tk264" + id })}
@@ -13592,14 +13611,17 @@ function GxTkLive264({ id }) {
           {p && trail.length ? <polyline points={[...trail].reverse().concat([p]).map((q) => q.x + "," + -q.y).join(" ")} fill="none" stroke={zc ? zc.f : "#9a9a9a"} strokeWidth="0.5" strokeDasharray="1.2 1.4" opacity="0.6" data-gx="266p" /> : null}
           {p ? <g key={"rp" + p.k} transform={"translate(" + p.x + " " + -p.y + ")"}><circle className="rp266" r="3" fill="none" stroke={zc ? zc.f : "#ffffff"} strokeWidth="0.7" /></g> : null}
           {trail.map((q, j) => <circle key={q.k} cx={q.x} cy={-q.y} r={1.3} fill={col(q.t) ? col(q.t).f : "#9a9a9a"} opacity={0.55 - j * 0.12} />)}
-          {p ? (
-            <g className="pk264" style={{ transform: "translate(" + p.x + "px, " + -p.y + "px)" }}>
-              {e && e.goal ? <circle r="6" fill="none" stroke={ec ? ec.f : "#fff"} strokeWidth="0.8" opacity="0.8" /> : null}
-              <circle r="3.2" fill={zc ? zc.f : "#888"} opacity="0.35" />
-              <circle r="1.7" fill="#111" stroke="#fff" strokeWidth="0.55" />
-            </g>
-          ) : null}
+          {p ? <GxPuck267 x={p.x} y={p.y} k={p.k} hold={S267.hold} zs={zs} fill={zc ? zc.f : null} /> : null}
+          {S267.lab && !(e && e.goal) ? <g className="lb267" data-gx="267l" pointerEvents="none"><text x={zs ? zs * 62 : 0} y="-33" textAnchor="middle" fontSize="6.4" fontWeight="900" fill={lc267 ? lc267.f : "#e8e8e8"} stroke="rgba(0,0,0,.55)" strokeWidth="0.9" paintOrder="stroke">{(S267.lt === "h" ? H : S267.lt === "a" ? A : "") + (S267.lt ? " " : "") + S267.lab.toUpperCase()}</text></g> : null}
+          {pp267 ? <g data-gx="267pp" pointerEvents="none"><rect x="-34" y="31.5" width="68" height="8.6" rx="4.3" fill="#f5a524" /><text x="0" y="37.4" textAnchor="middle" fontSize="4.8" fontWeight="800" fill="#121212">{pp267.pp + " POWER PLAY " + gxMmss132(pp267.left)}</text></g> : null}
+          <GxCel267 e={e} c={ec} tm={e ? (e.t === "h" ? H : e.t === "a" ? A : "") : ""} />
         </svg>
+      </div>
+      <div className="pb267" data-gx="267b">
+        <span style={{ color: cA.f }}>{A}</span>
+        <div className="br267"><i style={{ left: 0, width: Math.round(pr267 * 100) + "%", background: cA.f }}></i><i style={{ left: Math.round(pr267 * 100) + "%", width: (100 - Math.round(pr267 * 100)) + "%", background: cH.f }}></i><em></em></div>
+        <span style={{ color: cH.f }}>{H}</span>
+        <small>Pressure, last 12 plays</small>
       </div>
       <div className="ev264">
         {e ? <span className="tg264" style={{ background: ec ? ec.f : "var(--line)", color: ec ? ec.t : "var(--ink)" }}>{e.t === "h" ? H : e.t === "a" ? A : "NHL"}</span> : null}
@@ -13608,6 +13630,7 @@ function GxTkLive264({ id }) {
           <span>{e ? (gxPlayLeft266(e) ? gxPlayLeft266(e) + "  " : "") + e.tx : ""}</span>
         </div>
       </div>
+      </div>{/* 267 pinned end */}
       <GxTkList266 d={d} k={k} col={col} A={A} H={H} />
     </div>
   );
@@ -13700,6 +13723,109 @@ function GxTkList266({ d, k, col, A, H }) {
         );
       })}
     </div>
+  );
+}
+// ---------- change 267: live tracker motion, attack labels, pressure, goal celebration, power play, Watch (install.py) ----------
+const gxG267 = (id) => ((window.__NHLNOW || {}).games || []).find((x) => x.id === id) || null;
+// which end a team attacks this period: where its shots were, else home attacks the right end
+function gxSide267(d, t, per) {
+  const sh = (ps) => d.ev.filter((q) => q.t === t && q.x != null && Math.abs(q.x) > 25 && (q.goal || /shot|save/i.test(q.ty)) && ps(q));
+  let L = sh((q) => q.per === per); if (!L.length) L = sh(() => true);
+  if (L.length) { const s = L.reduce((a, q) => a + Math.sign(q.x), 0); if (s) return s > 0 ? 1 : -1; }
+  return t === "h" ? 1 : -1;
+}
+const gxOth267 = (t) => (t === "h" ? "a" : t === "a" ? "h" : "");
+// who is attacking at a play: the play's team if it is in that team's attacking zone, the other team if in its own end
+function gxWho267(d, q, per) {
+  if (!q || !q.t) return { t: "", zs: 0 };
+  if (q.x == null || Math.abs(q.x) <= 25) return { t: q.t, zs: 0 };
+  const s = gxSide267(d, q.t, per);
+  if (Math.sign(q.x) === s) return { t: q.t, zs: s };
+  const o = gxOth267(q.t); return { t: o, zs: o ? gxSide267(d, o, per) : 0 };
+}
+const gxStop267 = (e) => !e || e.goal || /stoppage|penalty|faceoff|period|game|shootout|challenge|timeout/i.test(e.ty);
+function gxAtk267(d, k, e, p) {
+  const per = (e && e.per) || d.per || 1, w = gxWho267(d, p, per);
+  let lab = "";
+  if (e) {
+    if (e.goal) lab = "GOAL";
+    else if (/stoppage|penalty|faceoff/i.test(e.ty)) lab = e.ty;
+    else if (/shot/i.test(e.ty)) lab = e.ty;
+    else if (!w.zs) lab = "In possession";
+    else lab = p && Math.abs(p.x) >= 64 ? "Dangerous attack" : "Attack";
+  }
+  const lt = e && (e.goal || /shot/i.test(e.ty)) ? e.t : w.t;
+  return { t: w.t, zs: w.zs, lab, lt, hold: gxStop267(e) };
+}
+// pressure: last 12 plays, shots count most; plays in a team's own end count for the other team
+function gxPress267(d, k) {
+  const per = d.per || 1; let a = 0, h = 0;
+  d.ev.slice(Math.max(0, k - 11), k + 1).forEach((q) => {
+    if (!q.t) return;
+    let w = 0.3, who = q.t;
+    if (q.goal) w = 4; else if (/^(shot|save)/i.test(q.ty)) w = 3; else if (/missed/i.test(q.ty)) w = 2; else if (/blocked/i.test(q.ty)) w = 1.5;
+    else { if (/takeaway/i.test(q.ty)) w = 1; else if (/hit/i.test(q.ty)) w = 0.7; else if (/faceoff/i.test(q.ty)) w = 0.5; else if (/giveaway/i.test(q.ty)) { w = 1; who = gxOth267(q.t); }
+      const z = gxWho267(d, q, q.per || per); if (z.zs && z.t) who = z.t; }
+    if (who === "a") a += w; else if (who === "h") h += w;
+  });
+  return a + h > 0 ? a / (a + h) : 0.5;
+}
+// the puck: glides to each real play, then keeps moving around the attacking zone until the next one (stops at whistles, faceoffs and goals)
+function GxPuck267({ x, y, k, hold, zs, fill }) {
+  const g = React.useRef(null), S = React.useRef(null);
+  React.useLayoutEffect(() => {
+    const el = g.current; if (!el) return;
+    const cur = S.current || (S.current = { x, y: -y });
+    const paint = () => el.setAttribute("transform", "translate(" + cur.x.toFixed(2) + " " + cur.y.toFixed(2) + ")");
+    const still = hold || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    const cl = (v, m) => Math.max(-m, Math.min(m, v));
+    let leg = { fx: cur.x, fy: cur.y, tx: x, ty: -y, t0: performance.now(), dur: 650 }, raf = 0, on = true, first = true;
+    const next = (now) => {
+      let tx, ty;
+      if (zs) { tx = zs * (30 + Math.random() * 58); ty = -34 + Math.random() * 68; }
+      else { tx = x + (Math.random() * 20 - 10); ty = -y + (Math.random() * 20 - 10); }
+      leg = { fx: cur.x, fy: cur.y, tx: cl(tx, 95), ty: cl(ty, 38), t0: now + (first ? 1100 : Math.random() < 0.3 ? 250 + Math.random() * 450 : 0), dur: 900 + Math.random() * 900 };
+      first = false;
+    };
+    const frame = (now) => {
+      if (!on) return;
+      const u = Math.max(0, Math.min(1, (now - leg.t0) / leg.dur)), v = ease(u);
+      cur.x = leg.fx + (leg.tx - leg.fx) * v; cur.y = leg.fy + (leg.ty - leg.fy) * v; paint();
+      if (u >= 1) { if (still) return; next(now); }
+      raf = requestAnimationFrame(frame);
+    };
+    paint(); raf = requestAnimationFrame(frame);
+    return () => { on = false; cancelAnimationFrame(raf); };
+  }, [k, hold, zs]);
+  return (
+    <g ref={g} data-gx="267">
+      <circle r="3.2" fill={fill || "#888"} opacity="0.35" />
+      <circle r="1.7" fill="#111" stroke="#fff" strokeWidth="0.55" />
+    </g>
+  );
+}
+// goal: rink flashes in the scoring team's colour with GOAL for 6 seconds after the goal shows up
+function GxCel267({ e, c, tm }) {
+  const [until, setU] = useState(0), last = React.useRef(null);
+  useEffect(() => {
+    if (!e || !e.goal || last.current === e.k) return;
+    const first = last.current === null; last.current = e.k;
+    if (first) return; // a goal that was already there when the game opened doesn't celebrate
+    const u = Date.now() + 6000; setU(u);
+    const t = setTimeout(() => setU(0), 6100); return () => clearTimeout(t);
+  }, [e && e.k]);
+  useEffect(() => { if (last.current === null) last.current = e ? e.k : ""; }, []);
+  if (!until || !e || !e.goal) return null;
+  const nm = String(e.tx || "").replace(/^Goal\s*\(\d+\)\s*[^,]*,\s*/i, "").slice(0, 34);
+  return (
+    <g data-gx="267g" pointerEvents="none">
+      <rect className="cl267" x="-100" y="-42.5" width="200" height="85" rx="28" ry="28" fill={c ? c.f : "#2563eb"} />
+      <g className="ct267">
+        <text x="0" y="-2" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff" stroke="rgba(0,0,0,.45)" strokeWidth="0.8" paintOrder="stroke" letterSpacing="2">GOAL</text>
+        <text x="0" y="12" textAnchor="middle" fontSize="7" fontWeight="800" fill="#fff" stroke="rgba(0,0,0,.45)" strokeWidth="0.5" paintOrder="stroke">{tm}{nm ? "  " + nm : ""}</text>
+      </g>
+    </g>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
