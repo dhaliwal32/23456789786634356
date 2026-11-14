@@ -35,6 +35,11 @@ def log(*a):
 
 
 def push(title, msg):
+    try:  # change 278: the same alert also goes to the home-screen app
+        import gm_push
+        gm_push.send(title, msg, "#matchup")
+    except Exception as e:
+        log("app alert failed", e)
     if not NTFY_TOPIC:
         log("(no ntfy topic)", title, msg)
         return
