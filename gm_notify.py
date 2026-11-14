@@ -459,11 +459,7 @@ if __name__ == "__main__":
             gm_edge.run()
         except Exception as ex:
             print(f"(edge probe) WARNING: {ex}")
-        try:  # change 268: player talk from Reddit
-            import gm_talk
-            gm_talk.run()
-        except Exception as ex:
-            print(f"(talk) WARNING: {ex}")
+        # change 270: gm_talk.py off - Reddit refuses GitHub's servers; talk_mac.py on Kuvar's Mac collects instead
         try:  # change 130: Monday note
             import gm_weekly
             gm_weekly.run()
