@@ -2,12 +2,13 @@
 """
 talk_mac.py - Fantasy Islands GM, Player Talk collector that runs on Kuvar's Mac (change 270).
 
-Reddit refuses GitHub's servers, so this runs on the Mac every 3 hours (launchd) from home internet.
+Reddit refuses GitHub's servers, so this runs on the Mac every hour (launchd) from home internet.
 It reads Reddit's public RSS feeds (newest comments and posts of all 32 team subreddits, r/fantasyhockey with the
 Daily Discussion thread, and r/hockey), keeps the last 3 days, and uploads talk/raw/<subreddit>.json to the repo
 in one commit through the GitHub API. It needs no roster: the app picks out the posts about each player itself.
 
 The GitHub key is read from the Mac Keychain (service "fantasy-gm-talk", account "talk"); it is never in a file.
+Change 273: plain requests only (short name, no limit=, Reddit gives 25 items each); refused otherwise. Runs every hour.
 Change 271: one request every 7 s or slower (Reddit gave 429 at 1.5 s), team subreddits comments only (about 37 requests, 5 minutes).
 Only Python's own modules are used, so nothing has to be installed.
 Run by hand:  python3 ~/FantasyTalk/talk_mac.py
@@ -32,7 +33,7 @@ REPO = "dhaliwal32/23456789786634356"
 BRANCH = "main"
 HOME = os.path.join(os.path.expanduser("~"), "FantasyTalk")
 DATA = os.path.join(HOME, "data")
-UA = "FantasyIslandsGM/1.0 (personal fantasy hockey app; macOS; github.com/dhaliwal32)"
+UA = "FantasyIslandsGM/1.0"  # change 273: Reddit refuses longer names (tested on the Mac)
 KEEP_DAYS = 3
 MAX_ITEMS = 400
 GAP_S = 5  # change 271: Reddit allows only a few requests a minute without an account
@@ -70,7 +71,7 @@ GAP = [GAP_S]
 
 def fetch(url):
     """Change 272: fetch with macOS curl. Reddit answers curl from the Mac but answers Python's own urllib with 429."""
-    r = subprocess.run(["curl", "-s", "-L", "--max-time", "20", "-A", UA, "-H", "Accept: application/atom+xml,application/xml;q=0.9,*/*;q=0.8",
+    r = subprocess.run(["curl", "-s", "-L", "--max-time", "20", "-A", UA,
                         "-w", "\\n%{http_code}", url], capture_output=True)
     body, _, code = r.stdout.rpartition(b"\n")
     try:
@@ -133,14 +134,14 @@ def collect():
         if items is not None:
             got.setdefault(sub, []).extend(items)
     for s in ["fantasyhockey", "hockey"] + TEAM_SUBS:
-        add(s, feed(f"https://www.reddit.com/r/{s}/comments/.rss?limit=100"))
+        add(s, feed(f"https://www.reddit.com/r/{s}/comments/.rss"))
         if s in ("fantasyhockey", "hockey"):
-            add(s, feed(f"https://www.reddit.com/r/{s}/new/.rss?limit=50"))
+            add(s, feed(f"https://www.reddit.com/r/{s}/new/.rss"))
     # newest Daily Discussion thread in r/fantasyhockey: its comments too
     q = urllib.parse.quote('title:"Daily Discussion"')
     th = feed(f"https://www.reddit.com/r/fantasyhockey/search.rss?q={q}&restrict_sr=on&sort=new&t=week") or []
     if th:
-        dd = feed(th[0]["u"].rstrip("/") + "/.rss?limit=100&sort=new")
+        dd = feed(th[0]["u"].rstrip("/") + "/.rss?sort=new")
         if dd:
             for it in dd:
                 it["d"] = 1

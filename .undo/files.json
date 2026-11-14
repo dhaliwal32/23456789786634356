@@ -3,6 +3,6 @@
   "talk_mac.py": true
  },
  "changes": [
-  "273-talk-mac-plain.py"
+  "274-talk-mac-trickle.py"
  ]
 }

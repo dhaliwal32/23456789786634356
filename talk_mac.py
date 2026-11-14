@@ -2,7 +2,7 @@
 """
 talk_mac.py - Fantasy Islands GM, Player Talk collector that runs on Kuvar's Mac (change 270).
 
-Reddit refuses GitHub's servers, so this runs on the Mac every hour (launchd) from home internet.
+Reddit refuses GitHub's servers, so this runs on the Mac every 5 minutes (launchd), one feed per run from home internet.
 It reads Reddit's public RSS feeds (newest comments and posts of all 32 team subreddits, r/fantasyhockey with the
 Daily Discussion thread, and r/hockey), keeps the last 3 days, and uploads talk/raw/<subreddit>.json to the repo
 in one commit through the GitHub API. It needs no roster: the app picks out the posts about each player itself.
@@ -67,6 +67,7 @@ def cut(s, n=300):
 
 FAILS = [0]
 GAP = [GAP_S]
+DD = [None]
 
 
 def fetch(url):
@@ -106,6 +107,10 @@ def feed(url):
     if root is None:
         FAILS[0] += 1
         return None
+    return parse(root)
+
+
+def parse(root):
     out = []
     for e in root.findall("a:entry", NS):
         g = lambda k: (e.findtext("a:" + k, default="", namespaces=NS) or "").strip()
@@ -113,6 +118,8 @@ def feed(url):
         au = e.find("a:author/a:name", NS)
         who = (au.text or "").replace("/u/", "").strip() if au is not None else ""
         url_ = ln.get("href") if ln is not None else ""
+        if url_ and re.search(r"daily discussion", g("title"), re.I) and "/comments/" in url_:
+            DD[0] = DD[0] or url_  # change 274: remember the newest Daily Discussion thread
         if not url_ or who.lower() in BOTS:
             continue
         title = plain(g("title"))
@@ -128,25 +135,16 @@ def feed(url):
     return out
 
 
-def collect():
-    got = {}
-    def add(sub, items):
-        if items is not None:
-            got.setdefault(sub, []).extend(items)
-    for s in ["fantasyhockey", "hockey"] + TEAM_SUBS:
-        add(s, feed(f"https://www.reddit.com/r/{s}/comments/.rss"))
-        if s in ("fantasyhockey", "hockey"):
-            add(s, feed(f"https://www.reddit.com/r/{s}/new/.rss"))
-    # newest Daily Discussion thread in r/fantasyhockey: its comments too
-    q = urllib.parse.quote('title:"Daily Discussion"')
-    th = feed(f"https://www.reddit.com/r/fantasyhockey/search.rss?q={q}&restrict_sr=on&sort=new&t=week") or []
-    if th:
-        dd = feed(th[0]["u"].rstrip("/") + "/.rss?sort=new")
-        if dd:
-            for it in dd:
-                it["d"] = 1
-            add("fantasyhockey", dd)
-    return got
+def slot_url(i, st):
+    """change 274: one feed per run. Even turns: r/fantasyhockey (newest comments, then the Daily Discussion thread);
+    odd turns: r/fantasyhockey new posts, r/hockey comments, r/hockey new posts, then each team subreddit in turn."""
+    if i % 2 == 0:
+        if (i // 2) % 2 == 1 and st.get("dd"):
+            return "fantasyhockey", st["dd"].rstrip("/") + "/.rss?sort=new", True
+        return "fantasyhockey", "https://www.reddit.com/r/fantasyhockey/comments/.rss", False
+    rest = [("fantasyhockey", "new"), ("hockey", "comments"), ("hockey", "new")] + [(t, "comments") for t in TEAM_SUBS]
+    sub, kind = rest[(i // 2) % len(rest)]
+    return sub, f"https://www.reddit.com/r/{sub}/{kind}/.rss", False
 
 
 def merge(sub, new):
@@ -218,31 +216,71 @@ def upload(files):
 
 
 def main():
+    """change 274: trickle mode. launchd starts this every 5 minutes; each run reads ONE Reddit feed (Reddit refuses
+    more than a trickle without an app key). On 429 the wait doubles (up to 60 min); each success shortens it again.
+    Changed subreddit files go up to GitHub at most every 30 minutes."""
     os.makedirs(DATA, exist_ok=True)
-    t0 = time.time()
-    got = collect()
-    if not got:
-        log("Reddit gave nothing this time; nothing uploaded")
-        return
-    sent = {}
+    sp = os.path.join(HOME, "state.json")
     try:
-        sent = json.load(open(os.path.join(HOME, "sent.json")))
+        st = json.load(open(sp))
     except Exception:
-        pass
-    files, meta = {}, {}
-    for sub, new in got.items():
-        body = merge(sub, new)
-        txt = json.dumps(body, ensure_ascii=False, separators=(",", ":"))
-        h = hashlib.sha1(json.dumps(body["items"]).encode()).hexdigest()
-        meta[sub] = {"n": len(body["items"]), "upd": body["upd"]}
-        if sent.get(sub) != h:
-            files["talk/raw/" + sub + ".json"] = txt
-            sent[sub] = h
-    files["talk/raw/_meta.json"] = json.dumps({"upd": datetime.now(timezone.utc).isoformat(timespec="seconds"), "from": "mac", "subs": meta}, separators=(",", ":"))
-    ok = upload(files)
-    if ok:
-        json.dump(sent, open(os.path.join(HOME, "sent.json"), "w"))
-    log(f"{len(got)} subreddits, {sum(len(v) for v in got.values())} new items, {len(files)} files {'uploaded' if ok else 'NOT uploaded'}, {int(time.time() - t0)} s")
+        st = {}
+    now = time.time()
+    if now < st.get("next_ok", 0):
+        return
+    i = st.get("i", 0)
+    sub, url, is_dd = slot_url(i, st)
+    GAP[0] = 0
+    code, body = fetch(url)
+    gap = st.get("gap", 5)
+    if code == 200:
+        items = None
+        try:
+            root = ET.fromstring(body)
+            items = parse(root)
+        except Exception as ex:
+            log(f"could not read {url}: {ex}")
+        if items is not None:
+            if is_dd:
+                for it in items:
+                    it["d"] = 1
+            merge(sub, items)
+            st.setdefault("dirty", [])
+            if sub not in st["dirty"]:
+                st["dirty"].append(sub)
+            log(f"{sub}: {len(items)} items ({url.split('reddit.com')[-1]})")
+        if DD[0] and DD[0] != st.get("dd"):
+            st["dd"] = DD[0]
+            log("Daily Discussion thread: " + DD[0])
+        gap = max(5, gap - 1)
+        st["i"] = i + 1
+    elif code == 429:
+        gap = min(60, gap * 2)
+        log(f"429 (Reddit says slow down) on {sub}; next try in {gap} minutes")
+    else:
+        log(f"{code} {url}")
+        st["i"] = i + 1
+    st["gap"] = gap
+    st["next_ok"] = now + gap * 60 - 30
+    if st.get("dirty") and now - st.get("last_up", 0) >= 30 * 60:
+        files, meta = {}, {}
+        for sb in st["dirty"]:
+            try:
+                files["talk/raw/" + sb + ".json"] = open(os.path.join(DATA, sb + ".json")).read()
+            except Exception:
+                pass
+        for fn in os.listdir(DATA):
+            if fn.endswith(".json"):
+                try:
+                    d = json.load(open(os.path.join(DATA, fn)))
+                    meta[fn[:-5]] = {"n": len(d.get("items", [])), "upd": d.get("upd")}
+                except Exception:
+                    pass
+        files["talk/raw/_meta.json"] = json.dumps({"upd": datetime.now(timezone.utc).isoformat(timespec="seconds"), "from": "mac", "subs": meta}, separators=(",", ":"))
+        if upload(files):
+            log(f"uploaded {len(files) - 1} subreddit files")
+            st["dirty"], st["last_up"] = [], now
+    json.dump(st, open(sp, "w"))
 
 
 if __name__ == "__main__":
