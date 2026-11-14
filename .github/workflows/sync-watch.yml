@@ -1,5 +1,5 @@
 name: Sync watch
-# Sends one phone alert (ntfy) when the Fantasy sync has stopped saving new data.
+# Sends one alert to the app (gm_push.py) when the Fantasy sync has stopped saving new data.
 on:
   schedule:
     - cron: "8,38 * * * *"
@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 60
       - name: Alert if the last sync is old
         env:
+          SWID: ${{ secrets.SWID }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
           last=$(git log -1 --grep='^sync ' --format=%ct)
@@ -24,10 +25,6 @@ jobs:
           echo "last sync was $age minutes ago"
           # this runs every 30 minutes, so each window below is hit once: after about 1 hour and again after about 6 hours
           if { [ $age -ge 50 ] && [ $age -lt 80 ]; } || { [ $age -ge 360 ] && [ $age -lt 390 ]; }; then
-            if [ -n "$NTFY_TOPIC" ]; then
-              curl -s -H "Title: Fantasy sync has stopped" -H "Priority: high" \
-                -d "No new data for $age minutes. Lineup alerts and autopilot are not running. Open GitHub, Actions, and look for a red X." \
-                "https://ntfy.sh/$NTFY_TOPIC" > /dev/null
-              echo "alert sent"
-            fi
+            pip install -q requests cryptography
+            AGE=$age python -c "import os, gm_push; gm_push.send('Fantasy sync has stopped', 'No new data for ' + os.environ['AGE'] + ' minutes. Lineup alerts and autopilot are not running.', '#setup')"
           fi
