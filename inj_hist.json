@@ -82,6 +82,7 @@
 "3025535": {
 "d": "2026-11-14",
 "k": "later",
+"nd": "2026-11-14",
 "now": "2026-11-18",
 "was": "2026-11-14"
 },
@@ -406,6 +407,11 @@
 "d": "2026-11-07",
 "k": "back",
 "was": "2026-11-07"
+},
+"4565274": {
+"d": "2026-11-14",
+"k": "new",
+"now": "2026-11-18"
 },
 "4565282": {
 "d": "2026-11-12",
@@ -760,8 +766,8 @@
 },
 "3025535": {
 "back": "2026-11-18",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Pesce (illness) won't play against Washington on Saturday, Amanda Stein of the Devils' official site reports.",
+"status": "Out"
 },
 "3041969": {
 "back": "2026-12-12",
@@ -982,6 +988,11 @@
 "back": "2026-11-21",
 "note": "Byram (upper body) was placed on injured reserve Tuesday.",
 "status": "Injured Reserve"
+},
+"4565274": {
+"back": "2026-11-18",
+"note": "out",
+"status": "Out"
 },
 "4565282": {
 "back": "2026-11-14",
