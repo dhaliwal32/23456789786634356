@@ -1,8 +1,8 @@
 {
  "files": {
-  "talk_mac.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "274-talk-mac-trickle.py"
+  "274-remove-talk-tab.py"
  ]
 }

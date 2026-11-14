@@ -2445,7 +2445,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="zacc2d.ij30t5" data-file="build/app.js">
+<meta name="gx-build" content="ca8qqw.1mdiwto" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8084,7 +8084,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
   const Q = window.__QA;
   const act = (fn) => () => { onClose(); fn(p); };
   const owner = p.ft === "fa" ? (p.wv ? "Waivers" : "Free agent") : <TL s={s} id={p.ft} />;
-  const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["talk", "Talk"], ["lines", "Lines"]];
+  const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["lines", "Lines"]]; /* 274: Talk tab removed */
 
   return (
     <div className={"gx-pd-ov" + (out101 ? " out" : "")} onClick={close101}>
@@ -8239,7 +8239,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
             </div>
           ) : null}
 
-          {tab === "talk" ? <GxTalk270 p={p} s={s} /> : null}
+          {/* 274: Talk tab body removed */}
           {tab === "lines" ? (<>
             <div className="gx-pd-pn">
               <div className="gx-pd-h">{"Where he plays for " + p.t}<button type="button" className="r text-blue-600" onClick={act(() => window.__NAV && window.__NAV.lines(p.t))}>All team lines</button></div>
