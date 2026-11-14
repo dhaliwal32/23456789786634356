@@ -2423,6 +2423,20 @@
   .gx-tk264 .ct267 { transform-box: fill-box; transform-origin: center; animation: gx267pop .5s cubic-bezier(.2, 1.4, .4, 1) 1 both; }
   @keyframes gx267pop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .gx-tk264 .cl267, .gx-tk264 .ct267 { animation: none; } }
+  /* change 270 (install.py) */
+  .gx-tk270 .hd270 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .gx-tk270 .hd270 small { font-size: 12px; font-weight: 500; color: var(--mute); }
+  .gx-tk270 .fl270 { display: flex; gap: 6px; margin: 8px 0 4px; overflow-x: auto; }
+  .gx-tk270 .fl270 button { flex: 0 0 auto; font-size: 12.5px; padding: 6px 11px; border-radius: 16px; border: 1px solid var(--line); background: var(--card2, transparent); color: var(--mute); }
+  .gx-tk270 .fl270 button.on { color: var(--ink); border-color: var(--accent); }
+  .gx-tk270 .it270 { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+  .gx-tk270 .it270 .mt270 { display: flex; gap: 6px; align-items: center; font-size: 11.5px; color: var(--mute); white-space: nowrap; overflow: hidden; }
+  .gx-tk270 .it270 .mt270 b { color: var(--ink); font-weight: 700; }
+  .gx-tk270 .it270 .mt270 .tg270 { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--line); color: var(--ink); }
+  .gx-tk270 .it270 .mt270 .tg270.d270 { background: #f5a524; color: #121212; }
+  .gx-tk270 .it270 .tx270 { font-size: 14px; line-height: 1.4; margin-top: 4px; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .gx-tk270 .it270 .th270 { font-size: 11.5px; color: var(--mute); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-tk270 .em270 { font-size: 13px; color: var(--mute); padding: 12px 0; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2431,7 +2445,7 @@
 <meta name="apple-mobile-web-app-title" content="Islands GM">
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
-<meta name="gx-build" content="gdxqln.1mupjzn" data-file="build/app.js">
+<meta name="gx-build" content="zacc2d.ij30t5" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -8070,7 +8084,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
   const Q = window.__QA;
   const act = (fn) => () => { onClose(); fn(p); };
   const owner = p.ft === "fa" ? (p.wv ? "Waivers" : "Free agent") : <TL s={s} id={p.ft} />;
-  const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["lines", "Lines"]];
+  const tabs = [["ov", "Overview"], ["log", "Game log"], ["news", "News" + (news.length ? " (" + news.length + ")" : "")], ["talk", "Talk"], ["lines", "Lines"]];
 
   return (
     <div className={"gx-pd-ov" + (out101 ? " out" : "")} onClick={close101}>
@@ -8225,6 +8239,7 @@ function GxPlayerDetail({ p: p0, s, wk, onClose }) {
             </div>
           ) : null}
 
+          {tab === "talk" ? <GxTalk270 p={p} s={s} /> : null}
           {tab === "lines" ? (<>
             <div className="gx-pd-pn">
               <div className="gx-pd-h">{"Where he plays for " + p.t}<button type="button" className="r text-blue-600" onClick={act(() => window.__NAV && window.__NAV.lines(p.t))}>All team lines</button></div>
@@ -13826,6 +13841,67 @@ function GxCel267({ e, c, tm }) {
         <text x="0" y="12" textAnchor="middle" fontSize="7" fontWeight="800" fill="#fff" stroke="rgba(0,0,0,.45)" strokeWidth="0.5" paintOrder="stroke">{tm}{nm ? "  " + nm : ""}</text>
       </g>
     </g>
+  );
+}
+// ---------- change 270: Player Talk tab (install.py) ----------
+// Reddit posts and comments from talk/raw/<subreddit>.json (uploaded by talk_mac.py on Kuvar's Mac every 3 hours);
+// the app picks the ones that mention this player: full name anywhere, last name alone only when no other player shares it
+const GX_SUB270 = { ANA: "AnaheimDucks", BOS: "BostonBruins", BUF: "sabres", CAR: "canes", CBJ: "BlueJackets", CGY: "CalgaryFlames", CHI: "hawks", COL: "ColoradoAvalanche", DAL: "DallasStars", DET: "DetroitRedWings", EDM: "EdmontonOilers", FLA: "FloridaPanthers", LA: "losangeleskings", MIN: "wildhockey", MTL: "Habs", NJ: "devils", NSH: "Predators", NYI: "NewYorkIslanders", NYR: "rangers", OTT: "OttawaSenators", PHI: "Flyers", PIT: "penguins", SEA: "SeattleKraken", SJ: "SanJoseSharks", STL: "stlouisblues", TB: "TampaBayLightning", TOR: "leafs", UTA: "UtahHockeyClub", UTAH: "UtahHockeyClub", VAN: "canucks", VGK: "goldenknights", WPG: "winnipegjets", WSH: "caps" };
+window.__TK270 = window.__TK270 || {};
+function gxTkLoad270(name) {
+  const c = window.__TK270[name], now = Date.now();
+  if (c && now - c.at < 10 * 60e3) return c.p;
+  const p = fetch("talk/raw/" + name + ".json?v=" + Math.floor(now / 600e3)).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  window.__TK270[name] = { at: now, p };
+  return p;
+}
+const gxTkN270 = (s) => String(s || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+function gxTkLasts270(s) {
+  const k = s.players.length;
+  if (window.__TKL270 && window.__TKL270.k === k) return window.__TKL270.m;
+  const m = {};
+  s.players.forEach((q) => { const l = gxTkN270(String(q.n || "").split(" ").slice(1).join(" ")); if (l) (m[l] = m[l] || []).push(q.t); });
+  window.__TKL270 = { k, m };
+  return m;
+}
+const gxAgo270 = (iso) => { const m = Math.max(0, (Date.now() - Date.parse(iso)) / 60e3); return m < 60 ? Math.round(m) + "m" : m < 48 * 60 ? Math.round(m / 60) + "h" : Math.round(m / 1440) + "d"; };
+function GxTalk270({ p, s }) {
+  const [d, setD] = useState(null), [f, setF] = useState("all");
+  const team = GX_SUB270[p.t] || "";
+  useEffect(() => {
+    let on = true;
+    Promise.all([gxTkLoad270("_meta"), gxTkLoad270("fantasyhockey"), gxTkLoad270("hockey"), team ? gxTkLoad270(team) : Promise.resolve(null)]).then(([m, fh, hk, tm]) => {
+      if (!on) return;
+      const full = " " + gxTkN270(p.n) + " ", last = gxTkN270(String(p.n || "").split(" ").slice(1).join(" ")), L = gxTkLasts270(s)[last] || [];
+      const anyOk = last.length > 3 && L.length === 1, teamOk = last.length > 3 && L.filter((t) => t === p.t).length === 1;
+      const hit = (it, okLast) => { const x = " " + gxTkN270((it.h || "") + " " + it.x) + " "; return x.indexOf(full) >= 0 || (okLast && x.indexOf(" " + last + " ") >= 0); };
+      const out = [], seen = {};
+      const take = (src, sub, okLast) => ((src || {}).items || []).forEach((it) => { if (!seen[it.u] && hit(it, okLast)) { seen[it.u] = 1; out.push({ ...it, sub }); } });
+      take(tm, team, teamOk); take(fh, "fantasyhockey", anyOk); take(hk, "hockey", anyOk);
+      out.sort((a, b) => (a.t < b.t ? 1 : -1));
+      setD({ items: out, upd: m && m.upd, none: !m && !fh && !hk });
+    });
+    return () => { on = false; };
+  }, [p.id]);
+  if (!d) return <div className="gx-pd-pn gx-tk270" data-gx="270"><div className="gx-pd-h">Talk</div><div className="em270">Loading Reddit...</div></div>;
+  const subs = [["all", "All"], ["team", team ? "r/" + team : ""], ["fantasyhockey", "r/fantasyhockey"], ["hockey", "r/hockey"]].filter((x) => x[1]);
+  const L = d.items.filter((it) => f === "all" || (f === "team" ? it.sub === team : it.sub === f)).slice(0, 40);
+  const stale = d.upd && Date.now() - Date.parse(d.upd) > 8 * 3600e3;
+  return (
+    <div className="gx-pd-pn gx-tk270" data-gx="270">
+      <div className="gx-pd-h hd270"><span>Talk</span><small>{d.upd ? "Reddit, updated " + gxAgo270(d.upd) + " ago" : ""}</small></div>
+      {d.none ? <div className="em270">No Reddit posts yet. They come from the script on your Mac every 3 hours.</div> : (<>
+        <div className="fl270">{subs.map(([k, l]) => <button key={k} type="button" className={f === k ? "on" : ""} onClick={() => setF(k)}>{l}</button>)}</div>
+        {stale ? <div className="em270" style={{ paddingTop: 4 }}>Your Mac hasn't sent new posts for a while (it only runs while the Mac is awake).</div> : null}
+        {L.length ? L.map((it) => (
+          <a key={it.u} className="it270" href={it.u} target="_blank" rel="noopener" onClick={gxWatchGo211}>
+            <div className="mt270"><b>{"r/" + it.sub}</b><span>{gxAgo270(it.t)}</span>{it.d ? <span className="tg270 d270">Daily Discussion</span> : <span className="tg270">{it.k === "c" ? "Comment" : "Post"}</span>}<span>{"u/" + it.w}</span></div>
+            <div className="tx270">{it.x}</div>
+            {it.h ? <div className="th270">{"in: " + it.h}</div> : null}
+          </a>
+        )) : <div className="em270">{"Nobody on these subreddits has mentioned " + p.n + " in the last 3 days."}</div>}
+      </>)}
+    </div>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);

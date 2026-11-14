@@ -1,8 +1,10 @@
 {
  "files": {
-  "gm_talk.py": true
+  "fantasy-gm.html": true,
+  "gm_notify.py": true,
+  "talk_mac.py": false
  },
  "changes": [
-  "269-talk-backoff.py"
+  "270-player-talk-tab.py"
  ]
 }
