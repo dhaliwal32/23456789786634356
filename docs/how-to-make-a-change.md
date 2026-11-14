@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 289.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 290.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -168,14 +168,14 @@ Routing is `go(tab, sub)`, and the address bar mirrors it, e.g. `#moves/trades`.
 |---|---|---|
 | Roster (first page) | `myteam` (`today` too) | Roster box (`GxBox230`: scoreboard, day strip, facts, spinning box Day / Win / Games / Players, best pickup), Back from IR card, Table / My team switch (239) |
 | Matchup | `matchup` | Matchups strip, score, day picker (Summary or any day, 209), head to head, week totals, games left, NHL scores at the bottom |
-| Players | `moves/adddrop` | One list with a switch: All, Free agents, Injured, Advice (287); Simulate box (107) |
+| Players | `moves/adddrop` | Free agents page; Filters has Show (Free agents, All players, Injured), positions, weeks; week strip above the list (289); Simulate box (107) |
 | Trades | `moves/trades` | Trade builder, result tiles, More details (195) |
 | Lines | `lines` | `GxLines111` locker room (233 to 251) |
 | League | `league` | League table, matchups, playoff odds, Draft (197), Player rankings `league/players` |
 | Setup | `setup` | Display (Favourite team, Watch link, My team view-as), Pickup rules, Phone alerts, AI Lab, Prediction history |
 | Player screen | tap a name | `GxPlayerDetail` (095): Overview, Game log, News, Lines |
 
-On the phone the top menu is Roster, Matchup, Players, Lines, Trades and a gear for Setup; League opens from a row at the bottom of Matchup (285).
+On the phone the top menu is Roster, Matchup, Players, Lines, Trades and a gear for Setup; League opens from the strength card on Roster (289).
 
 **Useful building blocks:**
 - Players and teams: `s.players`, `s.me`, `p.ft` (team id or `"fa"`), `PN`, `TL`, `TeamLogo`, `teamName`, `GxFtPic114`.
@@ -212,6 +212,7 @@ Recent rows (add new ones here):
 | 286 | Lines: clean photo cards (`.gx-cd286` inside `.gx-bd286`) instead of jerseys, stalls and drawn locker rooms (Kuvar, Nov 14: the jerseys looked unclean). Card: photo, last name, number and position, points a game, owner (your players outlined, free agents "Free" in green), small HOT / COLD mark from `gxHC248`. Rows are a 6-column grid: lines of 3 span 2 each, pairs span 3 each. The jersey, stall and room code (224 to 251) stays in the file unused |
 | 287 | Players is one page (`GxPlayers287`): a switch on top (All, Free agents, Injured, Advice) over the one list (`GxRankings` with `st287`), positions, search, and the fantasy team and NHL team lists behind a More filters button. Injured shows players without a rank too (rank 9999 prints as a dash). Advice is the old Free agents page (`Pickups`: watchlist, win chances, Simulate), kept because nothing else has those. The row of four pages (`GX_PL103`) is gone; `#moves/allp` and `#moves/injuries` open the matching view |
 | 288 | Goalie starts moved to Matchup (Kuvar picked this, Nov 14): `GxGoalCard288` is a card under the matchup, one line on your goalies today, tap to open the full `GoalieStreams` list for any day (open or closed is remembered). `#moves/goalies` still works but has no button |
+| 289 | Kuvar on waking (Nov 14) rejected three overnight choices; this fixes them. (1) Players: 287's switch on top was wrong ("all fucked"). He never wanted separate sections or a top tab. The page is the Free agents page (`Pickups`) again, and its Filters box has a Show choice (`GX_SHOW289`: Free agents, All players, Injured); the other two views show the `GxRankings` list under the same Filters box (`GxPlayers289`; `GxPlayers287` is unused). `GxWkStrip289` is a sideways strip of every week left above the list, one tap each. (2) Goalies: 288's card at the bottom of Matchup was "so hard to access, looks horrible". `GxGoal289` is at the top of Matchup: Goalies tonight, one line when closed, and when open Yours, the opponent's, and the 5 best free agents starting, each one row (photo, name, game, Confirmed / Likely / Not confirmed / Backup, points if he starts), plus a button to the any-day page. `GxGoalCard288` is unused. (3) League: his only use for it is where his team ranks in strength. The Roster page's strength line is now `GxStr289`: rank of 10, strength a week, F / D / G ranks; tap it for a sheet with every team (slides up, tap outside closes) and a button to the League page. The League row at the bottom of Matchup (`GxLgLink285`) is gone. Lesson: when he says "combine", he means one page with a filter inside, not a row of tabs; and anything he has to scroll to the bottom for counts as hidden |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
