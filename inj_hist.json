@@ -254,6 +254,11 @@
 "now": "2026-11-14",
 "was": "Out"
 },
+"3939716": {
+"d": "2026-11-14",
+"k": "news",
+"nd": "2026-11-14"
+},
 "3941973": {
 "d": "2026-11-13",
 "k": "dtd",
@@ -557,7 +562,7 @@
 "5080162": {
 "d": "2026-11-13",
 "k": "later",
-"nd": "2026-11-13",
+"nd": "2026-11-14",
 "now": "2026-11-27",
 "was": "2026-11-14"
 },
@@ -878,7 +883,7 @@
 },
 "3939716": {
 "back": "2026-11-27",
-"note": "ir",
+"note": "Capobianco (leg) was moved to long-term injured reserve Saturday.",
 "status": "Injured Reserve"
 },
 "3941973": {
@@ -1063,7 +1068,7 @@
 },
 "5080162": {
 "back": "2026-11-27",
-"note": "ir",
+"note": "Bichsel (lower body) was placed on injured reserve Saturday.",
 "status": "Injured Reserve"
 },
 "5080177": {
