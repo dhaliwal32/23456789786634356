@@ -1,0 +1,33 @@
+name: Sync watch
+# Sends one phone alert (ntfy) when the Fantasy sync has stopped saving new data.
+on:
+  schedule:
+    - cron: "8,38 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 60
+      - name: Alert if the last sync is old
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          last=$(git log -1 --grep='^sync ' --format=%ct)
+          if [ -z "$last" ]; then echo "no sync commit in the last 60 commits"; last=0; fi
+          age=$(( ( $(date +%s) - last ) / 60 ))
+          echo "last sync was $age minutes ago"
+          # this runs every 30 minutes, so each window below is hit once: after about 1 hour and again after about 6 hours
+          if { [ $age -ge 50 ] && [ $age -lt 80 ]; } || { [ $age -ge 360 ] && [ $age -lt 390 ]; }; then
+            if [ -n "$NTFY_TOPIC" ]; then
+              curl -s -H "Title: Fantasy sync has stopped" -H "Priority: high" \
+                -d "No new data for $age minutes. Lineup alerts and autopilot are not running. Open GitHub, Actions, and look for a red X." \
+                "https://ntfy.sh/$NTFY_TOPIC" > /dev/null
+              echo "alert sent"
+            fi
+          fi
