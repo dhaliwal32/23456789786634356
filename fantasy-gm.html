@@ -2521,6 +2521,10 @@
   .gx-sw282 i { position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 99px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,.35); transition: transform .2s cubic-bezier(.2,.8,.2,1); }
   .gx-sw282.on i { transform: translateX(18px); }
   .gx-sw282:active { transform: none; }
+  /* change 283 (install.py) */
+  .gx-tk264 .un283 { padding: 0 16px; }
+  @media (min-width: 641px) { .gx-tk264 .rw264 { max-width: 560px; margin: 0 auto; } }
+  .gx-pv279.gs283 { padding-top: 0; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2530,7 +2534,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="3eku8.1744zzi" data-file="build/app.js">
+<meta name="gx-build" content="1qq0rh8.1isb59u" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -10105,7 +10109,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
             <div className="ph"><span>{GX_PER141[k] || (+k === 4 ? "OVERTIME" : "SHOOTOUT")}</span><span>{aw}</span><span>{hm}</span></div>
             {per[k].map((r) => <div key={r.i} className="gw173"><div className="gr"><span><TeamLogo t={r.tm} size={26} /></span><span><small>{r.x.timeInPeriod}<GxStr205 x={r.x} /></small>Goal: {pBtn(r.p, shortN(r.n), "s")}<small className="as">{r.as.length ? "(" : ""}{r.as.map((q, j) => <React.Fragment key={j}>{j ? ", " : ""}{pBtn(q.ap, shortN(q.an), "a")}</React.Fragment>)}{r.as.length ? ")" : "Unassisted"}</small></span><span>{r.x.awayScore}</span><span>{r.x.homeScore}</span></div>{<GxGv208 x={r.x} g={r.g} tm={r.tm}>{(lb208) => { const k173 = "G" + r.g.id + "-" + r.i, on = !!gv163[k173]; return <><button type="button" className="gv173" onClick={(e) => { e.stopPropagation(); setGv163((o) => ({ ...o, [k173]: !on })); }}>{lb208} <i className={on ? "up" : ""}>{"\u25be"}</i></button>{on ? <div className="gvb173"><GxRink163 x={r.x} g={r.g} tm={r.tm} s={s} /></div> : null}</>; }}</GxGv208>}<GxOi205 x={r.x} g={r.g} tm={r.tm} s={s} cls="gv173" /></div>)}
           </React.Fragment>
-        ))}</div> : <div className="em" style={{ padding: 16, color: "var(--mute)" }}>{pre(g) ? "Not started yet." : "No goals yet."}</div>}</>;
+        ))}</div> : <div className="em" style={{ padding: 16, color: "var(--mute)" }}>{pre(g) ? "Not started yet." : "No goals yet."}</div>}<GxGmStats283 id={gid} g={g} live={live(g)} /></>;
       } else if (pre(g)) {
         body = <GxPreTab279 s={s} g={g} gt={gt} a={a} b={b} pBtn={pBtn} />;
       } else if (!bx) {
@@ -13746,6 +13750,8 @@ function GxTkLive264({ id }) {
           <GxCel267 e={e} c={ec} tm={e ? (e.t === "h" ? H : e.t === "a" ? A : "") : ""} />
         </svg>
       </div>
+      </div>{/* change 283: only the rink stays pinned */}
+      <div className="un283">
       <div className="pb267" data-gx="267b">
         <span style={{ color: cA.f }}>{A}</span>
         <div className="br267"><i style={{ left: 0, width: Math.round(pr267 * 100) + "%", background: cA.f }}></i><i style={{ left: Math.round(pr267 * 100) + "%", width: (100 - Math.round(pr267 * 100)) + "%", background: cH.f }}></i><em></em></div>
@@ -14355,6 +14361,34 @@ const gxAlPatch282 = (p, x) => {
 };
 function GxSw282({ on, label, onTap }) {
   return <button type="button" role="switch" aria-checked={!!on} aria-label={label} className={"gx-sw282" + (on ? " on" : "")} onClick={onTap}><i></i></button>;
+}
+// ---------- change 283: team stats card for live and finished games (install.py) ----------
+const GX_GS283 = [["shotsTotal", "Shots", 1], ["faceoffPercent", "Faceoff %", 1], ["hits", "Hits", 1], ["blockedShots", "Blocked shots", 1], ["takeaways", "Takeaways", 1], ["giveaways", "Giveaways", -1], ["pp", "Power play", 1], ["penaltyMinutes", "Penalty minutes", -1]];
+function GxGmStats283({ id, g, live }) {
+  const [sm, setSm] = useState(null);
+  useEffect(() => {
+    let dead = false;
+    const load = () => gxSum132(id).then((js) => { if (!dead && js) setSm(js); });
+    setSm(null); load();
+    const t = live ? setInterval(load, 10000) : null;
+    return () => { dead = true; if (t) clearInterval(t); };
+  }, [id, live]);
+  if (!sm) return null;
+  const aw = gxAb131((g.awayTeam || {}).abbrev), hm = gxAb131((g.homeTeam || {}).abbrev);
+  const tm = (ab) => ((((sm.boxscore || {}).teams) || []).find((x) => gxAb131(((x || {}).team || {}).abbreviation) === ab) || {}).statistics || [];
+  const raw = (ab, nm) => { const x = tm(ab).find((q) => q.name === nm); return x ? x.displayValue : null; };
+  const val = (ab, nm) => (nm === "pp" ? (raw(ab, "powerPlayOpportunities") == null ? null : (raw(ab, "powerPlayGoals") || "0") + " for " + raw(ab, "powerPlayOpportunities")) : raw(ab, nm));
+  const rows = GX_GS283.map(([k, l, dir]) => { const a = val(aw, k), b = val(hm, k); if (a == null && b == null) return null; const x = parseFloat(a), y = parseFloat(b), tie = isNaN(x) || isNaN(y) || x === y, aw2 = dir > 0 ? x > y : x < y; return { k, l, a, b, wa: !tie && aw2, wb: !tie && !aw2 }; }).filter(Boolean);
+  if (!rows.length) return null;
+  return (
+    <div className="gx-pv279 gs283" data-gx="283">
+      <div className="h"><span>TEAM STATS</span><small>{live ? "so far, better side in bold" : "better side in bold"}</small></div>
+      <div className="cd">
+        <div className="c3 tm"><span><TeamLogo t={aw} size={22} />{aw}</span><span></span><span style={{ justifyContent: "flex-end" }}>{hm}<TeamLogo t={hm} size={22} /></span></div>
+        {rows.map((r) => <div key={r.k} className="c3">{r.wa ? <b>{r.a}</b> : <span className={r.wb ? "lo" : ""}>{r.a}</span>}<span>{r.l}</span>{r.wb ? <b>{r.b}</b> : <span className={r.wa ? "lo" : ""}>{r.b}</span>}</div>)}
+      </div>
+    </div>
+  );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
