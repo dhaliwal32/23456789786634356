@@ -104,6 +104,11 @@ def _clock(dt):
 
 def push(title, msg, prio="default", tags=""):
     """Send one message to the phone right now. Returns True if sent."""
+    try:  # change 278: the same alert also goes to the home-screen app
+        import gm_push
+        gm_push.send(title, msg, "#myteam")
+    except Exception as ex:
+        print(f"(notify) app alert not sent: {ex}")
     if not NTFY_TOPIC or "PASTE" in NTFY_TOPIC:
         print("(notify) off - no ntfy topic")
         return False
@@ -450,6 +455,11 @@ if __name__ == "__main__":
     elif "--test" in sys.argv:
         print("sent" if push("Fantasy Islands GM", "Test - phone notifications are working.") else "not sent")
     else:
+        try:  # change 278: keep push_key.json there for the app
+            import gm_push
+            gm_push.ensure_key()
+        except Exception as ex:
+            print(f"(notify) push key: {ex}")
         try:
             flush()
         except Exception as ex:
