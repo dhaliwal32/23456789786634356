@@ -19,7 +19,7 @@
   "goalie_not_confirmed": true,
   "pickup_new_pp1": true,
   "pickup_ice_time_jump": false,
-  "pickup_trending": false,
+  "pickup_trending": true,
   "pickup_bigger_role": false,
   "return_watch": [
     "Jared McCann",
