@@ -2578,6 +2578,16 @@
   .gx-pl287 > .gx-seg103 { margin-bottom: 12px; }
   .gx-mf287 { border: 1px solid var(--line2); border-radius: 8px; padding: 6px 12px; font-size: 14px; color: var(--ink); white-space: nowrap; }
   .gx-mf287.on { background: var(--accentSoft); }
+  /* change 288 (install.py) */
+  .gx-gc288 { border-radius: 16px; background: var(--card); overflow: hidden; }
+  .gx-gc288 > .hd288 { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 56px; padding: 10px 16px; color: var(--ink); text-align: left; }
+  .gx-gc288 > .hd288 > span:first-child { flex: 1; min-width: 0; }
+  .gx-gc288 > .hd288 b { display: block; font-weight: 600; font-size: 15px; }
+  .gx-gc288 > .hd288 small { display: block; font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-gc288 > .hd288 .sec-chev { transition: transform .2s ease; }
+  .gx-gc288 > .bd288 { padding: 0 12px 14px; animation: gx288-in .26s cubic-bezier(.2,.8,.2,1); }
+  @keyframes gx288-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 640px) { .gx-gc288 { border-radius: 14px; } .gx-gc288 > .hd288 { padding: 10px 14px; } .gx-gc288 > .bd288 { padding: 0 6px 12px; } }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2587,7 +2597,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1sgqy3s.yd82bk" data-file="build/app.js">
+<meta name="gx-build" content="15bqopu.1q55frv" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3195,7 +3205,7 @@ function App() {
   let content = null;
   if (tab === "today" || tab === "myteam") content = <div className="space-y-4"><Today {...P} top103 /><GxRosterView239 P={P} /></div>;
   else if (tab === "myteam") content = <MyTeam {...P} />;
-  else if (tab === "matchup") content = <div className="space-y-4"><Matchup {...P} /><GxLgLink285 go={P.go} />{/* gx105: games, league and carrying boxes removed */}</div>;
+  else if (tab === "matchup") content = <div className="space-y-4"><Matchup {...P} /><GxGoalCard288 {...P} /><GxLgLink285 go={P.go} />{/* gx105: games, league and carrying boxes removed */}</div>;
   else if (tab === "teams") content = teamView ? <TeamPage {...P} id={teamView} back={backFromTeam} /> : <TeamsTab {...P} openTeam={openTeam} />;
   else if (tab === "lines") content = true ? <GxLines111 {...P} /> : window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
@@ -14502,6 +14512,28 @@ function GxPlayers287(P) {
     <div className="gx-pl287" data-gx="287">
       <div className="gx-seg103">{GX_PL287.map(([k, l]) => <button key={k} type="button" className={v === k ? "on" : ""} onClick={() => pick(k)}>{l}</button>)}</div>
       {v === "adv" ? <Pickups {...P} /> : <GxRankings s={P.s} st287={v} />}
+    </div>
+  );
+}
+// ---------- change 288: Goalie starts card on Matchup (install.py) ----------
+function GxGoalCard288(P) {
+  const { s } = P, today = todayISO();
+  const [open, setOpen] = useState(() => uiGet().gc288 === "o");
+  const flip = () => { const v = !open; setOpen(v); uiSet("gc288", v ? "o" : "c"); };
+  let sum = "";
+  try {
+    const DF = (((window.ESPN_DATA || {}).goalies) || {})[today] || {};
+    const plays = (p) => !!gameOf(p.t, today) || Object.values(DF).some((v) => v && v.team === p.t);
+    const mine = s.players.filter((p) => p.ft === s.me && p.p === "G" && !p.ir && plays(p));
+    sum = mine.length ? mine.map((p) => lastN(p.n) + ": " + String(gStart(p, today).l || "").replace(/^[^A-Za-z]+/, "")).join(" \u00b7 ") : "None of your goalies play today";
+  } catch (e) { sum = ""; }
+  return (
+    <div className="gx-gc288" data-gx="288">
+      <button type="button" className="hd288" aria-expanded={open} onClick={flip}>
+        <span><b>Goalie starts</b><small>{sum}</small></span>
+        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 0 0" }}></span>
+      </button>
+      {open ? <div className="bd288"><GoalieStreams {...P} /></div> : null}
     </div>
   );
 }
