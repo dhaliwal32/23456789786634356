@@ -609,6 +609,11 @@
 "k": "back",
 "was": ""
 },
+"5161": {
+"d": "2026-11-14",
+"k": "back",
+"was": "2027-01-12"
+},
 "5172": {
 "d": "2026-11-07",
 "k": "back",
@@ -672,6 +677,7 @@
 "5833": {
 "d": "2026-11-14",
 "k": "later",
+"nd": "2026-11-14",
 "now": "2027-01-02",
 "was": "2026-11-14"
 }
@@ -1112,11 +1118,6 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
-"status": "Injured Reserve"
-},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1164,7 +1165,7 @@
 },
 "5833": {
 "back": "2027-01-02",
-"note": "out",
+"note": "Kreider (lower body) will be out for approximately 6-8 weeks, the Canadiens announced Saturday.",
 "status": "Out"
 }
 }
