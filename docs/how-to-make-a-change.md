@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 275.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 278.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -197,6 +197,10 @@ Recent rows (add new ones here):
 | # | What |
 |---|---|
 | 270 to 274 | Player Talk (Reddit) tab added then removed; see `docs/notes/changes-270-to-274.md` |
+| 275 | Setup cleaned up (Kuvar, Nov 14: "a lot of information in there, most isn't being used"). Main Setup page is now short: App (My team, Favourite team, Watch link inline), Alerts and lineup (Phone alerts, Lineup autopilot, Protected players = the old Pickup rules page), AI (AI Lab, Prediction history), then one More row. `#setup/more` holds Theme, Injury return dates, Edit players, News, Betting lines, Schedule, Data and backup. Nothing was deleted; old `#setup/display`, `players`, `league` pages still open by hash. Class `gx-st275` |
+| 276 | Roster box: Game plan card above Best pickup (`GxPlan276`, worker `gxPlan276(s, w, today)`). One sentence on where the matchup stands, then for today (or the next day with games once today's have started) who starts over who when more players have a game than there are spots: each player who sits is paired with the weakest starter he could replace. Yellow dot = ESPN's lineup has them the other way round (`actDay` slots; 7 = bench). Also lists goalies not confirmed. Uses `liveNudges` so its numbers match the Day side. Classes `gp276`, `dd276` (don't use `.dy` inside the box, it is taken) |
+| 277 | Cleaner look (Kuvar, Nov 14: wants it smooth like Apple's apps). CSS only: every `.gx-pn` card has rounded corners (16px, 14px on the phone, none when `.full`), `.gx-seg` and `.gx-seg103` switches are soft grey sliders (`--seg277`), tap highlight off |
+| (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
 
