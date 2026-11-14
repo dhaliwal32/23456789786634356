@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_notify.py": true,
+  "gm_talk.py": false
  },
  "changes": [
-  "267-tracker-live-motion.py"
+  "268-player-talk-collector.py"
  ]
 }
