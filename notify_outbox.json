@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-07|2f2fe0c254f5",
-   "at": "2026-11-07T19:33:50Z",
-   "title": "Fantasy GM",
-   "text": "Misa joined SJ PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-07T19:33:50Z",
-   "seen": "2026-11-07T19:33:50Z"
-  },
-  {
    "k": "2026-11-07|63f437451d93",
    "at": "2026-11-07T22:45:35Z",
    "title": "Fantasy GM",
@@ -866,7 +854,31 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-14T19:16:26Z",
-   "seen": "2026-11-14T19:28:25Z"
+   "seen": "2026-11-14T19:34:26Z"
+  },
+  {
+   "k": "2026-11-14|da0ddd4bea7a",
+   "at": "2026-11-14T19:34:48Z",
+   "title": "Fantasy GM",
+   "text": "Zuccarello joined LA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-14T19:34:48Z",
+   "seen": "2026-11-14T19:34:48Z"
+  },
+  {
+   "k": "2026-11-14|13a23070027f",
+   "at": "2026-11-14T19:34:48Z",
+   "title": "Fantasy GM",
+   "text": "Laferriere left Panarin's line (LA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-14T19:34:48Z",
+   "seen": "2026-11-14T19:34:48Z"
   }
  ],
  "sent": {
