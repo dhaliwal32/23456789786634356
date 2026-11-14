@@ -1,10 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_notify.py": true,
-  "talk_mac.py": false
+  "talk_mac.py": true
  },
  "changes": [
-  "270-player-talk-tab.py"
+  "271-talk-mac-slower.py"
  ]
 }
