@@ -2536,6 +2536,16 @@
     .gx-pd::before { content: ""; position: absolute; top: 7px; left: 50%; width: 40px; height: 5px; margin-left: -20px; border-radius: 99px; background: rgba(255,255,255,.45); z-index: 4; pointer-events: none; }
     .gx-pd-ov.out .gx-pd { transform: translateY(60vh); }
   }
+  /* change 285 (install.py) */
+  .gx-ll285 { display: none; }
+  @media (max-width: 640px) {
+    .gx-tm103 .tb .mr241.gr285 { flex: 0 0 44px; padding-left: 0; padding-right: 0; }
+    .gx-tm103 .tb .mr241.gr285 svg { width: 19px; height: 19px; }
+    .gx-ll285 { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 56px; padding: 10px 14px; border-radius: 14px; background: var(--card); color: var(--ink); text-align: left; }
+    .gx-ll285 > span:first-child { flex: 1; min-width: 0; }
+    .gx-ll285 b { display: block; font-weight: 600; font-size: 15px; }
+    .gx-ll285 small { display: block; font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2545,7 +2555,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1lnhu3e.p4u1w0" data-file="build/app.js">
+<meta name="gx-build" content="18hocdq.wc8wdr" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3153,7 +3163,7 @@ function App() {
   let content = null;
   if (tab === "today" || tab === "myteam") content = <div className="space-y-4"><Today {...P} top103 /><GxRosterView239 P={P} /></div>;
   else if (tab === "myteam") content = <MyTeam {...P} />;
-  else if (tab === "matchup") content = <div className="space-y-4"><Matchup {...P} />{/* gx105: games, league and carrying boxes removed */}</div>;
+  else if (tab === "matchup") content = <div className="space-y-4"><Matchup {...P} /><GxLgLink285 go={P.go} />{/* gx105: games, league and carrying boxes removed */}</div>;
   else if (tab === "teams") content = teamView ? <TeamPage {...P} id={teamView} back={backFromTeam} /> : <TeamsTab {...P} openTeam={openTeam} />;
   else if (tab === "lines") content = true ? <GxLines111 {...P} /> : window.LinesTab ? <window.LinesTab {...P} H={LH} /> : <div className="text-slate-400 p-4">The Lines tab could not load (lines-tab.js). Refresh the page; if it keeps happening, check that lines-tab.js is in the repo.</div>;
   else if (tab === "news") content = <div className="space-y-4"><NewsView s={s} wk={wk} /><PhoneFeed /></div>;
@@ -8591,7 +8601,7 @@ function GxTopM103({ s, tab, go, ageH }) {
         {GX_TABS103.map(([k, l, t, sb]) => (
           <a key={k} href={gxHash(t, sb || undefined)} className={((pend213 ? pend213 === k : gxTabOn103(k, tab)) ? "on" : "") + (GX_MAIN241.includes(k) ? "" : " sd241")} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setPend213(k); go(t, sb || undefined); }}>{l}</a>
         ))}
-        <GxMore241 tab={tab} go={go} />
+        <GxGear285 tab={tab} go={go} />
       </nav>
     </div>
   );
@@ -12675,8 +12685,7 @@ function GxRosterView239({ P }) {
   const pick = (k) => { setV(k); uiSet("rv239", k); };
   return (
     <div className="gx-rv239" data-gx="239">
-      <div className="gx-seg103">{[["table", "Table"], ["team", "My team"]].map(([k, l]) => <button key={k} type="button" className={v === k ? "on" : ""} onClick={() => pick(k)}>{l}</button>)}</div>
-      {v === "team" ? <GxMyRoom238 s={P.s} /> : <MyTeam {...P} />}
+      <MyTeam {...P} />{/* change 285: table only */}
     </div>
   );
 }
@@ -14426,6 +14435,23 @@ function GxGmStats283({ id, g, live }) {
         {rows.map((r) => <div key={r.k} className="c3">{r.wa ? <b>{r.a}</b> : <span className={r.wb ? "lo" : ""}>{r.a}</span>}<span>{r.l}</span>{r.wb ? <b>{r.b}</b> : <span className={r.wa ? "lo" : ""}>{r.b}</span>}</div>)}
       </div>
     </div>
+  );
+}
+// ---------- change 285: phone menu gear, League row on Matchup (install.py) ----------
+function GxGear285({ tab, go }) {
+  const on = tab === "setup" || tab === "news";
+  return (
+    <a href={gxHash("setup", "settings")} className={"mr241 gr285" + (on ? " on" : "")} data-gx="285" aria-label="Setup" onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go("setup", "settings"); }}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3.2"></circle><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V19.5a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3.5a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5V3.5a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"></path></svg>
+    </a>
+  );
+}
+function GxLgLink285({ go }) {
+  return (
+    <a href={gxHash("league", "power")} className="gx-ll285" data-gx="285" onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go("league", "power"); }}>
+      <span><b>League</b><small>Standings, every matchup this week, playoff odds</small></span>
+      <span className="sec-chev shut" style={{ margin: "0 4px 0 0" }}></span>
+    </a>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
