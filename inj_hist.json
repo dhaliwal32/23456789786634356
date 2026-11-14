@@ -88,6 +88,7 @@
 "3041969": {
 "d": "2026-11-14",
 "k": "later",
+"nd": "2026-11-14",
 "now": "2026-11-18",
 "was": "2026-11-14"
 },
@@ -324,9 +325,9 @@
 "was": "2026-11-14"
 },
 "4233563": {
-"d": "2026-11-13",
+"d": "2026-11-14",
 "k": "later",
-"now": "2026-11-14",
+"now": "2026-11-28",
 "was": "2026-11-12"
 },
 "4233643": {
@@ -759,7 +760,7 @@
 },
 "3041969": {
 "back": "2026-11-18",
-"note": "out",
+"note": "MacKinnon (lower body) will miss at least one month, per Corey Masisak of The Denver Post on Saturday.",
 "status": "Out"
 },
 "3041970": {
@@ -918,9 +919,9 @@
 "status": "Out"
 },
 "4233563": {
-"back": "2026-11-14",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-28",
+"note": "out",
+"status": "Out"
 },
 "4233668": {
 "back": "2026-12-06",
