@@ -8,6 +8,7 @@ Daily Discussion thread, and r/hockey), keeps the last 3 days, and uploads talk/
 in one commit through the GitHub API. It needs no roster: the app picks out the posts about each player itself.
 
 The GitHub key is read from the Mac Keychain (service "fantasy-gm-talk", account "talk"); it is never in a file.
+Change 271: one request every 7 s or slower (Reddit gave 429 at 1.5 s), team subreddits comments only (about 37 requests, 5 minutes).
 Only Python's own modules are used, so nothing has to be installed.
 Run by hand:  python3 ~/FantasyTalk/talk_mac.py
 """
@@ -34,7 +35,7 @@ DATA = os.path.join(HOME, "data")
 UA = "FantasyIslandsGM/1.0 (personal fantasy hockey app; macOS; github.com/dhaliwal32)"
 KEEP_DAYS = 3
 MAX_ITEMS = 400
-GAP_S = 1.5
+GAP_S = 7  # change 271: Reddit allows only a few requests a minute without an account
 NS = {"a": "http://www.w3.org/2005/Atom"}
 TEAM_SUBS = ["AnaheimDucks", "BostonBruins", "sabres", "canes", "BlueJackets", "CalgaryFlames", "hawks", "ColoradoAvalanche",
              "DallasStars", "DetroitRedWings", "EdmontonOilers", "FloridaPanthers", "losangeleskings", "wildhockey", "Habs",
@@ -64,13 +65,17 @@ def cut(s, n=300):
 
 
 FAILS = [0]
+GAP = [GAP_S]
 
 
 def feed(url):
-    if FAILS[0] >= 6:
+    """Reads one Reddit feed. Waits GAP seconds before each request; on "too many requests" (429) waits a minute,
+    tries again and slows down for the rest of the run. Gives up on the run after 4 failures in a row."""
+    if FAILS[0] >= 4:
         return None
-    for attempt in (1, 2):
-        time.sleep(GAP_S if attempt == 1 else 12)
+    root = None
+    for attempt in (1, 2, 3):
+        time.sleep(GAP[0] if attempt == 1 else 60)
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
             with urllib.request.urlopen(req, timeout=20) as r:
@@ -78,7 +83,9 @@ def feed(url):
             FAILS[0] = 0
             break
         except urllib.error.HTTPError as ex:
-            if ex.code == 429 and attempt == 1:
+            if ex.code == 429:
+                GAP[0] = min(30, GAP[0] * 1.5)
+                log(f"429 (Reddit says slow down), waiting a minute; now {GAP[0]:.0f} s between requests")
                 continue
             FAILS[0] += 1
             log(f"{ex.code} {url}")
@@ -87,6 +94,10 @@ def feed(url):
             FAILS[0] += 1
             log(f"failed {url}: {ex}")
             return None
+    if root is None:
+        FAILS[0] += 1
+        log(f"gave up on {url}")
+        return None
     out = []
     for e in root.findall("a:entry", NS):
         g = lambda k: (e.findtext("a:" + k, default="", namespaces=NS) or "").strip()
@@ -116,7 +127,8 @@ def collect():
             got.setdefault(sub, []).extend(items)
     for s in ["fantasyhockey", "hockey"] + TEAM_SUBS:
         add(s, feed(f"https://www.reddit.com/r/{s}/comments/.rss?limit=100"))
-        add(s, feed(f"https://www.reddit.com/r/{s}/new/.rss?limit={50 if s in ('fantasyhockey', 'hockey') else 25}"))
+        if s in ("fantasyhockey", "hockey"):
+            add(s, feed(f"https://www.reddit.com/r/{s}/new/.rss?limit=50"))
     # newest Daily Discussion thread in r/fantasyhockey: its comments too
     q = urllib.parse.quote('title:"Daily Discussion"')
     th = feed(f"https://www.reddit.com/r/fantasyhockey/search.rss?q={q}&restrict_sr=on&sort=new&t=week") or []
