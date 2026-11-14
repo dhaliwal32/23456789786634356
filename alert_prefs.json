@@ -3,7 +3,7 @@
   "lines": true,
   "goalies": true,
   "pickups": true,
-  "morning_summary": true,
+  "morning_summary": false,
   "pregame_summary": true,
   "bench_player_has_a_game": false,
   "starter_is_out": false,
