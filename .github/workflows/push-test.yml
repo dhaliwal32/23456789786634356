@@ -1,0 +1,21 @@
+name: App alert test
+# Sends one test alert to every device that turned on "Alerts from this app" (the Send a test button starts this).
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests cryptography
+      - name: Send the test alert
+        env:
+          SWID: ${{ secrets.SWID }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python gm_push.py --test
