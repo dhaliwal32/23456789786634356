@@ -3,6 +3,6 @@
   "fantasy-gm.html": true
  },
  "changes": [
-  "264-live-puck-tracker.py"
+  "265-tracker-clock-ticks.py"
  ]
 }
