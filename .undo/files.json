@@ -1,8 +1,10 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_notify.py": true,
+  "gm_live.py": true
  },
  "changes": [
-  "283-live-game-tidy.py"
+  "284-box-scroll-player-sheet.py"
  ]
 }
