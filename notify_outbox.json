@@ -891,6 +891,18 @@
    "via": "urgent",
    "sent_at": "2026-11-15T02:24:49Z",
    "seen": "2026-11-15T02:55:41Z"
+  },
+  {
+   "k": "2026-11-14|6efd59119a16",
+   "at": "2026-11-15T05:34:11Z",
+   "title": "Fantasy GM",
+   "text": "Connelly left Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T05:34:11Z",
+   "seen": "2026-11-15T05:34:11Z"
   }
  ],
  "sent": {
