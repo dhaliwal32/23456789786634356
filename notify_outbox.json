@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-08|f17a9a8adf9c",
-   "at": "2026-11-08T23:45:11Z",
-   "title": "Fantasy GM",
-   "text": "Dostal not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T23:45:11Z",
-   "seen": "2026-11-09T00:28:36Z"
-  },
-  {
    "k": "2026-11-08|8e731e922ce7",
    "at": "2026-11-09T00:34:36Z",
    "title": "Fantasy GM",
@@ -879,6 +867,18 @@
    "via": "urgent",
    "sent_at": "2026-11-15T23:17:57Z",
    "seen": "2026-11-15T23:17:57Z"
+  },
+  {
+   "k": "2026-11-15|fdfb3b7ad1a2",
+   "at": "2026-11-15T23:49:18Z",
+   "title": "Fantasy GM",
+   "text": "Brossoit not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T23:49:18Z",
+   "seen": "2026-11-15T23:49:18Z"
   }
  ],
  "sent": {
