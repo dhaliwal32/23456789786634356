@@ -608,6 +608,12 @@
 "k": "back",
 "was": "2026-11-15"
 },
+"5149209": {
+"d": "2026-11-15",
+"k": "later",
+"now": "2027-01-01",
+"was": "2026-12-01"
+},
 "5173105": {
 "d": "2026-11-15",
 "k": "new",
@@ -1129,7 +1135,7 @@
 "status": "Injured Reserve"
 },
 "5149209": {
-"back": "2026-12-01",
+"back": "2027-01-01",
 "note": "Musty (upper body) was put on non-roster injured reserve Monday, according to Curtis Pashelka of The San Jose Mercury News.",
 "status": "Injured Reserve"
 },
