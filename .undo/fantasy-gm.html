@@ -2703,7 +2703,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1i5y53y.8pjg80" data-file="build/app.js">
+<meta name="gx-build" content="1wq9z91.1t0jfvl" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3809,9 +3809,9 @@ function Matchup({ s, setS, wk, setWk }) {
       <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 6 }}>
         <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
       </div>
-      <GxNhl141 s={s} a={a} b={b} tA={tA141} tB={tB141} />
+      <GxNhl141 s={s} a={a} b={b} tA={dates[d] < today ? A.days[d] : tA141} tB={dates[d] < today ? B.days[d] : tB141} day296={dates[d]} />
     </div>
-    <div className="sd"><GxNhl141 s={s} a={a} b={b} tA={tA141} tB={tB141} side /></div>
+    <div className="sd"><GxNhl141 s={s} a={a} b={b} tA={dates[d] < today ? A.days[d] : tA141} tB={dates[d] < today ? B.days[d] : tB141} day296={dates[d]} side /></div>
     </div>
   );
 }
@@ -10059,7 +10059,7 @@ function gxLock141(on) { return; /* gx149: the page-wide lock does this now */
   if (on) { const y = window.scrollY || 0; b.dataset.gx141 = String(y); b.style.position = "fixed"; b.style.top = -y + "px"; b.style.left = "0"; b.style.right = "0"; b.style.width = "100%"; b.style.overflow = "hidden"; }
   else if (b.dataset.gx141 != null) { const y = +b.dataset.gx141 || 0; delete b.dataset.gx141; b.style.position = ""; b.style.top = ""; b.style.left = ""; b.style.right = ""; b.style.width = ""; b.style.overflow = ""; window.scrollTo(0, y); }
 }
-function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
+function GxNhl141({ s, a, b, tA, tB, side, only201, day296 }) {
   useTick159(gxAnyInt159()); /* gx159 */
   const [gv163, setGv163] = useState({});
   const [open, setOpen] = useState(false);
@@ -10125,7 +10125,16 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
     gxLock141(true);
     return () => { window.removeEventListener("keydown", k); gxLock141(false); };
   }, [open, dragNow144]);
-  const J = window.__NHLNOW || {}, games = (J.games || []).slice();
+  /* change 296: an earlier day picked on Matchup shows that day's games (read once from ESPN, kept while the app is open) */
+  const past296 = !!day296 && day296 < todayISO(), D296 = (window.__NHLDAY296 = window.__NHLDAY296 || {});
+  useEffect(() => {
+    if (!past296 || D296[day296]) return undefined;
+    let dead = false;
+    (window.__GXF132 || window.fetch)(GX_E132 + "scoreboard?dates=" + day296.replace(/-/g, "")).then((r) => (r.ok ? r.json() : null)).then((js) => { if (!js) return; D296[day296] = gxNow132(js); if (!dead) bump((x) => x + 1); }).catch(() => {});
+    return () => { dead = true; };
+  }, [day296, past296]);
+  useEffect(() => { setGid(null); }, [day296]);
+  const J = past296 ? D296[day296] || { games: [] } : window.__NHLNOW || {}, games = (J.games || []).slice();
   const live = (g) => g.gameState === "LIVE" || g.gameState === "CRIT", fin = (g) => g.gameState === "FINAL" || g.gameState === "OFF", pre = (g) => !(live(g) || fin(g));
   const BX = (window.__BX131 = window.__BX131 || {}), L = (window.__LD131 = window.__LD131 || {});
   const box = (id) => (typeof G120 !== "undefined" && G120.box[id] && G120.box[id].bx) || (BX[id] && BX[id].bx) || null;
@@ -10195,7 +10204,7 @@ function GxNhl141({ s, a, b, tA, tB, side, only201 }) {
   if (side) {
     const n = goals.length, idx = gi == null || gi >= n ? n - 1 : gi, r = n ? goals[idx] : null;
     const pos = r && r.p ? r.p.p : "";
-    const dl = (() => { try { return new Date().toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }); } catch (e) { return ""; } })();
+    const dl = (() => { try { return (past296 ? fromIso(day296) : new Date()).toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }); } catch (e) { return ""; } })();
     const abA = gxFtAb141(s, a), abB = gxFtAb141(s, b);
     return (
       <div className={"gx-sd141" + (a !== s.me ? " gx-nc148" : "")}>

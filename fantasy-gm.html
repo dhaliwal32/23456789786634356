@@ -2694,6 +2694,11 @@
   .gx-ti293 .nm { text-align: right; font-size: 12px; color: var(--mute); white-space: nowrap; }
   .gx-ti293 .nm b { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
   .gx-ti293 .em { font-size: 13.5px; color: var(--mute); padding: 8px 0 2px; }
+  /* change 297 (install.py) */
+  .gx-ti293 .tg297 { min-width: 0; display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 10px; }
+  .gx-ti293 .tg297 b { display: block; font-size: 14.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ti293 .tg297 small { display: block; font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gx-ti293 .rw { height: 58px; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2703,7 +2708,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1wq9z91.1t0jfvl" data-file="build/app.js">
+<meta name="gx-build" content="1v1vlbk.14ja6cm" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -14832,11 +14837,11 @@ function gxIdeas293(s, done) {
     teams[tm.id] = B;
     A.filter((p) => ok(p) && !p.keep).forEach((x) => B.filter(ok).forEach((y) => {
       const da = str(A.filter((p) => p.id !== x.id).concat([y])) - a0, db = str(B.filter((p) => p.id !== y.id).concat([x])) - b0;
-      if (da > -0.3 && db > -0.3) cand.push({ x, y, tm: tm.id, q: Math.min(da, db) + (da + db) / 4 });
+      if (da > 0.1 && db > -1.5) cand.push({ x, y, tm: tm.id, q: da + Math.min(0, db) }); /* change 297 */
     }));
   });
   cand.sort((u, v) => v.q - u.q);
-  const top = cand.slice(0, 36), tD = gxTradeDay(), live = (r) => r.map((p) => (p.ir ? { ...p, ir: false } : p));
+  const top = (() => { const n = {}; return cand.filter((o) => (n[o.y.id] = (n[o.y.id] || 0) + 1) <= 3).slice(0, 90); })(), tD = gxTradeDay(), /* change 297: 3 offers per player at most */ live = (r) => r.map((p) => (p.ir ? { ...p, ir: false } : p));
   const base = {}, tot = (id, r) => (base[id] != null ? base[id] : (base[id] = horizonTotal(live(r), s, nR)));
   const good = [];
   let i = 0, dead = false;
@@ -14848,13 +14853,13 @@ function gxIdeas293(s, done) {
       try {
         const my = horizonTotal(live(gxTimed(A, A.filter((p) => p.id !== o.x.id).concat([{ ...o.y, ft: s.me }]), tD)), s, nR) - tot(s.me, A);
         const th = horizonTotal(live(gxTimed(B, B.filter((p) => p.id !== o.y.id).concat([{ ...o.x, ft: o.tm }]), tD)), s, nR) - tot(o.tm, B);
-        if (my >= 2 && th >= 2) good.push({ x: o.x, y: o.y, tm: o.tm, my, th });
+        if (my >= 2 && th >= 0) good.push({ x: o.x, y: o.y, tm: o.tm, my, th }); /* change 297: they must not lose, you must gain */
       } catch (e) {}
     }
     if (i < top.length) { setTimeout(step, 0); return; }
     good.sort((u, v) => v.my - u.my);
     const out = [], ux = {}, uy = {};
-    good.forEach((o) => { if (out.length >= 5 || ux[o.x.id] || uy[o.y.id]) return; ux[o.x.id] = uy[o.y.id] = 1; out.push(o); });
+    good.forEach((o) => { if (out.length >= 10 || uy[o.y.id]) return; uy[o.y.id] = 1; out.push(o); }); /* change 297: one row per player to trade for */
     done(out);
   };
   setTimeout(step, 0);
@@ -14872,13 +14877,13 @@ function GxIdeas293({ s, onPick }) {
   const sg = (v) => "+" + Math.round(v);
   return (
     <div className="gx-pn gx-ti293" data-gx="293">
-      <div className="hd"><span className="gx-tag">Trade ideas</span><small>swaps that help both teams</small></div>
+      <div className="hd"><span className="gx-tag">Players to trade for</span><small>with an offer that helps them too</small></div>
       {!list ? <div className="em">Looking through every team...</div> : list.length ? list.map((o) => (
         <button key={o.x.id + "|" + o.y.id} type="button" className="rw" onClick={() => onPick(o.x.id, o.y.id, o.tm)}>
-          <span className="sw"><small>Give</small><GxFace p={o.x} size={14} /><b>{o.x.n}</b><small>Get</small><GxFace p={o.y} size={14} /><b>{o.y.n + " \u00b7 " + (gxTag131(s, o.y) || teamName(s, o.tm))}</b></span>
+          <span className="tg297"><GxFace p={o.y} size={22} /><span><b>{o.y.n}</b><small>{o.y.t + " \u00b7 " + o.y.p + " \u00b7 " + (gxTag131(s, o.y) || teamName(s, o.tm)) + " \u00b7 offer " + lastN(o.x.n)}</small></span></span>
           <span className="nm"><b>{"You " + sg(o.my)}</b>{"Them " + sg(o.th)}</span>
         </button>
-      )) : <div className="em">No one-for-one swap helps both teams right now.</div>}
+      )) : <div className="em">Nobody on another team can be had right now in a one-for-one that helps both sides.</div>}
       {list && list.length ? <div className="em" style={{ fontSize: 12 }}>Points over the rest of the season, scored the same way as the result below. Tap an idea to load it.</div> : null}
     </div>
   );
