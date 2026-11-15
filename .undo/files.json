@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_autopilot.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "295-autopilot-fix-setup-puck.py"
+  "296-past-day-games.py"
  ]
 }

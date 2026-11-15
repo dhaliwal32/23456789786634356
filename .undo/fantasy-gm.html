@@ -2703,7 +2703,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1da2lqc.1hx6r4o" data-file="build/app.js">
+<meta name="gx-build" content="1i5y53y.8pjg80" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6418,7 +6418,10 @@ function SetupPage({ s, setS, go, sub }) {
   </>);
   if (sub === "more") return page("More", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
+    <div className="gx-sr"><span>My team</span><GxMeSel241 s={s} /></div>
+    <div className="gx-sr"><span>Favourite team</span><GxFavSel112 /></div>
     <div className="gx-sr"><span>Watch link</span><GxWatchSel174 /></div>{/* change 291 */}
+    {row("rules", "Protected players", (top + kept.length) + " players the app will never tell you to drop", () => go("setup", "rules"), 1)}{/* change 295 */}
     {row("inj", "Injury return dates", outN ? outN + " of your players hurt or on IR" : "Everyone on your team is healthy", () => go("setup", "inj"), 1)}
     {row("bulk", "Edit players", "Projections, play %, fantasy team", () => go("setup", "bulk"), 2)}
     {row("news", "News", newsN ? newsN + " of your players in the news" : "Nothing new on your players", () => go("news"), 3)}
@@ -6457,15 +6460,10 @@ function SetupPage({ s, setS, go, sub }) {
         <button type="button" className={btn} style={{ marginLeft: "auto" }} onClick={refresh}>Refresh</button>
       </div>
       {/* change 275: short Setup */}
-      <div className="gx-tag gx-st275">App</div>
-      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
-        <div className="gx-sr" style={{ borderTop: 0 }}><span>My team</span><GxMeSel241 s={s} /></div>
-        <div className="gx-sr"><span>Favourite team</span><GxFavSel112 /></div>
-      </div>
+      {/* change 295: My team and Favourite team are in More */}
       <div className="gx-tag gx-st275">Alerts and lineup</div>
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
         {row("alerts", "Phone alerts", alertTxt, () => go("setup", "alerts"), 0)}<GxAutoRow row={row} go={go} />{/* gx089-row */}
-        {row("rules", "Protected players", (top + kept.length) + " players the app will never tell you to drop", () => go("setup", "rules"), 1)}
       </div>
       <div className="gx-tag gx-st275">AI</div>
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
@@ -6474,7 +6472,7 @@ function SetupPage({ s, setS, go, sub }) {
       </div>
       <div className="gx-tag gx-st275">Rarely used</div>
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
-        {row("more", "More", "Injury dates, edit players, betting lines, schedule, backup", () => go("setup", "more"), 0)}
+        {row("more", "More", "Your team, protected players, injury dates, backup", () => go("setup", "more"), 0)}
       </div>
     </div>
   );
@@ -13934,7 +13932,7 @@ function GxTkLive264({ id }) {
         <svg viewBox="-106.25 -48.75 212.5 97.5" role="img" aria-label="Live tracker">
           {gxRink184({ L: A, R: H, H, id: "tk264" + id })}
           <g clipPath={cp}><rect className="zn264" x={zs > 0 ? 25 : -100} y="-42.5" width="75" height="85" fill={zc ? zc.f : "#888"} opacity={zs && zc ? 0.22 : 0} /></g>
-          {p && trail.length ? <polyline points={[...trail].reverse().concat([p]).map((q) => q.x + "," + -q.y).join(" ")} fill="none" stroke={zc ? zc.f : "#9a9a9a"} strokeWidth="0.5" strokeDasharray="1.2 1.4" opacity="0.6" data-gx="266p" /> : null}
+          {/* change 295: no dashed path behind the puck */}
           {p ? <g key={"rp" + p.k} transform={"translate(" + p.x + " " + -p.y + ")"}><circle className="rp266" r="3" fill="none" stroke={zc ? zc.f : "#ffffff"} strokeWidth="0.7" /></g> : null}
           {trail.map((q, j) => <circle key={q.k} cx={q.x} cy={-q.y} r={1.3} fill={col(q.t) ? col(q.t).f : "#9a9a9a"} opacity={0.55 - j * 0.12} />)}
           {p ? <GxPuck267 x={p.x} y={p.y} k={p.k} hold={S267.hold} zs={zs} fill={zc ? zc.f : null} /> : null}
@@ -14112,7 +14110,8 @@ function GxPuck267({ x, y, k, hold, zs, fill }) {
     let leg = { fx: cur.x, fy: cur.y, tx: x, ty: -y, t0: performance.now(), dur: 320 }, raf = 0, on = true, first = true;
     const next = (now) => {
       let tx, ty;
-      tx = x + (Math.random() * 8 - 4); ty = -y + (Math.random() * 8 - 4); /* change 293: stays by the real spot */
+      if (zs) { tx = zs * (30 + Math.random() * 58); ty = -34 + Math.random() * 68; } /* change 295: moves around the zone again */
+      else { tx = x + (Math.random() * 20 - 10); ty = -y + (Math.random() * 20 - 10); }
       leg = { fx: cur.x, fy: cur.y, tx: cl(tx, 95), ty: cl(ty, 38), t0: now + (first ? 1100 : Math.random() < 0.3 ? 250 + Math.random() * 450 : 0), dur: 900 + Math.random() * 900 };
       first = false;
     };
