@@ -903,6 +903,78 @@
    "via": "urgent",
    "sent_at": "2026-11-15T05:34:11Z",
    "seen": "2026-11-15T05:34:11Z"
+  },
+  {
+   "k": "2026-11-15|302868c0a8e3",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Hyry left Robertson's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|e63c01826f71",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Benn left Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|781447cda99b",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Sherwood joined SJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|db6c7b7cf345",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Marchment joined SJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|0843c064da9c",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Bj\u00f6rck joined Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|7d19658ee423",
+   "at": "2026-11-15T14:03:17Z",
+   "title": "Fantasy GM",
+   "text": "Vilardi left Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T14:03:17Z",
+   "seen": "2026-11-15T14:03:17Z"
   }
  ],
  "sent": {
