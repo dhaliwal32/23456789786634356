@@ -37,11 +37,11 @@
 "was": "2026-11-14"
 },
 "2593131": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "2967072": {
 "d": "2026-11-14",
@@ -50,18 +50,18 @@
 "was": "Out"
 },
 "2976833": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-10",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "2976851": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-16",
-"was": "2026-11-14"
+"was": "Out"
 },
 "2993474": {
 "d": "2026-11-12",
@@ -82,22 +82,17 @@
 "was": "2026-11-19"
 },
 "3025535": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-18",
-"was": "2026-11-14"
+"was": "Out"
 },
 "3041969": {
 "d": "2026-11-14",
 "k": "later",
 "nd": "2026-11-14",
 "now": "2026-12-12",
-"was": "2026-11-14"
-},
-"3041996": {
-"d": "2026-11-13",
-"k": "back",
 "was": "2026-11-14"
 },
 "3041999": {
@@ -116,10 +111,10 @@
 "was": ""
 },
 "3042017": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "now": "2026-11-15",
-"was": "2026-11-14"
+"was": "Out"
 },
 "3042019": {
 "d": "2026-11-12",
@@ -215,9 +210,9 @@
 "was": ""
 },
 "3648015": {
-"d": "2026-11-10",
+"d": "2026-11-15",
 "k": "later",
-"now": "2026-11-15",
+"now": "2026-11-28",
 "was": "2026-11-11"
 },
 "3652964": {
@@ -236,16 +231,17 @@
 "was": "2026-11-12"
 },
 "3891922": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-09",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "3891952": {
-"d": "2026-11-14",
-"k": "new",
-"now": "2026-11-17"
+"d": "2026-11-15",
+"k": "dtd",
+"now": "2026-11-17",
+"was": "Out"
 },
 "3899946": {
 "d": "2026-11-14",
@@ -263,11 +259,11 @@
 "was": ""
 },
 "3904178": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "3939716": {
 "d": "2026-11-14",
@@ -275,11 +271,11 @@
 "nd": "2026-11-14"
 },
 "3941973": {
-"d": "2026-11-14",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "3941974": {
 "d": "2026-11-12",
@@ -421,9 +417,10 @@
 "now": "2026-11-17"
 },
 "4565274": {
-"d": "2026-11-14",
-"k": "new",
-"now": "2026-11-18"
+"d": "2026-11-15",
+"k": "dtd",
+"now": "2026-11-18",
+"was": "Out"
 },
 "4565282": {
 "d": "2026-11-14",
@@ -489,11 +486,11 @@
 "was": "2026-11-11"
 },
 "4874731": {
-"d": "2026-11-13",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-13",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "4874733": {
 "d": "2026-11-10",
@@ -551,11 +548,11 @@
 "was": "2026-11-14"
 },
 "5080143": {
-"d": "2026-11-13",
-"k": "later",
+"d": "2026-11-15",
+"k": "dtd",
 "nd": "2026-11-12",
 "now": "2026-11-16",
-"was": "2026-11-14"
+"was": "Out"
 },
 "5080152": {
 "d": "2026-11-10",
@@ -706,8 +703,8 @@
 },
 "2593131": {
 "back": "2026-11-17",
-"note": "Pageau (lower body) won't play Saturday versus the Ducks, Andrew Gross of Newsday reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2952729": {
 "back": "2027-07-01",
@@ -721,13 +718,13 @@
 },
 "2976833": {
 "back": "2026-11-17",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976851": {
 "back": "2026-11-16",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2993474": {
 "back": "2026-11-19",
@@ -741,8 +738,8 @@
 },
 "3025535": {
 "back": "2026-11-18",
-"note": "Pesce (illness) won't play against Washington on Saturday, Amanda Stein of the Devils' official site reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3041969": {
 "back": "2026-12-12",
@@ -753,6 +750,11 @@
 "back": "2026-11-27",
 "note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
+},
+"3041996": {
+"back": "2026-11-17",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042002": {
 "back": "2026-11-17",
@@ -766,8 +768,8 @@
 },
 "3042017": {
 "back": "2026-11-15",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042037": {
 "back": "2026-12-05",
@@ -850,7 +852,7 @@
 "status": "Injured Reserve"
 },
 "3648015": {
-"back": "2026-11-15",
+"back": "2026-11-28",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
@@ -866,18 +868,18 @@
 },
 "3891922": {
 "back": "2026-11-17",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3891952": {
 "back": "2026-11-17",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3904178": {
 "back": "2026-11-17",
-"note": "Cernak (upper body) won't play against Detroit on Saturday, per Diandra Loux of The Hockey News.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-11-27",
@@ -886,8 +888,8 @@
 },
 "3941973": {
 "back": "2026-11-17",
-"note": "Cirelli (lower body) is set to miss Saturday's game against Detroit, per Diandra Loux of The Hockey News.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3941974": {
 "back": "2026-12-03",
@@ -986,8 +988,8 @@
 },
 "4565274": {
 "back": "2026-11-18",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4565282": {
 "back": "2026-11-18",
@@ -1036,8 +1038,8 @@
 },
 "4874731": {
 "back": "2026-11-17",
-"note": "Rosen (undisclosed) has been ruled out for Saturday's game against the Blackhawks, Ken Wiebe of The Winnipeg Free Press reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-27",
@@ -1066,8 +1068,8 @@
 },
 "5080143": {
 "back": "2026-11-16",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080153": {
 "back": "2026-11-24",
