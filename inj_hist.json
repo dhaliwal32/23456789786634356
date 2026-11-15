@@ -606,22 +606,15 @@
 "k": "back",
 "was": "2026-11-15"
 },
-"5161": {
-"d": "2026-11-15",
-"k": "back",
-"was": "2027-01-12"
-},
 "5188510": {
 "d": "2026-11-14",
 "k": "new",
 "now": "2026-11-17"
 },
 "5188523": {
-"d": "2026-11-14",
-"k": "later",
-"nd": "2026-11-11",
-"now": "2026-11-15",
-"was": "2026-11-08"
+"d": "2026-11-15",
+"k": "back",
+"was": "2026-11-15"
 },
 "5216860": {
 "d": "2026-11-14",
@@ -1133,6 +1126,11 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
+"status": "Injured Reserve"
+},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1142,11 +1140,6 @@
 "back": "2026-11-17",
 "note": "Kaskimaki sustained an undisclosed injury near the end of Saturday's game versus the Panthers, Lou Korac of NHL.com reports.",
 "status": "Day-To-Day"
-},
-"5188523": {
-"back": "2026-11-15",
-"note": "Moore (lower body) might be an option to play by the end of the week, Derek Lee of The Hockey News reports Wednesday.",
-"status": "Injured Reserve"
 },
 "5216860": {
 "back": "2026-11-21",
