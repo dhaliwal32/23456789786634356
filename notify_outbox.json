@@ -1,126 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-08|e836525cbed4",
-   "at": "2026-11-08T16:21:41Z",
-   "title": "Fantasy GM",
-   "text": "Lundell joined Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T16:21:41Z",
-   "seen": "2026-11-08T16:21:41Z"
-  },
-  {
-   "k": "2026-11-08|bc233274f4ad",
-   "at": "2026-11-08T16:21:41Z",
-   "title": "Fantasy GM",
-   "text": "Vilmanis left Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T16:21:41Z",
-   "seen": "2026-11-08T16:21:41Z"
-  },
-  {
-   "k": "2026-11-08|95d08bdba1de",
-   "at": "2026-11-08T18:24:22Z",
-   "title": "Fantasy GM",
-   "text": "Eller joined Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T18:24:22Z",
-   "seen": "2026-11-08T18:24:22Z"
-  },
-  {
-   "k": "2026-11-08|dff7a67ea943",
-   "at": "2026-11-08T18:24:22Z",
-   "title": "Fantasy GM",
-   "text": "Lundell left Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T18:24:22Z",
-   "seen": "2026-11-08T18:24:22Z"
-  },
-  {
-   "k": "2026-11-08|fbf20ee680df",
-   "at": "2026-11-08T20:27:37Z",
-   "title": "Fantasy GM",
-   "text": "Connelly joined Eichel's line (VGK)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T20:27:37Z",
-   "seen": "2026-11-08T20:27:37Z"
-  },
-  {
-   "k": "2026-11-08|579a87895893",
-   "at": "2026-11-08T20:27:37Z",
-   "title": "Fantasy GM",
-   "text": "Howden left Eichel's line (VGK)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T20:27:37Z",
-   "seen": "2026-11-08T20:27:37Z"
-  },
-  {
-   "k": "2026-11-08|4d147f465a43",
-   "at": "2026-11-08T21:48:43Z",
-   "title": "Fantasy GM",
-   "text": "Skinner not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T21:48:43Z",
-   "seen": "2026-11-08T22:43:31Z"
-  },
-  {
-   "k": "2026-11-08|c419c88b9b07",
-   "at": "2026-11-08T22:30:43Z",
-   "title": "Fantasy GM",
-   "text": "Gourde joined Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T22:30:43Z",
-   "seen": "2026-11-08T22:30:43Z"
-  },
-  {
-   "k": "2026-11-08|d53cf90b346c",
-   "at": "2026-11-08T22:30:43Z",
-   "title": "Fantasy GM",
-   "text": "Goncalves left Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T22:30:43Z",
-   "seen": "2026-11-08T22:30:43Z"
-  },
-  {
-   "k": "2026-11-08|dc92806a5fc3",
-   "at": "2026-11-08T22:49:31Z",
-   "title": "Fantasy GM",
-   "text": "Skinner confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-08T22:49:31Z",
-   "seen": "2026-11-08T22:55:29Z"
-  },
-  {
    "k": "2026-11-08|f17a9a8adf9c",
    "at": "2026-11-08T23:45:11Z",
    "title": "Fantasy GM",
@@ -975,6 +855,30 @@
    "via": "urgent",
    "sent_at": "2026-11-15T14:03:17Z",
    "seen": "2026-11-15T14:03:17Z"
+  },
+  {
+   "k": "2026-11-15|687129af8c92",
+   "at": "2026-11-15T23:17:57Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen joined EDM PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T23:17:57Z",
+   "seen": "2026-11-15T23:17:57Z"
+  },
+  {
+   "k": "2026-11-15|ee9b3bd74db8",
+   "at": "2026-11-15T23:17:57Z",
+   "title": "Fantasy GM",
+   "text": "Dvorak joined PHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-15T23:17:57Z",
+   "seen": "2026-11-15T23:17:57Z"
   }
  ],
  "sent": {
