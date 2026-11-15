@@ -154,11 +154,6 @@
 "now": "2026-11-22",
 "was": "2026-11-08"
 },
-"3069687": {
-"d": "2026-11-10",
-"k": "back",
-"was": "2026-11-10"
-},
 "3094261": {
 "d": "2026-11-08",
 "k": "back",
@@ -806,6 +801,11 @@
 "note": "Grzelcyk (lower body) suffered a \"flare-up\" and could be out for at least \"a few days,\" head coach Lindy Ruff told Rachel Lenzi of The Buffalo News on Tuesday.",
 "status": "Injured Reserve"
 },
+"3069687": {
+"back": "2026-11-23",
+"note": "ir",
+"status": "Injured Reserve"
+},
 "3096217": {
 "back": "2026-12-21",
 "note": "Co-president of hockey operations Henrik Sedin said Monday that he hopes Demko (hip) will be ready to return before Christmas, Kevin Woodley of NHL.com reports.",
@@ -1173,8 +1173,8 @@
 },
 "5833": {
 "back": "2027-01-02",
-"note": "Kreider (lower body) will be out for approximately 6-8 weeks, the Canadiens announced Saturday.",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 }
 }
 }
