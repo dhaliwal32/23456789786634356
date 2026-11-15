@@ -237,6 +237,19 @@ def _post(session, url, my_team_id, swid, sp, future, moves):
         return False, f"{type(ex).__name__}: {ex}"
 
 
+def _sp_for(E, dd):
+    """ESPN's number for a day (its scoringPeriodId). change 295: espn-data "periods" only lists the first weeks of the
+    season, but the numbers simply run one a day from opening day, so count from the first one."""
+    try:
+        ps = [p for p in (E.get("periods") or []) if p.get("dates")]
+        first = min(ps, key=lambda p: int(p["id"]))
+        d0 = datetime.fromisoformat(first["dates"][0]).date()
+        n = int(first["id"]) + (dd - d0).days
+        return n if n >= 1 else None
+    except Exception:
+        return None
+
+
 def run(session, league_url, my_team_id, swid, season, league_id):
     c = conf()
     if c["mode"] == "off":
@@ -268,14 +281,19 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             last = _when(planned.get(day))
             if last and not (redo and redo > last):
                 continue          # already set: only the day itself or a redo changes it again
-        sp = next((p["id"] for p in (E.get("periods") or []) if day in (p.get("dates") or [])), None)
+        sp = _sp_for(E, dd)
         games = (G.get("games") or {}).get(day) or {}
         if not sp or not games:
+            print(f"(autopilot) {day}: skipped, " + ("no NHL games that day" if sp else "could not work out ESPN's number for the day"))
             if future:
                 planned[day] = datetime.now(PT).isoformat(timespec="seconds")
             continue
         r = session.get(league_url, params=[("view", "mRoster"), ("forTeamId", my_team_id), ("scoringPeriodId", sp)], timeout=30)
         r.raise_for_status()
+        cur_sp = r.json().get("scoringPeriodId")
+        if not future and cur_sp and abs(int(cur_sp) - int(sp)) > 1:
+            print(f"(autopilot) {day}: ESPN says today is day {cur_sp} but the app worked out day {sp}, so nothing was changed")
+            continue
         team = next((t for t in r.json().get("teams", []) if t.get("id") == my_team_id), None)
         entries = (team or {}).get("roster", {}).get("entries", [])
         if len(entries) < 15:
@@ -338,8 +356,8 @@ def run(session, league_url, my_team_id, swid, season, league_id):
                 st["notes"] += 1
                 note("Autopilot test", f"Would change your lineup ({stamp}):\n" + "\n".join(lines) + "\nNothing was changed on ESPN.")
         else:
-            note("Autopilot", f"Changed your lineup ({stamp}):\n" + "\n".join(lines))
+            note("Fantasy GM", f"Autopilot set your lineup ({stamp}):\n" + "\n".join(lines))
     if fails and not st.get("failed"):
         st["failed"] = 1
-        note("Autopilot could not change your lineup", "\n".join(fails) + ". Set it by hand on ESPN.", "high")
+        note("Fantasy GM", "Autopilot could not change your lineup. " + "\n".join(fails) + ". Set it by hand on ESPN.", "high")
     save_log(b)

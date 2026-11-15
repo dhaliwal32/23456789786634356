@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_autopilot.py": true
  },
  "changes": [
-  "294-numbers-glide.py"
+  "295-autopilot-fix-setup-puck.py"
  ]
 }
