@@ -157,6 +157,7 @@
 "3069687": {
 "d": "2026-11-15",
 "k": "later",
+"nd": "2026-11-15",
 "now": "2026-12-14",
 "was": "2026-11-23"
 },
@@ -612,6 +613,11 @@
 "k": "back",
 "was": "2026-11-15"
 },
+"5173105": {
+"d": "2026-11-15",
+"k": "new",
+"now": "2026-11-17"
+},
 "5188510": {
 "d": "2026-11-14",
 "k": "new",
@@ -724,7 +730,7 @@
 },
 "2976851": {
 "back": "2026-11-21",
-"note": "Matheson (lower body) will not travel for the Canadiens' upcoming three-game road trip, per Renaud Lavoie of TVA Sports.",
+"note": "Matheson (lower body) will miss approximately 2-3 weeks, the Canadiens announced Sunday.",
 "status": "Out"
 },
 "2993474": {
@@ -809,7 +815,7 @@
 },
 "3069687": {
 "back": "2026-12-14",
-"note": "ir",
+"note": "Anderson (lower body) will be out for approximately 3-4 weeks, per Renaud Lavoie of TVA Sports on Sunday.",
 "status": "Injured Reserve"
 },
 "3096217": {
@@ -1136,6 +1142,11 @@
 "back": "2027-01-12",
 "note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
+},
+"5173105": {
+"back": "2026-11-17",
+"note": "Barkey (illness) won't play against Edmonton on Sunday, per Adam Kimelman of NHL.com.",
+"status": "Out"
 },
 "5188490": {
 "back": "2027-02-13",
