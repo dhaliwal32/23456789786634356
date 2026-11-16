@@ -2736,7 +2736,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="ymob34.4e4u2t" data-file="build/app.js">
+<meta name="gx-build" content="i7powf.1up591i" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -14987,12 +14987,16 @@ function gxAct299(s) {
     if ((t.ty === "FREEAGENT" || t.ty === "WAIVER") && t.st === "EXECUTED") {
       const add = (t.it || []).find((i) => i[1] === "ADD"), drop = (t.it || []).find((i) => i[1] === "DROP");
       out.push({ k: t.id, kind: "move", at: t.at, tm: gxTm299(s, t.tm), add: add ? gxPl299(s, add[0]) : null, drop: drop ? gxPl299(s, drop[0]) : null, waiver: t.ty === "WAIVER" });
-    } else if (t.ty === "TRADE_ACCEPT" || (t.ty === "TRADE_PROPOSAL" && /EXECUTED|VETOED|PENDING/.test(String(t.st || "")) && (votes[t.id] || []).length)) {
+    } else if ((t.ty === "TRADE_ACCEPT" || t.ty === "TRADE_PROPOSAL") && t.st === "EXECUTED") { /* change 304: processed trades only */
       const root = t.ty === "TRADE_ACCEPT" && t.rel && byId[t.rel] ? byId[t.rel] : t;
       if (seenTrade[root.id]) return;
       seenTrade[root.id] = 1;
       const sides = gxSides300(s, root, t); /* change 300 */
       const v = [...(votes[root.id] || []), ...(t.id !== root.id ? votes[t.id] || [] : [])];
+      if (Object.keys(sides).length !== 2 || Object.keys(sides).some((X) => !(sides[X] || []).length)) return; /* change 304: both sides with players, or not shown */
+      const sig304 = Object.keys(sides).map((X) => sides[X].map((p) => p.id).sort().join(",")).sort().join("|");
+      if (seenTrade["s" + sig304]) return; /* change 304: one row per trade, however ESPN splits it */
+      seenTrade["s" + sig304] = 1;
       out.push({ k: root.id, kind: "trade", at: t.at, st: t.ty === "TRADE_ACCEPT" ? t.st || "PENDING" : root.st, sides, votes: v }); /* ESPN leaves an accepted trade's status empty while votes are open */
     }
   });

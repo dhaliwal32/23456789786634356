@@ -2736,7 +2736,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="sw0ul8.h8hjbo" data-file="build/app.js">
+<meta name="gx-build" content="ymob34.4e4u2t" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -15128,6 +15128,12 @@ function gxSides300(s, root, t) {
   const tx = ((window.ESPN_DATA || {}).tx) || [], recs = tx.filter((x) => x.id === root.id || x.id === t.id || x.rel === root.id || x.rel === t.id || (t.rel && (x.id === t.rel || x.rel === t.rel)));
   const sides = {};
   recs.forEach((x) => (x.it || []).forEach((i) => { if (i[1] === "LINEUP" || i[1] === "DROP") return; const to = gxTm299(s, i[3]); const p = gxPl299(s, i[0]); if (!to || !p || (sides[to] || []).some((q) => q.id === p.id)) return; (sides[to] = sides[to] || []).push(p); }));
+  if (!Object.keys(sides).length) { /* change 303: find the offer by the team that accepted it */
+    const who = String(t.tm), at = t.at || 0;
+    const offer = tx.filter((x) => x.ty === "TRADE_PROPOSAL" && (x.it || []).some((i) => String(i[2]) === who || String(i[3]) === who) && (x.pr || x.at || 0) <= at + 6e4)
+      .sort((u, v) => (v.pr || v.at || 0) - (u.pr || u.at || 0))[0];
+    if (offer) (offer.it || []).forEach((i) => { if (i[1] === "LINEUP" || i[1] === "DROP") return; const to = gxTm299(s, i[3]); const p = gxPl299(s, i[0]); if (!to || !p || (sides[to] || []).some((q) => q.id === p.id)) return; (sides[to] = sides[to] || []).push(p); });
+  }
   if (!Object.keys(sides).length) {
     const A = gxTm299(s, root.tm), B = gxTm299(s, t.tm !== root.tm ? t.tm : null);
     recs.forEach((x) => (x.it || []).forEach((i) => { const p = gxPl299(s, i[0]); if (!p) return; const to = p.ft === A ? B : p.ft === B ? A : null; if (to && !(sides[to] || []).some((q) => q.id === p.id)) (sides[to] = sides[to] || []).push(p); }));
