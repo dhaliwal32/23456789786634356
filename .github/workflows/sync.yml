@@ -47,11 +47,18 @@ jobs:
             git add -A
             if ! git diff --cached --quiet; then
               git commit -q -m "sync $(date -u +%Y-%m-%dT%H:%MZ)"
+              pushed=0
               for i in 1 2 3 4 5; do
-                if git pull -q --rebase -X theirs && git push -q; then break; fi
+                if git pull -q --rebase -X theirs && git push -q; then pushed=1; break; fi
                 git rebase --abort 2>/dev/null || true
                 sleep 5
               done
+              if [ $pushed = 0 ]; then
+                # a file changed both here and on GitHub in a way git cannot merge (seen Nov 16: edge/onice-live.json);
+                # drop this round and start the next one from GitHub's copy, or every later round fails too
+                echo "::warning::could not save this round, starting the next round from GitHub's copy"
+                git fetch -q origin main && git reset -q --hard origin/main
+              fi
             fi
             h=$((10#$(date -u +%H)))
             if [ $h -ge 7 ] && [ $h -lt 16 ]; then break; fi
