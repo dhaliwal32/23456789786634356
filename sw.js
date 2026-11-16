@@ -4,7 +4,7 @@ self.addEventListener("activate", function (e) { e.waitUntil(self.clients.claim(
 self.addEventListener("push", function (e) {
   var d = {};
   try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data ? e.data.text() : "" }; }
-  e.waitUntil(self.registration.showNotification(d.title || "Fantasy GM", { body: d.body || "", icon: "icon.png", data: { url: d.url || "#matchup" } }));
+  e.waitUntil(self.registration.showNotification(d.title != null ? d.title : "Fantasy GM", { /* change 305: an empty title stays empty */ body: d.body || "", icon: "icon.png", data: { url: d.url || "#matchup" } }));
 });
 self.addEventListener("notificationclick", function (e) {
   e.notification.close();

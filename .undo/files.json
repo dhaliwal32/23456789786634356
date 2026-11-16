@@ -1,8 +1,10 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "sw.js": true,
+  "gm_live.py": true,
+  "gm_push.py": true
  },
  "changes": [
-  "304-only-processed-trades.py"
+  "305-alerts-no-title.py"
  ]
 }

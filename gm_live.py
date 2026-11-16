@@ -244,7 +244,7 @@ def goal_alerts302(opp):
                 msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
                 try:
                     import gm_push
-                    gm_push.send("\U0001F3D2 Fantasy Islands", msg, "#matchup")
+                    gm_push.send("", msg, "#matchup")  # change 305: no title, the app's name shows instead
                 except Exception as e:
                     log("goal alert failed", e)
                 log("goal alert:", msg)
