@@ -1,9 +1,8 @@
 {
  "files": {
-  "gm_lock.py": true,
-  "gx-lock.js": true
+  "ai_learn.py": true
  },
  "changes": [
-  "307-smaller-locked-data.py"
+  "308-goalie-typical-night.py"
  ]
 }
