@@ -1,170 +1,170 @@
 {
  "version": "combo-v1",
- "asof": "2026-11-15T17:46:04Z",
+ "asof": "2026-11-16T19:28:45Z",
  "data": {
   "from": "2026-09-29",
-  "to": "2026-11-14",
-  "records": 23209
+  "to": "2026-11-15",
+  "records": 23568
  },
  "groups": {
   "F": {
    "pick": "ai",
-   "why": "smallest average miss per game (4.611 pts)",
+   "why": "smallest average miss per game (4.615 pts)",
    "w": {
     "espn": 0.0,
     "gm": 0.0,
     "ai": 1.0
    },
    "bias": 0.0,
-   "games": 7660,
+   "games": 7779,
    "tests": {
     "half": {
-     "n": 6738,
-     "mae": 4.616,
-     "rmse": 6.074,
-     "bias": -0.096
+     "n": 6857,
+     "mae": 4.62,
+     "rmse": 6.082,
+     "bias": -0.101
     },
     "ai": {
-     "n": 6738,
-     "mae": 4.611,
-     "rmse": 6.078,
-     "bias": -0.113
+     "n": 6857,
+     "mae": 4.615,
+     "rmse": 6.085,
+     "bias": -0.119
     },
     "gm": {
-     "n": 6738,
-     "mae": 4.633,
-     "rmse": 6.086,
-     "bias": -0.08
+     "n": 6857,
+     "mae": 4.638,
+     "rmse": 6.094,
+     "bias": -0.084
     },
     "espn": {
-     "n": 6738,
-     "mae": 4.787,
-     "rmse": 6.253,
-     "bias": 0.105
+     "n": 6857,
+     "mae": 4.789,
+     "rmse": 6.256,
+     "bias": 0.099
     },
     "mix": {
-     "n": 6738,
-     "mae": 4.614,
-     "rmse": 6.077,
-     "bias": -0.112
+     "n": 6857,
+     "mae": 4.617,
+     "rmse": 6.084,
+     "bias": -0.118
     }
    }
   },
   "D": {
    "pick": "ai",
-   "why": "smallest average miss per game (3.627 pts)",
+   "why": "smallest average miss per game (3.635 pts)",
    "w": {
     "espn": 0.0,
     "gm": 0.0,
     "ai": 1.0
    },
    "bias": 0.0,
-   "games": 3912,
+   "games": 3972,
    "tests": {
     "half": {
-     "n": 3447,
-     "mae": 3.639,
-     "rmse": 4.872,
-     "bias": -0.072
+     "n": 3507,
+     "mae": 3.646,
+     "rmse": 4.876,
+     "bias": -0.064
     },
     "ai": {
-     "n": 3447,
-     "mae": 3.627,
-     "rmse": 4.876,
-     "bias": -0.094
+     "n": 3507,
+     "mae": 3.635,
+     "rmse": 4.881,
+     "bias": -0.086
     },
     "gm": {
-     "n": 3447,
-     "mae": 3.666,
-     "rmse": 4.89,
-     "bias": -0.05
+     "n": 3507,
+     "mae": 3.672,
+     "rmse": 4.893,
+     "bias": -0.042
     },
     "espn": {
-     "n": 3447,
-     "mae": 3.847,
-     "rmse": 5.08,
-     "bias": 0.047
+     "n": 3507,
+     "mae": 3.851,
+     "rmse": 5.083,
+     "bias": 0.051
     },
     "mix": {
-     "n": 3447,
-     "mae": 3.627,
-     "rmse": 4.876,
-     "bias": -0.093
+     "n": 3507,
+     "mae": 3.635,
+     "rmse": 4.881,
+     "bias": -0.085
     }
    }
   },
   "G": {
-   "pick": "gm",
-   "why": "smallest average miss per game (6.574 pts)",
+   "pick": "half",
+   "why": "smallest average miss per game (6.611 pts)",
    "w": {
     "espn": 0.0,
-    "gm": 1.0,
-    "ai": 0.0
+    "gm": 0.5,
+    "ai": 0.5
    },
    "bias": 0.0,
-   "games": 646,
+   "games": 656,
    "tests": {
     "half": {
-     "n": 543,
-     "mae": 6.576,
-     "rmse": 8.192,
-     "bias": 0.428
+     "n": 553,
+     "mae": 6.611,
+     "rmse": 8.207,
+     "bias": 0.414
     },
     "ai": {
-     "n": 543,
-     "mae": 6.6,
-     "rmse": 8.216,
-     "bias": 0.547
+     "n": 553,
+     "mae": 6.633,
+     "rmse": 8.227,
+     "bias": 0.536
     },
     "gm": {
-     "n": 543,
-     "mae": 6.574,
-     "rmse": 8.19,
-     "bias": 0.309
+     "n": 553,
+     "mae": 6.611,
+     "rmse": 8.211,
+     "bias": 0.293
     },
     "espn": {
-     "n": 543,
-     "mae": 6.902,
-     "rmse": 8.55,
-     "bias": 0.516
+     "n": 553,
+     "mae": 6.946,
+     "rmse": 8.572,
+     "bias": 0.493
     },
     "mix": {
-     "n": 543,
-     "mae": 6.583,
-     "rmse": 8.195,
-     "bias": 0.328
+     "n": 553,
+     "mae": 6.62,
+     "rmse": 8.214,
+     "bias": 0.313
     }
    }
   }
  },
  "gstart": {
   "use": false,
-  "a": 1.4678,
-  "b": 0.3478,
-  "n": 2071,
-  "brier_ai": 0.108,
-  "brier_new": 0.108,
+  "a": 1.4802,
+  "b": 0.3575,
+  "n": 2116,
+  "brier_ai": 0.1074,
+  "brier_new": 0.1071,
   "se": 0.0014
  },
  "gs_df": {
   "use": true,
-  "rows": 45295,
-  "n": 38636,
-  "brier_old": 0.2288,
-  "brier_new": 0.1259,
+  "rows": 46375,
+  "n": 39716,
+  "brier_old": 0.2291,
+  "brier_new": 0.1262,
   "se": 0.0009,
   "likely": 0.99,
   "unc": [
-   0.3233,
-   0.5527,
-   1.0455,
-   -0.4157
+   0.3085,
+   0.5705,
+   1.1131,
+   -0.4436
   ],
   "other": [
-   -0.3475,
-   1.0036,
-   -1.3865,
-   0.1343
+   -0.3223,
+   1.0046,
+   -1.4037,
+   0.1569
   ]
  }
 }
