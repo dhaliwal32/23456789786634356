@@ -1,10 +1,8 @@
 {
  "files": {
-  "sw.js": true,
-  "gm_live.py": true,
-  "gm_push.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "305-alerts-no-title.py"
+  "306-remove-unused-code.py"
  ]
 }

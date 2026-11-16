@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#121212" />
 <title>Fantasy Islands GM</title>
-<meta name="gx-tw" content="19ko4fw">
+<meta name="gx-tw" content="wktjdi">
 <script>/* gx216-tw: use the styles built on GitHub; if they are missing, build them in the browser like before */(function () {
   var m = document.querySelector('meta[name="gx-tw"]'), v = m && m.getAttribute("content");
   if (!v || /[?&]tw\b/.test(location.search)) { document.write('<script src="https://cdn.tailwindcss.com"><\/script>'); return; }
@@ -2736,7 +2736,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="i7powf.1up591i" data-file="build/app.js">
+<meta name="gx-build" content="1avvblk.1ivln4t" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3018,7 +3018,6 @@ const Tags = ({ p, K }) => (
 );
 // ice time: seconds -> "+2.5 min"
 const mm = (sec) => (sec >= 0 ? "+" : "−") + (Math.abs(sec) / 60).toFixed(1) + " min";
-const toiOf = (p) => sigOf(p).toi || null;
 // ---------- move engine ----------
 function computeMoves(s, o) {
   const K = s.blend, gw = s.gw ?? 1.3, protectTop = s.protectTop ?? 8;
@@ -3117,23 +3116,6 @@ const Section = ({ title, sub, link, children, closed, id }) => {
         </div>
         {open && link ? <button className="text-xs text-blue-600 whitespace-nowrap" onClick={link[1]}>{link[0] + " \u2192"}</button> : null}
         <button type="button" onClick={flip} aria-label={open ? "Close this box" : "Open this box"} style={{ lineHeight: 0, padding: "2px 0" }}><span className={"sec-chev" + (open ? "" : " shut")}></span></button>
-      </div>
-      {open ? children : null}
-    </div>
-  );
-};
-const SectionShut = (p) => <Section {...p} closed />;
-const DayFold = ({ id, open0, head, right, children }) => {
-  const k = "day:" + id;
-  const [open, setOpen] = useState(() => { const v = uiGet()[k]; return v == null ? !!open0 : !!v; });
-  const flip = () => { uiSet(k, !open); setOpen(!open); };
-  const onKey = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
-  return (
-    <div className="bg-white rounded-xl border border-slate-200 mb-3">
-      <div role="button" tabIndex={0} aria-expanded={open} onClick={flip} onKeyDown={onKey} className={"flex items-center gap-3 px-3 py-2 text-sm cursor-pointer" + (open ? " border-b border-slate-200" : "")}>
-        <span className="font-semibold">{head}</span>
-        <span className="ml-auto flex items-center gap-3">{right}</span>
-        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 2px 2px" }}></span>
       </div>
       {open ? children : null}
     </div>
@@ -3481,7 +3463,6 @@ function NewsView({ s, wk }) {
 }
 
 // ---------- Betting lines ----------
-const oddsFor = (t, dt) => { const O = ((window.ESPN_DATA || {}).model || {}).odds || {}; return dt && O[dt] ? O[dt][t] || null : null; };
 function OddsBoard({ s }) {
   const O = ((window.ESPN_DATA || {}).model || {}).odds || null;
   const today = todayISO();
@@ -3852,165 +3833,6 @@ function Matchup({ s, setS, wk, setWk }) {
 // ---------- Add / Drop ----------
 const shortTag = (p, K) => { const t = tags(p, K)[0]; if (!t) return null; const x = t.u ? t.t.split(":")[0] : t.t; return { t: x.length > 20 ? x.slice(0, 19) + "…" : x, c: t.c }; };
 const cntOf = (r) => { const c = { F: 0, D: 0, G: 0 }; r.forEach((p) => { if (!p.ir) c[p.p]++; }); return c; };
-function MoveSim({ s, setS, wk, M, H, hLabel, init, wBase, onClose }) {
-  const effAvg = gxPgAvg; /* gx088-sim */
-  const { total, rawPts, gamesIn, protectedIds, mins, lineupAware, myR, fas, K } = M;
-  const left = movesLeft(s, s.me, wk);
-  const cap = Math.max(1, left == null ? 3 : left);
-  const [moves, setMoves] = useState([{ add: init.add || "", drop: init.drop || "", sug: init.drop || "" }]);
-  const [qs, setQs] = useState({});
-  const [openI, setOpenI] = useState(init.add ? -1 : 0);
-  const [focus, setFocus] = useState(0);
-  useEffect(() => {
-    const k = (e) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", k); document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
-  }, []);
-  const byId = (id) => (id ? s.players.find((p) => p.id === id) || null : null);
-  const rosterBefore = (i, ms) => { let r = myR; (ms || moves).slice(0, i).forEach((m) => { const a = byId(m.add); if (a && r.some((x) => x.id === m.drop)) r = r.filter((x) => x.id !== m.drop).concat([{ ...a, ft: s.me }]); }); return r; };
-  const suggestDrop = (i, f, ms) => {
-    const r = rosterBefore(i, ms), c = cntOf(r);
-    const ok = (d) => !d.ir && (d.p === f.p || c[d.p] - 1 >= mins[d.p]);
-    let cands = r.filter((d) => ok(d) && !protectedIds.has(d.id));
-    if (!cands.length) cands = r.filter(ok);
-    const b = lineupAware ? total(r) : 0;
-    let best = null;
-    cands.forEach((d) => { const g = lineupAware ? total(timedMove(r, s.me, [{ add: f, drop: d }])) - b : rawPts(f) - rawPts(d, f); if (!best || g > best.g) best = { d, g }; });
-    return best ? best.d.id : "";
-  };
-  const setAdd = (i, id) => {
-    const f = byId(id);
-    setMoves((ms) => ms.map((m, k) => { if (k !== i) return m; const sug = f ? suggestDrop(i, f, ms) : ""; return { add: id, drop: sug, sug }; }));
-    setQs((x) => ({ ...x, [i]: "" })); setOpenI(-1); setFocus(i);
-  };
-  const setDrop = (i, id) => setMoves((ms) => ms.map((m, k) => (k === i ? { ...m, drop: id } : m)));
-  const addMove = () => { const n = moves.length; setMoves((ms) => ms.concat([{ add: "", drop: "", sug: "" }])); setOpenI(n); setFocus(n); };
-  const removeMove = (i) => { setMoves((ms) => ms.filter((_, k) => k !== i)); setFocus(0); setOpenI(-1); };
-  const matches = (i) => {
-    const q = nrm(qs[i] || ""), used = new Set(moves.filter((_, k) => k !== i).map((m) => m.add));
-    if (!q) return M.res.filter((r) => !used.has(r.f.id)).slice(0, 6).map((r) => r.f);
-    return fas.filter((p) => p.prob > 0 && !used.has(p.id) && nrm(p.n).includes(q)).sort((a, b) => effAvg(b, K) - effAvg(a, K)).slice(0, 8);
-  };
-  const key = JSON.stringify(moves.map((m) => [m.add, m.drop]));
-  const R = useMemo(() => {
-    const list = moves.map((m, i) => { const a = byId(m.add), r = rosterBefore(i); const d = r.find((x) => x.id === m.drop) || null; return a && d ? { a, d } : null; });
-    const ok = list.filter(Boolean);
-    if (!ok.length) return { list, ok };
-    const after = rosterBefore(moves.length);
-    const timed = timedMove(myR, s.me, ok.map((x) => ({ add: x.a, drop: x.d })));
-    const gain = lineupAware ? total(timed) - total(myR) : ok.reduce((t, x) => t + rawPts(x.a) - rawPts(x.d, x.a), 0);
-    const c = cntOf(after);
-    return { list, ok, after, gain, c, win: winChance(s, timed), short: ["F", "D", "G"].filter((k) => c[k] < mins[k]) };
-  }, [key]);
-  const addF = byId((moves[focus] || {}).add);
-  const alts = useMemo(() => (addF ? computeMoves(s, { H, pos: addF.p, pool: 40 }).res.filter((r) => r.f.id !== addF.id && !moves.some((m) => m.add === r.f.id)).slice(0, 3) : []), [addF ? addF.id : "", H]);
-  const apply = () => {
-    const drops = new Set(R.ok.map((x) => x.d.id)), adds = new Set(R.ok.map((x) => x.a.id));
-    setS((st) => ({ ...st, players: st.players.map((p) => (drops.has(p.id) ? { ...p, ft: "fa", ir: false } : adds.has(p.id) ? { ...p, ft: st.me } : p)) }));
-    onClose();
-  };
-  const before = cntOf(myR);
-  const posName = { F: "forwards", D: "defencemen", G: "goalies" };
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 overflow-y-auto" style={{ background: "rgba(0,0,0,.65)" }} onClick={onClose}>
-      <div className="ms-card" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-start gap-3 mb-3">
-          <div>
-            <div className="font-semibold text-base">Simulate a move</div>
-            <div className="text-xs text-slate-500">Points: {hLabel} · win chance: this week{left != null ? ` · ${left} move${left === 1 ? "" : "s"} left this week` : ""}</div>
-          </div>
-          <button className="ml-auto text-2xl leading-none text-slate-500" aria-label="Close" onClick={onClose}>×</button>
-        </div>
-        {moves.map((m, i) => {
-          const a = byId(m.add), r = rosterBefore(i), it = R.list[i];
-          const drops = r.filter((p) => !p.ir).sort((x, y) => effAvg(x, K) - effAvg(y, K));
-          const sd = it ? effAvg(it.a, K) - effAvg(it.d, K) : 0;
-          const ml = openI === i ? matches(i) : [];
-          return (
-            <div key={i} className="ms-move" onClick={() => setFocus(i)}>
-              {moves.length > 1 ? <div className="flex items-center mb-2"><span className="text-xs uppercase tracking-wide text-slate-500">Move {i + 1}</span><button className="ml-auto text-xs text-slate-500" onClick={(e) => { e.stopPropagation(); removeMove(i); }}>Remove</button></div> : null}
-              <div className="tb-grid">
-                <div className="min-w-0">
-                  <div className="text-xs text-slate-500 mb-1">Add</div>
-                  {a && openI !== i ? (
-                    <div className="ms-pick">
-                      <GxFace p={a} size={26} />
-                      <div className="min-w-0 flex-1"><div className="truncate font-medium">{a.n}</div><div className="text-xs text-slate-500">{a.p} · {gamesIn(a)} gms · {f1(effAvg(a, K))}/g</div></div>
-                      <button className="text-xs text-blue-600" onClick={() => setOpenI(i)}>Change</button>
-                    </div>
-                  ) : (
-                    <div className="relative">
-                      <input className={inp + " w-full"} autoFocus={openI === i} placeholder="Type a free agent's name" value={qs[i] || ""}
-                        onChange={(e) => { setQs({ ...qs, [i]: e.target.value }); setOpenI(i); }} onFocus={() => setOpenI(i)}
-                        onBlur={() => setTimeout(() => setOpenI((x) => (x === i ? -1 : x)), 150)} />
-                      {openI === i ? (
-                        <div className="ms-list">
-                          {!(qs[i] || "").trim() ? <div className="text-xs text-slate-500 px-2 pt-1 pb-1">Top pickups</div> : null}
-                          {ml.map((p) => (
-                            <button key={p.id} type="button" className="ms-opt" onMouseDown={(e) => e.preventDefault()} onClick={() => setAdd(i, p.id)}>
-                              <GxFace p={p} size={22} />
-                              <span className="truncate flex-1 text-left">{p.n} <span className="text-xs text-slate-500">{p.p}</span></span>
-                              <span className="text-xs text-slate-500 whitespace-nowrap">{gamesIn(p)} gms · {f1(effAvg(p, K))}</span>
-                            </button>
-                          ))}
-                          {ml.length === 0 ? <div className="text-sm text-slate-400 px-2 py-2">No free agent matches.</div> : null}
-                          {a ? <button type="button" className="text-xs text-slate-500 px-2 py-1" onMouseDown={(e) => e.preventDefault()} onClick={() => setOpenI(-1)}>Keep {a.n}</button> : null}
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs text-slate-500 mb-1">Drop{m.drop && m.drop === m.sug ? " · suggested" : ""}</div>
-                  <select className={inp + " w-full"} value={m.drop} onChange={(e) => setDrop(i, e.target.value)}>
-                    <option value="">Choose who to drop</option>
-                    {drops.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p}) · {f1(effAvg(p, K))}/g{p.p === "G" ? " · starts " + Math.round((p.prob || 0) * 100) + "%" : ""}{protectedIds.has(p.id) ? " · protected" : ""}</option>)}{/* gx088-opt */}
-                  </select>
-                </div>
-              </div>
-              {it ? (
-                <div className={"text-xs mt-2 " + (sd >= 0 ? "text-green-700" : "text-amber-600")}>
-                  {sd >= 0 ? `Keeper: ${f1(sd)}/game better than ${it.d.n} long-term` : `Stream only: ${f1(-sd)}/game worse than ${it.d.n} long-term`}{protectedIds.has(it.d.id) ? ` · ${it.d.n} is protected` : ""}
-                </div>
-              ) : a && m.drop && !r.some((x) => x.id === m.drop) ? <div className="text-xs mt-2 text-red-600">That player is already dropped in an earlier move. Choose another drop.</div> : null}
-            </div>
-          );
-        })}
-        {addF && alts.length ? (
-          <div className="mt-3">
-            <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Other {posName[addF.p]} to consider</div>
-            {alts.map((r) => (
-              <div key={r.f.id} className="flex items-center gap-2.5 py-2 border-t border-slate-100">
-                <GxFace p={r.f} size={22} />
-                <div className="min-w-0 flex-1"><div className="truncate">{r.f.n}</div><div className="text-xs text-slate-500">{gamesIn(r.f)} gms · {f1(effAvg(r.f, K))}/g · drop {r.d.n}</div></div>
-                <span className="text-green-700 font-semibold text-sm">+{f1(r.gain)}</span>
-                <button className="text-xs text-blue-600" onClick={() => setAdd(focus, r.f.id)}>Use</button>
-              </div>
-            ))}
-          </div>
-        ) : null}
-        {moves.length < cap ? <button className="text-sm text-blue-600 mt-3" onClick={addMove}>+ Add another move</button>
-          : <div className="text-xs text-slate-500 mt-3">{left === 0 ? "No moves left this week on ESPN, so this is only a what-if." : `That's all ${cap} of your moves left this week.`}</div>}
-        <div className="ms-res">
-          {R.ok.length ? (
-            <div>
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div><div className="text-xs text-slate-500">Points</div><div className="text-xl"><Dlt v={R.gain} /></div><div className="text-xs text-slate-500">{hLabel}</div></div>
-                <div><div className="text-xs text-slate-500">Win this week</div><div className={"text-xl font-semibold " + (R.win != null && wBase != null ? (R.win > wBase ? "text-green-700" : R.win < wBase ? "text-red-600" : "") : "")}>{R.win == null ? "–" : wpTxt(R.win)}</div><div className="text-xs text-slate-500">now {wBase == null ? "–" : wpTxt(wBase)}</div></div>
-                <div><div className="text-xs text-slate-500">Roster after</div><div className="text-sm font-semibold mt-1">F {R.c.F} · D {R.c.D} · G {R.c.G}</div><div className="text-xs text-slate-500">was F {before.F} · D {before.D} · G {before.G}</div></div>
-              </div>
-              <GxPickRes92 s={s} myR={myR} ok={R.ok} />{/* gx092-res */}{R.short.length ? <div className="text-sm text-red-600 mt-2">Below your minimum at {R.short.join(", ")}. Pick a different drop.</div> : null}
-              <div className="flex flex-wrap items-center gap-3 mt-3">
-                <button className="bg-blue-600 rounded-lg px-4 py-1.5 font-semibold" onClick={apply}>Apply here</button>
-                <span className="text-xs text-slate-500">Updates this app only. Make the real move on ESPN; the next sync confirms it.</span>
-              </div>
-            </div>
-          ) : <div className="text-sm text-slate-400">Pick a player to add and one to drop to see the result.</div>}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ---------- Players ----------
 function Players({ s, wk }) {
@@ -4152,46 +3974,6 @@ function InjuryPanel({ s, setS }) {
         </table>
       </div>
     </Section>
-  );
-}
-function RosterTable({ s, setS, wk, team }) {
-  const [q, setQ] = useState("");
-  const upd = (id, patch) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
-  const order = { F: 0, D: 1, G: 2 };
-  const all = s.players.filter((p) => p.ft === team);
-  const list = all.filter((p) => p.n.toLowerCase().includes(q.toLowerCase())).sort((a, b) => order[a.p] - order[b.p] || b.avg - a.avg).slice(0, team === "fa" ? 100 : 999);
-  const cnt = { F: 0, D: 0, G: 0 }; all.forEach((p) => { if (!p.ir) cnt[p.p]++; });
-  const active = all.filter((p) => !p.ir).length;
-  const mins = { F: s.minF ?? 10, D: s.minD ?? 5, G: s.minGo ?? 2 };
-  const low = team === s.me && (cnt.F < mins.F || cnt.D < mins.D || cnt.G < mins.G);
-  return (
-    <div className="bg-white rounded-xl border border-slate-200 mb-4">
-      <div className="flex flex-wrap items-center gap-3 p-3 border-b border-slate-200">
-        <div className="font-semibold text-base">{teamName(s, team) || "Free agents"}</div>
-        {team !== "fa" && <span className={"text-xs " + (low ? "text-red-600 font-semibold" : "text-slate-500")}>{active}/22 active · F {cnt.F} · D {cnt.D} · G {cnt.G}{all.length - active ? ` · ${all.length - active} IR` : ""}{low ? " — below minimums" : ""}</span>}
-        <input className={inp + " ml-auto"} placeholder="Search" value={q} onChange={(e) => setQ(e.target.value)} />
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="text-left"><tr>{["Player", "", "Proj avg", "Play %", "IR", "Back on", "Gms", "Fantasy team"].map((h, i) => <th key={i} className="px-2 py-2">{h}</th>)}</tr></thead>
-          <tbody>
-            {list.map((p) => (
-              <tr key={p.id} className="border-t border-slate-100">
-                <td className="px-2 py-1.5 font-medium whitespace-nowrap">{p.n}{p.status && p.status !== "ACTIVE" ? <span className="text-red-600 text-xs ml-1">{p.status.replace(/_/g, " ")}</span> : ""}</td>
-                <td className="px-2 py-1.5 text-xs text-slate-500 whitespace-nowrap">{p.p} · <GxFace p={p} /></td>
-                <td className="px-2 py-1.5"><input type="number" step="0.1" className={inp + " w-20"} value={p.avg} onChange={(e) => upd(p.id, { avg: parseFloat(e.target.value) || 0, est: false })} /></td>
-                <td className="px-2 py-1.5"><input type="number" min="0" max="100" className={inp + " w-16"} value={Math.round(p.prob * 100)} onChange={(e) => upd(p.id, { prob: Math.max(0, Math.min(100, parseFloat(e.target.value) || 0)) / 100 })} /></td>
-                <td className="px-2 py-1.5"><input type="checkbox" checked={!!p.ir} onChange={(e) => upd(p.id, { ir: e.target.checked })} /></td>
-                <td className="px-2 py-1.5"><input type="date" className={inp} value={p.back || ""} onChange={(e) => upd(p.id, { back: e.target.value })} /></td>
-                <td className="px-2 py-1.5">{gms(wk, p.t)}</td>
-                <td className="px-2 py-1.5"><select className={inp} value={p.ft} onChange={(e) => upd(p.id, { ft: e.target.value, ir: false })}>{s.teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}<option value="fa">Free agent</option></select></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {team === "fa" && all.length > 100 && <div className="text-xs text-slate-500 p-3">Showing 100 of {all.length} — use search.</div>}
-    </div>
   );
 }
 function AddOne({ s, setS }) {
@@ -4818,13 +4600,6 @@ function winChance(s, roster) {
   return winProb(A, B, +(gxAct120(w)[s.me]) || 0, +(gxAct120(w)[opp]) || 0);
 }
 const afterMove = (s, add, drop) => timedMove(s.players.filter((p) => p.ft === s.me), s.me, [{ add, drop }]);
-const WinDelta = ({ s, add, drop, base }) => {
-  const b = base === undefined ? winChance(s) : base;
-  const n = winChance(s, afterMove(s, add, drop));
-  if (b == null || n == null) return null;
-  const d = Math.round(n * 100) - Math.round(b * 100);
-  return <span className={"text-xs whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Chance to win this week's matchup, before and after the move">win {wpTxt(b)} → {wpTxt(n)}</span>;
-};
 
 // ---------- round 6: moves left, fill slots, ESPN lineup check, goalie streams, strategy (news_logos.py) ----------
 const movesLeft = (s, tid, w) => {
@@ -4989,12 +4764,6 @@ function GoalieStreams({ s, setS, wk }) {
 }
 
 // ---------- moves used from ESPN (news_logos.py) ----------
-function movesUsedESPN(s, w) {
-  const E = window.ESPN_DATA || {};
-  if (!E.acq || !w || w.period == null) return null;
-  const a = E.acq[String(s.me).replace(/^t/, "")];
-  return a ? (+a[String(w.period)] || 0) : null;
-}
 
 // ---------- round 9: phone layout (news_logos.py) ----------
 const M_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["league", "League"]]; // round 37, older marker kept: ["lines", "Lines"]];
@@ -5004,52 +4773,7 @@ const M_ST = { DAY_TO_DAY: "DTD", OUT: "Out", INJURY_RESERVE: "IR", SUSPENSION: 
 const shortN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x[0][0] + ". " + x.slice(1).join(" ") : x[0]; };
 const mGame = (p) => { const g = gameOf(p.t, p.dt); return g ? (g.h ? "vs " : "@") + g.o + " " + gameTime(g) : ""; };
 const mStart = (gs) => (!gs ? "" : gs.includes("confirmed") && !gs.includes("un") ? "Confirmed" : /not starting|rests|backup/.test(gs) ? "May sit" : /likely/.test(gs) ? "Likely" : "Unconfirmed");
-function MobileHeader({ s, setS, tab, go, ageH }) {
-  const [menu, setMenu] = useState(false);
-  const [opts, setOpts] = useState(false);
-  const more = M_MORE.find(([k]) => k === tab);
-  const pick = (k) => { setMenu(false); setOpts(false); go(k); };
-  const dot = !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)";
-  const can = (k) => k === "espn" || (!!window.__MODEL && (k !== "ai" || !!window.__AI));
-  const tabBtn = (k, l, on, fn) => (
-    <button key={k} onClick={fn} className="m-tab" style={{ color: on ? "var(--ink)" : "var(--mute)", borderBottomColor: on ? "var(--accent)" : "transparent" }}>{l}</button>
-  );
-  return (
-    <div className="m-only">
-      <div className="flex items-center gap-2 px-3 pt-2">
-        <span className="font-semibold text-white truncate" style={{ fontSize: 18 }}>{teamName(s, s.me) || "Islands GM"}</span>
-        <span title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"} style={{ width: 7, height: 7, borderRadius: 99, background: dot, flexShrink: 0 }}></span>
-        <select className="m-wk ml-auto" value={s.wk} onChange={(e) => setS({ ...s, wk: +e.target.value })}>
-          {s.weeks.map((w, i) => <option key={i} value={i}>{(w.label || "").replace(/^Week /, "Wk ")}</option>)}
-        </select>
-        <button className="m-icon" aria-label="Options" onClick={() => { setOpts(!opts); setMenu(false); }}>⋯</button>
-      </div>
-      {opts && (
-        <div className="px-3 pt-2 pb-1">
-          <div className="text-xs text-slate-500 mb-1">Projections: Combined</div>
-          <div className="flex gap-2 overflow-x-auto navscroll">
-            {[].map(([k, l]) => <button key={k} disabled={!can(k)} onClick={() => setS({ ...s, pmode: k, players: [...s.players] })} className={"px-3 py-1 rounded-full text-sm border whitespace-nowrap " + (window.__PMODE === k ? "bg-blue-600 border-blue-600" : "border-slate-300 text-slate-600") + (can(k) ? "" : " opacity-40")}>{l}</button>)}
-          </div>
-          <div className="flex items-center gap-3 text-xs text-slate-500 mt-2">
-            <span>{s.lastSync ? "Synced " + fmtTime(s.lastSync) : "Not synced yet"}</span>
-            <span className="ml-auto"><ThemeBtn /></span><a href="ai-dashboard.html" className="text-blue-600">AI Lab</a>
-          </div>
-        </div>
-      )}
-      <div className="grid grid-cols-6 mt-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
-        {M_TABS.map(([k, l]) => tabBtn(k, l, (tab === k || (k === "myteam" && (tab === "moves" || tab === "lines"))) && !menu || (k === "league" && tab === "teams"), () => (k === "league" ? (setMenu(false), setOpts(false), go("league", "power")) : pick(k))))}
-        {tabBtn("setup", "Setup", tab === "setup" || tab === "news", () => { setMenu(false); setOpts(false); go("setup", "settings"); })}{/* older marker kept: more ? more[1] : "Setup", */}
-      </div>
-      {menu && (
-        <div className="border-t border-slate-800">
-          {M_MORE.map(([k, l]) => <button key={k} onClick={() => pick(k)} className="block w-full text-left px-4 py-3 border-b border-slate-800" style={{ color: tab === k ? "var(--accent)" : "var(--ink)" }}>{l}</button>)}
-        </div>
-      )}
-    </div>
-  );
-}
 // ---------- round 10: one trade builder (analyzer + 2-for-1 + best waiver pickup) (news_logos.py) ----------
-const Dlt = ({ v }) => <span className={"font-semibold " + (v >= 0 ? "text-green-700" : "text-red-600")}>{v >= 0 ? "+" : ""}{f1(v)}</span>;
 const tbFlags = (p, K) => {
   const f = [], g = sigOf(p), l = g.luck, id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
   const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
@@ -5300,67 +5024,6 @@ function TradeBuilder({ s, initPartner, setS }) {
 }
 
 // ---------- round 14: My Team injuries + protected players (news_logos.py) ----------
-function MyInjProt({ s, setS, wk }) {
-  const K = s.blend, today = todayISO();
-  const [edit, setEdit] = useState(null);
-  const [adv, setAdv] = useState(false);
-  const roster = s.players.filter((p) => p.ft === s.me);
-  const upd = (id, patch) => setS((st) => ({ ...st, players: st.players.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
-  const out = roster.filter((p) => { const b = effBack(p).d; return p.ir || (b && b > today) || (!b && avail(p, today) === 0) || (p.status && p.status !== "ACTIVE"); })
-    .sort((a, b) => ((effBack(a).d || "9999") < (effBack(b).d || "9999") ? -1 : 1));
-  const top = s.protectTop ?? 8;
-  const healthy = roster.filter((p) => !p.ir).sort((a, b) => gxPgAvg(b, K) - gxPgAvg(a, K)); /* gx088-r */
-  const auto = healthy.slice(0, top), autoIds = new Set(auto.map((p) => p.id));
-  const mine = healthy.filter((p) => p.keep && !autoIds.has(p.id));
-  const addable = healthy.filter((p) => !autoIds.has(p.id) && !p.keep);
-  const ST = { DAY_TO_DAY: "Day-to-day", OUT: "Out", INJURY_RESERVE: "IR", SUSPENSION: "Suspended" };
-  const stTxt = (p) => (p.ir ? "IR" : ST[p.status] || (p.status || "Out").replace(/_/g, " "));
-  const SRC = { you: "your date", ESPN: "from ESPN", news: "from injury news", estimate: "estimate" };
-  const chip = "inline-flex items-center gap-1.5 pl-1.5 pr-2.5 py-1 rounded-full border text-sm ";
-  const backTxt = (p, b) => {
-    if (!b) return "No return date yet";
-    if (b <= today) return "Available now";
-    const n = Math.round((fromIso(b) - fromIso(today)) / 864e5);
-    const miss = (wk.dates || []).filter((d, i) => d >= today && d < b && (wk.games[p.t] || []).includes(i)).length;
-    return "Back " + mdL(b) + " (" + n + " day" + (n === 1 ? "" : "s") + ")" + (miss ? " · misses " + miss + " game" + (miss === 1 ? "" : "s") + " this week" : "");
-  };
-  return (
-    <div className="space-y-4">
-      <div className="grid md:grid-cols-2 gap-4 items-start">
-        <Section title="Injuries" sub="Return dates come from ESPN. Change one only if you know better.">
-          {out.length ? out.map((p) => { const eb = effBack(p); return (
-            <div key={p.id} className="flex items-center gap-3 py-3 border-t border-slate-100">
-              <GxFace p={p} size={30} />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2"><PN p={p} /><span className="text-xs text-slate-500">{p.p}</span><span className="text-xs px-1.5 py-0.5 rounded bg-red-100 text-red-600">{stTxt(p)}</span></div>
-                <div className="text-xs text-slate-500 mt-0.5">{backTxt(p, eb.d)}{eb.d && eb.src ? " · " + SRC[eb.src] : ""}{eb.src === "you" ? <button className="text-blue-600 ml-2" onClick={() => upd(p.id, { back: DEFAULT_BACK[p.n] || "" })}>Reset</button> : null}</div>
-                {edit === p.id ? <div className="flex items-center gap-2 mt-2"><input type="date" className={inp} value={eb.d} onChange={(e) => upd(p.id, { back: e.target.value })} /><button className="text-sm text-blue-600" onClick={() => setEdit(null)}>Done</button></div> : null}
-              </div>
-              {edit === p.id ? null : <button className="text-sm text-blue-600 whitespace-nowrap" onClick={() => setEdit(p.id)}>Change</button>}
-            </div>
-          ); }) : <div className="text-green-700">Everyone is healthy.</div>}
-        </Section>
-        <Section title="Protected players" sub="Never suggested as drops anywhere in the app. Players on IR are never dropped.">
-          <label className="flex flex-wrap items-center gap-2 text-sm"><span>Always protect my top</span>
-            <select className={inp} value={top} onChange={(e) => setS((st) => ({ ...st, protectTop: +e.target.value }))}>{[...Array(13)].map((_, n) => <option key={n} value={n}>{n}</option>)}</select>
-            <span>players</span></label>
-          {auto.length ? (
-            <div className="mt-3 flex flex-wrap gap-2">{auto.map((p) => <span key={p.id} className={chip + "border-slate-200 text-slate-600"}><GxFace p={p} size={18} />{p.n}</span>)}</div>
-          ) : null}
-          <div className="text-xs uppercase tracking-wide text-slate-500 mt-4 mb-2">Also protect</div>
-          <div className="flex flex-wrap gap-2 items-center">
-            {mine.map((p) => <span key={p.id} className={chip + "border-green-300 bg-green-50"}><GxFace p={p} size={18} />{p.n}<button className="text-slate-500 ml-1 text-base leading-none" aria-label={"Unprotect " + p.n} onClick={() => upd(p.id, { keep: false })}>×</button></span>)}
-            {addable.length ? <select className={inp} value="" onChange={(e) => { if (e.target.value) upd(e.target.value, { keep: true }); }}><option value="">+ Add a player</option>{addable.map((p) => <option key={p.id} value={p.id}>{p.n} ({p.p})</option>)}</select> : null}
-          </div>
-        </Section>
-      </div>
-      <div className="px-1">
-        <button className="text-sm text-blue-600" onClick={() => setAdv(!adv)}>{adv ? "Hide the full editor" : "Edit every player: projections, play %, IR"}</button>
-        {adv ? <div className="mt-3"><RosterTable s={s} setS={setS} wk={wk} team={s.me} /></div> : null}
-      </div>
-    </div>
-  );
-}
 
 // ---------- round 16: live and final points from ESPN (news_logos.py) ----------
 const ESLOT = { 3: "F", 4: "D", 6: "UTIL", 5: "G" };
@@ -5495,18 +5158,12 @@ const timedMove = (roster, me, moves) => {
   moves.forEach(({ add, drop }) => { const a = pickStart(add); r = r.map((p) => (drop && p.id === drop.id ? { ...p, untilD: a } : p)).concat([{ ...add, ft: me, fromD: a }]); });
   return r;
 };
-const PickNote = () => { const a = pickStart(null); return a === todayISO() ? null : <div className="w-full text-xs text-amber-600 mt-1">Today's first game has started, so anyone you add now plays from {dayLabel(a)}. Players on waivers show a Waivers tag and can't play before tomorrow.</div>; };
 
 // ---------- round 26: planner win chance (news_logos.py) ----------
 const planRoster = (s, wk, steps) => {
   let r = s.players.filter((p) => p.ft === s.me);
   steps.forEach((st) => { const a = wk.dates[st.day]; r = r.map((p) => (p.id === st.drop.id ? { ...p, untilD: a } : p)).concat([{ ...st.add, ft: s.me, fromD: a }]); });
   return r;
-};
-const PlanWin = ({ a, b }) => {
-  if (a == null || b == null) return null;
-  const d = Math.round(b * 100) - Math.round(a * 100);
-  return <span className={"text-sm whitespace-nowrap " + (d > 0 ? "text-green-700" : d < 0 ? "text-red-600" : "text-slate-500")} title="Your chance to win this week before and after this move">win {wpTxt(a)} → {wpTxt(b)} <span className="font-semibold">{d > 0 ? "+" : ""}{d}%</span></span>;
 };
 
 // ---------- round 27: no moves left this week, so plan next week instead (news_logos.py) ----------
@@ -5515,8 +5172,6 @@ const outOfMoves = (s) => noMovesWk(s, s.weeks[s.wk]);
 const nextWkS = (s) => (s.wk + 1 < s.weeks.length ? { ...s, wk: s.wk + 1 } : null);
 const planS = (s) => (outOfMoves(s) && nextWkS(s)) || s;
 const planBase = (s, sP) => (sP !== s && !oppOf(sP.weeks[sP.wk] || {}, sP.me) ? null : winChance(sP));
-const planNote = (sP) => { const w = sP.weeks[sP.wk] || {}, d = (w.dates || [])[0]; return "No moves left this week. These are for " + (w.label || "next week") + (d ? ", once your moves reset on " + dayLabel(d) : "") + "."; };
-const PlanNote = ({ sP }) => <div className="w-full text-xs text-amber-600 mt-1 mb-1">{planNote(sP)}</div>;
 
 // ---------- round 28: goalies must be playing, player updates for My Team (news_logos.py) ----------
 // a goalie is "not playing" if he started fewer than 2 of his team's last 5 games, or is out right now
@@ -5529,67 +5184,8 @@ const gxGoalieOut0 = (p) => { /* gx075-g */
   const played = [...(SCHED[p.t] || [])].filter((d) => d < today).length;
   return played >= 4 && !(p.gp > 0);
 };
-function MyForm({ s }) {
-  const K = s.blend;
-  const rows = s.players.filter((p) => p.ft === s.me && !p.ir).map((p) => {
-    const fr = formRatio(p, K), t = toiOf(p), rec = sigOf(p).rec;
-    if (fr !== null && fr >= 1.3) return { p, n: "Hot: " + f1(rec.ppg) + "/g lately. Start him every game.", c: "text-orange-600" };
-    if (fr !== null && fr <= 0.7) return { p, n: "Cold: " + f1(rec.ppg) + "/g lately. Check his role before dropping.", c: "text-sky-600" };
-    if (t && (t.d <= -90 || t.pd <= -45)) return { p, n: "Losing minutes (" + (t.d <= -90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + "). Watch closely.", c: "text-red-600" };
-    if (t && (t.d >= 90 || t.pd >= 45)) return { p, n: "Bigger role (" + (t.d >= 90 ? mm(t.d) + " a game" : "power play " + mm(t.pd)) + ").", c: "text-green-700" };
-    return null;
-  }).filter(Boolean);
-  return (
-    <Section title={"Player updates" + (rows.length ? " (" + rows.length + ")" : "")} sub="Hot and cold streaks and ice-time changes, compared with each player's projection.">
-      {rows.length ? rows.map(({ p, n, c }) => <PlayerLine key={p.id} s={s} p={p} extra={<span className={c}>{"\u00b7 " + n}</span>} />) : <div className="text-slate-400">Everyone is playing close to projection.</div>}
-    </Section>
-  );
-}
 
 // ---------- round 29: trade advice with buy-low list, free-agent search (news_logos.py) ----------
-function TradeAdvice({ s, onPick }) {
-  const K = s.blend;
-  const [team, setTeam] = useState("all");
-  const [more, setMore] = useState(false);
-  const T = leagueTable(s), g = T.grpRank[s.me] || {};
-  const posName = { F: "forwards", D: "defence", G: "goalies" }, need = { F: 10, D: 5, G: 2 };
-  const by = ["F", "D", "G"].sort((a, b) => (g[b] || 0) - (g[a] || 0)), weak = by[0], strong = by[2];
-  const pg = (p) => effAvg(p, K) * (p.p === "G" ? p.prob : 1);
-  const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
-  const spare = mine.filter((p) => p.p === strong).sort((a, b) => pg(b) - pg(a)).slice(need[strong]);
-  const sell = mine.filter((p) => tbFlags(p, K).some((f) => f.sell)).sort((a, b) => pg(b) - pg(a)).slice(0, 6);
-  const all = useMemo(() => {
-    const why = (p) => {
-      const r = [], fr = formRatio(p, K), sg = sigOf(p), rec = sg.rec, l = sg.luck;
-      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
-      const mb = window.__MODEL && id ? (window.__MODEL.base || {})[id] : null;
-      if (fr !== null && fr <= 0.75 && rec) r.push("cold: " + f1(rec.ppg) + "/g last 14 days");
-      if (mb != null && p.proj && p.avg > 0 && mb / p.avg >= 1.15 && mb - p.avg >= 1) r.push("model " + f1(mb) + " vs ESPN " + f1(p.avg));
-      if (l && ((l.t === "s" && l.d <= -2) || (l.t === "g" && l.d <= -4))) r.push("unlucky");
-      return r;
-    };
-    return s.players.filter((p) => p.ft !== s.me && p.ft !== "fa" && !p.ir && pg(p) >= 6 && !goalieOut(p))
-      .map((p) => ({ p, r: why(p) })).filter((x) => x.r.length).sort((a, b) => pg(b.p) - pg(a.p));
-  }, [s.players, K, window.__PMODE]);
-  const list = all.filter((x) => team === "all" || x.p.ft === team);
-  const shown = list.slice(0, more ? 20 : 8);
-  return (
-    <Section title="Buy low">
-      {/* round 42: rank paragraph removed */}
-      <div className="flex flex-wrap items-center gap-2 mb-1" data-r42="bl">
-        <div className="text-xs text-slate-500">{list.length + " players"}</div>
-        <select className={inp + " ml-auto"} value={team} onChange={(e) => { setTeam(e.target.value); setMore(false); }}>
-          <option value="all">All teams</option>
-          {s.teams.filter((t) => t.id !== s.me).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-        </select>
-      </div>
-      {shown.length ? shown.map(({ p, r }) => (
-        <GxBL104 key={p.id} s={s} p={p} r={r} onPick={onPick} />
-      )) : <div className="text-slate-400">No buy-low players here right now. Cold streaks need 3 or more recent games to show.</div>}
-      {list.length > shown.length && !more ? <button className="text-sm text-blue-600 mt-2" onClick={() => setMore(true)}>Show all {Math.min(20, list.length)}</button> : null}
-    </Section>
-  );
-}
 function FaSearch({ s, top, taken, val, onPick }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
@@ -5619,11 +5215,6 @@ function FaSearch({ s, top, taken, val, onPick }) {
 }
 
 // ---------- round 32: theme switch, top bar, Today gauges and week chart (news_logos.py) ----------
-const ThemeBtn = ({ cls }) => {
-  const v = window.__themePref ? window.__themePref() : "auto";
-  const next = v === "auto" ? "light" : v === "light" ? "dark" : "auto";
-  return <button type="button" className={cls || "text-xs text-slate-500"} title="Switch between automatic, light and dark" onClick={() => window.__setTheme && window.__setTheme(next)}>{"Theme: " + (v === "auto" ? "automatic" : v)}</button>;
-};
 const ordN = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
 const lastN = (n) => { const x = String(n || "").split(" "); return x.length > 1 ? x.slice(1).join(" ") : x[0]; };
 const GX_TABS = [["today", "Today"], ["matchup", "Matchup"], ["myteam", "Team"], ["league", "League"]];
@@ -5675,66 +5266,6 @@ const GxRing = ({ v, big, plain }) => {
     </svg>
   );
 };
-function GxWeek({ wk, A, B, aA, aB }) {
-  // week chart v34: drawn at real size so text stays readable, cleaner projection line (news_logos.py)
-  const [W, setW] = useState(620);
-  const box = React.useRef(null);
-  useEffect(() => {
-    const el = box.current;
-    if (!el) return;
-    const fit = () => setW(Math.max(300, Math.round(el.clientWidth)));
-    fit();
-    if (window.ResizeObserver) { const ro = new ResizeObserver(fit); ro.observe(el); return () => ro.disconnect(); }
-    window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
-  }, []);
-  const dates = wk.dates || [], n = dates.length, today = todayISO();
-  if (!n) return <div ref={box}></div>;
-  let run = (aA - aB) - (A.act - B.act);
-  const rows = dates.map((dt, d) => { const x = A.days[d], y = B.days[d], dv = x.act + x.total - (y.act + y.total); run += dv; return { dt, dv, run, st: dt < today ? "f" : dt === today ? "t" : "p" }; });
-  const grid = Math.max(10, Math.ceil(rows.reduce((mx, r) => Math.max(mx, Math.abs(r.dv)), 0) / 10) * 10), sc = 46 / grid;
-  const L = 34, R = W - 16, colW = (R - L) / n, cx = (i) => L + colW * (i + 0.5), bw = Math.min(40, colW * 0.36);
-  const lo = Math.min.apply(null, rows.map((r) => r.run)), hi = Math.max.apply(null, rows.map((r) => r.run));
-  const ry = (v) => (hi === lo ? 167 : 178 - ((v - lo) / (hi - lo)) * 22);
-  const ci = rows.findIndex((r) => r.st !== "f"), last = ci < 0 ? n - 1 : ci - 1;
-  const pts = (a, b) => rows.slice(a, b + 1).map((r, i) => cx(a + i).toFixed(1) + "," + ry(r.run).toFixed(1)).join(" ");
-  const sg = (v) => (v > 0 ? "+" : "") + Math.round(v);
-  const col = (v) => (v >= 0 ? "var(--good)" : "var(--bad)");
-  const tx = (size, fill, weight) => ({ fontSize: size, fill, fontWeight: weight || 400 });
-  const nowLeft = last >= n - 3;
-  return (
-    <div ref={box} style={{ overflow: "hidden" }}>
-      <svg viewBox={"0 0 " + W + " 196"} width={W} height={196} className="gx-svg" style={{ display: "block", marginTop: 6 }} role="img" aria-label="Margin each day this week and the running total">
-        {rows.map((r, i) => (r.st === "t" ? <rect key={"h" + i} x={cx(i) - colW / 2 + 2} y={4} width={colW - 4} height={136} style={{ fill: "var(--accentSoft)" }} /> : null))}
-        <line x1={L} y1={36} x2={R} y2={36} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
-        <line x1={L} y1={82} x2={R} y2={82} style={{ stroke: "var(--faint)" }} />
-        <line x1={L} y1={128} x2={R} y2={128} style={{ stroke: "var(--line)", strokeDasharray: "2 4" }} />
-        <text x={26} y={40} textAnchor="end" style={tx(11, "var(--faint)")}>{"+" + grid}</text>
-        <text x={26} y={86} textAnchor="end" style={tx(11, "var(--faint)")}>0</text>
-        <text x={26} y={132} textAnchor="end" style={tx(11, "var(--faint)")}>{"-" + grid}</text>
-        {rows.map((r, i) => {
-          const h = Math.max(1, Math.abs(r.dv) * sc), up = r.dv >= 0, y = up ? 81 - h : 83, flat = Math.abs(r.dv) < 0.05;
-          return (
-            <g key={r.dt}>
-              <text x={cx(i)} y={18} textAnchor="middle" style={tx(12, r.st === "t" ? "var(--accent)" : "var(--mute)", r.st === "t" ? 600 : 400)}>{r.st === "t" ? "Today" : dayLabel(r.dt).split(",")[0]}</text>
-              {flat ? null : r.st === "p"
-                ? <rect x={cx(i) - bw / 2 + 0.5} y={y + 0.5} width={bw - 1} height={Math.max(1, h - 1)} style={{ fill: "none", stroke: col(r.dv), strokeWidth: 1, strokeDasharray: "3 3" }} />
-                : <rect x={cx(i) - bw / 2} y={y} width={bw} height={h} style={{ fill: col(r.dv) }} />}
-              <text x={cx(i)} y={up && !flat ? 98 : 76} textAnchor="middle" style={tx(12, flat ? "var(--faint)" : col(r.dv))}>{flat ? "0" : sg(r.dv)}</text>
-            </g>
-          );
-        })}
-        <line x1={L} y1={152} x2={R} y2={152} style={{ stroke: "var(--line)" }} />
-        {last < n - 1 ? <polyline points={pts(Math.max(last, 0), n - 1)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1, opacity: 0.35 }} /> : null}
-        {last >= 1 ? <polyline points={pts(0, last)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 1.5 }} /> : null}
-        {rows.map((r, i) => (i > last ? <circle key={"p" + i} cx={cx(i)} cy={ry(r.run)} r={2.5} style={{ fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 1, opacity: 0.55 }} /> : null))}
-        {rows.map((r, i) => (i <= last ? <circle key={"c" + i} cx={cx(i)} cy={ry(r.run)} r={i === last ? 3.5 : 2.5} style={i === last ? { fill: "var(--card)", stroke: "var(--accent)", strokeWidth: 1.5 } : { fill: "var(--accent)" }} /> : null))}
-        {last >= 0 && ci >= 0 ? <text x={cx(last) + (nowLeft ? -8 : 8)} y={192} textAnchor={nowLeft ? "end" : "start"} style={tx(11, "var(--accent)")}>{sg(aA - aB) + " now"}</text> : null}
-        <text x={R} y={192} textAnchor="end" style={tx(11, "var(--mute)")}>{sg(rows[n - 1].run) + (ci < 0 ? " final" : " projected")}</text>
-      </svg>
-    </div>
-  );
-}
 
 // ---------- round 33: home page panels (news_logos.py) ----------
 const GxPanel = ({ title, right, children }) => (
@@ -5897,27 +5428,6 @@ function GxHome({ s, wk, A, B }) {
 // ---------- round 37: Team sub-pages and box-score history for the roster (news_logos.py) ----------
 const TEAM_SUBS = [["roster", "Roster"], ["pickups", "Pickups"], ["plan", "Plan"], ["trades", "Trades"], ["lines", "Lines"]];
 const PICK_SUBS = [["adddrop", "Pickups"], ["advice", "Advice"], ["goalies", "Goalies"], ["injuries", "Injuries"]];
-function SubBar({ tab, sub, go, setSubs, nav, s, wk }) {
-  if (tab === "matchup") return s && wk ? <MatchStrip s={s} wk={wk} /> : null;
-  const team = tab === "myteam" || tab === "moves" || tab === "lines";
-  if (!team) {
-    const back = tab === "news" || (tab === "setup" && sub && sub !== "settings") ? ["Setup", () => go("setup", "settings")] : tab === "league" && (sub === "playoffs" || sub === "players") ? ["League", () => go("league", "power")] : null;
-    return back ? <div className="mb-3"><button type="button" className="text-sm text-blue-600" onClick={back[1]}>{"\u2039 Back to " + back[0]}</button></div> : null;
-  }
-  const inPick = PICK_SUBS.some((x) => x[0] === sub);
-  const cur = tab === "myteam" ? "roster" : tab === "lines" ? "lines" : sub === "planner" ? "plan" : sub === "trades" ? "trades" : "pickups";
-  const to = (k) => (k === "roster" ? go("myteam") : k === "lines" ? go("lines") : k === "plan" ? go("moves", "planner") : k === "trades" ? go("moves", "trades") : go("moves", "adddrop"));
-  return (
-    <div className="mb-4">
-      <div className="flex gap-2 overflow-x-auto navscroll pb-1">{/* gx072-sub */}{TEAM_SUBS.map(([k, l]) => <a key={k} href={GX_TEAM_HREF[k]} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); to(k); }} className={"px-3 py-1.5 rounded-full text-sm border whitespace-nowrap " + (cur === k ? "bg-blue-600 text-white border-blue-600" : "bg-white border-slate-300 text-slate-600")}>{l}</a>)}</div>
-      {cur === "pickups" ? (
-        <div className="flex gap-4 overflow-x-auto navscroll text-sm" style={{ marginTop: 10 }}>
-          {PICK_SUBS.map(([k, l]) => <a key={k} href={gxHash("moves", k)} onClick={(e) => { /* gx072-pick */ if (gxNewTab(e)) return; e.preventDefault(); go("moves", k); }} className={"whitespace-nowrap " + (sub === k || (k === "adddrop" && !inPick) ? "font-semibold" : "text-slate-500")}>{l}</a>)}
-        </div>
-      ) : null}
-    </div>
-  );
-}
 const gxBoxIdx = () => fetch("box/index.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.dates) || []).catch(() => []);
 const gxBoxDay = (d) => {
   const B = (window.__BOX = window.__BOX || { idx: null, at: 0, days: {} });
@@ -7747,179 +7257,9 @@ function GxTradeModes82({ res, cmp, tm, setTm, part }) {
 }
 // ---------- change 083: head start on next week when this week is decided (install.py) ----------
 const GX_HS_SURE = 0.80;
-const gxHsKey = (s) => "hs83:" + (((s.weeks || [])[s.wk] || {}).label || s.wk);
-const gxHsMode = (s) => { const v = uiGet()[gxHsKey(s)]; return v === "on" ? "on" : v === "off" || v === true ? "off" : ""; }; /* change 084 */
-const gxHsAuto = (base) => base != null && (base >= GX_HS_SURE || base <= 1 - GX_HS_SURE);
-const gxHsOff = (s) => gxHsMode(s) === "off";
-const gxHsSet = (s, v) => { uiSet(gxHsKey(s), v); window.dispatchEvent(new Event("gx-hs83")); };
-const gxHsCan = (s, base, ml) => !!nextWkS(s) && ml > 0 && base != null;
-const gxHsOn = (s, base, ml) => gxHsCan(s, base, ml) && (gxHsMode(s) === "on" || (gxHsMode(s) === "" && gxHsAuto(base)));
-function gxUseHs() {
-  const [n, setN] = useState(0);
-  useEffect(() => { const h = () => setN((x) => x + 1); window.addEventListener("gx-hs83", h); return () => window.removeEventListener("gx-hs83", h); }, []);
-  return n;
-}
-function GxHsLine({ s, base, ml }) {
-  gxUseHs();
-  if (!gxHsCan(s, base, ml)) return null;
-  const btn = { marginLeft: 6 };
-  if (!gxHsOn(s, base, ml)) return <span>{" "}<button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, "on")}>Use them for next week instead</button></span>;
-  const why084 = base >= GX_HS_SURE ? "You're " + wpTxt(base) + " to win this week, so they're aimed at next week." : base <= 1 - GX_HS_SURE ? "This week looks lost (" + wpTxt(base) + "), so they're aimed at next week." : "Aimed at next week by you (" + wpTxt(base) + " to win this week).";
-  return (
-    <span className="text-slate-500">
-      {" " + why084}
-      <button type="button" className="text-blue-600 text-sm" style={btn} onClick={() => gxHsSet(s, "off")}>Keep them for this week</button>
-    </span>
-  );
-}
-function GxHeadStart({ s, base, ml }) {
-  const hsV = gxUseHs();
-  const gxHideV = gxUseHide();
-  const sN = nextWkS(s);
-  const on = gxHsOn(s, base, ml);
-  const baseN = useMemo(() => (on ? winChance(sN) : null), [on, s]);
-  const rows = useMemo(() => {
-    if (!on || baseN == null) return [];
-    const M = computeMoves(s, { H: 2, pos: "all", pool: 60 });
-    const out = [];
-    M.res.slice(0, 30).forEach((r) => {
-      if (gxHideSet().has(r.f.id) || gxScratch(r.f)) return;
-      const R = afterMove(s, r.f, r.d), now = winChance(s, R), nx = winChance(sN, R);
-      if (now == null || nx == null || nx <= baseN + 0.004) return;
-      if (base >= 0.5 && now < (gxHsAuto(base) ? Math.min(base, GX_HS_SURE) : base) - 0.03) return;
-      out.push({ ...r, now, nx });
-    });
-    return out.sort((a, b) => b.nx - a.nx || b.gain - a.gain).slice(0, 5);
-  }, [on, s, baseN, gxHideV, hsV]);
-  if (!on || baseN == null) return null;
-  const wN = deriveWeek(sN.weeks[sN.wk], sN.autoDone), opp = oppOf(wN, s.me);
-  return (
-    <div className="gx-pn"><b></b><b></b><b></b><b></b>
-      <div className="gx-st">Pickups for next week</div>
-      <div className="text-xs text-slate-500" style={{ marginTop: 2, marginBottom: 6 }}>
-        {"Best adds for next week" + (opp ? " against " + teamName(s, opp) : "") + " (" + wpTxt(baseN) + " now). You still get 3 new moves next week."}
-      </div>
-      {rows.length ? (
-        <div>
-          <div className="gx-hs83 hd"><span></span><span></span><span className="n">This wk</span><span className="n">Next wk</span></div>
-          {rows.map((r) => (
-            <div key={r.f.id} className="gx-hs83">
-              <GxFace p={r.f} size={26} />
-              <div className="min-w-0">
-                <div className="truncate"><PN p={r.f} className="" /> <span className="text-xs text-slate-500">{r.f.p}</span>{r.f.wv ? <i className="gx-wv218" title="On waivers" /> : null}</div>
-                <div className="text-xs text-slate-500">{"Swap for " + r.d.n + " · "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); if (window.__QA) window.__QA.espn(r.f); }}>Add on ESPN</button>{" · "}<button type="button" className="text-blue-600" onClick={(e) => { e.stopPropagation(); gxHide.toggle(r.f.id); }}>Hide</button></div>
-              </div>
-              <div className="n" style={{ color: r.now < base - 0.004 ? "var(--bad)" : "var(--ink)" }}>{wpTxt(r.now)}</div>
-              <div className="n font-semibold" style={{ color: "var(--good)" }}>{wpTxt(r.nx)}</div>
-            </div>
-          ))}
-        </div>
-      ) : <div className="text-sm text-slate-500" style={{ padding: "6px 0" }}>No free agent raises next week's win chance right now.</div>}
-    </div>
-  );
-}
+ /* change 084 */
 // ---------- change 085: Injuries page under Team > Pickups (install.py) ----------
-const gxIjDays = (d) => Math.round((fromIso(d) - fromIso(todayISO())) / 864e5);
-const gxIjWhen = (d) => { const n = gxIjDays(d); return n < 0 ? "any day now" : n === 0 ? "today" : n === 1 ? "tomorrow" : "in " + n + " days"; };
-const gxIjAgo = (d) => { const n = -gxIjDays(d); return n <= 0 ? "today" : n === 1 ? "yesterday" : mdL(d); };
 const gxIjLast = (e) => (e.nd && e.nd > e.d ? e.nd : e.d);
-const gxIjNote = (n) => (n && n.length > 15 ? n : "");
-function GxInjPage({ s }) {
-  const effAvg = gxPgAvg; /* gx088-i */
-  const [, tick] = useState(0);
-  useEffect(() => { const h = () => tick((x) => x + 1); window.addEventListener("gm-watch", h); return () => window.removeEventListener("gm-watch", h); }, []);
-  const [who, setWho] = useState(() => uiGet()["ij85:who"] || "fa");
-  const [pos, setPos] = useState("all");
-  const [allP, setAllP] = useState(false);
-  const [moreU, setMoreU] = useState(false);
-  const [moreL, setMoreL] = useState(false);
-  const [openN, setOpenN] = useState({});
-  const K = s.blend;
-  const pick = (v) => { setWho(v); uiSet("ij85:who", v); };
-  const D = useMemo(() => {
-    const S = window.__SIG || {}, EV = S.injmoves || {};
-    const val = (p) => effAvg(p, K); /* gx088-iv */
-    const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
-    const bar = {};
-    ["F", "D", "G"].forEach((g) => { const v = mine.filter((p) => p.p === g).map(val); bar[g] = v.length ? Math.min(...v) : 0; });
-    const list = [], ups = [];
-    s.players.forEach((p) => {
-      const id = typeof p.id === "string" && p.id[0] === "e" ? p.id.slice(1) : null;
-      const inj = autoInj(p), e = id ? EV[id] : null;
-      if (!inj && !(e && e.k === "back")) return;
-      const v = val(p), good = v > 0 && v >= bar[p.p];
-      const r = { p, v, good, inj, e, back: inj ? effBack(p).d : "" };
-      if (inj) list.push(r);
-      if (e) ups.push(r);
-    });
-    return { list, ups };
-  }, [s]);
-  const inWho = (r) => (who === "fa" ? r.p.ft === "fa" : who === "mine" ? r.p.ft === s.me : true);
-  const keep = (r) => inWho(r) && (pos === "all" || r.p.p === pos) && (allP || who === "mine" || r.good);
-  const ups = D.ups.filter(keep).sort((a, b) => gxIjLast(b.e).localeCompare(gxIjLast(a.e)) || b.v - a.v);
-  const list = D.list.filter(keep).sort((a, b) => (a.back || "9").localeCompare(b.back || "9") || b.v - a.v);
-  const groups = [
-    ["Back within a week", list.filter((r) => r.back && gxIjDays(r.back) <= 7)],
-    ["Back in 1 to 4 weeks", list.filter((r) => r.back && gxIjDays(r.back) > 7 && gxIjDays(r.back) <= 30)],
-    ["Out longer", list.filter((r) => r.back && gxIjDays(r.back) > 30)],
-    ["No return date", list.filter((r) => !r.back)],
-  ];
-  const evTxt = (e) => {
-    if (e.k === "back") return <span className="up">{"Off the injury list"}</span>;
-    if (e.k === "sooner") return <span className="up">{"Back sooner: was " + mdL(e.was) + ", now " + mdL(e.now)}</span>;
-    if (e.k === "dtd") return <span className="up">{"Now day-to-day (was " + (e.was || "out").replace("Injured Reserve", "IR") + ")"}</span>;
-    if (e.k === "later") return <span className="wn">{"Pushed back: was " + mdL(e.was) + ", now " + mdL(e.now)}</span>;
-    if (e.k === "new") return <span className="dn">{"Newly injured" + (e.now ? ", back about " + mdL(e.now) : "")}</span>;
-    return <span>{"New injury news"}</span>;
-  };
-  const owner = (p) => (p.ft === "fa" ? "Free agent" : p.ft === s.me ? "Your team" : teamName(s, p.ft));
-  const row = (r, i, upd) => {
-    const st = r.inj ? (r.inj.status || "Out").replace("Injured Reserve", "IR") + (r.inj.type ? " · " + r.inj.type : "") + (r.back ? " · back " + mdL(r.back) + " (" + gxIjWhen(r.back) + ")" : "") : "Healthy now";
-    const note = r.inj ? gxIjNote(r.inj.note) : "", nk = (upd ? "u" : "l") + r.p.id;
-    return (
-      <div key={nk} className={"gx-ij85" + (i ? "" : " first")}>
-        <GxFace p={r.p} size={26} />
-        <div className="min-w-0">
-          <div className="truncate"><PN p={r.p} className="" /> <span className="text-xs text-slate-500">{r.p.p}</span>{r.good && allP && who !== "mine" ? <span className="good">Good</span> : null}{r.p.wv ? <i className="gx-wv218" title="On waivers" /> : null}</div>
-          <div className="text-xs text-slate-500">{(who === "fa" ? "" : owner(r.p) + " · ") + st}</div>
-          {upd && r.e ? <div className="text-xs">{evTxt(r.e)}<span className="text-slate-500">{" · " + gxIjAgo(gxIjLast(r.e))}</span></div> : !upd && r.e && r.e.k !== "news" ? <div className="text-xs">{evTxt(r.e)}</div> : null}
-          {/* gx105: news text removed */}
-          <div className="text-xs text-slate-500">
-            {/* gx105: links removed */}
-            
-          </div>
-        </div>
-        <div className="n"><div className="font-semibold">{f1(effAvg(r.p, K))}</div><div className="text-xs text-slate-500">pts/g</div></div>
-      </div>
-    );
-  };
-  const upsShown = moreU ? ups : ups.slice(0, 5);
-  return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-2 items-center">
-        <Pills items={[["fa", "Free agents"], ["mine", "My team"], ["all", "All teams"]]} value={who} onChange={pick} />
-        <Pills items={[["all", "All"], ["F", "Forwards"], ["D", "Defence"], ["G", "Goalies"]]} value={pos} onChange={setPos} />
-      </div>
-      {who !== "mine" ? <div className="text-xs text-slate-500">{allP ? "Every injured player \u00b7 " : "Good players only \u00b7 "}<button type="button" className="text-blue-600" onClick={() => setAllP(!allP)}>{allP ? "Good players only" : "Show everyone"}</button></div> : null}
-      <GxPanel title="Updates" right="last 7 days">
-        {ups.length ? upsShown.map((r, i) => row(r, i, true)) : <div className="text-sm text-slate-500" style={{ padding: "4px 0" }}>No injury updates in the last 7 days{who === "fa" ? " for these free agents" : ""}. New return dates, day-to-day moves and fresh news show up here.</div>}
-        {ups.length > 5 ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 8 }} onClick={() => setMoreU(!moreU)}>{moreU ? "Show fewer" : "Show all " + ups.length + " updates"}</button> : null}
-      </GxPanel>
-      {groups.map(([title, g]) => {
-        if (!g.length) return null;
-        const longer = title === "Out longer" || title === "No return date";
-        const shown = longer && !moreL ? g.slice(0, 3) : g;
-        return (
-          <GxPanel key={title} title={title} right={g.length + (g.length === 1 ? " player" : " players")}>
-            {shown.map((r, i) => row(r, i, false))}
-            {shown.length < g.length ? <button type="button" className="text-sm text-blue-600" style={{ marginTop: 8 }} onClick={() => setMoreL(true)}>{"Show " + (g.length - shown.length) + " more"}</button> : null}
-          </GxPanel>
-        );
-      })}
-      {!list.length ? <div className="text-sm text-slate-500">No injured players match.</div> : null}
-    </div>
-  );
-}
 // ---------- change 086: simulated trades that stay on until you undo them (install.py) ----------
 const GX_SIM_K = "gm-simtrade";
 const gxSimList = () => { try { const v = JSON.parse(localStorage.getItem(GX_SIM_K) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
@@ -8010,24 +7350,6 @@ const GX_AP_MODE = { on: ["On", "var(--good)", "Changes your ESPN lineup by itse
 const gxApMode = (v) => (v && v.c ? String(v.c.mode || "test").toLowerCase() : null);
 const gxApTime = (iso) => { try { return new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch (e) { return ""; } };
 const gxApDay = (iso) => { try { return new Date(iso).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }); } catch (e) { return ""; } };
-function GxAutoToday({ go }) {
-  const v = gxUseAp();
-  if (!v || !v.b) return null;
-  const today = todayISO();
-  const e = [...(v.b.entries || [])].reverse().find((x) => String(x.at || "").slice(0, 10) === today);
-  if (!e) return null;
-  const fail = String(e.result || "").indexOf("failed") === 0, test = e.mode !== "on";
-  return (
-    <div className="gx-pn" style={{ borderLeft: "3px solid " + (fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)"), padding: "10px 14px" }}><b></b><b></b><b></b><b></b>
-      <div className="text-sm">
-        <span className="font-semibold" style={{ color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)" }}>{fail ? "Autopilot could not change your lineup" : test ? "Autopilot test" : "Autopilot set your lineup"}</span>
-        <span className="text-slate-500">{" · " + gxApTime(e.at)}</span>
-      </div>
-      <div className="text-sm" style={{ marginTop: 2 }}>{(e.day && e.day !== todayISO() ? "For " + gxApDayName(e.day) + ": " : "") + (test && !fail ? "Would: " : "") + e.text + (e.gain ? " +" + e.gain + " points." : "")}</div>{/* gx090-today */}
-      <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{fail ? "Set it by hand on ESPN today. " : test ? "Nothing was changed on ESPN. " : ""}<button type="button" className="text-blue-600" onClick={() => go("setup", "autopilot")}>Autopilot details</button></div>
-    </div>
-  );
-}
 function GxAutoPage({ s, go }) {
   const v = gxUseAp();
   const m = gxApMode(v), M = GX_AP_MODE[m] || null;
@@ -8078,93 +7400,8 @@ function GxAutoRow({ row, go }) {
 // ---------- change 090: autopilot controls in the app, lineups set days ahead (install.py) ----------
 const GX_AP_API = "https://api.github.com/repos/dhaliwal32/23456789786634356/contents/autopilot.json";
 const GX_AP_RUN = "https://api.github.com/repos/dhaliwal32/23456789786634356/actions/workflows/sync.yml/dispatches";
-const gxApSave = (patch) => {
-  const key = gxSyncKey();
-  if (!key) return Promise.reject(new Error("nokey"));
-  const hdr = { Authorization: "Bearer " + key, Accept: "application/vnd.github+json" };
-  const once = (again) => fetch(GX_AP_API + "?ref=main&t=" + Date.now(), { headers: hdr, cache: "no-store" })
-    .then((r) => { if (r.status === 401 || r.status === 403) throw new Error("key"); if (!r.ok) throw new Error("read " + r.status); return r.json(); })
-    .then((j) => {
-      let cur = {};
-      try { cur = JSON.parse(decodeURIComponent(escape(atob(String(j.content || "").replace(/\n/g, ""))))); } catch (e) {}
-      const next = { ...cur, ...patch };
-      return fetch(GX_AP_API, { method: "PUT", headers: { ...hdr, "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Autopilot settings from the app", content: gxB64(JSON.stringify(next, null, 2) + "\n"), branch: "main", sha: j.sha }) })
-        .then((r) => {
-          if ((r.status === 409 || r.status === 422) && again) return once(false);
-          if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "key" : "save " + r.status);
-          return next;
-        });
-    });
-  return once(true).then((next) => fetch(GX_AP_RUN, { method: "POST", headers: { ...hdr, "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main" }) })
-    .then((r) => ({ next, ran: r.status === 204 })).catch(() => ({ next, ran: false })));
-};
 const GX_AP_AHEAD = [["0", "Today only"], ["1", "+1 day"], ["3", "+3 days"], ["week", "Rest of week"], ["7", "+7 days"]];
 const gxApDayName = (d) => { try { return d === todayISO() ? "today" : fromIso(d).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }); } catch (e) { return d || ""; } };
-function GxAutoPage2({ s, go }) {
-  const v = gxUseAp();
-  const [cfg, setCfg] = useState(null);
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
-  const c = cfg || (v && v.c) || null;
-  const m = c ? String(c.mode || "test").toLowerCase() : null, M = GX_AP_MODE[m] || null;
-  const ahead = c ? String(c.days_ahead == null ? 0 : c.days_ahead) : "0";
-  const has = !!gxSyncKey();
-  const list = v && v.b ? [...(v.b.entries || [])].reverse().slice(0, 25) : [];
-  const save = (patch, done) => {
-    if (busy) return;
-    setBusy(true); setMsg("Saving…");
-    gxApSave(patch).then(({ next, ran }) => {
-      setCfg(next); __gxAP = null;
-      setMsg((done || "Saved.") + (ran ? " Running now; give it about 2 minutes." : " It takes effect at the next sync (every 6 to 30 minutes)."));
-    }).catch((e) => setMsg(e && e.message === "key" ? "GitHub refused the key. It needs Contents: Read and write on this repo." : e && e.message === "nokey" ? "Turn on Sync between devices first." : "Could not reach GitHub. Try again."))
-      .finally(() => setBusy(false));
-  };
-  const seg = (items, val, pick) => <span className="gx-seg">{items.map(([k, l]) => <button key={k} type="button" disabled={busy || !has} className={val === k ? "on" : ""} onClick={() => pick(k)}>{l}</button>)}</span>;
-  const pickMode = (k) => {
-    if (k === m) return;
-    if (k === "on" && !window.confirm("Let the app change your real ESPN lineup by itself?")) return;
-    save({ mode: k }, "Mode set to " + GX_AP_MODE[k][0] + ".");
-  };
-  return (
-    <div className="space-y-3">
-      <div className="font-semibold" style={{ fontSize: 17 }}>Lineup autopilot</div>
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div className="gx-sr" style={{ borderTop: 0 }}><span>Mode</span>{c ? seg([["off", "Off"], ["test", "Test"], ["on", "On"]], m, pickMode) : <span className="text-sm text-slate-500">{v ? "Starts after the next sync" : "Checking…"}</span>}</div>
-        {M ? <div className="text-sm text-slate-500" style={{ padding: "2px 0 8px" }}>{M[2]}</div> : null}
-        <div className="gx-sr"><span>Set lineups</span>{seg(GX_AP_AHEAD, ahead, (k) => save({ days_ahead: k === "week" ? "week" : +k }, "Lineups will be set " + ({ "0": "for today only.", "1": "for today and tomorrow.", "3": "for today and the next 3 days.", week: "through Sunday.", "7": "for today and the next 7 days." }[k] || ".")))}</div>
-        <div className="text-xs text-slate-500" style={{ paddingTop: 6 }}>Days after today are set once. After that they only change on the day itself, when starting goalies are confirmed, or when you tap Redo.</div>
-        <div className="gx-sr">
-          <span>Upcoming days</span>
-          <button type="button" className="border border-slate-300 rounded-lg px-3 py-1 text-sm" disabled={busy || !has || ahead === "0"} onClick={() => save({ redo_at: new Date().toISOString() }, "Upcoming days will be set again.")}>Redo upcoming days</button>
-        </div>
-        {msg ? <div className="text-xs" style={{ paddingTop: 6, color: /refused|Could not|first/.test(msg) ? "var(--bad)" : "var(--good)" }}>{msg}</div> : null}
-        {!has ? <div className="text-xs text-slate-500" style={{ paddingTop: 8 }}>To change these here, turn on Sync between devices in Setup, Data and backup. Or <a className="text-blue-600" href={GX_AP_EDIT} target="_blank" rel="noopener">edit autopilot.json on GitHub</a>.</div> : null}
-      </div>
-      <div className="gx-pn"><b></b><b></b><b></b><b></b>
-        <div className="gx-tag" style={{ marginBottom: 6 }}>What it does</div>
-        <div className="text-sm" style={{ lineHeight: 1.6 }}>
-          <div>{"• Every sync it works out the best lineup for today and for the days you chose."}</div>
-          <div>{"• Starts players who have a game, benches players who don't, and swaps in the goalie who is actually starting."}</div>
-          <div>{"• Never moves a player once his game has started, never touches IR, and only changes things when it adds at least " + ((c && c.min_gain) || 0.5) + " points."}</div>
-          <div>{"• Sends a phone note every time, and shows it on Today."}</div>
-        </div>
-      </div>
-      <GxPanel title="History" right={list.length ? "newest first" : ""}>
-        {list.length ? list.map((e, i) => {
-          const fail = String(e.result || "").indexOf("failed") === 0, test = e.mode !== "on";
-          return (
-            <div key={i} className="gx-row" style={{ display: "block", ...(i ? {} : { borderTop: 0 }) }}>
-              <div className="text-xs text-slate-500">{"For " + gxApDayName(e.day) + " · " + gxApDay(e.at) + " " + gxApTime(e.at) + " · "}<span style={{ color: fail ? "var(--bad)" : test ? "var(--warn)" : "var(--good)" }}>{fail ? "ESPN refused" : test ? "test only" : "done"}</span>{e.gain ? " · +" + e.gain + " pts" : ""}</div>
-              <div className="text-sm">{e.text}</div>
-              {fail ? <div className="text-xs" style={{ color: "var(--bad)" }}>{String(e.result).replace(/^failed: /, "")}</div> : null}
-            </div>
-          );
-        }) : <div className="text-sm text-slate-500">Nothing yet. The first suggestion shows up here when a lineup can be improved.</div>}
-      </GxPanel>
-    </div>
-  );
-}
 // ---------- change 092: full result for a pickup, like Trades (install.py) ----------
 function GxPickRes92({ s, myR, ok }) {
   const key = ok.map((x) => x.a.id + ">" + x.d.id).join(",");
@@ -8641,13 +7878,6 @@ function gxToday99(p) {
     <div key="t99b" className="n font-semibold">{a == null ? "-" : f1(a)}</div>,
   ];
 }
-function gxStats99(p) {
-  const td = todayISO(), x = gState(p.t, td).s !== "P" ? pStat(p, td) : null, d = "-";
-  const v = !x ? GX_ST99.map(() => d)
-    : p.p === "G" ? [d, d, d, d, d, d, x.sv != null ? x.sv : d, x.ga != null ? x.ga : d, x.toi || d]
-    : [x.g || 0, x.a || 0, gxPdSigned(x.pm), x.sog || 0, x.hit || 0, x.blk || 0, d, d, x.toi || d];
-  return v.map((c, i) => <div key={"s99" + i} className="n text-slate-500">{c}</div>);
-}
 // ---------- change 100: stats range picker for rosters (install.py) ----------
 const GX_RNG100 = [["today", "Today"], ["l7", "Last 7 days"], ["l15", "Last 15 days"], ["l30", "Last 30 days"], ["sea", "Season"], ["n7", "Next 7 days (projected)"], ["n30", "Next 30 days (projected)"], ["ros", "Rest of season (projected)"]];
 const GX_C100 = ["GP", "G", "A", "+/-", "PIM", "SOG", "HIT", "BLK", "TOI", "W", "SV", "GA", "SV%", "FPTS", "Avg"];
@@ -8673,18 +7903,6 @@ function gxLoad100(rng) {
     GX100.data[rng] = o;
   }).catch(() => { GX100.data[rng] = {}; }).then(() => { GX100.busy[rng] = false; window.dispatchEvent(new Event("gx-rng100")); });
 }
-function gxAgg100(list, isG, sc) {
-  if (!list || !list.length) return GX_C100.map((h, i) => (i === 0 ? 0 : "-"));
-  const n = list.length, S = (f) => list.reduce((a, x) => a + (+f(x) || 0), 0);
-  const fp = S((x) => (x.fp != null ? x.fp : gxEst(x, sc)));
-  const ts = list.map((x) => gxPdSec(x.toi)).filter((v) => v != null);
-  const toi = ts.length ? gxPdMS(ts.reduce((a, v) => a + v, 0) / ts.length) : "-";
-  if (isG) {
-    const sv = S((x) => x.sv), sa = S((x) => (x.sa != null ? x.sa : (x.sv || 0) + (x.ga || 0)));
-    return [n, "-", "-", "-", "-", "-", "-", "-", toi, list.filter((x) => x.dec === "W").length, sv, S((x) => x.ga), sa ? (sv / sa).toFixed(3).replace(/^0/, "") : "-", f1(fp), f1(fp / n)];
-  }
-  return [n, S((x) => x.g), S((x) => x.a), gxPdSigned(S((x) => x.pm)), S((x) => x.pim), S((x) => x.sog), Math.round(S((x) => x.hit)), S((x) => x.blk), toi, "-", "-", "-", "-", f1(fp), f1(fp / n)];
-}
 // projected ranges: games left and projected fantasy points (the app does not project goals or shots)
 function gxProj100(p, s, rng) {
   const td = todayISO(), K = s.blend, S = SCHED[p.t];
@@ -8706,19 +7924,6 @@ const gxUse100 = () => {
   useEffect(() => { const f = () => tick((x) => x + 1); window.addEventListener("gx-rng100", f); return () => window.removeEventListener("gx-rng100", f); }, []);
   return gxRng100();
 };
-function GxSC100({ p, s }) {
-  const rng = gxUse100();
-  useEffect(() => { gxLoad100(rng); });
-  const eid = String(p.id || "").replace(/^e/, "");
-  let v;
-  if (gxProjR100(rng)) v = gxProj100(p, s, rng);
-  else { const D = GX100.data[rng]; v = D ? gxAgg100(D[eid], p.p === "G", s.sc || {}) : GX_C100.map(() => "..."); }
-  return v.map((c, i) => <div key={"c100" + i} className={"n " + (i >= 13 ? "font-semibold" : "text-slate-500")}>{c}</div>);
-}
-function GxSH100() {
-  const rng = gxUse100();
-  return GX_C100.map((h, i) => <span key={h} className="n">{gxProjR100(rng) && i === 0 ? "Gms" : h}</span>);
-}
 function GxRngSel100() {
   const rng = gxUse100();
   return (
@@ -8800,12 +8005,6 @@ function GxSubBar103({ tab, sub, go, s, wk }) {
   return back ? <div className="mb-3"><button type="button" className="text-sm text-blue-600" onClick={back[1]}>{"\u2039 Back to " + back[0]}</button></div> : null;
 }
 // the boxes that used to sit lower on Today, now under the Matchup
-function GxMuMore103({ s, wk }) {
-  const K = s.blend, opp = oppOf(wk, s.me) || s.opp;
-  const A = useMemo(() => weekLive(s.players.filter((p) => p.ft === s.me), wk, K, s.me), [s.players, wk, K, window.__LIVEV120]);
-  const B = useMemo(() => weekLive(s.players.filter((p) => p.ft === opp), wk, K, opp), [s.players, wk, K, opp, window.__LIVEV120]);
-  return <><GxGamesAny s={s} wk={wk} A={A} B={B} /><GxLeagueAny s={s} wk={wk} /><GxCarry s={s} wk={wk} /></>;
-}
 // ---------- change 104: separate skater and goalie stat columns (install.py) ----------
 const GX_SK104 = ["GP", "G", "A", "PTS", "+/-", "PIM", "SOG", "HIT", "BLK", "TOI", "FPTS", "Avg"];
 const GX_GO104 = ["GP", "W", "L", "OTL", "GA", "SV", "SV%", "GAA", "SO", "TOI", "FPTS", "GS%"];
@@ -8824,38 +8023,11 @@ function gxAgg104(list, isG, sc) {
   const g = S((x) => x.g), a = S((x) => x.a);
   return [n, g, a, g + a, gxPdSigned(S((x) => x.pm)), S((x) => x.pim), S((x) => x.sog), Math.round(S((x) => x.hit)), S((x) => x.blk), toi, f1(fp), f1(fp / n)];
 }
-function GxSC104({ p, s }) {
-  const rng = gxUse100();
-  useEffect(() => { gxLoad100(rng); });
-  const eid = String(p.id || "").replace(/^e/, ""), isG = p.p === "G";
-  let v;
-  if (gxProjR100(rng)) { const pr = gxProj100(p, s, rng); v = [pr[0], "-", "-", "-", "-", "-", "-", "-", "-", "-", pr[13], pr[14]]; }
-  else { const D = GX100.data[rng]; v = D ? gxAgg104(D[eid], isG, s.sc || {}) : GX_SK104.map(() => "..."); }
-  if (isG) v = [...v.slice(0, 11), p.prob != null ? Math.round(p.prob * 100) + "%" : "-"];
-  return v.map((c, i) => <div key={"c104" + i} className={"n " + (i >= 10 ? "font-semibold" : "text-slate-500")}>{c}</div>);
-}
-function GxSH104({ g }) {
-  const rng = gxUse100();
-  return (g ? GX_GO104 : GX_SK104).map((h, i) => <span key={h + i} className="n">{gxProjR100(rng) && i === 0 ? "Gms" : h}</span>);
-}
 // heading row for the goalie group (11 blank cells under the roster columns, then the goalie stats)
 function GxGH104() {
   return <div className="gx-ro gx-roh gx-gh104">{Array.from({ length: 11 }, (_, i) => <span key={i}></span>)}<GxSH106 mode="go" /></div>;
 }
 // ---------- change 104: tidy Buy low row ----------
-function GxBL104({ s, p, r, onPick }) {
-  return (
-    <div className="gx-bl104">
-      <GxFace p={p} size={26} />
-      <div className="min-w-0">
-        <div className="truncate"><PN p={p} className="font-medium" /> <span className="text-xs text-slate-500">{p.p}</span></div>
-        <div className="why"><TL s={s} id={p.ft} />{" · " + r.join(", ")}</div>
-      </div>
-      <div className="pg">{f1(effAvg(p, s.blend))}<span>pts/g</span></div>
-      <button type="button" className="tr" onClick={() => onPick(p)}>+ Trade</button>
-    </div>
-  );
-}
 // ---------- change 105: slide on swipe, all players, chart games (install.py) ----------
 // returns "r" or "l" when the key moves forward or back, so the new content slides in from that side
 function useSlide105(k) {
@@ -9188,20 +8360,6 @@ function GxInj109({ s }) {
 }
 // ---------- change 111: Lines on an ice rink (install.py) ----------
 const GX_ORD111 = { lw: 0, l: 0, c: 1, rw: 2, r: 2, ld: 3, rd: 4, d: 3, g: 5 };
-function GxRinkLines111({ teamCode }) {
-  const t = teamCode;
-  return (
-    <svg className="ice" viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="0" y1="12" x2="100" y2="12" style={{ stroke: "rgba(220,38,38,.35)", strokeWidth: 0.6 }} vectorEffect="non-scaling-stroke" />
-      <line x1="0" y1="66" x2="100" y2="66" style={{ stroke: "rgba(37,99,235,.45)", strokeWidth: 1.6 }} vectorEffect="non-scaling-stroke" />
-      <line x1="0" y1="100" x2="100" y2="100" style={{ stroke: "rgba(220,38,38,.45)", strokeWidth: 1.6 }} vectorEffect="non-scaling-stroke" />
-      <line x1="0" y1="134" x2="100" y2="134" style={{ stroke: "rgba(37,99,235,.45)", strokeWidth: 1.6 }} vectorEffect="non-scaling-stroke" />
-      <line x1="0" y1="188" x2="100" y2="188" style={{ stroke: "rgba(220,38,38,.35)", strokeWidth: 0.6 }} vectorEffect="non-scaling-stroke" />
-      <ellipse cx="50" cy="100" rx="16" ry="8" style={{ fill: "none", stroke: "rgba(37,99,235,.3)", strokeWidth: 0.8 }} vectorEffect="non-scaling-stroke" />
-      <path d="M42 188 A8 4 0 0 1 58 188" style={{ fill: "rgba(37,99,235,.10)", stroke: "rgba(220,38,38,.35)", strokeWidth: 0.6 }} vectorEffect="non-scaling-stroke" />
-    </svg>
-  );
-}
 function GxLines111({ s }) {
   const L = window.LINES_DATA || { teams: {}, changes: [] };
   const teams = Object.keys(L.teams || {}).filter((t) => ((L.teams[t] || {}).lines || {}).F1).sort();
@@ -9432,32 +8590,6 @@ function GxFtPic114({ id, size }) {
   return <span className="gx-fp114 l" style={{ ...st, fontSize: Math.round(z * 0.45) }}>{(nm.replace(/[^A-Za-z0-9 ]/g, "").trim()[0] || "?").toUpperCase()}</span>;
 }
 // ---------- change 118: one player's box score for one day, opened from Matchup (install.py) ----------
-function GxBox118({ p }) {
-  const x = typeof pStat === "function" ? pStat(p, p.dt) : null;
-  const pts = p.st ? (p.a == null ? 0 : p.a) : p.x;
-  const opp = p.st && typeof gxOpp98 === "function" ? gxOpp98(p) : mGame(p);
-  const t = (k, l, v, f) => <div key={k} className={f ? "f" : ""}><small>{l}</small><b>{v}</b></div>;
-  let cells = [];
-  if (x && x.sv != null) {
-    cells = [t("f", "FPTS", f1(pts || 0), 1), t("dec", "Result", ({ W: "Win", L: "Loss", O: "OT loss" })[x.dec] || "–"), t("sv", "Saves", x.sv), t("ga", "Goals against", x.ga),
-      t("sa", "Shots", x.sa != null ? x.sa : x.sv + x.ga), t("svp", "Save %", x.sv + x.ga ? (x.sv / (x.sv + x.ga)).toFixed(3).replace(/^0/, "") : "–"), t("so", "Shutout", x.ga === 0 && x.dec === "W" ? "Yes" : "No"), t("toi", "TOI", x.toi || "–")];
-  } else if (x) {
-    const pm = x.pm || 0;
-    cells = [t("f", "FPTS", f1(pts || 0), 1), t("g", "G", x.g || 0), t("a", "A", x.a || 0), t("pts", "PTS", (x.g || 0) + (x.a || 0)), t("pm", "+/-", (pm > 0 ? "+" : "") + pm),
-      t("sog", "SOG", x.sog || 0), t("ppg", "PPG", x.ppg || 0), t("pim", "PIM", x.pim || 0), t("hit", "HIT", x.hit || 0), t("blk", "BLK", x.blk || 0),
-      t("tk", "TK", x.tk || 0), t("gv", "GV", x.gv || 0), x.fo ? t("fo", "FO%", Math.round(x.fo * 100) + "%") : null, t("shf", "Shifts", x.shf || 0), t("toi", "TOI", x.toi || "–")].filter(Boolean);
-  }
-  return (
-    <div className="gx-bx118">
-      <div className="hd">
-        <span className="n">{p.n}</span><span className="o">{opp}</span>
-        <button type="button" className="x" onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.player(p); }}>Profile</button>
-      </div>
-      {cells.length ? <div className="g">{cells}</div>
-        : <div className="e">{p.st ? "No stats yet for this game." : "Has not played yet. Projected " + f1(p.x || 0) + " FPTS."}</div>}
-    </div>
-  );
-}
 // ---------- change 119: box score pop-up for one player on one day (install.py) ----------
 const GX_NICK119 = { ANA: "Ducks", BOS: "Bruins", BUF: "Sabres", CAR: "Hurricanes", CBJ: "Blue Jackets", CGY: "Flames", CHI: "Blackhawks", COL: "Avalanche", DAL: "Stars", DET: "Red Wings", EDM: "Oilers", FLA: "Panthers", LA: "Kings", LAK: "Kings", MIN: "Wild", MTL: "Canadiens", NJ: "Devils", NJD: "Devils", NSH: "Predators", NYI: "Islanders", NYR: "Rangers", OTT: "Senators", PHI: "Flyers", PIT: "Penguins", SEA: "Kraken", SJ: "Sharks", SJS: "Sharks", STL: "Blues", TB: "Lightning", TBL: "Lightning", TOR: "Maple Leafs", UTA: "Mammoth", VAN: "Canucks", VGK: "Golden Knights", WPG: "Jets", WSH: "Capitals" };
 function GxBox119({ s, p, onClose }) {
@@ -9783,163 +8915,6 @@ function gxBoxRows131(bx, gid) {
     });
   });
   return out;
-}
-function GxNhl131({ s, opp }) {
-  const [open, setOpen] = useState(false) /* gx139 */;
-  const [tab, setTab] = useState("sb");
-  const [gid, setGid] = useState(null);
-  const [side, setSide] = useState("fan");
-  const [gf138, setGf138] = useState("all");
-  const [cl139, setCl139] = useState(false);
-  const close139 = () => { setCl139(true); setTimeout(() => { setCl139(false); setOpen(false); setGid(null); }, 220); };
-  useEffect(() => {
-    if (!open) return undefined;
-    const k = (e) => { if (e.key === "Escape") close139(); };
-    window.addEventListener("keydown", k);
-    const ov = document.body.style.overflow; document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ov; };
-  }, [open]);
-  const [, bump] = useState(0);
-  const J = window.__NHLNOW || {}, games = (J.games || []).slice();
-  const live = (g) => g.gameState === "LIVE" || g.gameState === "CRIT", fin = (g) => g.gameState === "FINAL" || g.gameState === "OFF";
-  const B = (window.__BX131 = window.__BX131 || {}), L = (window.__LD131 = window.__LD131 || {});
-  const box = (id) => (typeof G120 !== "undefined" && G120.box[id] && G120.box[id].bx) || (B[id] && B[id].bx) || null;
-  useEffect(() => {
-    if (!open || !gid) return undefined;
-    const g = games.find((x) => x.id === gid);
-    const need = !box(gid) || (g && live(g) && (!B[gid] || Date.now() - B[gid].at > 30000) && !(typeof G120 !== "undefined" && G120.box[gid]));
-    if (!need || (g && g.gameState === "FUT")) return undefined;
-    let dead = false;
-    fetch("https://api-web.nhle.com/v1/gamecenter/" + gid + "/boxscore").then((r) => (r.ok ? r.json() : null)).then((bx) => { if (bx && !dead) { B[gid] = { bx, at: Date.now() }; bump((x) => x + 1); } }).catch(() => {});
-    return () => { dead = true; };
-  }, [open, gid, J]);
-  // goals: from the scoreboard feed, or each game's summary when the feed has none
-  useEffect(() => {
-    if (!open || tab !== "gt") return undefined;
-    let dead = false;
-    games.filter((g) => (live(g) || fin(g)) && !g.goals).forEach((g) => {
-      const c = L[g.id];
-      if (c && (fin(g) || Date.now() - c.at < 45000)) return;
-      fetch("https://api-web.nhle.com/v1/gamecenter/" + g.id + "/landing").then((r) => (r.ok ? r.json() : null)).then((js) => {
-        if (!js || dead) return;
-        const goals = [];
-        (((js.summary || {}).scoring) || []).forEach((p) => (p.goals || []).forEach((x) => goals.push({ ...x, periodDescriptor: p.periodDescriptor })));
-        L[g.id] = { at: Date.now(), goals }; bump((x) => x + 1);
-      }).catch(() => {});
-    });
-    return () => { dead = true; };
-  }, [open, tab, J]);
-  const nick = (ab) => (typeof GX_NICK119 !== "undefined" && GX_NICK119[gxAb131(ab)]) || ab;
-  const nLive = games.filter(live).length;
-  const toggle = () => { setGid(null); setOpen(true); }; /* gx139 */
-  const status = (g) => (live(g) ? ((g.clock || {}).inIntermission ? gxIntG159(g) : <GxGClk266 g={g} />) : fin(g) ? "Final" + (((g.periodDescriptor || {}).periodType || "REG") !== "REG" ? "/" + gxPer131(g.periodDescriptor) : "") : g.startTimeUTC ? new Date(g.startTimeUTC).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
-  const order = (g) => (live(g) ? 0 : g.gameState === "FUT" || g.gameState === "PRE" ? 1 : 2);
-  games.sort((a, b) => order(a) - order(b) || String(a.startTimeUTC).localeCompare(String(b.startTimeUTC)));
-  const teamRow = (T) => <div className="tm"><TeamLogo t={gxAb131(T.abbrev)} size={22} /><span>{nick(T.abbrev)}</span><b>{T.score != null ? T.score : ""}</b></div>;
-  let body = null;
-  if (gid) {
-    const g = games.find((x) => x.id === gid) || {}, bx = box(gid), rows = bx ? gxBoxRows131(bx, gid) : [];
-    rows.forEach((r) => { r.p = gxFind131(r.t, r.no, r.n); r.tag = gxTag131(s, r.p); r.me = r.p && r.p.ft === s.me; });
-    const aw = gxAb131((g.awayTeam || {}).abbrev), hm = gxAb131((g.homeTeam || {}).abbrev);
-    const list = side === "fan" ? rows.filter((r) => r.tag).sort((a, b) => b.fp - a.fp) : rows.filter((r) => r.side === side);
-    const sk = list.filter((r) => !r.g), gl = list.filter((r) => r.g);
-    const nm = (r) => <div className={"nm" + (r.me ? " me" : "")} key={"n" + r.id}><button type="button" className="hover:underline" onClick={() => { if (r.p && window.__NAV) window.__NAV.player(r.p); }}>{r.n}</button>{r.tag ? <span className="own">{r.tag}</span> : null}</div>;
-    body = (
-      <>
-        <div className="hd"><button type="button" className="bk" aria-label="Back" onClick={() => setGid(null)}>{"‹"}</button>
-          <div style={{ flex: 1 }}>{teamRow(g.awayTeam || {})}{teamRow(g.homeTeam || {})}</div>
-          <div className={"st" + (live(g) ? " lv" : "")} style={{ fontSize: 13, color: live(g) ? "var(--bad)" : "var(--mute)", minWidth: 70, textAlign: "right" }}>{status(g)}</div></div>
-        <div className="tabs">{[["fan", "Fantasy"], ["awayTeam", aw], ["homeTeam", hm]].map(([k, l]) => <button key={k} type="button" className={side === k ? "on" : ""} onClick={() => setSide(k)}>{l}</button>)}</div>
-        {!bx ? <div className="em">{g.gameState === "FUT" || g.gameState === "PRE" ? "Not started yet." : "Loading..."}</div> : (
-          <>
-            {sk.length ? <div className="bx"><div className="h nm">Skaters</div><div className="h">TOI</div><div className="h">G</div><div className="h">A</div><div className="h">+/-</div><div className="h">FPTS</div>
-              {sk.map((r) => [nm(r), <div key={"t" + r.id}>{r.toi}</div>, <div key={"g" + r.id}>{r.x.g}</div>, <div key={"a" + r.id}>{r.x.a}</div>, <div key={"p" + r.id}>{r.x.pm > 0 ? "+" + r.x.pm : r.x.pm}</div>, <div key={"f" + r.id} className="f">{f1(r.fp)}</div>])}</div> : side === "fan" ? <div className="em">No fantasy-rostered players in this game.</div> : null}
-            {gl.length ? <div className="bx g"><div className="h nm">Goalies</div><div className="h">MIN</div><div className="h">W</div><div className="h">GA</div><div className="h">SV</div><div className="h">FPTS</div>
-              {gl.map((r) => [nm(r), <div key={"t" + r.id}>{r.toi}</div>, <div key={"w" + r.id}>{r.x.dec === "W" ? 1 : 0}</div>, <div key={"ga" + r.id}>{r.x.ga}</div>, <div key={"sv" + r.id}>{r.x.sv}</div>, <div key={"f" + r.id} className="f">{f1(r.fp)}</div>])}</div> : null}
-          </>
-        )}
-      </>
-    );
-  } else if (tab === "sb") {
-    /* gx140: ESPN-style game cards */
-    body = games.length ? <div className="gx-gc140">{games.map((g) => {
-      const A = g.awayTeam || {}, H = g.homeTeam || {}, pre = !(live(g) || fin(g)), done = fin(g);
-      const aw = !pre && +A.score > +H.score, hw = !pre && +H.score > +A.score;
-      const row = (T, win, lose) => <div className={"tr" + (done && lose ? " lo" : "")}><TeamLogo t={gxAb131(T.abbrev)} size={24} /><span className="nm">{nick(T.abbrev)}</span><b>{pre || T.score == null ? "" : T.score}</b><i className={done && win ? "ar" : ""}></i></div>;
-      return (
-        <button key={g.id} type="button" className="cd" onClick={() => { setGid(g.id); setSide("fan"); }}>
-          <div className="tms">{row(A, aw, hw)}{row(H, hw, aw)}</div>
-          <div className={"st" + (live(g) ? " lv" : pre ? " pr" : "")}>{status(g)}</div>
-        </button>
-      );
-    })}</div> : <div className="em">No NHL games today.</div>;
-  } else {
-    const all = [];
-    games.forEach((g) => (g.goals || (L[g.id] || {}).goals || []).forEach((x) => all.push({ g, x })));
-    const gw134 = ({ g, x }) => { const w = Date.parse(x.wc || ""); if (!isNaN(w)) return w; const m = String(x.timeInPeriod || "0:0").split(":"), n = ((x.periodDescriptor || {}).number || 1) - 1; return (Date.parse(g.startTimeUTC || "") || 0) + (n * 1200 + (+m[0] || 0) * 60 + (+m[1] || 0)) * 1600 + n * 1080e3; };
-    all.sort((a, b) => gw134(b) - gw134(a)); /* change 134 */
-    /* gx139: goal counters and goal cards with faces */
-    const nmOf = (q) => (q.name && q.name.default) || [((q.firstName || {}).default || ""), ((q.lastName || {}).default || "")].join(" ").trim();
-    const G138 = all.map(({ g, x }, i) => {
-      const tm = gxAb131(x.teamAbbrev && x.teamAbbrev.default ? x.teamAbbrev.default : x.teamAbbrev), who = nmOf(x), p = gxFind131(tm, null, who), tag = gxTag131(s, p);
-      const as = (x.assists || []).map((a) => { const an = nmOf(a), ap = gxFind131(tm, null, an); return { an, ap, at: gxTag131(s, ap) }; });
-      const by = (ft) => !!ft && ((p && p.ft === ft) || as.some((a) => a.ap && a.ap.ft === ft));
-      return { g, x, i, tm, who, p, tag, as, me: by(s.me), op: by(opp) };
-    });
-    const nM = G138.filter((r) => r.me).length, nO = G138.filter((r) => r.op).length;
-    const list = G138.filter((r) => (gf138 === "me" ? r.me : gf138 === "op" ? r.op : true));
-    const pBtn = (pl, label, k) => (pl ? <button key={k} type="button" className="hover:underline text-left" style={{ fontWeight: "inherit" }} onClick={() => { close139(); if (window.__NAV) window.__NAV.player(pl); }}>{label}</button> : <React.Fragment key={k}>{label}</React.Fragment>);
-    const face = (r) => {
-      const src = r.x.headshot || r.x.mugshot || (r.p && String(r.p.id || "")[0] === "e" ? "https://a.espncdn.com/i/headshots/nhl/players/full/" + String(r.p.id).slice(1) + ".png" : "");
-      return <span className="ph139">{src ? <img src={src} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : <TeamLogo t={r.tm} size={30} />}</span>;
-    };
-    body = (
-      <>
-        <div className="gx-gc138">{[["all", "Goals today", G138.length], ["me", "Mine", nM], ["op", "Opponent's", nO]].map(([k, l, c]) => <button key={k} type="button" className={gf138 === k ? "on" : ""} onClick={() => setGf138(k)}><b>{c}</b><small>{l}</small></button>)}</div>
-        {list.length ? list.map((r) => {
-          const sc = gxAb131((r.g.awayTeam || {}).abbrev) + " " + (r.x.awayScore != null ? r.x.awayScore : "") + ", " + gxAb131((r.g.homeTeam || {}).abbrev) + " " + (r.x.homeScore != null ? r.x.homeScore : "");
-          return (
-            <div key={r.g.id + "-" + r.i} className="gl">
-              <div className="top">{face(r)}
-                <div className="min-w-0"><div className="who">{pBtn(r.p, r.who, "s")}{", " + r.tm}{r.tag ? <span className="own">{"(" + r.tag + ")"}</span> : null}</div><div className="when">{(r.x.timeInPeriod || "") + " " + gxPer131(r.x.periodDescriptor) + " Period \u00b7 " + sc}</div></div></div>
-              <div className="as"><span>Assists:</span><span>{r.as.length ? r.as.map((a, k) => <React.Fragment key={k}>{k ? ", " : ""}{pBtn(a.ap, a.an, "a")}{a.at ? " (" + a.at + ")" : ""}</React.Fragment>) : "Unassisted"}</span></div>
-            </div>
-          );
-        }) : <div className="em">{G138.length ? (gf138 === "me" ? "No goals or assists by your players yet." : "No goals or assists by your opponent's players yet.") : "No goals yet today."}</div>}
-      </>
-    );
-  }
-  /* gx139: sheet */
-  /* gx140: phone bar */
-  const tsY140 = React.useRef(null);
-  const fb140 = (
-    <div className="gx-fb140" role="button" aria-label="Open NHL scores" onClick={toggle}
-      onTouchStart={(e) => { tsY140.current = e.touches[0].clientY; }}
-      onTouchEnd={(e) => { const y0 = tsY140.current; tsY140.current = null; if (y0 != null && e.changedTouches[0].clientY - y0 < -25) toggle(); }}>
-      <div className="grab"></div>
-      <div className="rw">{GX_IC140}<b>NHL Scores</b><GxTick140 games={games} live={live} fin={fin} status={status} /></div>
-    </div>
-  );
-  const gl139 = games.filter((g) => live(g) || fin(g)).reduce((a, g) => a + (+((g.awayTeam || {}).score) || 0) + (+((g.homeTeam || {}).score) || 0), 0);
-  const cnt139 = <>{nLive ? <span className="lv">{nLive + " live"}</span> : games.length ? games.length + " games" : ""}{gl139 ? " \u00b7 " + gl139 + " goals" : ""}</>;
-  const seg139 = <div className="seg"><button type="button" className={tab === "sb" ? "on" : ""} onClick={() => setTab("sb")}>Scoreboard</button><button type="button" className={tab === "gt" ? "on" : ""} onClick={() => setTab("gt")}>Goal tracker</button></div>;
-  return (
-    <>
-    {!open ? ReactDOM.createPortal(fb140, document.body) : null}<div className="gx-sp140"></div>
-    <div className="gx-ns131 gx138">
-      <button type="button" className="bar" onClick={toggle}><span>NHL scores</span><span className="n">{cnt139}</span><span className="sec-chev shut" style={{ marginLeft: 8 }}></span></button>
-      {open ? ReactDOM.createPortal(
-        <div className={"gx-sh139" + (cl139 ? " out" : "")} onClick={close139} role="dialog" aria-label="NHL scores">
-          <div className="gx-ns131 sh" onClick={(e) => e.stopPropagation()}>
-            <div className="grab"></div>
-            <div className="hd139">{GX_IC140}<span>NHL Scores</span><span className="n">{cnt139}</span><button type="button" className="xx" aria-label="Close" onClick={close139}>{"\u00d7"}</button></div>
-            {!gid ? seg139 : null}
-            <div className="bd139">{body}</div>
-          </div>
-        </div>, document.body) : null}
-    </div>
-    </>
-  );
 }
 
 // ---------- change 132: live NHL data from ESPN (install.py) ----------
@@ -10478,7 +9453,6 @@ function gxIntLeft159(g) {
   if (!g || !(g.clock || {}).inIntermission) return null;
   return Math.max(0, GX_INT159 - Math.floor((Date.now() - gxIntEnd159(g)) / 1000));
 }
-const gxIntFmt159 = (sec) => String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
 function gxIntG159(g) {
   const per = gxPer131(g.periodDescriptor), left = gxIntLeft159(g);
   return per + " INT" + (left ? " - " + gxMmss132(left) : ""); /* gx161 */
@@ -10579,22 +9553,6 @@ function useEdge165(x, g, tm) {
     return null;
   }
   return F ? { k: m.k, v: m.v, F } : null;
-}
-function gxRinkBg165() {
-  const red = "#d64545", blue = "#3d73d9", ln = "var(--line2, var(--line))";
-  const out = [
-    <rect key="b" x="-100" y="-42.5" width="200" height="85" rx="28" fill="var(--card2, var(--bg))" stroke={ln} strokeWidth="1" />,
-    <line key="c" x1="0" y1="-42.5" x2="0" y2="42.5" stroke={red} strokeWidth="1" strokeDasharray="2 1.5" />,
-    <line key="bl" x1="-25" y1="-42.5" x2="-25" y2="42.5" stroke={blue} strokeWidth="1.2" />,
-    <line key="br" x1="25" y1="-42.5" x2="25" y2="42.5" stroke={blue} strokeWidth="1.2" />,
-    <line key="gl" x1="-89" y1="-38.5" x2="-89" y2="38.5" stroke={red} strokeWidth="0.5" />,
-    <line key="gr" x1="89" y1="-38.5" x2="89" y2="38.5" stroke={red} strokeWidth="0.5" />,
-    <circle key="cc" cx="0" cy="0" r="15" fill="none" stroke={blue} strokeWidth="0.6" opacity=".7" />,
-    <rect key="nl" x="-92.3" y="-3" width="3.3" height="6" fill="none" stroke={red} strokeWidth="0.6" />,
-    <rect key="nr" x="89" y="-3" width="3.3" height="6" fill="none" stroke={red} strokeWidth="0.6" />,
-  ];
-  [[-69, -22], [-69, 22], [69, -22], [69, 22]].forEach(([a, b], i) => out.push(<circle key={"f" + i} cx={a} cy={b} r="15" fill="none" stroke={red} strokeWidth="0.6" opacity=".7" />));
-  return out;
 }
 function GxEdge165({ e, s, x, g, tm }) {
   /* change 184: NHL.com look; dots still moved directly each screen frame (172) */
@@ -10732,14 +9690,6 @@ function GxEdge165({ e, s, x, g, tm }) {
 // ---------- change 169: team colours for the replay, big replay window on the laptop (install.py) ----------
 function gxHex169(h) { const m = String(h || "").replace("#", ""); return [parseInt(m.slice(0, 2), 16) || 0, parseInt(m.slice(2, 4), 16) || 0, parseInt(m.slice(4, 6), 16) || 0]; }
 function gxLum169(h) { const c = gxHex169(h); return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; }
-function gxPair169(a, b) {
-  const ca = gxTC101(a), cb = gxTC101(b), x = gxHex169(ca), y = gxHex169(cb);
-  const dist = Math.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2 + (x[2] - y[2]) ** 2);
-  const solid = (c) => ({ f: c, t: gxLum169(c) > 0.55 ? "#111111" : "#ffffff", s: gxLum169(c) > 0.55 ? "#111111" : "#ffffff" });
-  const ring = (c) => ({ f: "#ffffff", t: gxLum169(c) > 0.75 ? "#111111" : c, s: gxLum169(c) > 0.75 ? "#111111" : c });
-  return { sc: solid(ca), ot: dist < 130 ? ring(cb) : solid(cb) };
-}
-const gxCol169 = (c, txt) => (txt ? { fill: c.t, fontWeight: 700 } : { fill: c.f, stroke: c.s, strokeWidth: c.f === "#ffffff" ? 0.9 : 0.5 });
 function GxGvModal169({ title, onClose, children }) {
   useEffect(() => { const k = (e) => { if (e.key === "Escape") onClose(); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, []);
   return ReactDOM.createPortal(
@@ -10871,7 +9821,6 @@ function gxIce184(dk) {
   } catch (e) { window.__GXICE186[K186] = ""; }
   return window.__GXICE186[K186];
 }
-const gxLogo184 = (t) => "https://assets.nhle.com/logos/nhl/svg/" + (NHL_LOGO[gxAb131(t)] || gxAb131(t)) + "_light.svg";
 // the rink in feet (x -100..100, y -42.5..42.5); L / R = team code at each end, H = home team for centre ice
 function gxRink184({ L, R, H, id }) {
   const dk = gxDk186(), red = dk ? "#e05a5a" : GX_RED184, blue = dk ? "#5b8ff0" : GX_BLUE184, cp = "gxb184" + id + (dk ? "d" : ""), ice = gxIce184(dk), out = []; /* change 186: dark rink */
@@ -11544,66 +10493,6 @@ const GX_JC224 = { ANA: ["#1c1c1f", "#F47A38", "#F47A38"], BOS: ["#1c1c1f", "#FF
 const gxJc224 = (t) => GX_JC224[t] || GX_JC224[typeof gxAb131 === "function" ? gxAb131(t) : t] || ["#3a3d44", "#9aa0a8", "#FFFFFF"];
 let gxSkN224 = 0;
 // a whole skater (or goalie) seen from behind ("back") or the front ("front"), viewBox 100 x 160
-function GxSkater224({ t, name, no, side, goalie, className }) {
-  const [bd, tr, nc] = gxJc224(t);
-  const id = React.useMemo(() => "sk224_" + (++gxSkN224), []);
-  const nm = String(name || "").toUpperCase().slice(0, 14), num = no == null || no === "" ? "" : String(no), front = side === "front";
-  const hel = bd.toUpperCase() === "#FFFFFF" ? "#1c1c1f" : bd;
-  const shade = "url(#" + id + ")";
-  const torso = goalie
-    ? "M30 34 Q50 28 70 34 L88 41 Q97 45 98 56 L99 78 L86 81 L81 60 L82 100 L18 100 L19 60 L14 81 L1 78 L2 56 Q3 45 12 41 Z"
-    : "M32 34 Q50 29 68 34 L85 41 Q94 45 95 55 L96 74 L84 76 L80 58 L79 98 L21 98 L20 58 L16 76 L4 74 L5 55 Q6 45 15 41 Z";
-  return (
-    <svg className={className} viewBox="0 0 100 160" aria-hidden="true">
-      <defs>
-        <linearGradient id={id} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#000" stopOpacity=".42" /><stop offset=".24" stopColor="#000" stopOpacity="0" />
-          <stop offset=".5" stopColor="#fff" stopOpacity=".12" /><stop offset=".76" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".42" />
-        </linearGradient>
-      </defs>
-      {/* skates */}
-      <path d="M30 146 L29 154 L46 154 L45 146 Z M55 146 L54 154 L71 154 L70 146 Z" fill="#202227" />
-      <path d="M26 156.5 H48 M52 156.5 H74" stroke="#d6dade" strokeWidth="2.4" strokeLinecap="round" />
-      {/* socks with stripes */}
-      <path d={goalie ? "M24 112 L46 112 L46 147 L28 147 Z M54 112 L76 112 L72 147 L54 147 Z" : "M31 112 L45 112 L45 147 L31 147 Z M55 112 L69 112 L69 147 L55 147 Z"} fill={goalie ? "#e9eaec" : bd} />
-      {goalie ? <path d="M24 112 L46 112 L46 147 L28 147 Z M54 112 L76 112 L72 147 L54 147 Z" fill="none" stroke={tr} strokeWidth="2" /> : <path d="M31 124 H45 M31 129 H45 M55 124 H69 M55 129 H69" stroke={tr} strokeWidth="2.4" />}
-      {/* pants */}
-      <path d="M22 94 L78 94 L76 115 L54 115 L50 106 L46 115 L24 115 Z" fill="#1d1f24" />
-      <path d="M23 99 H77" stroke={tr} strokeWidth="2.6" opacity=".9" />
-      {/* stick */}
-      {goalie ? <path d="M86 84 L80 150 L60 154" stroke="#c9a56b" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        : <path d="M90 76 L84 150 L72 154" stroke="#c9a56b" strokeWidth="3.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />}
-      {/* jersey */}
-      <path d={torso} fill={bd} />
-      <path d={goalie ? "M1.6 66 L15.5 68 M1.4 71 L15 73 M98.4 66 L84.5 68 M98.6 71 L85 73" : "M4.6 64 L17.5 66 M4.5 68.5 L17 70.5 M95.4 64 L82.5 66 M95.5 68.5 L83 70.5"} stroke={tr} strokeWidth="2.6" />
-      <path d="M21 86 H79 M21 91 H79" stroke={tr} strokeWidth="2.6" />
-      <path d={torso} fill={shade} />
-      {/* gloves (a blocker and catcher for goalies) */}
-      {goalie ? <><rect x="-1" y="76" width="17" height="14" rx="4" fill="#e9eaec" stroke={tr} strokeWidth="1.5" /><ellipse cx="92" cy="84" rx="10" ry="9" fill="#e9eaec" stroke={tr} strokeWidth="1.5" /></>
-        : <><rect x="3" y="73" width="14" height="12" rx="4" fill="#26282d" /><rect x="83" y="73" width="14" height="12" rx="4" fill="#26282d" /></>}
-      {front ? (
-        <>
-          <path d="M40 33 L50 44 L60 33" stroke={tr} strokeWidth="2.6" fill="none" />
-          {num ? <text x="50" y="66" textAnchor="middle" fontSize="15" fontWeight="900" fill={nc} stroke={tr === nc ? "#000" : tr} strokeOpacity={tr === nc ? 0.35 : 1} strokeWidth="1" paintOrder="stroke" style={{ fontFamily: "Arial Black, Arial, Helvetica, sans-serif" }}>{num}</text> : null}
-          <ellipse cx="50" cy="20" rx="13" ry="13.5" fill={hel} />
-          <ellipse cx="50" cy="20" rx="13" ry="13.5" fill={shade} />
-          <path d="M40.5 18 Q50 15 59.5 18 L58 30 Q50 34 42 30 Z" fill="#e2b48c" />
-          {goalie ? <path d="M40 17 H60 M40 21 H60 M40 25 H60 M44 15 V31 M50 15 V33 M56 15 V31" stroke="#cfd3d8" strokeWidth="1.1" /> : <path d="M39.5 17.5 Q50 14 60.5 17.5 L60 21.5 Q50 18.5 40 21.5 Z" fill="#20232a" opacity=".85" />}
-          <circle cx="45.5" cy="23.5" r="1" fill="#2a1d14" /><circle cx="54.5" cy="23.5" r="1" fill="#2a1d14" />
-        </>
-      ) : (
-        <>
-          <path d="M41 33 Q50 38 59 33" stroke={tr} strokeWidth="2.4" fill="none" />
-          <ellipse cx="50" cy="20" rx="13" ry="13.5" fill={hel} />
-          <ellipse cx="50" cy="20" rx="13" ry="13.5" fill={shade} />
-          <path d="M38 23 Q50 27 62 23" stroke="#000" strokeOpacity=".35" strokeWidth="1.4" fill="none" />
-          {nm ? <text x="50" y="47" textAnchor="middle" fontSize="8.4" fontWeight="800" letterSpacing=".6" fill={nc} textLength={nm.length > 8 ? 46 : undefined} lengthAdjust="spacingAndGlyphs" style={{ fontFamily: "Arial, Helvetica, sans-serif" }}>{nm}</text> : null}
-          {num ? <text x="50" y="77" textAnchor="middle" fontSize="27" fontWeight="900" fill={nc} stroke={tr === nc ? "#000" : tr} strokeOpacity={tr === nc ? 0.35 : 1} strokeWidth="1.3" paintOrder="stroke" style={{ fontFamily: "Arial Black, Arial, Helvetica, sans-serif" }}>{num}</text> : null}
-        </>
-      )}
-    </svg>
-  );
-}
 // which lines and units a player is on, e.g. "Line 1 \u00b7 PP1 \u00b7 PK2"
 function gxLnOf224(ln, n) {
   const L = { F1: "Line 1", F2: "Line 2", F3: "Line 3", F4: "Line 4", D1: "Pair 1", D2: "Pair 2", D3: "Pair 3", G: "Goalie", PP1: "PP1", PP2: "PP2", PK1: "PK1", PK2: "PK2" };
@@ -11710,549 +10599,7 @@ function GxLnZoom224({ s, t, T, list, i0, from, byName, onClose }) {
   return ReactDOM.createPortal(box, document.body);
 }
 // ---------- change 225: matchup box on the Roster page (install.py) ----------
-function GxBox225({ s, wk }) {
-  const K = s.blend, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
-  const [pick, setPick] = useState(null);
-  const [who, setWho] = useState(null);
-  const [k, setK] = useState(0);
-  const [sel, setSel] = useState(null);
-  const [full, setFull] = useState(false);
-  const stg = React.useRef(null), pr = React.useRef(null), ang = React.useRef(0), drag = React.useRef(null);
-  const i = gxWkAt61(s, pick), cur = i === s.wk;
-  const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
-  const me = who && (w.pairs || []).some((p) => p[0] === who || p[1] === who) ? who : s.me;
-  const dates = w.dates || [], n = dates.length;
-  const opp = oppOf(w, me) || (cur && me === s.me ? s.opp : null);
-  const up = !(n > 0 && dates[0] <= today), fin = !cur && n > 0 && dates[n - 1] < today;
-  const R = useMemo(() => {
-    if (!opp || !n || fin) return null;
-    const run = (id) => weekLive(s.players.filter((p) => p.ft === id), w, K, id, { detail: true });
-    return [run(me), run(opp)];
-  }, [w, me, opp, fin, s.players, K, gen, window.__PMODE, window.__LIVEV120]);
-  useEffect(() => {
-    const h = () => { setPick(Math.min(s.weeks.length - 1, s.wk + 1)); setSel(null); };
-    window.addEventListener("gx-race-next", h);
-    return () => window.removeEventListener("gx-race-next", h);
-  }, [s.wk, s.weeks.length]);
-  useEffect(() => { if (!full) return undefined; const kd = (e) => { if (e.key === "Escape") setFull(false); }; window.addEventListener("keydown", kd); return () => window.removeEventListener("keydown", kd); }, [full]);
-  // spinning: the four sides are placed around the middle of the box and the box turns
-  const paint = (a, anim) => {
-    const el = pr.current, box = stg.current;
-    if (!el || !box) return;
-    const z = box.clientWidth / 2;
-    el.classList.toggle("an", !!anim);
-    el.style.transform = "translateZ(" + -z + "px) rotateY(" + -a + "deg)";
-    [...el.children].forEach((f, j) => {
-      f.style.transform = "rotateY(" + j * 90 + "deg) translateZ(" + z + "px)";
-      const d = Math.abs((((j * 90 - a) % 360) + 540) % 360 - 180);
-      f.style.setProperty("--sh", String(Math.min(0.75, d / 120)));
-    });
-  };
-  const turn = (j) => { const a0 = ang.current, base = Math.round(a0 / 360) * 360; let t = base + j * 90; while (t - a0 > 180) t -= 360; while (a0 - t > 180) t += 360; ang.current = t; paint(t, true); setK(((j % 4) + 4) % 4); };
-  React.useLayoutEffect(() => { paint(ang.current, false); });
-  useEffect(() => {
-    const box = stg.current;
-    if (!box || !window.ResizeObserver) return undefined;
-    const ro = new ResizeObserver(() => paint(ang.current, false)); ro.observe(box);
-    return () => ro.disconnect();
-  }, [full, R ? 1 : 0]);
-  const pDown = (e) => { drag.current = { x: e.clientX, y: e.clientY, a: ang.current, on: false }; };
-  const pMove = (e) => {
-    const d = drag.current;
-    if (!d) return;
-    const dx = e.clientX - d.x, dy = e.clientY - d.y;
-    if (!d.on) { if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { d.on = true; try { stg.current.setPointerCapture(e.pointerId); } catch (x) {} } else return; }
-    ang.current = d.a - dx * 0.42; paint(ang.current, false);
-  };
-  const pUp = () => {
-    const d = drag.current; drag.current = null;
-    if (!d || !d.on) return;
-    const moved = ang.current - d.a, j = Math.round(d.a / 90) + (Math.abs(moved) > 25 ? Math.sign(moved) : 0);
-    ang.current = d.a + moved; turn(j);
-  };
-  const pairs = (w.pairs || []).filter((p) => p[0] && p[1]);
-  const title = cur ? "This week" : up && i === s.wk + 1 ? "Next week" : "Week " + (i + 1);
-  const muSel = pairs.length ? (
-    <select className="mu" aria-label="Choose a matchup" value={me} onChange={(e) => { setWho(e.target.value); setSel(null); }}>
-      {pairs.map((p) => { const a = p[0] === s.me || p[1] === s.me ? s.me : p[0], b = a === p[0] ? p[1] : p[0]; return <option key={a + b} value={a}>{(a === s.me ? "You" : teamName(s, a)) + " v " + teamName(s, b)}</option>; })}
-    </select>
-  ) : null;
-  const head = (
-    <div className="hd">
-      <span className="gx-tag">{title}</span>
-      <GxWkPick s={s} i={i} go={(j) => { setPick(Math.max(0, Math.min(s.weeks.length - 1, j))); setSel(null); }} />
-      <span className="sp"></span>
-      {muSel}
-      <button type="button" className="fs" aria-label={full ? "Close full screen" : "Full screen"} onClick={() => setFull(!full)}>{full ? "\u00d7" : "\u2922"}</button>
-    </div>
-  );
-  const cls = "gx-pn gx-bx225" + (full ? " full fixed inset-0" : "");
-  const act = (id) => +(gxAct120(w)[id]) || 0;
-  const sa = up ? 0 : act(me), sb = up || !opp ? 0 : act(opp);
-  if (fin || !R) {
-    return (
-      <div className={cls}>{head}
-        {fin && opp && (sa || sb) ? (
-          <div style={{ display: "flex", alignItems: "baseline", gap: 10, paddingTop: 10, fontVariantNumeric: "tabular-nums" }}>
-            <span className="gx-stv">{f1(sa)}</span><span className="text-slate-500">to {f1(sb)}</span>
-            <span className="text-slate-500">{sa > sb ? "Won by " + f1(sa - sb) : sa < sb ? "Lost by " + f1(sb - sa) : "Tied"}</span>
-          </div>
-        ) : <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>{fin ? "No result saved for this week." : "The matchup for this week is not set yet."}</div>}
-        {fin ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Day by day scores are only kept for the current week.</div> : null}
-      </div>
-    );
-  }
-  const X = R[0], Y = R[1];
-  const st = (d) => (dates[d] < today ? "f" : dates[d] === today ? "t" : "p");
-  const pts = (L, d) => { const x = L.days[d] || {}, kk = st(d); return kk === "f" ? x.act || 0 : kk === "t" ? (x.act || 0) + (x.total || 0) : x.total || 0; };
-  const exp = (L, d) => { const x = L.days[d] || {}; return x.proj != null ? x.proj : x.total || 0; };
-  const A7 = dates.map((_, d) => pts(X, d)), B7 = dates.map((_, d) => pts(Y, d));
-  const fdays = dates.map((_, d) => d).filter((d) => st(d) === "f"), done = fdays.length;
-  const wp = winProb(X, Y, sa, sb), fa = sa + X.total, fb = sb + Y.total, over = done >= n;
-  const nmA = me === s.me ? "You" : teamName(s, me), nmB = teamName(s, opp);
-  const DN = (d) => (dates[d] === today ? "Today" : dayLabel(dates[d]).split(",")[0].slice(0, 3));
-  const gms = (L, d) => gxGmN(L.days[d]);
-  const totG = (L) => dates.reduce((t, _, d) => t + gms(L, d), 0);
-  const won = fdays.filter((d) => A7[d] > B7[d]).length;
-  const vsA = fdays.reduce((t, d) => t + A7[d] - exp(X, d), 0), vsB = fdays.reduce((t, d) => t + B7[d] - exp(Y, d), 0);
-  const sg = (v) => (v >= 0 ? "+" : "\u2212") + f1(Math.abs(v));
-  // win chance at the end of each finished day: points so far plus the original projection for the days after it
-  const sdNow = Math.sqrt(projVar(X) + projVar(Y)), remNow = Math.max(1, X.total + Y.total);
-  const wHist = fdays.map((d) => {
-    let a = 0, b = 0, ra = 0, rb = 0;
-    for (let j = 0; j < n; j++) { if (j <= d) { a += A7[j]; b += B7[j]; } else { ra += exp(X, j); rb += exp(Y, j); } }
-    const sd = sdNow * Math.sqrt(Math.max(0.05, (ra + rb) / remNow));
-    const m = a + ra - (b + rb);
-    return sd > 0 ? normCdf(m / sd) : m > 0 ? 1 : m < 0 ? 0 : 0.5;
-  });
-  const leftA = X.used, leftB = Y.used;
-  const need = fb - sa, perG = leftA ? Math.max(0, need) / leftA : 0;
-  const SA = gxSum209(s, me, X), SB = gxSum209(s, opp, Y);
-  const top = (G) => [...G.F, ...G.D, ...G.G].filter((o) => o.gp || o.left).sort((u, v) => v.pts - u.pts || v.rem - u.rem).slice(0, 5);
-  const openP = (p) => { if (p && window.__NAV) window.__NAV.player(p); };
-  const faceTitle = (a, b) => <div className="ft"><span className="gx-tag">{a}</span><span className="text-xs text-slate-500">{b}</span></div>;
-  const dayCell = (d) => {
-    const k0 = st(d), a = A7[d], b = B7[d], pj = k0 === "p";
-    return (
-      <button key={d} type="button" className={"dy" + (dates[d] === today ? " td" : "") + (pj ? " pj" : "") + (sel === d ? " on" : "")} onClick={() => setSel(sel === d ? null : d)}>
-        <small>{DN(d)}</small><b>{f1(a)}</b><i>{f1(b)}</i>
-      </button>
-    );
-  };
-  // the four sides
-  const fScore = (
-    <div className="fc">
-      {faceTitle("Score", over ? "Final" : "Day " + Math.min(n, done + 1) + " of " + n)}
-      <div className="sc">
-        <div className="min-w-0"><div className="text-sm font-semibold truncate">{nmA}</div><div className="bg"><GxAnimNum131 v={sa} /></div></div>
-        <GxRing v={wp} plain />
-        <div className="min-w-0 r"><div className="text-sm text-slate-500 truncate">{nmB}</div><div className="bg" style={{ color: "var(--ink2)" }}><GxAnimNum131 v={sb} /></div></div>
-      </div>
-      <div className="shr"><div style={{ width: (sa + sb > 0 ? Math.max(4, Math.min(96, (sa / (sa + sb)) * 100)) : 50) + "%", background: "var(--accent)" }}></div><div style={{ flex: 1, background: "var(--track)" }}></div></div>
-      <div className="text-xs text-slate-500" style={{ display: "flex" }}><span>{(over ? "Final " : "Projected ") + f1(fa)}</span><span style={{ margin: "0 auto" }}>{(fa >= fb ? "Ahead by " : "Behind by ") + f1(Math.abs(fa - fb))}</span><span>{f1(fb)}</span></div>
-      <div className="dys">{dates.map((_, d) => dayCell(d))}</div>
-    </div>
-  );
-  const W0 = 300, H0 = 86, px = (j) => 14 + (W0 - 28) * (wHist.length > 1 ? j / (wHist.length - 1) : 0.5), py = (v) => 8 + (1 - v) * (H0 - 26);
-  const fWin = (
-    <div className="fc">
-      {faceTitle("Win chance", over ? "Final" : "Now")}
-      <div className="wn">
-        <GxRing v={wp} big plain />
-        <div className="min-w-0">
-          <div className="text-sm">{over ? (sa >= sb ? "Won by " + f1(sa - sb) : "Lost by " + f1(sb - sa)) : (fa >= fb ? "On pace to win by " : "On pace to lose by ") + f1(Math.abs(fa - fb))}</div>
-          {over ? null : <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{"They should finish near " + f1(fb)}</div>}
-          {over ? null : <div className="text-xs text-slate-500" style={{ marginTop: 2 }}>{"You need " + f1(Math.max(0, need)) + " more" + (leftA ? ", " + f1(perG) + " a game left" : "")}</div>}
-        </div>
-      </div>
-      <div className="gx-tag" style={{ marginTop: 12 }}>After each day</div>
-      {wHist.length ? (
-        <svg viewBox={"0 0 " + W0 + " " + H0} width="100%" height={H0} className="gx-svg" style={{ display: "block", marginTop: 4 }} role="img" aria-label="Win chance after each day">
-          <line x1={0} x2={W0} y1={py(0.5)} y2={py(0.5)} style={{ stroke: "var(--line2, var(--line))", strokeDasharray: "3 4" }} />
-          {wHist.length > 1 ? <polyline points={wHist.map((v, j) => px(j).toFixed(1) + "," + py(v).toFixed(1)).join(" ")} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 2, strokeLinejoin: "round" }} /> : null}
-          {wHist.map((v, j) => <g key={j}><circle cx={px(j)} cy={py(v)} r={3} style={{ fill: "var(--accent)" }} /><text x={px(j)} y={py(v) - 7} textAnchor="middle" style={{ fontSize: 10, fill: "var(--ink2)" }}>{Math.round(v * 100)}</text><text x={px(j)} y={H0 - 2} textAnchor="middle" style={{ fontSize: 10, fill: "var(--mute)" }}>{DN(fdays[j])}</text></g>)}
-        </svg>
-      ) : <div className="text-xs text-slate-500" style={{ marginTop: 8 }}>Shows once the first day is over.</div>}
-    </div>
-  );
-  const maxG = Math.max(1, ...dates.map((_, d) => Math.max(gms(X, d), gms(Y, d))));
-  const gCell = (L, d, mine) => { const g = gms(L, d), fut = st(d) === "p"; return <div key={d} className="c" style={{ background: fut ? "transparent" : mine ? "rgba(127,127,127," + (0.08 + 0.32 * g / maxG) + ")" : "rgba(127,127,127," + (0.05 + 0.18 * g / maxG) + ")", border: fut ? "1px dashed var(--line)" : "0", color: fut ? "var(--faint)" : mine ? "var(--ink)" : "var(--ink2)" }}>{g}</div>; };
-  const fGames = (
-    <div className="fc">
-      {faceTitle("Lineup games", up ? "Projected" : "Left " + leftA + " v " + leftB)}
-      <div className="gr">
-        <div></div>{dates.map((_, d) => <div key={d} className="h" style={dates[d] === today ? { color: "var(--ink)", fontWeight: 600 } : null}>{DN(d)}</div>)}<div className="h">{up ? "All" : "Left"}</div>
-        <div className="n">{nmA}</div>{dates.map((_, d) => gCell(X, d, true))}<div className="t">{up ? totG(X) : leftA}</div>
-        <div className="n text-slate-500">{nmB}</div>{dates.map((_, d) => gCell(Y, d, false))}<div className="t text-slate-500">{up ? totG(Y) : leftB}</div>
-      </div>
-      <div className="fx" style={{ marginTop: 14 }}>
-        <div>Games all week<b>{totG(X) + " v " + totG(Y)}</b></div>
-        <div>{done ? "Days won" : "Days"}<b>{done ? won + " of " + done : n}</b></div>
-        <div>Vs projection<b>{done ? sg(vsA) + " v " + sg(vsB) : "\u2013"}</b></div>
-      </div>
-    </div>
-  );
-  const pCol = (G, nm, dim) => (
-    <div className="min-w-0">
-      <div className={"text-xs truncate" + (dim ? " text-slate-500" : " font-semibold")} style={{ marginBottom: 2 }}>{nm}</div>
-      {top(G).map((o) => (
-        <button key={o.p.id} type="button" className="pl" onClick={() => openP(o.p)}>
-          <GxFace p={o.p} size={22} />
-          <span className="nm"><b>{lastN(o.p.n)}</b><span>{o.p.t + " \u00b7 " + o.gp + " GP" + (o.left ? " \u00b7 " + o.left + " left" : "")}</span></span>
-          <span className="pt" style={dim ? { color: "var(--ink2)" } : null}>{f1(o.pts)}</span>
-        </button>
-      ))}
-    </div>
-  );
-  const fPlayers = (
-    <div className="fc">
-      {faceTitle("Who's carrying", "Points this week")}
-      <div className="kp">{pCol(SA, nmA, false)}{pCol(SB, nmB, true)}</div>
-    </div>
-  );
-  // details under the box for a tapped day
-  const dayRows = (L, d) => ((L.days[d] || {}).start || []).map((q) => ({ q, v: q.a != null ? q.a : q.x0 != null ? q.x0 : q.x || 0, real: q.a != null })).sort((u, v) => v.v - u.v);
-  const det = sel != null && sel < n ? (
-    <div className="dt">
-      <div className="ft"><span className="gx-tag">{dayLabel(dates[sel])}</span><button type="button" className="text-xs text-slate-500" onClick={() => setSel(null)}>Close</button></div>
-      <div className="cols" style={{ marginTop: 6 }}>
-        {[[X, nmA], [Y, nmB]].map(([L, nm], c) => (
-          <div key={c} className="min-w-0">
-            <div className={"text-xs" + (c ? " text-slate-500" : " font-semibold")}>{nm + " \u00b7 " + f1(c ? B7[sel] : A7[sel])}</div>
-            {dayRows(L, sel).map(({ q, v, real }) => <div key={q.id} className="rw"><span>{shortN(q.n)}</span><b style={real ? null : { color: "var(--faint)", fontWeight: 400 }}>{f1(v)}</b></div>)}
-            {!dayRows(L, sel).length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>No games</div> : null}
-          </div>
-        ))}
-      </div>
-      <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Grey numbers are projections.</div>
-    </div>
-  ) : null;
-  return (
-    <div className={cls}>
-      {head}
-      <div ref={stg} className="stg" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
-        <div ref={pr} className="pr">{fScore}{fWin}{fGames}{fPlayers}</div>
-      </div>
-      <div className="tb">{["Score", "Win", "Games", "Players"].map((t, j) => <button key={t} type="button" className={k === j ? "on" : ""} onClick={() => turn(j)}>{t}</button>)}</div>
-      {det}
-    </div>
-  );
-}
 // ---------- change 226: fuller matchup box (install.py) ----------
-function GxBox226({ s, wk }) {
-  const K = s.blend, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
-  const NF = 4, STEP = 360 / NF, NAMES = ["Today", "Win", "Games", "Players"];
-  const [pick, setPick] = useState(null);
-  const [who, setWho] = useState(null);
-  const [k, setK] = useState(0);
-  const [sel, setSel] = useState(null);
-  const [full, setFull] = useState(false);
-  const stg = React.useRef(null), pr = React.useRef(null), ang = React.useRef(0), drag = React.useRef(null);
-  const i = gxWkAt61(s, pick), cur = i === s.wk;
-  const w = useMemo(() => (cur ? wk : deriveWeek(s.weeks[i], s.autoDone)), [cur, wk, s.weeks, i, s.autoDone]);
-  const me = who && (w.pairs || []).some((p) => p[0] === who || p[1] === who) ? who : s.me;
-  const dates = w.dates || [], n = dates.length;
-  const opp = oppOf(w, me) || (cur && me === s.me ? s.opp : null);
-  const up = !(n > 0 && dates[0] <= today), fin = !cur && n > 0 && dates[n - 1] < today;
-  const R = useMemo(() => {
-    if (!opp || !n || fin) return null;
-    const run = (id) => weekLive(s.players.filter((p) => p.ft === id), w, K, id, { detail: true });
-    return [run(me), run(opp)];
-  }, [w, me, opp, fin, s.players, K, gen, window.__PMODE, window.__LIVEV120]);
-  useEffect(() => {
-    const h = () => { setPick(Math.min(s.weeks.length - 1, s.wk + 1)); setSel(null); };
-    window.addEventListener("gx-race-next", h);
-    return () => window.removeEventListener("gx-race-next", h);
-  }, [s.wk, s.weeks.length]);
-  useEffect(() => { if (!full) return undefined; const kd = (e) => { if (e.key === "Escape") setFull(false); }; window.addEventListener("keydown", kd); return () => window.removeEventListener("keydown", kd); }, [full]);
-  // five sides around the middle of the box; the box turns
-  const paint = (a, anim) => {
-    const el = pr.current, box = stg.current;
-    if (!el || !box) return;
-    const z = box.clientWidth / 2 / Math.tan(Math.PI / NF);
-    el.classList.toggle("an", !!anim);
-    el.style.transform = "translateZ(" + -z + "px) rotateY(" + -a + "deg)";
-    [...el.children].forEach((f, j) => {
-      f.style.transform = "rotateY(" + j * STEP + "deg) translateZ(" + z + "px)";
-      const d = Math.abs((((j * STEP - a) % 360) + 540) % 360 - 180);
-      f.style.setProperty("--sh", String(Math.min(0.8, d / 90)));
-    });
-  };
-  const turn = (j) => { const a0 = ang.current; let t = Math.round(a0 / 360) * 360 + j * STEP; while (t - a0 > 180) t -= 360; while (a0 - t > 180) t += 360; ang.current = t; paint(t, true); setK(((j % NF) + NF) % NF); };
-  React.useLayoutEffect(() => { paint(ang.current, false); });
-  useEffect(() => {
-    const box = stg.current;
-    if (!box || !window.ResizeObserver) return undefined;
-    const ro = new ResizeObserver(() => paint(ang.current, false)); ro.observe(box);
-    return () => ro.disconnect();
-  }, [full, R ? 1 : 0]);
-  const pDown = (e) => { drag.current = { x: e.clientX, y: e.clientY, a: ang.current, on: false }; };
-  const pMove = (e) => {
-    const d = drag.current;
-    if (!d) return;
-    const dx = e.clientX - d.x, dy = e.clientY - d.y;
-    if (!d.on) { if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { d.on = true; try { stg.current.setPointerCapture(e.pointerId); } catch (x) {} } else return; }
-    ang.current = d.a - dx * 0.36; paint(ang.current, false);
-  };
-  const pUp = () => {
-    const d = drag.current; drag.current = null;
-    if (!d || !d.on) return;
-    const moved = ang.current - d.a, j = Math.round(d.a / STEP) + (Math.abs(moved) > 20 ? Math.sign(moved) : 0);
-    turn(j);
-  };
-  const pairs = (w.pairs || []).filter((p) => p[0] && p[1]);
-  const title = cur ? "This week" : up && i === s.wk + 1 ? "Next week" : "Week " + (i + 1);
-  const muSel = pairs.length ? (
-    <select className="mu" aria-label="Choose a matchup" value={me} onChange={(e) => { setWho(e.target.value); setSel(null); }}>
-      {pairs.map((p) => { const a = p[0] === s.me || p[1] === s.me ? s.me : p[0], b = a === p[0] ? p[1] : p[0]; return <option key={a + b} value={a}>{(a === s.me ? "You" : teamName(s, a)) + " v " + teamName(s, b)}</option>; })}
-    </select>
-  ) : null;
-  const head = (
-    <div className="hd">
-      <span className="gx-tag">{title}</span>
-      <GxWkPick s={s} i={i} go={(j) => { setPick(Math.max(0, Math.min(s.weeks.length - 1, j))); setSel(null); }} />
-      <span className="sp"></span>
-      {muSel}
-      <button type="button" className="fs" aria-label={full ? "Close full screen" : "Full screen"} onClick={() => setFull(!full)}>{full ? "\u00d7" : "\u2922"}</button>
-    </div>
-  );
-  const cls = "gx-pn gx-bx225 gx-bx226" + (full ? " full fixed inset-0" : "");
-  const act = (id) => +(gxAct120(w)[id]) || 0;
-  const sa = up ? 0 : act(me), sb = up || !opp ? 0 : act(opp);
-  const nmA = me === s.me ? "You" : teamName(s, me), nmB = opp ? teamName(s, opp) : "";
-  if (fin || !R) {
-    return (
-      <div className={cls}>{head}
-        {fin && opp && (sa || sb) ? (
-          <div style={{ paddingTop: 10 }}>
-            <div className="sc"><div className="min-w-0"><div className="text-sm font-semibold truncate">{nmA}</div><div className="bg">{f1(sa)}</div></div><div></div><div className="min-w-0 r"><div className="text-sm text-slate-500 truncate">{nmB}</div><div className="bg" style={{ color: "var(--ink2)" }}>{f1(sb)}</div></div></div>
-            <div className="text-sm text-slate-500" style={{ marginTop: 6 }}>{sa > sb ? "Won by " + f1(sa - sb) : sa < sb ? "Lost by " + f1(sb - sa) : "Tied"}</div>
-          </div>
-        ) : <div className="text-sm text-slate-500" style={{ paddingTop: 10 }}>{fin ? "No result saved for this week." : "The matchup for this week is not set yet."}</div>}
-        {fin ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Day by day scores are only kept for the current week.</div> : null}
-      </div>
-    );
-  }
-  const X = R[0], Y = R[1];
-  const st = (d) => (dates[d] < today ? "f" : dates[d] === today ? "t" : "p");
-  const pts = (L, d) => { const x = L.days[d] || {}, kk = st(d); return kk === "f" ? x.act || 0 : kk === "t" ? (x.act || 0) + (x.total || 0) : x.total || 0; };
-  const exp = (L, d) => { const x = L.days[d] || {}; return x.proj != null ? x.proj : x.total || 0; };
-  const A7 = dates.map((_, d) => pts(X, d)), B7 = dates.map((_, d) => pts(Y, d));
-  const fdays = dates.map((_, d) => d).filter((d) => st(d) === "f"), done = fdays.length, ti = dates.indexOf(today);
-  const wp = winProb(X, Y, sa, sb), fa = sa + X.total, fb = sb + Y.total, over = done >= n;
-  const DN = (d) => (dates[d] === today ? "Today" : dayLabel(dates[d]).split(",")[0].slice(0, 3));
-  const gms = (L, d) => gxGmN(L.days[d]);
-  const totG = (L) => dates.reduce((t, _, d) => t + gms(L, d), 0);
-  const playedG = (L) => dates.reduce((t, _, d) => t + (st(d) === "p" ? 0 : ((L.days[d] || {}).start || []).filter((q) => q.st === "L" || q.st === "F").length), 0);
-  const won = fdays.filter((d) => A7[d] > B7[d]).length, lost = fdays.filter((d) => A7[d] < B7[d]).length;
-  const vsA = fdays.reduce((t, d) => t + A7[d] - exp(X, d), 0), vsB = fdays.reduce((t, d) => t + B7[d] - exp(Y, d), 0);
-  const sg = (v) => (v >= 0 ? "+" : "\u2212") + f1(Math.abs(v));
-  const best = (a7) => fdays.reduce((b, d) => (b == null || a7[d] > a7[b] ? d : b), null);
-  const bA = best(A7), bB = best(B7);
-  const gpA = playedG(X), gpB = playedG(Y);
-  const sdNow = Math.sqrt(projVar(X) + projVar(Y)), remNow = Math.max(1, X.total + Y.total);
-  const wHist = fdays.map((d) => {
-    let a = 0, b = 0, ra = 0, rb = 0;
-    for (let j = 0; j < n; j++) { if (j <= d) { a += A7[j]; b += B7[j]; } else { ra += exp(X, j); rb += exp(Y, j); } }
-    const sd = sdNow * Math.sqrt(Math.max(0.05, (ra + rb) / remNow)), m = a + ra - (b + rb);
-    return sd > 0 ? normCdf(m / sd) : m > 0 ? 1 : m < 0 ? 0 : 0.5;
-  });
-  const leftA = X.used, leftB = Y.used, need = fb - sa, perG = leftA ? Math.max(0, need) / leftA : 0;
-  // what a swing of 10 points would do to the win chance
-  const swing = (v) => { const m = fa + v - fb; return sdNow > 0 ? normCdf(m / sdNow) : m > 0 ? 1 : 0; };
-  const SA = gxSum209(s, me, X), SB = gxSum209(s, opp, Y);
-  const all = (G) => [...G.F, ...G.D, ...G.G];
-  const top = (G, m) => all(G).filter((o) => o.gp || o.left).sort((u, v) => v.pts - u.pts || v.rem - u.rem).slice(0, m);
-  const lefts = (G) => all(G).filter((o) => o.left || o.live).sort((u, v) => v.rem - u.rem).slice(0, 3);
-  const grpPts = (G, g) => G[g].reduce((t, o) => t + o.pts, 0);
-  const openP = (p) => { if (p && window.__NAV) window.__NAV.player(p); };
-  const faceTitle = (a, b) => <div className="ft"><span className="gx-tag">{a}</span><span className="text-xs text-slate-500">{b}</span></div>;
-  const two = (a, b) => <>{a}<i>{" v " + b}</i></>;
-  const dayCell = (d) => (
-    <button key={d} type="button" className={"dy" + (dates[d] === today ? " td" : "") + (st(d) === "p" ? " pj" : "") + (sel === d ? " on" : "")} onClick={() => setSel(sel === d ? null : d)}>
-      <small>{DN(d)}</small><b>{f1(A7[d])}</b><i>{f1(B7[d])}</i>
-    </button>
-  );
-  const tag = "Week " + (i + 1) + (!n ? "" : up ? " \u00b7 starts " + dayLabel(dates[0]) : over ? " \u00b7 final" : " \u00b7 day " + Math.min(n, done + 1) + " of " + n);
-  const mineMu = me === s.me;
-  const board = (
-    <div className="sbd">
-      <div className="tg2">{tag}</div>
-      <div className="row2">
-        <div className="min-w-0"><div className="text-sm font-semibold truncate">{mineMu ? teamName(s, s.me) : nmA}</div><div className="big"><GxAnimNum131 v={sa} /></div></div>
-        <div style={{ display: "flex", justifyContent: "center" }}><GxRing v={wp} big plain={!mineMu} /></div>
-        <div className="min-w-0 text-right"><div className="text-sm text-slate-500 truncate">{nmB}</div><div className="big" style={{ color: "var(--ink2)" }}><GxAnimNum131 v={sb} /></div></div>
-      </div>
-      <div className="shr"><div style={{ width: (sa + sb > 0 ? Math.max(4, Math.min(96, (sa / (sa + sb)) * 100)) : 50) + "%", background: "var(--accent)" }}></div><div style={{ flex: 1, background: "var(--track)" }}></div></div>
-      <div className="text-xs text-slate-500" style={{ display: "flex" }}><span>{(over ? "Final " : "Projected ") + f1(fa)}</span><span style={{ margin: "0 auto" }}>{(fa >= fb ? "Ahead by " : "Behind by ") + f1(Math.abs(fa - fb))}</span><span>{f1(fb)}</span></div>
-      <div className="dys">{dates.map((_, d) => dayCell(d))}</div>
-      <div className="fx2">
-        <div>Per game<b>{two(gpA ? f1(sa / gpA) : "\u2013", gpB ? f1(sb / gpB) : "\u2013")}</b></div>
-        <div>Days won<b>{done ? two(won, lost) : "\u2013"}</b></div>
-        <div>Best day<b>{bA != null ? two(f1(A7[bA]), f1(B7[bB])) : "\u2013"}</b></div>
-        <div>Forwards<b>{two(f1(grpPts(SA, "F")), f1(grpPts(SB, "F")))}</b></div>
-        <div>Defence<b>{two(f1(grpPts(SA, "D")), f1(grpPts(SB, "D")))}</b></div>
-        <div>Goalies<b>{two(f1(grpPts(SA, "G")), f1(grpPts(SB, "G")))}</b></div>
-        <div>Points left<b>{two(f1(X.total), f1(Y.total))}</b></div>
-        <div>Games left<b>{two(leftA, leftB)}</b></div>
-        <div>Vs projection<b>{done ? two(sg(vsA), sg(vsB)) : "\u2013"}</b></div>
-      </div>
-    </div>
-  );
-  // today: everyone in today's lineup for both teams, live points or projection
-  const tRows = (L) => ti < 0 ? [] : ((L.days[ti] || {}).start || []).map((q) => ({ q, v: q.a != null ? q.a : q.x0 != null ? q.x0 : q.x || 0, real: q.a != null, g: gState(q.t, today) })).sort((u, v) => (u.real === v.real ? v.v - u.v : u.real ? -1 : 1));
-  const tA = tRows(X), tB = tRows(Y), tSum = (r) => r.filter((x) => x.real).reduce((t, x) => t + x.v, 0), tProj = (r) => r.reduce((t, x) => t + x.v, 0);
-  const tCol = (rows, nm, dim) => (
-    <div className="min-w-0">
-      <div className="tot"><span className={dim ? "text-slate-500" : "font-semibold"}>{nm}</span><b>{f1(tSum(rows))}<span className="text-xs text-slate-500" style={{ fontWeight: 400 }}>{" / " + f1(tProj(rows))}</span></b></div>
-      {rows.slice(0, 9).map(({ q, v, real, g }) => (
-        <button key={q.id} type="button" className="tr" onClick={() => openP(q)}>
-          <span className="nm">{lastN(q.n)}<small>{g.s === "L" ? "live" : g.s === "F" ? "final" : gameTime(gameOf(q.t, today))}</small></span>
-          <b className={real ? "" : "pj"}>{f1(v)}</b>
-        </button>
-      ))}
-      {rows.length > 9 ? <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{"+" + (rows.length - 9) + " more"}</div> : null}
-      {!rows.length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>No games today</div> : null}
-    </div>
-  );
-  const fToday = (
-    <div className="fc">
-      {faceTitle("Today", ti < 0 ? "Not in this week" : tA.filter((x) => x.g.s === "L").length + tB.filter((x) => x.g.s === "L").length + " playing now")}
-      {ti < 0 ? <div className="text-sm text-slate-500" style={{ marginTop: 10 }}>Today is not part of this week. Tap a day on the Score side to see its lineups.</div> : (
-        <>
-          <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{"Lineup games " + tA.length + " v " + tB.length + " \u00b7 points so far / with projection"}</div>
-          <div className="tdc">{tCol(tA, nmA, false)}{tCol(tB, nmB, true)}</div>
-        </>
-      )}
-    </div>
-  );
-  const W0 = 300, H0 = 80, px = (j) => 14 + (W0 - 28) * (wHist.length > 1 ? j / (wHist.length - 1) : 0.5), py = (v) => 8 + (1 - v) * (H0 - 26);
-  const fWin = (
-    <div className="fc">
-      {faceTitle("Win chance", over ? "Final" : "Now")}
-      <div className="wbig">{over ? (sa >= sb ? "Won by " + f1(sa - sb) : "Lost by " + f1(sb - sa)) : (fa >= fb ? "On pace to win by " : "On pace to lose by ") + f1(Math.abs(fa - fb))}</div>
-      {over ? null : <div className="text-xs text-slate-500" style={{ marginTop: 4 }}>{"They should finish near " + f1(fb) + ". You need " + f1(Math.max(0, need)) + " more" + (leftA ? ", " + f1(perG) + " a game left." : ".")}</div>}
-      <div className="gx-tag" style={{ marginTop: 12 }}>After each day</div>
-      {wHist.length ? (
-        <svg viewBox={"0 0 " + W0 + " " + H0} width="100%" height={H0} className="gx-svg" style={{ display: "block", marginTop: 2 }} role="img" aria-label="Win chance after each day">
-          <line x1={0} x2={W0} y1={py(0.5)} y2={py(0.5)} style={{ stroke: "var(--line2, var(--line))", strokeDasharray: "3 4" }} />
-          {wHist.length > 1 ? <polyline points={wHist.map((v, j) => px(j).toFixed(1) + "," + py(v).toFixed(1)).join(" ")} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 2, strokeLinejoin: "round" }} /> : null}
-          {wHist.map((v, j) => <g key={j}><circle cx={px(j)} cy={py(v)} r={3} style={{ fill: "var(--accent)" }} /><text x={px(j)} y={py(v) - 7} textAnchor="middle" style={{ fontSize: 10, fill: "var(--ink2)" }}>{Math.round(v * 100)}</text><text x={px(j)} y={H0 - 2} textAnchor="middle" style={{ fontSize: 10, fill: "var(--mute)" }}>{DN(fdays[j])}</text></g>)}
-        </svg>
-      ) : <div className="text-xs text-slate-500" style={{ marginTop: 8 }}>Shows once the first day is over.</div>}
-      <div className="fx2">
-        <div>If you add 10<b>{over ? "\u2013" : wpTxt(swing(10))}</b></div>
-        <div>If they add 10<b>{over ? "\u2013" : wpTxt(swing(-10))}</b></div>
-        <div>Need a game<b>{over || !leftA ? "\u2013" : f1(perG)}</b></div>
-        <div>Their pace<b>{f1(fb)}</b></div>
-        <div>Your pace<b>{f1(fa)}</b></div>
-        <div>Spread<b>{"\u00b1" + f1(sdNow)}</b></div>
-      </div>
-    </div>
-  );
-  const maxG = Math.max(1, ...dates.map((_, d) => Math.max(gms(X, d), gms(Y, d))));
-  const gCell = (L, d, mine) => { const g = gms(L, d), fut = st(d) === "p"; return <div key={d} className="c" style={{ background: fut ? "transparent" : mine ? "rgba(127,127,127," + (0.08 + 0.32 * g / maxG) + ")" : "rgba(127,127,127," + (0.05 + 0.18 * g / maxG) + ")", border: fut ? "1px dashed var(--line)" : "0", color: fut ? "var(--faint)" : mine ? "var(--ink)" : "var(--ink2)" }}>{g}</div>; };
-  const gToday = (L) => ti < 0 ? 0 : gms(L, ti);
-  const fGames = (
-    <div className="fc">
-      {faceTitle("Lineup games", up ? "Projected" : "Left " + leftA + " v " + leftB)}
-      <div className="gr">
-        <div></div>{dates.map((_, d) => <div key={d} className="h" style={dates[d] === today ? { color: "var(--ink)", fontWeight: 600 } : null}>{DN(d)}</div>)}<div className="h">{up ? "All" : "Left"}</div>
-        <div className="n">{nmA}</div>{dates.map((_, d) => gCell(X, d, true))}<div className="t">{up ? totG(X) : leftA}</div>
-        <div className="n text-slate-500">{nmB}</div>{dates.map((_, d) => gCell(Y, d, false))}<div className="t text-slate-500">{up ? totG(Y) : leftB}</div>
-      </div>
-      <div className="fx2" style={{ marginTop: 14 }}>
-        <div>All week<b>{two(totG(X), totG(Y))}</b></div>
-        <div>Played<b>{two(gpA, gpB)}</b></div>
-        <div>Today<b>{two(gToday(X), gToday(Y))}</b></div>
-        <div>Bench with a game<b>{two(X.wasted || 0, Y.wasted || 0)}</b></div>
-        <div>Empty spots<b>{two(X.empty || 0, Y.empty || 0)}</b></div>
-        <div>Vs projection<b>{done ? two(sg(vsA), sg(vsB)) : "\u2013"}</b></div>
-      </div>
-    </div>
-  );
-  const pCol = (G, nm, dim) => (
-    <div className="min-w-0">
-      <div className={"text-xs truncate" + (dim ? " text-slate-500" : " font-semibold")} style={{ marginBottom: 2 }}>{nm}</div>
-      {top(G, 5).map((o) => (
-        <button key={o.p.id} type="button" className="pl" onClick={() => openP(o.p)}>
-          <GxFace p={o.p} size={20} />
-          <span className="nm"><b>{lastN(o.p.n)}</b><span>{o.p.t + " \u00b7 " + o.gp + " GP" + (o.left ? " \u00b7 " + o.left + " left" : "")}</span></span>
-          <span className="pt" style={dim ? { color: "var(--ink2)" } : null}>{f1(o.pts)}</span>
-        </button>
-      ))}
-      <div className="lf"><div className="gx-tag">Most left to give</div>
-        {lefts(G).map((o) => <div key={o.p.id} className="rw2"><span>{lastN(o.p.n) + " \u00b7 " + o.left + (o.live ? " live" : " left")}</span><b>{"+" + f1(o.rem)}</b></div>)}
-        {!lefts(G).length ? <div className="text-xs text-slate-500">No games left</div> : null}
-      </div>
-    </div>
-  );
-  const fPlayers = (
-    <div className="fc">
-      {faceTitle("Players", "Points this week")}
-      <div className="kp">{pCol(SA, nmA, false)}{pCol(SB, nmB, true)}</div>
-    </div>
-  );
-  const dayRows = (L, d) => ((L.days[d] || {}).start || []).map((q) => ({ q, v: q.a != null ? q.a : q.x0 != null ? q.x0 : q.x || 0, real: q.a != null })).sort((u, v) => v.v - u.v);
-  const det = sel != null && sel < n ? (
-    <div className="dt">
-      <div className="ft"><span className="gx-tag">{dayLabel(dates[sel])}</span><button type="button" className="text-xs text-slate-500" onClick={() => setSel(null)}>Close</button></div>
-      <div className="cols" style={{ marginTop: 6 }}>
-        {[[X, nmA], [Y, nmB]].map(([L, nm], c) => (
-          <div key={c} className="min-w-0">
-            <div className={"text-xs" + (c ? " text-slate-500" : " font-semibold")}>{nm + " \u00b7 " + f1(c ? B7[sel] : A7[sel])}</div>
-            {dayRows(L, sel).map(({ q, v, real }) => <div key={q.id} className="rw"><span>{shortN(q.n)}</span><b style={real ? null : { color: "var(--faint)", fontWeight: 400 }}>{f1(v)}</b></div>)}
-            {!dayRows(L, sel).length ? <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>No games</div> : null}
-          </div>
-        ))}
-      </div>
-      <div className="text-xs text-slate-500" style={{ marginTop: 6 }}>Grey numbers are projections.</div>
-    </div>
-  ) : null;
-  // change 228: what the four screens of the 3D scoreboard show
-  const J228 = {
-    nmA, nmB,
-    today: ti < 0 ? { none: "Today is not part of this week.", right: "" } : {
-      right: tA.filter((x) => x.g.s === "L").length + tB.filter((x) => x.g.s === "L").length + " playing now",
-      a: tA.map(({ q, v, real, g }) => ({ n: lastN(q.n), st: g.s === "L" ? "LIVE" : g.s === "F" ? "FINAL" : gameTime(gameOf(q.t, today)), live: g.s === "L", v, real, id: q.id })),
-      b: tB.map(({ q, v, real, g }) => ({ n: lastN(q.n), st: g.s === "L" ? "LIVE" : g.s === "F" ? "FINAL" : gameTime(gameOf(q.t, today)), live: g.s === "L", v, real, id: q.id })),
-      ta: tSum(tA), tb: tSum(tB), pa: tProj(tA), pb: tProj(tB),
-    },
-    win: {
-      right: over ? "Final" : "Now",
-      line: over ? (sa >= sb ? "Won by " + f1(sa - sb) : "Lost by " + f1(sb - sa)) : (fa >= fb ? "On pace to win by " : "On pace to lose by ") + f1(Math.abs(fa - fb)),
-      sub: over ? "" : "They should finish near " + f1(fb) + ". You need " + f1(Math.max(0, need)) + " more" + (leftA ? ", " + f1(perG) + " a game left." : "."),
-      hist: wHist.map((v, j) => ({ v, d: DN(fdays[j]) })),
-      cells: [["If you add 10", over ? "\u2013" : wpTxt(swing(10))], ["If they add 10", over ? "\u2013" : wpTxt(swing(-10))], ["Need a game", over || !leftA ? "\u2013" : f1(perG)], ["Your pace", f1(fa)], ["Their pace", f1(fb)], ["Spread", "\u00b1" + f1(sdNow)]],
-    },
-    games: {
-      right: up ? "Projected" : "Left " + leftA + " v " + leftB, leftLab: up ? "All" : "Left",
-      days: dates.map((_, d) => DN(d)), ti, a: dates.map((_, d) => gms(X, d)), b: dates.map((_, d) => gms(Y, d)), fut: dates.map((_, d) => st(d) === "p"),
-      la: up ? totG(X) : leftA, lb: up ? totG(Y) : leftB,
-      cells: [["All week", totG(X) + " v " + totG(Y)], ["Played", gpA + " v " + gpB], ["Today", gToday(X) + " v " + gToday(Y)], ["Bench with a game", (X.wasted || 0) + " v " + (Y.wasted || 0)], ["Empty spots", (X.empty || 0) + " v " + (Y.empty || 0)], ["Vs projection", done ? sg(vsA) + " v " + sg(vsB) : "\u2013"]],
-    },
-    players: {
-      a: top(SA, 5).map((o) => ({ n: lastN(o.p.n), sub: o.p.t + " \u00b7 " + o.gp + " GP", v: o.pts, id: o.p.id })),
-      b: top(SB, 5).map((o) => ({ n: lastN(o.p.n), sub: o.p.t + " \u00b7 " + o.gp + " GP", v: o.pts, id: o.p.id })),
-      la: lefts(SA).map((o) => ({ n: lastN(o.p.n) + " \u00b7 " + o.left + (o.live ? " live" : " left"), v: "+" + f1(o.rem), id: o.p.id })),
-      lb: lefts(SB).map((o) => ({ n: lastN(o.p.n) + " \u00b7 " + o.left + (o.live ? " live" : " left"), v: "+" + f1(o.rem), id: o.p.id })),
-    },
-  };
-  return (
-    <div className={cls}>
-      {head}
-      <div className="lay">
-        <div className="min-w-0">{board}{det}</div>
-        <div className="min-w-0">
-          {/* change 229: flat box again */}<div ref={stg} className="stg" data-gx="229" onPointerDown={pDown} onPointerMove={pMove} onPointerUp={pUp} onPointerCancel={pUp}>
-            <div ref={pr} className="pr">{fToday}{fWin}{fGames}{fPlayers}</div>
-          </div>
-          <div className="tb">{NAMES.map((t, j) => <button key={t} type="button" className={k === j ? "on" : ""} onClick={() => turn(j)}>{t}</button>)}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
 // ---------- change 226: Players list headings use one sort at a time (install.py) ----------
 function gxClr226() { if (GX108.k) { GX108.k = null; GX108.dir = 1; window.dispatchEvent(new Event("gx-sort108")); } }
 // ---------- change 227: Lines player cards with photos (install.py) ----------
@@ -12265,40 +10612,6 @@ function GxLnPic227({ p, no, big }) {
 // ---------- change 228: 3D scoreboard in the Roster box (install.py) ----------
 // loads the 3D library and the scoreboard only when the box is shown; the flat box stays as the fallback
 const GX228 = (window.__GX228 = window.__GX228 || { p: null });
-function gxLoad228() {
-  if (window.gxJumbo) return Promise.resolve(true);
-  if (GX228.p) return GX228.p;
-  const add = (src) => new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = src; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
-  GX228.p = (window.GX3D ? Promise.resolve() : add("vendor/gx3d.js?v=228")).then(() => add("vendor/gx3d-jumbo.js?v=228")).then(() => !!window.gxJumbo);
-  GX228.p.catch(() => { GX228.p = null; });
-  return GX228.p;
-}
-function GxJumbo228({ J, k, setK, onTap, fb }) {
-  const box = React.useRef(null), ctl = React.useRef(null), tapR = React.useRef(onTap);
-  const [on, setOn] = useState(false);
-  tapR.current = onTap;
-  useEffect(() => {
-    let dead = false;
-    const ok = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
-    if (!ok) return undefined;
-    gxLoad228().then((y) => {
-      if (dead || !y || !box.current) return;
-      ctl.current = window.gxJumbo.mount(box.current, { base: "models3d/", onFace: (f) => setK(f), onTap: (id) => tapR.current && tapR.current(id), onReady: () => { if (!dead) setOn(true); }, onError: () => { if (!dead) setOn(false); } });
-      if (J) ctl.current.set(J);
-      ctl.current.turn(k);
-    }).catch(() => {});
-    return () => { dead = true; if (ctl.current) { ctl.current.destroy(); ctl.current = null; } };
-  }, []);
-  const key = JSON.stringify(J);
-  useEffect(() => { if (ctl.current && J) ctl.current.set(J); }, [key]);
-  useEffect(() => { if (ctl.current) ctl.current.turn(k); }, [k]);
-  return (
-    <div className={"jb228" + (on ? " on" : "")}>
-      {fb}
-      <div ref={box} className="gl228" style={on ? null : { visibility: "hidden" }}></div>
-    </div>
-  );
-}
 // ---------- change 230: Roster box with more in it (install.py) ----------
 function GxBox230({ s, wk }) {
   const K = s.blend, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
@@ -12685,33 +10998,6 @@ function GxBox230({ s, wk }) {
 }
 // ---------- change 231: jersey backs on Lines (install.py) ----------
 // a plain jersey seen from behind in the team's colours (GX_JC224: body, trim, numbers), name arched over a big number
-function GxJersey231({ t, name, no, goalie }) {
-  const c = GX_JC224[t] || GX_JC224[String(t || "").toUpperCase()] || ["#3a3d44", "#9aa0a8", "#ffffff"];
-  const body = c[0], trim = c[1], num = c[2] || "#ffffff";
-  const id = "j231" + String(t || "x") + String(no == null ? "" : no) + String(name || "").replace(/[^A-Za-z]/g, "");
-  const nm = String(name || "").toUpperCase();
-  const nmSize = Math.max(6.2, Math.min(10.5, 92 / Math.max(5, nm.length)));
-  const nTxt = no == null ? "" : String(no);
-  const outline = (hex) => { const h = String(hex).replace("#", ""); const v = parseInt(h.length === 3 ? h.split("").map((x) => x + x).join("") : h, 16); const r = (v >> 16) & 255, g = (v >> 8) & 255, b = v & 255; return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? "rgba(0,0,0,.35)" : "rgba(255,255,255,.18)"; };
-  const shirt = "M42 6 Q60 14 78 6 L98 12 Q108 16 112 26 L119 58 L101 64 L95 44 L94 106 Q60 111 26 106 L25 44 L19 64 L1 58 L8 26 Q12 16 22 12 Z";
-  return (
-    <svg viewBox="0 0 120 112" role="img" aria-label={(name || "") + (nTxt ? " number " + nTxt : "")}>
-      <defs><clipPath id={id}><path d={shirt} /></clipPath></defs>
-      <path d={shirt} style={{ fill: body, stroke: outline(body), strokeWidth: 1 }} />
-      <g clipPath={"url(#" + id + ")"}>
-        <rect x="0" y="45" width="30" height="5.5" style={{ fill: trim }} /><rect x="0" y="52.5" width="30" height="2.4" style={{ fill: num }} /><rect x="0" y="56.8" width="30" height="5.5" style={{ fill: trim }} />
-        <rect x="90" y="45" width="30" height="5.5" style={{ fill: trim }} /><rect x="90" y="52.5" width="30" height="2.4" style={{ fill: num }} /><rect x="90" y="56.8" width="30" height="5.5" style={{ fill: trim }} />
-        <rect x="0" y="88" width="120" height="5.5" style={{ fill: trim }} /><rect x="0" y="95.5" width="120" height="2.4" style={{ fill: num }} />
-        {goalie ? <rect x="0" y="99.5" width="120" height="5" style={{ fill: trim }} /> : null}
-        <path d="M42 6 Q60 14 78 6 L80 9 Q60 18 40 9 Z" style={{ fill: trim }} />
-        <path d="M25 44 L25 104" style={{ stroke: "rgba(0,0,0,.18)", strokeWidth: 1 }} /><path d="M95 44 L95 104" style={{ stroke: "rgba(0,0,0,.18)", strokeWidth: 1 }} />
-      </g>
-      <path id={id + "a"} d="M30 33 Q60 25 90 33" fill="none" />
-      <text className="nm231" style={{ fontSize: nmSize, fill: num, stroke: trim, strokeWidth: 0.9, paintOrder: "stroke" }} textAnchor="middle"><textPath href={"#" + id + "a"} startOffset="50%">{nm}</textPath></text>
-      <text className="no231" x="60" y="79" textAnchor="middle" style={{ fontSize: nTxt.length > 1 ? 40 : 44, fill: num, stroke: trim, strokeWidth: 2.4, paintOrder: "stroke", strokeLinejoin: "round" }}>{nTxt}</text>
-    </svg>
-  );
-}
 // ---------- change 232: team names shrink to fit, same size on both sides (install.py) ----------
 function gxFit232(el) {
   if (!el || el.__ft232) return;
@@ -12733,143 +11019,9 @@ function gxFit232(el) {
 }
 // ---------- change 232: Lines locker room jerseys (install.py) ----------
 // one jersey shape for every team (no team's real design), coloured from GX_JC224, with fabric, folds and stitched name and number
-function gxLum232(hex) { const h = String(hex || "#777").replace("#", ""); const v = parseInt(h.length === 3 ? h.split("").map((x) => x + x).join("") : h, 16); return 0.299 * ((v >> 16) & 255) + 0.587 * ((v >> 8) & 255) + 0.114 * (v & 255); }
-function GxJersey232({ t, name, no, goalie }) {
-  const c = GX_JC224[t] || GX_JC224[String(t || "").toUpperCase()] || ["#3a3d44", "#9aa0a8", "#ffffff"];
-  const body = c[0], trim = c[1], num = c[2] || "#ffffff";
-  const id = "j232" + String(t || "x") + String(no == null ? "" : no) + String(name || "").replace(/[^A-Za-z]/g, "");
-  const nm = String(name || "").toUpperCase(), nTxt = no == null ? "" : String(no);
-  const D = GX_JD249[String(t || "").toUpperCase()] || null; /* change 249 */
-  const ST = D ? D.st : null, NF = D ? D.n : num, NO = D ? D.o : trim, NM = D ? D.nm : num, NMO = D ? (D.o.toLowerCase() === D.nm.toLowerCase() ? "rgba(0,0,0,.45)" : D.o) : trim;
-  const bandD = (y, x, w) => ST.map((c, i) => <rect key={"d" + y + x + i} x={x} y={y + i * 3.4} width={w} height="3.4" style={{ fill: c }} />);
-  const three = num.toLowerCase() !== trim.toLowerCase() && num.toLowerCase() !== body.toLowerCase(), dark = D ? !!D.y : gxLum232(body) < 70;
-  const nmSize = Math.min(9.5, 60 / Math.max(1, nm.length * 0.86)), nmW = 0, NMMAX = 58;
-  const shirt = "M44 20 Q60 29 76 20 L100 26 Q112 31 115 42 L120 112 L103 117 L96 62 L96 128 Q60 134 24 128 L24 62 L17 117 L0 112 L5 42 Q8 31 20 26 Z"; /* change 235 */
-  // stripes: three colours get trim / number / trim bands, two colours get two trim bands
-  const band = (y, x, w) => three
-    ? [<rect key={"a" + y + x} x={x} y={y} width={w} height="5" style={{ fill: trim }} />, <rect key={"b" + y + x} x={x} y={y + 6.2} width={w} height="2.4" style={{ fill: num }} />, <rect key={"c" + y + x} x={x} y={y + 9.8} width={w} height="5" style={{ fill: trim }} />]
-    : [<rect key={"a" + y + x} x={x} y={y} width={w} height="4.6" style={{ fill: trim }} />, <rect key={"c" + y + x} x={x} y={y + 7.4} width={w} height="4.6" style={{ fill: trim }} />];
-  const twill = (props, kids) => [
-    <text key="sh" {...props} transform="translate(0.7 1.3)" style={{ ...props.style, fill: "rgba(0,0,0,.4)", stroke: "rgba(0,0,0,.4)", strokeWidth: props.sw + 1.6 }}>{kids}</text>,
-    <text key="o2" {...props} style={{ ...props.style, fill: props.f || num, stroke: gxLum232(props.k || trim) > 140 ? "rgba(0,0,0,.55)" : "rgba(255,255,255,.35)", strokeWidth: props.sw + 1.6, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
-    <text key="o1" {...props} style={{ ...props.style, fill: props.f || num, stroke: props.k || trim, strokeWidth: props.sw, paintOrder: "stroke", strokeLinejoin: "round" }}>{kids}</text>,
-    <text key="st" {...props} style={{ ...props.style, fill: "none", stroke: gxLum232(props.f || num) > 140 ? "rgba(0,0,0,.28)" : "rgba(255,255,255,.4)", strokeWidth: 0.35, strokeDasharray: "0.9 0.9" }}>{kids}</text>,
-  ];
-  return (
-    <svg viewBox="0 0 120 140" role="img" aria-label={(name || "") + (nTxt ? " number " + nTxt : "")}>
-      <defs>
-        <clipPath id={id + "c"}><path d={shirt} /></clipPath>
-        <filter id={id + "g"} x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" /><feColorMatrix type="saturate" values="0" /></filter>
-        <radialGradient id={id + "l"} cx="50%" cy="10%" r="75%"><stop offset="0" stopColor="#fff3dc" stopOpacity=".26" /><stop offset=".55" stopColor="#fff3dc" stopOpacity=".05" /><stop offset="1" stopColor="#000" stopOpacity=".22" /></radialGradient>
-        <pattern id={id + "m"} width="2.2" height="2.2" patternUnits="userSpaceOnUse"><circle cx="0.55" cy="0.55" r="0.42" fill="rgba(0,0,0,.16)" /><circle cx="1.65" cy="1.65" r="0.42" fill="rgba(255,255,255,.06)" /></pattern>
-        <linearGradient id={id + "s"} x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#000" stopOpacity=".42" /><stop offset=".2" stopColor="#000" stopOpacity=".1" /><stop offset=".5" stopColor="#fff" stopOpacity=".08" /><stop offset=".8" stopColor="#000" stopOpacity=".1" /><stop offset="1" stopColor="#000" stopOpacity=".42" /></linearGradient>
-        <linearGradient id={id + "v"} x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".1" /><stop offset=".35" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".3" /></linearGradient>
-        <path id={id + "a"} d={dark ? "M27 57 Q60 47 93 57" : "M27 47 Q60 37 93 47"} fill="none" />
-      </defs>
-      <path d="M60 3 Q66 3 66 8 Q66 12 61 13 L60 19" style={{ fill: "none", stroke: "#b9bcc2", strokeWidth: 2.2, strokeLinecap: "round" }} />
-      <path d="M24 26 Q60 14 96 26" style={{ fill: "none", stroke: "#8e6a45", strokeWidth: 4, strokeLinecap: "round" }} />
-      <path d={shirt} transform="translate(1.5 2.5)" style={{ fill: "rgba(0,0,0,.35)" }} />
-      <path d={shirt} style={{ fill: D ? D.b : body }} />
-      <g clipPath={"url(#" + id + "c)"}>
-        {D ? <>
-          {D.sl ? <><rect x="0" y="86" width="23.6" height="40" style={{ fill: D.sl }} /><rect x="96.4" y="86" width="23.6" height="40" style={{ fill: D.sl }} /></> : null}
-          {D.y ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: D.y }} /> : null}
-          {(D.ys || []).map((c, i) => <path key={"ys" + i} d={"M0 " + (41.2 + i * 2.6) + " Q60 " + (48.2 + i * 2.6) + " 120 " + (41.2 + i * 2.6)} style={{ fill: "none", stroke: c, strokeWidth: 2.6 }} />)}
-        </> : dark ? <path d="M0 18 L120 18 L120 40 Q60 47 0 40 Z" style={{ fill: trim, opacity: 0.9 }} /> : null}
-        {D ? <>{bandD(76, 0, 26)}{bandD(76, 94, 26)}{bandD(108, 24, 72)}{D.hm ? <rect x="24" y={108 + ST.length * 3.4} width="72" height="40" style={{ fill: D.hm }} /> : null}</> : <>{band(80, 0, 26)}{band(80, 94, 26)}{band(108, 24, 72)}</>}
-        <path d="M44 20 Q60 29 76 20 L79 24 Q60 34 41 24 Z" style={{ fill: D ? (D.col || D.y || ST[0]) : trim }} />
-        <path d="M0 104 L19 109 L18 117 L0 112 Z M120 104 L101 109 L102 117 L120 112 Z" style={{ fill: D ? (D.hm || ST[0]) : trim }} />
-        {goalie ? <rect x="0" y="122" width="120" height="4" style={{ fill: num }} /> : null}
-        <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "m)" }} />
-        <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "s)" }} />
-        <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "v)" }} />
-        <path d="M24 60 Q30 66 27 80 M96 60 Q90 66 93 80 M36 120 Q44 114 52 121 M70 121 Q78 114 86 120 M30 98 Q34 90 31 82 M90 98 Q86 90 89 82" style={{ fill: "none", stroke: "rgba(0,0,0,.2)", strokeWidth: 1.3, strokeLinecap: "round" }} />
-        <path d="M25 61 Q31 67 28 80 M95 61 Q89 67 92 80" style={{ fill: "none", stroke: "rgba(255,255,255,.07)", strokeWidth: 1, strokeLinecap: "round" }} />
-        <path d="M45 22 Q34 36 24 58 M75 22 Q86 36 96 58" style={{ fill: "none", stroke: "rgba(0,0,0,.28)", strokeWidth: 0.6, strokeDasharray: "1.4 1.2" }} />
-        <rect x="0" y="0" width="120" height="140" filter={"url(#" + id + "g)"} style={{ opacity: 0.22, mixBlendMode: "overlay" }} />{/* change 251: fabric grain */}
-        <rect x="0" y="0" width="120" height="140" style={{ fill: "url(#" + id + "l)" }} />
-      </g>
-      {twill({ className: "nm231", textAnchor: "middle", style: { fontSize: nmSize }, sw: 1.2, f: NM, k: NMO }, <textPath href={"#" + id + "a"} startOffset="50%" {...(nmW > NMMAX ? { textLength: NMMAX, lengthAdjust: "spacingAndGlyphs" } : {})}>{nm}</textPath>)}
-      {twill({ className: "no231", x: 60, y: 95, textAnchor: "middle", style: { fontSize: nTxt.length > 1 ? 40 : 44 }, sw: 3, f: NF, k: NO }, nTxt)}
-    </svg>
-  );
-}
 // ---------- change 236: each team's own locker room on Lines (install.py) ----------
 const GX_RS236 = ["walnut", "carbon", "oak", "white"];
-function gxRoom236(t) {
-  const c = GX_JC224[t] || GX_JC224[String(t || "").toUpperCase()] || ["#3a3d44", "#9aa0a8", "#ffffff"];
-  const body = c[0], trim = c[1], num = c[2] || "#ffffff";
-  let gl = gxLum232(trim) >= gxLum232(num) ? trim : num;
-  if (gxLum232(gl) < 60) gl = "#ffffff";
-  const keys = Object.keys(GX_JC224).sort();
-  const i = Math.max(0, keys.indexOf(String(t || "").toUpperCase()));
-  const warm = i % 2 === 0;
-  return { cls: GX_RS236[i % 4], style: { "--rb": body, "--rt": trim, "--rn": num, "--rg": gl, "--lc": warm ? "#ffe6b8" : "#e6f1ff" } };
-}
-function GxRoom236({ t }) {
-  return (
-    <div className="rr236" aria-hidden="true">
-      {[12, 38, 62, 88].map((x) => <span key={x} className="bm236" style={{ left: x + "%" }} />)}
-      <div className="cl236"><i /><i /><i /><i /><i /></div>
-      <div className="sr236" />
-      <div className="fl236"><span className="lg236"><TeamLogo t={t} size={150} /></span></div>
-    </div>
-  );
-}
 // ---------- change 238: your own team's locker room on Roster (install.py) ----------
-function gxNo238(p) {
-  const L = window.LINES_DATA || { teams: {} }, T = (L.teams || {})[p.t] || {}, no = T.no || {};
-  if (no[p.n] != null) return no[p.n];
-  const k = nrm(p.n); for (const n in no) if (nrm(n) === k) return no[n];
-  return null;
-}
-function gxTn238(p) {
-  const td = todayISO(), g = p.ir ? null : gameOf(p.t, td);
-  if (!g) return { k: "off", txt: p.ir ? "IR" : "No game" };
-  const st = gState(p.t, td).s, opp = (g.h ? "v " : "@ ") + g.o;
-  if (st === "P") return { k: "", txt: opp + " " + gameTime(g) };
-  const sc = gScore(p.t, td), a = gxPdReal(p, td);
-  const scr = sc && sc.my != null ? " " + sc.my + "-" + sc.op : "";
-  return { k: st === "F" ? "" : "lv", txt: opp + scr + (st === "F" ? " F" : ""), pts: a };
-}
-function GxMyRoom238({ s }) {
-  const mine = (s.players || []).filter((p) => p.ft === s.me);
-  if (!mine.length) return null;
-  const val = (p) => gxPgAvg(p, s.blend) || 0;
-  const by = (f) => mine.filter(f).sort((a, b) => val(b) - val(a));
-  const groups = [["F", by((p) => !p.ir && p.p !== "D" && p.p !== "G")], ["D", by((p) => !p.ir && p.p === "D")], ["G", by((p) => !p.ir && p.p === "G")], ["IR", by((p) => p.ir)]].filter((g) => g[1].length);
-  const name = teamName(s, s.me) || "My team";
-  const st = { "--rb": "#1b2330", "--rt": "var(--accent)", "--rn": "#ffffff", "--rg": "#ffffff", "--lc": "#e6f1ff" };
-  const card = (p) => {
-    const last = p.n.split(" ").slice(1).join(" ") || p.n, no = gxNo238(p), tn = gxTn238(p), isG = p.p === "G";
-    return (
-      <button key={p.id} type="button" className={"gx-fg224 gx-lt227 " + tn.k + gxSt246c(p.t)} style={gxSt246s(p.t)} aria-label={p.n} onClick={() => { if (window.__NAV) window.__NAV.player(p); }}>
-        <div className="md jr231"><span className="pl232">{last}</span><GxJersey232 t={p.t} name={last} no={no} goalie={isG} /></div>
-        <span className="sb227">{(no != null ? "#" + no + " \u00b7 " : "") + p.p + " \u00b7 " + p.t}</span>
-        <span className="ow227"><span>{tn.txt}</span><b>{tn.pts != null ? f1(tn.pts) : f1(val(p))}</b></span>
-      </button>
-    );
-  };
-  const rows = [];
-  groups.forEach(([lb, list]) => {
-    for (let i = 0; i < list.length; i += 3) {
-      const part = list.slice(i, i + 3);
-      rows.push(<div key={lb + i} className={"row" + (part.length < 3 ? " c112" : "")} style={{ "--n": part.length }}><span className="lb">{i === 0 ? lb : ""}</span>{part.map(card)}</div>);
-    }
-  });
-  return (
-    <div className="gx-rk111 rm236 carbon gx-mr238" style={st} data-gx="238">
-      <div className="rr236" aria-hidden="true">
-        {[12, 38, 62, 88].map((x) => <span key={x} className="bm236" style={{ left: x + "%" }} />)}
-        <div className="cl236"><i /><i /><i /><i /><i /></div>
-        <div className="sr236" />
-        <div className="fl236"><span className="lg236"><GxFtPic114 id={s.me} size={110} /></span></div>
-      </div>
-      <div className="wn238"><GxFtPic114 id={s.me} size={34} /><div className="min-w-0"><small>Your locker room</small><b>{name}</b></div></div>
-      {rows}
-    </div>
-  );
-}
 // ---------- change 239: Table or My team on Roster, remembered (install.py) ----------
 function GxRosterView239({ P }) {
   const [v, setV] = useState(() => (uiGet().rv239 === "team" ? "team" : "table"));
@@ -12882,31 +11034,6 @@ function GxRosterView239({ P }) {
 }
 // ---------- change 241: More menu for the phone tabs, view as another team (install.py) ----------
 const GX_MAIN241 = ["roster", "matchup", "players", "lines", "trades"]; // change 247
-function GxMore241({ tab, go }) {
-  const [open, setOpen] = useState(false);
-  const [top, setTop] = useState(60);
-  const ref = React.useRef(null);
-  const side = GX_TABS103.filter((x) => !GX_MAIN241.includes(x[0]));
-  const cur = side.find((x) => gxTabOn103(x[0], tab));
-  useEffect(() => { setOpen(false); }, [tab, (window.__ROUTE || {}).sub]);
-  useEffect(() => { if (!open) return undefined; const k = (e) => { if (e.key === "Escape") setOpen(false); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [open]);
-  const tap = () => { const r = ref.current && ref.current.getBoundingClientRect(); if (r) setTop(r.bottom + 6); setOpen((o) => !o); };
-  return (
-    <>
-      <button ref={ref} type="button" className={"mr241" + (cur ? " on" : "")} data-gx="241" aria-expanded={open} onClick={tap}>
-        {cur ? cur[1] : "More"}
-        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M3 4.5l3 3 3-3"></path></svg>
-      </button>
-      {open ? ReactDOM.createPortal(
-        <div className="gx-mm241">
-          <div className="bg" onClick={() => setOpen(false)}></div>
-          <div className="pn" style={{ top }}>
-            {side.map(([k, l, t, sb]) => <a key={k} href={gxHash(t, sb || undefined)} className={cur && cur[0] === k ? "on" : ""} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); setOpen(false); go(t, sb || undefined); }}>{l}</a>)}
-          </div>
-        </div>, document.body) : null}
-    </>
-  );
-}
 function gxMe241(teams, real) {
   const v = uiGet().me241;
   return v && v !== real && (teams || []).some((t) => t.id === v) ? v : real;
@@ -12976,91 +11103,8 @@ function gxSoon244(p, today) {
   if (p.back && p.back <= addDays(today, 7)) return { now: p.back <= today, d: p.back };
   return null;
 }
-function GxIrBack244({ s }) {
-  const today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
-  const mine = useMemo(() => s.players.filter((p) => p.ft === s.me), [s.players, s.me]);
-  const back = mine.map((p) => ({ p, w: gxSoon244(p, today) })).filter((x) => x.w);
-  const [open, setOpen] = useState(null);
-  const [calc, setCalc] = useState(null);
-  useEffect(() => {
-    setCalc(null);
-    if (!open) return undefined;
-    const P = mine.find((p) => p.id === open);
-    if (!P) return undefined;
-    let dead = false;
-    const id = setTimeout(() => {
-      try {
-        const on = mine.map((q) => (q.id === P.id ? { ...q, ir: false } : q));
-        const pct = (x) => (x == null ? null : x);
-        const base = pct(winChance(s));
-        const irOpts = mine.filter((q) => !q.ir && q.id !== P.id && OUTS.includes(String(q.status || "").toUpperCase()))
-          .map((q) => ({ q, w: pct(winChance(s, on.map((r) => (r.id === q.id ? { ...r, ir: true } : r)))) }));
-        const pool = mine.filter((q) => !q.ir && q.id !== P.id && !irOpts.some((o) => o.q.id === q.id)).sort((a, b) => gxPgAvg(a, s.blend) - gxPgAvg(b, s.blend)).slice(0, 8);
-        const drops = pool.map((q) => ({ q, v: gxPgAvg(q, s.blend), w: pct(winChance(s, on.filter((r) => r.id !== q.id))) }))
-          .sort((a, b) => (b.w || 0) - (a.w || 0) || a.v - b.v).slice(0, 5);
-        /* change 245: good injured free agents who could take the IR spot */
-        const stash = irOpts.length ? [] : s.players.filter((q) => q.ft === "fa" && ["OUT", "INJURY_RESERVE"].includes(String(q.status || "").toUpperCase()))
-          .sort((a, b) => gxPgAvg(b, s.blend) - gxPgAvg(a, s.blend)).slice(0, 4);
-        if (!dead) setCalc({ base, irOpts, drops, stash });
-      } catch (e) { if (!dead) setCalc({ err: true }); }
-    }, 60);
-    return () => { dead = true; clearTimeout(id); };
-  }, [open, gen, mine]);
-  if (!back.length) return null;
-  const wp = (x) => (x == null ? "\u2013" : Math.round(x * 100) + "%");
-  const col = (x, b) => (x == null || b == null ? "" : x > b + 0.005 ? "var(--good)" : x < b - 0.005 ? "var(--bad)" : "");
-  const openP = (p) => { if (window.__NAV) window.__NAV.player(p); };
-  const row = (o, sub, best) => (
-    <div key={o.q.id} className={"r" + (best ? " best" : "")}>
-      <GxFace p={o.q} size={26} />
-      <button type="button" className="nn text-left" onClick={() => openP(o.q)}><b>{o.q.n}</b><small>{sub}</small></button>
-      <span className="n">{f1(gxPgAvg(o.q, s.blend))}<small>pts/g</small></span>
-      <span className="n" style={{ color: col(o.w, calc && calc.base) }}>{wp(o.w)}<small>win after</small></span>
-    </div>
-  );
-  return (
-    <div className="gx-pn gx-ir244" data-gx="244">
-      <div className="hd"><span className="gx-tag">Back from IR</span></div>
-      {back.map(({ p, w }) => (
-        <React.Fragment key={p.id}>
-          <div className="pl">
-            <GxFace p={p} size={30} />
-            <button type="button" className="nm text-left" onClick={() => openP(p)}><b>{p.n}</b><small>{p.t + " \u00b7 " + p.p + " \u00b7 " + (w.now ? "Ready to come back" : "Back around " + dayLabel(w.d)) + " \u00b7 " + f1(gxPgAvg(p, s.blend)) + " pts/g"}</small></button>
-            <button type="button" className="bt" onClick={() => setOpen(open === p.id ? null : p.id)}>{open === p.id ? "Close" : "Make room"}</button>
-          </div>
-          {open === p.id ? (
-            <div className="op">
-              {!calc ? <div className="text-xs text-slate-500" style={{ padding: "8px 0" }}>Working out your options...</div> : calc.err ? <div className="text-xs text-slate-500">Could not work this out right now.</div> : (
-                <>
-                  {calc.irOpts.length ? <><div className="gt">Move to IR instead (no drop)</div>{calc.irOpts.map((o, i) => row(o, o.q.t + " \u00b7 " + String(o.q.status || "").replace(/_/g, " ").toLowerCase() + (o.q.back ? " \u00b7 back " + dayLabel(o.q.back) : ""), i === 0))}</> : null}
-                  <div className="gt">{calc.irOpts.length ? "Or drop" : "Drop one to make room"}</div>
-                  {calc.drops.map((o, i) => row(o, o.q.t + " \u00b7 " + o.q.p, !calc.irOpts.length && i === 0))}
-                  {calc.stash && calc.stash.length && calc.drops.length ? <>{/* change 245 */}
-                    <div className="gt">Then stash an injured free agent in IR</div>
-                    <div className="nt245">{"Drop " + calc.drops[0].q.n + ", pick up one of these and put him in the IR spot " + p.n.split(" ").slice(-1)[0] + " leaves. He doesn't play now, but you keep him for when he's back."}</div>
-                    {calc.stash.map((q, i) => (
-                      <div key={q.id} className={"r" + (i === 0 ? " best" : "")}>
-                        <GxFace p={q} size={26} />
-                        <button type="button" className="nn text-left" onClick={() => openP(q)}><b>{q.n}</b><small>{q.t + " \u00b7 " + q.p + " \u00b7 " + (String(q.status || "").toUpperCase() === "OUT" ? "out" : "IR") + (q.back && q.back >= today ? " \u00b7 back " + dayLabel(q.back) : "")}</small></button>
-                        <span className="n">{f1(gxPgAvg(q, s.blend))}<small>pts/g</small></span>
-                        <span className="fr245">Add<small>to IR</small></span>
-                      </div>
-                    ))}
-                  </> : null}
-                  <div className="ft"><span>{"Your win chance this week now: " + wp(calc.base)}</span><button type="button" className="bt" onClick={() => window.__QA && window.__QA.espn && window.__QA.espn(p)}>Do it on ESPN</button></div>
-                </>
-              )}
-            </div>
-          ) : null}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-}
 // ---------- change 246: Kuvar's team stall pictures (install.py) ----------
 const GX_ST246 = new Set(["ANA", "BOS", "BUF", "CAR", "CBJ", "CGY", "CHI", "COL", "DAL", "DET", "EDM", "FLA", "LA", "MIN", "MTL", "NJ", "NSH", "NYI", "NYR", "OTT", "PHI", "PIT", "SEA", "SJ", "STL", "TB", "TOR", "UTA", "VAN", "VGK", "WPG", "WSH"]);
-const gxSt246c = (t) => (GX_ST246.has(String(t || "").toUpperCase()) ? " st246" : "");
-const gxSt246s = (t) => { const T = String(t || "").toUpperCase(); return GX_ST246.has(T) ? { "--st": "url(stalls/" + T + ".jpg?v=1)" } : undefined; };
 // ---------- change 248: hot and cold stalls on Lines (install.py) ----------
 // soft cone of light for the available-player spotlight (blurred trapezoid used as a mask)
 (function () { try { const s = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><filter id='b' x='-20%' y='-20%' width='140%' height='140%'><feGaussianBlur stdDeviation='3.2'/></filter></defs><polygon points='40,0 60,0 88,100 12,100' fill='white' filter='url(#b)'/></svg>"; document.documentElement.style.setProperty("--bm248", "url(\"data:image/svg+xml," + encodeURIComponent(s) + "\")"); } catch (e) {} })();
@@ -13075,58 +11119,6 @@ function gxHC248(p, hist, s) {
   if (!(exp > 0.5)) return "";
   const r = a.reduce((t, v) => t + v, 0) / a.length / exp - 1;
   return r >= 1 ? "h3" : r >= 0.7 ? "h2" : r >= 0.4 ? "h1" : r <= -0.8 ? "c3" : r <= -0.6 ? "c2" : r <= -0.4 ? "c1" : "";
-}
-function gxCup248(x, y, h, k) {
-  const w = h * 0.62, s = h / 10;
-  return (
-    <g key={k} transform={"translate(" + x + " " + y + ") scale(" + s + ")"}>
-      <ellipse cx="0" cy="0.2" rx="4.2" ry="0.7" fill="rgba(0,0,0,.45)" />
-      <path d="M-3 0 h6 v-1.4 h-6 Z" fill="#5a3b12" />
-      <path d="M-1.9 -1.4 h3.8 l-0.5 -1.1 h-2.8 Z" fill="#b8860b" />
-      <path d="M-0.55 -2.5 h1.1 v-2.1 h-1.1 Z" fill="#c9971a" />
-      <path d="M-3.1 -9.6 h6.2 q0 4.6 -3.1 5.1 q-3.1 -0.5 -3.1 -5.1 Z" fill="#e0aa1e" stroke="#7a560c" strokeWidth="0.18" />
-      <path d="M-3.1 -8.9 q-2 0 -1.9 1.5 q0.2 1.4 2.1 1.3 M3.1 -8.9 q2 0 1.9 1.5 q-0.2 1.4 -2.1 1.3" fill="none" stroke="#d29c19" strokeWidth="0.45" />
-      <path d="M-2.2 -9.2 q-0.1 3.4 1.2 4.2" fill="none" stroke="#fff1b0" strokeWidth="0.45" opacity=".8" />
-      <circle className="tw" cx="1.6" cy="-8.6" r="0.35" fill="#fff" />
-    </g>
-  );
-}
-function gxWeb248(cx, cy, r, ang0, k) {
-  const sp = [], n = 6, a1 = ang0, a2 = ang0 + 90;
-  const pt = (a, rr) => [cx + Math.cos(a * Math.PI / 180) * rr, cy + Math.sin(a * Math.PI / 180) * rr];
-  for (let i = 0; i <= n; i++) { const a = a1 + (a2 - a1) * i / n, [x, y] = pt(a, r); sp.push(<line key={"l" + i} x1={cx} y1={cy} x2={x} y2={y} />); }
-  for (let j = 1; j <= 4; j++) {
-    const rr = r * j / 4.4; let d = "";
-    for (let i = 0; i <= n; i++) { const a = a1 + (a2 - a1) * i / n, [x, y] = pt(a, rr); d += (i ? " Q" + pt(a - (a2 - a1) / n / 2, rr * 0.86).map((v) => v.toFixed(2)).join(" ") + " " : "M") + x.toFixed(2) + " " + y.toFixed(2); }
-    sp.push(<path key={"r" + j} d={d} fill="none" />);
-  }
-  return <g key={k} stroke="rgba(235,240,245,.6)" strokeWidth="0.32">{sp}</g>;
-}
-function gxSpider248(x, y, top, s, k) {
-  const legs = [];
-  for (let i = 0; i < 4; i++) { const yy = -0.9 + i * 0.6; legs.push(<path key={"a" + i} d={"M-0.6 " + yy + " q-1.6 -0.8 -2.4 " + (0.9 + i * 0.5)} />, <path key={"b" + i} d={"M0.6 " + yy + " q1.6 -0.8 2.4 " + (0.9 + i * 0.5)} />); }
-  return (
-    <g key={k}>
-      <line x1={x} y1={top} x2={x} y2={y - 1.6 * s} stroke="rgba(235,240,245,.55)" strokeWidth="0.22" />
-      <g className="sp" transform={"translate(" + x + " " + y + ") scale(" + s + ")"}>
-        <g fill="none" stroke="#111" strokeWidth="0.32" strokeLinecap="round">{legs}</g>
-        <ellipse cx="0" cy="0.5" rx="1.1" ry="1.4" fill="#141414" stroke="#3a3a3a" strokeWidth="0.15" />
-        <circle cx="0" cy="-1" r="0.7" fill="#1c1c1c" />
-        <circle cx="-0.25" cy="-1.15" r="0.13" fill="#c33" /><circle cx="0.25" cy="-1.15" r="0.13" fill="#c33" />
-      </g>
-    </g>
-  );
-}
-function GxHC248({ k }) {
-  if (!k) return null;
-  const g = [];
-  if (k === "h1") g.push(gxCup248(84, 95, 9, "a"));
-  if (k === "h2") g.push(gxCup248(16, 95, 9, "a"), gxCup248(84, 95, 11, "b"));
-  if (k === "h3") g.push(gxCup248(10, 95, 8, "a"), gxCup248(21, 95.5, 12, "b"), gxCup248(79, 95.5, 12, "c"), gxCup248(90, 95, 8, "d"));
-  if (k === "c1") g.push(gxWeb248(0, 0, 18, 0, "w1"));
-  if (k === "c2") g.push(gxWeb248(0, 0, 22, 0, "w1"), gxWeb248(100, 0, 18, 90, "w2"), gxSpider248(80, 30, 0, 1.2, "s1"));
-  if (k === "c3") g.push(gxWeb248(0, 0, 28, 0, "w1"), gxWeb248(100, 0, 26, 90, "w2"), gxWeb248(0, 100, 16, 270, "w3"), gxWeb248(100, 100, 16, 180, "w4"), gxSpider248(18, 38, 0, 1.3, "s1"), gxSpider248(84, 24, 0, 1, "s2"), gxSpider248(70, 52, 0, 0.9, "s3"));
-  return <span className={"hc248"} aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none">{g}</svg></span>;
 }
 // ---------- change 249: per-team jersey colours and stripes from Kuvar's jersey sheet (install.py) ----------
 // b body, y shoulder yoke, ys stripes under the yoke, sl lower sleeves, st sleeve and hem stripes (top to bottom), hm below the hem stripes, col collar, n number, o number outline, nm name
@@ -14010,22 +12002,6 @@ function GxTkLive264({ id }) {
 // ESPN's clock only changes every few seconds. Between updates the app counts down by itself from the last value.
 // If ESPN's clock has not moved for 8 s, the clock is stopped (whistle), so the app shows ESPN's value and stops counting.
 const gxSec265 = (c) => { const m = String(c || "").match(/^(\d+):(\d{1,2})/); return m ? +m[1] * 60 + +m[2] : null; };
-function GxClk265({ id, per, clk }) {
-  const r = React.useRef({ v: null, sec: null, chg: 0 });
-  const [, tick] = useState(0);
-  const now = Date.now();
-  if (clk !== r.current.v) r.current = { v: clk, sec: gxSec265(clk), chg: now };
-  useEffect(() => { const t = setInterval(() => tick((x) => x + 1), 250); return () => clearInterval(t); }, []);
-  const ty = ((gxHead132(((G132.sum || {})[id] || {}).js).status || {}).type) || {};
-  const brk = ty.name === "STATUS_END_PERIOD" || ty.name === "STATUS_INTERMISSION" || /intermission|end of/i.test(ty.detail || "");
-  const R = r.current, el = (now - R.chg) / 1000;
-  let sec = R.sec;
-  if (sec != null && !brk && sec > 0 && el < 8) sec = Math.max(0, Math.ceil(sec - el));
-  if (!per) return null;
-  const pl = per > 3 ? "OT" : "P" + per;
-  const txt = brk ? (per <= 3 ? pl + " INT" : pl + " END") : sec == null ? pl + " " + (clk || "") : pl + " " + gxMmss132(sec);
-  return <span className="ck264" data-gx="265">{txt}</span>;
-}
 // ---------- change 266: one shared game clock and a richer live tracker (install.py) ----------
 // Two ESPN feeds give the clock (scoreboard and game summary) and they lag by different amounts.
 // Each feed's last value is kept with the moment it changed; each counts down by itself while it keeps changing (8 s rule from 265),
@@ -14204,62 +12180,6 @@ function GxCel267({ e, c, tm }) {
 // the app picks the ones that mention this player: full name anywhere, last name alone only when no other player shares it
 const GX_SUB270 = { ANA: "AnaheimDucks", BOS: "BostonBruins", BUF: "sabres", CAR: "canes", CBJ: "BlueJackets", CGY: "CalgaryFlames", CHI: "hawks", COL: "ColoradoAvalanche", DAL: "DallasStars", DET: "DetroitRedWings", EDM: "EdmontonOilers", FLA: "FloridaPanthers", LA: "losangeleskings", MIN: "wildhockey", MTL: "Habs", NJ: "devils", NSH: "Predators", NYI: "NewYorkIslanders", NYR: "rangers", OTT: "OttawaSenators", PHI: "Flyers", PIT: "penguins", SEA: "SeattleKraken", SJ: "SanJoseSharks", STL: "stlouisblues", TB: "TampaBayLightning", TOR: "leafs", UTA: "UtahHockeyClub", UTAH: "UtahHockeyClub", VAN: "canucks", VGK: "goldenknights", WPG: "winnipegjets", WSH: "caps" };
 window.__TK270 = window.__TK270 || {};
-function gxTkLoad270(name) {
-  const c = window.__TK270[name], now = Date.now();
-  if (c && now - c.at < 10 * 60e3) return c.p;
-  const p = fetch("talk/raw/" + name + ".json?v=" + Math.floor(now / 600e3)).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-  window.__TK270[name] = { at: now, p };
-  return p;
-}
-const gxTkN270 = (s) => String(s || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-function gxTkLasts270(s) {
-  const k = s.players.length;
-  if (window.__TKL270 && window.__TKL270.k === k) return window.__TKL270.m;
-  const m = {};
-  s.players.forEach((q) => { const l = gxTkN270(String(q.n || "").split(" ").slice(1).join(" ")); if (l) (m[l] = m[l] || []).push(q.t); });
-  window.__TKL270 = { k, m };
-  return m;
-}
-const gxAgo270 = (iso) => { const m = Math.max(0, (Date.now() - Date.parse(iso)) / 60e3); return m < 60 ? Math.round(m) + "m" : m < 48 * 60 ? Math.round(m / 60) + "h" : Math.round(m / 1440) + "d"; };
-function GxTalk270({ p, s }) {
-  const [d, setD] = useState(null), [f, setF] = useState("all");
-  const team = GX_SUB270[p.t] || "";
-  useEffect(() => {
-    let on = true;
-    Promise.all([gxTkLoad270("_meta"), gxTkLoad270("fantasyhockey"), gxTkLoad270("hockey"), team ? gxTkLoad270(team) : Promise.resolve(null)]).then(([m, fh, hk, tm]) => {
-      if (!on) return;
-      const full = " " + gxTkN270(p.n) + " ", last = gxTkN270(String(p.n || "").split(" ").slice(1).join(" ")), L = gxTkLasts270(s)[last] || [];
-      const anyOk = last.length > 3 && L.length === 1, teamOk = last.length > 3 && L.filter((t) => t === p.t).length === 1;
-      const hit = (it, okLast) => { const x = " " + gxTkN270((it.h || "") + " " + it.x) + " "; return x.indexOf(full) >= 0 || (okLast && x.indexOf(" " + last + " ") >= 0); };
-      const out = [], seen = {};
-      const take = (src, sub, okLast) => ((src || {}).items || []).forEach((it) => { if (!seen[it.u] && hit(it, okLast)) { seen[it.u] = 1; out.push({ ...it, sub }); } });
-      take(tm, team, teamOk); take(fh, "fantasyhockey", anyOk); take(hk, "hockey", anyOk);
-      out.sort((a, b) => (a.t < b.t ? 1 : -1));
-      setD({ items: out, upd: m && m.upd, none: !m && !fh && !hk });
-    });
-    return () => { on = false; };
-  }, [p.id]);
-  if (!d) return <div className="gx-pd-pn gx-tk270" data-gx="270"><div className="gx-pd-h">Talk</div><div className="em270">Loading Reddit...</div></div>;
-  const subs = [["all", "All"], ["team", team ? "r/" + team : ""], ["fantasyhockey", "r/fantasyhockey"], ["hockey", "r/hockey"]].filter((x) => x[1]);
-  const L = d.items.filter((it) => f === "all" || (f === "team" ? it.sub === team : it.sub === f)).slice(0, 40);
-  const stale = d.upd && Date.now() - Date.parse(d.upd) > 8 * 3600e3;
-  return (
-    <div className="gx-pd-pn gx-tk270" data-gx="270">
-      <div className="gx-pd-h hd270"><span>Talk</span><small>{d.upd ? "Reddit, updated " + gxAgo270(d.upd) + " ago" : ""}</small></div>
-      {d.none ? <div className="em270">No Reddit posts yet. They come from the script on your Mac every 3 hours.</div> : (<>
-        <div className="fl270">{subs.map(([k, l]) => <button key={k} type="button" className={f === k ? "on" : ""} onClick={() => setF(k)}>{l}</button>)}</div>
-        {stale ? <div className="em270" style={{ paddingTop: 4 }}>Your Mac hasn't sent new posts for a while (it only runs while the Mac is awake).</div> : null}
-        {L.length ? L.map((it) => (
-          <a key={it.u} className="it270" href={it.u} target="_blank" rel="noopener" onClick={gxWatchGo211}>
-            <div className="mt270"><b>{"r/" + it.sub}</b><span>{gxAgo270(it.t)}</span>{it.d ? <span className="tg270 d270">Daily Discussion</span> : <span className="tg270">{it.k === "c" ? "Comment" : "Post"}</span>}<span>{"u/" + it.w}</span></div>
-            <div className="tx270">{it.x}</div>
-            {it.h ? <div className="th270">{"in: " + it.h}</div> : null}
-          </a>
-        )) : <div className="em270">{"Nobody on these subreddits has mentioned " + p.n + " in the last 3 days."}</div>}
-      </>)}
-    </div>
-  );
-}
 // ---------- change 276: Game plan card in the Roster box (install.py) ----------
 // the lineup day to plan: today while a game has not started yet, otherwise the next day with games
 function gxPlan276(s, w, today) {
@@ -14636,49 +12556,9 @@ function GxGear285({ tab, go }) {
     </a>
   );
 }
-function GxLgLink285({ go }) {
-  return (
-    <a href={gxHash("league", "power")} className="gx-ll285" data-gx="285" onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go("league", "power"); }}>
-      <span><b>League</b><small>Standings, every matchup this week, playoff odds</small></span>
-      <span className="sec-chev shut" style={{ margin: "0 4px 0 0" }}></span>
-    </a>
-  );
-}
 // ---------- change 287: Players as one list (install.py) ----------
 const GX_PL287 = [["all", "All"], ["fa", "Free agents"], ["inj", "Injured"], ["adv", "Advice"]];
-function GxPlayers287(P) {
-  const { sub } = P;
-  const [v, setV] = useState(() => { const u = uiGet().pl287; return sub === "allp" ? "all" : sub === "injuries" ? "inj" : GX_PL287.some((x) => x[0] === u) ? u : "fa"; });
-  const pick = (k) => { setV(k); uiSet("pl287", k); };
-  return (
-    <div className="gx-pl287" data-gx="287">
-      <div className="gx-seg103">{GX_PL287.map(([k, l]) => <button key={k} type="button" className={v === k ? "on" : ""} onClick={() => pick(k)}>{l}</button>)}</div>
-      {v === "adv" ? <Pickups {...P} /> : <GxRankings s={P.s} st287={v} />}
-    </div>
-  );
-}
 // ---------- change 288: Goalie starts card on Matchup (install.py) ----------
-function GxGoalCard288(P) {
-  const { s } = P, today = todayISO();
-  const [open, setOpen] = useState(() => uiGet().gc288 === "o");
-  const flip = () => { const v = !open; setOpen(v); uiSet("gc288", v ? "o" : "c"); };
-  let sum = "";
-  try {
-    const DF = (((window.ESPN_DATA || {}).goalies) || {})[today] || {};
-    const plays = (p) => !!gameOf(p.t, today) || Object.values(DF).some((v) => v && v.team === p.t);
-    const mine = s.players.filter((p) => p.ft === s.me && p.p === "G" && !p.ir && plays(p));
-    sum = mine.length ? mine.map((p) => lastN(p.n) + ": " + String(gStart(p, today).l || "").replace(/^[^A-Za-z]+/, "")).join(" \u00b7 ") : "None of your goalies play today";
-  } catch (e) { sum = ""; }
-  return (
-    <div className="gx-gc288" data-gx="288">
-      <button type="button" className="hd288" aria-expanded={open} onClick={flip}>
-        <span><b>Goalie starts</b><small>{sum}</small></span>
-        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 0 0" }}></span>
-      </button>
-      {open ? <div className="bd288"><GoalieStreams {...P} /></div> : null}
-    </div>
-  );
-}
 // ---------- change 289: Players page back with a Show filter, week strip, Goalies tonight, strength rank (install.py) ----------
 const GX_SHOW289 = [["fa", "Free agents"], ["all", "All players"], ["inj", "Injured"], ["watch", "Watchlist"]];
 function GxPlayers289(P) {
@@ -14727,38 +12607,6 @@ function gxGoals289(s, wk, today) {
   const opp = oppOf(wk, s.me) || s.opp;
   const free = starts.filter((x) => x.p && x.p.ft === "fa").map((x) => row(x.p)).sort((a, b) => b.x - a.x).slice(0, 5);
   return { mine: team(s.me), opp, theirs: opp ? team(opp) : [], free, known: starts.length };
-}
-function GxGoal289(P) {
-  const { s, wk, go } = P, today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
-  const [open, setOpen] = useState(() => uiGet().go289 === "o");
-  const flip = () => { const v = !open; setOpen(v); uiSet("go289", v ? "o" : "c"); };
-  const d = useMemo(() => { try { return gxGoals289(s, wk, today); } catch (e) { return null; } }, [s.players, wk, today, gen]);
-  if (!d) return null;
-  const sum = d.mine.length ? d.mine.map((r) => lastN(r.p.n) + " " + r.w[0].toLowerCase()).join(" \u00b7 ") : "None of your goalies play today";
-  const rows = (list, none) => (list.length ? list.map((r) => (
-    <button key={r.p.id} type="button" className="rw" onClick={() => { if (window.__NAV) window.__NAV.player(r.p); }}>
-      <GxFace p={r.p} size={22} />
-      <span className="nn"><b>{r.p.n}</b><small>{r.sub}</small></span>
-      <span className={"st " + r.w[1]}>{r.w[0]}</span>
-      <span className="xp">{r.sits ? "\u2013" : f1(r.x)}</span>
-    </button>
-  )) : <div className="em">{none}</div>);
-  return (
-    <div className="gx-go289" data-gx="289g">
-      <button type="button" className="hd" aria-expanded={open} onClick={flip}>
-        <span><b>Goalies tonight</b><small>{sum}</small></span>
-        <span className={"sec-chev" + (open ? "" : " shut")} style={{ margin: "0 4px 0 0" }}></span>
-      </button>
-      {open ? (
-        <div className="bd">
-          <div className="sc">Yours</div>{rows(d.mine, "None play today.")}
-          {d.opp ? <><div className="sc">{teamName(s, d.opp)}</div>{rows(d.theirs, "None play today.")}</> : null}
-          <div className="sc">Free agents starting</div>{rows(d.free, d.known ? "No free agent is starting tonight." : "Starters are not posted yet.")}
-          <button type="button" className="al" onClick={() => go("moves", "goalies")}>Every goalie, any day</button>
-        </div>
-      ) : null}
-    </div>
-  );
 }
 // where my team ranks in strength; tap for every team
 function GxStr289({ s }) {
