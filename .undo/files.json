@@ -1,8 +1,9 @@
 {
  "files": {
-  "gm_edge.py": true
+  "fantasy-gm.html": true,
+  "gm_live.py": true
  },
  "changes": [
-  "301-sync-unblock.py"
+  "302-team-colours-goal-alerts.py"
  ]
 }

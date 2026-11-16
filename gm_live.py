@@ -168,7 +168,87 @@ def main():
             elif side != 0:
                 last = side
         push_onice()  # change 205
+        try:
+            goal_alerts302(sc[2] if sc else None)  # change 302
+        except Exception as e:
+            log("goal alerts failed", e)
         time.sleep(EVERY)
+
+
+# ---------- change 302: a phone alert for every goal and assist by your opponent's players ----------
+SB302 = "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/"
+_seen302, _primed302, _opp302 = set(), False, {"id": None, "ids": set(), "at": 0}
+
+
+def _opp_ids302(opp):
+    """the opponent's player ids, read again every 20 minutes"""
+    if opp != _opp302["id"] or time.time() - _opp302["at"] > 1200:
+        try:
+            r = s.get(LEAGUE, params=[("view", "mRoster"), ("forTeamId", opp)], timeout=30).json()
+            t = next((x for x in r.get("teams", []) if x.get("id") == opp), {})
+            _opp302.update({"id": opp, "ids": {e.get("playerId") for e in (t.get("roster") or {}).get("entries", [])}, "at": time.time()})
+        except Exception as e:
+            log("opponent roster failed", e)
+    return _opp302["ids"]
+
+
+def _count302(text, name, goal):
+    import re as _re
+    if goal:
+        m = _re.search(r"Goal \((\d+)\)", text or "")
+    else:
+        m = _re.search(_re.escape(name) + r" \((\d+)\)", text or "")
+    return f" ({m.group(1)})" if m else ""
+
+
+def goal_alerts302(opp):
+    global _primed302
+    if not opp:
+        return
+    ids = _opp_ids302(opp)
+    if not ids:
+        return
+    try:
+        sb = requests.get(SB302 + "scoreboard", timeout=20).json()
+    except Exception as e:
+        log("goal check failed", e)
+        return
+    for ev in sb.get("events", []):
+        st = (((ev.get("status") or {}).get("type")) or {}).get("state")
+        if st not in ("in", "post"):
+            continue
+        try:
+            sm = requests.get(SB302 + "summary", params={"event": ev.get("id")}, timeout=20).json()
+        except Exception:
+            continue
+        for p in sm.get("plays") or []:
+            if not p.get("scoringPlay") or ((p.get("period") or {}).get("number") or 0) >= 5:
+                continue          # shootout goals do not count
+            for q in p.get("participants") or []:
+                a = q.get("athlete") or {}
+                try:
+                    pid = int(a.get("id"))
+                except Exception:
+                    continue
+                kind = q.get("type")
+                if pid not in ids or kind not in ("scorer", "assister"):
+                    continue
+                key = f"{p.get('id')}|{pid}"
+                if key in _seen302:
+                    continue
+                _seen302.add(key)
+                if not _primed302:
+                    continue          # goals from before this run started: no alert
+                name = a.get("displayName") or a.get("fullName") or ""
+                goal = kind == "scorer"
+                msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
+                try:
+                    import gm_push
+                    gm_push.send("\U0001F3D2 Fantasy Islands", msg, "#matchup")
+                except Exception as e:
+                    log("goal alert failed", e)
+                log("goal alert:", msg)
+    _primed302 = True
 
 
 if __name__ == "__main__":
