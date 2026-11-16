@@ -1,0 +1,18 @@
+# Fantasy Islands GM: what GitHub Pages leaves OFF the website.
+# These folders stay in the repo (the AI jobs still use them); they just aren't published,
+# which keeps the site far under GitHub's 1 GB website limit. Nothing in the app loads them.
+exclude:
+  - ai/predictions
+  - ai/older
+  - ai/labels
+  - ai/xg
+  - ai/mates
+  - changes
+  - docs
+  - .undo
+  - models3d
+  - proto3d
+  - "*.py"
+  - "*.pkl"
+  - README.md
+  - CLAUDE.md
