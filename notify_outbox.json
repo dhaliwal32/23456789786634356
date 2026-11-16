@@ -878,7 +878,31 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-16T15:07:07Z",
-   "seen": "2026-11-16T15:35:30Z"
+   "seen": "2026-11-16T15:46:40Z"
+  },
+  {
+   "k": "2026-11-16|72c54113d267",
+   "at": "2026-11-16T15:46:38Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen joined EDM PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-16T15:46:38Z",
+   "seen": "2026-11-16T15:46:38Z"
+  },
+  {
+   "k": "2026-11-16|95a6525d2b97",
+   "at": "2026-11-16T15:46:38Z",
+   "title": "Fantasy GM",
+   "text": "Connelly joined Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-16T15:46:38Z",
+   "seen": "2026-11-16T15:46:38Z"
   }
  ],
  "sent": {
