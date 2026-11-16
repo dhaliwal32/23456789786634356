@@ -611,6 +611,7 @@
 "5149209": {
 "d": "2026-11-15",
 "k": "later",
+"nd": "2026-11-15",
 "now": "2027-01-01",
 "was": "2026-12-01"
 },
@@ -644,6 +645,7 @@
 "5216907": {
 "d": "2026-11-15",
 "k": "later",
+"nd": "2026-11-15",
 "now": "2026-12-08",
 "was": "2026-11-14"
 },
@@ -1136,7 +1138,7 @@
 },
 "5149209": {
 "back": "2027-01-01",
-"note": "Musty (upper body) was put on non-roster injured reserve Monday, according to Curtis Pashelka of The San Jose Mercury News.",
+"note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
 "status": "Injured Reserve"
 },
 "5149210": {
@@ -1176,7 +1178,7 @@
 },
 "5216907": {
 "back": "2026-12-08",
-"note": "ir",
+"note": "Head coach Ryan Warsofsky said Sunday that Chernyshov (upper body) is not close to returning to game action, per Curtis Pashelka of The San Jose Mercury News.",
 "status": "Injured Reserve"
 },
 "5275337": {
