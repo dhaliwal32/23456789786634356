@@ -39,10 +39,10 @@
 "was": "Out"
 },
 "2967072": {
-"d": "2026-11-15",
-"k": "later",
+"d": "2026-11-16",
+"k": "dtd",
 "now": "2026-11-17",
-"was": "2026-11-15"
+"was": "Out"
 },
 "2976833": {
 "d": "2026-11-15",
@@ -106,10 +106,10 @@
 "was": ""
 },
 "3042017": {
-"d": "2026-11-15",
-"k": "later",
+"d": "2026-11-16",
+"k": "dtd",
 "now": "2026-11-17",
-"was": "2026-11-15"
+"was": "Out"
 },
 "3042019": {
 "d": "2026-11-12",
@@ -314,11 +314,11 @@
 "was": ""
 },
 "4233536": {
-"d": "2026-11-13",
-"k": "later",
+"d": "2026-11-16",
+"k": "dtd",
 "nd": "2026-11-14",
 "now": "2026-11-17",
-"was": "2026-11-14"
+"was": "Out"
 },
 "4233563": {
 "d": "2026-11-14",
@@ -513,10 +513,11 @@
 "was": "2026-12-01"
 },
 "5052": {
-"d": "2026-11-15",
-"k": "new",
+"d": "2026-11-16",
+"k": "dtd",
 "nd": "2026-11-15",
-"now": "2026-11-17"
+"now": "2026-11-17",
+"was": "Out"
 },
 "5075840": {
 "d": "2026-11-13",
@@ -589,9 +590,10 @@
 "was": "2026-12-01"
 },
 "5173105": {
-"d": "2026-11-15",
-"k": "new",
-"now": "2026-11-17"
+"d": "2026-11-16",
+"k": "dtd",
+"now": "2026-11-17",
+"was": "Out"
 },
 "5188510": {
 "d": "2026-11-14",
@@ -701,8 +703,8 @@
 },
 "2967072": {
 "back": "2026-11-17",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976833": {
 "back": "2026-11-17",
@@ -756,8 +758,8 @@
 },
 "3042017": {
 "back": "2026-11-17",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042037": {
 "back": "2026-12-05",
@@ -911,8 +913,8 @@
 },
 "4233536": {
 "back": "2026-11-17",
-"note": "Heiskanen (upper body) is doubtful for Sunday's matchup against Florida, per Mike Heika of the Stars' official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233563": {
 "back": "2026-11-28",
@@ -1066,8 +1068,8 @@
 },
 "5052": {
 "back": "2026-11-17",
-"note": "Myers (upper body) will be evaluated Monday, Robert Tiffin of NHL.com reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5075840": {
 "back": "2026-11-19",
@@ -1136,8 +1138,8 @@
 },
 "5173105": {
 "back": "2026-11-17",
-"note": "Barkey (illness) won't play against Edmonton on Sunday, per Adam Kimelman of NHL.com.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5188490": {
 "back": "2027-02-13",
