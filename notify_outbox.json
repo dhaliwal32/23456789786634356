@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-09|weekly-6",
-   "at": "2026-11-09T15:03:12Z",
-   "title": "Fantasy GM",
-   "text": "Week 6: you 582, Gyani 382 (won by 200). App was 8% off on your players.",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-09T15:03:12Z",
-   "seen": "2026-11-09T18:56:27Z"
-  },
-  {
    "k": "2026-11-09|43f467f8e8e8",
    "at": "2026-11-09T16:57:45Z",
    "title": "Fantasy GM",
@@ -879,6 +867,18 @@
    "via": "urgent",
    "sent_at": "2026-11-16T01:23:23Z",
    "seen": "2026-11-16T01:23:23Z"
+  },
+  {
+   "k": "2026-11-16|weekly-7",
+   "at": "2026-11-16T15:07:07Z",
+   "title": "Fantasy GM",
+   "text": "Week 7: you 435, BigWilly 498 (lost by 63). App was 12% off on your players.",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-16T15:07:07Z",
+   "seen": "2026-11-16T15:07:07Z"
   }
  ],
  "sent": {
