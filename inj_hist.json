@@ -390,6 +390,11 @@
 "now": "2027-09-15",
 "was": "2026-11-08"
 },
+"4391255": {
+"d": "2026-11-15",
+"k": "new",
+"now": "2026-11-17"
+},
 "4393049": {
 "d": "2026-11-10",
 "k": "back",
@@ -996,6 +1001,11 @@
 "back": "2027-09-15",
 "note": "Bahl will undergo surgery for a ruptured Achilles tendon and won't play again in the 2026-27 season, the Flames announced Sunday.",
 "status": "Injured Reserve"
+},
+"4391255": {
+"back": "2026-11-17",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4392260": {
 "back": "2026-12-05",
