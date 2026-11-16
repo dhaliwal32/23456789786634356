@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-09|43f467f8e8e8",
-   "at": "2026-11-09T16:57:45Z",
-   "title": "Fantasy GM",
-   "text": "Monahan joined CBJ PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-09T16:57:45Z",
-   "seen": "2026-11-09T16:57:45Z"
-  },
-  {
    "k": "2026-11-09|5bd9b2633752",
    "at": "2026-11-09T19:02:44Z",
    "title": "Fantasy GM",
@@ -878,7 +866,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-16T15:07:07Z",
-   "seen": "2026-11-16T16:52:10Z"
+   "seen": "2026-11-16T16:58:10Z"
   },
   {
    "k": "2026-11-16|72c54113d267",
