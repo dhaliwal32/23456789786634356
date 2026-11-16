@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_lock.py": true,
+  "gx-lock.js": true
  },
  "changes": [
-  "306-remove-unused-code.py"
+  "307-smaller-locked-data.py"
  ]
 }

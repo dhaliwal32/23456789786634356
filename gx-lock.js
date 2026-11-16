@@ -61,12 +61,31 @@
     return out;
   }
   function dec(E) {
+    if (E && E.v === 2) return dec307(E);
     return unlocked.then(function (k) {
       return crypto.subtle.decrypt({ name: "RSA-OAEP" }, k, b64(E.k));
     }).then(function (raw) {
       var z = chacha(new Uint8Array(raw), b64(E.n), b64(E.c));
       return new Response(new Blob([z]).stream().pipeThrough(new DecompressionStream("deflate"))).text();
     }).then(function (t) { return JSON.parse(t); });
+  }
+  // change 307: the new kind is many small locked pieces; each one is nonce (12 bytes) + locked, zipped text
+  function dec307(E) {
+    return unlocked.then(function (k) {
+      return crypto.subtle.decrypt({ name: "RSA-OAEP" }, k, b64(E.k));
+    }).then(function (raw) {
+      var key = new Uint8Array(raw);
+      return Promise.all(E.c.map(function (s) {
+        var u = b64(s), z = chacha(key, u.subarray(0, 12), u.subarray(12));
+        return new Response(new Blob([z]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer();
+      }));
+    }).then(function (parts) {
+      var n = 0, i, all;
+      for (i = 0; i < parts.length; i++) n += parts[i].byteLength;
+      all = new Uint8Array(n); n = 0;
+      for (i = 0; i < parts.length; i++) { all.set(new Uint8Array(parts[i]), n); n += parts[i].byteLength; }
+      return JSON.parse(new TextDecoder().decode(all));
+    });
   }
   function load(src) {
     return new Promise(function (res, rej) {
