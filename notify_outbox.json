@@ -879,6 +879,18 @@
    "via": "urgent",
    "sent_at": "2026-11-15T23:49:18Z",
    "seen": "2026-11-16T00:27:24Z"
+  },
+  {
+   "k": "2026-11-15|a6b0a48cf847",
+   "at": "2026-11-16T00:33:24Z",
+   "title": "Fantasy GM",
+   "text": "Brossoit not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-16T00:33:24Z",
+   "seen": "2026-11-16T00:33:24Z"
   }
  ],
  "sent": {
