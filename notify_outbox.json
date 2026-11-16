@@ -867,6 +867,18 @@
    "via": "urgent",
    "sent_at": "2026-11-16T00:33:24Z",
    "seen": "2026-11-16T00:57:26Z"
+  },
+  {
+   "k": "2026-11-15|5682ae3f56aa",
+   "at": "2026-11-16T01:23:23Z",
+   "title": "Fantasy GM",
+   "text": "Cates joined PHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-16T01:23:23Z",
+   "seen": "2026-11-16T01:23:23Z"
   }
  ],
  "sent": {
