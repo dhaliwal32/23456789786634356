@@ -37,4 +37,7 @@ def read(session, league_url, cur_sp, days=8):
                         "pr": t.get("proposedDate"), "rel": t.get("relatedTransactionId"), "it": items, "bid": t.get("bidAmount")})
     out.sort(key=lambda x: x.get("at") or 0, reverse=True)
     print(f"(tx) {len(out)} moves in the last {days} days: " + ", ".join(f"{k} {v}" for k, v in sorted(types.items())))
+    for x in out:  # change 300: how ESPN links the parts of a trade (ids shortened, no names)
+        if x["ty"].startswith("TRADE"):
+            print("(tx) trade part:", x["ty"], x["st"], "id", str(x["id"])[:8], "rel", str(x.get("rel"))[:8], "team", x["tm"], "items", [(i[1], i[2], i[3]) for i in x["it"]])
     return out[:400]

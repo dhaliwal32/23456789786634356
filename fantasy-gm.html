@@ -2722,6 +2722,11 @@
   .gx-ad299 .vt { display: flex; align-items: center; gap: 10px; height: 40px; border-top: 1px solid var(--line); font-size: 14px; }
   .gx-ad299 .vt span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gx-ad299 .vt em { font-style: normal; font-size: 13px; }
+  /* change 300 (install.py) */
+  .gx-ad299 .gx-sw194 { margin-top: 10px; }
+  .gx-ad299 .gx-sw194 .sec { font-size: 12px; color: var(--mute); letter-spacing: .04em; text-transform: uppercase; padding: 4px 0; }
+  .gx-ad299 .gx-sw194 .nt { display: none; }
+  .gx-ad299 .gx-sw194 .wc { cursor: default; }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2731,7 +2736,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1re57yc.1almkrq" data-file="build/app.js">
+<meta name="gx-build" content="5iy2hv.1ebnsz3" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -6444,6 +6449,7 @@ function SetupPage({ s, setS, go, sub }) {
       </span>
     </div>
   </>);
+  if (sub === "activity") return <div className="space-y-3"><GxAct299 s={s} /></div>; /* change 300 */
   if (sub === "more") return page("More", <>
     <div className="gx-sr" style={{ borderTop: 0 }}><span>Theme</span>{seg([["auto", "Automatic"], ["light", "Light"], ["dark", "Dark"]], theme, (k) => window.__setTheme && window.__setTheme(k))}</div>
     <div className="gx-sr"><span>My team</span><GxMeSel241 s={s} /></div>
@@ -6488,7 +6494,7 @@ function SetupPage({ s, setS, go, sub }) {
         <button type="button" className={btn} style={{ marginLeft: "auto" }} onClick={refresh}>Refresh</button>
       </div>
       {/* change 275: short Setup */}
-      <GxAct299 s={s} />{/* change 299 */}
+      <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>{row("activity", "League activity", gxActSum300(s), () => go("setup", "activity"), 0)}</div>{/* change 300 */}
       {/* change 295: My team and Favourite team are in More */}
       <div className="gx-tag gx-st275">Alerts and lineup</div>
       <div className="gx-pn" style={{ paddingTop: 2, paddingBottom: 2 }}>
@@ -14985,9 +14991,7 @@ function gxAct299(s) {
       const root = t.ty === "TRADE_ACCEPT" && t.rel && byId[t.rel] ? byId[t.rel] : t;
       if (seenTrade[root.id]) return;
       seenTrade[root.id] = 1;
-      const items = (root.it && root.it.length ? root.it : t.it) || [];
-      const sides = {};
-      items.forEach((i) => { if (i[1] !== "TRADE" && i[1] !== "ADD") return; const to = gxTm299(s, i[3]); if (!to) return; (sides[to] = sides[to] || []).push(gxPl299(s, i[0])); });
+      const sides = gxSides300(s, root, t); /* change 300 */
       const v = [...(votes[root.id] || []), ...(t.id !== root.id ? votes[t.id] || [] : [])];
       out.push({ k: root.id, kind: "trade", at: t.at, st: t.ty === "TRADE_ACCEPT" ? t.st || "PENDING" : root.st, sides, votes: v }); /* ESPN leaves an accepted trade's status empty while votes are open */
     }
@@ -15011,8 +15015,9 @@ function gxTradeFx299(s, m) {
   if (ids.length !== 2) return out;
   const moved = {}; ids.forEach((to) => (m.sides[to] || []).forEach((p) => { if (p) moved[p.id] = to; }));
   const from = {}; ids.forEach((to) => (m.sides[to] || []).forEach((p) => { if (p) from[p.id] = ids.find((x) => x !== to); }));
-  const before = s.players.map((p) => (from[p.id] ? { ...p, ft: from[p.id] } : p));
-  ids.forEach((T) => { try { const sT = { ...s, me: T, opp: null }; out[T] = horizonTotal(s.players.filter((p) => p.ft === T), sT, nR) - horizonTotal(before.filter((p) => p.ft === T), sT, nR); } catch (e) {} });
+  const done = ids.every((X) => (m.sides[X] || []).every((p) => !p || p.ft === X)); /* change 300: a trade still waiting for votes has not moved anyone yet */
+  const before = done ? s.players.map((p) => (from[p.id] ? { ...p, ft: from[p.id] } : p)) : s.players, after = done ? s.players : s.players.map((p) => (moved[p.id] ? { ...p, ft: moved[p.id] } : p));
+  ids.forEach((T) => { try { const sT = { ...s, me: T, opp: null }; out[T] = horizonTotal(after.filter((p) => p.ft === T), sT, nR) - horizonTotal(before.filter((p) => p.ft === T), sT, nR); } catch (e) {} });
   return out;
 }
 // fantasy points a player has scored since a day (box scores, one file a day)
@@ -15055,6 +15060,7 @@ function GxActSheet299({ s, m, onClose }) {
           <div className="tl"><small>Points rest of season</small><b>{sg(fx.ros)}</b></div>
         </div>
       )}
+      <GxWeeks300 s={s} T={m.tm} before={s.players.map((p) => (m.add && p.id === m.add.id ? { ...p, ft: "fa" } : m.drop && p.id === m.drop.id ? { ...p, ft: m.tm } : p)).filter((p) => p.ft === m.tm)} after={s.players.filter((p) => p.ft === m.tm)} />
       <div className="sc">SINCE THE MOVE</div>
       <div className="gr">
         <div className="tl"><small>{m.add ? lastN(m.add.n) + " (added)" : "Added"}</small><b>{since && since[0] ? f1(since[0].pts) : "\u2013"} <i>{since && since[0] ? since[0].gp + " GP" : ""}</i></b></div>
@@ -15068,11 +15074,12 @@ function GxActSheet299({ s, m, onClose }) {
           <div className="sc">{String(teamName(s, T)).toUpperCase() + " GETS"}</div>
           {(m.sides[T] || []).map((p, j) => (p ? <React.Fragment key={j}>{pr(p, "Added")}</React.Fragment> : null))}
           <div className="tl" style={{ marginTop: 4 }}><small>Points rest of season</small><b>{fx ? sg(fx[T]) : "\u2026"}</b></div>
+          {(() => { const from = {}; Object.keys(m.sides).forEach((X) => (m.sides[X] || []).forEach((p) => { if (p) from[p.id] = Object.keys(m.sides).find((Y) => Y !== X); })); const done = Object.keys(m.sides).every((X) => (m.sides[X] || []).every((p) => !p || p.ft === X)); const bef = s.players.map((p) => (done && from[p.id] ? { ...p, ft: from[p.id] } : p)), aft = s.players.map((p) => (!done && from[p.id] !== undefined ? { ...p, ft: Object.keys(m.sides).find((X) => (m.sides[X] || []).some((q) => q && q.id === p.id)) } : p)); return <GxWeeks300 s={s} T={T} before={bef.filter((p) => p.ft === T)} after={aft.filter((p) => p.ft === T)} />; })()}{/* change 300 */}
         </React.Fragment>
       ))}
       <div className="sc">{"VOTES \u00b7 " + (GX_ST299[m.st] || m.st || "")}</div>
       {m.votes.length ? m.votes.map((v, j) => <div key={j} className="vt"><GxFtPic114 id={v.tm} size={22} /><span>{teamName(s, v.tm)}</span><em className={v.up ? "ad" : "dr"}>{v.up ? "Uphold" : "Veto"}</em></div>)
-        : <div className="tl"><small>No votes ESPN shows yet. If the league hides who voted, only the result appears here.</small></div>}
+        : null}
     </>
   );
   return ReactDOM.createPortal(
@@ -15113,6 +15120,31 @@ function GxAct299({ s }) {
       {sel ? <GxActSheet299 s={s} m={sel} onClose={() => setSel(null)} /> : null}
     </>
   );
+}
+// ---------- change 300: League activity page, trade sides, win chance by week (install.py) ----------
+const gxActSum300 = (s) => { try { const L = gxAct299(s), td = iso(new Date()); const n = L.filter((m) => iso(new Date(m.at)) === td).length; return L.length ? (n ? n + " move" + (n === 1 ? "" : "s") + " today \u00b7 " : "") + L.length + " in the last 7 days" : "Pickups, drops and trades"; } catch (e) { return "Pickups, drops and trades"; } };
+// both sides of a trade, from every ESPN record that belongs to it
+function gxSides300(s, root, t) {
+  const tx = ((window.ESPN_DATA || {}).tx) || [], recs = tx.filter((x) => x.id === root.id || x.id === t.id || x.rel === root.id || x.rel === t.id || (t.rel && (x.id === t.rel || x.rel === t.rel)));
+  const sides = {};
+  recs.forEach((x) => (x.it || []).forEach((i) => { if (i[1] === "LINEUP" || i[1] === "DROP") return; const to = gxTm299(s, i[3]); const p = gxPl299(s, i[0]); if (!to || !p || (sides[to] || []).some((q) => q.id === p.id)) return; (sides[to] = sides[to] || []).push(p); }));
+  if (!Object.keys(sides).length) {
+    const A = gxTm299(s, root.tm), B = gxTm299(s, t.tm !== root.tm ? t.tm : null);
+    recs.forEach((x) => (x.it || []).forEach((i) => { const p = gxPl299(s, i[0]); if (!p) return; const to = p.ft === A ? B : p.ft === B ? A : null; if (to && !(sides[to] || []).some((q) => q.id === p.id)) (sides[to] = sides[to] || []).push(p); }));
+    if (A && !sides[A]) sides[A] = []; if (B && !sides[B]) sides[B] = [];
+  }
+  return sides;
+}
+// win chance in every week left for a team, before and after a move
+function GxWeeks300({ s, T, before, after }) {
+  const [v, setV] = useState(null);
+  useEffect(() => {
+    const id = setTimeout(() => { try { const sT = { ...s, me: T, opp: null }; setV({ b: gxWkWins194(sT, before), a: gxWkWins194(sT, after) }); } catch (e) { setV({ b: [], a: [] }); } }, 120);
+    return () => clearTimeout(id);
+  }, [T]);
+  if (!v) return <div className="tl"><small>Working out every week left...</small></div>;
+  if (!v.b.length) return null;
+  return <GxSimWeeks194 s={s} before={v.b} after={v.a} sel={[]} onW={null} />;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

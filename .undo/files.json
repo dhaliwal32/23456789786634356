@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "fantasy-gm.html": true,
+  "gm_tx.py": true
  },
  "changes": [
-  "299-recent-activity.py"
+  "300-activity-page-trades.py"
  ]
 }
