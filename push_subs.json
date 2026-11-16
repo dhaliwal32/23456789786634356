@@ -6,6 +6,13 @@
    "auth": "jhA49SeA8Ms7iK3gGH1rnQ",
    "name": "iPhone",
    "at": "2026-11-14T11:40:38.548Z"
+  },
+  {
+   "endpoint": "https://web.push.apple.com/QBMMu8jgPeRrfC1ri2UynQIIqCm629UFkHxnCDFjOv_o64ACMHlS_ks1VmuwSwWt-U9OKkCFnDk-6uYfe2czCLHk9xkMpEtNEzCvhKH9sGPIiDw_jbvPoKVDOB_hYNFNvQtyPa2lEfDADyNM9bRGtDZm0ffc5JxzFxYfRIY4-O4",
+   "p256dh": "BLoisEMcyEnRF4pOyHEsEJvdWmILlU_JlzxnGzKdV6gRQ1Z_G6scJIyyU5KGgaG9WmpywSQjHc-0yFCXq3_V8Fo",
+   "auth": "ZPCwMCSdKHkEzs4qQSpV4Q",
+   "name": "iPhone",
+   "at": "2026-11-16T04:05:47.286Z"
   }
  ]
 }
