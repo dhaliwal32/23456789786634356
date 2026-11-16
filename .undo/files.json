@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_tx.py": true
+  "gm_edge.py": true
  },
  "changes": [
-  "300-activity-page-trades.py"
+  "301-sync-unblock.py"
  ]
 }
