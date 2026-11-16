@@ -631,6 +631,11 @@ try:
     data["signals"] = gm_signals.build(players)
 except Exception as ex:
     print(f"(check) signals failed: {ex}")
+try:  # change 298: the league's recent moves for Recent activity
+    import gm_tx
+    data["tx"] = gm_tx.read(session, LEAGUE, lg.get("scoringPeriodId") or (lg.get("status") or {}).get("latestScoringPeriod"))
+except Exception as ex:
+    print(f"(tx) failed: {type(ex).__name__}: {ex}")
 try:
     
     import gm_alerts

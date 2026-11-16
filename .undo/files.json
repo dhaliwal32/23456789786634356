@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "espn_sync.py": true,
+  "gm_tx.py": false
  },
  "changes": [
-  "297-trade-targets.py"
+  "298-league-activity-data.py"
  ]
 }
