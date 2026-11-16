@@ -1,9 +1,8 @@
 {
  "files": {
-  "fantasy-gm.html": true,
-  "gm_live.py": true
+  "fantasy-gm.html": true
  },
  "changes": [
-  "302-team-colours-goal-alerts.py"
+  "303-trade-players.py"
  ]
 }

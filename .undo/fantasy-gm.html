@@ -2736,7 +2736,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="5iy2hv.1ebnsz3" data-file="build/app.js">
+<meta name="gx-build" content="sw0ul8.h8hjbo" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -13879,7 +13879,7 @@ function GxShotMap263({ id, g }) {
   }, [id, live]);
   if (!d) return null;
   const A = d.A || "AWAY", H = d.H || "HOME";
-  const cA = gxCols184(A, H).sc, cH = gxCols184(H, A).sc;
+  const [cA, cH] = gxPair302(A, H); /* change 302 */
   const colr = (t) => (t === "h" ? cH.f : cA.f);
   const n = (t, k) => d.pts.filter((p) => p.t === t && (p.k === "sog" || p.k === "goal")).length;
   const sA = n("a"), sH = n("h");
@@ -13953,7 +13953,7 @@ function GxTkLive264({ id }) {
   }, [n, i]);
   if (!d) return null;
   const A = d.A || "AWAY", H = d.H || "HOME";
-  const cA = gxCols184(A, H).sc, cH = gxCols184(H, A).sc;
+  const [cA, cH] = gxPair302(A, H); /* change 302 */
   const col = (t) => (t === "h" ? cH : t === "a" ? cA : null);
   const k = Math.min(Math.max(i, 0), n - 1), e = n ? d.ev[k] : null;
   // puck: spot of the latest event up to now that has one
@@ -15145,6 +15145,15 @@ function GxWeeks300({ s, T, before, after }) {
   if (!v) return <div className="tl"><small>Working out every week left...</small></div>;
   if (!v.b.length) return null;
   return <GxSimWeeks194 s={s} before={v.b} after={v.a} sel={[]} onW={null} />;
+}
+// ---------- change 302: two teams in nearly the same colour (install.py) ----------
+function gxPair302(A, H) {
+  const a = gxCols184(A, H).sc, h = gxCols184(H, A).sc;
+  try {
+    const x = gxHex169(a.f), y = gxHex169(h.f), d = Math.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2 + (x[2] - y[2]) ** 2);
+    if (d < 100) return [a, { f: "#e6e6e6", s: "#121212", t: "#121212" }];
+  } catch (e) {}
+  return [a, h];
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
