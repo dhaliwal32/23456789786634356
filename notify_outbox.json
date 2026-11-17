@@ -890,7 +890,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T19:43:20Z"
+   "seen": "2026-11-17T19:46:16Z"
   },
   {
    "k": "2026-11-17|dc92806a5fc3",
@@ -902,7 +902,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T19:43:20Z"
+   "seen": "2026-11-17T19:46:16Z"
   },
   {
    "k": "2026-11-17|92213e7328c5",
@@ -2286,6 +2286,12 @@
    "kind": "Not sent (switched off)",
    "title": "Lineup: bench player has a game",
    "body": "Joel Farabee (CGY, 5:30 PM) is on your bench with a game today, while Brady Tkachuk (FLA) is starting with no game. Swap them."
+  },
+  {
+   "at": "2026-11-17T19:46:16Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot set your lineup (12:46 PM):\ntoday: Start Michkov; bench MacKinnon, Raymond, Gostisbehere, Gritsyuk (no game). +5.3"
   }
  ]
 }

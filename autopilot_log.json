@@ -151,6 +151,53 @@
     }
    ],
    "result": "done"
+  },
+  {
+   "at": "2026-11-17T12:46:16-07:00",
+   "day": "2026-11-17",
+   "mode": "on",
+   "text": "Start Michkov; bench MacKinnon, Raymond, Gostisbehere, Gritsyuk (no game).",
+   "gain": 5.3,
+   "before": 97.6,
+   "after": 102.9,
+   "moves": [
+    {
+     "id": 3041969,
+     "n": "Nathan MacKinnon",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4697385,
+     "n": "Lucas Raymond",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3025662,
+     "n": "Shayne Gostisbehere",
+     "from": 6,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4915855,
+     "n": "Arseny Gritsyuk",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    }
+   ],
+   "result": "done"
   }
  ],
  "state": {
