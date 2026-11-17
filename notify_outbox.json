@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-10|2ae5f921f5bb",
-   "at": "2026-11-10T21:04:45Z",
-   "title": "Fantasy GM",
-   "text": "Gourde joined Guentzel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T21:04:45Z",
-   "seen": "2026-11-10T21:04:45Z"
-  },
-  {
-   "k": "2026-11-10|968de7db82a2",
-   "at": "2026-11-10T21:04:45Z",
-   "title": "Fantasy GM",
-   "text": "Goncalves joined Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T21:04:45Z",
-   "seen": "2026-11-10T21:04:45Z"
-  },
-  {
    "k": "2026-11-11|1470336157fe",
    "at": "2026-11-11T17:34:18Z",
    "title": "Fantasy GM",
@@ -830,7 +806,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T20:58:46Z"
+   "seen": "2026-11-17T21:04:46Z"
   },
   {
    "k": "2026-11-17|dc92806a5fc3",
@@ -842,7 +818,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T20:58:46Z"
+   "seen": "2026-11-17T21:04:46Z"
   },
   {
    "k": "2026-11-17|92213e7328c5",
