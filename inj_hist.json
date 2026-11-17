@@ -132,7 +132,7 @@
 "3042037": {
 "d": "2026-11-17",
 "k": "later",
-"nd": "2026-11-11",
+"nd": "2026-11-17",
 "now": "2026-12-17",
 "was": "2026-11-14"
 },
@@ -214,10 +214,9 @@
 "was": "2026-11-25"
 },
 "3151187": {
-"d": "2026-11-14",
-"k": "later",
-"now": "2026-11-17",
-"was": "2026-11-11"
+"d": "2026-11-17",
+"k": "back",
+"was": ""
 },
 "3541": {
 "d": "2026-11-14",
@@ -439,7 +438,7 @@
 "4565282": {
 "d": "2026-11-14",
 "k": "later",
-"nd": "2026-11-06",
+"nd": "2026-11-17",
 "now": "2026-11-18",
 "was": "2026-11-05"
 },
@@ -568,6 +567,11 @@
 "d": "2026-11-10",
 "k": "back",
 "was": "2026-11-14"
+},
+"5080155": {
+"d": "2026-11-17",
+"k": "new",
+"now": "2026-11-25"
 },
 "5080162": {
 "d": "2026-11-13",
@@ -772,7 +776,7 @@
 },
 "3042037": {
 "back": "2026-12-17",
-"note": "Mantha (throat) was placed on long-term injured reserve by the Devils on Wednesday, retroactive to Nov. 7.",
+"note": "Mantha (neck) is expected to miss about one month after undergoing surgery, per Kristy Flannery of The Hockey News.",
 "status": "Injured Reserve"
 },
 "3042044": {
@@ -843,11 +847,6 @@
 "3151038": {
 "back": "2027-03-30",
 "note": "Merzlikins is expected to miss 4-6 months to begin the 2026-27 regular season while recovering from a shoulder injury, per Luke Fox of Sportsnet.",
-"status": "Injured Reserve"
-},
-"3151187": {
-"back": "",
-"note": "ir",
 "status": "Injured Reserve"
 },
 "3151297": {
@@ -987,7 +986,7 @@
 },
 "4565282": {
 "back": "2026-11-18",
-"note": "Johansson (undisclosed) will be with the Red Wings for their upcoming four-game road trip, Ansar Khan of MLive.com reports Friday.",
+"note": "Johansson (undisclosed) is expected to return to the lineup either Wednesday or Saturday, per Ansar Khan of MLive.com.",
 "status": "Injured Reserve"
 },
 "4587588": {
@@ -1078,6 +1077,11 @@
 "5080153": {
 "back": "2026-11-24",
 "note": "Savoie (lower body) was shifted to long-term injured reserve Thursday.",
+"status": "Injured Reserve"
+},
+"5080155": {
+"back": "2026-11-25",
+"note": "ir",
 "status": "Injured Reserve"
 },
 "5080162": {
