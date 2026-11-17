@@ -7,17 +7,17 @@
 "was": "2026-12-30"
 },
 "2562606": {
-"d": "2026-11-13",
+"d": "2026-11-17",
 "k": "later",
-"nd": "2026-11-13",
-"now": "2026-11-19",
+"nd": "2026-11-17",
+"now": "2026-11-25",
 "was": "2026-11-02"
 },
 "2562624": {
-"d": "2026-11-16",
-"k": "dtd",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "later",
+"now": "2026-11-19",
+"was": "2026-11-17"
 },
 "2563027": {
 "d": "2026-11-11",
@@ -680,8 +680,8 @@
 "status": "Injured Reserve"
 },
 "2562606": {
-"back": "2026-11-19",
-"note": "Huberdeau (hip) won't travel with the Flames during their upcoming three-game road trip, Pat Steinberg of QR Calgary 770 AM reports Friday.",
+"back": "2026-11-25",
+"note": "Huberdeau (hip) was assigned to AHL Calgary on Tuesday on a conditioning loan.",
 "status": "Injured Reserve"
 },
 "2562622": {
@@ -690,9 +690,9 @@
 "status": "Injured Reserve"
 },
 "2562624": {
-"back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-19",
+"note": "out",
+"status": "Out"
 },
 "2563027": {
 "back": "2026-11-19",
