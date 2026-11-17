@@ -282,11 +282,9 @@
 "nd": "2026-11-14"
 },
 "3941973": {
-"d": "2026-11-15",
-"k": "dtd",
-"nd": "2026-11-17",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": ""
 },
 "3941974": {
 "d": "2026-11-12",
@@ -577,12 +575,6 @@
 "k": "back",
 "was": "2026-11-14"
 },
-"5080155": {
-"d": "2026-11-17",
-"k": "sooner",
-"now": "2026-11-22",
-"was": "2026-11-25"
-},
 "5080162": {
 "d": "2026-11-13",
 "k": "later",
@@ -634,6 +626,11 @@
 "nd": "2026-11-15",
 "now": "2027-01-01",
 "was": "2026-12-01"
+},
+"5161": {
+"d": "2026-11-17",
+"k": "back",
+"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -894,11 +891,6 @@
 "note": "Capobianco (leg) was moved to long-term injured reserve Saturday.",
 "status": "Injured Reserve"
 },
-"3941973": {
-"back": "",
-"note": "Cirelli (lower body) will be a game-time decision for Tuesday's clash with the Capitals, per NHL.com.",
-"status": "Day-To-Day"
-},
 "3941974": {
 "back": "2026-12-03",
 "note": "ir",
@@ -1095,7 +1087,7 @@
 "status": "Injured Reserve"
 },
 "5080155": {
-"back": "2026-11-22",
+"back": "2026-11-25",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1137,11 +1129,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
