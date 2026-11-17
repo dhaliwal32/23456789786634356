@@ -119,10 +119,9 @@
 "was": ""
 },
 "3042017": {
-"d": "2026-11-16",
-"k": "dtd",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": "2026-11-17"
 },
 "3042019": {
 "d": "2026-11-12",
@@ -341,11 +340,9 @@
 "was": ""
 },
 "4233536": {
-"d": "2026-11-16",
-"k": "dtd",
-"nd": "2026-11-14",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": ""
 },
 "4233563": {
 "d": "2026-11-14",
@@ -548,11 +545,11 @@
 "was": "2026-12-01"
 },
 "5052": {
-"d": "2026-11-16",
-"k": "dtd",
+"d": "2026-11-17",
+"k": "later",
 "nd": "2026-11-15",
-"now": "2026-11-17",
-"was": "Out"
+"now": "2026-11-19",
+"was": "2026-11-17"
 },
 "5075840": {
 "d": "2026-11-13",
@@ -781,11 +778,6 @@
 "note": "Domi (back) was transferred from the non-roster list to long-term injured reserve Wednesday, per PuckPedia.",
 "status": "Injured Reserve"
 },
-"3042017": {
-"back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "3042037": {
 "back": "2026-12-17",
 "note": "Mantha (neck) is expected to miss about one month after undergoing surgery, per Kristy Flannery of The Hockey News.",
@@ -925,11 +917,6 @@
 "back": "2026-12-04",
 "note": "ir",
 "status": "Injured Reserve"
-},
-"4233536": {
-"back": "",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "4233563": {
 "back": "2026-11-28",
@@ -1082,9 +1069,9 @@
 "status": "Injured Reserve"
 },
 "5052": {
-"back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-19",
+"note": "out",
+"status": "Out"
 },
 "5075840": {
 "back": "2026-11-19",

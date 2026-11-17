@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-10|rw258|hello|5161",
-   "at": "2026-11-10T20:14:52Z",
-   "title": "Fantasy GM",
-   "text": "Duchene is not on the injury list",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T20:14:52Z",
-   "seen": "2026-11-10T20:14:52Z"
-  },
-  {
-   "k": "2026-11-10|rw258|hello|5275337",
-   "at": "2026-11-10T20:14:52Z",
-   "title": "Fantasy GM",
-   "text": "Hagens back around Nov 21",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T20:14:52Z",
-   "seen": "2026-11-10T20:14:52Z"
-  },
-  {
-   "k": "2026-11-10|rw258|hello|2517899",
-   "at": "2026-11-10T20:14:52Z",
-   "title": "Fantasy GM",
-   "text": "Andersen back around Dec 30",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T20:14:52Z",
-   "seen": "2026-11-10T20:14:52Z"
-  },
-  {
    "k": "2026-11-10|2ae5f921f5bb",
    "at": "2026-11-10T21:04:45Z",
    "title": "Fantasy GM",
@@ -866,7 +830,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T20:09:05Z"
+   "seen": "2026-11-17T20:15:07Z"
   },
   {
    "k": "2026-11-17|dc92806a5fc3",
@@ -878,7 +842,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T20:09:05Z"
+   "seen": "2026-11-17T20:15:07Z"
   },
   {
    "k": "2026-11-17|92213e7328c5",
