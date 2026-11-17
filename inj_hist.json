@@ -40,7 +40,7 @@
 "2593131": {
 "d": "2026-11-15",
 "k": "dtd",
-"nd": "2026-11-14",
+"nd": "2026-11-17",
 "now": "2026-11-17",
 "was": "Out"
 },
@@ -416,7 +416,7 @@
 "4565225": {
 "d": "2026-11-14",
 "k": "later",
-"nd": "2026-11-16",
+"nd": "2026-11-17",
 "now": "2026-11-21",
 "was": "2026-11-02"
 },
@@ -611,10 +611,9 @@
 "was": "2026-12-01"
 },
 "5173105": {
-"d": "2026-11-16",
-"k": "dtd",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": "2026-11-17"
 },
 "5188510": {
 "d": "2026-11-14",
@@ -707,7 +706,7 @@
 },
 "2593131": {
 "back": "2026-11-17",
-"note": "day-to-day",
+"note": "Pageau (lower body) will be a game-time decision ahead of Tuesday's matchup with Columbus, Stefen Rosner of NHL.com reports.",
 "status": "Day-To-Day"
 },
 "2952729": {
@@ -992,7 +991,7 @@
 },
 "4565225": {
 "back": "2026-11-21",
-"note": "Byram (upper body) has been ruled out for Tuesday's game against the Maple Leafs, CHGO Blackhawks reports.",
+"note": "Byram (upper body) will not play in the Blackhawks' next two games, per CHGO Blackhawks.",
 "status": "Injured Reserve"
 },
 "4565274": {
@@ -1134,11 +1133,6 @@
 "back": "2027-01-12",
 "note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
-},
-"5173105": {
-"back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "5188490": {
 "back": "2027-02-13",
