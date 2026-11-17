@@ -450,6 +450,11 @@
 "k": "back",
 "was": "2026-11-14"
 },
+"4587588": {
+"d": "2026-11-16",
+"k": "new",
+"now": "2026-11-22"
+},
 "4587904": {
 "d": "2026-11-12",
 "k": "later",
@@ -1024,6 +1029,11 @@
 "back": "2026-11-18",
 "note": "Johansson (undisclosed) will be with the Red Wings for their upcoming four-game road trip, Ansar Khan of MLive.com reports Friday.",
 "status": "Injured Reserve"
+},
+"4587588": {
+"back": "2026-11-22",
+"note": "out",
+"status": "Out"
 },
 "4587854": {
 "back": "2027-04-08",
