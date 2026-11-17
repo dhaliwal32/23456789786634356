@@ -2727,6 +2727,21 @@
   .gx-ad299 .gx-sw194 .sec { font-size: 12px; color: var(--mute); letter-spacing: .04em; text-transform: uppercase; padding: 4px 0; }
   .gx-ad299 .gx-sw194 .nt { display: none; }
   .gx-ad299 .gx-sw194 .wc { cursor: default; }
+  /* change 309 (install.py) */
+  .gx-say309 { font-size: 14px; line-height: 1.45; color: var(--ink2, var(--ink)); margin: 10px 0 2px; }
+  .gxg309 { display: flex; align-items: flex-end; }
+  .gxg309 a { display: flex; align-items: center; padding: 6px 8px 12px; color: var(--mute); border-bottom: 2px solid transparent; }
+  .gxg309 a.on { color: var(--ink); border-bottom-color: var(--accent); }
+  .gxg309 svg { width: 18px; height: 18px; }
+  .gx-tn309 .pl .tg { flex: none; font-size: 12px; color: var(--mute); white-space: nowrap; }
+  .gx-tn309 .ok { padding: 4px 0 2px; font-size: 14px; color: var(--mute); }
+  /* rows are only tall once a game has started and they carry a stat line; before that they stay compact */
+  .gx-h2h > .gx-pc { min-height: 44px; }
+  *:has(> .gx-h2h .gx-sl98) > .gx-h2h > .gx-pc { min-height: 72px; }
+  @media (max-width: 640px) {
+    .gx-h2h > .gx-pc { min-height: 40px; }
+    *:has(> .gx-h2h .gx-sl98) > .gx-h2h > .gx-pc { min-height: 64px; }
+  }
 </style>
 <script>(function(){var k="fantasy-islands-gm-theme";function pref(){try{return localStorage.getItem(k)||"auto"}catch(e){return"auto"}}function ap(){var v=pref(),d=v==="auto"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):v;document.documentElement.setAttribute("data-theme",d);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d==="light"?"#f5f5f4":"#0c0d0f");}window.__themePref=pref;window.__setTheme=function(v){try{localStorage.setItem(k,v)}catch(e){}ap();window.dispatchEvent(new Event("gm-theme"));};ap();try{window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){ap();window.dispatchEvent(new Event("gm-theme"));});}catch(e){}})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2736,7 +2751,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="1avvblk.1ivln4t" data-file="build/app.js">
+<meta name="gx-build" content="12we433.tvz6ma" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3340,8 +3355,8 @@ function App() {
         {/* round 32: new top bar (older marker kept: m-hide max-w-6xl mx-auto px-2) */}
         <TopBar s={s} setS={setS} tab={tab} go={go} ageH={ageH} />
       </div>
-      {ageH !== null && ageH > 2 && (
-        <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">Data is {Math.round(ageH)} hours old — the automatic sync may have stopped. Check GitHub → Actions for a red ✕.</div>
+      {ageH !== null && ageH > 12 && (
+        <div className="bg-red-600 text-white text-sm px-4 py-2 text-center">No new data for {Math.round(ageH)} hours. The automatic sync may have stopped.</div>
       )}
       <div className="max-w-6xl mx-auto px-3 py-4">
         <GxAsBar241 s={s} /><GxTeamMenu242 s={s} /><GxSimBar s={s} setS={setS} go={go} />{/* gx086-bar */}<GxSubBar103 tab={tab} sub={sub} go={go} s={s} wk={wk} /><GxExtras s={s} tab={tab} go={go} /><GxQA s={s} go={go} /><GxBest s={s} setS={setS} /><GxSync s={s} setS={setS} />{/* gx073-app */}
@@ -3416,7 +3431,7 @@ function Today({ s, wk, go, top103 }) {
           <span>{Math.round(fb)}</span>
         </div>
       </div>
-      <GxAutoToday2 go={go} />{/* gx089-today */}{/* gx092-today */}{top103 ? <GxBox230 s={s} wk={wk} /> : <GxRace s={s} wk={wk} />}{top103 ? <GxIrBack253 s={s} /> : null}
+      <GxAutoToday2 go={go} />{/* gx089-today */}{/* gx092-today */}{top103 ? <GxBox230 s={s} wk={wk} /> : <GxRace s={s} wk={wk} />}{top103 ? <GxTonight309 s={s} wk={wk} /> : null}{top103 ? <GxIrBack253 s={s} /> : null}
       {/* change 071: next week card removed */}
       {top103 ? null : <GxHome s={s} wk={wk} A={A} B={B} />}
     </div>
@@ -5241,12 +5256,12 @@ function TopBar({ s, setS, tab, go, ageH }) {
         <span className="block text-xs text-slate-500">{rank ? ordN(rank[0]) + " of " + rank[1] : s.league || "\u00a0"}</span>
       </span>
       </button>
-      {GX_TABS103.map(([k, l, t, sb]) => <a key={k} href={gxHash(t, sb || undefined)} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go(t, sb || undefined); }} className={"gx-tab" + (gxTabOn103(k, tab) ? " on" : "")}>{l}</a>)}
-      <a className="gx-tab" href="ai-dashboard.html" target="_blank" rel="noopener" data-r63="ailab">AI Lab</a>
+      {GX_TABS103.filter((x) => GX_MAIN241.includes(x[0])).map(([k, l, t, sb]) => <a key={k} href={gxHash(t, sb || undefined)} onClick={(e) => { if (gxNewTab(e)) return; e.preventDefault(); go(t, sb || undefined); }} className={"gx-tab" + (gxTabOn103(k, tab) ? " on" : "")}>{l}</a>)}
       <button type="button" className="ml-auto gx-tab" onClick={() => window.dispatchEvent(new Event("gm-search"))}>Search</button>
+      <span className="gxg309" data-gx="309g"><GxGear285 tab={tab} go={go} /></span>
       <span className="text-xs text-slate-500 whitespace-nowrap" style={{ marginBottom: 12, marginLeft: 12 }} title={s.lastSync ? "Synced " + fmtTime(s.lastSync) : ""}>
-        <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, marginRight: 6, verticalAlign: 1, background: !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)" }}></span>
-        {sync ? "Synced " + sync.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "Not synced yet"}
+        <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, marginRight: 6, verticalAlign: 1, background: !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 12 ? "var(--bad)" : ageH !== null && ageH > 2 ? "var(--faint)" : "var(--good)" }}></span>
+        {sync ? (ageH !== null && ageH > 2 ? "Updated " + Math.round(ageH) + " h ago" : "Synced " + sync.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })) : "Not synced yet"}
       </span>
     </div>
   );
@@ -7971,7 +7986,7 @@ function GxTopM103({ s, tab, go, ageH }) {
     const n = ref.current, el = n && n.querySelector(".on");
     if (el) { try { n.scrollTo({ left: el.offsetLeft - n.clientWidth / 2 + el.clientWidth / 2, behavior: "smooth" }); } catch (e) {} }
   }, [tab, sub]);
-  const dot = !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 2 ? "var(--bad)" : "var(--good)";
+  const dot = !s.lastSync ? "var(--faint)" : ageH !== null && ageH > 12 ? "var(--bad)" : ageH !== null && ageH > 2 ? "var(--faint)" : "var(--good)";
   const name = teamName(s, s.me) || "Islands GM";
   return (
     <div className="m-only gx-tm103">
@@ -10804,6 +10819,7 @@ function GxBox230({ s, wk }) {
       </div>
       <div className="shr"><div style={{ width: (sa + sb > 0 ? Math.max(4, Math.min(96, (sa / (sa + sb)) * 100)) : 50) + "%", background: "var(--accent)" }}></div><div style={{ flex: 1, background: "var(--track)" }}></div></div>
       <div className="text-xs text-slate-500" style={{ display: "flex" }}><span>{(over ? "Final " : "Projected ") + f1(fa)}</span><span style={{ margin: "0 auto" }}>{(fa >= fb ? "Ahead by " : "Behind by ") + f1(Math.abs(fa - fb))}</span><span>{f1(fb)}</span></div>
+      {mineMu ? <GxSay309 sa={sa} sb={sb} la={leftA} lb={leftB} over={over} up={up} ml={movesLeft(s, s.me, w)} /> : null}
       <div className="dys">{dates.map((_, d) => dayCell(d))}</div>
       <div className="fx2">
         <div>Per game<b>{two(gpA ? f1(sa / gpA) : "\u2013", gpB ? f1(sb / gpB) : "\u2013")}</b></div>
@@ -11613,7 +11629,7 @@ function GxBp257({ s, openP }) {
         const opts = m.res.filter((x) => x.gain >= (s.minGain ?? 3)).slice(0, 20)
           .map((r) => ({ ...r, a: winChance(s, afterMove(s, r.f, r.d)) }))
           .sort((x, y) => Math.round((y.a || 0) * 100) - Math.round((x.a || 0) * 100) || y.gain - x.gain).slice(0, 10);
-        if (!dead) { setL({ b, opts }); setIx(0); }
+        if (!dead) { setL({ b, opts }); setIx(0); window.__BP309 = { b, top: opts[0] || null }; window.dispatchEvent(new Event("gx-bp309")); }
       } catch (e) { if (!dead) setL({ err: true }); }
     }, 900);
     return () => { dead = true; clearTimeout(id); };
@@ -13013,6 +13029,66 @@ function gxPair302(A, H) {
   } catch (e) {}
   return [a, h];
 }
+// ---------- change 309: state of the matchup line, Tonight card, laptop gear (install.py) ----------
+// one plain line under the Roster box score: where it stands now, who has more games left, and the move that helps most
+// (the projected margin is already on the line above, so it is not repeated)
+function GxSay309({ sa, sb, la, lb, over, up, ml }) {
+  const [bp, setBp] = useState(() => window.__BP309 || null);
+  useEffect(() => { const f = () => setBp(window.__BP309 || null); window.addEventListener("gx-bp309", f); return () => window.removeEventListener("gx-bp309", f); }, []);
+  if (over) return null;
+  const pl = (n) => n + " game" + (n === 1 ? "" : "s"), more = (n) => n + " more game" + (n === 1 ? "" : "s");
+  const d = sa - sb;
+  const a = up ? "Your week hasn't started yet." : Math.abs(d) < 0.05 ? "You're tied right now." : d > 0 ? "You lead by " + f1(d) + " right now." : "You trail by " + f1(-d) + " right now.";
+  const g = la === lb ? " You both have " + pl(la) + " left." : la > lb ? " You have " + more(la - lb) + " left than them." : " They have " + more(lb - la) + " left than you.";
+  const o = bp && bp.top;
+  const t = ml !== 0 && o && o.a != null && bp.b != null && o.a - bp.b >= 0.02 && o.f && o.d ? " Adding " + o.f.n + " for " + lastN(o.d.n) + " takes you from " + wpTxt(bp.b) + " to " + wpTxt(o.a) + "." : "";
+  return <div className="gx-say309" data-gx="309s">{a + g + t}</div>;
+}
+// only what needs doing before puck drop tonight; says so plainly when there is nothing
+function GxTonight309({ s, wk }) {
+  const today = todayISO(), gen = (window.ESPN_DATA || {}).generated;
+  const v = useMemo(() => {
+    try {
+      const dates = (wk && wk.dates) || [], di = dates.indexOf(today);
+      const mine = s.players.filter((p) => p.ft === s.me && !p.ir);
+      const plays = (p) => SCHED[p.t] && SCHED[p.t].has(today);
+      const pre = (p) => gState(p.t, today).s === "P";
+      const tonight = mine.filter(plays);
+      if (!tonight.length) return null;
+      const byId = {}; s.players.forEach((p) => (byId[p.id] = p));
+      const L = di >= 0 ? weekLive(mine, wk, s.blend, s.me, { detail: true }) : null;
+      const day = L && L.days ? L.days[di] : null;
+      const inLine = new Set(((day && day.start) || []).map((q) => q.id));
+      const when = (p) => { const g = gameOf(p.t, today); return g ? (g.h ? "v " : "@ ") + g.o + " \u00b7 " + gameTime(g) : ""; };
+      const out = [];
+      if (day && day.empty > 0 && tonight.some(pre) && movesLeft(s, s.me, wk) !== 0) out.push({ k: "empty", t: day.empty + " empty lineup spot" + (day.empty === 1 ? "" : "s") + " tonight", sub: "A pickup with a game tonight would fill it", act: "Find one" });
+      tonight.filter(pre).forEach((p) => {
+        const stt = String(p.status || "").toUpperCase();
+        if (OUTS.includes(stt)) { out.push({ k: "out", p, t: p.n, sub: "Listed " + (stt === "INJURY_RESERVE" ? "on IR" : stt.toLowerCase()) + " \u00b7 keep him out of your lineup", tag: when(p) }); return; }
+        if (p.p !== "G") return;
+        const g = gStart(p, today), l = String(g.l || "").toLowerCase(), conf = l.includes("confirm") && !l.includes("un");
+        if (inLine.has(p.id) && g.v < 0.5) out.push({ k: "g", p, t: p.n, sub: "In your lineup but probably not starting (" + Math.round(g.v * 100) + "%)", tag: when(p) });
+        else if (g.v >= 0.5 && !conf) out.push({ k: "g", p, t: p.n, sub: "Expected to start, not confirmed yet", tag: when(p) });
+      });
+      return { out, n: tonight.length };
+    } catch (e) { return null; }
+  }, [s.players, wk, today, gen, s.blend]);
+  if (!v) return null;
+  const openP = (p) => { if (p && window.__NAV) window.__NAV.player(byIdP(s, p.id) || p); };
+  return (
+    <div className="gx-pn gx-ir253 gx-tn309" data-gx="309t">
+      <div className="gx-tag" style={{ marginBottom: 6 }}>Tonight</div>
+      {!v.out.length ? <div className="ok">{"Nothing to do tonight. " + v.n + " of your players have a game."}</div> : v.out.map((x, j) => (
+        <div key={j} className="pl">
+          {x.p ? <GxFace p={x.p} size={30} /> : null}
+          <button type="button" className="nm text-left" onClick={() => (x.p ? openP(x.p) : (window.location.hash = gxHash("moves", "adddrop")))}><b>{x.t}</b><small>{x.sub}</small></button>
+          {x.act ? <button type="button" className="bt" onClick={() => (window.location.hash = gxHash("moves", "adddrop"))}>{x.act}</button> : <span className="tg">{x.tag}</span>}
+        </div>
+      ))}
+    </div>
+  );
+}
+const byIdP = (s, id) => s.players.find((q) => q.id === id) || null;
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */
