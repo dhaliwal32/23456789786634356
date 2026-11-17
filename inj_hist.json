@@ -427,6 +427,11 @@
 "k": "back",
 "was": ""
 },
+"4565259": {
+"d": "2026-11-17",
+"k": "new",
+"now": "2026-11-19"
+},
 "4565274": {
 "d": "2026-11-17",
 "k": "back",
@@ -457,11 +462,11 @@
 "was": "2026-11-12"
 },
 "4587933": {
-"d": "2026-11-12",
-"k": "dtd",
-"nd": "2026-11-13",
-"now": "2026-11-18",
-"was": "Out"
+"d": "2026-11-17",
+"k": "later",
+"nd": "2026-11-17",
+"now": "2026-12-12",
+"was": "2026-11-18"
 },
 "4587996": {
 "d": "2026-11-10",
@@ -473,6 +478,11 @@
 "d": "2026-11-16",
 "k": "back",
 "was": ""
+},
+"4697436": {
+"d": "2026-11-17",
+"k": "new",
+"now": "2026-11-18"
 },
 "4697449": {
 "d": "2026-11-14",
@@ -985,6 +995,11 @@
 "note": "Byram (upper body) will not play in the Blackhawks' next two games, per CHGO Blackhawks.",
 "status": "Injured Reserve"
 },
+"4565259": {
+"back": "2026-11-19",
+"note": "Kochetkov (illness) did not practice on Tuesday, per Walt Ruff of the Hurricanes' official site.",
+"status": "Day-To-Day"
+},
 "4565282": {
 "back": "2026-11-18",
 "note": "Johansson (undisclosed) will be with the Red Wings for their upcoming four-game road trip, Ansar Khan of MLive.com reports Friday.",
@@ -1006,14 +1021,19 @@
 "status": "Injured Reserve"
 },
 "4587933": {
-"back": "2026-11-18",
-"note": "The Devils placed Kovacevic (ankle) on injured reserve Friday, retroactive to Nov. 10.",
+"back": "2026-12-12",
+"note": "Kovacevic (ankle) is expected to be sidelined for 4-6 weeks, per Kristy Flannery of The Hockey News.",
 "status": "Injured Reserve"
 },
 "4587996": {
 "back": "2026-11-23",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"4697436": {
+"back": "2026-11-18",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4781550": {
 "back": "2026-11-23",
