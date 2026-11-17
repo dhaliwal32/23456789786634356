@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-10|cb5f81259425",
-   "at": "2026-11-10T19:37:18Z",
-   "title": "Fantasy GM",
-   "text": "Terry back in the ANA lineup",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-10T19:37:18Z",
-   "seen": "2026-11-10T19:37:18Z"
-  },
-  {
    "k": "2026-11-10|rw258|hello|3852",
    "at": "2026-11-10T19:56:50Z",
    "title": "Fantasy GM",
@@ -902,7 +890,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T19:31:10Z"
+   "seen": "2026-11-17T19:37:11Z"
   },
   {
    "k": "2026-11-17|dc92806a5fc3",
@@ -914,7 +902,67 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T19:31:10Z"
+   "seen": "2026-11-17T19:37:11Z"
+  },
+  {
+   "k": "2026-11-17|92213e7328c5",
+   "at": "2026-11-17T19:37:36Z",
+   "title": "Fantasy GM",
+   "text": "Gritsyuk joined NJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T19:37:36Z",
+   "seen": "2026-11-17T19:37:36Z"
+  },
+  {
+   "k": "2026-11-17|41d63419165f",
+   "at": "2026-11-17T19:37:37Z",
+   "title": "Fantasy GM",
+   "text": "Marchessault joined NSH PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T19:37:37Z",
+   "seen": "2026-11-17T19:37:37Z"
+  },
+  {
+   "k": "2026-11-17|5f2dadb3b017",
+   "at": "2026-11-17T19:37:37Z",
+   "title": "Fantasy GM",
+   "text": "Wennberg joined SJ PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T19:37:37Z",
+   "seen": "2026-11-17T19:37:37Z"
+  },
+  {
+   "k": "2026-11-17|cdace350778f",
+   "at": "2026-11-17T19:37:37Z",
+   "title": "Fantasy GM",
+   "text": "Howden joined Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T19:37:37Z",
+   "seen": "2026-11-17T19:37:37Z"
+  },
+  {
+   "k": "2026-11-17|08d35e7f3070",
+   "at": "2026-11-17T19:37:38Z",
+   "title": "Fantasy GM",
+   "text": "Connelly left Eichel's line (VGK)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T19:37:38Z",
+   "seen": "2026-11-17T19:37:38Z"
   }
  ],
  "sent": {
