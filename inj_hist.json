@@ -153,9 +153,11 @@
 "was": "2026-11-17"
 },
 "3067822": {
-"d": "2026-11-16",
-"k": "new",
-"now": "2026-11-17"
+"d": "2026-11-17",
+"k": "later",
+"nd": "2026-11-17",
+"now": "2026-11-19",
+"was": "2026-11-17"
 },
 "3069285": {
 "d": "2026-11-12",
@@ -482,6 +484,7 @@
 "4697436": {
 "d": "2026-11-17",
 "k": "new",
+"nd": "2026-11-17",
 "now": "2026-11-18"
 },
 "4697449": {
@@ -620,11 +623,6 @@
 "nd": "2026-11-15",
 "now": "2027-01-01",
 "was": "2026-12-01"
-},
-"5161": {
-"d": "2026-11-17",
-"k": "back",
-"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -806,9 +804,9 @@
 "status": "Injured Reserve"
 },
 "3067822": {
-"back": "2026-11-17",
-"note": "Johnston didn't practice Monday due to personal reasons, and his status for Tuesday's game against the Ducks is uncertain, Lou Korac of NHL.com reports.",
-"status": "Day-To-Day"
+"back": "2026-11-19",
+"note": "Johnston (upper body) won't play against Anaheim on Tuesday, Lou Korac of NHL.com reports.",
+"status": "Out"
 },
 "3069448": {
 "back": "2026-11-22",
@@ -1022,7 +1020,7 @@
 },
 "4587933": {
 "back": "2026-12-12",
-"note": "Kovacevic (ankle) is expected to be sidelined for 4-6 weeks, per Kristy Flannery of The Hockey News.",
+"note": "The Devils placed Kovacevic (ankle) on injured reserve Friday, retroactive to Nov. 10.",
 "status": "Injured Reserve"
 },
 "4587996": {
@@ -1032,7 +1030,7 @@
 },
 "4697436": {
 "back": "2026-11-18",
-"note": "day-to-day",
+"note": "Wallinder (upper body) is day-to-day, per Ansar Khan of MLive.com on Tuesday.",
 "status": "Day-To-Day"
 },
 "4781550": {
@@ -1133,6 +1131,11 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
