@@ -247,11 +247,9 @@
 "was": "2026-11-12"
 },
 "3891922": {
-"d": "2026-11-15",
-"k": "dtd",
-"nd": "2026-11-09",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": "2026-11-17"
 },
 "3891952": {
 "d": "2026-11-16",
@@ -878,11 +876,6 @@
 "note": "Head coach Paul Maurice said Friday that Marchand (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers",
 "status": "Injured Reserve"
 },
-"3891922": {
-"back": "2026-11-17",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "3891952": {
 "back": "2026-11-19",
 "note": "out",
@@ -1020,7 +1013,7 @@
 },
 "4587933": {
 "back": "2026-12-12",
-"note": "The Devils placed Kovacevic (ankle) on injured reserve Friday, retroactive to Nov. 10.",
+"note": "Kovacevic (ankle) is expected to be sidelined for 4-6 weeks, per Kristy Flannery of The Hockey News.",
 "status": "Injured Reserve"
 },
 "4587996": {
