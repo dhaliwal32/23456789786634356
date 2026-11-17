@@ -915,6 +915,18 @@
    "via": "urgent",
    "sent_at": "2026-11-17T03:09:18Z",
    "seen": "2026-11-17T03:09:18Z"
+  },
+  {
+   "k": "2026-11-17|8ba61306d944",
+   "at": "2026-11-17T15:33:19Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-17T15:33:19Z",
+   "seen": "2026-11-17T15:33:19Z"
   }
  ],
  "sent": {
