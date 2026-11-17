@@ -39,11 +39,11 @@
 "was": "2026-11-14"
 },
 "2593131": {
-"d": "2026-11-15",
-"k": "dtd",
+"d": "2026-11-17",
+"k": "later",
 "nd": "2026-11-17",
-"now": "2026-11-17",
-"was": "Out"
+"now": "2026-11-19",
+"was": "2026-11-17"
 },
 "2967072": {
 "d": "2026-11-17",
@@ -270,11 +270,9 @@
 "was": ""
 },
 "3904178": {
-"d": "2026-11-15",
-"k": "dtd",
-"nd": "2026-11-17",
-"now": "2026-11-17",
-"was": "Out"
+"d": "2026-11-17",
+"k": "back",
+"was": ""
 },
 "3939716": {
 "d": "2026-11-14",
@@ -340,6 +338,7 @@
 "4065019": {
 "d": "2026-11-17",
 "k": "new",
+"nd": "2026-11-17",
 "now": "2026-11-19"
 },
 "4233536": {
@@ -732,7 +731,7 @@
 "status": "Injured Reserve"
 },
 "2593131": {
-"back": "2026-11-17",
+"back": "2026-11-19",
 "note": "Pageau (lower body) will be a game-time decision ahead of Tuesday's matchup with Columbus, Stefen Rosner of NHL.com reports.",
 "status": "Day-To-Day"
 },
@@ -881,11 +880,6 @@
 "note": "out",
 "status": "Out"
 },
-"3904178": {
-"back": "",
-"note": "Cernak (upper body) is considered a game-time decision ahead of Tuesday's matchup with Washington, per NHL.com.",
-"status": "Day-To-Day"
-},
 "3939716": {
 "back": "2026-11-27",
 "note": "Capobianco (leg) was moved to long-term injured reserve Saturday.",
@@ -918,7 +912,7 @@
 },
 "4065019": {
 "back": "2026-11-19",
-"note": "out",
+"note": "Hagel (undisclosed) won't play against Washington on Tuesday, Benjamin Pierce of the Lightning's official site reports.",
 "status": "Out"
 },
 "4233563": {
