@@ -411,7 +411,7 @@
 "4565282": {
 "d": "2026-11-18",
 "k": "later",
-"nd": "2026-11-17",
+"nd": "2026-11-18",
 "now": "2026-11-21",
 "was": "2026-11-05"
 },
@@ -443,11 +443,6 @@
 "d": "2026-11-16",
 "k": "back",
 "was": ""
-},
-"4697436": {
-"d": "2026-11-18",
-"k": "back",
-"was": "2026-11-18"
 },
 "4697449": {
 "d": "2026-11-14",
@@ -938,7 +933,7 @@
 },
 "4565282": {
 "back": "2026-11-21",
-"note": "Johansson (undisclosed) is expected to return to the lineup either Wednesday or Saturday, per Ansar Khan of MLive.com.",
+"note": "Johansson (undisclosed) has been ruled out for Wednesday's game against the Bruins, Ansar Khan of MLive.com reports.",
 "status": "Injured Reserve"
 },
 "4587588": {
@@ -965,6 +960,11 @@
 "back": "2026-11-23",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"4697436": {
+"back": "2026-11-21",
+"note": "Wallinder (upper body) will not be in the lineup versus Boston on Wednesday, Ansar Khan of MLive.com reports.",
+"status": "Out"
 },
 "4781550": {
 "back": "2026-11-23",
