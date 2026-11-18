@@ -2774,7 +2774,7 @@
 <meta name="theme-color" content="#0c0d0f">
 <!-- round 50 home-screen app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="gx-build" content="6yek6.371q0i" data-file="build/app.js">
+<meta name="gx-build" content="rqua85.1co3sbq" data-file="build/app.js">
 </head>
 <body>
 <script>window.GAMES_DATA = null; document.write('<script src="games-data.js?t=' + Date.now() + '"><\/script>');</script>
@@ -3712,10 +3712,7 @@ function Matchup({ s, setS, wk, setWk }) {
   // <DayFold key=
   // </DayFold>
   const K = s.blend, done = wk.done || 0;
-  const pairOpp = oppOf(wk, s.me);
-  const myPair = [s.me, pairOpp || s.opp];
-  const others = (wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me);
-  const all = [myPair, ...others];
+  const all = gxSides316(wk, s.me, s.opp); /* change 316: ESPN's sides */
   const [sel, setSel] = useState(() => { const v44 = window.__MATCH_SEL || 0; window.__MATCH_SEL = 0; return v44; });
   useEffect(() => { window.__matchSel = sel; window.__setMatch = setSel; window.dispatchEvent(new Event("gm-match")); }, [sel]);
   const [day, setDay] = useState(null);
@@ -3807,7 +3804,7 @@ function Matchup({ s, setS, wk, setWk }) {
   const dayTot = state === "live" ? lv135(x) - lv135(y) : x.act + x.total - (y.act + y.total); /* change 135 */
   const dvD135 = state === "live" ? dayTot : dvOf(d);
   const wkLive135 = Object.values((window.__LIVESC || {})[today] || {}).some((g) => g && g.s === "L");
-  const mine = a === s.me;
+  const mine = a === s.me || b === s.me, sg316 = b === s.me ? -1 : 1; /* change 316: you may be on the right */
   const tI141 = dates.indexOf(today), tA141 = tI141 >= 0 ? A.days[tI141] : null, tB141 = tI141 >= 0 ? B.days[tI141] : null;
   return (
     <div className="gx-mu141"><div className="mn">
@@ -3815,12 +3812,12 @@ function Matchup({ s, setS, wk, setWk }) {
         <div key={"m105-" + sel} className={"gx-sl105 " + sl105a} style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {all.length > 1 ? <button type="button" className="gx-arw" aria-label="Previous matchup" onClick={() => move(-1)}>{"\u2039"}</button> : null}
           <div className="min-w-0" style={{ flex: 1 }}>
-            <div className="text-sm font-semibold gx-nm114" style={mine ? { color: "var(--accent)" } : null}><button type="button" className="gx-tp187" aria-label={"Open " + teamName(s, a)} onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.team(a); }}><GxFtPic114 id={a} size={22} /></button><TL s={s} id={a} /></div>
+            <div className={"text-sm gx-nm114" + (b === s.me ? " text-slate-500" : " font-semibold")} style={a === s.me ? { color: "var(--accent)" } : null}><button type="button" className="gx-tp187" aria-label={"Open " + teamName(s, a)} onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.team(a); }}><GxFtPic114 id={a} size={22} /></button><TL s={s} id={a} /></div>
             <div className="gx-num" style={{ fontSize: 28 }}><GxAnimNum131 v={aA} /></div>
           </div>
-          <GxRing v={winProb(A, B, aA, aB)} plain={!mine} />
+          <GxRing v={sg316 < 0 ? 1 - winProb(A, B, aA, aB) : winProb(A, B, aA, aB)} plain={!mine} />
           <div className="min-w-0 text-right" style={{ flex: 1 }}>
-            <div className="text-sm text-slate-500 gx-nm114 r"><TL s={s} id={b} /><button type="button" className="gx-tp187" aria-label={"Open " + teamName(s, b)} onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.team(b); }}><GxFtPic114 id={b} size={22} /></button></div>
+            <div className={"text-sm gx-nm114 r" + (b === s.me ? " font-semibold" : " text-slate-500")} style={b === s.me ? { color: "var(--accent)" } : null}><TL s={s} id={b} /><button type="button" className="gx-tp187" aria-label={"Open " + teamName(s, b)} onClick={(e) => { e.stopPropagation(); if (window.__NAV) window.__NAV.team(b); }}><GxFtPic114 id={b} size={22} /></button></div>
             <div className="gx-num" style={{ fontSize: 28 }} data-gx="138sc"><GxAnimNum131 v={aB} /></div>
           </div>
           {all.length > 1 ? <button type="button" className="gx-arw" aria-label="Next matchup" onClick={() => move(1)}>{"\u203a"}</button> : null}
@@ -3831,12 +3828,12 @@ function Matchup({ s, setS, wk, setWk }) {
           </div>
         ) : null}
         <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 8 }}>
-          <span data-gx="114w" style={{ margin: "0 auto", color: "var(--ink2, var(--ink))" /* change 222: plain */ }}>{mine ? (margin >= 0 ? "Projected to win by " : "Projected to lose by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " projected to win by " + f1(Math.abs(margin))}</span>
+          <span data-gx="114w" style={{ margin: "0 auto", color: "var(--ink2, var(--ink))" /* change 222: plain */ }}>{mine ? (margin * sg316 >= 0 ? "Projected to win by " : "Projected to lose by ") + f1(Math.abs(margin)) : teamName(s, margin >= 0 ? a : b) + " projected to win by " + f1(Math.abs(margin))}</span>
         </div>
       </div>
       <div className="gx-dn108" data-gx="138top">
         <button type="button" className="gx-arw" aria-label="Earlier day" disabled={!sum209 && d <= 0} onClick={() => { if (sum209) setSum209(false); else setDay(d - 1); }}>{"\u2039"}</button>
-        <GxDayPick209 dates={dates} d={d} sum={sum209} today={today} mine={mine} dv={(i) => (i === d ? dvD135 : dvOf(i))} wkDv={aA - aB} onDay={(i) => { setSum209(false); setDay(i); }} onSum={() => setSum209(true)} />
+        <GxDayPick209 dates={dates} d={d} sum={sum209} today={today} mine={mine} dv={(i) => sg316 * (i === d ? dvD135 : dvOf(i))} wkDv={sg316 * (aA - aB)} onDay={(i) => { setSum209(false); setDay(i); }} onSum={() => setSum209(true)} />
         <button type="button" className="gx-arw" aria-label="Later day" disabled={!sum209 && d >= n - 1} onClick={() => { if (sum209) setSum209(false); else setDay(d + 1); }}>{"\u203a"}</button>
       </div>
       {sum209 ? <div key={"s209-" + sel} className="gx-pn gx-sl105" style={{ marginTop: 12 }}><GxWkSum209 s={s} a={a} b={b} A={A} B={B} aA={aA} aB={aB} fa={fa} fb={fb} mine={mine} /></div> : null}
@@ -3844,7 +3841,7 @@ function Matchup({ s, setS, wk, setWk }) {
         <div style={{ display: "none" }} data-gx="152t">
           <span className="gx-tag">{(dates[d] === today ? "Today" : dates[d] ? dayLabel(dates[d]) : "") + " \u00b7 " + state}</span>
         </div>
-        {rows.length ? <div className={"gx-h2h gx-tt114 gx-tt147" + (state !== "projected" ? " gx-on157" : "") + "" /* gx176 */}><div>{state === "final" ? "Final" : state === "live" ? "Today" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(dayTot > 0 ? "+" : "") + f1(dayTot)}</div></div> : null}
+        {rows.length ? <div className={"gx-h2h gx-tt114 gx-tt147" + (state !== "projected" ? " gx-on157" : "") + "" /* gx176 */}><div>{state === "final" ? "Final" : state === "live" ? "Today" : "Projected"}</div><div className="text-right">{state === "live" ? <>{f1(lv135(x))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(x.act + x.total)}</div></> : f1(x.act + x.total)}</div><div></div><div>{state === "live" ? <>{f1(lv135(y))}<div className="text-xs" style={{ color: "var(--faint)", fontWeight: 400, whiteSpace: "nowrap" }}>proj {f1(y.act + y.total)}</div></> : f1(y.act + y.total)}</div><div className="text-right" style={{ color: !mine || Math.abs(dayTot) < 0.05 ? "var(--mute)" : sg316 * dayTot > 0 ? "var(--good)" : "var(--bad)" }}>{(sg316 * dayTot > 0 ? "+" : "") + f1(sg316 * dayTot)}</div></div> : null}
         {rows.length ? rows.map(([sl, p, q], i) => (
           <React.Fragment key={i}>
           <div className={"gx-h2h" + (sl === "BE" && (!rows[i - 1] || rows[i - 1][0] !== "BE") ? " gx-be147" : "")} style={i ? null : { borderTop: 0 }}>
@@ -3861,9 +3858,9 @@ function Matchup({ s, setS, wk, setWk }) {
       <div className="text-xs text-slate-500" style={{ display: "flex", marginTop: 6 }}>
         <span>{gamesMoves(s, a, wk, A)}</span><span style={{ marginLeft: "auto" }}>{gamesMoves(s, b, wk, B)}</span>
       </div>
-      <GxNhl141 s={s} a={a} b={b} tA={dates[d] < today ? A.days[d] : tA141} tB={dates[d] < today ? B.days[d] : tB141} day296={dates[d]} />
+      <GxNhl141 s={s} a={sg316 < 0 ? b : a} b={sg316 < 0 ? a : b} tA={sg316 < 0 ? (dates[d] < today ? B.days[d] : tB141) : (dates[d] < today ? A.days[d] : tA141)} tB={sg316 < 0 ? (dates[d] < today ? A.days[d] : tA141) : (dates[d] < today ? B.days[d] : tB141)} day296={dates[d]} />
     </div>
-    <div className="sd"><GxNhl141 s={s} a={a} b={b} tA={dates[d] < today ? A.days[d] : tA141} tB={dates[d] < today ? B.days[d] : tB141} day296={dates[d]} side /></div>
+    <div className="sd"><GxNhl141 s={s} a={sg316 < 0 ? b : a} b={sg316 < 0 ? a : b} tA={sg316 < 0 ? (dates[d] < today ? B.days[d] : tB141) : (dates[d] < today ? A.days[d] : tA141)} tB={sg316 < 0 ? (dates[d] < today ? A.days[d] : tA141) : (dates[d] < today ? B.days[d] : tB141)} day296={dates[d]} side /></div>
     </div>
   );
 }
@@ -6086,7 +6083,7 @@ function MatchStrip({ s, wk }) {
     return () => window.removeEventListener("gm-match", h);
   }, []);
   const myOpp = oppOf(wk, s.me);
-  const all = [[s.me, myOpp || s.opp]].concat((wk.pairs || []).filter((p) => p[0] && p[1] && p[0] !== s.me && p[1] !== s.me)).filter((p) => p[0] && p[1]);
+  const all = gxSides316(wk, s.me, myOpp || s.opp).filter((p) => p[0] && p[1]); /* change 316 */
   if (all.length < 2) return null;
   const sc = (id) => +(gxAct120(wk)[id]) || 0;
   const nm = (id) => { const w = (teamName(s, id) || "").split(" ")[0]; return w.length > 10 ? w.slice(0, 9) + "\u2026" : w; };
@@ -10428,7 +10425,7 @@ const gxSum209 = (s, id, R) => {
 };
 function GxWkSum209({ s, a, b, A, B, aA, aB, fa, fb, mine }) {
   const SA = gxSum209(s, a, A), SB = gxSum209(s, b, B);
-  const dw = aA - aB;
+  const dw = (b === s.me ? -1 : 1) * (aA - aB); /* change 316 */
   const nm = { F: "FORWARDS", D: "DEFENCE", G: "GOALIES" };
   const cell = (o, right, id) => {
     if (!o) return <div></div>;
@@ -13129,6 +13126,13 @@ function GxTonight309({ s, wk }) {
   );
 }
 const byIdP = (s, id) => s.players.find((q) => q.id === id) || null;
+// ---------- change 316: ESPN's sides on the Matchup page (away left, home right) ----------
+// wk.pairs are stored [home, away]; your own matchup stays first in the list
+function gxSides316(wk, me, opp) {
+  const P = (wk.pairs || []).filter((p) => p[0] && p[1]);
+  const mp = P.find((p) => p[0] === me || p[1] === me);
+  return [mp ? [mp[1], mp[0]] : [me, opp], ...P.filter((p) => p !== mp).map((p) => [p[1], p[0]])];
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 <script>/* change 074 (gx074-loader): use the copy built on GitHub when it matches this page; otherwise translate in the browser like before */

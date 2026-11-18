@@ -1,9 +1,10 @@
 {
  "files": {
-  "gm_live.py": true,
-  "gm_push.py": true
+  "fantasy-gm.html": true,
+  "gm_live.py": true
  },
  "changes": [
-  "315-alert-two-lines.py"
+  "316-matchup-espn-sides.py",
+  "317-no-lead-alerts.py"
  ]
 }
