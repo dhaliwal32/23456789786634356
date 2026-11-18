@@ -6,7 +6,7 @@
   "morning_summary": false,
   "pregame_summary": true,
   "bench_player_has_a_game": false,
-  "starter_is_out": true,
+  "starter_is_out": false,
   "possible_scratch": false,
   "your_player_injury_update": false,
   "your_player_line_change": false,
