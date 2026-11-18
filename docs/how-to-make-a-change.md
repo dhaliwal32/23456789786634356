@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 315.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 316.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -240,6 +240,7 @@ Recent rows (add new ones here):
 | 312 | Alert format and speed (Kuvar, Nov 17, phone picture: '🏒 Fantasy Islands' on top and 'from 🏒 Fantasy Islands' under it). On iOS the title shows above 'from <home screen name>', and an empty title gets the app name instead (305), so the message itself is now the title with an empty body: 'Assist by X (9)' / 'from <home screen name>'. Same for lead-change alerts. Goal checks every 15 s (was 30), finished games read once more then skipped. The watcher no longer stops when the next game is over 75 min away; it waits and stops only after the day's last game, so a late GitHub cron start no longer costs alerts (the next cron run waits in the queue behind it). Tried also making sync-timer.yml start the watcher; the Mac's GitHub token has no `workflow` scope, so workflow files cannot be pushed from here |
 | 313 | Alerts copy ESPN's look (Kuvar, Nov 17, picked 'Exact ESPN copy' after seeing 312): title '🏒 Fantasy Islands' (bold), message as the body. iOS puts 'from <home screen name>' between them for web apps; that cannot be removed, and Kuvar is fine with it. Do not swap title and body again |
 | 314 | Kuvar marked out the bold top line on the 313 test alert (Nov 17): he wants only 'from <home screen name>' and the message, nothing above. Title is now a zero-width space (U+200B) for lead, goal and test alerts; an empty title makes iOS show the app name (305/311) |
+| 315 | Final alert look, picked by Kuvar (Nov 17) after 312-314: two lines, message as the title (bold, iOS always bolds it) and empty body, so the phone shows 'Assist by X (21)' then 'from <home screen name>'. iOS web apps always need a title line and always add the 'from' line under it; an ESPN-style alert would need a real App Store app. Ask Kuvar before changing this again |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
