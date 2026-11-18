@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-11|rw258|date|2517899|2026-12-30|2027-01-09",
-   "at": "2026-11-11T21:40:27Z",
-   "title": "Fantasy GM",
-   "text": "Andersen return moved to Jan 9 (was Dec 30)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-11T21:40:27Z",
-   "seen": "2026-11-11T21:40:27Z"
-  },
-  {
    "k": "2026-11-11|2adc21c0202c",
    "at": "2026-11-11T23:08:27Z",
    "title": "Fantasy GM",
@@ -961,6 +949,18 @@
    "via": "urgent",
    "sent_at": "2026-11-18T21:00:23Z",
    "seen": "2026-11-18T21:00:23Z"
+  },
+  {
+   "k": "2026-11-18|rw258|date|5275337|2026-11-21|2026-11-25",
+   "at": "2026-11-18T22:33:53Z",
+   "title": "Fantasy GM",
+   "text": "Hagens return moved to Nov 25 (was Nov 21)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T22:33:53Z",
+   "seen": "2026-11-18T22:33:53Z"
   }
  ],
  "sent": {
