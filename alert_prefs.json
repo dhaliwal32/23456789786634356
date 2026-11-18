@@ -16,7 +16,7 @@
   "more_line_changes": true,
   "your_player_losing_ice_time": false,
   "goalie_not_starting": true,
-  "goalie_not_confirmed": true,
+  "goalie_not_confirmed": false,
   "pickup_new_pp1": true,
   "pickup_ice_time_jump": false,
   "pickup_trending": true,
