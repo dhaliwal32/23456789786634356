@@ -1,8 +1,9 @@
 {
  "files": {
-  "fantasy-gm.html": true
+  "gm_live.py": true,
+  "gm_push.py": true
  },
  "changes": [
-  "310-tall-screen.py"
+  "311-goal-alerts-late-start.py"
  ]
 }
