@@ -160,7 +160,9 @@ def main():
                 log(f"start: {a:.1f} to {b:.1f}")
                 last = side
             elif side != 0 and side != last:
-                if side > 0:
+                if True:  # change 317: lead alerts off (Kuvar, Nov 17); delete this line and the "pass" under it, and change the next "elif" to "if", to bring them back
+                    pass
+                elif side > 0:
                     push("Fantasy GM", f"You lead {a:.1f} to {b:.1f}")
                 else:
                     push("Fantasy GM", f"{them} lead {b:.1f} to {a:.1f}")
