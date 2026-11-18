@@ -951,6 +951,18 @@
    "via": "urgent",
    "sent_at": "2026-11-18T00:11:13Z",
    "seen": "2026-11-18T00:11:13Z"
+  },
+  {
+   "k": "2026-11-17|98cd5c4c3539",
+   "at": "2026-11-18T01:15:47Z",
+   "title": "Fantasy GM",
+   "text": "Dach joined McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T01:15:47Z",
+   "seen": "2026-11-18T01:15:47Z"
   }
  ],
  "sent": {
