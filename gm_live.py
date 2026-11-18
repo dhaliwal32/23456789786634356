@@ -1,8 +1,7 @@
 """
-gm_live.py - watches your matchup during NHL games and buzzes your phone (ntfy) when the lead changes.
-
-Runs on GitHub (live-alerts.yml). It checks ESPN's live matchup score about every 30 seconds while
-games are on, and stops by itself when no game is live and none starts in the next 75 minutes.
+gm_live.py - watches your matchup during NHL games: goal and assist alerts for the other team's players
+(from the NHL live feed, change 318) and who was on the ice for each goal. Runs on GitHub (live-alerts.yml)
+and stops by itself after the day's last game. Lead-change alerts are off (change 317).
 """
 import json
 import os
@@ -18,11 +17,9 @@ SEASON = 2027
 MY_TEAM_ID = 4
 ESPN_S2 = os.environ.get("ESPN_S2", "").strip()
 SWID = os.environ.get("SWID", "").strip()
-NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
 APP_URL = "https://dhaliwal32.github.io/23456789786634356/fantasy-gm.html#matchup"
 LEAGUE = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/fhl/seasons/{SEASON}/segments/0/leagues/{LEAGUE_ID}"
 HERE = os.path.dirname(os.path.abspath(__file__))
-EVERY = 15          # seconds between checks while games are on (change 312: was 30)
 MAX_RUN = 5.6 * 3600  # GitHub stops a job after 6 hours
 
 s = requests.Session()
@@ -40,16 +37,6 @@ def push(title, msg):
         gm_push.send(msg, "", "#matchup")  # change 315: two lines, message on top then "from <app>" (Kuvar picked this; iOS always needs a top line)
     except Exception as e:
         log("app alert failed", e)
-    if True:  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. Delete these two lines to bring ntfy back.
-        return
-    if not NTFY_TOPIC:
-        log("(no ntfy topic)", title, msg)
-        return
-    try:
-        requests.post(f"https://ntfy.sh/{NTFY_TOPIC}", data=msg.encode("utf-8"),
-                      headers={"Title": title, "Priority": "default"}, timeout=20)  # change 261: no Click link, tapping opens ntfy
-    except Exception as e:
-        log("ntfy failed", e)
 
 
 def games_now():
@@ -175,9 +162,7 @@ def main():
 
 
 # ---------- change 302: a phone alert for every goal and assist by your opponent's players ----------
-SB302 = "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/"
-_seen302, _primed302, _opp302 = set(), False, {"id": None, "ids": set(), "at": 0}
-_fin312 = set()  # change 312: finished games already read
+_opp302 = {"id": None, "ids": set(), "at": 0}  # the opponent's roster (change 302, names added in 318)
 
 
 def _opp_ids302(opp):
@@ -192,15 +177,6 @@ def _opp_ids302(opp):
         except Exception as e:
             log("opponent roster failed", e)
     return _opp302["ids"]
-
-
-def _count302(text, name, goal):
-    import re as _re
-    if goal:
-        m = _re.search(r"Goal \((\d+)\)", text or "")
-    else:
-        m = _re.search(_re.escape(name) + r" \((\d+)\)", text or "")
-    return f" ({m.group(1)})" if m else ""
 
 
 # ---------- change 311: remember sent goal alerts, catch goals scored before the watcher started ----------
@@ -227,69 +203,6 @@ def _mark311(key):
             json.dump({"keys": sorted(k)[-400:]}, f)
     except Exception as e:
         log("could not save sent alerts", e)
-
-
-def _recent311(wc):
-    try:
-        t = datetime.strptime(str(wc)[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
-        return (datetime.now(timezone.utc) - t).total_seconds() < 3 * 3600
-    except Exception:
-        return False
-
-
-def goal_alerts302(opp):
-    global _primed302
-    if not opp:
-        return
-    ids = _opp_ids302(opp)
-    if not _primed302:
-        log(f"goal alerts: opponent {opp}, {len(ids)} players")  # change 311
-    if not ids:
-        return
-    try:
-        sb = requests.get(SB302 + "scoreboard", timeout=20).json()
-    except Exception as e:
-        log("goal check failed", e)
-        return
-    for ev in sb.get("events", []):
-        st = (((ev.get("status") or {}).get("type")) or {}).get("state")
-        if st not in ("in", "post") or ev.get("id") in _fin312:
-            continue
-        if st == "post" and _primed302:
-            _fin312.add(ev.get("id"))  # change 312: read a finished game one last time, then skip it
-        try:
-            sm = requests.get(SB302 + "summary", params={"event": ev.get("id")}, timeout=20).json()
-        except Exception:
-            continue
-        for p in sm.get("plays") or []:
-            if not p.get("scoringPlay") or ((p.get("period") or {}).get("number") or 0) >= 5:
-                continue          # shootout goals do not count
-            for q in p.get("participants") or []:
-                a = q.get("athlete") or {}
-                try:
-                    pid = int(a.get("id"))
-                except Exception:
-                    continue
-                kind = q.get("type")
-                if pid not in ids or kind not in ("scorer", "assister"):
-                    continue
-                key = f"{p.get('id')}|{pid}"
-                if key in _seen302:
-                    continue
-                _seen302.add(key)
-                if not _primed302 and (key in _sent311() or not _recent311(p.get("wallclock"))):
-                    continue          # change 311: before this run started, only goals from the last 3 hours not already sent
-                name = a.get("displayName") or a.get("fullName") or ""
-                goal = kind == "scorer"
-                msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
-                try:
-                    import gm_push
-                    gm_push.send(msg, "", "#matchup")  # change 315: two lines (Kuvar picked this, Nov 17); do not change again without asking
-                    _mark311(key)
-                except Exception as e:
-                    log("goal alert failed", e)
-                log("goal alert:", msg)
-    _primed302 = True
 
 
 # ---------- change 318: goal / assist alerts from the NHL's own live feed (faster than ESPN) ----------

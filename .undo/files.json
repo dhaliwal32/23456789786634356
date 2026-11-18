@@ -3,6 +3,6 @@
   "gm_live.py": true
  },
  "changes": [
-  "318-fast-goal-alerts.py"
+  "319-tidy-alert-code.py"
  ]
 }
