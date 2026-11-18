@@ -37,7 +37,7 @@ def log(*a):
 def push(title, msg):
     try:  # change 278: the same alert also goes to the home-screen app
         import gm_push
-        gm_push.send(msg, "", "#matchup")  # change 312: the message is the title, so only the app name shows above it
+        gm_push.send("\U0001F3D2 Fantasy Islands", msg, "#matchup")  # change 313: like ESPN, bold name on top, message under it
     except Exception as e:
         log("app alert failed", e)
     if True:  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. Delete these two lines to bring ntfy back.
@@ -284,7 +284,7 @@ def goal_alerts302(opp):
                 msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
                 try:
                     import gm_push
-                    gm_push.send(msg, "", "#matchup")  # change 312: the message is the title (Kuvar wants only the app name above it, not a second name)
+                    gm_push.send("\U0001F3D2 Fantasy Islands", msg, "#matchup")  # change 313: like ESPN (Kuvar picked this, Nov 17)
                     _mark311(key)
                 except Exception as e:
                     log("goal alert failed", e)
