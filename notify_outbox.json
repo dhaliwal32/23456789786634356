@@ -963,6 +963,16 @@
    "via": "urgent",
    "sent_at": "2026-11-18T01:15:47Z",
    "seen": "2026-11-18T01:15:47Z"
+  },
+  {
+   "k": "2026-11-18|52bfbab5cef3",
+   "at": "2026-11-18T13:27:06Z",
+   "title": "Fantasy GM",
+   "text": "Bertuzzi joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": false,
+   "seen": "2026-11-18T13:27:06Z"
   }
  ],
  "sent": {
