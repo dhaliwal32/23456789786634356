@@ -146,5 +146,5 @@ if __name__ == "__main__":
     except Exception as ex:
         print(f"(push) could not make the key: {ex}")
     if "--test" in sys.argv:
-        n = send("\u200b", "Test - alerts from the app are working.", "#matchup")  # change 314: same look as real alerts
+        n = send("Test - alerts from the app are working.", "", "#matchup")  # change 315: same look as real alerts
         print(f"(push) test sent to {n} device(s)")

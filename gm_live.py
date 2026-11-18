@@ -37,7 +37,7 @@ def log(*a):
 def push(title, msg):
     try:  # change 278: the same alert also goes to the home-screen app
         import gm_push
-        gm_push.send("\u200b", msg, "#matchup")  # change 314: invisible title, no top line (Kuvar, Nov 17)
+        gm_push.send(msg, "", "#matchup")  # change 315: two lines, message on top then "from <app>" (Kuvar picked this; iOS always needs a top line)
     except Exception as e:
         log("app alert failed", e)
     if True:  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. Delete these two lines to bring ntfy back.
@@ -284,7 +284,7 @@ def goal_alerts302(opp):
                 msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
                 try:
                     import gm_push
-                    gm_push.send("\u200b", msg, "#matchup")  # change 314: invisible title; only "from <app>" and the message show
+                    gm_push.send(msg, "", "#matchup")  # change 315: two lines (Kuvar picked this, Nov 17); do not change again without asking
                     _mark311(key)
                 except Exception as e:
                     log("goal alert failed", e)
