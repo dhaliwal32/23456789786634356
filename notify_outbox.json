@@ -879,6 +879,78 @@
    "via": "urgent",
    "sent_at": "2026-11-17T19:37:38Z",
    "seen": "2026-11-17T19:37:38Z"
+  },
+  {
+   "k": "2026-11-17|d801b06dfda7",
+   "at": "2026-11-18T00:11:12Z",
+   "title": "Fantasy GM",
+   "text": "Lundell left Tkachuk's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:12Z",
+   "seen": "2026-11-18T00:11:12Z"
+  },
+  {
+   "k": "2026-11-17|f05ad73d68aa",
+   "at": "2026-11-18T00:11:12Z",
+   "title": "Fantasy GM",
+   "text": "Luostarinen joined Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:12Z",
+   "seen": "2026-11-18T00:11:12Z"
+  },
+  {
+   "k": "2026-11-17|9ec9c8e39a36",
+   "at": "2026-11-18T00:11:12Z",
+   "title": "Fantasy GM",
+   "text": "Eller left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:12Z",
+   "seen": "2026-11-18T00:11:12Z"
+  },
+  {
+   "k": "2026-11-17|caa08312e553",
+   "at": "2026-11-18T00:11:13Z",
+   "title": "Fantasy GM",
+   "text": "Goncalves left Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:13Z",
+   "seen": "2026-11-18T00:11:13Z"
+  },
+  {
+   "k": "2026-11-17|490cf4e7b9ef",
+   "at": "2026-11-18T00:11:13Z",
+   "title": "Fantasy GM",
+   "text": "Yager left Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:13Z",
+   "seen": "2026-11-18T00:11:13Z"
+  },
+  {
+   "k": "2026-11-17|51a2a58746be",
+   "at": "2026-11-18T00:11:13Z",
+   "title": "Fantasy GM",
+   "text": "Mercer left Connor's line (WPG)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-18T00:11:13Z",
+   "seen": "2026-11-18T00:11:13Z"
   }
  ],
  "sent": {
