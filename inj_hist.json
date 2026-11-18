@@ -14,17 +14,17 @@
 "was": "2026-11-02"
 },
 "2562624": {
-"d": "2026-11-17",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-17",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "2563027": {
-"d": "2026-11-11",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "now": "2026-11-19",
-"was": "2026-11-12"
+"was": "Out"
 },
 "2590861": {
 "d": "2026-11-13",
@@ -34,11 +34,11 @@
 "was": "2026-11-14"
 },
 "2593131": {
-"d": "2026-11-17",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-17",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "2967072": {
 "d": "2026-11-17",
@@ -189,11 +189,11 @@
 "was": "2026-11-14"
 },
 "3150479": {
-"d": "2026-11-16",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-16",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "3151036": {
 "d": "2026-11-16",
@@ -304,11 +304,11 @@
 "was": "2026-11-12"
 },
 "4024968": {
-"d": "2026-11-17",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-16",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "4063569": {
 "d": "2026-11-12",
@@ -571,6 +571,11 @@
 "now": "2027-01-01",
 "was": "2026-12-01"
 },
+"5161": {
+"d": "2026-11-18",
+"k": "back",
+"was": "2027-01-12"
+},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -647,13 +652,13 @@
 },
 "2562624": {
 "back": "2026-11-19",
-"note": "Nugent-Hopkins (undisclosed) isn't expected to play against Florida on Tuesday, per Oilers play-by-play announcer Jack Michaels.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2563027": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -672,8 +677,8 @@
 },
 "2593131": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2952729": {
 "back": "2027-07-01",
@@ -787,8 +792,8 @@
 },
 "3150479": {
 "back": "2026-11-19",
-"note": "Hodgson (groin) isn't expected to play against Winnipeg on Tuesday, per TSN 1200 Ottawa.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3151036": {
 "back": "2026-12-03",
@@ -852,8 +857,8 @@
 },
 "4024968": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4063268": {
 "back": "2026-12-04",
@@ -1083,11 +1088,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
