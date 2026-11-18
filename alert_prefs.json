@@ -8,7 +8,7 @@
   "bench_player_has_a_game": true,
   "starter_is_out": false,
   "possible_scratch": false,
-  "your_player_injury_update": false,
+  "your_player_injury_update": true,
   "your_player_line_change": false,
   "your_player_lineup_change": false,
   "your_player_power_play_change": true,
