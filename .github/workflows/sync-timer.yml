@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 355
     steps:
-      - name: Start Fantasy sync every 10 minutes
+      - name: Start Fantasy sync every 10 minutes (30 overnight) and the goal alerts watcher if it stopped
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -21,7 +21,14 @@ jobs:
           end=$(( $(date +%s) + 340*60 ))
           while [ $(date +%s) -lt $end ]; do
             gh workflow run sync.yml --ref main || echo "could not start sync, will try again in 10 min"
-            sleep 600
+            h=$((10#$(date -u +%H)))
+            # goal alerts watcher: GitHub's own schedule can start it hours late, so start it here when it is not running (game hours, 6 AM to 11 PM Pacific)
+            if [ $h -ge 14 ] || [ $h -lt 7 ]; then
+              busy=$(gh run list --workflow live-alerts.yml --limit 5 --json status -q '[.[] | select(.status != "completed")] | length' || echo 1)
+              if [ "$busy" = "0" ]; then gh workflow run live-alerts.yml --ref main && echo "started the goal alerts watcher" || true; fi
+            fi
+            # overnight (about 1 AM to 8 AM Pacific) nothing changes in the league: sync every 30 minutes instead of 10
+            if [ $h -ge 9 ] && [ $h -lt 16 ]; then sleep 1800; else sleep 600; fi
           done
       - name: Start the next timer
         if: always()
