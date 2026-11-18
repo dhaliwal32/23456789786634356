@@ -141,11 +141,11 @@
 "was": "2026-11-17"
 },
 "3067822": {
-"d": "2026-11-17",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-17",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "3069285": {
 "d": "2026-11-12",
@@ -234,10 +234,10 @@
 "was": "2026-11-17"
 },
 "3891952": {
-"d": "2026-11-16",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "3899946": {
 "d": "2026-11-14",
@@ -316,10 +316,11 @@
 "was": ""
 },
 "4065019": {
-"d": "2026-11-17",
-"k": "new",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-17",
-"now": "2026-11-19"
+"now": "2026-11-19",
+"was": "Out"
 },
 "4233536": {
 "d": "2026-11-17",
@@ -491,11 +492,11 @@
 "was": "2026-12-01"
 },
 "5052": {
-"d": "2026-11-17",
-"k": "later",
+"d": "2026-11-18",
+"k": "dtd",
 "nd": "2026-11-15",
 "now": "2026-11-19",
-"was": "2026-11-17"
+"was": "Out"
 },
 "5075840": {
 "d": "2026-11-13",
@@ -571,11 +572,6 @@
 "now": "2027-01-01",
 "was": "2026-12-01"
 },
-"5161": {
-"d": "2026-11-18",
-"k": "back",
-"was": "2027-01-12"
-},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -592,9 +588,10 @@
 "was": "2026-11-15"
 },
 "5216858": {
-"d": "2026-11-17",
-"k": "new",
-"now": "2026-11-19"
+"d": "2026-11-18",
+"k": "dtd",
+"now": "2026-11-19",
+"was": "Out"
 },
 "5216860": {
 "d": "2026-11-14",
@@ -757,8 +754,8 @@
 },
 "3067822": {
 "back": "2026-11-19",
-"note": "Johnston (upper body) won't play against Anaheim on Tuesday, Lou Korac of NHL.com reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3069448": {
 "back": "2026-11-22",
@@ -827,8 +824,8 @@
 },
 "3891952": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3900219": {
 "back": "2026-11-19",
@@ -867,8 +864,8 @@
 },
 "4065019": {
 "back": "2026-11-19",
-"note": "Hagel (undisclosed) won't play against Washington on Tuesday, Benjamin Pierce of the Lightning's official site reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233563": {
 "back": "2026-11-28",
@@ -1027,8 +1024,8 @@
 },
 "5052": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5075840": {
 "back": "2026-11-19",
@@ -1090,6 +1087,11 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
+"status": "Injured Reserve"
+},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1097,8 +1099,8 @@
 },
 "5216858": {
 "back": "2026-11-19",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5216860": {
 "back": "2026-11-21",
