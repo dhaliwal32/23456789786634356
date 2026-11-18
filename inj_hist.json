@@ -354,11 +354,6 @@
 "k": "new",
 "now": "2026-11-18"
 },
-"4233890": {
-"d": "2026-11-17",
-"k": "back",
-"was": "2026-11-28"
-},
 "4271998": {
 "d": "2026-11-14",
 "k": "back",
@@ -575,6 +570,11 @@
 "nd": "2026-11-15",
 "now": "2027-01-01",
 "was": "2026-12-01"
+},
+"5161": {
+"d": "2026-11-18",
+"k": "back",
+"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -885,6 +885,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"4233890": {
+"back": "2026-11-28",
+"note": "Gadjovich (upper body) is out indefinitely, the team announced Thursday.",
+"status": "Injured Reserve"
+},
 "4272674": {
 "back": "2026-11-23",
 "note": "Gustavsson (hip) could rejoin the Wild on Monday ahead of their game versus the Sharks, Michael Russo of The Athletic reports.",
@@ -1083,11 +1088,6 @@
 "5149210": {
 "back": "2026-12-01",
 "note": "ir",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
