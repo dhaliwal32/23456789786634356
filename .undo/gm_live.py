@@ -22,7 +22,7 @@ NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
 APP_URL = "https://dhaliwal32.github.io/23456789786634356/fantasy-gm.html#matchup"
 LEAGUE = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/fhl/seasons/{SEASON}/segments/0/leagues/{LEAGUE_ID}"
 HERE = os.path.dirname(os.path.abspath(__file__))
-EVERY = 30          # seconds between checks while games are on
+EVERY = 15          # seconds between checks while games are on (change 312: was 30)
 MAX_RUN = 5.6 * 3600  # GitHub stops a job after 6 hours
 
 s = requests.Session()
@@ -37,7 +37,7 @@ def log(*a):
 def push(title, msg):
     try:  # change 278: the same alert also goes to the home-screen app
         import gm_push
-        gm_push.send(title, msg, "#matchup")
+        gm_push.send(msg, "", "#matchup")  # change 312: the message is the title, so only the app name shows above it
     except Exception as e:
         log("app alert failed", e)
     if True:  # change 284: ntfy switched off (Kuvar, Nov 14, 2026); alerts go only to the app. Delete these two lines to bring ntfy back.
@@ -141,8 +141,8 @@ def main():
             log("NHL check failed", e)
             live, nxt = True, None
         if not live:
-            if nxt is None or nxt > 75:
-                log("no game live and none soon - stopping")
+            if nxt is None:  # change 312: stay on between games (GitHub's schedule can start it hours late); stop after the last one
+                log("no game live and none left today - stopping")
                 return
             time.sleep(min(300, max(30, (nxt - 2) * 60)))
             continue
@@ -179,6 +179,7 @@ def main():
 # ---------- change 302: a phone alert for every goal and assist by your opponent's players ----------
 SB302 = "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/"
 _seen302, _primed302, _opp302 = set(), False, {"id": None, "ids": set(), "at": 0}
+_fin312 = set()  # change 312: finished games already read
 
 
 def _opp_ids302(opp):
@@ -252,8 +253,10 @@ def goal_alerts302(opp):
         return
     for ev in sb.get("events", []):
         st = (((ev.get("status") or {}).get("type")) or {}).get("state")
-        if st not in ("in", "post"):
+        if st not in ("in", "post") or ev.get("id") in _fin312:
             continue
+        if st == "post" and _primed302:
+            _fin312.add(ev.get("id"))  # change 312: read a finished game one last time, then skip it
         try:
             sm = requests.get(SB302 + "summary", params={"event": ev.get("id")}, timeout=20).json()
         except Exception:
@@ -281,7 +284,7 @@ def goal_alerts302(opp):
                 msg = ("Goal by " if goal else "Assist by ") + name + _count302(p.get("text"), name, goal)
                 try:
                     import gm_push
-                    gm_push.send("\U0001F3D2 Fantasy Islands", msg, "#matchup")  # change 311: title back (no title showed the name twice)
+                    gm_push.send(msg, "", "#matchup")  # change 312: the message is the title (Kuvar wants only the app name above it, not a second name)
                     _mark311(key)
                 except Exception as e:
                     log("goal alert failed", e)
