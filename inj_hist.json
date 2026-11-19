@@ -573,9 +573,11 @@
 "was": "2026-11-14"
 },
 "5136614": {
-"d": "2026-11-18",
-"k": "new",
-"now": "2026-11-19"
+"d": "2026-11-19",
+"k": "later",
+"nd": "2026-11-19",
+"now": "2026-11-25",
+"was": "2026-11-19"
 },
 "5149125": {
 "d": "2026-11-19",
@@ -920,8 +922,8 @@
 },
 "4233563": {
 "back": "2026-11-28",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4233668": {
 "back": "2026-12-06",
@@ -1124,9 +1126,9 @@
 "status": "Injured Reserve"
 },
 "5136614": {
-"back": "2026-11-19",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-25",
+"note": "Brindley (upper body) is slated to be unavailable for Thursday's game against the Ducks, AJ Haefele of DNVR Avalanche reports.",
+"status": "Out"
 },
 "5149125": {
 "back": "2026-11-27",
