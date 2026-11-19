@@ -28,11 +28,9 @@
 "was": "2026-11-14"
 },
 "2593131": {
-"d": "2026-11-18",
-"k": "dtd",
-"nd": "2026-11-19",
-"now": "2026-11-19",
-"was": "Out"
+"d": "2026-11-19",
+"k": "back",
+"was": "2026-11-19"
 },
 "2967072": {
 "d": "2026-11-17",
@@ -308,11 +306,11 @@
 "was": "2026-11-12"
 },
 "4024968": {
-"d": "2026-11-18",
-"k": "dtd",
+"d": "2026-11-19",
+"k": "later",
 "nd": "2026-11-16",
-"now": "2026-11-19",
-"was": "Out"
+"now": "2026-11-21",
+"was": "2026-11-19"
 },
 "4063569": {
 "d": "2026-11-12",
@@ -721,11 +719,6 @@
 "note": "Rust (lower body) will be re-evaluated in six weeks, Michelle Crechiolo of the Penguins' official site reports Thursday.",
 "status": "Injured Reserve"
 },
-"2593131": {
-"back": "2026-11-19",
-"note": "Pageau (lower body) will be a game-time call against the Jets on Thursday, Andrew Gross of Newsday reports.",
-"status": "Day-To-Day"
-},
 "2952729": {
 "back": "2027-07-01",
 "note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
@@ -907,9 +900,9 @@
 "status": "Injured Reserve"
 },
 "4024968": {
-"back": "2026-11-19",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-21",
+"note": "out",
+"status": "Out"
 },
 "4063268": {
 "back": "2026-12-04",
