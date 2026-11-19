@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-11|2adc21c0202c",
-   "at": "2026-11-11T23:08:27Z",
-   "title": "Fantasy GM",
-   "text": "Cirelli joined Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-11T23:08:27Z",
-   "seen": "2026-11-11T23:08:27Z"
-  },
-  {
-   "k": "2026-11-11|d5dad7246d4a",
-   "at": "2026-11-11T23:08:27Z",
-   "title": "Fantasy GM",
-   "text": "Gourde left Kucherov's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-11T23:08:27Z",
-   "seen": "2026-11-11T23:08:27Z"
-  },
-  {
-   "k": "2026-11-11|0799292796ca",
-   "at": "2026-11-11T23:08:28Z",
-   "title": "Fantasy GM",
-   "text": "O'Reilly left Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-11T23:08:28Z",
-   "seen": "2026-11-11T23:08:28Z"
-  },
-  {
    "k": "2026-11-11|96762d91602b",
    "at": "2026-11-12T03:28:41Z",
    "title": "Fantasy GM",
@@ -961,6 +925,18 @@
    "via": "urgent",
    "sent_at": "2026-11-18T22:33:53Z",
    "seen": "2026-11-18T22:33:53Z"
+  },
+  {
+   "k": "2026-11-18|f8111481236f",
+   "at": "2026-11-19T01:09:39Z",
+   "title": "Fantasy GM",
+   "text": "Texier joined Caufield's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T01:09:39Z",
+   "seen": "2026-11-19T01:09:39Z"
   }
  ],
  "sent": {
