@@ -509,10 +509,8 @@
 },
 "4894747": {
 "d": "2026-11-19",
-"k": "sooner",
-"nd": "2026-11-19",
-"now": "2026-11-19",
-"was": "2026-12-01"
+"k": "back",
+"was": ""
 },
 "5052": {
 "d": "2026-11-18",
@@ -653,9 +651,9 @@
 "was": "2026-11-21"
 },
 "5291944": {
-"d": "2026-11-12",
+"d": "2026-11-19",
 "k": "later",
-"now": "2026-11-28",
+"now": "2026-12-10",
 "was": "2026-11-12"
 },
 "5334662": {
@@ -1078,11 +1076,6 @@
 "note": "Back was placed on long-term injured reserve on Saturday.",
 "status": "Injured Reserve"
 },
-"4894747": {
-"back": "",
-"note": "Melanson (chest) is \"super close\" to returning, head coach Lane Lambert told Mike Benton of the Kraken Audio Network on Thursday.",
-"status": "Injured Reserve"
-},
 "5052": {
 "back": "2026-11-21",
 "note": "out",
@@ -1174,7 +1167,7 @@
 "status": "Injured Reserve"
 },
 "5291944": {
-"back": "2026-11-28",
+"back": "2026-12-10",
 "note": "O'Brien (lower body) was placed on non-roster injured reserve Wednesday.",
 "status": "Injured Reserve"
 },
