@@ -430,6 +430,12 @@
 "k": "back",
 "was": ""
 },
+"4697436": {
+"d": "2026-11-19",
+"k": "dtd",
+"now": "2026-11-21",
+"was": "Out"
+},
 "4697449": {
 "d": "2026-11-14",
 "k": "back",
@@ -471,7 +477,7 @@
 "d": "2026-11-19",
 "k": "sooner",
 "nd": "2026-11-13",
-"now": "2026-11-21",
+"now": "2026-11-19",
 "was": "2026-12-01"
 },
 "5052": {
@@ -965,8 +971,8 @@
 },
 "4697436": {
 "back": "2026-11-21",
-"note": "Wallinder (upper body) will not be in the lineup versus Boston on Wednesday, Ansar Khan of MLive.com reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4781550": {
 "back": "2026-11-27",
@@ -1014,7 +1020,7 @@
 "status": "Injured Reserve"
 },
 "4894747": {
-"back": "2026-11-21",
+"back": "2026-11-19",
 "note": "Melanson (chest) will be a game-time call for Saturday's clash with the Hurricanes, Tom Gulitti of NHL.com reports.",
 "status": "Injured Reserve"
 },
