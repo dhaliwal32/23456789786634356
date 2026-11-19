@@ -1,8 +1,8 @@
 {
  "files": {
-  "gm_live.py": true
+  "gm_notify.py": true
  },
  "changes": [
-  "322-alerts-own-track.py"
+  "323-news-alerts-two-lines.py"
  ]
 }

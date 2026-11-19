@@ -110,7 +110,7 @@ def push(title, msg, prio="default", tags=""):
     app_ok = False
     try:  # change 278: the alert goes to the home-screen app
         import gm_push
-        app_ok = gm_push.send(title, msg, "#myteam") > 0
+        app_ok = gm_push.send(msg, "", "#myteam") > 0  # change 323: two lines like goal alerts (change 315), no "Fantasy GM" title
     except Exception as ex:
         print(f"(notify) app alert not sent: {ex}")
     if not NTFY_ON:  # change 284
