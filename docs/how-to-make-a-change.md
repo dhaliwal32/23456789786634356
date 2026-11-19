@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 321.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 322.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -247,6 +247,7 @@ Recent rows (add new ones here):
 | 319 | Tidy (Kuvar, Nov 18): `gm_live.py` loses the switched-off ntfy sender, the unused `EVERY`, and the old ESPN goal check (`goal_alerts302`, `_count302`, `_recent311`, `SB302`) that 318 replaced; 390 to 303 lines, alerts unchanged (dry run on Nov 17 games). `gm_edge_probe.py` deleted (one-time test from change 164, nothing ran it). ntfy itself stays off; `gm_notify.py` is still used (News tab outbox) and was not touched |
 | (timer) | `sync-timer.yml` edited directly (Kuvar, Nov 18, after adding the `workflow` scope to the Mac's token): every 10 minutes it also starts `live-alerts.yml` if no run of it is queued or running (UTC 14-07 only), and from 09 to 16 UTC (about 1 AM to 8 AM Pacific) it waits 30 minutes between syncs instead of 10. Takes effect when the running timer starts its next round (each round is about 5.7 hours) |
 | 320 | Late assists (Kuvar, Nov 18: Evangelista goal alert came minutes apart from Meier's assist alert). The NHL feed often adds assists a few minutes after the goal, after 318's 4-minute 'hot' window, so the assist waited for the next goal in that game. Now every LIVE/CRIT game is also re-read every 30 s (`_read320`); hot games still every 5 s |
+| 321 | Alerts race two feeds (Kuvar, Nov 18). `espn_goals321` reads ESPN's scoreboard/summary the same way 318 reads the NHL feed (summary only on score change, every 30 s for live games). Both go through `_send321`, which skips a goal if the same player + kind + period is already sent within 60 s of game clock (`d|pid|kind|period|secs` keys), so whichever feed shows it first sends it, once. Tested Nov 18 with both orders: 19 alerts, 0 repeats. Both feeds checked every 2 s (was 5). Every alert is written to `edge/alert-times.json` (sent time, feed, ESPN goal wallclock when known), committed with the on-ice file or on its own. Sent list now kept in the order things happened, newest 3000 (sorted truncation would drop the `d|` keys first). First run marks ESPN goals already on the board (`zz-espn321`) |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
