@@ -21,10 +21,10 @@
 "was": "Out"
 },
 "2590861": {
-"d": "2026-11-13",
+"d": "2026-11-19",
 "k": "later",
-"nd": "2026-11-13",
-"now": "2026-11-21",
+"nd": "2026-11-19",
+"now": "2026-12-26",
 "was": "2026-11-14"
 },
 "2593131": {
@@ -359,6 +359,11 @@
 "now": "2026-11-25",
 "was": "2026-11-12"
 },
+"4378656": {
+"d": "2026-11-19",
+"k": "new",
+"now": "2026-11-19"
+},
 "4378683": {
 "d": "2026-11-13",
 "k": "later",
@@ -562,10 +567,11 @@
 "now": "2026-11-19"
 },
 "5149125": {
-"d": "2026-11-17",
-"k": "new",
+"d": "2026-11-19",
+"k": "later",
 "nd": "2026-11-18",
-"now": "2026-11-19"
+"now": "2026-11-27",
+"was": "2026-11-19"
 },
 "5149180": {
 "d": "2026-11-13",
@@ -692,8 +698,8 @@
 "status": "Injured Reserve"
 },
 "2590861": {
-"back": "2026-11-21",
-"note": "DeMelo (lower body) was placed on injured reserve Friday.",
+"back": "2026-12-26",
+"note": "DeMelo (lower body) is expected to be out of action for 4-6 weeks, Mitchell Clinton of the Jets' official site reports Thursday.",
 "status": "Injured Reserve"
 },
 "2591155": {
@@ -931,6 +937,11 @@
 "note": "Veleno (lower body) was placed on long-term injured reserve Saturday, Vince Z. Mercogliano of The Athletic reports.",
 "status": "Injured Reserve"
 },
+"4378656": {
+"back": "2026-11-19",
+"note": "Samuelsson (undisclosed) is considered a game-time decision for Thursday's road clash against the Capitals, per Paul Hamilton of WGR Sports Radio 550.",
+"status": "Day-To-Day"
+},
 "4378683": {
 "back": "2026-11-22",
 "note": "Durzi (lower body) wore a regular jersey during Monday's morning skate and should be ready to play against the Hurricanes on Sunday, Colin Stephenson of Newsday",
@@ -1107,9 +1118,9 @@
 "status": "Day-To-Day"
 },
 "5149125": {
-"back": "2026-11-19",
-"note": "Bedard is being evaluated for a shoulder injury, Emily Kaplan of ESPN reports Wednesday.",
-"status": "Day-To-Day"
+"back": "2026-11-27",
+"note": "out",
+"status": "Out"
 },
 "5149209": {
 "back": "2027-01-01",
