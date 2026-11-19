@@ -161,6 +161,11 @@
 "now": "2026-12-14",
 "was": "2026-11-23"
 },
+"3096186": {
+"d": "2026-11-19",
+"k": "new",
+"now": "2026-11-21"
+},
 "3096237": {
 "d": "2026-11-14",
 "k": "back",
@@ -801,6 +806,11 @@
 "back": "2026-12-14",
 "note": "Anderson (lower body) will be out for approximately 3-4 weeks, per Renaud Lavoie of TVA Sports on Sunday.",
 "status": "Injured Reserve"
+},
+"3096186": {
+"back": "2026-11-21",
+"note": "out",
+"status": "Out"
 },
 "3096217": {
 "back": "2026-12-21",
