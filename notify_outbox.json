@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-12|dc92806a5fc3",
-   "at": "2026-11-12T19:17:52Z",
-   "title": "Fantasy GM",
-   "text": "Skinner confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T19:17:52Z",
-   "seen": "2026-11-13T00:58:28Z"
-  },
-  {
    "k": "2026-11-12|d73770801c2f",
    "at": "2026-11-12T23:07:16Z",
    "title": "Fantasy GM",
@@ -889,6 +877,66 @@
    "via": "urgent",
    "sent_at": "2026-11-19T17:44:48Z",
    "seen": "2026-11-19T17:44:48Z"
+  },
+  {
+   "k": "2026-11-19|ab5a9fa9e67d",
+   "at": "2026-11-19T19:48:31Z",
+   "title": "Fantasy GM",
+   "text": "Barkov joined FLA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:48:31Z",
+   "seen": "2026-11-19T19:48:31Z"
+  },
+  {
+   "k": "2026-11-19|fdbea8274556",
+   "at": "2026-11-19T19:48:31Z",
+   "title": "Fantasy GM",
+   "text": "Kasper left DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:48:31Z",
+   "seen": "2026-11-19T19:48:31Z"
+  },
+  {
+   "k": "2026-11-19|38f435ad8d32",
+   "at": "2026-11-19T19:48:31Z",
+   "title": "Fantasy GM",
+   "text": "Lundell left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:48:31Z",
+   "seen": "2026-11-19T19:48:31Z"
+  },
+  {
+   "k": "2026-11-19|69ac4e3b8b76",
+   "at": "2026-11-19T19:48:32Z",
+   "title": "Fantasy GM",
+   "text": "Marchand back in the FLA lineup",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:48:32Z",
+   "seen": "2026-11-19T19:48:32Z"
+  },
+  {
+   "k": "2026-11-19|b1919cf57b44",
+   "at": "2026-11-19T19:48:32Z",
+   "title": "Fantasy GM",
+   "text": "Luostarinen left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:48:32Z",
+   "seen": "2026-11-19T19:48:32Z"
   }
  ],
  "sent": {
