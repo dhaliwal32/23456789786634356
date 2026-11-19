@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 320.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 321.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -246,6 +246,7 @@ Recent rows (add new ones here):
 | 318 | Faster goal alerts (Kuvar, Nov 17). Goals and assists now come from the NHL feed (`score/now` every 5 s; a game's play-by-play is read only when its score changes, then every pass for 4 minutes so late assists are caught), not ESPN's summary (often 1 min+ behind). NHL names are matched to the opponent's ESPN roster names (full name, else first letter + last name if unique); a dry run on Nov 17 matched 110 of 111 goal/assist names to league players (the miss was not in the league). Keys `n|game|event|nhlId|kind` in `edge/onice-sent311.json`; the first run after install marks goals already on the board (`zz-nhl318`) so the switch from ESPN never repeats one. ESPN lead score check and on-ice saving still run every ~30 s. `goal_alerts302` is kept but no longer called |
 | 319 | Tidy (Kuvar, Nov 18): `gm_live.py` loses the switched-off ntfy sender, the unused `EVERY`, and the old ESPN goal check (`goal_alerts302`, `_count302`, `_recent311`, `SB302`) that 318 replaced; 390 to 303 lines, alerts unchanged (dry run on Nov 17 games). `gm_edge_probe.py` deleted (one-time test from change 164, nothing ran it). ntfy itself stays off; `gm_notify.py` is still used (News tab outbox) and was not touched |
 | (timer) | `sync-timer.yml` edited directly (Kuvar, Nov 18, after adding the `workflow` scope to the Mac's token): every 10 minutes it also starts `live-alerts.yml` if no run of it is queued or running (UTC 14-07 only), and from 09 to 16 UTC (about 1 AM to 8 AM Pacific) it waits 30 minutes between syncs instead of 10. Takes effect when the running timer starts its next round (each round is about 5.7 hours) |
+| 320 | Late assists (Kuvar, Nov 18: Evangelista goal alert came minutes apart from Meier's assist alert). The NHL feed often adds assists a few minutes after the goal, after 318's 4-minute 'hot' window, so the assist waited for the next goal in that game. Now every LIVE/CRIT game is also re-read every 30 s (`_read320`); hot games still every 5 s |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
