@@ -937,6 +937,18 @@
    "via": "urgent",
    "sent_at": "2026-11-19T19:48:32Z",
    "seen": "2026-11-19T19:48:32Z"
+  },
+  {
+   "k": "2026-11-19|rw258|hello|3041970",
+   "at": "2026-11-19T19:54:06Z",
+   "title": "Fantasy GM",
+   "text": "Barkov back around Nov 21",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T19:54:06Z",
+   "seen": "2026-11-19T19:54:06Z"
   }
  ],
  "sent": {
