@@ -92,6 +92,12 @@
 "now": "2026-12-12",
 "was": "2026-11-14"
 },
+"3041970": {
+"d": "2026-11-19",
+"k": "sooner",
+"now": "2026-11-21",
+"was": "2026-11-27"
+},
 "3041996": {
 "d": "2026-11-16",
 "k": "later",
@@ -226,7 +232,8 @@
 "3891952": {
 "d": "2026-11-19",
 "k": "later",
-"now": "2026-11-23",
+"nd": "2026-11-19",
+"now": "2026-11-21",
 "was": "2026-11-19"
 },
 "3899946": {
@@ -730,7 +737,7 @@
 "status": "Out"
 },
 "3041970": {
-"back": "2026-11-27",
+"back": "2026-11-21",
 "note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
 },
@@ -840,8 +847,8 @@
 "status": "Injured Reserve"
 },
 "3891952": {
-"back": "2026-11-23",
-"note": "out",
+"back": "2026-11-21",
+"note": "Panarin (personal), who has been ruled out for Thursday's game against the Maple Leafs, is expected to return Saturday against the Senators, John Hoven of Siriu",
 "status": "Out"
 },
 "3900219": {
