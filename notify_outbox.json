@@ -949,6 +949,30 @@
    "via": "urgent",
    "sent_at": "2026-11-19T19:54:06Z",
    "seen": "2026-11-19T19:54:06Z"
+  },
+  {
+   "k": "2026-11-19|63f437451d93",
+   "at": "2026-11-19T22:45:48Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T22:45:48Z",
+   "seen": "2026-11-19T22:45:48Z"
+  },
+  {
+   "k": "2026-11-19|4d147f465a43",
+   "at": "2026-11-19T22:45:48Z",
+   "title": "Fantasy GM",
+   "text": "Skinner not confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T22:45:48Z",
+   "seen": "2026-11-19T22:45:48Z"
   }
  ],
  "sent": {
