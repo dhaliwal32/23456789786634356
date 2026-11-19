@@ -302,11 +302,11 @@
 "was": ""
 },
 "4065019": {
-"d": "2026-11-18",
-"k": "dtd",
-"nd": "2026-11-18",
-"now": "2026-11-19",
-"was": "Out"
+"d": "2026-11-19",
+"k": "later",
+"nd": "2026-11-19",
+"now": "2026-11-25",
+"was": "2026-11-19"
 },
 "4233536": {
 "d": "2026-11-17",
@@ -875,9 +875,9 @@
 "status": "Injured Reserve"
 },
 "4065019": {
-"back": "2026-11-19",
-"note": "Hagel is considered day-to-day due to his lower-body injury, Eduardo A. Encina of the Tampa Bay Times reports Wednesday.",
-"status": "Day-To-Day"
+"back": "2026-11-25",
+"note": "Hagel (lower body) was placed on injured reserve by the Lightning on Thursday, retroactive to Nov. 15, Eduardo A. Encina of the Tampa Bay Times reports.",
+"status": "Injured Reserve"
 },
 "4233563": {
 "back": "2026-11-28",
