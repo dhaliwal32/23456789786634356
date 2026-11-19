@@ -937,6 +937,30 @@
    "via": "urgent",
    "sent_at": "2026-11-19T22:45:48Z",
    "seen": "2026-11-19T23:31:45Z"
+  },
+  {
+   "k": "2026-11-19|a485707c4cb6",
+   "at": "2026-11-19T23:37:44Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T23:37:44Z",
+   "seen": "2026-11-19T23:37:44Z"
+  },
+  {
+   "k": "2026-11-19|7122c8e5ec8e",
+   "at": "2026-11-19T23:37:45Z",
+   "title": "Fantasy GM",
+   "text": "Skinner not starting",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T23:37:45Z",
+   "seen": "2026-11-19T23:37:45Z"
   }
  ],
  "sent": {
