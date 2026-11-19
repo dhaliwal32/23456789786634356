@@ -159,8 +159,10 @@ def main():
                 last = side
             elif side != 0:
                 last = side
+        alerts322(sc[2] if sc else None)  # change 322: start the alert track before the slow on-ice step
         push_onice()  # change 205
-        fast318(sc[2] if sc else None, 30)  # change 318: NHL feed every 5 seconds (replaces the ESPN goal check, goal_alerts302)
+        alerts322(sc[2] if sc else None)  # change 322: goal alerts run on their own track (every 2 s), never held up by the steps above
+        time.sleep(20)
 
 
 # ---------- change 302: a phone alert for every goal and assist by your opponent's players ----------
@@ -423,6 +425,32 @@ def espn_goals321(opp):
     if seed:
         _mark311(SEED321)
     _eboot321["done"] = True
+
+
+# ---------- change 322: the alert checks run on their own track ----------
+_opp322 = [None]
+_run322 = [False]
+
+
+def _loop322():
+    while True:
+        try:
+            if _opp322[0]:
+                fast318(_opp322[0], 0)  # one look at both feeds
+        except Exception as e:
+            log("alert track error", e)
+        time.sleep(2)
+
+
+def alerts322(opp):
+    """hand the alert track the current opponent; start the track the first time"""
+    if opp:
+        _opp322[0] = opp
+    if not _run322[0] and _opp322[0]:
+        import threading
+        threading.Thread(target=_loop322, daemon=True).start()
+        _run322[0] = True
+        log("alert track started")
 
 
 if __name__ == "__main__":
