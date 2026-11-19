@@ -210,6 +210,7 @@ NHL318 = "https://api-web.nhle.com/v1/"
 UA318 = {"User-Agent": "Mozilla/5.0"}
 SEED318 = "zz-nhl318"  # in the sent file: goals already on the board when the NHL feed first ran were alerted by the old ESPN path
 _tot318, _hot318, _boot318 = {}, {}, {"done": False}
+_read320 = {}  # change 320: when each game was last read
 
 
 def _norm318(x):
@@ -247,8 +248,10 @@ def nhl_goals318(opp):
         if tot != _tot318.get(gid):
             _tot318[gid] = tot
             _hot318[gid] = now + 240  # a new goal: read this game every pass for 4 minutes (assists are often added late)
-        if _boot318["done"] and now > _hot318.get(gid, 0):
-            continue
+        live320 = g.get("gameState") in ("LIVE", "CRIT")
+        if _boot318["done"] and now > _hot318.get(gid, 0) and not (live320 and now - _read320.get(gid, 0) >= 30):
+            continue  # change 320: a live game is still re-read every 30 s, so a late assist is never stuck until the next goal
+        _read320[gid] = now
         try:
             pbp = requests.get(f"{NHL318}gamecenter/{gid}/play-by-play", headers=UA318, timeout=10).json()
         except Exception as e:
