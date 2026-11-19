@@ -1,66 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-11|96762d91602b",
-   "at": "2026-11-12T03:28:41Z",
-   "title": "Fantasy GM",
-   "text": "But joined Keller's line (UTA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T03:28:41Z",
-   "seen": "2026-11-12T03:28:41Z"
-  },
-  {
-   "k": "2026-11-11|a397b5d14183",
-   "at": "2026-11-12T03:28:41Z",
-   "title": "Fantasy GM",
-   "text": "Lee left Keller's line (UTA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T03:28:41Z",
-   "seen": "2026-11-12T03:28:41Z"
-  },
-  {
-   "k": "2026-11-11|1686ba8431bf",
-   "at": "2026-11-12T03:28:41Z",
-   "title": "Fantasy GM",
-   "text": "Hayton left Keller's line (UTA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T03:28:41Z",
-   "seen": "2026-11-12T03:28:41Z"
-  },
-  {
-   "k": "2026-11-11|c8cad0b82587",
-   "at": "2026-11-12T03:28:41Z",
-   "title": "Fantasy GM",
-   "text": "Lee joined UTA PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T03:28:41Z",
-   "seen": "2026-11-12T03:28:41Z"
-  },
-  {
-   "k": "2026-11-12|18542b348f21",
-   "at": "2026-11-12T17:38:58Z",
-   "title": "Fantasy GM",
-   "text": "Kane joined CHI PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-12T17:38:58Z",
-   "seen": "2026-11-12T17:38:58Z"
-  },
-  {
    "k": "2026-11-12|dc92806a5fc3",
    "at": "2026-11-12T19:17:52Z",
    "title": "Fantasy GM",
@@ -937,6 +877,18 @@
    "via": "urgent",
    "sent_at": "2026-11-19T01:09:39Z",
    "seen": "2026-11-19T01:09:39Z"
+  },
+  {
+   "k": "2026-11-19|efb2d1bb1a68",
+   "at": "2026-11-19T17:44:48Z",
+   "title": "Fantasy GM",
+   "text": "McKenna joined TOR PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-19T17:44:48Z",
+   "seen": "2026-11-19T17:44:48Z"
   }
  ],
  "sent": {
