@@ -224,10 +224,10 @@
 "was": "2026-11-17"
 },
 "3891952": {
-"d": "2026-11-18",
-"k": "dtd",
-"now": "2026-11-19",
-"was": "Out"
+"d": "2026-11-19",
+"k": "later",
+"now": "2026-11-23",
+"was": "2026-11-19"
 },
 "3899946": {
 "d": "2026-11-14",
@@ -560,11 +560,6 @@
 "k": "back",
 "was": "2026-12-01"
 },
-"5161": {
-"d": "2026-11-19",
-"k": "back",
-"was": "2027-01-12"
-},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -828,9 +823,9 @@
 "status": "Injured Reserve"
 },
 "3891952": {
-"back": "2026-11-19",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-23",
+"note": "out",
+"status": "Out"
 },
 "3900219": {
 "back": "2026-11-19",
@@ -1085,6 +1080,11 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
