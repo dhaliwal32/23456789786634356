@@ -118,6 +118,11 @@
 "k": "back",
 "was": "2026-11-17"
 },
+"3042095": {
+"d": "2026-11-20",
+"k": "new",
+"now": "2026-11-22"
+},
 "3067822": {
 "d": "2026-11-20",
 "k": "dtd",
@@ -161,6 +166,11 @@
 "nd": "2026-11-14",
 "now": "2026-11-25",
 "was": "2026-11-14"
+},
+"3124": {
+"d": "2026-11-20",
+"k": "new",
+"now": "2026-11-25"
 },
 "3150479": {
 "d": "2026-11-20",
@@ -394,7 +404,7 @@
 "4565275": {
 "d": "2026-11-20",
 "k": "later",
-"now": "2026-11-27",
+"now": "2026-12-05",
 "was": "2026-11-21"
 },
 "4565282": {
@@ -757,6 +767,11 @@
 "note": "Janmark (undisclosed) does not have a timetable for his return from injury.",
 "status": "Injured Reserve"
 },
+"3042095": {
+"back": "2026-11-22",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "3042110": {
 "back": "2026-11-30",
 "note": "Wood (undisclosed) was transferred to long-term injured reserve Wednesday, David Alter of The Hockey News reports.",
@@ -806,6 +821,11 @@
 "back": "2027-01-02",
 "note": "McCann (lower body) will be out for approximately 10 weeks, the team announced Sunday.",
 "status": "Injured Reserve"
+},
+"3124": {
+"back": "2026-11-25",
+"note": "out",
+"status": "Out"
 },
 "3150479": {
 "back": "2026-11-21",
@@ -963,7 +983,7 @@
 "status": "Injured Reserve"
 },
 "4565275": {
-"back": "2026-11-27",
+"back": "2026-12-05",
 "note": "ir",
 "status": "Injured Reserve"
 },
