@@ -20,6 +20,13 @@
    "auth": "Zt3nBCKZ0dJ71Xd5pgXF3A",
    "name": "iPhone",
    "at": "2026-11-18T00:20:30.064Z"
+  },
+  {
+   "endpoint": "https://web.push.apple.com/QI4hLmoFTWMmqRW3OQf4_2T5l0KgSqJino-rp5zX1K6H44tjxkua13itN994_Pb-JeYxQGzQGdGBTrhnqV16t7o0GunluUp0A-3h3tz-Q-LO2dIeuHaj1qRzlgIu_bfy9eAYfobhVOdY4XHGMqPF2xhmu27MOY5YsJHGdJ3-C_Q",
+   "p256dh": "BGn8ugyTM9LwnzZTKfWG33v3L8lmVSG5Po5BF5iIbFEQnaOwoSrWZFObOMDorwJvvQCaAfJHjerP4jS72D4uEn0",
+   "auth": "OkW9wQgbwig7-Wce_doNIw",
+   "name": "iPhone",
+   "at": "2026-11-20T22:32:07.044Z"
   }
  ]
 }
