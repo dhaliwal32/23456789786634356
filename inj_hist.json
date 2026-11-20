@@ -367,6 +367,11 @@
 "now": "2026-11-23",
 "was": "2026-11-19"
 },
+"4320548": {
+"d": "2026-11-19",
+"k": "new",
+"now": "2026-11-21"
+},
 "4331586": {
 "d": "2026-11-18",
 "k": "later",
@@ -944,6 +949,11 @@
 "back": "2026-11-23",
 "note": "Gustavsson (hip) was reassigned to AHL Iowa on a conditioning assignment Thursday.",
 "status": "Injured Reserve"
+},
+"4320548": {
+"back": "2026-11-21",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4331586": {
 "back": "2026-11-25",
