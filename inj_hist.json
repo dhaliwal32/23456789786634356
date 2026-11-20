@@ -136,11 +136,11 @@
 "was": "2026-11-17"
 },
 "3067822": {
-"d": "2026-11-18",
-"k": "dtd",
-"nd": "2026-11-17",
-"now": "2026-11-19",
-"was": "Out"
+"d": "2026-11-19",
+"k": "later",
+"nd": "2026-11-19",
+"now": "2026-11-21",
+"was": "2026-11-19"
 },
 "3069285": {
 "d": "2026-11-12",
@@ -370,8 +370,8 @@
 },
 "4378656": {
 "d": "2026-11-19",
-"k": "new",
-"now": "2026-11-19"
+"k": "back",
+"was": "2026-11-19"
 },
 "4378683": {
 "d": "2026-11-13",
@@ -796,9 +796,9 @@
 "status": "Injured Reserve"
 },
 "3067822": {
-"back": "2026-11-19",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-21",
+"note": "Johnston (upper body) will miss Thursday's game against Pittsburgh, per the NHL media site.",
+"status": "Out"
 },
 "3069448": {
 "back": "2026-12-01",
@@ -949,11 +949,6 @@
 "back": "2027-01-03",
 "note": "Veleno (lower body) was placed on long-term injured reserve Saturday, Vince Z. Mercogliano of The Athletic reports.",
 "status": "Injured Reserve"
-},
-"4378656": {
-"back": "2026-11-19",
-"note": "Samuelsson (undisclosed) is considered a game-time decision for Thursday's road clash against the Capitals, per Paul Hamilton of WGR Sports Radio 550.",
-"status": "Day-To-Day"
 },
 "4378683": {
 "back": "2026-11-22",
