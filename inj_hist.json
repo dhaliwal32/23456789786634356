@@ -671,6 +671,11 @@
 "now": "2026-12-03",
 "was": "2026-11-22"
 },
+"5614": {
+"d": "2026-11-19",
+"k": "new",
+"now": "2026-11-21"
+},
 "5622": {
 "d": "2026-11-18",
 "k": "back",
@@ -1137,7 +1142,7 @@
 },
 "5136614": {
 "back": "2026-11-25",
-"note": "Brindley (upper body) is slated to be unavailable for Thursday's game against the Ducks, AJ Haefele of DNVR Avalanche reports.",
+"note": "Brindley is in concussion protocol and is considered out indefinitely, Bailey Curtis of DNVR Sports reports.",
 "status": "Out"
 },
 "5149125": {
@@ -1189,6 +1194,11 @@
 "back": "2026-12-03",
 "note": "ir",
 "status": "Injured Reserve"
+},
+"5614": {
+"back": "2026-11-21",
+"note": "Gallagher (lower body) won't return to Thursday's game versus the Kraken.",
+"status": "Day-To-Day"
 },
 "5828": {
 "back": "2027-03-11",
