@@ -8,17 +8,17 @@
 "was": "2026-11-02"
 },
 "2562624": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-17",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "2563027": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "2590861": {
 "d": "2026-11-19",
@@ -38,11 +38,11 @@
 "was": ""
 },
 "2968829": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-18",
 "now": "2026-11-22",
-"was": "2026-11-19"
+"was": "Out"
 },
 "2976833": {
 "d": "2026-11-17",
@@ -119,11 +119,11 @@
 "was": "2026-11-17"
 },
 "3067822": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-19",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "3069448": {
 "d": "2026-11-18",
@@ -139,9 +139,10 @@
 "was": "2026-11-23"
 },
 "3096186": {
-"d": "2026-11-19",
-"k": "new",
-"now": "2026-11-21"
+"d": "2026-11-20",
+"k": "dtd",
+"now": "2026-11-21",
+"was": "Out"
 },
 "3096237": {
 "d": "2026-11-14",
@@ -162,11 +163,11 @@
 "was": "2026-11-14"
 },
 "3150479": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-19",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "3151036": {
 "d": "2026-11-16",
@@ -197,11 +198,11 @@
 "was": "2026-11-17"
 },
 "3891952": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-19",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "3899946": {
 "d": "2026-11-14",
@@ -224,9 +225,10 @@
 "was": ""
 },
 "3904188": {
-"d": "2026-11-19",
-"k": "new",
-"now": "2026-11-21"
+"d": "2026-11-20",
+"k": "dtd",
+"now": "2026-11-21",
+"was": "Out"
 },
 "3904190": {
 "d": "2026-11-18",
@@ -264,11 +266,11 @@
 "was": "2026-11-19"
 },
 "4024968": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-16",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "4064781": {
 "d": "2026-11-19",
@@ -383,10 +385,10 @@
 "was": "2026-11-18"
 },
 "4565275": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "4565282": {
 "d": "2026-11-18",
@@ -458,11 +460,11 @@
 "was": "2026-11-17"
 },
 "4874734": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-18",
 "now": "2026-11-21",
-"was": "2026-11-19"
+"was": "Out"
 },
 "4894398": {
 "d": "2026-11-17",
@@ -477,10 +479,10 @@
 "was": ""
 },
 "5052": {
-"d": "2026-11-18",
+"d": "2026-11-20",
 "k": "later",
 "nd": "2026-11-15",
-"now": "2026-11-21",
+"now": "2026-11-22",
 "was": "2026-11-19"
 },
 "5075840": {
@@ -531,11 +533,11 @@
 "was": "2026-11-14"
 },
 "5136614": {
-"d": "2026-11-19",
-"k": "later",
+"d": "2026-11-20",
+"k": "dtd",
 "nd": "2026-11-19",
 "now": "2026-11-25",
-"was": "2026-11-19"
+"was": "Out"
 },
 "5149125": {
 "d": "2026-11-19",
@@ -560,6 +562,11 @@
 "d": "2026-11-18",
 "k": "back",
 "was": "2026-12-01"
+},
+"5161": {
+"d": "2026-11-20",
+"k": "back",
+"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -655,13 +662,13 @@
 },
 "2562624": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2563027": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -685,8 +692,8 @@
 },
 "2968829": {
 "back": "2026-11-22",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976850": {
 "back": "2026-11-25",
@@ -760,8 +767,8 @@
 },
 "3067822": {
 "back": "2026-11-21",
-"note": "Johnston (upper body) will miss Thursday's game against Pittsburgh, per the NHL media site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3069448": {
 "back": "2026-12-01",
@@ -775,8 +782,8 @@
 },
 "3096186": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3096217": {
 "back": "2026-12-21",
@@ -800,8 +807,8 @@
 },
 "3150479": {
 "back": "2026-11-21",
-"note": "Hodgson (groin) is slated to miss Thursday's game against Philadelphia.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3151036": {
 "back": "2026-12-03",
@@ -835,13 +842,13 @@
 },
 "3891952": {
 "back": "2026-11-21",
-"note": "Panarin (personal), who has been ruled out for Thursday's game against the Maple Leafs, is expected to return Saturday against the Senators, John Hoven of Siriu",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3904188": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-11-27",
@@ -865,8 +872,8 @@
 },
 "4024968": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4063268": {
 "back": "2026-12-04",
@@ -955,8 +962,8 @@
 },
 "4565275": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4565282": {
 "back": "2026-11-21",
@@ -1020,8 +1027,8 @@
 },
 "4874734": {
 "back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4874744": {
 "back": "2026-11-27",
@@ -1039,9 +1046,9 @@
 "status": "Injured Reserve"
 },
 "5052": {
-"back": "2026-11-21",
-"note": "out",
-"status": "Out"
+"back": "2026-11-22",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5075840": {
 "back": "2026-11-25",
@@ -1090,8 +1097,8 @@
 },
 "5136614": {
 "back": "2026-11-25",
-"note": "Brindley is in concussion protocol and is considered out indefinitely, Bailey Curtis of DNVR Sports reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149125": {
 "back": "2026-11-27",
@@ -1101,11 +1108,6 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
