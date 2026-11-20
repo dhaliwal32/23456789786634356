@@ -613,6 +613,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"5161": {
+"d": "2026-11-19",
+"k": "back",
+"was": "2027-01-12"
+},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -1142,7 +1147,7 @@
 },
 "5136614": {
 "back": "2026-11-25",
-"note": "Brindley is in concussion protocol and is considered out indefinitely, Bailey Curtis of DNVR Sports reports.",
+"note": "Brindley (upper body) is slated to be unavailable for Thursday's game against the Ducks, AJ Haefele of DNVR Avalanche reports.",
 "status": "Out"
 },
 "5149125": {
@@ -1153,11 +1158,6 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
