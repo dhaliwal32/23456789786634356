@@ -408,6 +408,11 @@
 "k": "back",
 "was": ""
 },
+"4565246": {
+"d": "2026-11-20",
+"k": "new",
+"now": "2026-11-22"
+},
 "4565259": {
 "d": "2026-11-18",
 "k": "back",
@@ -997,6 +1002,11 @@
 "back": "2026-11-21",
 "note": "Byram (upper body) will not play in the Blackhawks' next two games, per CHGO Blackhawks.",
 "status": "Injured Reserve"
+},
+"4565246": {
+"back": "2026-11-22",
+"note": "out",
+"status": "Out"
 },
 "4565275": {
 "back": "2026-12-05",
