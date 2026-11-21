@@ -556,9 +556,10 @@
 "was": ""
 },
 "5080155": {
-"d": "2026-11-19",
+"d": "2026-11-21",
 "k": "later",
-"now": "2026-11-27",
+"nd": "2026-11-21",
+"now": "2026-12-12",
 "was": "2026-11-25"
 },
 "5080162": {
@@ -1098,8 +1099,8 @@
 "status": "Injured Reserve"
 },
 "5080155": {
-"back": "2026-11-27",
-"note": "ir",
+"back": "2026-12-12",
+"note": "Geekie (upper body) is out indefinitely, according to Eduardo A. Encina of the Tampa Bay Times on Saturday.",
 "status": "Injured Reserve"
 },
 "5080162": {
