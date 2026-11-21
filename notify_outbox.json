@@ -861,6 +861,66 @@
    "via": "urgent",
    "sent_at": "2026-11-21T16:29:34Z",
    "seen": "2026-11-21T16:29:34Z"
+  },
+  {
+   "k": "2026-11-21|1bf0d9397e26",
+   "at": "2026-11-21T18:33:19Z",
+   "title": "Fantasy GM",
+   "text": "Benn joined Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T18:33:19Z",
+   "seen": "2026-11-21T18:33:19Z"
+  },
+  {
+   "k": "2026-11-21|205caa39da6f",
+   "at": "2026-11-21T18:33:20Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen left McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T18:33:20Z",
+   "seen": "2026-11-21T18:33:20Z"
+  },
+  {
+   "k": "2026-11-21|835c568c0f82",
+   "at": "2026-11-21T18:33:20Z",
+   "title": "Fantasy GM",
+   "text": "Hallander left McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T18:33:20Z",
+   "seen": "2026-11-21T18:33:20Z"
+  },
+  {
+   "k": "2026-11-21|bc3607492103",
+   "at": "2026-11-21T18:33:21Z",
+   "title": "Fantasy GM",
+   "text": "Joseph left Draisaitl's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T18:33:21Z",
+   "seen": "2026-11-21T18:33:21Z"
+  },
+  {
+   "k": "2026-11-21|9581181c41f6",
+   "at": "2026-11-21T18:33:22Z",
+   "title": "Fantasy GM",
+   "text": "Rossi joined VAN PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T18:33:22Z",
+   "seen": "2026-11-21T18:33:22Z"
   }
  ],
  "sent": {
