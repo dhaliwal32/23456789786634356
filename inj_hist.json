@@ -373,9 +373,11 @@
 "was": "2026-11-19"
 },
 "4320548": {
-"d": "2026-11-19",
-"k": "new",
-"now": "2026-11-21"
+"d": "2026-11-21",
+"k": "later",
+"nd": "2026-11-21",
+"now": "2026-11-25",
+"was": "2026-11-21"
 },
 "4331586": {
 "d": "2026-11-18",
@@ -513,10 +515,10 @@
 "was": "2026-11-11"
 },
 "4874731": {
-"d": "2026-11-19",
+"d": "2026-11-21",
 "k": "later",
 "nd": "2026-11-13",
-"now": "2026-11-21",
+"now": "2026-11-23",
 "was": "2026-11-17"
 },
 "4874734": {
@@ -967,9 +969,9 @@
 "status": "Injured Reserve"
 },
 "4320548": {
-"back": "2026-11-21",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-25",
+"note": "Hughes (upper body) will miss the rest of Minnesota's road trip, per Joe Smith of The Athletic on Saturday.",
+"status": "Out"
 },
 "4331586": {
 "back": "2026-11-25",
@@ -1077,7 +1079,7 @@
 "status": "Injured Reserve"
 },
 "4874731": {
-"back": "2026-11-21",
+"back": "2026-11-23",
 "note": "ir",
 "status": "Injured Reserve"
 },
