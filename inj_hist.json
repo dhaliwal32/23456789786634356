@@ -90,9 +90,9 @@
 "was": "2026-11-14"
 },
 "3041970": {
-"d": "2026-11-19",
-"k": "sooner",
-"now": "2026-11-21",
+"d": "2026-11-21",
+"k": "later",
+"now": "2026-11-28",
 "was": "2026-11-27"
 },
 "3041996": {
@@ -217,6 +217,12 @@
 "d": "2026-11-20",
 "k": "back",
 "was": "2026-12-01"
+},
+"3852": {
+"d": "2026-11-21",
+"k": "later",
+"now": "2026-11-28",
+"was": "2026-11-21"
 },
 "3891922": {
 "d": "2026-11-17",
@@ -554,11 +560,17 @@
 "k": "back",
 "was": ""
 },
+"5080212": {
+"d": "2026-11-21",
+"k": "later",
+"now": "2026-12-12",
+"was": "2026-11-21"
+},
 "5080223": {
-"d": "2026-11-19",
+"d": "2026-11-21",
 "k": "later",
 "nd": "2026-11-07",
-"now": "2026-11-21",
+"now": "2026-11-23",
 "was": "2026-11-08"
 },
 "5080225": {
@@ -751,7 +763,7 @@
 "status": "Out"
 },
 "3041970": {
-"back": "2026-11-21",
+"back": "2026-11-28",
 "note": "Head coach Paul Maurice said Friday that Barkov (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers' ",
 "status": "Injured Reserve"
 },
@@ -871,7 +883,7 @@
 "status": "Injured Reserve"
 },
 "3852": {
-"back": "2026-11-21",
+"back": "2026-11-28",
 "note": "Head coach Paul Maurice said Friday that Marchand (knee) will travel with the Panthers during their upcoming three-game road trip, Jameson Olive of the Panthers",
 "status": "Injured Reserve"
 },
@@ -1111,12 +1123,12 @@
 "status": "Injured Reserve"
 },
 "5080212": {
-"back": "2026-11-21",
+"back": "2026-12-12",
 "note": "Casey (knee) was moved to long-term injured reserve on Friday, per PuckPedia.",
 "status": "Injured Reserve"
 },
 "5080223": {
-"back": "2026-11-21",
+"back": "2026-11-23",
 "note": "ir-nr",
 "status": "Injured Reserve"
 },

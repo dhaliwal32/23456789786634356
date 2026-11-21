@@ -789,6 +789,30 @@
    "via": "urgent",
    "sent_at": "2026-11-21T05:40:03Z",
    "seen": "2026-11-21T05:40:03Z"
+  },
+  {
+   "k": "2026-11-21|rw258|date|3041970|2026-11-21|2026-11-28",
+   "at": "2026-11-21T14:23:51Z",
+   "title": "Fantasy GM",
+   "text": "Barkov return moved to Nov 28 (was Nov 21)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T14:23:51Z",
+   "seen": "2026-11-21T14:23:51Z"
+  },
+  {
+   "k": "2026-11-21|rw258|date|3852|2026-11-21|2026-11-28",
+   "at": "2026-11-21T14:23:51Z",
+   "title": "Fantasy GM",
+   "text": "Marchand return moved to Nov 28 (was Nov 21)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T14:23:51Z",
+   "seen": "2026-11-21T14:23:51Z"
   }
  ],
  "sent": {
@@ -2130,6 +2154,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (1:01 AM):\ntoday: Start Arvidsson; bench Michkov. +1.4"
+  },
+  {
+   "at": "2026-11-21T14:23:54Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot set your lineup (7:23 AM):\ntoday: Start Michkov; bench Barkov. +5.7"
   }
  ]
 }

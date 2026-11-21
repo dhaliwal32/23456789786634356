@@ -1155,6 +1155,39 @@
     }
    ],
    "result": "done"
+  },
+  {
+   "at": "2026-11-21T07:23:54-07:00",
+   "day": "2026-11-21",
+   "mode": "on",
+   "text": "Start Michkov; bench Barkov.",
+   "gain": 5.7,
+   "before": 117.2,
+   "after": 122.9,
+   "moves": [
+    {
+     "id": 3041970,
+     "n": "Aleksander Barkov",
+     "from": 3,
+     "to": 7,
+     "why": "out"
+    },
+    {
+     "id": 3942905,
+     "n": "Troy Terry",
+     "from": 6,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 7,
+     "to": 6,
+     "why": ""
+    }
+   ],
+   "result": "done"
   }
  ],
  "state": {
