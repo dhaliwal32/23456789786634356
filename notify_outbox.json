@@ -849,6 +849,42 @@
    "via": "urgent",
    "sent_at": "2026-11-21T16:17:02Z",
    "seen": "2026-11-21T16:17:02Z"
+  },
+  {
+   "k": "2026-11-21|b0c4028f48df",
+   "at": "2026-11-21T16:29:33Z",
+   "title": "Fantasy GM",
+   "text": "Lundell joined Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T16:29:33Z",
+   "seen": "2026-11-21T16:29:33Z"
+  },
+  {
+   "k": "2026-11-21|8006bf9b4268",
+   "at": "2026-11-21T16:29:34Z",
+   "title": "Fantasy GM",
+   "text": "Luostarinen joined Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T16:29:34Z",
+   "seen": "2026-11-21T16:29:34Z"
+  },
+  {
+   "k": "2026-11-21|41f17b4a0213",
+   "at": "2026-11-21T16:29:34Z",
+   "title": "Fantasy GM",
+   "text": "Barkov left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T16:29:34Z",
+   "seen": "2026-11-21T16:29:34Z"
   }
  ],
  "sent": {
