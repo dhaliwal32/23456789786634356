@@ -468,11 +468,9 @@
 "was": "2026-11-18"
 },
 "4587996": {
-"d": "2026-11-18",
-"k": "later",
-"nd": "2026-11-20",
-"now": "2026-11-27",
-"was": "2026-11-23"
+"d": "2026-11-21",
+"k": "news",
+"nd": "2026-11-21"
 },
 "4697409": {
 "d": "2026-11-16",
@@ -492,10 +490,9 @@
 "was": ""
 },
 "4781550": {
-"d": "2026-11-18",
-"k": "later",
-"now": "2026-11-27",
-"was": "2026-11-23"
+"d": "2026-11-21",
+"k": "news",
+"nd": "2026-11-21"
 },
 "4874723": {
 "d": "2026-11-20",
@@ -594,6 +591,7 @@
 "5136696": {
 "d": "2026-11-20",
 "k": "later",
+"nd": "2026-11-21",
 "now": "2026-11-28",
 "was": "2026-11-27"
 },
@@ -615,11 +613,6 @@
 "d": "2026-11-18",
 "k": "back",
 "was": "2026-12-01"
-},
-"5161": {
-"d": "2026-11-21",
-"k": "back",
-"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -1049,8 +1042,8 @@
 "status": "Injured Reserve"
 },
 "4587996": {
-"back": "2026-11-27",
-"note": "Marchenko (lower body) was on the ice with his teammates for Friday's optional skate, Lance Hornby of The Toronto Sun reports.",
+"back": "2026-11-23",
+"note": "Marchenko (lower body) is day-to-day, according to David Alter of The Hockey News on Saturday.",
 "status": "Injured Reserve"
 },
 "4697436": {
@@ -1059,8 +1052,8 @@
 "status": "Day-To-Day"
 },
 "4781550": {
-"back": "2026-11-27",
-"note": "Blankenburg (undisclosed) was placed on injured reserve by the Maple Leafs on Friday, David Alter of The Hockey News reports.",
+"back": "2026-11-23",
+"note": "Blankenburg (upper body) is day-to-day, according to David Alter of The Hockey News on Saturday.",
 "status": "Injured Reserve"
 },
 "4874720": {
@@ -1155,7 +1148,7 @@
 },
 "5136696": {
 "back": "2026-11-28",
-"note": "ir",
+"note": "McWard (lower body) is considered day-to-day, per David Alter of The Hockey News on Saturday.",
 "status": "Injured Reserve"
 },
 "5149125": {
@@ -1166,6 +1159,11 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
