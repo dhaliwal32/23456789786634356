@@ -623,11 +623,6 @@
 "k": "back",
 "was": "2026-12-01"
 },
-"5161": {
-"d": "2026-11-21",
-"k": "back",
-"was": "2027-01-12"
-},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -650,9 +645,9 @@
 "was": "2026-11-14"
 },
 "5216882": {
-"d": "2026-11-16",
+"d": "2026-11-21",
 "k": "later",
-"now": "2026-11-21",
+"now": "2026-12-01",
 "was": "2026-11-17"
 },
 "5216907": {
@@ -1158,6 +1153,11 @@
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
 "status": "Injured Reserve"
 },
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
+"status": "Injured Reserve"
+},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1174,7 +1174,7 @@
 "status": "Injured Reserve"
 },
 "5216882": {
-"back": "2026-11-21",
+"back": "2026-12-01",
 "note": "ir",
 "status": "Injured Reserve"
 },
