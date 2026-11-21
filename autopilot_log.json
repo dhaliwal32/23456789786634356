@@ -957,6 +957,39 @@
     }
    ],
    "result": "failed: Transaction type can only be executed in the current scoring period"
+  },
+  {
+   "at": "2026-11-21T00:10:48-07:00",
+   "day": "2026-11-21",
+   "mode": "on",
+   "text": "Start Arvidsson; bench Michkov.",
+   "gain": 1.4,
+   "before": 123.7,
+   "after": 125.1,
+   "moves": [
+    {
+     "id": 3120307,
+     "n": "Viktor Arvidsson",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 3942905,
+     "n": "Troy Terry",
+     "from": 3,
+     "to": 6,
+     "why": ""
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 6,
+     "to": 7,
+     "why": ""
+    }
+   ],
+   "result": "failed: Transaction type can only be executed in the current scoring period"
   }
  ],
  "state": {
