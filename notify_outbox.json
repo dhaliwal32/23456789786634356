@@ -884,7 +884,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-21T19:10:53Z",
-   "seen": "2026-11-21T23:33:58Z"
+   "seen": "2026-11-21T23:38:47Z"
   },
   {
    "k": "2026-11-21|cca24fc0a6e8",
@@ -945,6 +945,18 @@
    "via": "urgent",
    "sent_at": "2026-11-21T22:48:47Z",
    "seen": "2026-11-21T23:33:58Z"
+  },
+  {
+   "k": "2026-11-21|c0d3b02539c1",
+   "at": "2026-11-21T23:38:47Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T23:38:47Z",
+   "seen": "2026-11-21T23:38:47Z"
   }
  ],
  "sent": {
