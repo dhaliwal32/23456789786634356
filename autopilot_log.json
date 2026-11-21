@@ -1221,6 +1221,32 @@
     }
    ],
    "result": "done"
+  },
+  {
+   "at": "2026-11-21T11:26:58-07:00",
+   "day": "2026-11-21",
+   "mode": "on",
+   "text": "Start Arvidsson; bench Michkov.",
+   "gain": 1.5,
+   "before": 135.6,
+   "after": 137.1,
+   "moves": [
+    {
+     "id": 3120307,
+     "n": "Viktor Arvidsson",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 3,
+     "to": 7,
+     "why": ""
+    }
+   ],
+   "result": "done"
   }
  ],
  "state": {
