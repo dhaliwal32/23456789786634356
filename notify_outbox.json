@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-14|4d147f465a43",
-   "at": "2026-11-14T19:16:26Z",
-   "title": "Fantasy GM",
-   "text": "Skinner not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-14T19:16:26Z",
-   "seen": "2026-11-14T20:06:08Z"
-  },
-  {
    "k": "2026-11-14|da0ddd4bea7a",
    "at": "2026-11-14T19:34:48Z",
    "title": "Fantasy GM",
@@ -932,7 +920,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-21T19:10:53Z",
-   "seen": "2026-11-21T19:10:53Z"
+   "seen": "2026-11-21T19:16:53Z"
   }
  ],
  "sent": {
