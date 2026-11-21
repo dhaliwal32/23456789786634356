@@ -884,7 +884,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-21T19:10:53Z",
-   "seen": "2026-11-21T22:38:24Z"
+   "seen": "2026-11-21T22:42:46Z"
   },
   {
    "k": "2026-11-21|cca24fc0a6e8",
@@ -897,6 +897,42 @@
    "via": "urgent",
    "sent_at": "2026-11-21T20:37:06Z",
    "seen": "2026-11-21T20:37:06Z"
+  },
+  {
+   "k": "2026-11-21|2087abb56d94",
+   "at": "2026-11-21T22:43:06Z",
+   "title": "Fantasy GM",
+   "text": "Lundell joined Tkachuk's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T22:43:06Z",
+   "seen": "2026-11-21T22:43:06Z"
+  },
+  {
+   "k": "2026-11-21|1a38997a9ebd",
+   "at": "2026-11-21T22:43:07Z",
+   "title": "Fantasy GM",
+   "text": "Eller joined Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T22:43:07Z",
+   "seen": "2026-11-21T22:43:07Z"
+  },
+  {
+   "k": "2026-11-21|7b21f11a0a09",
+   "at": "2026-11-21T22:43:08Z",
+   "title": "Fantasy GM",
+   "text": "Luostarinen left Reinhart's line (FLA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T22:43:08Z",
+   "seen": "2026-11-21T22:43:08Z"
   }
  ],
  "sent": {
