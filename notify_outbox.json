@@ -825,6 +825,30 @@
    "via": "urgent",
    "sent_at": "2026-11-21T16:06:26Z",
    "seen": "2026-11-21T16:06:26Z"
+  },
+  {
+   "k": "2026-11-21|rw258|news|3041970|69fe692d8f",
+   "at": "2026-11-21T16:17:01Z",
+   "title": "Fantasy GM",
+   "text": "Barkov injury news",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T16:17:01Z",
+   "seen": "2026-11-21T16:17:01Z"
+  },
+  {
+   "k": "2026-11-21|rw258|news|3852|8034b9a837",
+   "at": "2026-11-21T16:17:02Z",
+   "title": "Fantasy GM",
+   "text": "Marchand injury news",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T16:17:02Z",
+   "seen": "2026-11-21T16:17:02Z"
   }
  ],
  "sent": {
