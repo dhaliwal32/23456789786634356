@@ -133,17 +133,16 @@
 "was": "2026-11-17"
 },
 "3042095": {
-"d": "2026-11-20",
+"d": "2026-11-21",
 "k": "later",
-"now": "2026-11-25",
+"nd": "2026-11-21",
+"now": "2027-01-30",
 "was": "2026-11-22"
 },
 "3067822": {
-"d": "2026-11-20",
-"k": "dtd",
-"nd": "2026-11-19",
-"now": "2026-11-21",
-"was": "Out"
+"d": "2026-11-21",
+"k": "back",
+"was": "2026-11-21"
 },
 "3069448": {
 "d": "2026-11-18",
@@ -795,8 +794,8 @@
 "status": "Injured Reserve"
 },
 "3042095": {
-"back": "2026-11-25",
-"note": "ir",
+"back": "2027-01-30",
+"note": "Bjorkstrand (upper body) is expected to be sidelined for 2-3 months, Peter Baugh of The Athletic reports Saturday.",
 "status": "Injured Reserve"
 },
 "3042110": {
@@ -808,11 +807,6 @@
 "back": "2026-11-28",
 "note": "Graves (lower body) is out indefinitely and was placed on injured reserve Sunday.",
 "status": "Injured Reserve"
-},
-"3067822": {
-"back": "2026-11-21",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "3069448": {
 "back": "2026-12-01",
