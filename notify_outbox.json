@@ -884,7 +884,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-21T19:10:53Z",
-   "seen": "2026-11-21T20:30:46Z"
+   "seen": "2026-11-21T20:36:46Z"
+  },
+  {
+   "k": "2026-11-21|cca24fc0a6e8",
+   "at": "2026-11-21T20:37:06Z",
+   "title": "Fantasy GM",
+   "text": "Caulfield joined ANA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T20:37:06Z",
+   "seen": "2026-11-21T20:37:06Z"
   }
  ],
  "sent": {

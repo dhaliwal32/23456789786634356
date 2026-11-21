@@ -677,6 +677,11 @@
 "now": "2027-01-30",
 "was": "2026-11-22"
 },
+"5509": {
+"d": "2026-11-21",
+"k": "new",
+"now": "2026-11-22"
+},
 "5614": {
 "d": "2026-11-21",
 "k": "later",
@@ -1187,6 +1192,11 @@
 "back": "2027-01-30",
 "note": "Smits (upper body) is expected to miss 2-3 months, Peter Baugh of The Athletic reported Saturday.",
 "status": "Injured Reserve"
+},
+"5509": {
+"back": "2026-11-22",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5614": {
 "back": "2026-11-27",
