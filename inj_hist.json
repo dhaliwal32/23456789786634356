@@ -538,10 +538,10 @@
 "was": ""
 },
 "5052": {
-"d": "2026-11-20",
+"d": "2026-11-21",
 "k": "later",
-"nd": "2026-11-15",
-"now": "2026-11-22",
+"nd": "2026-11-21",
+"now": "2026-11-25",
 "was": "2026-11-19"
 },
 "5075840": {
@@ -939,7 +939,7 @@
 },
 "4233566": {
 "back": "2026-11-22",
-"note": "Pettersson (upper body) won't play against Minnesota on Saturday, per Dan Murphy of Sportsnet.",
+"note": "Pettersson (upper body) isn't expected to play against Chicago on Sunday, per Canucks play-by-play announcer Brendan Batchelor.",
 "status": "Out"
 },
 "4233668": {
@@ -999,7 +999,7 @@
 },
 "4565225": {
 "back": "2026-11-22",
-"note": "Byram (upper body) won't play against Calgary on Saturday, Scott Powers of The Athletic reports.",
+"note": "Byram (upper body) didn't accompany his teammates on Chicago's three-game road trip, per Mark Lazerus of The Athletic on Saturday.",
 "status": "Injured Reserve"
 },
 "4565246": {
@@ -1083,9 +1083,9 @@
 "status": "Injured Reserve"
 },
 "5052": {
-"back": "2026-11-22",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-25",
+"note": "Myers (upper body) will not play in Sunday's home clash against Pittsburgh, per Robert Tiffin of NHL.com.",
+"status": "Out"
 },
 "5075840": {
 "back": "2026-11-25",
