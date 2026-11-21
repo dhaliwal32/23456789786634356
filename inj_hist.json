@@ -267,11 +267,6 @@
 "k": "back",
 "was": ""
 },
-"3904188": {
-"d": "2026-11-21",
-"k": "back",
-"was": "2026-11-21"
-},
 "3904190": {
 "d": "2026-11-18",
 "k": "back",
@@ -621,6 +616,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"5161": {
+"d": "2026-11-21",
+"k": "back",
+"was": "2027-01-12"
+},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -768,7 +768,7 @@
 },
 "3041969": {
 "back": "2027-02-13",
-"note": "MacKinnon (lower body) has been evaluated by a specialist and is expected to miss the next 12 weeks, Aarif Deen of Colorado Hockey Now reports Saturday.",
+"note": "MacKinnon (lower body) will miss at least one month, per Corey Masisak of The Denver Post on Saturday.",
 "status": "Out"
 },
 "3041970": {
@@ -895,6 +895,11 @@
 "back": "2026-11-23",
 "note": "out",
 "status": "Out"
+},
+"3904188": {
+"back": "2026-11-21",
+"note": "Trenin (personal) is expected to meet up with the Wild in Vancouver ahead of Saturday's game versus the Canucks, per Michael Russo of The Athletic.",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-11-27",
@@ -1139,11 +1144,6 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
