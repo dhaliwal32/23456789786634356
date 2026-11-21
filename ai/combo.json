@@ -1,6 +1,6 @@
 {
  "version": "combo-v1",
- "asof": "2026-11-20T19:12:05Z",
+ "asof": "2026-11-21T18:07:27Z",
  "data": {
   "from": "2026-09-29",
   "to": "2026-11-19",
@@ -9,93 +9,93 @@
  "groups": {
   "F": {
    "pick": "ai",
-   "why": "smallest average miss per game (4.606 pts)",
+   "why": "smallest average miss per game (4.609 pts)",
    "w": {
     "espn": 0.0,
     "gm": 0.0,
     "ai": 1.0
    },
    "bias": 0.0,
-   "games": 8005,
+   "games": 8003,
    "tests": {
     "half": {
-     "n": 7083,
-     "mae": 4.612,
-     "rmse": 6.073,
-     "bias": -0.089
+     "n": 7081,
+     "mae": 4.615,
+     "rmse": 6.076,
+     "bias": -0.09
     },
     "ai": {
-     "n": 7083,
-     "mae": 4.606,
-     "rmse": 6.077,
-     "bias": -0.107
+     "n": 7081,
+     "mae": 4.609,
+     "rmse": 6.079,
+     "bias": -0.109
     },
     "gm": {
-     "n": 7083,
-     "mae": 4.63,
-     "rmse": 6.086,
-     "bias": -0.07
+     "n": 7081,
+     "mae": 4.633,
+     "rmse": 6.089,
+     "bias": -0.072
     },
     "espn": {
-     "n": 7083,
-     "mae": 4.78,
-     "rmse": 6.247,
+     "n": 7081,
+     "mae": 4.784,
+     "rmse": 6.252,
      "bias": 0.117
     },
     "mix": {
-     "n": 7083,
-     "mae": 4.609,
-     "rmse": 6.075,
-     "bias": -0.107
+     "n": 7081,
+     "mae": 4.612,
+     "rmse": 6.078,
+     "bias": -0.108
     }
    }
   },
   "D": {
    "pick": "ai",
-   "why": "smallest average miss per game (3.631 pts)",
+   "why": "smallest average miss per game (3.629 pts)",
    "w": {
     "espn": 0.0,
     "gm": 0.0,
     "ai": 1.0
    },
    "bias": 0.0,
-   "games": 4115,
+   "games": 4117,
    "tests": {
     "half": {
-     "n": 3650,
-     "mae": 3.642,
-     "rmse": 4.866,
-     "bias": -0.039
+     "n": 3652,
+     "mae": 3.639,
+     "rmse": 4.861,
+     "bias": -0.038
     },
     "ai": {
-     "n": 3650,
-     "mae": 3.631,
-     "rmse": 4.87,
-     "bias": -0.06
+     "n": 3652,
+     "mae": 3.629,
+     "rmse": 4.865,
+     "bias": -0.058
     },
     "gm": {
-     "n": 3650,
-     "mae": 3.667,
-     "rmse": 4.884,
-     "bias": -0.019
+     "n": 3652,
+     "mae": 3.664,
+     "rmse": 4.879,
+     "bias": -0.017
     },
     "espn": {
-     "n": 3650,
-     "mae": 3.847,
-     "rmse": 5.071,
-     "bias": 0.088
+     "n": 3652,
+     "mae": 3.845,
+     "rmse": 5.067,
+     "bias": 0.092
     },
     "mix": {
-     "n": 3650,
-     "mae": 3.631,
-     "rmse": 4.87,
-     "bias": -0.059
+     "n": 3652,
+     "mae": 3.629,
+     "rmse": 4.865,
+     "bias": -0.057
     }
    }
   },
   "G": {
    "pick": "half",
-   "why": "smallest average miss per game (6.618 pts)",
+   "why": "smallest average miss per game (6.621 pts)",
    "w": {
     "espn": 0.0,
     "gm": 0.5,
@@ -106,33 +106,33 @@
    "tests": {
     "half": {
      "n": 609,
-     "mae": 6.618,
-     "rmse": 8.22,
-     "bias": 0.432
+     "mae": 6.621,
+     "rmse": 8.224,
+     "bias": 0.429
     },
     "ai": {
      "n": 609,
-     "mae": 6.636,
-     "rmse": 8.236,
-     "bias": 0.545
+     "mae": 6.639,
+     "rmse": 8.24,
+     "bias": 0.542
     },
     "gm": {
      "n": 609,
-     "mae": 6.619,
-     "rmse": 8.227,
-     "bias": 0.319
+     "mae": 6.622,
+     "rmse": 8.231,
+     "bias": 0.316
     },
     "espn": {
      "n": 609,
-     "mae": 6.931,
-     "rmse": 8.559,
-     "bias": 0.538
+     "mae": 6.934,
+     "rmse": 8.563,
+     "bias": 0.535
     },
     "mix": {
      "n": 609,
-     "mae": 6.627,
-     "rmse": 8.229,
-     "bias": 0.338
+     "mae": 6.63,
+     "rmse": 8.233,
+     "bias": 0.335
     }
    }
   }
