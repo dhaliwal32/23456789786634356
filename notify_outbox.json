@@ -2046,6 +2046,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (12:46 PM):\ntoday: Start Michkov; bench MacKinnon, Raymond, Gostisbehere, Gritsyuk (no game). +5.3"
+  },
+  {
+   "at": "2026-11-21T05:01:48Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot could not change your lineup. today: ESPN said Transaction type can only be executed in the current scoring period. Set it by hand on ESPN."
   }
  ]
 }
