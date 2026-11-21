@@ -921,6 +921,18 @@
    "via": "urgent",
    "sent_at": "2026-11-21T18:33:22Z",
    "seen": "2026-11-21T18:33:22Z"
+  },
+  {
+   "k": "2026-11-21|dc92806a5fc3",
+   "at": "2026-11-21T19:10:53Z",
+   "title": "Fantasy GM",
+   "text": "Skinner confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-21T19:10:53Z",
+   "seen": "2026-11-21T19:10:53Z"
   }
  ],
  "sent": {

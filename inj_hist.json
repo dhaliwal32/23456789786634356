@@ -380,10 +380,9 @@
 "was": "2026-11-21"
 },
 "4331586": {
-"d": "2026-11-18",
-"k": "later",
-"now": "2026-11-25",
-"was": "2026-11-12"
+"d": "2026-11-21",
+"k": "back",
+"was": "2026-11-25"
 },
 "4352804": {
 "d": "2026-11-20",
@@ -424,10 +423,10 @@
 "was": "2026-11-23"
 },
 "4565225": {
-"d": "2026-11-14",
+"d": "2026-11-21",
 "k": "later",
-"nd": "2026-11-17",
-"now": "2026-11-21",
+"nd": "2026-11-21",
+"now": "2026-11-22",
 "was": "2026-11-02"
 },
 "4565229": {
@@ -968,11 +967,6 @@
 "note": "Hughes (upper body) will miss the rest of Minnesota's road trip, per Joe Smith of The Athletic on Saturday.",
 "status": "Out"
 },
-"4331586": {
-"back": "2026-11-25",
-"note": "ir",
-"status": "Injured Reserve"
-},
 "4352803": {
 "back": "2026-11-25",
 "note": "Sandin (knee) will be with the Capitals for their two-game road trip, Tarik El-Bashir of Monumental Sports Network reports Monday.",
@@ -1009,8 +1003,8 @@
 "status": "Injured Reserve"
 },
 "4565225": {
-"back": "2026-11-21",
-"note": "Byram (upper body) will not play in the Blackhawks' next two games, per CHGO Blackhawks.",
+"back": "2026-11-22",
+"note": "Byram (upper body) won't play against Calgary on Saturday, Scott Powers of The Athletic reports.",
 "status": "Injured Reserve"
 },
 "4565246": {
