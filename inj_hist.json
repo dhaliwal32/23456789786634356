@@ -419,6 +419,11 @@
 "now": "2026-11-25",
 "was": "2026-12-05"
 },
+"4392883": {
+"d": "2026-11-21",
+"k": "new",
+"now": "2026-11-23"
+},
 "4419778": {
 "d": "2026-11-18",
 "k": "later",
@@ -665,6 +670,11 @@
 "k": "later",
 "now": "2026-11-25",
 "was": "2026-11-21"
+},
+"5291935": {
+"d": "2026-11-21",
+"k": "new",
+"now": "2026-11-22"
 },
 "5291944": {
 "d": "2026-11-19",
@@ -1001,6 +1011,11 @@
 "note": "Desharnais (abdomen) has been cleared for contact, Sammi Silber of The District Standard reports Friday.",
 "status": "Injured Reserve"
 },
+"4392883": {
+"back": "2026-11-23",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "4419778": {
 "back": "2026-12-03",
 "note": "ir",
@@ -1185,6 +1200,11 @@
 "back": "2026-11-25",
 "note": "Head coach Marco Sturm announced Saturday that Hagens (back) is expected to miss multiple weeks, per Jack Studley of Boston Hockey Now.",
 "status": "Injured Reserve"
+},
+"5291935": {
+"back": "2026-11-22",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5291944": {
 "back": "2026-12-10",
