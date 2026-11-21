@@ -115,6 +115,12 @@
 "k": "back",
 "was": "2026-11-17"
 },
+"3042019": {
+"d": "2026-11-21",
+"k": "later",
+"now": "2026-11-23",
+"was": "2026-11-21"
+},
 "3042037": {
 "d": "2026-11-17",
 "k": "later",
@@ -567,10 +573,8 @@
 },
 "5080223": {
 "d": "2026-11-21",
-"k": "later",
-"nd": "2026-11-07",
-"now": "2026-11-23",
-"was": "2026-11-08"
+"k": "back",
+"was": "2026-11-23"
 },
 "5080225": {
 "d": "2026-11-20",
@@ -774,7 +778,7 @@
 "status": "Injured Reserve"
 },
 "3042019": {
-"back": "2026-11-21",
+"back": "2026-11-23",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -1111,11 +1115,6 @@
 "5080212": {
 "back": "2026-12-12",
 "note": "Casey (knee) was moved to long-term injured reserve on Friday, per PuckPedia.",
-"status": "Injured Reserve"
-},
-"5080223": {
-"back": "2026-11-23",
-"note": "ir-nr",
 "status": "Injured Reserve"
 },
 "5080232": {
