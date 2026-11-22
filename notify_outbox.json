@@ -957,6 +957,30 @@
    "via": "urgent",
    "sent_at": "2026-11-22T20:46:27Z",
    "seen": "2026-11-22T20:46:27Z"
+  },
+  {
+   "k": "2026-11-22|3e167d88b835",
+   "at": "2026-11-22T22:54:43Z",
+   "title": "Fantasy GM",
+   "text": "Hallander joined McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T22:54:43Z",
+   "seen": "2026-11-22T22:54:43Z"
+  },
+  {
+   "k": "2026-11-22|7938f6d58a50",
+   "at": "2026-11-22T22:54:43Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen joined EDM PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T22:54:43Z",
+   "seen": "2026-11-22T22:54:43Z"
   }
  ],
  "sent": {
