@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-15|687129af8c92",
-   "at": "2026-11-15T23:17:57Z",
-   "title": "Fantasy GM",
-   "text": "Kapanen joined EDM PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-15T23:17:57Z",
-   "seen": "2026-11-15T23:17:57Z"
-  },
-  {
-   "k": "2026-11-15|ee9b3bd74db8",
-   "at": "2026-11-15T23:17:57Z",
-   "title": "Fantasy GM",
-   "text": "Dvorak joined PHI PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-15T23:17:57Z",
-   "seen": "2026-11-15T23:17:57Z"
-  },
-  {
-   "k": "2026-11-15|fdfb3b7ad1a2",
-   "at": "2026-11-15T23:49:18Z",
-   "title": "Fantasy GM",
-   "text": "Brossoit not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-15T23:49:18Z",
-   "seen": "2026-11-16T00:27:24Z"
-  },
-  {
    "k": "2026-11-15|a6b0a48cf847",
    "at": "2026-11-16T00:33:24Z",
    "title": "Fantasy GM",
@@ -981,6 +945,42 @@
    "via": "urgent",
    "sent_at": "2026-11-22T22:54:43Z",
    "seen": "2026-11-22T22:54:43Z"
+  },
+  {
+   "k": "2026-11-22|dc5017e067d3",
+   "at": "2026-11-22T23:56:49Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen joined McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T23:56:49Z",
+   "seen": "2026-11-22T23:56:49Z"
+  },
+  {
+   "k": "2026-11-22|664a81376e0c",
+   "at": "2026-11-22T23:56:50Z",
+   "title": "Fantasy GM",
+   "text": "Joseph joined Draisaitl's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T23:56:50Z",
+   "seen": "2026-11-22T23:56:50Z"
+  },
+  {
+   "k": "2026-11-22|e9ac27cd256f",
+   "at": "2026-11-22T23:56:50Z",
+   "title": "Fantasy GM",
+   "text": "Dach left McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T23:56:50Z",
+   "seen": "2026-11-22T23:56:50Z"
   }
  ],
  "sent": {
