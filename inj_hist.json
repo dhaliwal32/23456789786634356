@@ -91,9 +91,11 @@
 "was": "2026-11-14"
 },
 "3041970": {
-"d": "2026-11-21",
-"k": "news",
-"nd": "2026-11-21"
+"d": "2026-11-22",
+"k": "sooner",
+"nd": "2026-11-21",
+"now": "2026-11-25",
+"was": "2026-11-27"
 },
 "3041996": {
 "d": "2026-11-16",
@@ -741,7 +743,7 @@
 "status": "Out"
 },
 "3041970": {
-"back": "2026-11-27",
+"back": "2026-11-25",
 "note": "Barkov (knee) won't play against Buffalo on Saturday, but he could return within Florida's next three games, Jameson Olive of the Panthers' official site report",
 "status": "Injured Reserve"
 },
