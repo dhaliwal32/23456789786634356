@@ -468,6 +468,11 @@
 "now": "2026-11-25",
 "was": "Out"
 },
+"4697717": {
+"d": "2026-11-22",
+"k": "new",
+"now": "2026-11-29"
+},
 "4781550": {
 "d": "2026-11-21",
 "k": "news",
@@ -1026,6 +1031,11 @@
 "back": "2026-11-25",
 "note": "day-to-day",
 "status": "Day-To-Day"
+},
+"4697717": {
+"back": "2026-11-29",
+"note": "Kaiser was suspended for three games by the NHL Department of Player Safety on Sunday for an illegal check to the head against Calgary's Martin Pospisil (upper ",
+"status": "Suspension"
 },
 "4781550": {
 "back": "2026-11-23",
