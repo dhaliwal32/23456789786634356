@@ -618,6 +618,11 @@
 "now": "2027-03-01",
 "was": "2026-11-19"
 },
+"5149153": {
+"d": "2026-11-21",
+"k": "new",
+"now": "2026-11-23"
+},
 "5149209": {
 "d": "2026-11-15",
 "k": "later",
@@ -1169,6 +1174,11 @@
 "back": "2027-03-01",
 "note": "Bedard will undergo surgery on his injured right shoulder in the coming week, Ben Pope of the Chicago Sun-Times reports.",
 "status": "Out"
+},
+"5149153": {
+"back": "2026-11-23",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149209": {
 "back": "2027-01-01",
