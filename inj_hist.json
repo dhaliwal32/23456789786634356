@@ -324,9 +324,11 @@
 "was": ""
 },
 "4233890": {
-"d": "2026-11-19",
-"k": "news",
-"nd": "2026-11-19"
+"d": "2026-11-22",
+"k": "later",
+"nd": "2026-11-19",
+"now": "2026-12-12",
+"was": "2026-11-28"
 },
 "4272674": {
 "d": "2026-11-17",
@@ -929,7 +931,7 @@
 "status": "Injured Reserve"
 },
 "4233890": {
-"back": "2026-11-28",
+"back": "2026-12-12",
 "note": "Gadjovich (neck) took the ice Thursday in a non-contact sweater, George Richards of Florida Hockey Now reports.",
 "status": "Injured Reserve"
 },
