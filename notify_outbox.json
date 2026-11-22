@@ -957,6 +957,30 @@
    "via": "urgent",
    "sent_at": "2026-11-21T23:38:47Z",
    "seen": "2026-11-21T23:56:48Z"
+  },
+  {
+   "k": "2026-11-21|b8f403fd934e",
+   "at": "2026-11-22T00:47:07Z",
+   "title": "Fantasy GM",
+   "text": "Copp joined DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T00:47:07Z",
+   "seen": "2026-11-22T00:47:07Z"
+  },
+  {
+   "k": "2026-11-21|4e6df0af5b6b",
+   "at": "2026-11-22T00:47:08Z",
+   "title": "Fantasy GM",
+   "text": "Bolduc joined MTL PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-22T00:47:08Z",
+   "seen": "2026-11-22T00:47:08Z"
   }
  ],
  "sent": {
