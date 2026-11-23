@@ -981,6 +981,18 @@
    "via": "urgent",
    "sent_at": "2026-11-23T03:03:05Z",
    "seen": "2026-11-23T03:03:05Z"
+  },
+  {
+   "k": "2026-11-23|weekly-8",
+   "at": "2026-11-23T15:04:39Z",
+   "title": "Fantasy GM",
+   "text": "Week 8: you 275, Active 405 (lost by 130). App was 2% off on your players.",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T15:04:39Z",
+   "seen": "2026-11-23T15:04:39Z"
   }
  ],
  "sent": {
