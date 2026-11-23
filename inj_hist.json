@@ -359,6 +359,7 @@
 "4391255": {
 "d": "2026-11-17",
 "k": "later",
+"nd": "2026-11-23",
 "now": "2026-12-01",
 "was": "2026-11-17"
 },
@@ -472,10 +473,10 @@
 "was": "2026-11-23"
 },
 "4874723": {
-"d": "2026-11-21",
+"d": "2026-11-23",
 "k": "later",
 "nd": "2026-11-20",
-"now": "2026-11-23",
+"now": "2026-11-25",
 "was": "2026-11-11"
 },
 "4874731": {
@@ -937,8 +938,8 @@
 },
 "4391255": {
 "back": "2026-12-01",
-"note": "out",
-"status": "Out"
+"note": "Sherwood (upper body) was placed on injured reserve Monday.",
+"status": "Injured Reserve"
 },
 "4392260": {
 "back": "2026-11-25",
@@ -1021,7 +1022,7 @@
 "status": "Injured Reserve"
 },
 "4874723": {
-"back": "2026-11-23",
+"back": "2026-11-25",
 "note": "Guenther (upper body) was upgraded to day-to-day ahead of Saturday's matchup with Anaheim, Cole Bagley of KSL Sports reports.",
 "status": "Injured Reserve"
 },

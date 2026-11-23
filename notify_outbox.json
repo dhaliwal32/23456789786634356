@@ -1,54 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-16|d95c8dd69584",
-   "at": "2026-11-16T17:48:06Z",
-   "title": "Fantasy GM",
-   "text": "Kulich joined Thompson's line (BUF)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T17:48:06Z",
-   "seen": "2026-11-16T17:48:06Z"
-  },
-  {
-   "k": "2026-11-16|4465e694e729",
-   "at": "2026-11-16T17:48:06Z",
-   "title": "Fantasy GM",
-   "text": "Krebs left Thompson's line (BUF)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T17:48:06Z",
-   "seen": "2026-11-16T17:48:06Z"
-  },
-  {
-   "k": "2026-11-16|4d2d4579bc0e",
-   "at": "2026-11-16T17:48:07Z",
-   "title": "Fantasy GM",
-   "text": "Doan joined BUF PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T17:48:07Z",
-   "seen": "2026-11-16T17:48:07Z"
-  },
-  {
-   "k": "2026-11-16|785b4e2fe2da",
-   "at": "2026-11-16T17:48:07Z",
-   "title": "Fantasy GM",
-   "text": "Bj\u00f6rck left Connor's line (WPG)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T17:48:07Z",
-   "seen": "2026-11-16T17:48:07Z"
-  },
-  {
    "k": "2026-11-16|e2d13c32c35d",
    "at": "2026-11-17T03:09:18Z",
    "title": "Fantasy GM",
@@ -956,7 +908,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-23T15:04:39Z",
-   "seen": "2026-11-23T17:47:50Z"
+   "seen": "2026-11-23T17:53:52Z"
   },
   {
    "k": "2026-11-23|3e479f412a1b",
