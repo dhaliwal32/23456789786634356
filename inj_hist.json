@@ -19,6 +19,11 @@
 "k": "back",
 "was": ""
 },
+"2563034": {
+"d": "2026-11-23",
+"k": "new",
+"now": "2026-11-23"
+},
 "2590861": {
 "d": "2026-11-19",
 "k": "later",
@@ -150,7 +155,7 @@
 "3096186": {
 "d": "2026-11-22",
 "k": "dtd",
-"nd": "2026-11-21",
+"nd": "2026-11-23",
 "now": "2026-11-23",
 "was": "Out"
 },
@@ -692,6 +697,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"2563034": {
+"back": "2026-11-23",
+"note": "Edmundson will be a game-time call against Montreal on Monday due to an undisclosed injury, Zach Dooley of the Kings' official site reports.",
+"status": "Day-To-Day"
+},
 "2590829": {
 "back": "2026-12-27",
 "note": "ir",
@@ -804,7 +814,7 @@
 },
 "3096186": {
 "back": "2026-11-23",
-"note": "day-to-day",
+"note": "Moore (undisclosed) will be a game-time decision versus the Canadiens on Monday, Zach Dooley of the Kings' official site reports.",
 "status": "Day-To-Day"
 },
 "3096217": {
