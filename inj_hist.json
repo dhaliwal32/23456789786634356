@@ -374,7 +374,7 @@
 "4392883": {
 "d": "2026-11-23",
 "k": "later",
-"nd": "2026-11-21",
+"nd": "2026-11-23",
 "now": "2026-11-28",
 "was": "2026-11-23"
 },
@@ -591,11 +591,6 @@
 "d": "2026-11-18",
 "k": "back",
 "was": "2026-12-01"
-},
-"5161": {
-"d": "2026-11-23",
-"k": "back",
-"was": "2027-01-12"
 },
 "5173105": {
 "d": "2026-11-17",
@@ -861,7 +856,7 @@
 "status": "Day-To-Day"
 },
 "3891952": {
-"back": "2026-11-23",
+"back": "",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -962,7 +957,7 @@
 },
 "4392883": {
 "back": "2026-11-28",
-"note": "out",
+"note": "Pospisil (upper body) didn't travel with his teammates for the start of Calgary's five-game road trip, per Eric Francis of Sportsnet on Monday.",
 "status": "Out"
 },
 "4419778": {
@@ -1128,6 +1123,11 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
