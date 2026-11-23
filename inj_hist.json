@@ -278,8 +278,9 @@
 },
 "4062251": {
 "d": "2026-11-23",
-"k": "new",
-"now": "2026-11-25"
+"k": "later",
+"now": "2026-12-01",
+"was": "2026-11-25"
 },
 "4064781": {
 "d": "2026-11-21",
@@ -441,9 +442,11 @@
 "was": "2026-11-18"
 },
 "4587996": {
-"d": "2026-11-21",
-"k": "news",
-"nd": "2026-11-21"
+"d": "2026-11-23",
+"k": "later",
+"nd": "2026-11-21",
+"now": "2026-11-27",
+"was": "2026-11-23"
 },
 "4697409": {
 "d": "2026-11-16",
@@ -477,10 +480,10 @@
 "was": "2026-11-11"
 },
 "4874731": {
-"d": "2026-11-21",
+"d": "2026-11-23",
 "k": "later",
 "nd": "2026-11-13",
-"now": "2026-11-23",
+"now": "2026-11-27",
 "was": "2026-11-17"
 },
 "4874734": {
@@ -884,7 +887,7 @@
 "status": "Day-To-Day"
 },
 "4062251": {
-"back": "2026-11-25",
+"back": "2026-12-01",
 "note": "The Capitals announced Monday that Kyrou is dealing with an upper-body injury, Sammi Silber of The District Standard reports.",
 "status": "Day-To-Day"
 },
@@ -994,7 +997,7 @@
 "status": "Injured Reserve"
 },
 "4587996": {
-"back": "2026-11-23",
+"back": "2026-11-27",
 "note": "Marchenko (lower body) is day-to-day, according to David Alter of The Hockey News on Saturday.",
 "status": "Injured Reserve"
 },
@@ -1029,7 +1032,7 @@
 "status": "Injured Reserve"
 },
 "4874731": {
-"back": "2026-11-23",
+"back": "2026-11-27",
 "note": "ir",
 "status": "Injured Reserve"
 },
