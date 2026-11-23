@@ -372,10 +372,11 @@
 "was": "2026-12-05"
 },
 "4392883": {
-"d": "2026-11-21",
-"k": "new",
+"d": "2026-11-23",
+"k": "later",
 "nd": "2026-11-21",
-"now": "2026-11-23"
+"now": "2026-11-28",
+"was": "2026-11-23"
 },
 "4419778": {
 "d": "2026-11-18",
@@ -960,9 +961,9 @@
 "status": "Injured Reserve"
 },
 "4392883": {
-"back": "2026-11-23",
-"note": "Pospisil (upper body) left Saturday's game against Chicago and won't return, per Pat Steinberg of QR Calgary 770 AM.",
-"status": "Day-To-Day"
+"back": "2026-11-28",
+"note": "out",
+"status": "Out"
 },
 "4419778": {
 "back": "2026-12-03",
