@@ -2,7 +2,7 @@
 
 Read this first in any new session about Fantasy Islands GM. It covers everything through change 251 (Nov 9, 2026); changes 252 to 274 are described by the first line of each file in `changes/done/` and by `docs/notes/`. It adds to the Oct 11 handoff PDF, which still holds the background: league settings, data files and alert keys.
 
-**Next change number: 324.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
+**Next change number: 325.** Whoever installs a change bumps this number and adds one line to the change log at the bottom.
 
 ## 1. Who Kuvar is and how to talk to him
 
@@ -250,6 +250,7 @@ Recent rows (add new ones here):
 | 321 | Alerts race two feeds (Kuvar, Nov 18). `espn_goals321` reads ESPN's scoreboard/summary the same way 318 reads the NHL feed (summary only on score change, every 30 s for live games). Both go through `_send321`, which skips a goal if the same player + kind + period is already sent within 60 s of game clock (`d|pid|kind|period|secs` keys), so whichever feed shows it first sends it, once. Tested Nov 18 with both orders: 19 alerts, 0 repeats. Both feeds checked every 2 s (was 5). Every alert is written to `edge/alert-times.json` (sent time, feed, ESPN goal wallclock when known), committed with the on-ice file or on its own. Sent list now kept in the order things happened, newest 3000 (sorted truncation would drop the `d|` keys first). First run marks ESPN goals already on the board (`zz-espn321`) |
 | 322 | Alerts on their own track (Nov 18: Suzuki goal 01:22:54Z, alert 01:27:40Z because `push_onice` spent 01:23:49-01:27:39 on the new goal's on-ice data and the alert checks only ran after it). `alerts322` starts a daemon thread that runs `fast318(opp, 0)` (both feeds) every 2 s; the main loop only hands it the opponent, does the ESPN score and on-ice steps, and sleeps 20 s |
 | 323 | Line / lineup / injury alerts (`gm_notify.push`) use change 315's two-line look too (Kuvar, Nov 19 picture): message as the title, empty body; the 'Fantasy GM' title only still decides which alerts are allowed (change 121), it is no longer shown |
+| 324 | Autopilot never leaves a starting spot empty (Kuvar, Nov 23: "it benches all players that still aren't playing; add all active and then for those empty still fit a player in"). The Nov 23 run had benched 7 no-game players to start Skinner, leaving spots empty. `plan` still starts everyone with a game first, then `fill324` puts a no-game player in any open F, D, UTIL or G spot (one already there stays put, healthy before injured, best average first). `run` now also acts when moves fill empty spots even with 0 points gained, so a lineup left with holes gets fixed. Note text: "fill empty spots with X (no game)". Tested with a made-up roster: 9 F, 5 D, 1 UTIL, 2 G always full |
 | (no number) | `.github/workflows/sync-watch.yml`: every 30 minutes, one ntfy alert when the newest "sync" commit is 50 to 80 minutes old, and again at 6 hours |
 
 ## 9. Open ideas Kuvar has not chosen yet
