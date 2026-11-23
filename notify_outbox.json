@@ -956,7 +956,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-23T15:04:39Z",
-   "seen": "2026-11-23T17:29:50Z"
+   "seen": "2026-11-23T17:36:07Z"
   },
   {
    "k": "2026-11-23|3e479f412a1b",
@@ -969,6 +969,42 @@
    "via": "urgent",
    "sent_at": "2026-11-23T15:35:32Z",
    "seen": "2026-11-23T15:35:32Z"
+  },
+  {
+   "k": "2026-11-23|c97b982a8cbc",
+   "at": "2026-11-23T17:36:04Z",
+   "title": "Fantasy GM",
+   "text": "Brown joined Hughes's line (NJ)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T17:36:04Z",
+   "seen": "2026-11-23T17:36:04Z"
+  },
+  {
+   "k": "2026-11-23|1c2f54b8b78d",
+   "at": "2026-11-23T17:36:05Z",
+   "title": "Fantasy GM",
+   "text": "Gritsyuk left Hughes's line (NJ)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T17:36:05Z",
+   "seen": "2026-11-23T17:36:05Z"
+  },
+  {
+   "k": "2026-11-23|cc2bb747ef36",
+   "at": "2026-11-23T17:36:06Z",
+   "title": "Fantasy GM",
+   "text": "Protas left Tuch's line (WSH)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T17:36:06Z",
+   "seen": "2026-11-23T17:36:06Z"
   }
  ],
  "sent": {
