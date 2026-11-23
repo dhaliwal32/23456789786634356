@@ -249,7 +249,7 @@
 "d": "2026-11-23",
 "k": "later",
 "nd": "2026-11-20",
-"now": "2026-11-25",
+"now": "2026-11-28",
 "was": "2026-10-24"
 },
 "3942714": {
@@ -593,6 +593,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"5161": {
+"d": "2026-11-23",
+"k": "back",
+"was": "2027-01-12"
+},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -867,7 +872,7 @@
 "status": "Injured Reserve"
 },
 "3941974": {
-"back": "2026-11-25",
+"back": "2026-11-28",
 "note": "Marino (upper body) is day-to-day and close to returning, per Cole Bagley of KSL Sports on Friday.",
 "status": "Injured Reserve"
 },
@@ -938,7 +943,7 @@
 },
 "4391255": {
 "back": "2026-12-01",
-"note": "Sherwood (upper body) was placed on injured reserve Monday.",
+"note": "ir",
 "status": "Injured Reserve"
 },
 "4392260": {
@@ -1114,11 +1119,6 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
-"status": "Injured Reserve"
-},
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
