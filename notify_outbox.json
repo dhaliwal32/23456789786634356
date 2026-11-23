@@ -2346,6 +2346,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (12:04 PM):\ntoday: Start Arvidsson; bench Michkov. +1.4"
+  },
+  {
+   "at": "2026-11-23T05:01:08Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot could not change your lineup. today: ESPN said Transaction type can only be executed in the current scoring period. Set it by hand on ESPN."
   }
  ]
 }
