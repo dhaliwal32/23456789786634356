@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-15|a6b0a48cf847",
-   "at": "2026-11-16T00:33:24Z",
-   "title": "Fantasy GM",
-   "text": "Brossoit not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T00:33:24Z",
-   "seen": "2026-11-16T00:57:26Z"
-  },
-  {
-   "k": "2026-11-15|5682ae3f56aa",
-   "at": "2026-11-16T01:23:23Z",
-   "title": "Fantasy GM",
-   "text": "Cates joined PHI PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T01:23:23Z",
-   "seen": "2026-11-16T01:23:23Z"
-  },
-  {
    "k": "2026-11-16|weekly-7",
    "at": "2026-11-16T15:07:07Z",
    "title": "Fantasy GM",
@@ -981,6 +957,30 @@
    "via": "urgent",
    "sent_at": "2026-11-22T23:56:50Z",
    "seen": "2026-11-22T23:56:50Z"
+  },
+  {
+   "k": "2026-11-22|5b10b7a4f231",
+   "at": "2026-11-23T03:03:04Z",
+   "title": "Fantasy GM",
+   "text": "Copp left DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T03:03:04Z",
+   "seen": "2026-11-23T03:03:04Z"
+  },
+  {
+   "k": "2026-11-22|15561463bb9f",
+   "at": "2026-11-23T03:03:05Z",
+   "title": "Fantasy GM",
+   "text": "Raymond left DeBrincat's line (DET)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T03:03:05Z",
+   "seen": "2026-11-23T03:03:05Z"
   }
  ],
  "sent": {
