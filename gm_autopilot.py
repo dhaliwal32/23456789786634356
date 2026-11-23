@@ -167,6 +167,22 @@ def plan(roster, day, games, E, c):
                    and (not r["elig"] or SLOT_U in r["elig"])], key=sc, reverse=True)
     for r in util[:max(0, cap[SLOT_U])]:
         want[r["id"]] = SLOT_U
+
+    # change 324: players with a game start first (above); any starting spot still open gets a player with no game
+    # today instead of staying empty. A player already in that spot stays put, healthy players before injured ones.
+    def fill324(slot, ok):
+        room = cap[slot] - sum(1 for r in left if want.get(r["id"]) == slot)
+        if room <= 0:
+            return
+        pool = sorted([r for r in left if r["id"] not in want and ok(r)],
+                      key=lambda r: (r["slot"] != slot, r["slot"] not in ACTIVE, r["why"] == "out",
+                                     -(r.get("pavg") or r.get("avg") or 0)))
+        for r in pool[:room]:
+            want[r["id"]] = slot
+    fill324(SLOT_G, lambda r: r["p"] == "G")
+    fill324(SLOT_D, lambda r: r["p"] == "D")
+    fill324(SLOT_F, lambda r: r["p"] == "F")
+    fill324(SLOT_U, lambda r: r["p"] in ("F", "D") and (not r["elig"] or SLOT_U in r["elig"]))
     for r in left:
         want.setdefault(r["id"], SLOT_BENCH)
     # keep starters in the starting spot they already have (F slot vs UTIL) so nothing moves for nothing
@@ -184,7 +200,8 @@ def plan(roster, day, games, E, c):
 
 
 def describe(moves):
-    ins = [m["r"] for m in moves if m["to"] in ACTIVE and m["from"] not in ACTIVE]
+    ins = [m["r"] for m in moves if m["to"] in ACTIVE and m["from"] not in ACTIVE and m["r"].get("v", 0) > 0]
+    fill = [m["r"] for m in moves if m["to"] in ACTIVE and m["from"] not in ACTIVE and not m["r"].get("v", 0) > 0]  # change 324
     outs = [m["r"] for m in moves if m["from"] in ACTIVE and m["to"] not in ACTIVE]
     def names(rs, why):
         out = [r["n"].split(" ")[-1] + (" (" + r["why"] + ")" if why and r["p"] == "G" and r.get("why") else "") for r in rs[:4]]
@@ -195,6 +212,8 @@ def describe(moves):
     if outs:
         nog = all(r.get("why") == "no game" for r in outs)
         parts.append("bench " + names(outs, False) + (" (no game)" if nog else ""))
+    if fill:
+        parts.append("fill empty spots with " + names(fill, False) + " (no game)")
     if not parts and moves:
         parts.append("move " + names([m["r"] for m in moves], False) + " between starting spots")
     s = "; ".join(parts)
@@ -311,7 +330,8 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         gain = round(after - before, 1)
         if future:
             planned[day] = datetime.now(PT).isoformat(timespec="seconds")
-        if not moves or gain < min_gain:
+        fills = sum(m["to"] in ACTIVE for m in moves) - sum(m["from"] in ACTIVE for m in moves)  # change 324: empty spots filled
+        if not moves or (gain < min_gain and fills <= 0):
             print(f"(autopilot) {day}: lineup is already the best (projected {before})")
             continue
         found.append({"day": day, "sp": sp, "future": future, "moves": moves, "before": before, "after": after, "gain": gain, "text": describe(moves)})
