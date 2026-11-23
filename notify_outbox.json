@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-16|weekly-7",
-   "at": "2026-11-16T15:07:07Z",
-   "title": "Fantasy GM",
-   "text": "Week 7: you 435, BigWilly 498 (lost by 63). App was 12% off on your players.",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-16T15:07:07Z",
-   "seen": "2026-11-16T18:57:18Z"
-  },
-  {
    "k": "2026-11-16|72c54113d267",
    "at": "2026-11-16T15:46:38Z",
    "title": "Fantasy GM",
@@ -992,7 +980,19 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-23T15:04:39Z",
-   "seen": "2026-11-23T15:04:39Z"
+   "seen": "2026-11-23T15:35:33Z"
+  },
+  {
+   "k": "2026-11-23|3e479f412a1b",
+   "at": "2026-11-23T15:35:32Z",
+   "title": "Fantasy GM",
+   "text": "Zuccarello joined LA PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-23T15:35:32Z",
+   "seen": "2026-11-23T15:35:32Z"
   }
  ],
  "sent": {
