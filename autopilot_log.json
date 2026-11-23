@@ -2667,6 +2667,88 @@
     }
    ],
    "result": "failed: Transaction type can only be executed in the current scoring period"
+  },
+  {
+   "at": "2026-11-22T23:35:24-07:00",
+   "day": "2026-11-23",
+   "mode": "on",
+   "text": "Start Skinner (50% to start); bench Tkachuk, Reinhart, Gostisbehere, Zegras +4 more (no game).",
+   "gain": 4.0,
+   "before": 54.3,
+   "after": 58.3,
+   "moves": [
+    {
+     "id": 4319858,
+     "n": "Brady Tkachuk",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3114722,
+     "n": "Sam Reinhart",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3025662,
+     "n": "Shayne Gostisbehere",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4565230,
+     "n": "Trevor Zegras",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3120307,
+     "n": "Viktor Arvidsson",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4697725,
+     "n": "Alex Laferriere",
+     "from": 6,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 5436,
+     "n": "Roman Josi",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 4268767,
+     "n": "Stuart Skinner",
+     "from": 7,
+     "to": 5,
+     "why": "50% to start"
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 3,
+     "to": 7,
+     "why": "no game"
+    },
+    {
+     "id": 3114757,
+     "n": "Travis Sanheim",
+     "from": 4,
+     "to": 7,
+     "why": "no game"
+    }
+   ],
+   "result": "failed: Transaction type can only be executed in the current scoring period"
   }
  ],
  "state": {
