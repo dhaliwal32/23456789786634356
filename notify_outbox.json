@@ -2352,6 +2352,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot could not change your lineup. today: ESPN said Transaction type can only be executed in the current scoring period. Set it by hand on ESPN."
+  },
+  {
+   "at": "2026-11-23T08:00:07Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot set your lineup (1:00 AM):\ntoday: Start Skinner (50% to start); bench Tkachuk, Reinhart, Gostisbehere, Zegras +4 more (no game). +4.0"
   }
  ]
 }
