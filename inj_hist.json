@@ -8,11 +8,11 @@
 "was": "2026-11-02"
 },
 "2562624": {
-"d": "2026-11-21",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "nd": "2026-11-21",
 "now": "2026-11-24",
-"was": "2026-11-21"
+"was": "Out"
 },
 "2563027": {
 "d": "2026-11-21",
@@ -42,11 +42,11 @@
 "was": ""
 },
 "2968829": {
-"d": "2026-11-22",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "nd": "2026-11-22",
 "now": "2026-11-25",
-"was": "2026-11-22"
+"was": "Out"
 },
 "2976833": {
 "d": "2026-11-17",
@@ -155,9 +155,10 @@
 "was": "Out"
 },
 "3114741": {
-"d": "2026-11-21",
-"k": "new",
-"now": "2026-11-25"
+"d": "2026-11-23",
+"k": "dtd",
+"now": "2026-11-25",
+"was": "Out"
 },
 "3114755": {
 "d": "2026-11-22",
@@ -172,9 +173,10 @@
 "was": "2026-11-14"
 },
 "3124": {
-"d": "2026-11-20",
-"k": "new",
-"now": "2026-11-25"
+"d": "2026-11-23",
+"k": "dtd",
+"now": "2026-11-25",
+"was": "Out"
 },
 "3150479": {
 "d": "2026-11-22",
@@ -294,11 +296,11 @@
 "was": ""
 },
 "4233566": {
-"d": "2026-11-22",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "nd": "2026-11-21",
 "now": "2026-11-25",
-"was": "2026-11-22"
+"was": "Out"
 },
 "4233668": {
 "d": "2026-11-19",
@@ -391,10 +393,10 @@
 "was": ""
 },
 "4565246": {
-"d": "2026-11-22",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "now": "2026-11-25",
-"was": "2026-11-22"
+"was": "Out"
 },
 "4565259": {
 "d": "2026-11-18",
@@ -501,11 +503,11 @@
 "was": ""
 },
 "5052": {
-"d": "2026-11-21",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "nd": "2026-11-21",
 "now": "2026-11-25",
-"was": "2026-11-19"
+"was": "Out"
 },
 "5075840": {
 "d": "2026-11-18",
@@ -547,9 +549,10 @@
 "was": ""
 },
 "5103825": {
-"d": "2026-11-22",
-"k": "new",
-"now": "2026-11-25"
+"d": "2026-11-23",
+"k": "dtd",
+"now": "2026-11-25",
+"was": "Out"
 },
 "5136614": {
 "d": "2026-11-21",
@@ -583,11 +586,6 @@
 "k": "back",
 "was": "2026-12-01"
 },
-"5161": {
-"d": "2026-11-23",
-"k": "back",
-"was": "2027-01-12"
-},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -617,10 +615,10 @@
 "was": "2026-11-21"
 },
 "5291935": {
-"d": "2026-11-22",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "now": "2026-11-25",
-"was": "2026-11-22"
+"was": "Out"
 },
 "5291944": {
 "d": "2026-11-19",
@@ -637,10 +635,10 @@
 "was": "2026-11-22"
 },
 "5509": {
-"d": "2026-11-22",
-"k": "later",
+"d": "2026-11-23",
+"k": "dtd",
 "now": "2026-11-24",
-"was": "2026-11-22"
+"was": "Out"
 },
 "5614": {
 "d": "2026-11-21",
@@ -673,8 +671,8 @@
 },
 "2562624": {
 "back": "2026-11-24",
-"note": "Nugent-Hopkins (undisclosed) is slated to return to the lineup against Vegas on Tuesday, Paige Martin of Oilers TV reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2590829": {
 "back": "2026-12-27",
@@ -698,8 +696,8 @@
 },
 "2968829": {
 "back": "2026-11-25",
-"note": "Girgensons (upper body) won't play against Buffalo on Sunday, per Benjamin Pierce of the Lightning's official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "2976850": {
 "back": "2026-11-25",
@@ -798,8 +796,8 @@
 },
 "3114741": {
 "back": "2026-11-25",
-"note": "Ehlers (undisclosed) won't play Sunday against the Rangers, per Chip Alexander of The Raleigh News &amp; Observer.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3114770": {
 "back": "2026-11-25",
@@ -813,8 +811,8 @@
 },
 "3124": {
 "back": "2026-11-25",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3150479": {
 "back": "2026-11-23",
@@ -903,8 +901,8 @@
 },
 "4233566": {
 "back": "2026-11-25",
-"note": "Pettersson (upper body) isn't expected to play against Chicago on Sunday, per Canucks play-by-play announcer Brendan Batchelor.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233668": {
 "back": "2026-12-06",
@@ -968,8 +966,8 @@
 },
 "4565246": {
 "back": "2026-11-25",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4565275": {
 "back": "2026-12-05",
@@ -1053,8 +1051,8 @@
 },
 "5052": {
 "back": "2026-11-25",
-"note": "Myers (upper body) will not play in Sunday's home clash against Pittsburgh, per Robert Tiffin of NHL.com.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5075840": {
 "back": "2026-11-25",
@@ -1093,8 +1091,8 @@
 },
 "5103825": {
 "back": "2026-11-25",
-"note": "Carlile (lower body) won't play against Dallas on Sunday, per King Jemison of the Pittsburgh Post-Gazette.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5136614": {
 "back": "2026-12-01",
@@ -1119,6 +1117,11 @@
 "5149209": {
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
+"status": "Injured Reserve"
+},
+"5161": {
+"back": "2027-01-12",
+"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
 "status": "Injured Reserve"
 },
 "5188490": {
@@ -1153,8 +1156,8 @@
 },
 "5291935": {
 "back": "2026-11-25",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5291944": {
 "back": "2026-12-10",
@@ -1168,8 +1171,8 @@
 },
 "5509": {
 "back": "2026-11-24",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5614": {
 "back": "2026-11-27",
