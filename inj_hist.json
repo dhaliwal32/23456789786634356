@@ -277,8 +277,9 @@
 },
 "4031645": {
 "d": "2026-11-23",
-"k": "new",
-"now": "2027-03-23"
+"k": "sooner",
+"now": "2027-03-21",
+"was": "2027-03-23"
 },
 "4062251": {
 "d": "2026-11-23",
@@ -892,7 +893,7 @@
 "status": "Injured Reserve"
 },
 "4031645": {
-"back": "2027-03-23",
+"back": "2027-03-21",
 "note": "Carcone (upper body) will be out of action for 3-4 months, Catherine Bogart of the Mammoth's official site reports Monday.",
 "status": "Out"
 },
