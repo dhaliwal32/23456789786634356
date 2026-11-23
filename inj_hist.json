@@ -173,6 +173,11 @@
 "k": "new",
 "now": "2026-11-25"
 },
+"3114755": {
+"d": "2026-11-22",
+"k": "back",
+"was": "2026-12-20"
+},
 "3114770": {
 "d": "2026-11-17",
 "k": "later",
@@ -829,11 +834,6 @@
 "back": "2026-11-25",
 "note": "Ehlers (undisclosed) won't play Sunday against the Rangers, per Chip Alexander of The Raleigh News &amp; Observer.",
 "status": "Out"
-},
-"3114755": {
-"back": "2026-12-20",
-"note": "ir-nr",
-"status": "Injured Reserve"
 },
 "3114770": {
 "back": "2026-11-25",
