@@ -179,11 +179,11 @@
 "was": "Out"
 },
 "3150479": {
-"d": "2026-11-22",
-"k": "dtd",
-"nd": "2026-11-19",
-"now": "2026-11-23",
-"was": "Out"
+"d": "2026-11-23",
+"k": "later",
+"nd": "2026-11-23",
+"now": "2026-11-28",
+"was": "2026-11-23"
 },
 "3151036": {
 "d": "2026-11-16",
@@ -277,6 +277,11 @@
 "d": "2026-11-21",
 "k": "back",
 "was": "2026-11-21"
+},
+"4062251": {
+"d": "2026-11-23",
+"k": "new",
+"now": "2026-11-25"
 },
 "4064781": {
 "d": "2026-11-21",
@@ -822,9 +827,9 @@
 "status": "Day-To-Day"
 },
 "3150479": {
-"back": "2026-11-23",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-28",
+"note": "Hodgson (groin) has no timeline in place for his return to the lineup, per Bruce Garrioch of Postmedia on Nov. 14.",
+"status": "Out"
 },
 "3151036": {
 "back": "2026-12-03",
@@ -889,6 +894,11 @@
 "4024857": {
 "back": "2026-11-23",
 "note": "day-to-day",
+"status": "Day-To-Day"
+},
+"4062251": {
+"back": "2026-11-25",
+"note": "The Capitals announced Monday that Kyrou is dealing with an upper-body injury, Sammi Silber of The District Standard reports.",
 "status": "Day-To-Day"
 },
 "4063268": {
