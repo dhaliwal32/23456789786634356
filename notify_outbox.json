@@ -1173,6 +1173,18 @@
    "via": "urgent",
    "sent_at": "2026-11-24T18:32:59Z",
    "seen": "2026-11-24T18:32:59Z"
+  },
+  {
+   "k": "2026-11-24|rw258|date|3852|2026-11-28|2026-11-25",
+   "at": "2026-11-24T19:34:22Z",
+   "title": "Fantasy GM",
+   "text": "Marchand return moved to Nov 25 (was Nov 28)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T19:34:22Z",
+   "seen": "2026-11-24T19:34:22Z"
   }
  ],
  "sent": {
