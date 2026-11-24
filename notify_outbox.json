@@ -1017,6 +1017,42 @@
    "via": "urgent",
    "sent_at": "2026-11-24T00:14:10Z",
    "seen": "2026-11-24T00:29:52Z"
+  },
+  {
+   "k": "2026-11-23|06289ea31d3f",
+   "at": "2026-11-24T01:10:39Z",
+   "title": "Fantasy GM",
+   "text": "Texier left Caufield's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T01:10:39Z",
+   "seen": "2026-11-24T01:10:39Z"
+  },
+  {
+   "k": "2026-11-23|a8fafecb7ae3",
+   "at": "2026-11-24T01:10:40Z",
+   "title": "Fantasy GM",
+   "text": "Paul joined Matthews's line (TOR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T01:10:40Z",
+   "seen": "2026-11-24T01:10:40Z"
+  },
+  {
+   "k": "2026-11-23|a3431544184e",
+   "at": "2026-11-24T01:10:40Z",
+   "title": "Fantasy GM",
+   "text": "McBain joined Keller's line (UTA)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T01:10:40Z",
+   "seen": "2026-11-24T01:10:40Z"
   }
  ],
  "sent": {
