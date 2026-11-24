@@ -63,6 +63,11 @@
 "k": "new",
 "now": "2026-12-01"
 },
+"2976851": {
+"d": "2026-11-24",
+"k": "news",
+"nd": "2026-11-24"
+},
 "2993474": {
 "d": "2026-11-19",
 "k": "later",
@@ -583,6 +588,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"5161": {
+"d": "2026-11-24",
+"k": "back",
+"was": "2027-01-12"
+},
 "5173105": {
 "d": "2026-11-17",
 "k": "back",
@@ -607,9 +617,10 @@
 "was": "2026-11-17"
 },
 "5275337": {
-"d": "2026-11-18",
+"d": "2026-11-24",
 "k": "later",
-"now": "2026-11-25",
+"nd": "2026-11-24",
+"now": "2026-11-27",
 "was": "2026-11-21"
 },
 "5291935": {
@@ -715,8 +726,8 @@
 },
 "2976851": {
 "back": "2026-12-05",
-"note": "Matheson (lower body) will miss approximately 2-3 weeks, the Canadiens announced Sunday.",
-"status": "Out"
+"note": "Matheson (lower body) was placed on long-term injured reserve Tuesday, Renaud Lavoie of TVA Sports reports.",
+"status": "Injured Reserve"
 },
 "2993474": {
 "back": "2026-11-27",
@@ -1118,11 +1129,6 @@
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
 "status": "Injured Reserve"
 },
-"5161": {
-"back": "2027-01-12",
-"note": "Duchene will be out for approximately three months after undergoing surgery to repair a core injury, the team announced Monday.",
-"status": "Injured Reserve"
-},
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
@@ -1149,8 +1155,8 @@
 "status": "Injured Reserve"
 },
 "5275337": {
-"back": "2026-11-25",
-"note": "Head coach Marco Sturm announced Saturday that Hagens (back) is expected to miss multiple weeks, per Jack Studley of Boston Hockey Now.",
+"back": "2026-11-27",
+"note": "Hagens (back) is wearing a non-contact sweater ahead of Tuesday's practice, Steve Conroy of the Boston Herald reports.",
 "status": "Injured Reserve"
 },
 "5291935": {
