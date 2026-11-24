@@ -111,9 +111,10 @@
 },
 "3042019": {
 "d": "2026-11-24",
-"k": "dtd",
-"now": "2026-11-25",
-"was": "Out"
+"k": "later",
+"nd": "2026-11-24",
+"now": "2026-12-04",
+"was": "2026-11-25"
 },
 "3042037": {
 "d": "2026-11-17",
@@ -654,6 +655,7 @@
 "5509": {
 "d": "2026-11-24",
 "k": "later",
+"nd": "2026-11-24",
 "now": "2026-11-27",
 "was": "2026-11-24"
 },
@@ -763,9 +765,9 @@
 "status": "Injured Reserve"
 },
 "3042019": {
-"back": "2026-11-25",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-12-04",
+"note": "Pulock (shoulder) is expected to miss 1-2 weeks, Andrew Gross of Newsday reports Tuesday.",
+"status": "Out"
 },
 "3042037": {
 "back": "2026-12-17",
@@ -1184,8 +1186,8 @@
 },
 "5509": {
 "back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Hyman (migraine) won't play against Vegas on Tuesday, per Oilers play-by-play announcer Jack Michaels.",
+"status": "Out"
 },
 "5517": {
 "back": "2026-11-25",
