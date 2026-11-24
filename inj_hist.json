@@ -327,6 +327,11 @@
 "k": "news",
 "nd": "2026-11-19"
 },
+"4233685": {
+"d": "2026-11-23",
+"k": "new",
+"now": "2026-11-25"
+},
 "4233880": {
 "d": "2026-11-18",
 "k": "back",
@@ -940,6 +945,11 @@
 "back": "2026-12-06",
 "note": "Poehling (knee) is on the Ducks' current road trip and has resumed skating, Derek Lee of The Hockey News reports Thursday.",
 "status": "Injured Reserve"
+},
+"4233685": {
+"back": "2026-11-25",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4320548": {
 "back": "2026-11-27",
