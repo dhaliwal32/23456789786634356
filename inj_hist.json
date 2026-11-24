@@ -320,9 +320,9 @@
 },
 "4064781": {
 "d": "2026-11-24",
-"k": "dtd",
-"now": "2026-11-25",
-"was": "Out"
+"k": "later",
+"now": "2026-12-03",
+"was": "2026-11-25"
 },
 "4065019": {
 "d": "2026-11-19",
@@ -575,7 +575,7 @@
 "5080153": {
 "d": "2026-11-24",
 "k": "later",
-"now": "2026-11-28",
+"now": "2026-12-01",
 "was": "2026-11-24"
 },
 "5080155": {
@@ -969,7 +969,7 @@
 "status": "Injured Reserve"
 },
 "4064781": {
-"back": "2026-11-25",
+"back": "2026-12-03",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -1139,7 +1139,7 @@
 "status": "Injured Reserve"
 },
 "5080153": {
-"back": "2026-11-28",
+"back": "2026-12-01",
 "note": "Savoie (lower body) was shifted to long-term injured reserve Thursday.",
 "status": "Injured Reserve"
 },
