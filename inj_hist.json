@@ -349,6 +349,11 @@
 "k": "back",
 "was": "2026-11-25"
 },
+"4352803": {
+"d": "2026-11-24",
+"k": "news",
+"nd": "2026-11-24"
+},
 "4352804": {
 "d": "2026-11-20",
 "k": "sooner",
@@ -527,10 +532,10 @@
 "was": "2026-11-24"
 },
 "5080155": {
-"d": "2026-11-21",
+"d": "2026-11-24",
 "k": "later",
-"nd": "2026-11-21",
-"now": "2026-12-12",
+"nd": "2026-11-24",
+"now": "2027-03-30",
 "was": "2026-11-25"
 },
 "5080212": {
@@ -941,7 +946,7 @@
 },
 "4352803": {
 "back": "2026-11-25",
-"note": "Sandin (knee) will be with the Capitals for their two-game road trip, Tarik El-Bashir of Monumental Sports Network reports Monday.",
+"note": "Sandin (knee) has been cleared to start taking contact, Sammi Silber of The District Standard reports Tuesday.",
 "status": "Injured Reserve"
 },
 "4352804": {
@@ -1075,8 +1080,8 @@
 "status": "Injured Reserve"
 },
 "5080155": {
-"back": "2026-12-12",
-"note": "Geekie (upper body) is out indefinitely, according to Eduardo A. Encina of the Tampa Bay Times on Saturday.",
+"back": "2027-03-30",
+"note": "Geekie (shoulder) underwent surgery Monday and is expected to miss 4-5 months.",
 "status": "Injured Reserve"
 },
 "5080162": {
