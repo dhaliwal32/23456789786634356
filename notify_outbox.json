@@ -1,42 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-17|8ba61306d944",
-   "at": "2026-11-17T15:33:19Z",
-   "title": "Fantasy GM",
-   "text": "Goncalves joined Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T15:33:19Z",
-   "seen": "2026-11-17T15:33:19Z"
-  },
-  {
-   "k": "2026-11-17|c0d3b02539c1",
-   "at": "2026-11-17T15:52:12Z",
-   "title": "Fantasy GM",
-   "text": "Sorokin confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T23:58:56Z"
-  },
-  {
-   "k": "2026-11-17|dc92806a5fc3",
-   "at": "2026-11-17T15:52:12Z",
-   "title": "Fantasy GM",
-   "text": "Skinner confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T15:52:12Z",
-   "seen": "2026-11-17T23:58:56Z"
-  },
-  {
    "k": "2026-11-17|92213e7328c5",
    "at": "2026-11-17T19:37:36Z",
    "title": "Fantasy GM",
@@ -1113,6 +1077,102 @@
    "via": "urgent",
    "sent_at": "2026-11-24T15:29:50Z",
    "seen": "2026-11-24T15:29:50Z"
+  },
+  {
+   "k": "2026-11-24|db899bbb1a6c",
+   "at": "2026-11-24T18:32:55Z",
+   "title": "Fantasy GM",
+   "text": "Steel joined Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:55Z",
+   "seen": "2026-11-24T18:32:55Z"
+  },
+  {
+   "k": "2026-11-24|8b25825f6c2b",
+   "at": "2026-11-24T18:32:56Z",
+   "title": "Fantasy GM",
+   "text": "Benn left Rantanen's line (DAL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:56Z",
+   "seen": "2026-11-24T18:32:56Z"
+  },
+  {
+   "k": "2026-11-24|e8adf80fbcc3",
+   "at": "2026-11-24T18:32:56Z",
+   "title": "Fantasy GM",
+   "text": "Kapanen joined McDavid's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:56Z",
+   "seen": "2026-11-24T18:32:56Z"
+  },
+  {
+   "k": "2026-11-24|c29760086c3b",
+   "at": "2026-11-24T18:32:57Z",
+   "title": "Fantasy GM",
+   "text": "Joseph joined Draisaitl's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:57Z",
+   "seen": "2026-11-24T18:32:57Z"
+  },
+  {
+   "k": "2026-11-24|c8c982044847",
+   "at": "2026-11-24T18:32:57Z",
+   "title": "Fantasy GM",
+   "text": "Marchand back in the FLA lineup",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:57Z",
+   "seen": "2026-11-24T18:32:57Z"
+  },
+  {
+   "k": "2026-11-24|4cf66e8037a6",
+   "at": "2026-11-24T18:32:58Z",
+   "title": "Fantasy GM",
+   "text": "Cirelli joined Hagel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:58Z",
+   "seen": "2026-11-24T18:32:58Z"
+  },
+  {
+   "k": "2026-11-24|8188c67924d6",
+   "at": "2026-11-24T18:32:59Z",
+   "title": "Fantasy GM",
+   "text": "Holmberg joined Guentzel's line (TB)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:59Z",
+   "seen": "2026-11-24T18:32:59Z"
+  },
+  {
+   "k": "2026-11-24|ce20003af00c",
+   "at": "2026-11-24T18:32:59Z",
+   "title": "Fantasy GM",
+   "text": "Protas joined Tuch's line (WSH)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-24T18:32:59Z",
+   "seen": "2026-11-24T18:32:59Z"
   }
  ],
  "sent": {
