@@ -233,6 +233,11 @@
 "k": "back",
 "was": "2026-11-25"
 },
+"3904175": {
+"d": "2026-11-24",
+"k": "new",
+"now": "2026-11-25"
+},
 "3904178": {
 "d": "2026-11-17",
 "k": "back",
@@ -430,6 +435,7 @@
 "4565246": {
 "d": "2026-11-24",
 "k": "later",
+"nd": "2026-11-24",
 "now": "2026-11-27",
 "was": "2026-11-25"
 },
@@ -910,6 +916,11 @@
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
+"3904175": {
+"back": "2026-11-25",
+"note": "day-to-day",
+"status": "Day-To-Day"
+},
 "3939716": {
 "back": "2026-12-01",
 "note": "Capobianco (leg) was moved to long-term injured reserve Saturday.",
@@ -1022,8 +1033,8 @@
 },
 "4565246": {
 "back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "McMichael (lower body) isn't expected to play against the Islanders on Wednesday, according to Lou Korac of NHL.com.",
+"status": "Out"
 },
 "4565275": {
 "back": "2026-12-05",
