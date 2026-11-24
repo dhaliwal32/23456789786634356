@@ -428,10 +428,10 @@
 "was": "2026-11-02"
 },
 "4565246": {
-"d": "2026-11-23",
-"k": "dtd",
-"now": "2026-11-25",
-"was": "Out"
+"d": "2026-11-24",
+"k": "later",
+"now": "2026-11-27",
+"was": "2026-11-25"
 },
 "4565259": {
 "d": "2026-11-18",
@@ -544,7 +544,7 @@
 "5052": {
 "d": "2026-11-23",
 "k": "dtd",
-"nd": "2026-11-21",
+"nd": "2026-11-24",
 "now": "2026-11-25",
 "was": "Out"
 },
@@ -1021,7 +1021,7 @@
 "status": "Injured Reserve"
 },
 "4565246": {
-"back": "2026-11-25",
+"back": "2026-11-27",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
@@ -1107,7 +1107,7 @@
 },
 "5052": {
 "back": "2026-11-25",
-"note": "day-to-day",
+"note": "Myers (upper body) has a chance to return in Wednesday's home clash against the Predators, per Robert Tiffin of NHL.com.",
 "status": "Day-To-Day"
 },
 "5075840": {
