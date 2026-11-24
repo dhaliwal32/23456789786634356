@@ -104,6 +104,12 @@
 "now": "2026-11-25",
 "was": "Out"
 },
+"3042014": {
+"d": "2026-11-24",
+"k": "later",
+"now": "2027-04-10",
+"was": "2027-01-30"
+},
 "3042017": {
 "d": "2026-11-17",
 "k": "back",
@@ -461,10 +467,10 @@
 "was": ""
 },
 "4587588": {
-"d": "2026-11-22",
+"d": "2026-11-24",
 "k": "later",
 "nd": "2026-11-24",
-"now": "2026-11-25",
+"now": "2026-11-27",
 "was": "2026-11-22"
 },
 "4587904": {
@@ -797,7 +803,7 @@
 "status": "Day-To-Day"
 },
 "3042014": {
-"back": "2027-01-30",
+"back": "2027-04-10",
 "note": "Domi (back) was transferred from the non-roster list to long-term injured reserve Wednesday, per PuckPedia.",
 "status": "Injured Reserve"
 },
@@ -1042,7 +1048,7 @@
 "status": "Injured Reserve"
 },
 "4587588": {
-"back": "2026-11-25",
+"back": "2026-11-27",
 "note": "Dorofeyev (lower body) will join the Rangers for their two-game road trip, Mollie Walker of the New York Post reports Tuesday.",
 "status": "Injured Reserve"
 },
