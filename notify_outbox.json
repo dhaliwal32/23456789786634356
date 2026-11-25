@@ -7,8 +7,10 @@
    "text": "Bertuzzi joined CHI PP1",
    "section": "mine",
    "urgent": true,
-   "sent": false,
-   "seen": "2026-11-18T13:27:06Z"
+   "sent": true,
+   "seen": "2026-11-18T13:27:06Z",
+   "via": "expired325",
+   "sent_at": "2026-11-25T05:27:43Z"
   },
   {
    "k": "2026-11-18|3b430999b040",
