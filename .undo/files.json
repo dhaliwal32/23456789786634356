@@ -1,8 +1,13 @@
 {
  "files": {
-  "gm_autopilot.py": true
+  "gm_autopilot.py": true,
+  "gm_notify.py": true,
+  "gm_lines.py": true,
+  "gm_push.py": true,
+  "gm_edge.py": true,
+  "gm_live.py": true
  },
  "changes": [
-  "324-autopilot-fill-empty.py"
+  "325-alerts-lineup-fixes.py"
  ]
 }

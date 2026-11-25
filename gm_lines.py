@@ -47,8 +47,8 @@ ET = ZoneInfo("America/New_York")
 PT = ZoneInfo("America/Vancouver")
 
 MY_TEAM_ID = 4
-READ_EVERY_H = 2           # re-read lines + rosters this often...
-READ_EVERY_H_PREGAME = 1   # ...and every hour from 2 PM to 7 PM (lineups get posted)
+READ_EVERY_H = 0.5         # re-read lines + rosters this often... (change 325: was 2 hours, alerts came late and in bunches)
+READ_EVERY_H_PREGAME = 0.25  # ...and every 15 minutes from 2 PM to 7 PM (lineups get posted) (change 325: was 1 hour)
 KEEP_CHANGES = 400
 KEEP_DAYS = 21
 FA_MIN_OWN = 3.0           # free agents must be this % rostered (or ESPN proj 5+) to trigger an alert

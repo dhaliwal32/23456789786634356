@@ -313,6 +313,9 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         if not future and cur_sp and abs(int(cur_sp) - int(sp)) > 1:
             print(f"(autopilot) {day}: ESPN says today is day {cur_sp} but the app worked out day {sp}, so nothing was changed")
             continue
+        # change 325: after midnight Eastern the app is on tomorrow but ESPN stays on today until about 1 AM Pacific;
+        # ESPN only takes that day as an upcoming-day change (it refused every "today" change in that window)
+        ahead325 = (not future) and bool(cur_sp) and int(sp) > int(cur_sp)
         team = next((t for t in r.json().get("teams", []) if t.get("id") == my_team_id), None)
         entries = (team or {}).get("roster", {}).get("entries", [])
         if len(entries) < 15:
@@ -324,7 +327,7 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             pl = pe.get("player") or {}
             base = byid.get(en.get("playerId"))
             if base:
-                roster.append({**base, "slot": en.get("lineupSlotId"), "locked": (not future) and bool(pe.get("lineupLocked")),
+                roster.append({**base, "slot": en.get("lineupSlotId"), "locked": (not future) and not ahead325 and bool(pe.get("lineupLocked")),
                                "elig": pl.get("eligibleSlots") or []})
         moves, before, after = plan(roster, day, games, E, c)
         gain = round(after - before, 1)
@@ -334,8 +337,9 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         if not moves or (gain < min_gain and fills <= 0):
             print(f"(autopilot) {day}: lineup is already the best (projected {before})")
             continue
-        found.append({"day": day, "sp": sp, "future": future, "moves": moves, "before": before, "after": after, "gain": gain, "text": describe(moves)})
+        found.append({"day": day, "sp": sp, "future": future, "post325": future or ahead325, "moves": moves, "before": before, "after": after, "gain": gain, "text": describe(moves)})
     if not found:
+        _held325(st)  # change 325: send what was held overnight
         save_log(b)
         return
     try:
@@ -359,7 +363,7 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             lines.append(f"{dname(f['day'])}: {f['text']} +{f['gain']}")
             print(f"(autopilot) test {f['day']}: would {f['text']} (+{f['gain']})")
             continue
-        ok, msg = _post(session, url, my_team_id, swid, f["sp"], f["future"], f["moves"])
+        ok, msg = _post(session, url, my_team_id, swid, f["sp"], f.get("post325", f["future"]), f["moves"])  # change 325
         entry["result"] = "done" if ok else "failed: " + str(msg)[:200]
         b["entries"].append(entry)
         if ok:
@@ -376,8 +380,36 @@ def run(session, league_url, my_team_id, swid, season, league_id):
                 st["notes"] += 1
                 note("Autopilot test", f"Would change your lineup ({stamp}):\n" + "\n".join(lines) + "\nNothing was changed on ESPN.")
         else:
-            note("Fantasy GM", f"Autopilot set your lineup ({stamp}):\n" + "\n".join(lines))
+            _note325(st, note, f"Autopilot set your lineup ({stamp}):\n" + "\n".join(lines))
     if fails and not st.get("failed"):
         st["failed"] = 1
-        note("Fantasy GM", "Autopilot could not change your lineup. " + "\n".join(fails) + ". Set it by hand on ESPN.", "high")
+        _note325(st, note, "Autopilot could not change your lineup. " + "\n".join(fails) + ". Set it by hand on ESPN.", "high")
+    _held325(st)
     save_log(b)
+
+
+# ---------- change 325: no autopilot buzz 11 PM - 7 AM Pacific; what it did overnight comes as one alert at 7 AM ----------
+def _quiet325():
+    h = datetime.now(PT).hour
+    return h >= 23 or h < 7
+
+
+def _note325(st, note, text, prio="default"):
+    if _quiet325():
+        st["held325"] = (st.get("held325") or [])[-5:] + [text]
+        print("(autopilot) quiet hours - alert held for 7 AM")
+        return
+    _held325(st)  # what was held overnight goes first
+    note("Fantasy GM", text, prio)
+
+
+def _held325(st):
+    held = st.get("held325") or []
+    if not held or _quiet325():
+        return
+    try:
+        import gm_notify
+        if gm_notify.push("Fantasy GM", "Overnight: " + "\n".join(held), "default"):
+            st.pop("held325", None)
+    except Exception as ex:
+        print(f"(autopilot) overnight alert not sent: {ex}")

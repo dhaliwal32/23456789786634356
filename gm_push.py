@@ -121,7 +121,7 @@ def send(title, text, url="#matchup"):
         if not key or not subs:
             return 0
         data = json.dumps({"title": str(title), "body": str(text), "url": url}).encode("utf-8")
-        ok = 0
+        ok, dead325 = 0, []
         for x in subs:
             try:
                 r = requests.post(x["endpoint"], data=encrypt(data, x["p256dh"], x["auth"]), timeout=20, headers={
@@ -131,13 +131,35 @@ def send(title, text, url="#matchup"):
                     ok += 1
                 else:
                     print(f"(push) a device refused the alert ({r.status_code}): {r.text[:120]}")
+                    if r.status_code in (404, 410):
+                        dead325.append(x["endpoint"])
             except Exception as ex:
                 print(f"(push) could not reach a device: {ex}")
         print(f"(push) app alert sent to {ok} of {len(subs)} device(s)")
+        if dead325:
+            _drop325(dead325)
         return ok
     except Exception as ex:
         print(f"(push) off: {ex}")
         return 0
+
+
+def _drop325(dead):
+    """change 325: a phone sign-up Apple says no longer exists is removed (only the sync saves this file)"""
+    if os.environ.get("GITHUB_WORKFLOW") != "Fantasy sync":
+        return
+    try:
+        with open(SUBS, encoding="utf-8") as f:
+            d = json.load(f)
+        keep = [x for x in d.get("subs", []) if x.get("endpoint") not in set(dead)]
+        if len(keep) < len(d.get("subs", [])):
+            d["subs"] = keep
+            with open(SUBS, "w", encoding="utf-8") as f:
+                json.dump(d, f, indent=1)
+                f.write("\n")
+            print(f"(push) removed {len(dead)} device(s) that no longer exist")
+    except Exception as ex:
+        print(f"(push) could not remove old devices: {ex}")
 
 
 if __name__ == "__main__":

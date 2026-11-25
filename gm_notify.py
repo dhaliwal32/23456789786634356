@@ -450,6 +450,32 @@ def add(key, title, text, section="other", urgent=False, tags=""):
 
 def flush(now=None):
     print("(notify) summaries are off")
+    try:
+        _morning325(now)
+    except Exception as ex:
+        print(f"(notify) WARNING overnight alerts: {ex}")
+
+
+def _morning325(now=None):
+    """change 325: alerts found 11 PM - 7 AM were held for a summary, but summaries are off, so they were never sent.
+    Now the ones from the last 10 hours go out after 7 AM (newest 5); older ones are dropped."""
+    now = now or datetime.now(UTC)
+    if quiet(now):
+        return
+    box = _load()
+    held = [i for i in box["items"] if not i.get("sent") and i.get("urgent") and i.get("title") == ONLY_TITLE]
+    if not held:
+        return
+    cut = now - timedelta(hours=10)
+    fresh = [i for i in held if (_parse(i.get("at", "")) or now) >= cut]
+    for i in held:
+        if i not in fresh[-5:]:
+            i.update(sent=True, via="expired325", sent_at=_iso(now))
+    for i in fresh[-5:]:
+        if push(ONLY_TITLE, i["text"], "high"):
+            i.update(sent=True, via="morning325", sent_at=_iso(now))
+    _save(box)
+    print(f"(notify) {len(fresh[-5:])} overnight alert(s) sent, {len(held) - len(fresh[-5:])} too old")
 
 
 if __name__ == "__main__":

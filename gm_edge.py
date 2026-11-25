@@ -134,7 +134,7 @@ def run():
         except Exception:
             pass
     for f in glob.glob(os.path.join(DIR, "*-*.json")):
-        if os.path.basename(f).startswith("onice"):  # change 301: written by gm_live.py / gm_onice.py, not a replay
+        if os.path.basename(f).startswith(("onice", "alert-times")):  # change 301: written by gm_live.py / gm_onice.py, not a replay (change 325: alert-times too)
             continue
         if os.path.basename(f)[:-5] not in G:
             os.remove(f)

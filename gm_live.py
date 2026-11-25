@@ -132,6 +132,7 @@ def main():
         if not live:
             if nxt is None:  # change 312: stay on between games (GitHub's schedule can start it hours late); stop after the last one
                 log("no game live and none left today - stopping")
+                push_onice()  # change 325: save the last alerts sent, so a restart never sends them again
                 return
             time.sleep(min(300, max(30, (nxt - 2) * 60)))
             continue
@@ -163,6 +164,12 @@ def main():
         push_onice()  # change 205
         alerts322(sc[2] if sc else None)  # change 322: goal alerts run on their own track (every 2 s), never held up by the steps above
         time.sleep(20)
+    push_onice()  # change 325: out of time (GitHub allows 6 hours): save, and ask live-alerts.yml to start the next watcher now
+    try:
+        open(os.path.join(HERE, ".gx-restart325"), "w").write("1")
+    except Exception:
+        pass
+    log("out of time - asking for the next watcher")
 
 
 # ---------- change 302: a phone alert for every goal and assist by your opponent's players ----------
