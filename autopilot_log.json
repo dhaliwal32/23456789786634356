@@ -1,39 +1,6 @@
 {
  "entries": [
   {
-   "at": "2026-11-20T23:07:30-07:00",
-   "day": "2026-11-21",
-   "mode": "on",
-   "text": "Start Arvidsson; bench Michkov.",
-   "gain": 1.4,
-   "before": 123.7,
-   "after": 125.1,
-   "moves": [
-    {
-     "id": 3120307,
-     "n": "Viktor Arvidsson",
-     "from": 7,
-     "to": 3,
-     "why": ""
-    },
-    {
-     "id": 3942905,
-     "n": "Troy Terry",
-     "from": 3,
-     "to": 6,
-     "why": ""
-    },
-    {
-     "id": 5149170,
-     "n": "Matvei Michkov",
-     "from": 6,
-     "to": 7,
-     "why": ""
-    }
-   ],
-   "result": "failed: Transaction type can only be executed in the current scoring period"
-  },
-  {
    "at": "2026-11-20T23:11:32-07:00",
    "day": "2026-11-21",
    "mode": "on",
@@ -3505,6 +3472,32 @@
     }
    ],
    "result": "done"
+  },
+  {
+   "at": "2026-11-25T00:33:06-07:00",
+   "day": "2026-11-25",
+   "mode": "on",
+   "text": "Your swap: Start Michkov; bench Gritsyuk.",
+   "gain": -1.6,
+   "before": 127.9,
+   "after": 126.3,
+   "moves": [
+    {
+     "id": 4915855,
+     "n": "Arseny Gritsyuk",
+     "from": 3,
+     "to": 7,
+     "why": ""
+    },
+    {
+     "id": 5149170,
+     "n": "Matvei Michkov",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    }
+   ],
+   "result": "done"
   }
  ],
  "state": {
@@ -3512,6 +3505,9 @@
   "notes": 0,
   "sent": [],
   "planned": {},
-  "failed": 1
+  "failed": 1,
+  "held325": [
+   "Autopilot set your lineup (12:33 AM):\ntoday: Your swap: Start Michkov; bench Gritsyuk. -1.6"
+  ]
  }
 }
