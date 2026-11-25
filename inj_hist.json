@@ -52,7 +52,7 @@
 "2976850": {
 "d": "2026-11-25",
 "k": "later",
-"now": "2026-11-27",
+"now": "2026-12-01",
 "was": "2026-11-25"
 },
 "2976851": {
@@ -81,11 +81,9 @@
 "was": "2026-11-14"
 },
 "3041970": {
-"d": "2026-11-22",
-"k": "sooner",
-"nd": "2026-11-21",
-"now": "2026-11-25",
-"was": "2026-11-27"
+"d": "2026-11-25",
+"k": "back",
+"was": "2026-11-25"
 },
 "3041996": {
 "d": "2026-11-24",
@@ -183,11 +181,9 @@
 "was": "2026-12-01"
 },
 "3852": {
-"d": "2026-11-24",
-"k": "later",
-"nd": "2026-11-21",
-"now": "2026-11-25",
-"was": "2026-11-21"
+"d": "2026-11-25",
+"k": "back",
+"was": ""
 },
 "3891922": {
 "d": "2026-11-23",
@@ -710,7 +706,7 @@
 "status": "Out"
 },
 "2976850": {
-"back": "2026-11-27",
+"back": "2026-12-01",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -733,11 +729,6 @@
 "back": "2027-02-13",
 "note": "MacKinnon (lower body) has been evaluated by a specialist and is expected to miss the next 12 weeks, Aarif Deen of Colorado Hockey Now reports Saturday.",
 "status": "Out"
-},
-"3041970": {
-"back": "2026-11-25",
-"note": "Barkov (knee) won't play against Buffalo on Saturday, but he could return within Florida's next three games, Jameson Olive of the Panthers' official site report",
-"status": "Injured Reserve"
 },
 "3041996": {
 "back": "2026-11-25",
@@ -847,11 +838,6 @@
 "3648015": {
 "back": "2026-11-28",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
-"status": "Injured Reserve"
-},
-"3852": {
-"back": "",
-"note": "Marchand (knee) is close to returning to the lineup, but he won't play against Buffalo on Saturday, per Jameson Olive of the Panthers' official site.",
 "status": "Injured Reserve"
 },
 "3891922": {
