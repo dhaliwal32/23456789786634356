@@ -1,20 +1,6 @@
 {
  "subs": [
   {
-   "endpoint": "https://web.push.apple.com/QBMMu8jgPeRrfC1ri2UynQIIqCm629UFkHxnCDFjOv_o64ACMHlS_ks1VmuwSwWt-U9OKkCFnDk-6uYfe2czCLHk9xkMpEtNEzCvhKH9sGPIiDw_jbvPoKVDOB_hYNFNvQtyPa2lEfDADyNM9bRGtDZm0ffc5JxzFxYfRIY4-O4",
-   "p256dh": "BLoisEMcyEnRF4pOyHEsEJvdWmILlU_JlzxnGzKdV6gRQ1Z_G6scJIyyU5KGgaG9WmpywSQjHc-0yFCXq3_V8Fo",
-   "auth": "ZPCwMCSdKHkEzs4qQSpV4Q",
-   "name": "iPhone",
-   "at": "2026-11-16T04:05:47.286Z"
-  },
-  {
-   "endpoint": "https://web.push.apple.com/QDU67wWIzNwtJ6ruYPoUfp1EqX-Tur8DQQTplebt1JhYWReQdbhGHgiTWMR4cjL_3spmiSbzDewjMV5G5VgIECsbnVv7os9xYDpmIgJnvXVRbPQLOeGKQCSyksxzEy5WwsiKw3EQjw5G70U9tOekRGPpYfLlev9CCWiSEBqjKpw",
-   "p256dh": "BCPe4H3shgIaQyGmlY1nqLR8KTKYWtacgNEWVCPj_exn1w5St9rdsuzF80bNYaMuqWk-AtpTFnM_NN8Q9R2eEs8",
-   "auth": "Zt3nBCKZ0dJ71Xd5pgXF3A",
-   "name": "iPhone",
-   "at": "2026-11-18T00:20:30.064Z"
-  },
-  {
    "endpoint": "https://web.push.apple.com/QI4hLmoFTWMmqRW3OQf4_2T5l0KgSqJino-rp5zX1K6H44tjxkua13itN994_Pb-JeYxQGzQGdGBTrhnqV16t7o0GunluUp0A-3h3tz-Q-LO2dIeuHaj1qRzlgIu_bfy9eAYfobhVOdY4XHGMqPF2xhmu27MOY5YsJHGdJ3-C_Q",
    "p256dh": "BGn8ugyTM9LwnzZTKfWG33v3L8lmVSG5Po5BF5iIbFEQnaOwoSrWZFObOMDorwJvvQCaAfJHjerP4jS72D4uEn0",
    "auth": "OkW9wQgbwig7-Wce_doNIw",
