@@ -28,7 +28,7 @@ jobs:
               if [ "$busy" = "0" ]; then gh workflow run live-alerts.yml --ref main && echo "started the goal alerts watcher" || true; fi
             fi
             # overnight (about 1 AM to 8 AM Pacific) nothing changes in the league: sync every 30 minutes instead of 10
-            if [ $h -ge 9 ] && [ $h -lt 16 ]; then sleep 1800; else sleep 600; fi
+            if [ $h -ge 9 ] && [ $h -lt 14 ]; then sleep 1800; else sleep 600; fi  # change 325: every 10 min from 7 AM Pacific (was 9 AM)
           done
       - name: Start the next timer
         if: always()

@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: live-alerts
   cancel-in-progress: false
@@ -15,6 +16,8 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main  # change 325: newest files, not the ones from when this run was queued (that re-sent old goal alerts)
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,3 +29,10 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
           if [ -f gm_live.py ]; then python gm_live.py; else echo "gm_live.py not installed yet"; fi
+      - name: Start the next watcher right away if this one ran out of time (change 325)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [ -f .gx-restart325 ]; then gh workflow run live-alerts.yml --ref main && echo "started the next watcher"; fi

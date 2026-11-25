@@ -61,7 +61,7 @@ jobs:
               fi
             fi
             h=$((10#$(date -u +%H)))
-            if [ $h -ge 7 ] && [ $h -lt 16 ]; then break; fi
+            if [ $h -ge 7 ] && [ $h -lt 14 ]; then break; fi  # change 325: fast syncs from 7 AM Pacific (was 9 AM)
             if [ $(( $(date +%s) - start )) -gt 3000 ]; then break; fi
             left=$(( 360 - ($(date +%s) - t0) ))
             if [ $left -gt 0 ]; then sleep $left; fi
