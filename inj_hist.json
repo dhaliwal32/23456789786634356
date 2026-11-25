@@ -302,9 +302,11 @@
 "was": "2026-11-25"
 },
 "4233668": {
-"d": "2026-11-19",
-"k": "news",
-"nd": "2026-11-19"
+"d": "2026-11-25",
+"k": "sooner",
+"nd": "2026-11-25",
+"now": "2026-11-27",
+"was": "2026-12-06"
 },
 "4233685": {
 "d": "2026-11-25",
@@ -601,6 +603,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"5216858": {
+"d": "2026-11-25",
+"k": "news",
+"nd": "2026-11-25"
+},
 "5216860": {
 "d": "2026-11-23",
 "k": "later",
@@ -894,8 +901,8 @@
 "status": "Out"
 },
 "4233668": {
-"back": "2026-12-06",
-"note": "Poehling (knee) is on the Ducks' current road trip and has resumed skating, Derek Lee of The Hockey News reports Thursday.",
+"back": "2026-11-27",
+"note": "Poehling (knee) is expected back in the short term, with head coach Joel Quenneville telling reporters, \"He's close. Would love to see him in by the weekend. We",
 "status": "Injured Reserve"
 },
 "4233685": {
@@ -1135,7 +1142,7 @@
 },
 "5216858": {
 "back": "2026-11-27",
-"note": "Sennecke (upper body) was placed on injured reserve Saturday.",
+"note": "Sennecke (upper body) is now considered day-to-day, Zach Cavanagh of The Sporting Tribune reports Wednesday.",
 "status": "Injured Reserve"
 },
 "5216860": {
