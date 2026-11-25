@@ -309,7 +309,7 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             continue
         r = session.get(league_url, params=[("view", "mRoster"), ("forTeamId", my_team_id), ("scoringPeriodId", sp)], timeout=30)
         r.raise_for_status()
-        cur_sp = r.json().get("scoringPeriodId")
+        cur_sp = _espn_day326(session, league_url) or r.json().get("scoringPeriodId")  # change 326: ESPN's real day
         if not future and cur_sp and abs(int(cur_sp) - int(sp)) > 1:
             print(f"(autopilot) {day}: ESPN says today is day {cur_sp} but the app worked out day {sp}, so nothing was changed")
             continue
@@ -386,6 +386,21 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         _note325(st, note, "Autopilot could not change your lineup. " + "\n".join(fails) + ". Set it by hand on ESPN.", "high")
     _held325(st)
     save_log(b)
+
+
+# ---------- change 326: the day ESPN is on right now (a roster read for a day only repeats that day back) ----------
+_day326 = {}
+
+
+def _espn_day326(session, league_url):
+    if "v" not in _day326:
+        try:
+            js = session.get(league_url, params=[("view", "mStatus")], timeout=30).json()
+            _day326["v"] = js.get("scoringPeriodId") or (js.get("status") or {}).get("latestScoringPeriod")
+        except Exception as ex:
+            print(f"(autopilot) could not read ESPN's current day: {ex}")
+            _day326["v"] = None
+    return _day326["v"]
 
 
 # ---------- change 325: no autopilot buzz 11 PM - 7 AM Pacific; what it did overnight comes as one alert at 7 AM ----------

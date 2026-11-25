@@ -156,6 +156,31 @@ def plan(roster, day, games, E, c):
                     cap[r["slot"]] -= 1
     left = [r for r in free if r["id"] not in want]
 
+    # change 327: swaps Kuvar made in the app for this day: the player he put in starts, the one he sat stays on the bench
+    forced327 = set()
+    home327 = {"F": SLOT_F, "D": SLOT_D, "G": SLOT_G}
+    for pin, pout in c.get("holds327") or []:
+        a = next((r for r in left if str(r["id"]) == pin and r["id"] not in want), None)
+        o = next((r for r in roster if str(r["id"]) == pout), None)
+        if not a or not o or a["p"] not in home327 or (o["locked"] and o["slot"] in ACTIVE):
+            continue  # one of the two is locked (game started) or not on the team any more
+        if o in left and o["id"] not in want:
+            want[o["id"]] = SLOT_BENCH
+            forced327.add(o["id"])
+        if a["slot"] in ACTIVE:
+            slot = a["slot"]
+        elif o["slot"] in (home327[a["p"]], SLOT_U) and (a["p"] != "G") == (o["slot"] != SLOT_G) and (o["slot"] != SLOT_U or not a["elig"] or SLOT_U in a["elig"]):
+            slot = o["slot"]
+        else:
+            slot = home327[a["p"]]
+        if cap[slot] <= 0 and a["p"] != "G" and (not a["elig"] or SLOT_U in a["elig"]) and cap[SLOT_U] > 0:
+            slot = SLOT_U
+        if cap[slot] <= 0:
+            continue
+        want[a["id"]] = slot
+        cap[slot] -= 1
+        forced327.add(a["id"])
+
     def take(pos, slot):
         pool = sorted([r for r in left if r["p"] == pos and r["v"] > 0 and r["id"] not in want], key=sc, reverse=True)
         for r in pool[:max(0, cap[slot])]:
@@ -171,7 +196,7 @@ def plan(roster, day, games, E, c):
     # change 324: players with a game start first (above); any starting spot still open gets a player with no game
     # today instead of staying empty. A player already in that spot stays put, healthy players before injured ones.
     def fill324(slot, ok):
-        room = cap[slot] - sum(1 for r in left if want.get(r["id"]) == slot)
+        room = cap[slot] - sum(1 for r in left if want.get(r["id"]) == slot and r["id"] not in forced327)  # change 327: swaps already took their spot from cap
         if room <= 0:
             return
         pool = sorted([r for r in left if r["id"] not in want and ok(r)],
@@ -292,13 +317,15 @@ def run(session, league_url, my_team_id, swid, season, league_id):
     min_gain = float(c.get("min_gain", 0.5))
     stamp = datetime.now(PT).strftime("%-I:%M %p")
     found = []
+    holds327 = _holds327(today)  # change 327: swaps saved in the app, by day
+    n_ahead = max(n_ahead, min(14, max(((datetime.fromisoformat(d).date() - today).days for d in holds327), default=0)))
     for k in range(n_ahead + 1):
         dd = today + timedelta(days=k)
         day = dd.isoformat()
         future = k > 0
         if future:
             last = _when(planned.get(day))
-            if last and not (redo and redo > last):
+            if last and not (redo and redo > last) and day not in holds327:  # change 327: a day with a swap is always checked
                 continue          # already set: only the day itself or a redo changes it again
         sp = _sp_for(E, dd)
         games = (G.get("games") or {}).get(day) or {}
@@ -329,15 +356,17 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             if base:
                 roster.append({**base, "slot": en.get("lineupSlotId"), "locked": (not future) and not ahead325 and bool(pe.get("lineupLocked")),
                                "elig": pl.get("eligibleSlots") or []})
-        moves, before, after = plan(roster, day, games, E, c)
+        moves, before, after = plan(roster, day, games, E, {**c, "holds327": holds327.get(day, [])})  # change 327
+        held327 = {x for pr in holds327.get(day, []) for x in pr}
         gain = round(after - before, 1)
         if future:
             planned[day] = datetime.now(PT).isoformat(timespec="seconds")
         fills = sum(m["to"] in ACTIVE for m in moves) - sum(m["from"] in ACTIVE for m in moves)  # change 324: empty spots filled
-        if not moves or (gain < min_gain and fills <= 0):
+        swap327 = any(str(m["r"]["id"]) in held327 for m in moves)  # change 327: a swap from the app is made even if it adds no points
+        if not moves or (gain < min_gain and fills <= 0 and not swap327):
             print(f"(autopilot) {day}: lineup is already the best (projected {before})")
             continue
-        found.append({"day": day, "sp": sp, "future": future, "post325": future or ahead325, "moves": moves, "before": before, "after": after, "gain": gain, "text": describe(moves)})
+        found.append({"day": day, "sp": sp, "future": future, "post325": future or ahead325, "moves": moves, "before": before, "after": after, "gain": gain, "text": ("Your swap: " if swap327 else "") + describe(moves)})
     if not found:
         _held325(st)  # change 325: send what was held overnight
         save_log(b)
@@ -347,7 +376,8 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         note = gm_notify.push
     except Exception:
         note = lambda *a, **k: False
-    dname = lambda d: "today" if d == today.isoformat() else datetime.fromisoformat(d).strftime("%a %b %-d")
+    pt327 = datetime.now(PT).date()  # change 327: named by the Pacific day, so a late-night change for tomorrow says "tomorrow"
+    dname = lambda d: "today" if d == pt327.isoformat() else "tomorrow" if d == (pt327 + timedelta(days=1)).isoformat() else datetime.fromisoformat(d).strftime("%a %b %-d")
     lines, fails = [], []
     for f in found:
         entry = {"at": datetime.now(PT).isoformat(timespec="seconds"), "day": f["day"], "mode": c["mode"], "text": f["text"],
@@ -360,14 +390,14 @@ def run(session, league_url, my_team_id, swid, season, league_id):
             st["sent"].append(sig)
             entry["result"] = "test only"
             b["entries"].append(entry)
-            lines.append(f"{dname(f['day'])}: {f['text']} +{f['gain']}")
+            lines.append(f"{dname(f['day'])}: {f['text']} {f['gain']:+}")  # change 327: -2.0, not +-2.0
             print(f"(autopilot) test {f['day']}: would {f['text']} (+{f['gain']})")
             continue
         ok, msg = _post(session, url, my_team_id, swid, f["sp"], f.get("post325", f["future"]), f["moves"])  # change 325
         entry["result"] = "done" if ok else "failed: " + str(msg)[:200]
         b["entries"].append(entry)
         if ok:
-            lines.append(f"{dname(f['day'])}: {f['text']} +{f['gain']}")
+            lines.append(f"{dname(f['day'])}: {f['text']} {f['gain']:+}")  # change 327: -2.0, not +-2.0
             print(f"(autopilot) changed {f['day']}: {f['text']} (+{f['gain']})")
         else:
             fails.append(f"{dname(f['day'])}: ESPN said {msg}")
@@ -386,6 +416,22 @@ def run(session, league_url, my_team_id, swid, season, league_id):
         _note325(st, note, "Autopilot could not change your lineup. " + "\n".join(fails) + ". Set it by hand on ESPN.", "high")
     _held325(st)
     save_log(b)
+
+
+# ---------- change 327: swaps saved from the app (lineup_holds.json, written by the app only) ----------
+def _holds327(today):
+    """{day: [(player in, player out), ...]} for today and later, ESPN ids as text"""
+    try:
+        with open(os.path.join(HERE, "lineup_holds.json"), encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception:
+        return {}
+    out = {}
+    for h in (d or {}).get("holds") or []:
+        day = str(h.get("day") or "")
+        if day >= today.isoformat() and h.get("in") and h.get("out"):
+            out.setdefault(day, []).append((str(h["in"]).lstrip("e"), str(h["out"]).lstrip("e")))
+    return out
 
 
 # ---------- change 326: the day ESPN is on right now (a roster read for a day only repeats that day back) ----------

@@ -1,8 +1,9 @@
 {
  "files": {
+  "fantasy-gm.html": true,
   "gm_autopilot.py": true
  },
  "changes": [
-  "326-autopilot-espn-day.py"
+  "327-swap-players.py"
  ]
 }
