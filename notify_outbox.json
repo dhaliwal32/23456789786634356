@@ -1,150 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-17|92213e7328c5",
-   "at": "2026-11-17T19:37:36Z",
-   "title": "Fantasy GM",
-   "text": "Gritsyuk joined NJ PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T19:37:36Z",
-   "seen": "2026-11-17T19:37:36Z"
-  },
-  {
-   "k": "2026-11-17|41d63419165f",
-   "at": "2026-11-17T19:37:37Z",
-   "title": "Fantasy GM",
-   "text": "Marchessault joined NSH PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T19:37:37Z",
-   "seen": "2026-11-17T19:37:37Z"
-  },
-  {
-   "k": "2026-11-17|5f2dadb3b017",
-   "at": "2026-11-17T19:37:37Z",
-   "title": "Fantasy GM",
-   "text": "Wennberg joined SJ PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T19:37:37Z",
-   "seen": "2026-11-17T19:37:37Z"
-  },
-  {
-   "k": "2026-11-17|cdace350778f",
-   "at": "2026-11-17T19:37:37Z",
-   "title": "Fantasy GM",
-   "text": "Howden joined Eichel's line (VGK)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T19:37:37Z",
-   "seen": "2026-11-17T19:37:37Z"
-  },
-  {
-   "k": "2026-11-17|08d35e7f3070",
-   "at": "2026-11-17T19:37:38Z",
-   "title": "Fantasy GM",
-   "text": "Connelly left Eichel's line (VGK)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-17T19:37:38Z",
-   "seen": "2026-11-17T19:37:38Z"
-  },
-  {
-   "k": "2026-11-17|d801b06dfda7",
-   "at": "2026-11-18T00:11:12Z",
-   "title": "Fantasy GM",
-   "text": "Lundell left Tkachuk's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:12Z",
-   "seen": "2026-11-18T00:11:12Z"
-  },
-  {
-   "k": "2026-11-17|f05ad73d68aa",
-   "at": "2026-11-18T00:11:12Z",
-   "title": "Fantasy GM",
-   "text": "Luostarinen joined Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:12Z",
-   "seen": "2026-11-18T00:11:12Z"
-  },
-  {
-   "k": "2026-11-17|9ec9c8e39a36",
-   "at": "2026-11-18T00:11:12Z",
-   "title": "Fantasy GM",
-   "text": "Eller left Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:12Z",
-   "seen": "2026-11-18T00:11:12Z"
-  },
-  {
-   "k": "2026-11-17|caa08312e553",
-   "at": "2026-11-18T00:11:13Z",
-   "title": "Fantasy GM",
-   "text": "Goncalves left Hagel's line (TB)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:13Z",
-   "seen": "2026-11-18T00:11:13Z"
-  },
-  {
-   "k": "2026-11-17|490cf4e7b9ef",
-   "at": "2026-11-18T00:11:13Z",
-   "title": "Fantasy GM",
-   "text": "Yager left Connor's line (WPG)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:13Z",
-   "seen": "2026-11-18T00:11:13Z"
-  },
-  {
-   "k": "2026-11-17|51a2a58746be",
-   "at": "2026-11-18T00:11:13Z",
-   "title": "Fantasy GM",
-   "text": "Mercer left Connor's line (WPG)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T00:11:13Z",
-   "seen": "2026-11-18T00:11:13Z"
-  },
-  {
-   "k": "2026-11-17|98cd5c4c3539",
-   "at": "2026-11-18T01:15:47Z",
-   "title": "Fantasy GM",
-   "text": "Dach joined McDavid's line (EDM)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T01:15:47Z",
-   "seen": "2026-11-18T01:15:47Z"
-  },
-  {
    "k": "2026-11-18|52bfbab5cef3",
    "at": "2026-11-18T13:27:06Z",
    "title": "Fantasy GM",
@@ -2580,6 +2436,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (2:08 PM):\ntoday: Start Shabanov; bench Zibanejad (no game). +5.5"
+  },
+  {
+   "at": "2026-11-25T05:03:18Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot could not change your lineup. today: ESPN said Transaction type can only be executed in the current scoring period. Set it by hand on ESPN."
   }
  ]
 }
