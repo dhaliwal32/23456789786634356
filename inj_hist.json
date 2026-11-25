@@ -647,11 +647,11 @@
 "was": "2026-11-22"
 },
 "5509": {
-"d": "2026-11-24",
-"k": "later",
+"d": "2026-11-25",
+"k": "dtd",
 "nd": "2026-11-24",
 "now": "2026-11-27",
-"was": "2026-11-24"
+"was": "Out"
 },
 "5517": {
 "d": "2026-11-24",
@@ -1210,8 +1210,8 @@
 },
 "5509": {
 "back": "2026-11-27",
-"note": "Hyman (migraine) won't play against Vegas on Tuesday, per Oilers play-by-play announcer Jack Michaels.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5517": {
 "back": "2026-12-01",
