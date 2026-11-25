@@ -1,39 +1,6 @@
 {
  "entries": [
   {
-   "at": "2026-11-20T22:57:42-07:00",
-   "day": "2026-11-21",
-   "mode": "on",
-   "text": "Start Arvidsson; bench Michkov.",
-   "gain": 1.4,
-   "before": 123.7,
-   "after": 125.1,
-   "moves": [
-    {
-     "id": 3120307,
-     "n": "Viktor Arvidsson",
-     "from": 7,
-     "to": 3,
-     "why": ""
-    },
-    {
-     "id": 3942905,
-     "n": "Troy Terry",
-     "from": 3,
-     "to": 6,
-     "why": ""
-    },
-    {
-     "id": 5149170,
-     "n": "Matvei Michkov",
-     "from": 6,
-     "to": 7,
-     "why": ""
-    }
-   ],
-   "result": "failed: Transaction type can only be executed in the current scoring period"
-  },
-  {
    "at": "2026-11-20T23:03:43-07:00",
    "day": "2026-11-21",
    "mode": "on",
@@ -3433,6 +3400,53 @@
   },
   {
    "at": "2026-11-24T22:27:18-07:00",
+   "day": "2026-11-25",
+   "mode": "on",
+   "text": "Start Barkov, Meier, Skinner (50% to start); bench Zegras, Shabanov.",
+   "gain": 8.7,
+   "before": 119.2,
+   "after": 127.9,
+   "moves": [
+    {
+     "id": 3041970,
+     "n": "Aleksander Barkov",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 4565230,
+     "n": "Trevor Zegras",
+     "from": 3,
+     "to": 7,
+     "why": ""
+    },
+    {
+     "id": 3899978,
+     "n": "Timo Meier",
+     "from": 7,
+     "to": 3,
+     "why": ""
+    },
+    {
+     "id": 4268767,
+     "n": "Stuart Skinner",
+     "from": 7,
+     "to": 5,
+     "why": "50% to start"
+    },
+    {
+     "id": 5302535,
+     "n": "Maxim Shabanov",
+     "from": 3,
+     "to": 7,
+     "why": ""
+    }
+   ],
+   "result": "failed: Transaction type can only be executed in the current scoring period"
+  },
+  {
+   "at": "2026-11-24T22:33:19-07:00",
    "day": "2026-11-25",
    "mode": "on",
    "text": "Start Barkov, Meier, Skinner (50% to start); bench Zegras, Shabanov.",
