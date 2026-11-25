@@ -113,6 +113,7 @@
 "3042081": {
 "d": "2026-11-25",
 "k": "later",
+"nd": "2026-11-25",
 "now": "2026-11-27",
 "was": "2026-11-25"
 },
@@ -537,6 +538,7 @@
 "5080171": {
 "d": "2026-11-25",
 "k": "later",
+"nd": "2026-11-25",
 "now": "2026-11-27",
 "was": "2026-11-25"
 },
@@ -588,11 +590,11 @@
 "was": "2026-11-19"
 },
 "5149153": {
-"d": "2026-11-24",
-"k": "dtd",
+"d": "2026-11-25",
+"k": "later",
 "nd": "2026-11-22",
-"now": "2026-11-25",
-"was": "Out"
+"now": "2026-11-27",
+"was": "2026-11-25"
 },
 "5149210": {
 "d": "2026-11-18",
@@ -753,8 +755,8 @@
 },
 "3042081": {
 "back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "Buchnevich (upper body) will miss Wednesday's game against the Islanders, per Brandon Kiley of ESPN St. Louis.",
+"status": "Out"
 },
 "3042085": {
 "back": "2026-11-28",
@@ -1073,8 +1075,8 @@
 },
 "5080171": {
 "back": "2026-11-27",
-"note": "Snuggerud (undisclosed) is questionable for Wednesday's game against the Islanders, per Lou Korac of NHL.com.",
-"status": "Day-To-Day"
+"note": "Snuggerud (upper body) didn't travel to Long Island for Wednesday's clash with the Islanders, Brandon Kiley of ESPN St. Louis reports.",
+"status": "Out"
 },
 "5080177": {
 "back": "2027-02-12",
@@ -1112,9 +1114,9 @@
 "status": "Injured Reserve"
 },
 "5149153": {
-"back": "2026-11-25",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-27",
+"note": "out",
+"status": "Out"
 },
 "5149209": {
 "back": "2027-01-01",
