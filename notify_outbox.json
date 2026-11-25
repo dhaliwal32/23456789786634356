@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-18|rw258|date|5275337|2026-11-21|2026-11-25",
-   "at": "2026-11-18T22:33:53Z",
-   "title": "Fantasy GM",
-   "text": "Hagens return moved to Nov 25 (was Nov 21)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-18T22:33:53Z",
-   "seen": "2026-11-18T22:33:53Z"
-  },
-  {
    "k": "2026-11-18|f8111481236f",
    "at": "2026-11-19T01:09:39Z",
    "title": "Fantasy GM",
@@ -1018,7 +1006,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-25T15:45:15Z",
-   "seen": "2026-11-25T22:31:41Z"
+   "seen": "2026-11-25T22:37:41Z"
   },
   {
    "k": "2026-11-25|63e7a3661816",
@@ -1054,7 +1042,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-25T18:16:58Z",
-   "seen": "2026-11-25T22:31:41Z"
+   "seen": "2026-11-25T22:37:41Z"
   }
  ],
  "sent": {
