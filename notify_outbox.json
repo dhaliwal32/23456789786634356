@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-18|52bfbab5cef3",
-   "at": "2026-11-18T13:27:06Z",
-   "title": "Fantasy GM",
-   "text": "Bertuzzi joined CHI PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "seen": "2026-11-18T13:27:06Z",
-   "via": "expired325",
-   "sent_at": "2026-11-25T05:27:43Z"
-  },
-  {
    "k": "2026-11-18|3b430999b040",
    "at": "2026-11-18T15:27:30Z",
    "title": "Fantasy GM",
@@ -2450,6 +2438,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (10:37 PM):\ntoday: Start Barkov, Meier, Skinner (50% to start); bench Zegras, Shabanov. +8.7"
+  },
+  {
+   "at": "2026-11-25T14:15:22Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Overnight: Autopilot set your lineup (12:33 AM):\ntoday: Your swap: Start Michkov; bench Gritsyuk. -1.6"
   }
  ]
 }
