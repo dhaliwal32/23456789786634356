@@ -105,7 +105,7 @@
 "3042044": {
 "d": "2026-11-20",
 "k": "news",
-"nd": "2026-11-20"
+"nd": "2026-11-25"
 },
 "3042081": {
 "d": "2026-11-24",
@@ -158,6 +158,12 @@
 "nd": "2026-11-23",
 "now": "2026-11-28",
 "was": "2026-11-23"
+},
+"3151036": {
+"d": "2026-11-25",
+"k": "later",
+"now": "2026-12-27",
+"was": "2026-12-03"
 },
 "3151038": {
 "d": "2026-11-24",
@@ -749,7 +755,7 @@
 },
 "3042044": {
 "back": "2026-11-27",
-"note": "Burakovsky (lower body) was on the ice Friday doing some individual drills, Bruce Garrioch of Postmedia reports.",
+"note": "Burakovsky (lower body) will be with the Senators for their four-game road trip and is expected to play at some point, Bruce Garrioch of Postmedia reports Wedne",
 "status": "Injured Reserve"
 },
 "3042081": {
@@ -818,7 +824,7 @@
 "status": "Injured Reserve"
 },
 "3151036": {
-"back": "2026-12-03",
+"back": "2026-12-27",
 "note": "Head coach Travis Green said Monday that Foegele (knee) hasn't yet resumed skating, Bruce Garrioch of Postmedia reports.",
 "status": "Injured Reserve"
 },
