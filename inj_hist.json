@@ -226,9 +226,10 @@
 "was": "2026-11-25"
 },
 "3904178": {
-"d": "2026-11-25",
-"k": "new",
-"now": "2026-11-27"
+"d": "2026-11-26",
+"k": "dtd",
+"now": "2026-11-27",
+"was": "Out"
 },
 "3904188": {
 "d": "2026-11-21",
@@ -314,11 +315,11 @@
 "was": "2026-12-06"
 },
 "4233685": {
-"d": "2026-11-25",
-"k": "later",
+"d": "2026-11-26",
+"k": "dtd",
 "nd": "2026-11-25",
 "now": "2026-11-27",
-"was": "2026-11-25"
+"was": "Out"
 },
 "4233890": {
 "d": "2026-11-25",
@@ -387,10 +388,10 @@
 "was": "2026-12-05"
 },
 "4392883": {
-"d": "2026-11-23",
+"d": "2026-11-26",
 "k": "later",
 "nd": "2026-11-23",
-"now": "2026-11-28",
+"now": "2026-12-03",
 "was": "2026-11-23"
 },
 "4565225": {
@@ -610,9 +611,10 @@
 "was": "Out"
 },
 "5157": {
-"d": "2026-11-25",
-"k": "new",
-"now": "2026-11-27"
+"d": "2026-11-26",
+"k": "dtd",
+"now": "2026-11-27",
+"was": "Out"
 },
 "5216858": {
 "d": "2026-11-25",
@@ -867,8 +869,8 @@
 },
 "3904178": {
 "back": "2026-11-27",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-12-01",
@@ -922,8 +924,8 @@
 },
 "4233685": {
 "back": "2026-11-27",
-"note": "Frost (upper body) has been ruled out for Wednesday's game against the Penguins, Eric Francis of Sportsnet reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4320548": {
 "back": "2026-12-03",
@@ -961,7 +963,7 @@
 "status": "Injured Reserve"
 },
 "4392883": {
-"back": "2026-11-28",
+"back": "2026-12-03",
 "note": "Pospisil (upper body) didn't travel with his teammates for the start of Calgary's five-game road trip, per Eric Francis of Sportsnet on Monday.",
 "status": "Out"
 },
@@ -1152,8 +1154,8 @@
 },
 "5157": {
 "back": "2026-11-27",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5161": {
 "back": "2027-01-12",
