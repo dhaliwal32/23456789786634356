@@ -116,11 +116,11 @@
 "now": "2026-11-27"
 },
 "3042081": {
-"d": "2026-11-25",
-"k": "later",
+"d": "2026-11-26",
+"k": "dtd",
 "nd": "2026-11-25",
 "now": "2026-11-27",
-"was": "2026-11-25"
+"was": "Out"
 },
 "3042095": {
 "d": "2026-11-21",
@@ -455,11 +455,11 @@
 "was": "2026-11-27"
 },
 "4697436": {
-"d": "2026-11-25",
-"k": "later",
+"d": "2026-11-26",
+"k": "dtd",
 "nd": "2026-11-19",
 "now": "2026-11-27",
-"was": "2026-11-25"
+"was": "Out"
 },
 "4697717": {
 "d": "2026-11-22",
@@ -549,11 +549,11 @@
 "was": "2026-11-27"
 },
 "5080171": {
-"d": "2026-11-25",
-"k": "later",
+"d": "2026-11-26",
+"k": "dtd",
 "nd": "2026-11-25",
 "now": "2026-11-27",
-"was": "2026-11-25"
+"was": "Out"
 },
 "5080212": {
 "d": "2026-11-21",
@@ -603,11 +603,11 @@
 "was": "2026-11-19"
 },
 "5149153": {
-"d": "2026-11-25",
-"k": "later",
+"d": "2026-11-26",
+"k": "dtd",
 "nd": "2026-11-22",
 "now": "2026-11-27",
-"was": "2026-11-25"
+"was": "Out"
 },
 "5157": {
 "d": "2026-11-25",
@@ -772,8 +772,8 @@
 },
 "3042081": {
 "back": "2026-11-27",
-"note": "Buchnevich (upper body) will miss Wednesday's game against the Islanders, per Brandon Kiley of ESPN St. Louis.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042085": {
 "back": "2026-11-28",
@@ -1032,8 +1032,8 @@
 },
 "4697436": {
 "back": "2026-11-27",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697717": {
 "back": "2026-11-29",
@@ -1102,8 +1102,8 @@
 },
 "5080171": {
 "back": "2026-11-27",
-"note": "Snuggerud (upper body) didn't travel to Long Island for Wednesday's clash with the Islanders, Brandon Kiley of ESPN St. Louis reports.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5080177": {
 "back": "2027-02-12",
@@ -1142,8 +1142,8 @@
 },
 "5149153": {
 "back": "2026-11-27",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149209": {
 "back": "2027-01-01",
