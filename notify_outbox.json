@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-18|f8111481236f",
-   "at": "2026-11-19T01:09:39Z",
-   "title": "Fantasy GM",
-   "text": "Texier joined Caufield's line (MTL)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T01:09:39Z",
-   "seen": "2026-11-19T01:09:39Z"
-  },
-  {
    "k": "2026-11-19|efb2d1bb1a68",
    "at": "2026-11-19T17:44:48Z",
    "title": "Fantasy GM",
@@ -1091,6 +1079,18 @@
    "via": "urgent",
    "sent_at": "2026-11-26T00:51:16Z",
    "seen": "2026-11-26T00:51:16Z"
+  },
+  {
+   "k": "2026-11-25|68895f28fbbc",
+   "at": "2026-11-26T02:50:07Z",
+   "title": "Fantasy GM",
+   "text": "Frondell joined CHI PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-26T02:50:07Z",
+   "seen": "2026-11-26T02:50:07Z"
   }
  ],
  "sent": {
