@@ -110,6 +110,11 @@
 "now": "2026-11-30",
 "was": "2026-11-27"
 },
+"3042056": {
+"d": "2026-11-25",
+"k": "new",
+"now": "2026-11-27"
+},
 "3042081": {
 "d": "2026-11-25",
 "k": "later",
@@ -650,10 +655,9 @@
 "was": "2026-11-21"
 },
 "5291935": {
-"d": "2026-11-23",
-"k": "dtd",
-"now": "2026-11-25",
-"was": "Out"
+"d": "2026-11-25",
+"k": "back",
+"was": "2026-11-25"
 },
 "5291944": {
 "d": "2026-11-19",
@@ -780,6 +784,11 @@
 "back": "2026-11-30",
 "note": "Burakovsky (lower body) will be with the Senators for their four-game road trip and is expected to play at some point, Bruce Garrioch of Postmedia reports Wedne",
 "status": "Injured Reserve"
+},
+"3042056": {
+"back": "2026-11-27",
+"note": "out",
+"status": "Out"
 },
 "3042081": {
 "back": "2026-11-27",
@@ -1185,11 +1194,6 @@
 "back": "2026-11-27",
 "note": "Hagens (back) is wearing a non-contact sweater ahead of Tuesday's practice, Steve Conroy of the Boston Herald reports.",
 "status": "Injured Reserve"
-},
-"5291935": {
-"back": "2026-11-25",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "5291944": {
 "back": "2026-12-10",
