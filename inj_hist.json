@@ -508,10 +508,8 @@
 },
 "4894398": {
 "d": "2026-11-25",
-"k": "later",
-"nd": "2026-11-19",
-"now": "2026-11-25",
-"was": "2026-11-14"
+"k": "back",
+"was": "2026-11-25"
 },
 "4894747": {
 "d": "2026-11-19",
@@ -521,7 +519,7 @@
 "4895527": {
 "d": "2026-11-25",
 "k": "later",
-"nd": "2026-11-24",
+"nd": "2026-11-25",
 "now": "2026-11-27",
 "was": "2026-11-25"
 },
@@ -1073,14 +1071,9 @@
 "note": "Danforth (upper body) was placed on injured reserve Thursday, per the NHL media site.",
 "status": "Injured Reserve"
 },
-"4894398": {
-"back": "2026-11-25",
-"note": "Back (finger) is expected to return within the next week, Robert Tiffin of NHL.com reports Thursday.",
-"status": "Injured Reserve"
-},
 "4895527": {
 "back": "2026-11-27",
-"note": "out",
+"note": "Kozak (undisclosed) won't play Wednesday versus the Rangers, Matthew Fairburn of The Athletic reports.",
 "status": "Out"
 },
 "5075840": {
