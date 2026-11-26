@@ -70,5 +70,13 @@
 "goal": null,
 "period": 1,
 "clock": "15:17"
+},
+{
+"sent": "2026-11-26T05:28:00Z",
+"msg": "Assist by Mikael Granlund (21)",
+"from": "NHL",
+"goal": null,
+"period": 3,
+"clock": "14:00"
 }
 ]
