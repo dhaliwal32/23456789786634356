@@ -628,9 +628,9 @@
 "was": "Out"
 },
 "5216858": {
-"d": "2026-11-25",
-"k": "news",
-"nd": "2026-11-25"
+"d": "2026-11-26",
+"k": "back",
+"was": ""
 },
 "5216860": {
 "d": "2026-11-23",
@@ -1160,8 +1160,8 @@
 },
 "5149204": {
 "back": "2026-12-31",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "5149209": {
 "back": "2027-01-01",
@@ -1181,11 +1181,6 @@
 "5188490": {
 "back": "2027-02-13",
 "note": "Grebenkin (back) underwent successful surgery and is expected to miss at least four months.",
-"status": "Injured Reserve"
-},
-"5216858": {
-"back": "",
-"note": "Sennecke (upper body) is now considered day-to-day, Zach Cavanagh of The Sporting Tribune reports Wednesday.",
 "status": "Injured Reserve"
 },
 "5216860": {
