@@ -209,11 +209,11 @@
 "was": "2026-11-19"
 },
 "3904098": {
-"d": "2026-11-24",
-"k": "dtd",
-"nd": "2026-11-23",
-"now": "2026-11-27",
-"was": "Out"
+"d": "2026-11-26",
+"k": "later",
+"nd": "2026-11-26",
+"now": "2026-11-28",
+"was": "2026-11-27"
 },
 "3904107": {
 "d": "2026-11-24",
@@ -859,9 +859,9 @@
 "status": "Injured Reserve"
 },
 "3904098": {
-"back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-28",
+"note": "Roslovic (upper body) is expected to miss Friday's road clash against the Bruins, per Mark Masters of TSN.",
+"status": "Out"
 },
 "3904175": {
 "back": "2026-12-02",
