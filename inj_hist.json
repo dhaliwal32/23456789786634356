@@ -295,10 +295,10 @@
 "was": "2026-11-25"
 },
 "4233668": {
-"d": "2026-11-25",
+"d": "2026-11-27",
 "k": "sooner",
 "nd": "2026-11-25",
-"now": "2026-11-27",
+"now": "2026-11-28",
 "was": "2026-12-06"
 },
 "4233685": {
@@ -528,6 +528,11 @@
 "now": "2026-11-30",
 "was": "2026-11-27"
 },
+"5080160": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-12-01"
+},
 "5080162": {
 "d": "2026-11-24",
 "k": "later",
@@ -594,6 +599,11 @@
 "nd": "2026-11-22",
 "now": "2026-11-27",
 "was": "Out"
+},
+"5149186": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-12-01"
 },
 "5149204": {
 "d": "2026-11-26",
@@ -898,7 +908,7 @@
 "status": "Out"
 },
 "4233668": {
-"back": "2026-11-27",
+"back": "2026-11-28",
 "note": "Poehling (knee) is expected back in the short term, with head coach Joel Quenneville telling reporters, \"He's close. Would love to see him in by the weekend. We",
 "status": "Injured Reserve"
 },
@@ -1072,6 +1082,11 @@
 "note": "out",
 "status": "Out"
 },
+"5080160": {
+"back": "2026-12-01",
+"note": "Ostlund (undisclosed) is expected to miss Friday's game against Pittsburgh, per Rachel Lenzi of The Buffalo News.",
+"status": "Out"
+},
 "5080162": {
 "back": "2026-12-09",
 "note": "Bichsel (lower body) was placed on injured reserve Saturday.",
@@ -1121,6 +1136,11 @@
 "back": "2026-11-27",
 "note": "day-to-day",
 "status": "Day-To-Day"
+},
+"5149186": {
+"back": "2026-12-01",
+"note": "Benson (upper body) will not play in Friday's home clash against the Penguins, per Rachel Lenzi of The Buffalo News.",
+"status": "Out"
 },
 "5149204": {
 "back": "2026-12-31",
