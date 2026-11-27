@@ -155,6 +155,11 @@
 "k": "back",
 "was": "2026-11-25"
 },
+"3149633": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-12-01"
+},
 "3150479": {
 "d": "2026-11-27",
 "k": "back",
@@ -852,6 +857,11 @@
 "back": "2026-11-29",
 "note": "Pastrnak sustained a lower-body injury and is unlikely to return to Friday's game against Toronto.",
 "status": "Day-To-Day"
+},
+"3149633": {
+"back": "2026-12-01",
+"note": "out",
+"status": "Out"
 },
 "3151036": {
 "back": "2026-12-27",
