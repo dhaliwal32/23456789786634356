@@ -301,6 +301,11 @@
 "now": "2026-12-04",
 "was": "2026-11-25"
 },
+"4233586": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-11-28"
+},
 "4233668": {
 "d": "2026-11-27",
 "k": "sooner",
@@ -365,6 +370,11 @@
 "nd": "2026-11-23",
 "now": "2026-12-01",
 "was": "2026-11-17"
+},
+"4392072": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-11-28"
 },
 "4392260": {
 "d": "2026-11-27",
@@ -922,6 +932,11 @@
 "note": "out",
 "status": "Out"
 },
+"4233586": {
+"back": "2026-11-28",
+"note": "out",
+"status": "Out"
+},
 "4233668": {
 "back": "2026-11-28",
 "note": "Poehling (knee) is expected back in the short term, with head coach Joel Quenneville telling reporters, \"He's close. Would love to see him in by the weekend. We",
@@ -956,6 +971,11 @@
 "back": "2026-12-01",
 "note": "Sherwood (upper body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
+},
+"4392072": {
+"back": "2026-11-28",
+"note": "out",
+"status": "Out"
 },
 "4392883": {
 "back": "2026-12-03",
