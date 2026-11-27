@@ -1042,7 +1042,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-27T16:01:13Z",
-   "seen": "2026-11-27T17:58:13Z"
+   "seen": "2026-11-27T18:04:13Z"
   },
   {
    "k": "2026-11-27|26b0c8b23cd3",
@@ -1067,6 +1067,30 @@
    "via": "urgent",
    "sent_at": "2026-11-27T16:58:27Z",
    "seen": "2026-11-27T16:58:27Z"
+  },
+  {
+   "k": "2026-11-27|b87c7c1ca36d",
+   "at": "2026-11-27T18:04:34Z",
+   "title": "Fantasy GM",
+   "text": "Khusnutdinov left Pastrnak's line (BOS)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T18:04:34Z",
+   "seen": "2026-11-27T18:04:34Z"
+  },
+  {
+   "k": "2026-11-27|71c9dfbd2f23",
+   "at": "2026-11-27T18:04:34Z",
+   "title": "Fantasy GM",
+   "text": "Frost joined CGY PP1",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T18:04:34Z",
+   "seen": "2026-11-27T18:04:34Z"
   }
  ],
  "sent": {
