@@ -297,6 +297,11 @@
 "now": "2026-11-28",
 "was": "2026-12-06"
 },
+"4233685": {
+"d": "2026-11-27",
+"k": "back",
+"was": "2026-11-27"
+},
 "4272674": {
 "d": "2026-11-23",
 "k": "back",
@@ -533,11 +538,11 @@
 "was": "2026-11-27"
 },
 "5080171": {
-"d": "2026-11-26",
-"k": "dtd",
+"d": "2026-11-27",
+"k": "later",
 "nd": "2026-11-25",
-"now": "2026-11-27",
-"was": "Out"
+"now": "2026-12-02",
+"was": "2026-11-27"
 },
 "5080212": {
 "d": "2026-11-21",
@@ -895,11 +900,6 @@
 "note": "Poehling (knee) is expected back in the short term, with head coach Joel Quenneville telling reporters, \"He's close. Would love to see him in by the weekend. We",
 "status": "Injured Reserve"
 },
-"4233685": {
-"back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
-},
 "4233890": {
 "back": "2026-12-12",
 "note": "Gadjovich (neck) took the ice Thursday in a non-contact sweater, George Richards of Florida Hockey Now reports.",
@@ -1076,7 +1076,7 @@
 "status": "Injured Reserve"
 },
 "5080171": {
-"back": "2026-11-27",
+"back": "2026-12-02",
 "note": "day-to-day",
 "status": "Day-To-Day"
 },
