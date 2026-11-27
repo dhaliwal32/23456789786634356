@@ -219,10 +219,11 @@
 "was": "2026-11-25"
 },
 "3904178": {
-"d": "2026-11-26",
-"k": "dtd",
-"now": "2026-11-27",
-"was": "Out"
+"d": "2026-11-27",
+"k": "later",
+"nd": "2026-11-27",
+"now": "2026-11-28",
+"was": "2026-11-27"
 },
 "3904188": {
 "d": "2026-11-21",
@@ -540,6 +541,7 @@
 "5080160": {
 "d": "2026-11-27",
 "k": "new",
+"nd": "2026-11-27",
 "now": "2026-12-01"
 },
 "5080162": {
@@ -624,6 +626,11 @@
 "k": "new",
 "nd": "2026-11-26",
 "now": "2026-12-31"
+},
+"5157": {
+"d": "2026-11-27",
+"k": "back",
+"was": "2026-11-27"
 },
 "5216858": {
 "d": "2026-11-26",
@@ -866,9 +873,9 @@
 "status": "Injured Reserve"
 },
 "3904178": {
-"back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"back": "2026-11-28",
+"note": "Cernak (illness) is expected to miss Friday's game against Ottawa, per Gabby Shirley of the Lightning's official site.",
+"status": "Out"
 },
 "3939716": {
 "back": "2026-12-01",
@@ -992,8 +999,8 @@
 },
 "4588205": {
 "back": "2026-12-02",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4588331": {
 "back": "2026-12-12",
@@ -1077,8 +1084,8 @@
 },
 "5080160": {
 "back": "2026-12-01",
-"note": "Ostlund (undisclosed) is expected to miss Friday's game against Pittsburgh, per Rachel Lenzi of The Buffalo News.",
-"status": "Out"
+"note": "Ostlund (undisclosed) was placed on injured reserve Friday, per the NHL Media Site.",
+"status": "Injured Reserve"
 },
 "5080162": {
 "back": "2026-12-09",
@@ -1149,11 +1156,6 @@
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
 "status": "Injured Reserve"
-},
-"5157": {
-"back": "2026-11-27",
-"note": "day-to-day",
-"status": "Day-To-Day"
 },
 "5161": {
 "back": "2027-01-12",
