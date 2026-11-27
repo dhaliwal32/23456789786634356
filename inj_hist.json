@@ -628,8 +628,8 @@
 },
 "5149170": {
 "d": "2026-11-27",
-"k": "new",
-"now": "2026-11-28"
+"k": "back",
+"was": "2026-11-28"
 },
 "5149186": {
 "d": "2026-11-27",
@@ -1168,11 +1168,6 @@
 "note": "ir",
 "status": "Injured Reserve"
 },
-"5149170": {
-"back": "2026-11-28",
-"note": "out",
-"status": "Out"
-},
 "5149186": {
 "back": "2026-12-01",
 "note": "Benson (upper body) will not play in Friday's home clash against the Penguins, per Rachel Lenzi of The Buffalo News.",
@@ -1240,8 +1235,8 @@
 },
 "5592": {
 "back": "2026-11-30",
-"note": "day-to-day",
-"status": "Day-To-Day"
+"note": "out",
+"status": "Out"
 },
 "5614": {
 "back": "2026-12-01",
