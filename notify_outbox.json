@@ -1,18 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-20|099fe1e0b21e",
-   "at": "2026-11-20T20:20:21Z",
-   "title": "Fantasy GM",
-   "text": "Buchnevich joined STL PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-20T20:20:21Z",
-   "seen": "2026-11-20T20:20:21Z"
-  },
-  {
    "k": "2026-11-20|507e24d1a722",
    "at": "2026-11-21T05:40:00Z",
    "title": "Fantasy GM",
@@ -1042,7 +1030,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-27T16:01:13Z",
-   "seen": "2026-11-27T20:14:55Z"
+   "seen": "2026-11-27T20:20:58Z"
   },
   {
    "k": "2026-11-27|26b0c8b23cd3",
