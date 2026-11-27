@@ -364,11 +364,9 @@
 "was": "2026-11-17"
 },
 "4392260": {
-"d": "2026-11-25",
-"k": "sooner",
-"nd": "2026-11-25",
-"now": "2026-11-27",
-"was": "2026-12-05"
+"d": "2026-11-27",
+"k": "back",
+"was": "2026-11-27"
 },
 "4392883": {
 "d": "2026-11-26",
@@ -403,10 +401,10 @@
 "was": ""
 },
 "4587588": {
-"d": "2026-11-24",
+"d": "2026-11-27",
 "k": "later",
 "nd": "2026-11-24",
-"now": "2026-11-27",
+"now": "2026-11-28",
 "was": "2026-11-22"
 },
 "4587996": {
@@ -463,10 +461,10 @@
 "was": ""
 },
 "4874731": {
-"d": "2026-11-23",
+"d": "2026-11-27",
 "k": "later",
 "nd": "2026-11-13",
-"now": "2026-11-27",
+"now": "2026-11-30",
 "was": "2026-11-17"
 },
 "4874734": {
@@ -652,10 +650,10 @@
 "was": "2026-11-25"
 },
 "5614": {
-"d": "2026-11-21",
+"d": "2026-11-27",
 "k": "later",
 "nd": "2026-11-21",
-"now": "2026-11-27",
+"now": "2026-12-01",
 "was": "2026-11-21"
 }
 },
@@ -882,8 +880,8 @@
 },
 "4062251": {
 "back": "2026-12-01",
-"note": "out",
-"status": "Out"
+"note": "ir",
+"status": "Injured Reserve"
 },
 "4063268": {
 "back": "2026-12-04",
@@ -940,11 +938,6 @@
 "note": "Sherwood (upper body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
-"4392260": {
-"back": "2026-11-27",
-"note": "Desharnais (appendectomy) is slated to miss Wednesday's game against the Flyers, Tarik El-Bashir of Monumental Sports Network reports.",
-"status": "Injured Reserve"
-},
 "4392883": {
 "back": "2026-12-03",
 "note": "Pospisil (upper body) didn't travel with his teammates for the start of Calgary's five-game road trip, per Eric Francis of Sportsnet on Monday.",
@@ -971,7 +964,7 @@
 "status": "Injured Reserve"
 },
 "4587588": {
-"back": "2026-11-27",
+"back": "2026-11-28",
 "note": "Dorofeyev (lower body) will join the Rangers for their two-game road trip, Mollie Walker of the New York Post reports Tuesday.",
 "status": "Injured Reserve"
 },
@@ -1041,7 +1034,7 @@
 "status": "Injured Reserve"
 },
 "4874731": {
-"back": "2026-11-27",
+"back": "2026-11-30",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -1196,7 +1189,7 @@
 "status": "Injured Reserve"
 },
 "5614": {
-"back": "2026-11-27",
+"back": "2026-12-01",
 "note": "Gallagher (lower body) was placed on injured reserve Saturday.",
 "status": "Injured Reserve"
 },
