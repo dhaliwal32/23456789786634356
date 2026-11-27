@@ -625,11 +625,6 @@
 "nd": "2026-11-26",
 "now": "2026-12-31"
 },
-"5157": {
-"d": "2026-11-27",
-"k": "back",
-"was": "2026-11-27"
-},
 "5216858": {
 "d": "2026-11-26",
 "k": "back",
@@ -997,8 +992,8 @@
 },
 "4588205": {
 "back": "2026-12-02",
-"note": "ir",
-"status": "Injured Reserve"
+"note": "out",
+"status": "Out"
 },
 "4588331": {
 "back": "2026-12-12",
@@ -1154,6 +1149,11 @@
 "back": "2027-01-01",
 "note": "Head coach Ryan Warsofsky said Sunday that Musty (upper body) isn't close to returning, Curtis Pashelka of The San Jose Mercury News reports.",
 "status": "Injured Reserve"
+},
+"5157": {
+"back": "2026-11-27",
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5161": {
 "back": "2027-01-12",
