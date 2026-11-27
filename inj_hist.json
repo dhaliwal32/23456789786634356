@@ -171,6 +171,11 @@
 "k": "back",
 "was": "2026-12-01"
 },
+"3735": {
+"d": "2026-11-27",
+"k": "new",
+"now": "2026-12-03"
+},
 "3852": {
 "d": "2026-11-25",
 "k": "back",
@@ -830,6 +835,11 @@
 "3648015": {
 "back": "2026-11-28",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
+"status": "Injured Reserve"
+},
+"3735": {
+"back": "2026-12-03",
+"note": "ir",
 "status": "Injured Reserve"
 },
 "3891922": {
