@@ -481,10 +481,9 @@
 "was": "2026-11-27"
 },
 "4894355": {
-"d": "2026-11-22",
-"k": "later",
-"now": "2026-12-01",
-"was": "2026-11-22"
+"d": "2026-11-27",
+"k": "back",
+"was": ""
 },
 "4894398": {
 "d": "2026-11-25",
@@ -1050,11 +1049,6 @@
 "4874744": {
 "back": "2026-12-08",
 "note": "ir-lt",
-"status": "Injured Reserve"
-},
-"4894355": {
-"back": "",
-"note": "Danforth (upper body) was placed on injured reserve Thursday, per the NHL media site.",
 "status": "Injured Reserve"
 },
 "4895527": {
