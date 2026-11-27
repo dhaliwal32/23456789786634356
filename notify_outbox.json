@@ -1019,6 +1019,18 @@
    "via": "urgent",
    "sent_at": "2026-11-27T02:46:04Z",
    "seen": "2026-11-27T02:46:04Z"
+  },
+  {
+   "k": "2026-11-27|rw258|date|5275337|2026-11-27|2026-11-29",
+   "at": "2026-11-27T15:04:51Z",
+   "title": "Fantasy GM",
+   "text": "Hagens return moved to Nov 29 (was Nov 27)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T15:04:51Z",
+   "seen": "2026-11-27T15:04:51Z"
   }
  ],
  "sent": {
