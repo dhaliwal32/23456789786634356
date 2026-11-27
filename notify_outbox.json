@@ -1030,7 +1030,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-27T16:01:13Z",
-   "seen": "2026-11-27T20:32:58Z"
+   "seen": "2026-11-27T20:39:33Z"
   },
   {
    "k": "2026-11-27|26b0c8b23cd3",
@@ -1115,6 +1115,18 @@
    "via": "urgent",
    "sent_at": "2026-11-27T20:09:20Z",
    "seen": "2026-11-27T20:09:20Z"
+  },
+  {
+   "k": "2026-11-27|3def134af3df",
+   "at": "2026-11-27T20:39:59Z",
+   "title": "Fantasy GM",
+   "text": "Gaudette joined Celebrini's line (SJ)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T20:39:59Z",
+   "seen": "2026-11-27T20:39:59Z"
   }
  ],
  "sent": {
