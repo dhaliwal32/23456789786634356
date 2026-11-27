@@ -1,138 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-19|efb2d1bb1a68",
-   "at": "2026-11-19T17:44:48Z",
-   "title": "Fantasy GM",
-   "text": "McKenna joined TOR PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T17:44:48Z",
-   "seen": "2026-11-19T17:44:48Z"
-  },
-  {
-   "k": "2026-11-19|ab5a9fa9e67d",
-   "at": "2026-11-19T19:48:31Z",
-   "title": "Fantasy GM",
-   "text": "Barkov joined FLA PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:48:31Z",
-   "seen": "2026-11-19T19:48:31Z"
-  },
-  {
-   "k": "2026-11-19|fdbea8274556",
-   "at": "2026-11-19T19:48:31Z",
-   "title": "Fantasy GM",
-   "text": "Kasper left DeBrincat's line (DET)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:48:31Z",
-   "seen": "2026-11-19T19:48:31Z"
-  },
-  {
-   "k": "2026-11-19|38f435ad8d32",
-   "at": "2026-11-19T19:48:31Z",
-   "title": "Fantasy GM",
-   "text": "Lundell left Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:48:31Z",
-   "seen": "2026-11-19T19:48:31Z"
-  },
-  {
-   "k": "2026-11-19|69ac4e3b8b76",
-   "at": "2026-11-19T19:48:32Z",
-   "title": "Fantasy GM",
-   "text": "Marchand back in the FLA lineup",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:48:32Z",
-   "seen": "2026-11-19T19:48:32Z"
-  },
-  {
-   "k": "2026-11-19|b1919cf57b44",
-   "at": "2026-11-19T19:48:32Z",
-   "title": "Fantasy GM",
-   "text": "Luostarinen left Reinhart's line (FLA)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:48:32Z",
-   "seen": "2026-11-19T19:48:32Z"
-  },
-  {
-   "k": "2026-11-19|rw258|hello|3041970",
-   "at": "2026-11-19T19:54:06Z",
-   "title": "Fantasy GM",
-   "text": "Barkov back around Nov 21",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T19:54:06Z",
-   "seen": "2026-11-19T19:54:06Z"
-  },
-  {
-   "k": "2026-11-19|63f437451d93",
-   "at": "2026-11-19T22:45:48Z",
-   "title": "Fantasy GM",
-   "text": "Sorokin not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T22:45:48Z",
-   "seen": "2026-11-19T23:31:45Z"
-  },
-  {
-   "k": "2026-11-19|4d147f465a43",
-   "at": "2026-11-19T22:45:48Z",
-   "title": "Fantasy GM",
-   "text": "Skinner not confirmed",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T22:45:48Z",
-   "seen": "2026-11-19T23:31:45Z"
-  },
-  {
-   "k": "2026-11-19|a485707c4cb6",
-   "at": "2026-11-19T23:37:44Z",
-   "title": "Fantasy GM",
-   "text": "Sorokin not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T23:37:44Z",
-   "seen": "2026-11-19T23:57:48Z"
-  },
-  {
-   "k": "2026-11-19|7122c8e5ec8e",
-   "at": "2026-11-19T23:37:45Z",
-   "title": "Fantasy GM",
-   "text": "Skinner not starting",
-   "section": "lineup",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-19T23:37:45Z",
-   "seen": "2026-11-19T23:57:48Z"
-  },
-  {
    "k": "2026-11-20|099fe1e0b21e",
    "at": "2026-11-20T20:20:21Z",
    "title": "Fantasy GM",
@@ -1115,6 +983,30 @@
    "via": "urgent",
    "sent_at": "2026-11-26T14:44:23Z",
    "seen": "2026-11-26T14:44:23Z"
+  },
+  {
+   "k": "2026-11-26|2b5595bbd36e",
+   "at": "2026-11-27T02:13:57Z",
+   "title": "Fantasy GM",
+   "text": "Joseph left Draisaitl's line (EDM)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T02:13:57Z",
+   "seen": "2026-11-27T02:13:57Z"
+  },
+  {
+   "k": "2026-11-26|189110a0cebf",
+   "at": "2026-11-27T02:13:58Z",
+   "title": "Fantasy GM",
+   "text": "Cowan left Matthews's line (TOR)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-27T02:13:58Z",
+   "seen": "2026-11-27T02:13:58Z"
   }
  ],
  "sent": {
