@@ -1,30 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-21|rw258|date|3041970|2026-11-21|2026-11-28",
-   "at": "2026-11-21T14:23:51Z",
-   "title": "Fantasy GM",
-   "text": "Barkov return moved to Nov 28 (was Nov 21)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T14:23:51Z",
-   "seen": "2026-11-21T14:23:51Z"
-  },
-  {
-   "k": "2026-11-21|rw258|date|3852|2026-11-21|2026-11-28",
-   "at": "2026-11-21T14:23:51Z",
-   "title": "Fantasy GM",
-   "text": "Marchand return moved to Nov 28 (was Nov 21)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T14:23:51Z",
-   "seen": "2026-11-21T14:23:51Z"
-  },
-  {
    "k": "2026-11-21|rw258|date|3041970|2026-11-28|2026-11-27",
    "at": "2026-11-21T16:06:26Z",
    "title": "Fantasy GM",
@@ -1136,7 +1112,7 @@
    "section": "lineup",
    "urgent": true,
    "sent": true,
-   "seen": "2026-11-28T14:23:03Z",
+   "seen": "2026-11-28T14:29:03Z",
    "via": "morning325",
    "sent_at": "2026-11-28T14:07:29Z"
   }
