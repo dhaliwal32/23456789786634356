@@ -1187,6 +1187,18 @@
    "via": "urgent",
    "sent_at": "2026-11-28T01:56:57Z",
    "seen": "2026-11-28T01:56:57Z"
+  },
+  {
+   "k": "2026-11-27|c0d3b02539c1",
+   "at": "2026-11-28T05:04:15Z",
+   "title": "Fantasy GM",
+   "text": "Sorokin confirmed",
+   "section": "lineup",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-28T05:04:15Z",
+   "seen": "2026-11-28T05:04:15Z"
   }
  ],
  "sent": {
@@ -2606,6 +2618,12 @@
    "kind": "urgent",
    "title": "Fantasy GM",
    "body": "Autopilot set your lineup (10:02 PM):\ntomorrow: Start Laferriere, Gritsyuk, Sanheim; bench Gostisbehere, Terry, Michkov. +8.9"
+  },
+  {
+   "at": "2026-11-28T05:04:16Z",
+   "kind": "urgent",
+   "title": "Fantasy GM",
+   "body": "Autopilot set your lineup (10:04 PM):\ntomorrow: Start Gostisbehere; bench Sanheim. +2.5"
   }
  ]
 }

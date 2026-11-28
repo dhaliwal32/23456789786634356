@@ -1,39 +1,6 @@
 {
  "entries": [
   {
-   "at": "2026-11-20T23:17:34-07:00",
-   "day": "2026-11-21",
-   "mode": "on",
-   "text": "Start Arvidsson; bench Michkov.",
-   "gain": 1.4,
-   "before": 123.7,
-   "after": 125.1,
-   "moves": [
-    {
-     "id": 3120307,
-     "n": "Viktor Arvidsson",
-     "from": 7,
-     "to": 3,
-     "why": ""
-    },
-    {
-     "id": 3942905,
-     "n": "Troy Terry",
-     "from": 3,
-     "to": 6,
-     "why": ""
-    },
-    {
-     "id": 5149170,
-     "n": "Matvei Michkov",
-     "from": 6,
-     "to": 7,
-     "why": ""
-    }
-   ],
-   "result": "failed: Transaction type can only be executed in the current scoring period"
-  },
-  {
    "at": "2026-11-20T23:23:33-07:00",
    "day": "2026-11-21",
    "mode": "on",
@@ -3526,10 +3493,36 @@
     }
    ],
    "result": "done"
+  },
+  {
+   "at": "2026-11-27T22:04:16-07:00",
+   "day": "2026-11-28",
+   "mode": "on",
+   "text": "Start Gostisbehere; bench Sanheim.",
+   "gain": 2.5,
+   "before": 127.9,
+   "after": 130.4,
+   "moves": [
+    {
+     "id": 3025662,
+     "n": "Shayne Gostisbehere",
+     "from": 7,
+     "to": 4,
+     "why": ""
+    },
+    {
+     "id": 3114757,
+     "n": "Travis Sanheim",
+     "from": 4,
+     "to": 7,
+     "why": ""
+    }
+   ],
+   "result": "done"
   }
  ],
  "state": {
-  "day": "2026-11-27",
+  "day": "2026-11-28",
   "notes": 0,
   "sent": [],
   "planned": {}
