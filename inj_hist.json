@@ -565,9 +565,10 @@
 },
 "5080160": {
 "d": "2026-11-27",
-"k": "new",
+"k": "later",
 "nd": "2026-11-27",
-"now": "2026-12-01"
+"now": "2027-01-02",
+"was": "2026-12-01"
 },
 "5080162": {
 "d": "2026-11-24",
@@ -1144,7 +1145,7 @@
 "status": "Out"
 },
 "5080160": {
-"back": "2026-12-01",
+"back": "2027-01-02",
 "note": "Ostlund (undisclosed) was placed on injured reserve Friday, per the NHL Media Site.",
 "status": "Injured Reserve"
 },
