@@ -27,11 +27,6 @@
 "k": "back",
 "was": "2026-11-23"
 },
-"2952729": {
-"d": "2026-11-28",
-"k": "back",
-"was": "2027-07-01"
-},
 "2968829": {
 "d": "2026-11-25",
 "k": "back",
@@ -144,11 +139,6 @@
 "now": "2026-11-30",
 "was": "2026-11-25"
 },
-"3114778": {
-"d": "2026-11-28",
-"k": "back",
-"was": "2026-11-29"
-},
 "3124": {
 "d": "2026-11-25",
 "k": "back",
@@ -175,11 +165,6 @@
 "k": "later",
 "now": "2027-04-03",
 "was": "2027-03-30"
-},
-"3735": {
-"d": "2026-11-28",
-"k": "back",
-"was": "2026-12-03"
 },
 "3852": {
 "d": "2026-11-25",
@@ -330,11 +315,6 @@
 "d": "2026-11-23",
 "k": "back",
 "was": "2026-11-25"
-},
-"4320548": {
-"d": "2026-11-28",
-"k": "back",
-"was": "2026-12-03"
 },
 "4331586": {
 "d": "2026-11-21",
@@ -694,11 +674,6 @@
 "d": "2026-11-27",
 "k": "new",
 "now": "2026-11-28"
-},
-"5828": {
-"d": "2026-11-28",
-"k": "back",
-"was": "2027-03-11"
 }
 },
 "last": {
@@ -735,6 +710,11 @@
 "2591155": {
 "back": "2026-12-05",
 "note": "Rust (lower body) is skating in a non-contact sweater Friday, Seth Rorabaugh of Tribune-Review Sports reports.",
+"status": "Injured Reserve"
+},
+"2952729": {
+"back": "2027-07-01",
+"note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
 "status": "Injured Reserve"
 },
 "2976839": {
@@ -832,6 +812,11 @@
 "note": "McCann (lower body) will be out for approximately 10 weeks, the team announced Sunday.",
 "status": "Injured Reserve"
 },
+"3114778": {
+"back": "2026-11-29",
+"note": "Pastrnak sustained a lower-body injury and is unlikely to return to Friday's game against Toronto.",
+"status": "Day-To-Day"
+},
 "3149633": {
 "back": "2026-12-01",
 "note": "out",
@@ -855,6 +840,11 @@
 "3648015": {
 "back": "2026-11-28",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
+"status": "Injured Reserve"
+},
+"3735": {
+"back": "2026-12-03",
+"note": "Kane (foot) was placed on injured reserve Friday, per the NHL media site.",
 "status": "Injured Reserve"
 },
 "3891922": {
@@ -940,6 +930,11 @@
 "4233890": {
 "back": "2026-12-12",
 "note": "Gadjovich (neck) took the ice Thursday in a non-contact sweater, George Richards of Florida Hockey Now reports.",
+"status": "Injured Reserve"
+},
+"4320548": {
+"back": "2026-12-03",
+"note": "Hughes (upper body) is doubtful to play Friday versus the Avalanche but is expected to join the wild on their road trip, which begins Sunday in Chicago, Michael",
 "status": "Injured Reserve"
 },
 "4352803": {
@@ -1231,6 +1226,11 @@
 "back": "2026-11-28",
 "note": "day-to-day",
 "status": "Day-To-Day"
+},
+"5828": {
+"back": "2027-03-11",
+"note": "Bjugstad (pectoral), Dawson Mercer, Nico Daws, Alexander Command and a pair of draft picks were traded to the Jets from the Devils on Friday in exchange for Con",
+"status": "Injured Reserve"
 },
 "5833": {
 "back": "2027-01-02",
