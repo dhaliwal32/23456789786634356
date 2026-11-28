@@ -1163,6 +1163,18 @@
    "via": "urgent",
    "sent_at": "2026-11-28T00:26:24Z",
    "seen": "2026-11-28T00:26:24Z"
+  },
+  {
+   "k": "2026-11-27|c1be02f792ba",
+   "at": "2026-11-28T01:39:00Z",
+   "title": "Fantasy GM",
+   "text": "Newhook joined Suzuki's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-28T01:39:00Z",
+   "seen": "2026-11-28T01:39:00Z"
   }
  ],
  "sent": {
