@@ -1,78 +1,6 @@
 {
  "items": [
   {
-   "k": "2026-11-20|507e24d1a722",
-   "at": "2026-11-21T05:40:00Z",
-   "title": "Fantasy GM",
-   "text": "Hallander joined McDavid's line (EDM)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:00Z",
-   "seen": "2026-11-21T05:40:00Z"
-  },
-  {
-   "k": "2026-11-20|ee6444033fde",
-   "at": "2026-11-21T05:40:01Z",
-   "title": "Fantasy GM",
-   "text": "Kapanen joined McDavid's line (EDM)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:01Z",
-   "seen": "2026-11-21T05:40:01Z"
-  },
-  {
-   "k": "2026-11-20|06ac6e1b8349",
-   "at": "2026-11-21T05:40:02Z",
-   "title": "Fantasy GM",
-   "text": "Joseph joined Draisaitl's line (EDM)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:02Z",
-   "seen": "2026-11-21T05:40:02Z"
-  },
-  {
-   "k": "2026-11-20|1708f2b3ebe0",
-   "at": "2026-11-21T05:40:02Z",
-   "title": "Fantasy GM",
-   "text": "Dach left McDavid's line (EDM)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:02Z",
-   "seen": "2026-11-21T05:40:02Z"
-  },
-  {
-   "k": "2026-11-20|b8a4aa597ade",
-   "at": "2026-11-21T05:40:03Z",
-   "title": "Fantasy GM",
-   "text": "Gaudette left Celebrini's line (SJ)",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:03Z",
-   "seen": "2026-11-21T05:40:03Z"
-  },
-  {
-   "k": "2026-11-20|33aa451a20db",
-   "at": "2026-11-21T05:40:03Z",
-   "title": "Fantasy GM",
-   "text": "Orlov joined SJ PP1",
-   "section": "mine",
-   "urgent": true,
-   "sent": true,
-   "via": "urgent",
-   "sent_at": "2026-11-21T05:40:03Z",
-   "seen": "2026-11-21T05:40:03Z"
-  },
-  {
    "k": "2026-11-21|rw258|date|3041970|2026-11-21|2026-11-28",
    "at": "2026-11-21T14:23:51Z",
    "title": "Fantasy GM",
@@ -1198,7 +1126,7 @@
    "sent": true,
    "via": "urgent",
    "sent_at": "2026-11-28T05:04:15Z",
-   "seen": "2026-11-28T05:10:13Z"
+   "seen": "2026-11-28T06:11:54Z"
   }
  ],
  "sent": {
