@@ -27,6 +27,11 @@
 "k": "back",
 "was": "2026-11-23"
 },
+"2952729": {
+"d": "2026-11-28",
+"k": "back",
+"was": "2027-07-01"
+},
 "2968829": {
 "d": "2026-11-25",
 "k": "back",
@@ -171,6 +176,11 @@
 "k": "later",
 "now": "2027-04-03",
 "was": "2027-03-30"
+},
+"3735": {
+"d": "2026-11-28",
+"k": "back",
+"was": "2026-12-03"
 },
 "3852": {
 "d": "2026-11-25",
@@ -687,6 +697,11 @@
 "d": "2026-11-27",
 "k": "new",
 "now": "2026-11-28"
+},
+"5828": {
+"d": "2026-11-28",
+"k": "back",
+"was": "2027-03-11"
 }
 },
 "last": {
@@ -723,11 +738,6 @@
 "2591155": {
 "back": "2026-12-05",
 "note": "Rust (lower body) is skating in a non-contact sweater Friday, Seth Rorabaugh of Tribune-Review Sports reports.",
-"status": "Injured Reserve"
-},
-"2952729": {
-"back": "2027-07-01",
-"note": "Krug (ankle) was placed on long-term injured reserve by the Blues on Monday, per PuckPedia.",
 "status": "Injured Reserve"
 },
 "2976839": {
@@ -853,11 +863,6 @@
 "3648015": {
 "back": "2026-11-28",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
-"status": "Injured Reserve"
-},
-"3735": {
-"back": "2026-12-03",
-"note": "Kane (foot) was placed on injured reserve Friday, per the NHL media site.",
 "status": "Injured Reserve"
 },
 "3891922": {
@@ -1239,11 +1244,6 @@
 "back": "2026-11-28",
 "note": "day-to-day",
 "status": "Day-To-Day"
-},
-"5828": {
-"back": "2027-03-11",
-"note": "Bjugstad (pectoral), Dawson Mercer, Nico Daws, Alexander Command and a pair of draft picks were traded to the Jets from the Devils on Friday in exchange for Con",
-"status": "Injured Reserve"
 },
 "5833": {
 "back": "2027-01-02",
