@@ -95,10 +95,10 @@
 "was": "2026-11-30"
 },
 "3042056": {
-"d": "2026-11-27",
-"k": "later",
+"d": "2026-11-28",
+"k": "dtd",
 "now": "2026-11-29",
-"was": "2026-11-27"
+"was": "Out"
 },
 "3042081": {
 "d": "2026-11-27",
@@ -189,11 +189,11 @@
 "now": "2026-11-29"
 },
 "3904098": {
-"d": "2026-11-26",
-"k": "later",
+"d": "2026-11-28",
+"k": "dtd",
 "nd": "2026-11-26",
 "now": "2026-11-28",
-"was": "2026-11-27"
+"was": "Out"
 },
 "3904107": {
 "d": "2026-11-24",
@@ -207,11 +207,11 @@
 "was": "2026-11-25"
 },
 "3904178": {
-"d": "2026-11-27",
-"k": "later",
+"d": "2026-11-28",
+"k": "dtd",
 "nd": "2026-11-27",
 "now": "2026-11-28",
-"was": "2026-11-27"
+"was": "Out"
 },
 "3904188": {
 "d": "2026-11-21",
@@ -351,9 +351,10 @@
 "was": "2026-11-17"
 },
 "4392072": {
-"d": "2026-11-27",
-"k": "new",
-"now": "2026-11-28"
+"d": "2026-11-28",
+"k": "dtd",
+"now": "2026-11-28",
+"was": "Out"
 },
 "4392260": {
 "d": "2026-11-27",
@@ -387,10 +388,11 @@
 "was": "2026-11-22"
 },
 "4587929": {
-"d": "2026-11-27",
-"k": "new",
+"d": "2026-11-28",
+"k": "dtd",
 "nd": "2026-11-27",
-"now": "2026-11-28"
+"now": "2026-11-28",
+"was": "Out"
 },
 "4587996": {
 "d": "2026-11-27",
@@ -410,9 +412,10 @@
 "was": "2026-11-27"
 },
 "4588638": {
-"d": "2026-11-27",
-"k": "new",
-"now": "2026-11-28"
+"d": "2026-11-28",
+"k": "dtd",
+"now": "2026-11-28",
+"was": "Out"
 },
 "4697399": {
 "d": "2026-11-27",
@@ -591,9 +594,10 @@
 "was": "2026-11-28"
 },
 "5149186": {
-"d": "2026-11-27",
-"k": "new",
-"now": "2026-12-01"
+"d": "2026-11-28",
+"k": "dtd",
+"now": "2026-12-01",
+"was": "Out"
 },
 "5149204": {
 "d": "2026-11-26",
@@ -759,8 +763,8 @@
 },
 "3042056": {
 "back": "2026-11-29",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3042085": {
 "back": "2026-11-28",
@@ -859,8 +863,8 @@
 },
 "3904098": {
 "back": "2026-11-28",
-"note": "Roslovic (upper body) is expected to miss Friday's road clash against the Bruins, per Mark Masters of TSN.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3904175": {
 "back": "2026-12-02",
@@ -869,8 +873,8 @@
 },
 "3904178": {
 "back": "2026-11-28",
-"note": "Cernak (illness) is expected to miss Friday's game against Ottawa, per Gabby Shirley of the Lightning's official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "3939716": {
 "back": "2026-12-01",
@@ -959,8 +963,8 @@
 },
 "4392072": {
 "back": "2026-11-28",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4392883": {
 "back": "2026-12-05",
@@ -999,8 +1003,8 @@
 },
 "4587929": {
 "back": "2026-11-28",
-"note": "Chisholm (illness) is expected to miss Friday's game against Calgary, per Amanda Stein of the Devils' official site.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4587933": {
 "back": "2026-12-12",
@@ -1019,8 +1023,8 @@
 },
 "4588638": {
 "back": "2026-11-28",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4697399": {
 "back": "2026-11-30",
@@ -1144,8 +1148,8 @@
 },
 "5149186": {
 "back": "2026-12-01",
-"note": "Benson (upper body) will not play in Friday's home clash against the Penguins, per Rachel Lenzi of The Buffalo News.",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "5149204": {
 "back": "2026-12-31",
