@@ -12,6 +12,12 @@
 "now": "2026-12-01",
 "was": "2026-11-02"
 },
+"2562622": {
+"d": "2026-11-28",
+"k": "later",
+"now": "2026-12-06",
+"was": "2026-11-28"
+},
 "2562624": {
 "d": "2026-11-24",
 "k": "back",
@@ -166,6 +172,12 @@
 "now": "2027-04-03",
 "was": "2027-03-30"
 },
+"3648015": {
+"d": "2026-11-28",
+"k": "later",
+"now": "2026-12-06",
+"was": "2026-11-28"
+},
 "3852": {
 "d": "2026-11-25",
 "k": "back",
@@ -290,9 +302,10 @@
 "was": "2026-11-25"
 },
 "4233586": {
-"d": "2026-11-27",
-"k": "new",
-"now": "2026-11-28"
+"d": "2026-11-28",
+"k": "dtd",
+"now": "2026-11-28",
+"was": "Out"
 },
 "4233643": {
 "d": "2026-11-27",
@@ -449,6 +462,12 @@
 "now": "2026-11-30",
 "was": "2026-11-23"
 },
+"4874720": {
+"d": "2026-11-28",
+"k": "later",
+"now": "2026-12-01",
+"was": "2026-11-28"
+},
 "4874723": {
 "d": "2026-11-23",
 "k": "back",
@@ -568,10 +587,10 @@
 "was": "2026-11-25"
 },
 "5136696": {
-"d": "2026-11-20",
+"d": "2026-11-28",
 "k": "later",
 "nd": "2026-11-21",
-"now": "2026-11-28",
+"now": "2026-11-30",
 "was": "2026-11-27"
 },
 "5149125": {
@@ -697,7 +716,7 @@
 "status": "Injured Reserve"
 },
 "2562622": {
-"back": "2026-11-28",
+"back": "2026-12-06",
 "note": "ir",
 "status": "Injured Reserve"
 },
@@ -842,7 +861,7 @@
 "status": "Injured Reserve"
 },
 "3648015": {
-"back": "2026-11-28",
+"back": "2026-12-06",
 "note": "Greer (upper body) was placed on injured reserve Monday.",
 "status": "Injured Reserve"
 },
@@ -918,8 +937,8 @@
 },
 "4233586": {
 "back": "2026-11-28",
-"note": "out",
-"status": "Out"
+"note": "day-to-day",
+"status": "Day-To-Day"
 },
 "4233643": {
 "back": "2026-11-29",
@@ -1052,7 +1071,7 @@
 "status": "Injured Reserve"
 },
 "4874720": {
-"back": "2026-11-28",
+"back": "2026-12-01",
 "note": "Edvinsson (contract dispute) is on the Red Wings' injured, non-roster list, per the NHL media site Wednesday.",
 "status": "Injured Reserve"
 },
@@ -1132,7 +1151,7 @@
 "status": "Injured Reserve"
 },
 "5136696": {
-"back": "2026-11-28",
+"back": "2026-11-30",
 "note": "McWard (lower body) is considered day-to-day, per David Alter of The Hockey News on Saturday.",
 "status": "Injured Reserve"
 },
