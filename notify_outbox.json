@@ -1175,6 +1175,18 @@
    "via": "urgent",
    "sent_at": "2026-11-28T01:39:00Z",
    "seen": "2026-11-28T01:39:00Z"
+  },
+  {
+   "k": "2026-11-27|1099fdde5f4f",
+   "at": "2026-11-28T01:56:57Z",
+   "title": "Fantasy GM",
+   "text": "Texier joined Suzuki's line (MTL)",
+   "section": "mine",
+   "urgent": true,
+   "sent": true,
+   "via": "urgent",
+   "sent_at": "2026-11-28T01:56:57Z",
+   "seen": "2026-11-28T01:56:57Z"
   }
  ],
  "sent": {
