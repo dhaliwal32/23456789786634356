@@ -150,5 +150,13 @@
 "goal": null,
 "period": 2,
 "clock": "01:16"
+},
+{
+"sent": "2026-11-28T02:03:00Z",
+"msg": "Goal by Kyle Connor (22)",
+"from": "NHL",
+"goal": null,
+"period": 2,
+"clock": "15:36"
 }
 ]
